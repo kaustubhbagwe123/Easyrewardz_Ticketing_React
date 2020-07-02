@@ -5334,9 +5334,12 @@ class Dashboard extends Component {
                           <div className="search-name">
                             <input
                               type="search"
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.ticketingDashboard.givenametoyoursearch
-                                : "Give name to your search"}
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .givenametoyoursearch
+                                  : "Give name to your search"
+                              }
                               name="SearchName"
                               value={this.state.SearchName}
                               onChange={this.handelOnchangeData}
@@ -5364,15 +5367,15 @@ class Dashboard extends Component {
                           <div className="search-names">
                             <div className="names-title">
                               <p>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.p.searchname
-                                : "Search Name"}
-                                </p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.searchname
+                                  : "Search Name"}
+                              </p>
                               <p className="mar-comp">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.p.action
-                                : "Action"}
-                                </p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.action
+                                  : "Action"}
+                              </p>
                             </div>
                             <ul>
                               {/* <li> */}
@@ -5392,9 +5395,8 @@ class Dashboard extends Component {
                                         )}
                                       >
                                         {TranslationContext !== undefined
-                                ? TranslationContext.a.apply
-                                : "APPLY"}
-                                        
+                                          ? TranslationContext.a.apply
+                                          : "APPLY"}
                                       </a>
                                       <a
                                         href="#!"
@@ -5439,9 +5441,11 @@ class Dashboard extends Component {
                                     onChange={this.handleByDateCreate.bind(
                                       this
                                     )}
-                                    placeholderText={TranslationContext !== undefined
-                                      ? TranslationContext.label.creationdate
-                                      : "Creation Date"}
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.creationdate
+                                        : "Creation Date"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5461,9 +5465,12 @@ class Dashboard extends Component {
                                     onChange={this.handleChangeSelectDate.bind(
                                       this
                                     )}
-                                    placeholderText={TranslationContext !== undefined
-                                      ? TranslationContext.label.lastupdateddate
-                                      : "Last Updated Date"}
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .lastupdateddate
+                                        : "Last Updated Date"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5477,9 +5484,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaDueByDate}
                                     onChange={this.handleSlaDueByDate}
                                   >
-                                    <option value="0">{TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard.slaDue
-                                      : "SLA Due"}</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .slaDue
+                                        : "SLA Due"}
+                                    </option>
                                     {this.state.SlaDueData !== null &&
                                       this.state.SlaDueData.map((item, i) => (
                                         <option key={i} value={item.slaDueID}>
@@ -5496,10 +5506,10 @@ class Dashboard extends Component {
                                     onChange={this.handleTicketStatusByDate}
                                   >
                                     <option value="0">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.div.ticketstatus
-                                      : "Ticket Status"}
-                                      </option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -5531,9 +5541,12 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder={TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard.customerMobileNo
-                                      : "Customer Mobile No"}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .customerMobileNo
+                                        : "Customer Mobile No"
+                                    }
                                     name="MobileNoByCustType"
                                     value={this.state.MobileNoByCustType}
                                     onChange={this.handelOnchangeData}
@@ -5547,9 +5560,12 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="no-bg"
-                                    placeholder={TranslationContext !== undefined
-                                      ? TranslationContext.label.customeremailid
-                                      : "Customer Email ID"}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .customeremailid
+                                        : "Customer Email ID"
+                                    }
                                     name="EmailIdByCustType"
                                     value={this.state.EmailIdByCustType}
                                     onChange={this.handelOnchangeData}
@@ -5562,7 +5578,11 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="no-bg"
-                                    placeholder="Ticket ID"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.ticketid
+                                        : "Ticket ID"
+                                    }
                                     name="TicketIdByCustType"
                                     maxLength={9}
                                     value={this.state.TicketIdByCustType}
@@ -5579,7 +5599,11 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByCustomer}
                                   >
-                                    <option value="0">Ticket Status</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -5612,7 +5636,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedPriority}
                                     onChange={this.setPriorityValue}
                                   >
-                                    <option value="0">Priority</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.priority
+                                        : "Priority"}
+                                    </option>
                                     {this.state.TicketPriorityData !== null &&
                                       this.state.TicketPriorityData.map(
                                         (item, i) => (
@@ -5636,7 +5664,11 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByTicket}
                                   >
-                                    <option value="0">Ticket Status</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -5660,7 +5692,12 @@ class Dashboard extends Component {
                                         option.channelOfPurchaseID
                                       }
                                       options={this.state.ChannelOfPurchaseData}
-                                      placeholder="Channel Of Purchase"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .channelofpurchase
+                                          : "Channel Of Purchase"
+                                      }
                                       // menuIsOpen={true}
                                       closeMenuOnSelect={false}
                                       onChange={this.setChannelOfPurchaseValue.bind(
@@ -5684,7 +5721,12 @@ class Dashboard extends Component {
                                         option.ticketActionTypeID
                                       }
                                       options={this.state.TicketActionTypeData}
-                                      placeholder="Ticket Action Type"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .ticketactiontype
+                                          : "Ticket Action Type"
+                                      }
                                       // menuIsOpen={true}
                                       closeMenuOnSelect={false}
                                       onChange={this.setTicketActionTypeValue.bind(
@@ -5717,7 +5759,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedCategory}
                                     onChange={this.setCategoryValue}
                                   >
-                                    <option value="0">Category</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.category
+                                        : "Category"}
+                                    </option>
                                     {this.state.CategoryData !== null &&
                                       this.state.CategoryData.map((item, i) => (
                                         <option key={i} value={item.categoryID}>
@@ -5734,7 +5780,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedSubCategory}
                                     onChange={this.setSubCategoryValue}
                                   >
-                                    <option value="0">Sub Category</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.subcategory
+                                        : "Sub Category"}
+                                    </option>
                                     {this.state.SubCategoryData !== null &&
                                       this.state.SubCategoryData.map(
                                         (item, i) => (
@@ -5756,7 +5806,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedIssueType}
                                     onChange={this.setIssueTypeValue}
                                   >
-                                    <option value="0">Issue Type</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.issuetype
+                                        : "Issue Type"}
+                                    </option>
                                     {this.state.IssueTypeData !== null &&
                                       this.state.IssueTypeData.map(
                                         (item, i) => (
@@ -5780,7 +5834,11 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByCategory}
                                   >
-                                    <option value="0">Ticket Status</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -5813,7 +5871,11 @@ class Dashboard extends Component {
                                 >
                                   <DatePicker
                                     selected={this.state.ByAllCreateDate}
-                                    placeholderText="Creation Date"
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.creationdate
+                                        : "Creation Date"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5832,7 +5894,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedTicketSource}
                                     onChange={this.setTicketSourceValue}
                                   >
-                                    <option>Ticket Source</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketSourceData !== null &&
                                       this.state.TicketSourceData.map(
                                         (item, i) => (
@@ -5853,7 +5919,11 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Claim ID"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.claimid
+                                        : "Claim ID"
+                                    }
                                     value={this.state.ClaimIdByAll}
                                     name="ClaimIdByAll"
                                     onChange={this.handelOnchangeData}
@@ -5866,7 +5936,11 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Email"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.a.email
+                                        : "Email"
+                                    }
                                     value={this.state.EmailByAll}
                                     name="EmailByAll"
                                     onChange={this.handelOnchangeData}
@@ -5881,7 +5955,12 @@ class Dashboard extends Component {
                                   <DatePicker
                                     selected={this.state.ByAllLastDate}
                                     onChange={this.handleAllLastDate.bind(this)}
-                                    placeholderText="Last Updated Date"
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .lastupdateddate
+                                        : "Last Updated Date"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5896,7 +5975,12 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Ticket Id/Title"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .ticketIdtitle
+                                        : "Ticket Id/Title"
+                                    }
                                     value={this.state.TicketIdTitleByAll}
                                     name="TicketIdTitleByAll"
                                     onChange={this.handelOnchangeData}
@@ -5911,7 +5995,12 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Invoice Number/Sub Order No"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .invoiceNumberSubOrderNo
+                                        : "Invoice Number/Sub Order No"
+                                    }
                                     value={this.state.InvoiceSubOrderByAll}
                                     name="InvoiceSubOrderByAll"
                                     onChange={this.handelOnchangeData}
@@ -5924,7 +6013,11 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Mobile"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.mobile
+                                        : "Mobile"
+                                    }
                                     maxLength={10}
                                     value={this.state.MobileByAll}
                                     name="MobileByAll"
@@ -5939,7 +6032,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedCategoryAll}
                                     onChange={this.setCategoryAllValue}
                                   >
-                                    <option value="0">Category</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.category
+                                        : "Category"}
+                                    </option>
                                     {this.state.CategoryData !== null &&
                                       this.state.CategoryData.map((item, i) => (
                                         <option key={i} value={item.categoryID}>
@@ -5956,7 +6053,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedPriorityAll}
                                     onChange={this.setPriorityAllValue}
                                   >
-                                    <option>Ticket Priority</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .ticketpriority
+                                        : "Ticket Priority"}
+                                    </option>
                                     {this.state.TicketPriorityData !== null &&
                                       this.state.TicketPriorityData.map(
                                         (item, i) => (
@@ -5977,7 +6079,11 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Item ID"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.itemid
+                                        : "Item ID"
+                                    }
                                     value={this.state.ItemIdByAll}
                                     name="ItemIdByAll"
                                     onChange={this.handelOnchangeData}
@@ -5992,7 +6098,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedAssignedTo}
                                     onChange={this.setAssignedToValue}
                                   >
-                                    <option>Select Assigned To</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .selectassignedto
+                                        : "Select Assigned To"}
+                                    </option>
                                     {this.state.AssignToData !== null &&
                                       this.state.AssignToData.map((item, i) => (
                                         <option key={i} value={item.userID}>
@@ -6005,14 +6116,15 @@ class Dashboard extends Component {
                                   className="col-md-3 col-sm-6 allspc"
                                   style={{ display: this.state.SubCategory }}
                                 >
-                                  {/* <select>
-                                          <option>Sub Category</option>
-                                        </select> */}
                                   <select
                                     value={this.state.selectedSubCategoryAll}
                                     onChange={this.setSubCategoryAllValue}
                                   >
-                                    <option value="0">Sub Category</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.subcategory
+                                        : "Sub Category"}
+                                    </option>
                                     {this.state.SubCategoryAllData !== null &&
                                       this.state.SubCategoryAllData.map(
                                         (item, i) => (
@@ -6034,7 +6146,11 @@ class Dashboard extends Component {
                                     value={this.state.selectedTicketStatusAll}
                                     onChange={this.handleTicketStatusAll}
                                   >
-                                    <option>Ticket Status</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -6057,13 +6173,22 @@ class Dashboard extends Component {
                                     onChange={this.handleVisitStoreAll}
                                   >
                                     <option value="all">
-                                      Did Visit Store : All
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .didvisitstoreall
+                                        : "Did Visit Store : All"}
                                     </option>
                                     <option value="yes">
-                                      Did Visit Store : Yes
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .didvisitstoreyes
+                                        : "Did Visit Store : Yes"}
                                     </option>
                                     <option value="no">
-                                      Did Visit Store : No
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .didvisitstoreno
+                                        : "Did Visit Store : No"}
                                     </option>
                                   </select>
                                 </div>
@@ -6091,14 +6216,16 @@ class Dashboard extends Component {
                                   className="col-md-3 col-sm-6 allspc"
                                   style={{ display: this.state.IssueType }}
                                 >
-                                  {/* <select>
-                                          <option>Issue Type</option>
-                                        </select> */}
                                   <select
                                     value={this.state.selectedIssueTypeAll}
                                     onChange={this.setIssueTypeAllValue}
                                   >
-                                    <option value="0">Issue Type</option>
+                                    <option value="0">
+                                      {" "}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.issuetype
+                                        : "Issue Type"}
+                                    </option>
                                     {this.state.IssueTypeAllData !== null &&
                                       this.state.IssueTypeAllData.map(
                                         (item, i) => (
@@ -6120,7 +6247,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaStatus}
                                     onChange={this.setSlaStatusValue}
                                   >
-                                    <option value="0">SLA Due</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .slaDue
+                                        : "SLA Due"}
+                                    </option>
                                     {this.state.SlaDueData !== null &&
                                       this.state.SlaDueData.map((item, i) => (
                                         <option key={i} value={item.slaDueID}>
@@ -6142,13 +6274,22 @@ class Dashboard extends Component {
                                     onChange={this.handleWantToVisitStoreAll}
                                   >
                                     <option value="all">
-                                      Want to Visit Store : All
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .wantvisitstoreall
+                                        : "Want to Visit Store : All"}
                                     </option>
                                     <option value="yes">
-                                      Want to Visit Store : Yes
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .wantvisitstoreyes
+                                        : "Want to Visit Store : Yes"}
                                     </option>
                                     <option value="no">
-                                      Want to Visit Store : No
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .wantvisitstoreno
+                                        : "Want to Visit Store : No"}
                                     </option>
                                   </select>
                                 </div>
@@ -6156,7 +6297,12 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Want to visit Store Code/Address"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .wanttovisitStoreCodeAddress
+                                        : "Want to visit Store Code/Address"
+                                    }
                                     value={
                                       this.state
                                         .selectedVisitStoreCodeAddressAll
@@ -6179,10 +6325,18 @@ class Dashboard extends Component {
                                           onChange={this.handleWithClaimAll}
                                         >
                                           <option value="no">
-                                            With Claim : No
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .WithClaimNo
+                                              : "With Claim : No"}
                                           </option>
                                           <option value="yes">
-                                            With Claim : Yes
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .WithClaimyes
+                                              : "With Claim : Yes"}
                                           </option>
                                         </select>
                                       </div>
@@ -6196,7 +6350,14 @@ class Dashboard extends Component {
                                               }
                                               onChange={this.handleClaimStatus}
                                             >
-                                              <option>Claim Status</option>
+                                              <option>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext
+                                                      .ticketingDashboard
+                                                      .claimstatus
+                                                  : "Claim Status"}
+                                              </option>
                                               {this.state.ClaimStatusData !==
                                                 null &&
                                                 this.state.ClaimStatusData.map(
@@ -6222,7 +6383,12 @@ class Dashboard extends Component {
                                               }
                                             >
                                               <option value="0">
-                                                Claim Category
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext
+                                                      .ticketingDashboard
+                                                      .claimcategory
+                                                  : "Claim Category"}
                                               </option>
                                               {this.state.CategoryData !==
                                                 null &&
@@ -6250,7 +6416,12 @@ class Dashboard extends Component {
                                               }
                                             >
                                               <option value="0">
-                                                Claim Sub Category
+                                              {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext
+                                                      .ticketingDashboard
+                                                      .claimsubcategory
+                                                  : "Claim Sub Category"}
                                               </option>
                                               {this.state
                                                 .ClaimSubCategoryData !==
