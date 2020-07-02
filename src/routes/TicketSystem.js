@@ -1991,7 +1991,9 @@ class TicketSystem extends Component {
                               this.state.selectedTicketActionType === "201"
                             }
                           />
-                          <label htmlFor="etb">ETB</label>
+                          <label htmlFor="etb">{TranslationContext !== undefined
+                        ? TranslationContext.label.etb
+                        : "ETB"}</label>
                         </div>
                       </div>
                     </div>
@@ -1999,7 +2001,9 @@ class TicketSystem extends Component {
 
                   <div className="row m-b-10">
                     <div className="col-md-6">
-                      <label className="category">Channel Of Purchase</label>
+                      <label className="category">{TranslationContext !== undefined
+                        ? TranslationContext.label.channelofpurchase
+                        : "Channel Of Purchase"}</label>
                       <select
                         value={this.state.selectedChannelOfPurchase}
                         onChange={this.setChannelOfPurchaseValue}
@@ -2203,7 +2207,9 @@ class TicketSystem extends Component {
                           <ul className="ticsys">
                             <li className="diwamargin">
                               <label>
-                                To: {this.state.customerData.customerEmailId}
+                              {TranslationContext !== undefined
+                              ? TranslationContext.label.to
+                              : "To"}: {this.state.customerData.customerEmailId}
                               </label>
                             </li>
                             <li>
@@ -2225,7 +2231,9 @@ class TicketSystem extends Component {
                                   htmlFor="fil-open-1"
                                   style={{ paddingLeft: "25px" }}
                                 >
-                                  <span>Inform Store</span>
+                                  <span>{TranslationContext !== undefined
+                                        ? TranslationContext.label.informstore
+                                        : "Inform Store"}</span>
                                 </label>
                               </div>
                             </li>
@@ -2260,7 +2268,9 @@ class TicketSystem extends Component {
                               <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
-                                    CC:
+                                  {TranslationContext !== undefined
+                                        ? TranslationContext.label.cc
+                                        : "CC"}:
                                   </span>
                                   <input
                                     type="text"
@@ -2769,16 +2779,23 @@ class TicketSystem extends Component {
                             <div className="row">
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Customer Name
+                                {TranslationContext !== undefined
+                                ? TranslationContext.label.customername
+                                : "Customer Name"}
                                 </label>
                               </div>
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Phone Number
+                                {TranslationContext !== undefined
+                                ? TranslationContext.label.phonenumber
+                                : "Phone Number"}
                                 </label>
                               </div>
                               <div className="col-md-4">
-                                <label className="category2">Email Id</label>
+                                <label className="category2">
+                                {TranslationContext !== undefined
+                                ? TranslationContext.label.emailid
+                                : "Email Id"}</label>
                               </div>
                             </div>
 
@@ -2805,16 +2822,24 @@ class TicketSystem extends Component {
 
                             <div className="row">
                               <div className="col-md-4">
-                                <label className="category2">Gender</label>
-                              </div>
-                              <div className="col-md-4">
                                 <label className="category2">
-                                  Alternate Number
+                                {TranslationContext !== undefined
+                                ? TranslationContext.label.gender
+                                : "Gender"}
                                 </label>
                               </div>
                               <div className="col-md-4">
                                 <label className="category2">
-                                  Alternate Email Id
+                                {TranslationContext !== undefined
+                                ? TranslationContext.label.alternatenumber
+                                : "Alternate Number"}
+                                </label>
+                              </div>
+                              <div className="col-md-4">
+                                <label className="category2">
+                                {TranslationContext !== undefined
+                                ? TranslationContext.label.alternateemailid
+                                : "Alternate Email Id"}
                                 </label>
                               </div>
                             </div>
@@ -2850,7 +2875,9 @@ class TicketSystem extends Component {
                                   "Edit"
                                 )}
                               >
-                                EDIT
+                                {TranslationContext !== undefined
+                                ? TranslationContext.button.edit
+                                : "EDIT"}
                               </button>
                             </div>
                           </div>
@@ -2865,14 +2892,20 @@ class TicketSystem extends Component {
                       overlayId="logout-ovrly"
                     >
                       <div className="pop-upAddSearchPD">
-                        <label className="lbl-popup-title">Edit Customer</label>
+                        <label className="lbl-popup-title">
+                          {TranslationContext !== undefined
+                          ? TranslationContext.label.editcustomer
+                          : "Edit Customer"}
+                        </label>
                         <hr />
                         <div className="row row-margin1">
                           <div className="col-md-6">
                             <input
                               type="text"
                               className="txt-1"
-                              placeholder="Full Name"
+                              placeholder={TranslationContext !== undefined
+                                ? TranslationContext.label.fullname
+                                : "Full Name"}
                               name="customername"
                               value={this.state.CustData.customername}
                               onChange={this.handleOnChangeData}
@@ -2888,7 +2921,9 @@ class TicketSystem extends Component {
                               type="text"
                               className="txt-1"
                               maxLength={10}
-                              placeholder="Mobile Number"
+                              placeholder={TranslationContext !== undefined
+                                ? TranslationContext.label.mobilenumber
+                                : "Mobile Number"}
                               name="customerPhone"
                               value={this.state.CustData.customerPhone}
                               onChange={this.handleOnChangeData}
@@ -2906,7 +2941,9 @@ class TicketSystem extends Component {
                             <input
                               type="text"
                               className="txt-1"
-                              placeholder="Email ID"
+                              placeholder={TranslationContext !== undefined
+                                ? TranslationContext.label.emailid
+                                : "Email ID"}
                               name="custEmailId"
                               value={this.state.CustData.custEmailId}
                               onChange={this.handleOnChangeData}
@@ -2924,8 +2961,12 @@ class TicketSystem extends Component {
                               value={this.state.CustData.genderID}
                               disabled
                             >
-                              <Radio value={1}>Male</Radio>
-                              <Radio value={2}>Female</Radio>
+                              <Radio value={1}>{TranslationContext !== undefined
+                                ? TranslationContext.label.male
+                                : "Male"}</Radio>
+                              <Radio value={2}>{TranslationContext !== undefined
+                                ? TranslationContext.label.female
+                                : "Female"}</Radio>
                             </Radio.Group>
                           </div>
                         </div>
@@ -2933,7 +2974,9 @@ class TicketSystem extends Component {
                           <div className="col-md-6 addcustdate">
                             <DatePicker
                               className="txt-1"
-                              placeholderText="DOB"
+                              placeholderText={TranslationContext !== undefined
+                                ? TranslationContext.label.dateofbirth
+                                : "DOB"}
                               name="editDOB"
                               maxDate={new Date()}
                               showMonthDropdown
@@ -2957,7 +3000,9 @@ class TicketSystem extends Component {
                               type="text"
                               className="txt-1"
                               maxLength={10}
-                              placeholder="Alternate Number"
+                              placeholder={TranslationContext !== undefined
+                                ? TranslationContext.label.alternatenumber
+                                : "Alternate Number"}
                               name="altNo"
                               value={this.state.CustData.altNo}
                               onChange={this.handleOnChangeData}
@@ -2972,7 +3017,9 @@ class TicketSystem extends Component {
                             <input
                               type="text"
                               className="txt-1"
-                              placeholder="Alternate Email"
+                              placeholder={TranslationContext !== undefined
+                                ? TranslationContext.label.alternateemail
+                                : "Alternate Email"}
                               name="altEmail"
                               value={this.state.CustData.altEmail}
                               onChange={this.handleOnChangeData}
@@ -2989,14 +3036,18 @@ class TicketSystem extends Component {
                             className="cancel-btn-A"
                             onClick={this.handleEditCustomerClose.bind(this)}
                           >
-                            CANCEL
+                            {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "CANCEL"}
                           </button>
                           <button
                             type="button"
                             className="butn"
                             onClick={this.handleUpdateCustomer.bind(this)}
                           >
-                            SAVE
+                            {TranslationContext !== undefined
+                            ? TranslationContext.button.save
+                            : "SAVE"}
                           </button>
                           {/* <button
                           type="button"
@@ -3104,7 +3155,11 @@ class TicketSystem extends Component {
                             />
                           )}
 
-                          <span className="system-tab-span">CUSTOMER</span>
+                          <span className="system-tab-span">
+                            {TranslationContext !== undefined
+                            ? TranslationContext.span.customer
+                            : "CUSTOMER"}
+                          </span>
                         </a>
                       </li>
 
@@ -3123,7 +3178,11 @@ class TicketSystem extends Component {
                             alt="order-icon"
                             className="order-icon"
                           />
-                          <span className="system-tab-span">ORDER</span>
+                          <span className="system-tab-span">
+                            {TranslationContext !== undefined
+                            ? TranslationContext.span.order
+                            : "ORDER"}
+                          </span>
                         </a>
                       </li>
 
@@ -3148,7 +3207,11 @@ class TicketSystem extends Component {
                             className="store-icon"
                             style={{ display: "none" }}
                           />
-                          <span className="system-tab-span">STORE</span>
+                          <span className="system-tab-span">
+                            {TranslationContext !== undefined
+                            ? TranslationContext.span.store
+                            : "STORE"}
+                          </span>
                         </a>
                       </li>
 
@@ -3167,7 +3230,11 @@ class TicketSystem extends Component {
                             alt="task-icon"
                             className="task-icon"
                           />
-                          <span className="system-tab-span">TASK</span>
+                          <span className="system-tab-span">
+                            {TranslationContext !== undefined
+                            ? TranslationContext.span.task
+                            : "TASK"}
+                          </span>
                         </a>
                       </li>
                     </ul>

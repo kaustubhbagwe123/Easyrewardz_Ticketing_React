@@ -30,6 +30,8 @@
     "issuetype": "समस्या का प्रकार",
     "ticketpriority": "टिकट प्राथमिकता",
     "ticketactiontype": "टिकट कार्रवाई प्रकार",
+    "qc": "क्यूसी",
+    "etb": "इटीबी",
     "channelofpurchase": "खरीद का चैनल",
     "customername": "ग्राहक का नाम",
     "phonenumber": "फ़ोन नंबर",
@@ -61,6 +63,8 @@
     "edit": "संपादित करें",
     "delete": "इसे हटा दें",
     "mobilenumber": "मोबाइल नंबर",
+    "male": "पुस्र्ष",
+    "female": "स्री",
     "name": "नाम",
     "mobile": "मोबाइल",
     "email": "ईमेल",
@@ -445,7 +449,8 @@
     "newsubmission":"नया सबमिशन",
     "items":"आइटम",
     "details":"विवरण",
-    "similartypeoftickets":"इसी प्रकार के टिकट"
+    "similartypeoftickets":"इसी प्रकार के टिकट",
+    "customerwanttoattachorder": "ग्राहक आदेश संलग्न करना चाहते हैं"
   },
   "text": {
     "brand": "ब्रांड :",
