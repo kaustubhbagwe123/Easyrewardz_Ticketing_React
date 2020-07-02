@@ -45,6 +45,8 @@ import { authHeader } from "../helpers/authHeader";
 import { CSVLink } from "react-csv";
 import { withRouter } from "react-router";
 import matchSorter from "match-sorter";
+import * as translationHI from "../translations/hindi";
+import * as translationMA from "../translations/marathi";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -286,6 +288,7 @@ class MyTicketList extends Component {
       spriorityFilterCheckbox: "",
       screatedOnFilterCheckbox: "",
       sassignedToFilterCheckbox: "",
+      translateLanguage: {},
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -364,6 +367,14 @@ class MyTicketList extends Component {
 
     this.handleGetDepartmentList();
     this.handleGetModulesNames();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   componentDidUpdate() {
@@ -815,7 +826,10 @@ class MyTicketList extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
-            TranslationContext!==undefined?TranslationContext.alertmessage.clearfollowupnotificationsuccessfully:"Clear Follow up notification successfully."
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage
+                  .clearfollowupnotificationsuccessfully
+              : "Clear Follow up notification successfully."
           );
           self.handleSearchTicketAllTabCount();
           self.handleSearchTicket(1003);
@@ -954,7 +968,11 @@ class MyTicketList extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.scheduledsuccessfully:"Scheduled successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.scheduledsuccessfully
+              : "Scheduled successfully."
+          );
           self.setState({
             scheduleRequired: "",
           });
@@ -1137,7 +1155,11 @@ class MyTicketList extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketsassignedsuccessfully:"Tickets assigned successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.ticketsassignedsuccessfully
+                : "Tickets assigned successfully."
+            );
             self.handleSearchTicket();
           }
         })
@@ -1742,8 +1764,10 @@ class MyTicketList extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              TranslationContext!==undefined?TranslationContext.alertmessage.yoursearchhasbeensavedsuccessfully:"Your search has been saved successfully."
-              
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage
+                    .yoursearchhasbeensavedsuccessfully
+                : "Your search has been saved successfully."
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -1795,7 +1819,10 @@ class MyTicketList extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            TranslationContext!==undefined?TranslationContext.alertmessage.savedsearchdatadeletedsuccessfully:"Saved search data deleted successfully."
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage
+                  .savedsearchdatadeletedsuccessfully
+              : "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -3868,9 +3895,14 @@ class MyTicketList extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { DraftDetails, SearchAssignData } = this.state;
     const TitleChange = this.state.collapseSearch
-      ? "Close Search"
+      ? TranslationContext !== undefined
+        ? TranslationContext.small.closesearch
+        : "Close Search"
+      : TranslationContext !== undefined
+      ? TranslationContext.small.searchtickets
       : "Search Tickets";
 
     const ImgChange = this.state.collapseSearch ? (
@@ -3900,7 +3932,11 @@ class MyTicketList extends Component {
                   <a className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div
                   className="d-flex"
@@ -3909,11 +3945,19 @@ class MyTicketList extends Component {
                   <a className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -4080,7 +4124,11 @@ class MyTicketList extends Component {
               </div>
 
               <div className="filter-type filter-color">
-                <p>FILTER BY COLOR</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbycolor
+                    : "FILTER BY COLOR"}
+                </p>
 
                 <div className="filter-checkbox">
                   <input
@@ -4161,7 +4209,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Escalation");
                   }}
                 >
-                  Escalation:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.escalation
+                    : "Escalation"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byEscalationCount < 9
                       ? "0" + this.state.byEscalationCount
@@ -4182,7 +4233,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("New");
                   }}
                 >
-                  New:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.new
+                    : "New"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byNewCount < 9
                       ? "0" + this.state.byNewCount
@@ -4203,7 +4257,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Open");
                   }}
                 >
-                  Open:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.open
+                    : "Open"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byOpenCount < 9
                       ? "0" + this.state.byOpenCount
@@ -4224,7 +4281,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Resolved");
                   }}
                 >
-                  Resolved:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.resolved
+                    : "Resolved"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
@@ -4246,7 +4306,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Closed");
                   }}
                 >
-                  Closed:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.closed
+                    : "Closed"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byClosedCount < 9
                       ? "0" + this.state.byClosedCount
@@ -4267,7 +4330,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("ReOpen");
                   }}
                 >
-                  Reopen:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.reopen
+                    : "Reopen"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byReOpenCount < 9
                       ? "0" + this.state.byReOpenCount
@@ -4292,7 +4358,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Reassigned");
                   }}
                 >
-                  Reassigned by me:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.reassigned
+                    : "Reassigned by me"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byReassignedCount < 9
                       ? "0" + this.state.byReassignedCount
@@ -4313,7 +4382,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("All");
                   }}
                 >
-                  All:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.all
+                    : "All"}
+                  :{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byAllCount < 9
                       ? "0" + this.state.byAllCount
@@ -4334,7 +4406,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("FollowUp");
                   }}
                 >
-                  Follow Up:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.followup
+                    : "Follow Up"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byFollowUpCount < 9
                       ? "0" + this.state.byFollowUpCount
@@ -4352,7 +4427,10 @@ class MyTicketList extends Component {
                   aria-selected="false"
                   onClick={this.handleGetDraftDetails}
                 >
-                  Draft:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.draft
+                    : "Draft"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.draftCountStatus < 9
                       ? "0" + this.state.draftCountStatus
@@ -4388,7 +4466,11 @@ class MyTicketList extends Component {
                 type="button"
                 onClick={this.hanleChange}
               >
-                <label className="add-tickets">ADD TICKETS</label>
+                <label className="add-tickets">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.addtickets
+                    : "ADD TICKETS"}
+                </label>
               </button>
             </div>
 
@@ -4432,7 +4514,9 @@ class MyTicketList extends Component {
                                       aria-selected="true"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Date
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bydate
+                                        : "By Date"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4445,7 +4529,9 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Customer Type
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bycustomertype
+                                        : "By Customer Type"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4458,7 +4544,9 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Ticket Type
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bytickettype
+                                        : "By Ticket Type"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4471,7 +4559,9 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Category
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bycategory
+                                        : "By Category"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4484,20 +4574,26 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      All
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.all
+                                        : "All"}
                                     </a>
                                   </li>
                                 </ul>
                                 <div className="save-view-search">
                                   <button onClick={this.onOpenModal}>
-                                    Save Search
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.savesearch
+                                      : "Save Search"}
                                   </button>
                                   <button
                                     type="button"
                                     className="btn-inv"
                                     onClick={this.ViewSearchData.bind(this, 0)}
                                   >
-                                    View Search
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.viewsearch
+                                      : "View Search"}
                                   </button>
                                 </div>
                               </div>
@@ -4604,7 +4700,12 @@ class MyTicketList extends Component {
                                           onChange={this.handleByDateCreate.bind(
                                             this
                                           )}
-                                          placeholderText="Creation Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
+                                                  .creationdate
+                                              : "Creation Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -4619,7 +4720,12 @@ class MyTicketList extends Component {
                                           onChange={this.handleChangeSelectDate.bind(
                                             this
                                           )}
-                                          placeholderText="Last Updated Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .lastupdateddate
+                                              : "Last Updated Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -4692,7 +4798,12 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Customer Mobile No"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .customermobilenumber
+                                              : "Customer Mobile No"
+                                          }
                                           name="MobileNoByCustType"
                                           value={this.state.MobileNoByCustType}
                                           onChange={this.handelOnchangeData}
@@ -4704,7 +4815,12 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="no-bg"
-                                          placeholder="Customer Email ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .customeremailid
+                                              : "Customer Email ID"
+                                          }
                                           name="EmailIdByCustType"
                                           autoComplete="off"
                                           value={this.state.EmailIdByCustType}
@@ -4715,7 +4831,12 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="no-bg"
-                                          placeholder="Ticket ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .ticketid
+                                              : "Ticket ID"
+                                          }
                                           name="TicketIdByCustType"
                                           maxLength={9}
                                           autoComplete="off"
@@ -4974,7 +5095,11 @@ class MyTicketList extends Component {
                                       <div className="col-md-3 col-sm-6 allspc">
                                         <DatePicker
                                           selected={this.state.ByAllCreateDate}
-                                          placeholderText="Creation Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.p.createddate
+                                              : "Creation Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -5011,7 +5136,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Claim ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.claimid
+                                              : "Claim ID"
+                                          }
                                           value={this.state.ClaimIdByAll}
                                           name="ClaimIdByAll"
                                           autoComplete="off"
@@ -5022,7 +5151,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Email"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.a.email
+                                              : "Email"
+                                          }
                                           value={this.state.EmailByAll}
                                           name="EmailByAll"
                                           autoComplete="off"
@@ -5035,7 +5168,12 @@ class MyTicketList extends Component {
                                           onChange={this.handleAllLastDate.bind(
                                             this
                                           )}
-                                          placeholderText="Last Updated Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .lastupdateddate
+                                              : "Last Updated Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -5047,7 +5185,12 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Ticket Id/Title"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .ticketidtitle
+                                              : "Ticket Id/Title"
+                                          }
                                           value={this.state.TicketIdTitleByAll}
                                           name="TicketIdTitleByAll"
                                           autoComplete="off"
@@ -5058,7 +5201,12 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Invoice Number/Sub Order No"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .invosuborderno
+                                              : "Invoice Number/Sub Order No"
+                                          }
                                           autoComplete="off"
                                           value={
                                             this.state.InvoiceSubOrderByAll
@@ -5071,7 +5219,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Mobile"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.mobile
+                                              : "Mobile"
+                                          }
                                           value={this.state.MobileByAll}
                                           name="MobileByAll"
                                           autoComplete="off"
@@ -5122,7 +5274,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Item ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.itemid
+                                              : "Item ID"
+                                          }
                                           value={this.state.ItemIdByAll}
                                           name="ItemIdByAll"
                                           autoComplete="off"
@@ -5597,14 +5753,18 @@ class MyTicketList extends Component {
                                           : this.state.resultCount}
                                         &nbsp;
                                       </span>
-                                      Results
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.results
+                                        : "Results"}
                                     </p>
                                     <a
                                       href="#!"
                                       className="blue-clr fs-14"
                                       onClick={this.clearSearch}
                                     >
-                                      CLEAR SEARCH
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.clearsearch
+                                        : "CLEAR SEARCH"}
                                     </a>
                                     &nbsp; &nbsp; &nbsp;
                                     <a
@@ -5615,7 +5775,9 @@ class MyTicketList extends Component {
                                         "all"
                                       )}
                                     >
-                                      CLEAR FILTER
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.clearfilter
+                                        : "CLEAR FILTER"}
                                     </a>
                                   </div>
                                   <div className="col-auto mob-mar-btm">
@@ -6376,7 +6538,9 @@ class MyTicketList extends Component {
                                           htmlFor="fil-aball"
                                           className="ticketid"
                                         >
-                                          ID
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.id
+                                            : "ID"}
                                         </label>
                                       </div>
                                     </div>
@@ -6475,7 +6639,9 @@ class MyTicketList extends Component {
                                       "Status"
                                     )}
                                   >
-                                    Status{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.status
+                                      : "Status"}{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6649,14 +6815,21 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <label className="ticketid">
-                                    <span>Subject/</span>
+                                    <span>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.subject
+                                        : "Subject"}
+                                      /
+                                    </span>
                                     <span
                                       style={{
                                         fontWeight: "bold",
                                         fontSize: "11px !important",
                                       }}
                                     >
-                                      Latest Message
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.latestmessage
+                                        : "Latest Message"}
                                     </span>
                                   </label>
                                 ),
@@ -6683,7 +6856,9 @@ class MyTicketList extends Component {
                                       "Category"
                                     )}
                                   >
-                                    Category
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.category
+                                      : "Category"}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6735,7 +6910,9 @@ class MyTicketList extends Component {
                                       "Priority"
                                     )}
                                   >
-                                    Priority{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.priority
+                                      : "Priority"}{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6753,7 +6930,9 @@ class MyTicketList extends Component {
                                       "Assign To"
                                     )}
                                   >
-                                    Assignee{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.assignee
+                                      : "Assignee"}{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6769,7 +6948,9 @@ class MyTicketList extends Component {
                                       "Creation On"
                                     )}
                                   >
-                                    Creation On{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.creationon
+                                      : "Creation On"}{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6789,8 +6970,8 @@ class MyTicketList extends Component {
                                               </li>
                                               <li>
                                                 <p>
+                                                  Created by{" "}
                                                   {row.original.createdBy}{" "}
-                                                  Created
                                                 </p>
                                                 <p>{row.original.createdago}</p>
                                               </li>
@@ -6805,8 +6986,8 @@ class MyTicketList extends Component {
                                               </li>
                                               <li>
                                                 <p>
+                                                  Updated by{" "}
                                                   {row.original.updatedBy}
-                                                  updated
                                                 </p>
                                                 <p>{row.original.updatedago}</p>
                                               </li>
