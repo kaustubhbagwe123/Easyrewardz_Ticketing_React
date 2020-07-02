@@ -441,7 +441,11 @@
     "profiledetails":"प्रोफ़ाइल विवरण",
     "mappedclaimcategory":"मैप्ड क्लियाम श्रेणी",
     "closechat":"चैट बंद करे",
-    "totalnoofchat":"चैट का कुल सं"
+    "totalnoofchat":"चैट का कुल सं",
+    "newsubmission":"नया सबमिशन",
+    "items":"आइटम",
+    "details":"विवरण",
+    "similartypeoftickets":"इसी प्रकार के टिकट"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -1011,7 +1015,7 @@
     "save": "सहेजें",
     "cancel": "इसे रद्द करें",
     "createtask": "कार्य बनाएँ",
-    "addnewkb": "नया KB जोड़ें",
+    "addnewkb": "नया के बी जोड़ें",
     "attachstore": "स्टोर संलग्न करें",
     "attachproduct": "उत्पाद संलग्न करें",
     "templates": "टेम्पलेट्स",
@@ -1433,7 +1437,9 @@
     "selectstatus":"स्थिति का चयन करें",
     "EnterDesignationName":"पदनाम नाम दर्ज करें",
     "selectdateandtime":"दिनांक और समय का चयन करें",
-    "maxcpty":"अधिकतम क्षमता"
+    "maxcpty":"अधिकतम क्षमता",
+    "writesubjecthere":"यहाँ विषय लिखें",
+    "canipurchaseadomainthroughgoogle":"क्या मैं गूगल के माध्यम से डोमेन खरीद सकता हूं?"
    
   },
   "title": {
@@ -1632,7 +1638,9 @@
     "pleaseentermobilenumber":"कृपया मोबाइल नंबर दर्ज करें।",
     "pleaseenterstaffname":"कृपया कर्मचारियों का नाम दर्ज करें।",
     "pleaseenterstorename":"कृपया स्टोर का नाम दर्ज करें।",
-    "pleaseenterpod":"कृपया पी ओ डी दर्ज करें।"
+    "pleaseenterpod":"कृपया पी ओ डी दर्ज करें।",
+    "recordrejectedsuccessfully":"सफलतापूर्वक रिकॉर्ड किया गया",
+    "recordapprovedsuccessfully":"रिकॉर्ड सफलतापूर्वक स्वीकृत।"
     
   },
   "ticketingDashboard":{
