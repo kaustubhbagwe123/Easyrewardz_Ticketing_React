@@ -5495,7 +5495,11 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByDate}
                                   >
-                                    <option value="0">Ticket Status</option>
+                                    <option value="0">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.div.ticketstatus
+                                      : "Ticket Status"}
+                                      </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -5527,7 +5531,9 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Customer Mobile No"
+                                    placeholder={TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard.customerMobileNo
+                                      : "Customer Mobile No"}
                                     name="MobileNoByCustType"
                                     value={this.state.MobileNoByCustType}
                                     onChange={this.handelOnchangeData}
@@ -5541,7 +5547,9 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="no-bg"
-                                    placeholder="Customer Email ID"
+                                    placeholder={TranslationContext !== undefined
+                                      ? TranslationContext.label.customeremailid
+                                      : "Customer Email ID"}
                                     name="EmailIdByCustType"
                                     value={this.state.EmailIdByCustType}
                                     onChange={this.handelOnchangeData}
