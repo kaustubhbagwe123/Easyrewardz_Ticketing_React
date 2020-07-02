@@ -7,6 +7,8 @@ import { Popover, Table } from "antd";
 import config from "../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class TicketSystemTask extends Component {
       selectedFunction: "",
       selectedAssignTo: "",
       selectedPriority: "",
+      translateLanguage: {}
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -40,6 +43,14 @@ class TicketSystemTask extends Component {
   componentDidMount() {
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   componentDidUpdate() {
@@ -273,6 +284,7 @@ class TicketSystemTask extends Component {
       "none";
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { taskData } = this.state;
     return (
       <Fragment>
@@ -289,7 +301,9 @@ class TicketSystemTask extends Component {
                       aria-expanded="true"
                       aria-controls="collapseOne"
                     >
-                      Created Task
+                      {TranslationContext !== undefined
+                      ? TranslationContext.label.createdtask
+                      : "Created Task"}
                     </label>
                   </h5>
                 </div>

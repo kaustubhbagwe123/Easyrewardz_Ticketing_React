@@ -13,6 +13,8 @@ import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
 import moment from "moment";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 // import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
 
 class TicketSystemOrder extends Component {
@@ -72,6 +74,7 @@ class TicketSystemOrder extends Component {
       SelectedAllItem: [],
       saveLoader: false,
       selectedInvoiceNo: "",
+      translateLanguage: {}
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -94,6 +97,14 @@ class TicketSystemOrder extends Component {
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
     this.handleGetChannelOfPurchaseList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   componentDidUpdate() {
     // debugger
@@ -126,7 +137,7 @@ class TicketSystemOrder extends Component {
         TicketID: ticketIDS,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
@@ -193,7 +204,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         //
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
@@ -274,7 +285,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         //
         let status = res.data.message;
         let data = res.data.responseData;
@@ -300,7 +311,7 @@ class TicketSystemOrder extends Component {
       headers: authHeader(),
       url: config.apiUrl + "/Master/getPaymentMode",
     })
-      .then(function(res) {
+      .then(function (res) {
         //
         let finalData = res.data.data;
         self.setState({ finalData: finalData });
@@ -328,7 +339,7 @@ class TicketSystemOrder extends Component {
             CustomerID: CustID,
           },
         })
-          .then(function(res) {
+          .then(function (res) {
             debugger;
             let Msg = res.data.message;
             let mainData = res.data.responseData;
@@ -369,7 +380,7 @@ class TicketSystemOrder extends Component {
             CustomerID: CustID,
           },
         })
-          .then(function(res) {
+          .then(function (res) {
             //
             let Msg = res.data.message;
             let mainData = res.data.responseData;
@@ -408,7 +419,7 @@ class TicketSystemOrder extends Component {
           CustomerID: CustID,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           // let Msg = res.data.message;
           let mainData = res.data.responseData;
@@ -465,7 +476,7 @@ class TicketSystemOrder extends Component {
           RequireSize: this.state.requiredSize,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           let status = res.data.message;
 
@@ -527,7 +538,7 @@ class TicketSystemOrder extends Component {
           SearchText: SearchData[field],
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           //
           let status = res.data.message;
           var data = res.data.responseData;
@@ -572,7 +583,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/getPaymentMode",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let modeData = res.data.responseData;
         self.setState({ modeData: modeData });
       })
@@ -731,7 +742,7 @@ class TicketSystemOrder extends Component {
           InvoiceDate: rowData.invoiceDate,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
@@ -1148,6 +1159,7 @@ class TicketSystemOrder extends Component {
   // -------------------------------Check box selected all code end-------------------------------
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { orderDetailsData } = this.state;
 
     return (
@@ -1156,12 +1168,18 @@ class TicketSystemOrder extends Component {
           <div className="row storemainrow">
             <div className="col-12 col-lg-7 col-xl-8">
               <label className="systemstordercustomer">
-                Customer Want to attach order
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.customerwanttoattachorder
+                  : "Customer Want to attach order"}
               </label>
             </div>
             <div className="col-12 col-lg-3 col-xl-3">
               <div style={{ display: "flex", marginTop: "4px" }}>
-                <label className="orderdetailpopup">Yes</label>
+                <label className="orderdetailpopup">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.yes
+                    : "Yes"}
+                </label>
                 <div className="switchmargin">
                   <div className="switch switch-primary d-inline m-r-10">
                     <input
@@ -1177,7 +1195,11 @@ class TicketSystemOrder extends Component {
                     ></label>
                   </div>
                 </div>
-                <label className="orderdetailpopup">No</label>
+                <label className="orderdetailpopup">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.no
+                    : "No"}
+                </label>
               </div>
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
@@ -1213,14 +1235,21 @@ class TicketSystemOrder extends Component {
                 <div className="row">
                   <div className="col-md-6">
                     <label style={{ marginTop: "7px" }}>
-                      <b>Customer Want to attach order</b>
+                      <b>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.customerwanttoattachorder
+                          : "Customer Want to attach order"}</b>
                     </label>
                   </div>
                   <div className="col-md-6 d-flex justify-content-end">
                     <div
                       style={{ display: "inline-flex", marginRight: "10px" }}
                     >
-                      <label className="orderdetailpopup">Yes</label>
+                      <label className="orderdetailpopup">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.yes
+                          : "Yes"}
+                      </label>
                       <div className="switchmargin">
                         <div className="switch switch-primary d-inline m-r-10">
                           <input
@@ -1236,7 +1265,11 @@ class TicketSystemOrder extends Component {
                           ></label>
                         </div>
                       </div>
-                      <label className="orderdetailpopup">No</label>
+                      <label className="orderdetailpopup">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.no
+                          : "No"}
+                      </label>
                     </div>
 
                     <div
@@ -1261,11 +1294,19 @@ class TicketSystemOrder extends Component {
               style={{ marginLeft: "0", marginRight: "0" }}
             >
               <div className="col-md-6">
-                <label className="orderdetailpopup">Order Details</label>
+                <label className="orderdetailpopup">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.orderdetails
+                    : "Order Details"}
+                </label>
               </div>
               <div className="col-md-3">
                 <div style={{ float: "right", display: "flex" }}>
-                  <label className="orderdetailpopup">Order</label>
+                  <label className="orderdetailpopup">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.order
+                      : "Order"}
+                  </label>
                   <div className="orderswitch orderswitchitem">
                     <div className="switch switch-primary d-inline">
                       <input
@@ -1280,7 +1321,11 @@ class TicketSystemOrder extends Component {
                       ></label>
                     </div>
                   </div>
-                  <label className="orderdetailpopup">Item</label>
+                  <label className="orderdetailpopup">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.item
+                      : "Item"}
+                  </label>
                 </div>
               </div>
               <div className="col-md-3">
@@ -1293,8 +1338,8 @@ class TicketSystemOrder extends Component {
                   autoComplete="off"
                   onChange={this.handleOrderChange.bind(this)}
                   disabled={this.state.custAttachOrder === 1 ? true : false}
-                  // value={this.state.filterAll}
-                  // onChange={this.filterAll}
+                // value={this.state.filterAll}
+                // onChange={this.filterAll}
                 />
                 <img
                   src={SearchBlackImg}
@@ -1345,35 +1390,51 @@ class TicketSystemOrder extends Component {
                     },
                   },
                   {
-                    title: "Invoice Number",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.invoicenumber
+                      : "Invoice Number",
                     dataIndex: "invoiceNumber",
                   },
                   {
-                    title: "Invoice Date",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.invoicedate
+                      : "Invoice Date",
                     dataIndex: "dateFormat",
                   },
                   {
-                    title: "Item Count",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.itemcount
+                      : "Item Count",
                     dataIndex: "itemCount",
                   },
                   {
-                    title: "Item Price",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.itemprice
+                      : "Item Price",
                     dataIndex: "ordeItemPrice",
                   },
                   {
-                    title: "Price Paid",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.pricepaid
+                      : "Price Paid",
                     dataIndex: "orderPricePaid",
                   },
                   {
-                    title: "Store Code",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.storecode
+                      : "Store Code",
                     dataIndex: "storeCode",
                   },
                   {
-                    title: "Store Address",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.storeaddress
+                      : "Store Address",
                     dataIndex: "storeAddress",
                   },
                   {
-                    title: "Discount",
+                    title: TranslationContext !== undefined
+                      ? TranslationContext.span.discount
+                      : "Discount",
                     dataIndex: "discount",
                   },
                 ]}
@@ -1469,7 +1530,7 @@ class TicketSystemOrder extends Component {
                                   name="AllItem"
                                   checked={
                                     this.state.CheckBoxAllItem[
-                                      item.articleNumber
+                                    item.articleNumber
                                     ] === true
                                   }
                                   onChange={this.checkIndividualItem.bind(
@@ -1566,7 +1627,7 @@ class TicketSystemOrder extends Component {
                         alt="Search"
                         className="systemorder-imgsearch"
                         onClick={this.handleOrderSearchData.bind(this, "1")}
-                        // disabled={this.state.custAttachOrder === 1 ? true : false}
+                      // disabled={this.state.custAttachOrder === 1 ? true : false}
                       />
                     </div>
                   </form>
@@ -1743,7 +1804,7 @@ class TicketSystemOrder extends Component {
                     showMonthDropdown
                     showYearDropdown
                     className="addmanuallytext1"
-                    // className="form-control"
+                  // className="form-control"
                   />
                   {this.validator.message(
                     "Date",
@@ -1866,7 +1927,7 @@ class TicketSystemOrder extends Component {
                         {item.storeName}
                       </div>
                     )}
-                    renderInput={function(props) {
+                    renderInput={function (props) {
                       return (
                         <input
                           placeholder="Purchase from Store name"
@@ -1918,7 +1979,7 @@ class TicketSystemOrder extends Component {
                     type="button"
                     className="addmanual m-t-15"
                     onClick={this.hadleAddManuallyOrderData.bind(this)}
-                    // disabled={this.state.saveLoader}
+                  // disabled={this.state.saveLoader}
                   >
                     {/* {this.state.saveLoader ? (
                       <FontAwesomeIcon
@@ -2146,7 +2207,7 @@ class TicketSystemOrder extends Component {
                                     name="AllItem"
                                     checked={
                                       this.state.CheckBoxAllItem[
-                                        item.articleNumber
+                                      item.articleNumber
                                       ] === true
                                     }
                                     onChange={this.checkIndividualItem.bind(

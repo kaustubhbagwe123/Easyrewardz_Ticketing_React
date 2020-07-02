@@ -30,6 +30,8 @@
     "issuetype": "समस्या का प्रकार",
     "ticketpriority": "टिकट प्राथमिकता",
     "ticketactiontype": "टिकट कार्रवाई प्रकार",
+    "qc": "क्यूसी",
+    "etb": "इटीबी",
     "channelofpurchase": "खरीद का चैनल",
     "customername": "ग्राहक का नाम",
     "phonenumber": "फ़ोन नंबर",
@@ -61,6 +63,8 @@
     "edit": "संपादित करें",
     "delete": "इसे हटा दें",
     "mobilenumber": "मोबाइल नंबर",
+    "male": "पुस्र्ष",
+    "female": "स्री",
     "name": "नाम",
     "mobile": "मोबाइल",
     "email": "ईमेल",
@@ -446,8 +450,12 @@
     "items":"आइटम",
     "details":"विवरण",
     "similartypeoftickets":"इसी प्रकार के टिकट",
+<<<<<<< HEAD
     "contactdetailsemails":"संपर्क विवरण: ईमेल",
     "contactdetailsphones":"संपर्क विवरण: फोन"
+=======
+    "customerwanttoattachorder": "ग्राहक आदेश संलग्न करना चाहते हैं"
+>>>>>>> b12adb4d7ae15ce8a01100230418a465b0b9cd98
   },
   "text": {
     "brand": "ब्रांड :",
@@ -1663,9 +1671,32 @@
     "avgResponseTAT":"औसत। प्रतिक्रिया TAT",
     "avgResolutionTAT":"औसत। संकल्प TAT",
     "givenametoyoursearch":"अपनी खोज को नाम दें",
-    "slaDue":"SLA देय"
+    "slaDue":"SLA देय",
+    "customerMobileNo":"ग्राहक मोबाइल नं",
+    "ticketIdtitle":"टिकट आईडी / शीर्षक",
+    "invoiceNumberSubOrderNo":"चालान संख्या / उप क्रम सं",
+    "didvisitstoreall":"क्या स्टोर पर जाएँ: सभी",
+    "didvisitstoreyes":"क्या स्टोर पर जाएँ: हाँ",
+    "didvisitstoreno":"डिड विजिट स्टोर: नहीं",
+    "wantvisitstoreall":"स्टोर पर जाना चाहते हैं: सभी",
+    "wantvisitstoreyes":"स्टोर पर जाना चाहते हैं: हाँ",
+    "wantvisitstoreno":"स्टोर पर जाना चाहते हैं: नहीं",
+    "wanttovisitStoreCodeAddress":"स्टोर कोड / पते पर जाना चाहते हैं",
+    "WithClaimNo":"दावे के साथ: नहीं",
+    "WithClaimyes":"दावे के साथ: हाँ",
+    "claimstatus":"दावा की स्थिति",
+    "claimcategory":"दावा श्रेणी",
+    "claimsubcategory":"दावा उप श्रेणी",
+    "claimissueType":"दावा जारी करने का प्रकार",
+    "withtaskno":"टास्क के साथ: नहीं",
+    "withtaskyes":"टास्क के साथ: हाँ",
+    "csv":"सीएसवी",
+    "purchasestorecodeaddress":"खरीद स्टोर कोड / पता",
+    "addremarks":"टिप्पणी जोड़ें",
+    "agentselectionisrequired":"एजेंट चयन आवश्यक है",
+    "allfieldsarerequired":"सभी फ़ील्ड आवश्यक हैं"
   },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."
-  }
+    }
 }
