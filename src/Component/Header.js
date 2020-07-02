@@ -879,7 +879,7 @@ class Header extends Component {
                   <div className="row backtohomerow">
                     <div className="col-md-12">
                       <a href="#!" className="backtohometext">
-                        >>Back to Home
+                        Back to Home
                       </a>
                     </div>
                   </div>
