@@ -440,7 +440,8 @@
     "personaldetails":"व्यक्तिगत विवरण",
     "profiledetails":"प्रोफ़ाइल विवरण",
     "mappedclaimcategory":"मैप्ड क्लियाम श्रेणी",
-    "closechat":"चैट बंद करे"    
+    "closechat":"चैट बंद करे",
+    "totalnoofchat":"चैट का कुल सं"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -1633,6 +1634,17 @@
     "pleaseenterstorename":"कृपया स्टोर का नाम दर्ज करें।",
     "pleaseenterpod":"कृपया पी ओ डी दर्ज करें।"
     
+  },
+  "ticketingDashboard":{
+    "viewMoreInsights":"अधिक जानकारी देखें",
+    "openByPriority":"प्राथमिकता से खोलें",
+    "noDataAvailable":"कोई डेटा उपलब्ध नहीं है",
+    "ticketsToBillGraph":"टिकट का बिल ग्राफ",
+    "ticketsGenerationSourceTab":"टिकट जनरेशन सोर्स टैब",
+    "failure":"असफलता",
+    "avgResponseTAT":"औसत। प्रतिक्रिया TAT",
+    "avgResolutionTAT":"औसत। संकल्प TAT",
+    "givenametoyoursearch":"अपनी खोज को नाम दें",
+    "slaDue":"SLA देय"
   }
-
 }

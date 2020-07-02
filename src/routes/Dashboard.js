@@ -50,6 +50,8 @@ import TaskStatus from "./TaskStatus";
 import { CSVLink } from "react-csv";
 import DatePickerComponenet from "./Settings/Ticketing/DatePickerComponent";
 import matchSorter from "match-sorter";
+import * as translationHI from "./../translations/hindi";
+import * as translationMA from "./../translations/marathi";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -327,6 +329,7 @@ class Dashboard extends Component {
       spriorityFilterCheckbox: "",
       screatedOnFilterCheckbox: "",
       sassignedToFilterCheckbox: "",
+      translateLanguage: {},
     };
     this.applyCallback = this.applyCallback.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -410,6 +413,13 @@ class Dashboard extends Component {
     // this.handleGetSaveSearchList();
 
     // this.handleGetModulesNames();
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   handleTicketsOnLoadLoader() {
@@ -4160,6 +4170,7 @@ class Dashboard extends Component {
     this.setState({ [name]: e.target.checked });
   };
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { SearchAssignData, SearchTicketData } = this.state;
     let now = new Date();
     let start = moment(
@@ -4182,7 +4193,11 @@ class Dashboard extends Component {
     // };
 
     const TitleChange = this.state.collapseSearch
-      ? "Close Search"
+      ? TranslationContext !== undefined
+        ? TranslationContext.small.closesearch
+        : "Close Search"
+      : TranslationContext !== undefined
+      ? TranslationContext.small.searchtickets
       : "Search Tickets";
 
     const ImgChange = this.state.collapseSearch ? (
@@ -4459,7 +4474,10 @@ class Dashboard extends Component {
           <div className="d-flex dashallbrand1">
             <div>
               <span>
-                Brand :
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.brand
+                  : "Brand"}
+                :
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -4468,7 +4486,9 @@ class Dashboard extends Component {
                     data-toggle="dropdown"
                   >
                     <span id="spnBrand" className="EMFCText">
-                      All
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.all
+                        : "All"}
                     </span>
                   </button>
                   <ul className="dropdown-menu">
@@ -4482,7 +4502,11 @@ class Dashboard extends Component {
                           checked={this.state.CheckBoxAllBrand}
                           name="allBrand"
                         />
-                        <span className="ch1-text">All</span>
+                        <span className="ch1-text">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.all
+                            : "All"}
+                        </span>
                       </label>
                     </li>
                     {this.state.BrandData !== null &&
@@ -4507,7 +4531,9 @@ class Dashboard extends Component {
             </div>
             <div>
               <span>
-                Agent :
+                {TranslationContext !== undefined
+                  ? TranslationContext.text.agent
+                  : "Agent:"}
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -4516,7 +4542,9 @@ class Dashboard extends Component {
                     data-toggle="dropdown"
                   >
                     <span id="spnAgent" className="EMFCText">
-                      All
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.all
+                        : "All"}
                     </span>
                   </button>
                   <ul style={{ width: "180px" }} className="dropdown-menu">
@@ -4530,7 +4558,11 @@ class Dashboard extends Component {
                           checked={this.state.CheckBoxAllAgent}
                           name="allAgent"
                         />
-                        <span className="ch1-text">All</span>
+                        <span className="ch1-text">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.all
+                            : "All"}
+                        </span>
                       </label>
                     </li>
                     {this.state.AgentData !== null &&
@@ -4557,7 +4589,11 @@ class Dashboard extends Component {
           <div>
             <div className="row">
               <div className="col-md-6 col-6">
-                <span style={{ float: "right" }}>Date Range : </span>
+                <span style={{ float: "right" }}>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.text.daterange
+                    : "Date Range :"}
+                </span>
               </div>
               <div className="col-md-6 col-6 p-0">
                 <div className="DashTimeRange">
@@ -4638,7 +4674,11 @@ class Dashboard extends Component {
                       <div className="row justify-content-center">
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">All</p>
+                            <p className="card-head">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.all
+                                : "All"}
+                            </p>
                             <span className="card-value">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.all !== null &&
@@ -4651,7 +4691,11 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">Open</p>
+                            <p className="card-head">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.open
+                                : "Open"}
+                            </p>
                             <span className="card-value">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.open !==
@@ -4669,7 +4713,10 @@ class Dashboard extends Component {
                               }
                               style={{ marginTop: "-3px" }}
                             >
-                              Resolution : &nbsp;
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.resolution
+                                : "Resolution"}
+                              : &nbsp;
                               <span style={{ fontWeight: "700" }}>
                                 {this.state.DashboardNumberData.resolutionRate}
                               </span>
@@ -4678,7 +4725,11 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">Due Today</p>
+                            <p className="card-head">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.duetoday
+                                : "Due Today"}
+                            </p>
                             <span className="card-value">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.dueToday !==
@@ -4693,7 +4744,11 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-md col-sm-4 col-6">
                           <div className="dash-top-cards">
-                            <p className="card-head">Over Due</p>
+                            <p className="card-head">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.overdue
+                                : "Over Due"}
+                            </p>
                             <span className="card-value red-clr">
                               {this.state.DashboardNumberData !== null
                                 ? this.state.DashboardNumberData.overDue !==
@@ -4711,10 +4766,17 @@ class Dashboard extends Component {
                             onClick={this.HandleChangeRedict.bind(this)}
                           >
                             <div className="dash-top-cards">
-                              <p className="card-head">Total no of chat</p>
+                              <p className="card-head">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.totalnoofchat
+                                  : "Total no of chat"}
+                              </p>
                               <span className="card-value">102</span>
                               <small className="blue-clr">
-                                View More Insights
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .viewMoreInsights
+                                  : "View More Insights"}
                               </small>
                             </div>
                           </div>
@@ -4725,7 +4787,12 @@ class Dashboard extends Component {
                       <div className="row">
                         <div className="col-lg-3 col-md-4">
                           <div className="dash-top-cards prio-pie-cntr">
-                            <p className="card-head mb-0">Open By Priority</p>
+                            <p className="card-head mb-0">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard
+                                    .openByPriority
+                                : "Open By Priority"}
+                            </p>
                             <div
                               className="prio-pie-chart"
                               style={{ position: "relative" }}
@@ -4739,8 +4806,10 @@ class Dashboard extends Component {
                                         this.state.DashboardGraphData
                                           .openPriorityTicketCount
                                       }
-                                    </span>{" "}
-                                    Tickets
+                                    </span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.tickets
+                                      : "Tickets"}
                                   </p>
                                   <OpenByPriorityPie
                                     data={this.state.DashboardPriorityGraphData}
@@ -4749,7 +4818,12 @@ class Dashboard extends Component {
                               ) : null}
                             </div>
                             {this.state.openByPriorityFlag && (
-                              <p>No Data Available</p>
+                              <p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .noDataAvailable
+                                  : "No Data Available"}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -4766,7 +4840,10 @@ class Dashboard extends Component {
                                   aria-selected="true"
                                   onClick={this.handlechangebtntab.bind(this)}
                                 >
-                                  Tickets To Bill Graph
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .ticketsToBillGraph
+                                    : "Tickets To Bill Graph"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -4779,7 +4856,10 @@ class Dashboard extends Component {
                                   aria-selected="false"
                                   onClick={this.handlechangebtntab.bind(this)}
                                 >
-                                  Tickets Generation Source Tab
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .ticketsGenerationSourceTab
+                                    : "Tickets Generation Source Tab"}
                                 </a>
                               </li>
                             </ul>
@@ -4798,7 +4878,7 @@ class Dashboard extends Component {
                                         this.state.DashboardBillGraphData.map(
                                           (item, i) => (
                                             <li key={i}>
-                                              {item.ticketSourceName} :{" "}
+                                              {item.ticketSourceName} :
                                               <b>
                                                 {item.ticketedBills}/
                                                 {item.totalBills}
@@ -4818,7 +4898,12 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                                 {this.state.ticketToBillBarFlag && (
-                                  <p>No Data Available</p>
+                                  <p>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .noDataAvailable
+                                      : "No Data Available"}
+                                  </p>
                                 )}
                               </div>
                               <div
@@ -4835,7 +4920,7 @@ class Dashboard extends Component {
                                         this.state.DashboardSourceGraphData.map(
                                           (item, i) => (
                                             <li key={i}>
-                                              {item.ticketSourceName} :{" "}
+                                              {item.ticketSourceName} :
                                               <b>{item.ticketSourceCount}</b>
                                             </li>
                                           )
@@ -4854,7 +4939,12 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                                 {this.state.ticketGenerationSourceFlag && (
-                                  <p>No Data Available</p>
+                                  <p>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .noDataAvailable
+                                      : "No Data Available"}
+                                  </p>
                                 )}
                               </div>
                             </div>
@@ -4873,10 +4963,19 @@ class Dashboard extends Component {
                                 .length > 0 ? (
                                 <div className="resp-success">
                                   <p className="card-head">
-                                    Response{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.response
+                                      : "Response"}
+
                                     {this.state.DashboardNumberData
                                       .isResponseSuccess === true
-                                      ? "Success"
+                                      ? TranslationContext !== undefined
+                                        ? TranslationContext.alertmessage
+                                            .success
+                                        : "Success"
+                                      : TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .failure
                                       : "Failure"}
                                   </p>
                                   <span className="card-value">
@@ -4894,7 +4993,11 @@ class Dashboard extends Component {
                                       }
                                       style={{ marginTop: "-5px" }}
                                     >
-                                      Avg. Response TAT &nbsp;
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .avgResponseTAT
+                                        : "Avg. Response TAT"}
+                                      &nbsp;
                                       <span style={{ fontWeight: "700" }}>
                                         {
                                           this.state.DashboardNumberData
@@ -4904,11 +5007,19 @@ class Dashboard extends Component {
                                     </span>
                                   </span>
                                   <p className="card-head mt-lg-4 mt-2">
-                                    Resolution{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.resolution
+                                      : "Resolution"}
                                     {this.state.DashboardNumberData
                                       .isResolutionSuccess === true
-                                      ? "Success"
-                                      : "Failure"}{" "}
+                                      ? TranslationContext !== undefined
+                                        ? TranslationContext.alertmessage
+                                            .success
+                                        : "Success"
+                                      : TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .failure
+                                      : "Failure"}
                                     :
                                     <span className="font-weight-bold">
                                       {
@@ -4923,7 +5034,11 @@ class Dashboard extends Component {
                                           : "dash-res"
                                       }
                                     >
-                                      Avg. Resolution TAT &nbsp;
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .avgResolutionTAT
+                                        : "Avg. Resolution TAT"}
+                                      &nbsp;
                                       <span style={{ fontWeight: "700" }}>
                                         {
                                           this.state.DashboardNumberData
@@ -4939,7 +5054,11 @@ class Dashboard extends Component {
                         </div>
                         <div className="col-lg-3 col-sm-6 d-none">
                           <div className="dash-top-cards">
-                            <p className="card-head">Task</p>
+                            <p className="card-head">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.nav.task
+                                : "Task"}
+                            </p>
                             <div className="aside-cont">
                               <div>
                                 <span className="card-value">
@@ -4951,7 +5070,11 @@ class Dashboard extends Component {
                                       : this.state.DashboardNumberData.taskOpen
                                     : null}
                                 </span>
-                                <small>Open</small>
+                                <small>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.open
+                                    : "Open"}
+                                </small>
                               </div>
                               <div>
                                 <span className="card-value">
@@ -4963,7 +5086,11 @@ class Dashboard extends Component {
                                       : this.state.DashboardNumberData.taskClose
                                     : null}
                                 </span>
-                                <small>Closed</small>
+                                <small>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.small.closed
+                                    : "Closed"}
+                                </small>
                               </div>
                             </div>
                           </div>
@@ -5107,7 +5234,9 @@ class Dashboard extends Component {
                                 aria-selected="true"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Date
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.bydate
+                                  : "By Date"}
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5120,7 +5249,9 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Customer Type
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.bycustomertype
+                                  : "By Customer Type"}
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5133,7 +5264,9 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Ticket Type
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.bytickettype
+                                  : "By Ticket Type"}
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5146,7 +5279,9 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                By Category
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.bycategory
+                                  : "By Category"}
                               </a>
                             </li>
                             <li className="nav-item">
@@ -5159,20 +5294,26 @@ class Dashboard extends Component {
                                 aria-selected="false"
                                 onClick={this.handleAdvSearchFlag}
                               >
-                                All
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.all
+                                  : "All"}
                               </a>
                             </li>
                           </ul>
                           <div className="save-view-search">
                             <button onClick={this.onOpenModal}>
-                              Save Search
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.savesearch
+                                : "Save Search"}
                             </button>
                             <button
                               type="button"
                               className="btn-inv"
                               onClick={this.ViewSearchData.bind(this, 1)}
                             >
-                              View Search
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewsearch
+                                : "View Search"}
                             </button>
                           </div>
                         </div>
@@ -5184,12 +5325,18 @@ class Dashboard extends Component {
                           overlayId="save-search-ovrly"
                         >
                           <div className="save-search">
-                            <p>SAVE SEARCH</p>
+                            <p>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.savesearch
+                                : "SAVE SEARCH"}
+                            </p>
                           </div>
                           <div className="search-name">
                             <input
                               type="search"
-                              placeholder="Give name to your search"
+                              placeholder={TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard.givenametoyoursearch
+                                : "Give name to your search"}
                               name="SearchName"
                               value={this.state.SearchName}
                               onChange={this.handelOnchangeData}
@@ -5209,13 +5356,23 @@ class Dashboard extends Component {
                               type="button"
                               onClick={this.SaveSearchData.bind(this)}
                             >
-                              Save
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.save
+                                : "Save"}
                             </button>
                           </div>
                           <div className="search-names">
                             <div className="names-title">
-                              <p>Search Name</p>
-                              <p className="mar-comp">Action</p>
+                              <p>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.searchname
+                                : "Search Name"}
+                                </p>
+                              <p className="mar-comp">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.action
+                                : "Action"}
+                                </p>
                             </div>
                             <ul>
                               {/* <li> */}
@@ -5234,7 +5391,10 @@ class Dashboard extends Component {
                                           item.searchParamID
                                         )}
                                       >
-                                        APPLY
+                                        {TranslationContext !== undefined
+                                ? TranslationContext.a.apply
+                                : "APPLY"}
+                                        
                                       </a>
                                       <a
                                         href="#!"
@@ -5279,7 +5439,9 @@ class Dashboard extends Component {
                                     onChange={this.handleByDateCreate.bind(
                                       this
                                     )}
-                                    placeholderText="Creation Date"
+                                    placeholderText={TranslationContext !== undefined
+                                      ? TranslationContext.label.creationdate
+                                      : "Creation Date"}
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5299,7 +5461,9 @@ class Dashboard extends Component {
                                     onChange={this.handleChangeSelectDate.bind(
                                       this
                                     )}
-                                    placeholderText="Last Updated Date"
+                                    placeholderText={TranslationContext !== undefined
+                                      ? TranslationContext.label.lastupdateddate
+                                      : "Last Updated Date"}
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5313,7 +5477,9 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaDueByDate}
                                     onChange={this.handleSlaDueByDate}
                                   >
-                                    <option value="0">SLA Due</option>
+                                    <option value="0">{TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard.slaDue
+                                      : "SLA Due"}</option>
                                     {this.state.SlaDueData !== null &&
                                       this.state.SlaDueData.map((item, i) => (
                                         <option key={i} value={item.slaDueID}>
@@ -6227,7 +6393,7 @@ class Dashboard extends Component {
                                   {this.state.resultCount < 9
                                     ? "0" + this.state.resultCount
                                     : this.state.resultCount}
-                                </span>{" "}
+                                </span>
                                 Results
                               </p>
                               <a
@@ -7119,7 +7285,7 @@ class Dashboard extends Component {
                                         </p>
                                         {row.original.ticketCommentCount > 0 ? (
                                           <div className="d-flex align-items-center">
-                                            {row.original.ticketCommentCount}{" "}
+                                            {row.original.ticketCommentCount}
                                             NEW
                                             <div className="nw-chat">
                                               <img src={Chat} alt="chat" />
@@ -7194,7 +7360,7 @@ class Dashboard extends Component {
                         Cell: (row) => (
                           <span className="one-line-outer">
                             <label className="one-line">
-                              {row.original.category}{" "}
+                              {row.original.category}
                             </label>
 
                             <Popover
