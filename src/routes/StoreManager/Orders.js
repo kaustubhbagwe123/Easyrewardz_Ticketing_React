@@ -25,6 +25,7 @@ class Orders extends Component {
       shipmentVisible: false,
       shoppingBagVisible: false,
       mobileTabShopping: false,
+      orderAllSearch: "",
     };
   }
   componentWillMount() {
@@ -114,17 +115,14 @@ class Orders extends Component {
       });
   }
   handleSeachAllData(e) {
+    debugger;
     e.preventDefault();
-    if (this.state.selectedTabs === 1) {
-      alert(this.state.orderAllSearch);
-    } else if (this.state.selectedTabs === 2) {
-     
-    } else if (this.state.selectedTabs === 3) {
-
-    } else if (this.state.selectedTabs === 4) {
-      
-    }
+    this.callhandleTextSearch();
   }
+  callhandleTextSearch = () => {
+    this.handleTextSearch();
+  };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const { Option } = Select;
@@ -440,9 +438,9 @@ class Orders extends Component {
                 }
                 name="orderAllSearch"
                 value={this.state.orderAllSearch}
-                // onChange={(e) =>
-                //   this.setState({ [e.target.name]: e.target.value })
-                // }
+                onChange={(e) =>
+                  this.setState({ [e.target.name]: e.target.value })
+                }
                 autoComplete="off"
               />
               <img
@@ -476,9 +474,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            {this.state.selectedTabs === 2 ? (
-              <OrderTab />
-            ) : null}
+            {this.state.selectedTabs === 2 ? <OrderTab /> : null}
           </div>
           <div
             className={

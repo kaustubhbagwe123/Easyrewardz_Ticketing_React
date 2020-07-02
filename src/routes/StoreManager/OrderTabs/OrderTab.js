@@ -48,11 +48,10 @@ class OrderTab extends Component {
   }
 
   componentDidMount() {
-    debugger
     this.handleGetOrderTabGridData();
     this.handleGetOrderStatusFilterData();
     this.handleGetCheckServiceData();
-  
+
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -62,10 +61,13 @@ class OrderTab extends Component {
     }
   }
 
+  handleTextSearch = () => {
+    alert("hello");
+  };
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
-    debugger
+    debugger;
     let self = this;
     this.setState({
       OrderTabLoading: true,
