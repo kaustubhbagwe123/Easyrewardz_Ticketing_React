@@ -30,7 +30,6 @@
     "issuetype": "समस्या का प्रकार",
     "ticketpriority": "टिकट प्राथमिकता",
     "ticketactiontype": "टिकट कार्रवाई प्रकार",
-    "qc": "क्यूसी",
     "channelofpurchase": "खरीद का चैनल",
     "customername": "ग्राहक का नाम",
     "phonenumber": "फ़ोन नंबर",
@@ -1670,5 +1669,8 @@
     "claimstatus":"दावा की स्थिति",
     "claimcategory":"दावा श्रेणी",
     "claimsubcategory":"दावा उप श्रेणी"
-  }
+  },
+  "tip":{
+    "pleasewait":"कृपया प्रतीक्षा करें..."
+    }
 }
