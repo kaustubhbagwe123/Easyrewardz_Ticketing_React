@@ -26,6 +26,7 @@ class Orders extends Component {
       shoppingBagVisible: false,
       mobileTabShopping: false,
       orderAllSearch: "",
+      isSearch: false,
     };
   }
   componentWillMount() {
@@ -115,13 +116,8 @@ class Orders extends Component {
       });
   }
   handleSeachAllData(e) {
-    debugger;
-    e.preventDefault();
-    this.callhandleTextSearch();
+    this.refs.OrderTab.handleGetOrderTabGridData(this.state.orderAllSearch);
   }
-  callhandleTextSearch = () => {
-    this.handleTextSearch();
-  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -474,7 +470,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            {this.state.selectedTabs === 2 ? <OrderTab /> : null}
+            {this.state.selectedTabs === 2 ? <OrderTab ref="OrderTab" /> : null}
           </div>
           <div
             className={
