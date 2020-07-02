@@ -2624,6 +2624,77 @@ class Header extends Component {
                     </span>
                   </div>
                   <div className="chat-cntr">
+                    <p className="chats-heading d-flex justify-content-between align-items-center">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.newchats
+                        : "New Chats"}{" "}
+                      (
+                      {this.state.newChatsData.length < 9
+                        ? "0" + this.state.newChatsData.length
+                        : this.state.newChatsData.length}
+                      )
+                    </p>
+                    <div className="chat-left-height">
+                      {this.state.newChatsData &&
+                        this.state.newChatsData.map((chat, i) => (
+                          <div
+                            key={i}
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
+                            onClick={this.handleUpdateCustomerChatStatus.bind(
+                              this,
+                              chat.chatID,
+                              chat.storeManagerId,
+                              chat.storeID,
+                              chat.cumtomerName,
+                              chat.mobileNo,
+                              chat.customerID,
+                              chat.programCode
+                            )}
+                          >
+                            <div className="d-flex align-items-center overflow-hidden">
+                              <span className="dark-blue-ini initial">
+                                {chat.cumtomerName.charAt(0)}
+                              </span>
+                              <div className="name-num mx-2">
+                                <p className="chat-name">{chat.cumtomerName}</p>
+                                <p className="num">{chat.mobileNo}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p
+                                  style={{
+                                    fontWeight:
+                                      chat.messageCount > 0 ? "bold" : "400",
+                                  }}
+                                >
+                                  {chat.messageCount === 0
+                                    ? "No"
+                                    : chat.messageCount}{" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.newmessages
+                                    : "New Messages"}
+                                </p>
+                                <p>{chat.timeAgo}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                  {this.state.newChatsData.length === 0 && (
+                    <p className="no-record" style={{ marginTop: "0px" }}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.norecordsfound
+                        : "No Records Found"}
+                      !
+                    </p>
+                  )}
+                  <div className="chat-cntr">
                     <div className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.ongoingchats
@@ -2724,77 +2795,6 @@ class Header extends Component {
                     </div>
                   </div>
                   {this.state.ongoingChatsData.length === 0 && (
-                    <p className="no-record" style={{ marginTop: "0px" }}>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.p.norecordsfound
-                        : "No Records Found"}
-                      !
-                    </p>
-                  )}
-                  <div className="chat-cntr">
-                    <p className="chats-heading d-flex justify-content-between align-items-center">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.p.newchats
-                        : "New Chats"}{" "}
-                      (
-                      {this.state.newChatsData.length < 9
-                        ? "0" + this.state.newChatsData.length
-                        : this.state.newChatsData.length}
-                      )
-                    </p>
-                    <div className="chat-left-height">
-                      {this.state.newChatsData &&
-                        this.state.newChatsData.map((chat, i) => (
-                          <div
-                            key={i}
-                            className={
-                              this.state.chatId === chat.chatID
-                                ? "chat-info active"
-                                : "chat-info"
-                            }
-                            onClick={this.handleUpdateCustomerChatStatus.bind(
-                              this,
-                              chat.chatID,
-                              chat.storeManagerId,
-                              chat.storeID,
-                              chat.cumtomerName,
-                              chat.mobileNo,
-                              chat.customerID,
-                              chat.programCode
-                            )}
-                          >
-                            <div className="d-flex align-items-center overflow-hidden">
-                              <span className="dark-blue-ini initial">
-                                {chat.cumtomerName.charAt(0)}
-                              </span>
-                              <div className="name-num mx-2">
-                                <p className="chat-name">{chat.cumtomerName}</p>
-                                <p className="num">{chat.mobileNo}</p>
-                              </div>
-                            </div>
-                            <div>
-                              <div className="mess-time">
-                                <p
-                                  style={{
-                                    fontWeight:
-                                      chat.messageCount > 0 ? "bold" : "400",
-                                  }}
-                                >
-                                  {chat.messageCount === 0
-                                    ? "No"
-                                    : chat.messageCount}{" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.newmessages
-                                    : "New Messages"}
-                                </p>
-                                <p>{chat.timeAgo}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                  {this.state.newChatsData.length === 0 && (
                     <p className="no-record" style={{ marginTop: "0px" }}>
                       {TranslationContext !== undefined
                         ? TranslationContext.p.norecordsfound

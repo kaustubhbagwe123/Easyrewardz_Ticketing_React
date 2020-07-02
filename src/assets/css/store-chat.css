@@ -11,12 +11,12 @@ p {
 }
 
 #chat-popup-overlay {
-  padding: 20px;
+  padding: 0px;
   background-color: rgba(77, 92, 116, 0.6);
 }
 #chat-popup-overlay .styles_modal__gNwvD {
   /* max-width: 100%; */
-  max-width: 85%;
+  max-width: 100%;
   width: 100%;
   padding: 0;
   /* height: calc(100vh - 40px);
