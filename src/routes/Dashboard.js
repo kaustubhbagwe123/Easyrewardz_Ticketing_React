@@ -5334,9 +5334,12 @@ class Dashboard extends Component {
                           <div className="search-name">
                             <input
                               type="search"
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.ticketingDashboard.givenametoyoursearch
-                                : "Give name to your search"}
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .givenametoyoursearch
+                                  : "Give name to your search"
+                              }
                               name="SearchName"
                               value={this.state.SearchName}
                               onChange={this.handelOnchangeData}
@@ -5364,15 +5367,15 @@ class Dashboard extends Component {
                           <div className="search-names">
                             <div className="names-title">
                               <p>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.p.searchname
-                                : "Search Name"}
-                                </p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.searchname
+                                  : "Search Name"}
+                              </p>
                               <p className="mar-comp">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.p.action
-                                : "Action"}
-                                </p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.action
+                                  : "Action"}
+                              </p>
                             </div>
                             <ul>
                               {/* <li> */}
@@ -5392,9 +5395,8 @@ class Dashboard extends Component {
                                         )}
                                       >
                                         {TranslationContext !== undefined
-                                ? TranslationContext.a.apply
-                                : "APPLY"}
-                                        
+                                          ? TranslationContext.a.apply
+                                          : "APPLY"}
                                       </a>
                                       <a
                                         href="#!"
@@ -5439,9 +5441,11 @@ class Dashboard extends Component {
                                     onChange={this.handleByDateCreate.bind(
                                       this
                                     )}
-                                    placeholderText={TranslationContext !== undefined
-                                      ? TranslationContext.label.creationdate
-                                      : "Creation Date"}
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.creationdate
+                                        : "Creation Date"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5461,9 +5465,12 @@ class Dashboard extends Component {
                                     onChange={this.handleChangeSelectDate.bind(
                                       this
                                     )}
-                                    placeholderText={TranslationContext !== undefined
-                                      ? TranslationContext.label.lastupdateddate
-                                      : "Last Updated Date"}
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .lastupdateddate
+                                        : "Last Updated Date"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -5477,9 +5484,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaDueByDate}
                                     onChange={this.handleSlaDueByDate}
                                   >
-                                    <option value="0">{TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard.slaDue
-                                      : "SLA Due"}</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .slaDue
+                                        : "SLA Due"}
+                                    </option>
                                     {this.state.SlaDueData !== null &&
                                       this.state.SlaDueData.map((item, i) => (
                                         <option key={i} value={item.slaDueID}>
@@ -5496,10 +5506,10 @@ class Dashboard extends Component {
                                     onChange={this.handleTicketStatusByDate}
                                   >
                                     <option value="0">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.div.ticketstatus
-                                      : "Ticket Status"}
-                                      </option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.div.ticketstatus
+                                        : "Ticket Status"}
+                                    </option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -5531,9 +5541,12 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder={TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard.customerMobileNo
-                                      : "Customer Mobile No"}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .customerMobileNo
+                                        : "Customer Mobile No"
+                                    }
                                     name="MobileNoByCustType"
                                     value={this.state.MobileNoByCustType}
                                     onChange={this.handelOnchangeData}
@@ -5547,9 +5560,12 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="no-bg"
-                                    placeholder={TranslationContext !== undefined
-                                      ? TranslationContext.label.customeremailid
-                                      : "Customer Email ID"}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .customeremailid
+                                        : "Customer Email ID"
+                                    }
                                     name="EmailIdByCustType"
                                     value={this.state.EmailIdByCustType}
                                     onChange={this.handelOnchangeData}
@@ -7458,7 +7474,7 @@ class Dashboard extends Component {
                                   <ul className="dash-creation-popup">
                                     <li className="title">Creation details</li>
                                     <li>
-                                      <p> {row.original.createdBy} Created</p>
+                                      <p>Created by {row.original.createdBy}</p>
                                       <p>{row.original.createdago}</p>
                                     </li>
                                     <li>
