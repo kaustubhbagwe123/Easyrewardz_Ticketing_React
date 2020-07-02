@@ -1259,7 +1259,8 @@ class Header extends Component {
                     textTransform: "uppercase",
                   }}
                 >
-                  {this.state.workTimeHours}
+                  {/* {this.state.workTimeHours} */}
+                  {this.state.LoggedInDuration}
                 </p>
               </div>
               <div>
