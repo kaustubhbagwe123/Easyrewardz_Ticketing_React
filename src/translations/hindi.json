@@ -1679,7 +1679,9 @@
     "withtaskyes":"टास्क के साथ: हाँ",
     "csv":"सीएसवी",
     "purchasestorecodeaddress":"खरीद स्टोर कोड / पता",
-    "addremarks":"टिप्पणी जोड़ें"
+    "addremarks":"टिप्पणी जोड़ें",
+    "agentselectionisrequired":"एजेंट चयन आवश्यक है",
+    "allfieldsarerequired":"सभी फ़ील्ड आवश्यक हैं"
   },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."

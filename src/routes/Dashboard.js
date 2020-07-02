@@ -395,7 +395,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
     // this.ViewSearchData();
@@ -427,7 +426,6 @@ class Dashboard extends Component {
   }
 
   handleTicketsOnLoad() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
 
@@ -623,7 +621,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let CSVData = data;
@@ -666,7 +663,6 @@ class Dashboard extends Component {
   }
 
   handleWeeklyDays = async (e) => {
-    debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -768,8 +764,6 @@ class Dashboard extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -779,7 +773,6 @@ class Dashboard extends Component {
     var sassignedToFilterCheckbox = this.state.sassignedToFilterCheckbox;
 
     if (column === "status" || column === "all") {
-      debugger;
       if (type === "value" && type !== "All") {
         sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
           "all",
@@ -798,11 +791,9 @@ class Dashboard extends Component {
           sticketStatusFilterCheckbox += e.currentTarget.value + ",";
         }
       } else {
-        debugger;
         if (sticketStatusFilterCheckbox.includes("all")) {
           sticketStatusFilterCheckbox = "";
         } else {
-          debugger;
           if (this.state.sortColumnName === "status") {
             for (let i = 0; i < this.state.sortTicketData.length; i++) {
               sticketStatusFilterCheckbox +=
@@ -1039,8 +1030,6 @@ class Dashboard extends Component {
       });
     }
 
-    debugger;
-
     this.setState({
       tempSearchTicketData: itemsArray,
     });
@@ -1048,7 +1037,6 @@ class Dashboard extends Component {
   };
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
 
@@ -1062,7 +1050,6 @@ class Dashboard extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
     itemsArray.sort((a, b) => {
@@ -1074,26 +1061,23 @@ class Dashboard extends Component {
     this.StatusCloseModel();
   }
   handleGetModulesNames() {
-    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModules",
       headers: authHeader(),
     }).then(function(res) {
-      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (data) {
         let moduleID = data[0].moduleID;
-        let selTab = data[0].moduleName;
-        let moduleIDMyticket = data[1].moduleID;
+        // let selTab = data[0].moduleName;
+        // let moduleIDMyticket = data[1].moduleID;
         self.handleAdvanceSearchOption(moduleID);
       }
     });
   }
   handleAdvanceSearchOption(id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1104,7 +1088,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data1 = res.data.responseData;
         if (status === "Success") {
@@ -1119,7 +1102,6 @@ class Dashboard extends Component {
       });
   }
   setAdvanceSearch(data1) {
-    debugger;
     var data = [];
     data = data1;
     if (data.length > 0) {
@@ -1260,7 +1242,7 @@ class Dashboard extends Component {
   }
   handleGetDashboardNumberData() {
     this.setState({ loadingAbove: true });
-    debugger;
+
     let self = this;
     var fromdate = moment(this.state.start).format("YYYY-MM-DD");
     var todate = moment(this.state.end).format("YYYY-MM-DD");
@@ -1284,7 +1266,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1305,7 +1286,7 @@ class Dashboard extends Component {
   }
   handleGetDashboardGraphData() {
     this.setState({ loadingAbove: true });
-    debugger;
+
     let self = this;
     var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
     var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
@@ -1329,7 +1310,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         if (res.data.responseData !== null) {
           let DashboardGraphData = res.data.responseData;
           let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
@@ -1396,7 +1376,6 @@ class Dashboard extends Component {
   }
 
   checkAllAgentStart(event) {
-    debugger;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds = "";
     for (var i in checkboxes) {
@@ -1420,7 +1399,6 @@ class Dashboard extends Component {
     }
   }
   checkAllBrandStart(event) {
-    debugger;
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds = "";
     for (var i in checkboxes) {
@@ -1444,7 +1422,6 @@ class Dashboard extends Component {
     }
   }
   checkIndividualAgent = (event) => {
-    debugger;
     var agentcount = 0;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds = "";
@@ -1484,7 +1461,6 @@ class Dashboard extends Component {
     );
   };
   checkIndividualBrand = (event) => {
-    debugger;
     var brandcount = 0;
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds = "";
@@ -1526,7 +1502,6 @@ class Dashboard extends Component {
     );
   };
   checkAllAgent = async (event) => {
-    debugger;
     this.setState((state) => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
     var strAgentIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -1557,8 +1532,6 @@ class Dashboard extends Component {
     this.ViewSearchData();
   };
   checkAllBrand = async (event) => {
-    debugger;
-
     this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strBrandIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -1589,7 +1562,6 @@ class Dashboard extends Component {
     this.ViewSearchData();
   };
   handleGetAgentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1597,7 +1569,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1620,7 +1591,6 @@ class Dashboard extends Component {
       });
   }
   handleGetBrandList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1628,7 +1598,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1644,7 +1613,6 @@ class Dashboard extends Component {
       });
   }
   handelCheckBoxCheckedChange = async (ticketID) => {
-    debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     var strIds = "";
     for (var i in checkboxes) {
@@ -1670,7 +1638,6 @@ class Dashboard extends Component {
     const index = column ? column.index : -1;
     return {
       onClick: (e) => {
-        debugger;
         this.selectedRow = index;
         var agentId = column.original["user_ID"];
         this.setState({ agentId, agentSelection: "" });
@@ -1716,7 +1683,6 @@ class Dashboard extends Component {
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
   applyCallback = async (startDate, endDate) => {
-    debugger;
     var startArr = endDate[0].split("-");
     var dummyStart = startArr[0];
     startArr[0] = startArr[1];
@@ -1777,13 +1743,11 @@ class Dashboard extends Component {
     this.setState({ selectedWantToVisitStoreAll: wantToVisitStoreAllValue });
   };
   handleScheduleTime(e) {
-    debugger;
     this.setState({
       selectedScheduleTime: e,
     });
   }
   handleAssignRemark(e) {
-    debugger;
     this.setState({
       agentRemark: e.currentTarget.value,
     });
@@ -1796,7 +1760,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1815,8 +1778,6 @@ class Dashboard extends Component {
     });
   }
   handleGetFunctionList() {
-    debugger;
-
     let self = this;
     self.setState({ FunctionData: [], selectedFunction: 0 });
 
@@ -1829,7 +1790,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -1838,7 +1798,6 @@ class Dashboard extends Component {
       });
   }
   handleGetDepartmentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1846,7 +1805,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1864,7 +1822,6 @@ class Dashboard extends Component {
     this.setState({ selectedWithTaskAll: withTaskAllValue });
   };
   handleAdvSearchFlag(e) {
-    debugger;
     let currentActive = e.currentTarget.innerText;
     if (currentActive === "By Date") {
       this.setState({
@@ -1914,7 +1871,6 @@ class Dashboard extends Component {
     }
   }
   handleAssignSearchData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1928,7 +1884,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let SearchAssignData = res.data.responseData;
         self.setState({
           SearchAssignData: SearchAssignData,
@@ -1943,7 +1898,6 @@ class Dashboard extends Component {
       });
   }
   handleAssignClearData() {
-    debugger;
     this.setState({
       assignFirstName: "",
       assignLastName: "",
@@ -1956,7 +1910,6 @@ class Dashboard extends Component {
     this.setState({ selectedFunction: functionValue });
   };
   handleGetTicketPriorityList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -1964,7 +1917,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2009,8 +1961,6 @@ class Dashboard extends Component {
     this.setState({ modalIsOpen: false });
   };
   StatusOpenModel(data, header) {
-    debugger;
-
     this.setState({
       StatusModel: true,
       sortColumnName: data,
@@ -2018,7 +1968,6 @@ class Dashboard extends Component {
     });
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFilterTicketData: this.state.sortTicketData,
       sortFilterCategoryData: this.state.sortCategoryData,
@@ -2206,7 +2155,6 @@ class Dashboard extends Component {
   onChange = (date) => this.setState({ date });
 
   checkAllCheckbox = async (event) => {
-    debugger;
     var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -2247,7 +2195,6 @@ class Dashboard extends Component {
     this.setState({ TotalNoOfChatShow: false });
   }
   handleScheduleDateChange = (e) => {
-    debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
       this.setState({
@@ -2372,7 +2319,6 @@ class Dashboard extends Component {
   };
 
   setNameOfDayForWeek = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -2384,14 +2330,12 @@ class Dashboard extends Component {
     });
   };
   handleDaysForMonth(e) {
-    debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value,
     });
   }
 
   handleWeekly(e) {
-    debugger;
     this.setState({
       selectedNoOfWeek: e.currentTarget.value,
     });
@@ -2406,7 +2350,6 @@ class Dashboard extends Component {
     this.setState({ selectedPriorityAll: priorityAllValue });
   };
   handleDailyDay(e) {
-    debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value,
     });
@@ -2496,7 +2439,6 @@ class Dashboard extends Component {
     this.setState({ selectedVisitStoreAll: visitStoreAllValue });
   };
   handleGetDesignationList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2504,7 +2446,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2518,16 +2459,15 @@ class Dashboard extends Component {
       });
   }
   handleSchedulePopup() {
-    debugger;
-    // if (this.state.selectedTeamMember.length > 0 && ) {
-
-    // }
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.selectScheduleDate === 0 ||
       this.state.selectScheduleDate === "100"
     ) {
       this.setState({
-        scheduleRequired: "All fields are required",
+        scheduleRequired: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.allfieldsarerequired
+        : "All fields are required."
       });
     } else if (this.state.selectScheduleDate === "230") {
       if (
@@ -2536,7 +2476,9 @@ class Dashboard extends Component {
         this.state.selectedNoOfDay === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2549,7 +2491,9 @@ class Dashboard extends Component {
         this.state.selectedWeeklyDays === ""
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2562,7 +2506,9 @@ class Dashboard extends Component {
         this.state.selectedNoOfMonthForMonth === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2576,7 +2522,9 @@ class Dashboard extends Component {
         this.state.selectedNameOfDayForWeek.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2589,7 +2537,9 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2603,7 +2553,9 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForDailyYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.allfieldsarerequired
+            : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2611,9 +2563,8 @@ class Dashboard extends Component {
     }
   }
   handleSchedulePopupSuccess() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-
     var month, day, year, hours, minutes, seconds;
     var date = new Date(this.state.selectedScheduleTime),
       month = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -2659,10 +2610,13 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
-          NotificationManager.success("Scheduled successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.scheduledsuccessfully
+              : "Scheduled successfully."
+          );
           self.ScheduleCloseModel();
           self.setState({
             scheduleRequired: "",
@@ -2675,13 +2629,11 @@ class Dashboard extends Component {
       });
   }
   handleWeekForYear(e) {
-    debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value,
     });
   }
   setNameOfMonthForDailyYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -2693,7 +2645,6 @@ class Dashboard extends Component {
     });
   };
   setTeamMember = (e) => {
-    debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, (s) => s.userID)
@@ -2702,13 +2653,11 @@ class Dashboard extends Component {
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
   };
   handleWeekForWeek(e) {
-    debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   }
   setNameOfDayForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -2720,19 +2669,16 @@ class Dashboard extends Component {
     });
   };
   handleMonthForWeek(e) {
-    debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value,
     });
   }
   handleDayForYear(e) {
-    debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value,
     });
   }
   setNameOfMonthForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -2744,7 +2690,7 @@ class Dashboard extends Component {
     });
   };
   handleAssignTickets() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.agentId !== 0) {
       let self = this;
       var ticketIdsComma = this.state.ticketIds;
@@ -2760,11 +2706,14 @@ class Dashboard extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success("Tickets assigned successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.ticketsassignedsuccessfully
+                : "Tickets assigned successfully."
+            );
             // self.handleSearchTicketEscalation();
             self.ViewSearchData();
           }
@@ -2774,13 +2723,13 @@ class Dashboard extends Component {
         });
     } else {
       this.setState({
-        agentSelection: "Agent Selection is required",
+        agentSelection: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.agentselectionisrequired
+          : "Agent Selection is required.",
       });
     }
   }
   handleGetSlaStatusList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2788,7 +2737,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2806,8 +2754,6 @@ class Dashboard extends Component {
       });
   }
   handleGetTicketSourceList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2815,7 +2761,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2848,7 +2793,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let ClaimIssueTypeData = res.data.responseData;
         self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
       })
@@ -2902,7 +2846,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         // if (self.state.byCategoryFlag === 4) {
         //   var IssueTypeData = res.data.responseData;
         //   self.setState({
@@ -2936,7 +2879,6 @@ class Dashboard extends Component {
       });
   }
   handleGetCategoryList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2944,7 +2886,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let data = res.data;
         let CategoryData = res.data;
         if (data.length > 0) {
@@ -2963,7 +2904,6 @@ class Dashboard extends Component {
       });
   }
   handleGetClaimSubCategoryList() {
-    debugger;
     let self = this;
     self.setState({
       ClaimSubCategoryData: [],
@@ -2981,7 +2921,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let ClaimSubCategoryData = res.data.responseData;
         self.setState({
           ClaimSubCategoryData: ClaimSubCategoryData,
@@ -2992,7 +2931,6 @@ class Dashboard extends Component {
       });
   }
   handleGetSubCategoryList(param) {
-    debugger;
     let self = this;
     // self.setState({
     //   SubCategoryData: [],
@@ -3048,7 +2986,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         // if (self.state.byCategoryFlag === 4) {
         //   var SubCategoryData = res.data.responseData;
         //   self.setState({
@@ -3082,7 +3019,6 @@ class Dashboard extends Component {
       });
   }
   clearSearch() {
-    debugger;
     if (this.state.byDateFlag === 1) {
       this.setState(
         {
@@ -3192,7 +3128,6 @@ class Dashboard extends Component {
   }
 
   ViewSearchData(Shwcheck) {
-    debugger;
     let self = this;
     this.setState({ loading: true });
 
@@ -3387,7 +3322,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -3514,7 +3448,7 @@ class Dashboard extends Component {
       });
   }
   SaveSearchData() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.SearchName.length > 0) {
       axios({
@@ -3527,11 +3461,13 @@ class Dashboard extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              "Your search has been saved successfully."
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage
+                    .yoursearchhasbeensavedsuccessfully
+                : "Your search has been saved successfully."
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -3553,7 +3489,6 @@ class Dashboard extends Component {
     if ((rowInfo, column)) {
       return {
         onClick: (e) => {
-          debugger;
           let Id = column.original["ticketID"];
           let self = this;
           self.setState({
@@ -3582,7 +3517,6 @@ class Dashboard extends Component {
   };
 
   handleGetSaveSearchList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -3590,7 +3524,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -3604,7 +3537,6 @@ class Dashboard extends Component {
       });
   }
   handleSearchTicketEscalation() {
-    debugger;
     this.setState({ loading: true });
     let self = this;
     axios({
@@ -3620,7 +3552,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         let Status = res.data.message;
         let CSVData = data;
@@ -3662,7 +3593,6 @@ class Dashboard extends Component {
     });
   };
   handleClaimStatus = (e) => {
-    debugger;
     let claimStatusValue = e.currentTarget.value;
     this.setState({ selectedClaimStatus: claimStatusValue });
   };
@@ -3679,7 +3609,7 @@ class Dashboard extends Component {
     this.setState({ selectedWithClaimAll: withClaimAllValue });
   };
   hadleSearchDeleteData(searchDeletId) {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -3690,11 +3620,13 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully."
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage
+                  .savedsearchdatadeletedsuccessfully
+              : "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -3708,7 +3640,6 @@ class Dashboard extends Component {
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
   handleMonthForMonth(e) {
-    debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value,
     });
@@ -3723,7 +3654,6 @@ class Dashboard extends Component {
   };
 
   handleApplySearch(paramsID) {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     self.onCloseModal();
@@ -3736,7 +3666,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData.dashboardTicketList;
         let count = 0;
@@ -3780,7 +3709,6 @@ class Dashboard extends Component {
               selectedTicketStatusByDate: 0,
             });
           } else {
-            debugger;
             if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
               let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
               let createdDateArray = createdDate.split("-");
@@ -4090,7 +4018,6 @@ class Dashboard extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     // if (e.target.value !== "") {
     if (this.state.sortColumnName === "status") {
@@ -4232,7 +4159,11 @@ class Dashboard extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -4242,11 +4173,20 @@ class Dashboard extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {" "}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <div className="filter-type ">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
 
                 <div className="FTypeScroll">
                   <input
@@ -4273,7 +4213,11 @@ class Dashboard extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.all
+                          : "ALL"}
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumnName === "status"
@@ -4414,7 +4358,11 @@ class Dashboard extends Component {
               </div>
 
               <div className="filter-type filter-color">
-                <p>FILTER BY COLOR</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbycolor
+                    : "FILTER BY COLOR"}
+                </p>
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -6226,7 +6174,6 @@ class Dashboard extends Component {
                                     onChange={this.setIssueTypeAllValue}
                                   >
                                     <option value="0">
-                                      {" "}
                                       {TranslationContext !== undefined
                                         ? TranslationContext.label.issuetype
                                         : "Issue Type"}
@@ -7353,7 +7300,6 @@ class Dashboard extends Component {
                                       {
                                         Header: (
                                           <span>
-                                            {" "}
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label.agent
                                               : "Agent"}
@@ -7562,13 +7508,15 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
-                              "Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"
                             )}
                             className={this.state.statusColor}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.label.status
-                              : "Status"}{" "}
+                              : "Status"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -7755,12 +7703,14 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "category",
-                              "Category"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.category
+                                : "Category"
                             )}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.span.category
-                              : "Category"}{" "}
+                              : "Category"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -7820,7 +7770,9 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "priority",
-                              "Priority"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.priority
+                                : "Priority"
                             )}
                           >
                             {TranslationContext !== undefined
@@ -7839,12 +7791,14 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "assignedTo",
-                              "Assign To"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.assignee
+                                : "Assignee"
                             )}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.span.assignee
-                              : "Assignee"}{" "}
+                              : "Assignee"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -7857,12 +7811,14 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdOn",
-                              " Creation On"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"
                             )}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.span.creationon
-                              : "Creation On"}{" "}
+                              : "Creation On"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -7895,24 +7851,22 @@ class Dashboard extends Component {
                                       <p>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label.assignedto
-                                          : "Assigned to"}{" "}
+                                          : "Assigned to"}
                                         {row.original.assignedTo}
                                       </p>
                                       <p>{row.original.assignedago}</p>
                                     </li>
                                     <li>
                                       <p>
-                                        {" "}
                                         {TranslationContext !== undefined
                                           ? TranslationContext.p.updatedby
-                                          : "Updated by"}{" "}
+                                          : "Updated by"}
                                         {row.original.updatedBy}
                                       </p>
                                       <p>{row.original.updatedago}</p>
                                     </li>
                                     <li>
                                       <p>
-                                        {" "}
                                         {TranslationContext !== undefined
                                           ? TranslationContext.p
                                               .responsetimeremainingby
