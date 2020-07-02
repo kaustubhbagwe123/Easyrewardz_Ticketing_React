@@ -101,6 +101,7 @@ class ProgramCodeSignIn extends Component {
                     maxLength={100}
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "Program Code",
