@@ -16,6 +16,8 @@ import SimpleReactValidator from "simple-react-validator";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import * as translationHI from "../translations/hindi";
+import * as translationMA from "../translations/marathi";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ class AddSearchMyTicket extends Component {
       value: "",
       copied: false,
       searchCompulsion: "",
+      translateLanguage: {}
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -51,6 +54,17 @@ class AddSearchMyTicket extends Component {
       },
     });
   }
+
+  componentWillMount() {
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
+  }
+
   handleCopyToaster() {
     //debugger;
     setTimeout(() => {
@@ -235,6 +249,7 @@ class AddSearchMyTicket extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
@@ -244,7 +259,9 @@ class AddSearchMyTicket extends Component {
             alt="ArrowCircle"
             className="arrowImg-addSearch"
           />
-          <label className="label-addsearch">Source</label>
+          <label className="label-addsearch">{TranslationContext !== undefined
+                        ? TranslationContext.label.source
+                        : "Source"}</label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
           <CopyToClipboard
@@ -265,9 +282,13 @@ class AddSearchMyTicket extends Component {
               <form name="form" onSubmit={this.handleSearchCustomer}>
                 <div>
                   <label className="label1-AddSearch">
-                    SEARCH CUSTOMER BY
+                  {TranslationContext !== undefined
+                        ? TranslationContext.label.searchcustomerby
+                        : "SEARCH CUSTOMER BY"}
                     <label className="label2-AddSearch">
-                      &nbsp;(PHONE NUMBER, EMAIL ID)
+                      &nbsp;({TranslationContext !== undefined
+                        ? TranslationContext.label.phonenumberemail
+                        : "PHONE NUMBER, EMAIL ID"})
                       <span className="span-color">*</span>
                     </label>
                   </label>
