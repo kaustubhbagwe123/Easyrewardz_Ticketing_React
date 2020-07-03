@@ -1541,7 +1541,9 @@ class TicketSystemOrder extends Component {
                     dataIndex: "storeAddress",
                   },
                   {
-                    title: "Discount",
+                    title: TranslationContext !== undefined
+                    ? TranslationContext.span.discount
+                    : "Discount",
                     dataIndex: "discount",
                   },
                 ]}
@@ -1583,15 +1585,22 @@ class TicketSystemOrder extends Component {
                           },
                         },
                         {
-                          title: "Article Number",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.span.articlenumber
+                          : "Article Number",
                           dataIndex: "articleNumber",
                         },
                         {
-                          title: "Article Name",
+                          title:  TranslationContext !== undefined
+                          ? TranslationContext.span.articlename
+                          : "Article Name",
                           dataIndex: "articleName",
                         },
                         {
-                          title: "Article MRP",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .articlemrp
+                          : "Article MRP",
                           dataIndex: "itemPrice",
                         },
                         {
@@ -1602,11 +1611,16 @@ class TicketSystemOrder extends Component {
                           dataIndex: "pricePaid",
                         },
                         {
-                          title: "Discount",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.span.discount
+                          : "Discount",
                           dataIndex: "discount",
                         },
                         {
-                          title: "Required Size",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .requiredsize
+                          : "Required Size",
                           dataIndex: "requireSize",
                           render: (data, record) => {
                             return (
