@@ -1395,7 +1395,8 @@
     "am": "ए एम",
     "pm": "पी एम",
     "selectchannelofpurchase": "खरीद का चैनल चुनें",
-    "kblink": "केबी लिंक"
+    "kblink": "केबी लिंक",
+    "placeholders": "प्लेसहोल्डर"
   },
   "radio": {
     "email": "ईमेल",

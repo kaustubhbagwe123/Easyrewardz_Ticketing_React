@@ -1401,14 +1401,14 @@ class Alerts extends Component {
     } else {
       this.setState({
         alertTypeCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseenteralerttype
-        : "Please Enter Alert Type",
+          ? TranslationContext.validation.pleaseenteralerttype
+          : "Please Enter Alert Type",
         statusCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectstatus
-        : "Please Select Status",
+          ? TranslationContext.validation.pleaseselectstatus
+          : "Please Select Status",
         communicationModeCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectcommunicationmode
-        : "Please Select Any Communication Mode",
+          ? TranslationContext.validation.pleaseselectcommunicationmode
+          : "Please Select Any Communication Mode",
       });
     }
   }
@@ -1631,9 +1631,11 @@ class Alerts extends Component {
         var alertName = e.target.selectedOptions[0].innerText;
         data[name] = value;
         data["AlertTypeName"] = alertName;
-        this.setState({ editalertTypeCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.pleaseenteralerttype
-          : "Please Enter Alert Type" });
+        this.setState({
+          editalertTypeCompulsion: TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenteralerttype
+            : "Please Enter Alert Type"
+        });
         this.setState({ alertEdit: data });
       } else {
         var alertName = e.target.selectedOptions[0].innerText;
@@ -1651,9 +1653,11 @@ class Alerts extends Component {
   handleOpenAdd() {
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.alertEdit.AlertTypeName == "Select Alert") {
-      this.setState({ editalertTypeCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseenteralerttype
-        : "Please Enter Alert Type" });
+      this.setState({
+        editalertTypeCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseenteralerttype
+          : "Please Enter Alert Type"
+      });
     } else if (
       this.state.emailCust === false &&
       this.state.emailInt === false &&
@@ -1663,8 +1667,8 @@ class Alerts extends Component {
     ) {
       this.setState({
         editcommunicationModeCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectcommunicationmode
-        : "Please Select Any Communication Mode",
+          ? TranslationContext.validation.pleaseselectcommunicationmode
+          : "Please Select Any Communication Mode",
       });
     } else {
       var innerTabIndex = 0;
@@ -2485,8 +2489,10 @@ class Alerts extends Component {
                                   aria-controls="email-tab"
                                   aria-selected="true"
                                 >
-                                  Email
-                              </a>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.email
+                                    : "Email"}
+                                </a>
                               </li>
                             )}
                           {this.state.smsCust && (
@@ -2501,7 +2507,9 @@ class Alerts extends Component {
                                 aria-controls="sms-tab"
                                 aria-selected="false"
                               >
-                                SMS
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.sms
+                                  : "SMS"}
                               </a>
                             </li>
                           )}
@@ -2517,7 +2525,9 @@ class Alerts extends Component {
                                 aria-controls="notification-tab"
                                 aria-selected="false"
                               >
-                                Notification
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.notification
+                                  : "Notification"}
                               </a>
                             </li>
                           )}
@@ -2558,8 +2568,10 @@ class Alerts extends Component {
                                         aria-controls="customer-tab"
                                         aria-selected="true"
                                       >
-                                        Customer
-                                    </a>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.customer
+                                          : "Customer"}
+                                      </a>
                                     </li>
                                   )}
                                   {this.state.emailInt && (
@@ -2573,8 +2585,10 @@ class Alerts extends Component {
                                         aria-controls="Internal-tab"
                                         aria-selected="false"
                                       >
-                                        Internal
-                                    </a>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.internal
+                                          : "Internal"}
+                                      </a>
                                     </li>
                                   )}
                                   {this.state.emailStore && (
@@ -2588,8 +2602,10 @@ class Alerts extends Component {
                                         aria-controls="ticket-tab"
                                         aria-selected="false"
                                       >
-                                        Store
-                                    </a>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.store
+                                          : "Store"}
+                                      </a>
                                     </li>
                                   )}
                                 </ul>
@@ -2603,8 +2619,10 @@ class Alerts extends Component {
                                   aria-labelledby="customer-tab"
                                 >
                                   <label className="alert-main-popuplbl">
-                                    Compose your Email
-                                </label>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.composeyouremail
+                                      : "Compose your Email"}
+                                  </label>
                                   {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
@@ -2662,7 +2680,11 @@ class Alerts extends Component {
                                           "Customer"
                                         )}
                                       >
-                                        <option value="0">Placeholders</option>
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.placeholders
+                                            : "Placeholders"}
+                                        </option>
                                         {this.state.placeholderData !== null &&
                                           this.state.placeholderData.map(
                                             (item, i) => (
@@ -2706,8 +2728,10 @@ class Alerts extends Component {
                                   aria-labelledby="Internal-tab"
                                 >
                                   <label className="alert-main-popuplbl">
-                                    Compose your Email
-                                </label>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.composeyouremail
+                                      : "Compose your Email"}
+                                  </label>
                                   {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
@@ -2765,7 +2789,11 @@ class Alerts extends Component {
                                           "Internal"
                                         )}
                                       >
-                                        <option value="0">Placeholders</option>
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.placeholders
+                                            : "Placeholders"}
+                                        </option>
                                         {this.state.placeholderData !== null &&
                                           this.state.placeholderData.map(
                                             (item, i) => (
@@ -2810,8 +2838,10 @@ class Alerts extends Component {
                                   aria-labelledby="ticket-tab"
                                 >
                                   <label className="alert-main-popuplbl">
-                                    Compose your Email
-                                </label>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.composeyouremail
+                                      : "Compose your Email"}
+                                  </label>
                                   {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
@@ -2867,7 +2897,11 @@ class Alerts extends Component {
                                           "Store"
                                         )}
                                       >
-                                        <option value="0">Placeholders</option>
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.placeholders
+                                            : "Placeholders"}
+                                        </option>
                                         {this.state.placeholderData !== null &&
                                           this.state.placeholderData.map(
                                             (item, i) => (
@@ -2926,7 +2960,9 @@ class Alerts extends Component {
                         >
                           <div className="sms-mainLabel alert-p1">
                             <label className="alert-main-popuplbl">
-                              Compose your SMS
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.composeyoursms
+                                : "Compose your SMS"}
                             </label>
                             <textarea
                               rows="10"
@@ -2958,7 +2994,9 @@ class Alerts extends Component {
                           <div className="sms-mainLabel alert-p1">
                             <div className="noti-plchldr-cntr">
                               <label className="alert-main-popuplbl">
-                                Compose your Notification
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.composeyournotification
+                                  : "Compose your Notification"}
                               </label>
                               <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
                                 <select
@@ -2969,7 +3007,11 @@ class Alerts extends Component {
                                     "Notification"
                                   )}
                                 >
-                                  <option value="0">Placeholders</option>
+                                  <option value="0">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.placeholders
+                                      : "Placeholders"}
+                                  </option>
                                   {this.state.placeholderData !== null &&
                                     this.state.placeholderData.map(
                                       (item, i) => (
@@ -3027,7 +3069,9 @@ class Alerts extends Component {
                             ) : (
                                 ""
                               )}
-                            SAVE
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "SAVE"}
                           </button>
                         </div>
                       </div>
