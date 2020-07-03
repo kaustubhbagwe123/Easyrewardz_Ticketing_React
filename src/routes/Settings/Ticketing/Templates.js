@@ -27,6 +27,8 @@ import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class Templates extends Component {
   constructor(props) {
@@ -92,6 +94,7 @@ class Templates extends Component {
       ckCusrsorPosition: 0,
       ckCusrsorData: "",
       isortA: false,
+      translateLanguage: {},
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -111,6 +114,14 @@ class Templates extends Component {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
     this.handlePlaceholderList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
     debugger;
@@ -1281,6 +1292,8 @@ class Templates extends Component {
     }
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
+
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1465,15 +1478,21 @@ class Templates extends Component {
 
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.a.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Templates
+            {TranslationContext !== undefined
+              ? TranslationContext.strong.templates
+              : "Templates"}
           </Link>
         </div>
         <div className="container-fluid">

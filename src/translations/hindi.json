@@ -10,6 +10,10 @@
     "orders": "आदेश"
   },
   "label": {
+    "pleaseenteremailid": "कृपया ईमेल आईडी दर्ज करें",
+    "pleaseenterreason": "कृपया कारण दर्ज करें",
+    "invalidemailid": "अमान्य ईमेल आईडी",
+    "pleaseenterjunkwords": "कृपया जंक शब्द दर्ज करें",
     "fieldname": "क्षेत्र का नाम",
     "ToTime": "तक",
     "time": "समय",

@@ -79,15 +79,22 @@ class JunkWords extends Component {
   };
 
   handleValidation() {
+    const TranslationContext = this.state.translateLanguage.default;
     let errors = this.state.errors;
     let formIsValid = true;
     if (!this.state.JunkWords) {
       formIsValid = false;
-      errors["JunkWords"] = "Please enter junk words";
+      errors["JunkWords"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenterjunkwords
+          : "Please enter junk words";
     }
     if (!this.state.Reason) {
       formIsValid = false;
-      errors["Reason"] = "Please enter reason";
+      errors["Reason"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenterreason
+          : "Please enter reason";
     }
     this.setState({ errors: errors });
     return formIsValid;

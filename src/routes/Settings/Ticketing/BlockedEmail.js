@@ -82,25 +82,35 @@ class BlockEmail extends Component {
   };
 
   handleValidation() {
+    const TranslationContext = this.state.translateLanguage.default;
     let errors = this.state.errors;
     let formIsValid = true;
     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!this.state.EmailIDs) {
       formIsValid = false;
-      errors["EmailIDs"] = "Please enter email id";
+      errors["EmailIDs"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenteremailid
+          : "Please enter email id";
     } else {
       var emailIds = this.state.EmailIDs;
       var arr = emailIds.split(",");
       arr.forEach((element) => {
         if (!re.test(element)) {
           formIsValid = false;
-          errors["EmailIDs"] = "Invalid email id";
+          errors["EmailIDs"] =
+            TranslationContext !== undefined
+              ? TranslationContext.label.invalidemailid
+              : "Invalid email id";
         }
       });
     }
     if (!this.state.Reason) {
       formIsValid = false;
-      errors["Reason"] = "Please enter reason";
+      errors["Reason"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenterreason
+          : "Please enter reason";
     }
     this.setState({ errors: errors });
     return formIsValid;
