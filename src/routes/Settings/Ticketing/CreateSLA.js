@@ -30,6 +30,9 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
+
 class CreateSLA extends Component {
   constructor(props) {
     super(props);
@@ -90,6 +93,7 @@ class CreateSLA extends Component {
       sisSLAActiveFilterCheckbox: "",
       isortA: false,
       bulkuploadLoading: false,
+      translateLanguage: {}
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -104,6 +108,14 @@ class CreateSLA extends Component {
     this.handleGetSLA();
     this.handleGetSLAIssueType();
     this.handleGetPriorityList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   sortStatusZtoA() {
@@ -685,7 +697,7 @@ class CreateSLA extends Component {
         SearchText: this.state.SearchText,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
@@ -728,7 +740,7 @@ class CreateSLA extends Component {
         SLAFor: 1,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -793,7 +805,7 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -855,7 +867,7 @@ class CreateSLA extends Component {
         SLAId: SLAId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -901,6 +913,7 @@ class CreateSLA extends Component {
   }
   createSla() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     var array = this.state.finalData;
     var valid = false;
     if (array.length > 0) {
@@ -952,11 +965,13 @@ class CreateSLA extends Component {
           SLAFor: 1,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("SLA added successfully.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slaaddeddsuccessfully
+              : "SLA added successfully.");
             self.setState({
               // selectedSlaIssueType: 0,
               SlaIsActive: "true",
@@ -977,14 +992,19 @@ class CreateSLA extends Component {
         });
     } else {
       this.setState({
-        issueTypeCompulsion: "Please select issuetype.",
-        slaTargetCompulsion: "Required.",
+        issueTypeCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectissuetype
+          : "Please select issue type.",
+        slaTargetCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.required
+          : "Required.",
       });
     }
   }
 
   deleteSLA(deleteId) {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -994,14 +1014,18 @@ class CreateSLA extends Component {
         SLAID: deleteId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
-          NotificationManager.success("SLA deleted successfully.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.sladeletedsuccessfully
+            : "SLA deleted successfully.");
           self.handleGetSLA();
         } else {
-          NotificationManager.error("SLA not deleted.");
+          NotificationManager.error(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.slanotdeleted
+            : "SLA not deleted.");
         }
       })
       .catch((data) => {
@@ -1064,6 +1088,7 @@ class CreateSLA extends Component {
   ////handle update sla details by id
   handleUpdareSLADetails() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     var EditData = this.state.finalEditData;
     var valid = false;
     // if (EditData.length > 0) {
@@ -1114,22 +1139,28 @@ class CreateSLA extends Component {
       headers: authHeader(),
       data: inputParamter,
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Updated Successfully");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.slaupdatesuccessfully
+            : "SLA Updated Successfully");
           self.handleGetSLA();
         } else {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Not Updated");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.slanotupdated
+            : "SLA Not Updated");
         }
       })
       .catch((response) => {
         self.setState({ editSaveLoading: false, editmodel: false });
-        NotificationManager.success("SLA Not Updated");
+        NotificationManager.success(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.slanotupdated
+          : "SLA Not Updated");
         console.log(response);
       });
     // } else {
@@ -1187,6 +1218,7 @@ class CreateSLA extends Component {
 
   hanldeAddBulkUpload() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
       this.setState({
@@ -1206,12 +1238,14 @@ class CreateSLA extends Component {
         //   this.updateUploadProgress(Math.round(progress));
         // }
       })
-        .then(function(res) {
+        .then(function (res) {
           debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.fileuploadedsuccessfully
+              : "File uploaded successfully.");
             self.setState({
               fileName: "",
               fileSize: "",
@@ -1226,7 +1260,9 @@ class CreateSLA extends Component {
               // isFileUploadFail: true,
               progressValue: 0,
             });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.filenotuploaded
+              : "File not uploaded.");
           }
         })
         .catch((data) => {
@@ -1242,7 +1278,9 @@ class CreateSLA extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file.",
+        bulkuploadCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectfile
+          : "Please select file.",
       });
     }
   }
@@ -1252,14 +1290,18 @@ class CreateSLA extends Component {
   }
   handleDeleteBulkupload = (e) => {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext !== undefined
+      ? TranslationContext.alertmessage.filedeletedsuccessfully
+      : "File deleted successfully.");
   };
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1282,7 +1324,9 @@ class CreateSLA extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{TranslationContext !== undefined
+                    ? TranslationContext.p.sortatoz
+                    : "SORT BY A TO Z"}</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1292,7 +1336,9 @@ class CreateSLA extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{TranslationContext !== undefined
+                    ? TranslationContext.p.sortztoa
+                    : "SORT BY Z TO A"}</p>
                 </div>
               </div>
               <a
@@ -1300,10 +1346,14 @@ class CreateSLA extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{TranslationContext !== undefined
+                  ? TranslationContext.p.filterbytype
+                  : "FILTER BY TYPE"}</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1327,88 +1377,92 @@ class CreateSLA extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.all
+                          : "ALL"}
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "issueTpeName"
                     ? this.state.sortFilterIssueType !== null &&
-                      this.state.sortFilterIssueType.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.issueTpeName}
-                            value={item.issueTpeName}
-                            checked={this.state.sissueTpeNameFilterCheckbox.includes(
-                              item.issueTpeName
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "issueTpeName",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.issueTpeName}>
-                            <span className="table-btn table-blue-btn">
-                              {item.issueTpeName}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilterIssueType.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.issueTpeName}
+                          value={item.issueTpeName}
+                          checked={this.state.sissueTpeNameFilterCheckbox.includes(
+                            item.issueTpeName
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "issueTpeName",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.issueTpeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.issueTpeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFilterCreatedBy !== null &&
-                      this.state.sortFilterCreatedBy.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.createdBy}
-                            value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "createdBy",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.createdBy}>
-                            <span className="table-btn table-blue-btn">
-                              {item.createdBy}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilterCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          checked={this.state.screatedByFilterCheckbox.includes(
+                            item.createdBy
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
 
                   {this.state.sortColumn === "isSLAActive"
                     ? this.state.sortFilterStatus !== null &&
-                      this.state.sortFilterStatus.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.isSLAActive}
-                            value={item.isSLAActive}
-                            checked={this.state.sisSLAActiveFilterCheckbox.includes(
-                              item.isSLAActive
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "isSLAActive",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.isSLAActive}>
-                            <span className="table-btn table-blue-btn">
-                              {item.isSLAActive}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilterStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.isSLAActive}
+                          value={item.isSLAActive}
+                          checked={this.state.sisSLAActiveFilterCheckbox.includes(
+                            item.isSLAActive
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "isSLAActive",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.isSLAActive}>
+                          <span className="table-btn table-blue-btn">
+                            {item.isSLAActive}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
                 </div>
               </div>
@@ -1417,15 +1471,21 @@ class CreateSLA extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.link.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            SLA
+            {TranslationContext !== undefined
+              ? TranslationContext.link.sla
+              : "SLA"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1444,10 +1504,14 @@ class CreateSLA extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "issueTpeName",
-                              "IssueType"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.issuetype
+                                : "IssueType"
                             )}
                           >
-                            Issue Type
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.issuetype
+                              : "Issue Type"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1464,18 +1528,24 @@ class CreateSLA extends Component {
                                     <>
                                       <div>
                                         <p className="title">
-                                          <b> Brand: </b>
+                                          <b> {TranslationContext !== undefined
+                                            ? TranslationContext.b.brand
+                                            : "Brand"}: </b>
                                           {row.original.brandName}
                                         </p>
 
                                         <p className="sub-title">
-                                          <b>Category: </b>
+                                          <b>{TranslationContext !== undefined
+                                            ? TranslationContext.label.category
+                                            : "Category"}: </b>
                                           {row.original.categoryName}
                                         </p>
                                       </div>
                                       <div>
                                         <p className="sub-title">
-                                          <b> Sub Category:</b>
+                                          <b>{TranslationContext !== undefined
+                                            ? TranslationContext.label.subcategory
+                                            : "Sub Category"}: </b>
                                           {row.original.subCategoryName}
                                         </p>
                                       </div>
@@ -1498,7 +1568,9 @@ class CreateSLA extends Component {
                       {
                         Header: (
                           <span>
-                            SLA by Priority
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.slabypriority
+                              : "SLA by Priority"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1527,21 +1599,31 @@ class CreateSLA extends Component {
                                       <div className="general-popover created-popover sla-popover">
                                         <div>
                                           <label className="slatargettext-1">
-                                            SLA TARGETS
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.slatargets
+                                              : "SLA TARGETS"}
                                           </label>
                                         </div>
                                         <div>
                                           <label className="createhead-text-1">
-                                            Priority
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.priority
+                                              : "Priority"}
                                           </label>
                                           <label className="createhead-text-1">
-                                            %SLA
+                                            %{TranslationContext !== undefined
+                                              ? TranslationContext.label.sla
+                                              : "SLA"}
                                           </label>
                                           <label className="createhead-text-1">
-                                            Respond
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.respond
+                                              : "Respond"}
                                           </label>
                                           <label className="createhead-text-1">
-                                            Resolve
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.resolve
+                                              : "Resolve"}
                                           </label>
                                         </div>
                                         {slaTarget !== null &&
@@ -1573,8 +1655,8 @@ class CreateSLA extends Component {
                                     />
                                   </Popover>
                                 ) : (
-                                  ""
-                                )}
+                                    ""
+                                  )}
                               </span>
                             </div>
                           );
@@ -1587,10 +1669,14 @@ class CreateSLA extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created By"
                             )}
                           >
-                            Created By
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.createdby
+                              : "Created By"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1609,23 +1695,31 @@ class CreateSLA extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createdby
+                                              : "Created By"}: {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}:{" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}:{" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}:{" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1653,10 +1747,14 @@ class CreateSLA extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isSLAActive",
-                              "Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"
                             )}
                           >
-                            Status
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.status
+                              : "Status"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1664,7 +1762,9 @@ class CreateSLA extends Component {
                         accessor: "isSLAActive",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>{TranslationContext !== undefined
+                          ? TranslationContext.span.action
+                          : "Actions"}</span>,
                         accessor: "actiondept",
                         sortable: false,
                         Cell: (row) => {
@@ -1680,14 +1780,21 @@ class CreateSLA extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file?"}
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.areyousuredeletefile
+                                            : "Are you sure you want to delete this file?"}
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteSLA.bind(
@@ -1695,7 +1802,9 @@ class CreateSLA extends Component {
                                               row.original.slaid
                                             )}
                                           >
-                                            Delete
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1720,7 +1829,9 @@ class CreateSLA extends Component {
                                   )}
                                 >
                                   <label className="Table-action-edit-button-text">
-                                    EDIT
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.edit
+                                      : "EDIT"}
                                   </label>
                                 </button>
                               </span>
@@ -1739,10 +1850,18 @@ class CreateSLA extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="Create-store-text">CREATE SLA</label>
+                    <label className="Create-store-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createsla
+                        : "CREATE SLA"}
+                    </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.issuetype
+                            : "Issue Type"}
+                        </label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"
@@ -1751,7 +1870,9 @@ class CreateSLA extends Component {
                             id="issueTypeValue"
                             onClick={this.handleSlaButton}
                           >
-                            Select
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.select
+                              : "Select"}
                             <span className="caret"></span>
                           </button>
                           {this.state.indiSla === "" && (
@@ -1791,14 +1912,18 @@ class CreateSLA extends Component {
                                     <label
                                       onClick={this.selectAllSLA.bind(this)}
                                     >
-                                      Select All
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.selectall
+                                        : "Select All"}
                                     </label>
                                   </li>
                                   <li>
                                     <label
                                       onClick={this.selectNoSLA.bind(this)}
                                     >
-                                      Clear
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.clear
+                                        : "Clear"}
                                     </label>
                                   </li>
                                 </ul>
@@ -1838,7 +1963,9 @@ class CreateSLA extends Component {
                                     className="cancel"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Cancel
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.cancel
+                                      : "Cancel"}
                                   </button>
                                 </li>
                                 <li style={{ float: "right" }}>
@@ -1846,7 +1973,9 @@ class CreateSLA extends Component {
                                     className="done"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Done
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.done
+                                      : "Done"}
                                   </button>
                                 </li>
                               </ul>
@@ -1856,17 +1985,34 @@ class CreateSLA extends Component {
                       </div>
                     </div>
                     <div className="slatargetRow">
-                      <label className="slatargettext">SLA Targets</label>
+                      <label className="slatargettext">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.slatargets
+                          : "SLA Targets"}</label>
                     </div>
                     <div className="slatargetRow-1">
                       <label className="createhead-text-new  createhead-cus">
-                        Priority
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.priority
+                          : "Priority"}
                       </label>
                       <label className="createhead-text">
-                        %SLA <br /> Breach
+                        %{TranslationContext !== undefined
+                          ? TranslationContext.label.sla
+                          : "SLA"} <br /> {TranslationContext !== undefined
+                            ? TranslationContext.label.breach
+                            : "Breach"}
                       </label>
-                      <label className="createhead-text">Respond</label>
-                      <label className="createhead-text">Resolve</label>
+                      <label className="createhead-text">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.respond
+                          : "Respond"}
+                      </label>
+                      <label className="createhead-text">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.resolve
+                          : "Resolve"}
+                      </label>
                     </div>
                     {this.state.finalData !== null &&
                       this.state.finalData.map((item, i) => (
@@ -1969,14 +2115,26 @@ class CreateSLA extends Component {
 
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.status
+                            : "Status"}
+                        </label>
                         <select
                           className="store-create-select"
                           value={this.state.SlaIsActive}
                           onChange={this.handleSlaIsActive}
                         >
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
+                          <option value="true">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.active
+                              : "Active"}
+                          </option>
+                          <option value="false">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.inactive
+                              : "Inactive"}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -1986,7 +2144,9 @@ class CreateSLA extends Component {
                         type="button"
                         onClick={this.createSla.bind(this)}
                       >
-                        ADD
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.add
+                          : "ADD"}
                       </button>
                     </div>
                   </div>
@@ -1996,9 +2156,17 @@ class CreateSLA extends Component {
                   <div className="right-sect-div">
                     <br />
                     <div className="d-flex justify-content-between align-items-center pb-2">
-                      <h3 className="pb-0">Bulk Upload</h3>
+                      <h3 className="pb-0">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h3.bulkupload
+                          : "Bulk Upload"}
+                      </h3>
                       <div className="down-excel">
-                        <p>Template</p>
+                        <p>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"}
+                        </p>
                         <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
                           <img src={DownExcel} alt="download icon" />
                         </CSVLink>
@@ -2020,9 +2188,13 @@ class CreateSLA extends Component {
                                 <img src={FileUpload} alt="file-upload" />
                               </div>
                               <span className={"fileupload-span"}>
-                                Add File
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.addfile
+                                  : "Add File"}
                               </span>{" "}
-                              or Drop File here
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.ordropfilehere
+                                : "or Drop File here"}
                             </div>
                           )}
                         </Dropzone>
@@ -2052,18 +2224,28 @@ class CreateSLA extends Component {
                                   </div>
                                   <div>
                                     <p className="font-weight-bold blak-clr">
-                                      Delete file?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deletefile
+                                        : "Delete file?"}
                                     </p>
                                     <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this file?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.areyousuredeletefile
+                                        : "Are you sure you want to delete this file?"}
                                     </p>
                                     <div className="del-can">
-                                      <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                      <a href={Demo.BLANK_LINK}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.cancel
+                                          : "CANCEL"}
+                                      </a>
                                       <button
                                         className="butn"
                                         onClick={this.handleDeleteBulkupload}
                                       >
-                                        Delete
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.delete
+                                          : "Delete"}
                                       </button>
                                     </div>
                                   </div>
@@ -2077,24 +2259,30 @@ class CreateSLA extends Component {
                             </div>
                           </div>
                           {this.state.fileN.length > 0 &&
-                          this.state.isFileUploadFail ? (
-                            <div className="file-cntr">
-                              <div className="file-dtls">
-                                <p className="file-name">
-                                  {this.state.fileName}
-                                </p>
-                                <a
-                                  className="file-retry"
-                                  onClick={this.hanldeAddBulkUpload.bind(this)}
-                                >
-                                  Retry
-                                </a>
+                            this.state.isFileUploadFail ? (
+                              <div className="file-cntr">
+                                <div className="file-dtls">
+                                  <p className="file-name">
+                                    {this.state.fileName}
+                                  </p>
+                                  <a
+                                    className="file-retry"
+                                    onClick={this.hanldeAddBulkUpload.bind(this)}
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.retry
+                                      : "Retry"}
+                                  </a>
+                                </div>
+                                <div>
+                                  <span className="file-failed">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.failed
+                                      : "Failed"}
+                                  </span>
+                                </div>
                               </div>
-                              <div>
-                                <span className="file-failed">Failed</span>
-                              </div>
-                            </div>
-                          ) : null}
+                            ) : null}
                           {this.state.showProgress ? (
                             <div className="file-cntr">
                               <div className="file-dtls">
@@ -2124,7 +2312,9 @@ class CreateSLA extends Component {
                         className="butn"
                         onClick={this.hanldeAddBulkUpload.bind(this)}
                       >
-                        ADD
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
                       </button>
                     </Spin>
                     <br />
@@ -2149,17 +2339,24 @@ class CreateSLA extends Component {
         >
           <div className="edtpadding">
             <label className="Create-store-text" style={{ paddingTop: "0" }}>
-              EDIT SLA
+              {TranslationContext !== undefined
+                ? TranslationContext.label.editsla
+                : "EDIT SLA"}
             </label>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Brand Name: </label>
+                <label className="createhead-text-new">{TranslationContext !== undefined
+                  ? TranslationContext.label.brandname
+                  : "Brand Name"}: </label>
                 <label className="createhead-text-1">
                   {this.state.brandName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Category Name: </label>
+                <label className="createhead-text-new">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.categoryname
+                    : "Category Name"}: </label>
                 <label className="createhead-text-1">
                   {this.state.categoryName}
                 </label>
@@ -2168,14 +2365,20 @@ class CreateSLA extends Component {
             <div className="row">
               <div className="col-md-6">
                 <label className="createhead-text-new">
-                  Sub Category Name:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.subcategoryname
+                    : "Sub Category Name"}:{" "}
                 </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Issue Type: </label>
+                <label className="createhead-text-new">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.issuetype
+                    : "Issue Type"}:
+                  </label>
                 <label className="createhead-text-1">
                   {this.state.issueTypeName}
                 </label>
@@ -2183,17 +2386,35 @@ class CreateSLA extends Component {
             </div>
             <br />
             <div className="slatargetRow">
-              <label className="slatargettext">SLA Targets</label>
+              <label className="slatargettext">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.slatargets
+                  : "SLA Targets"}
+              </label>
             </div>
             <div className="slatargetRow-1">
               <label className="createhead-text-new createhead-cus">
-                Priority
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.priority
+                  : "Priority"}
               </label>
               <label className="createhead-text">
-                %SLA <br /> Breach
+                %{TranslationContext !== undefined
+                  ? TranslationContext.label.sla
+                  : "SLA"} <br /> {TranslationContext !== undefined
+                    ? TranslationContext.label.breach
+                    : "Breach"}
               </label>
-              <label className="createhead-text">Respond</label>
-              <label className="createhead-text">Resolve</label>
+              <label className="createhead-text">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.respond
+                  : "Respond"}
+              </label>
+              <label className="createhead-text">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.resolve
+                  : "Resolve"}
+              </label>
             </div>
             {this.state.finalEditData !== null &&
               this.state.finalEditData.map((item, i) => (
@@ -2296,14 +2517,26 @@ class CreateSLA extends Component {
 
             <div className="divSpace-3">
               <div className="dropDrownSpace">
-                <label className="reports-to">Status</label>
+                <label className="reports-to">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.status
+                    : "Status"}
+                </label>
                 <select
                   className="store-create-select"
                   value={this.state.isActive}
                   onChange={this.handleEditSlaIsActive}
                 >
-                  <option value={true}>Active</option>
-                  <option value={false}>Inactive</option>
+                  <option value={true}>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.active
+                      : "Active"}
+                  </option>
+                  <option value={false}>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.inactive
+                      : "Inactive"}
+                  </option>
                 </select>
               </div>
             </div>
@@ -2312,7 +2545,9 @@ class CreateSLA extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.cancel
+                  : "CANCEL"}
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2327,9 +2562,13 @@ class CreateSLA extends Component {
                     spin
                   />
                 ) : (
-                  ""
-                )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                    ""
+                  )}
+                <label className="pop-over-btnsave-text">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.save
+                    : "SAVE"}
+                </label>
               </button>
             </div>
           </div>

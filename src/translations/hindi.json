@@ -1533,7 +1533,10 @@
     "appointmentdays":"नियुक्ति के दिन"
   },
   "validation":{
-    "designationnamefieldiscompulsory":"पदनाम नाम फ़ील्ड अनिवार्य है।"
+    "designationnamefieldiscompulsory":"पदनाम नाम फ़ील्ड अनिवार्य है।",
+    "pleaseselectissuetype":"कृपया समस्या प्रकार चुनें।",
+    "required": "अपेक्षित।",
+    "pleaseselectfile": "कृपया फ़ाइल चुनें।"
 
   },
   "alertmessage":{
