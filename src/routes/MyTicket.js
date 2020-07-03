@@ -271,7 +271,7 @@ class MyTicket extends Component {
       }
 
       this.setState({ HistOrderShow: true, ticket_Id: ticketId, isKB });
-      this.handleGetTicketPriorityList();
+      // this.handleGetTicketPriorityList();
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
@@ -484,6 +484,7 @@ class MyTicket extends Component {
             self.handleGetSubCategoryList();
             self.handleGetIssueTypeList();
             self.handleOnLoadFiles();
+            self.handleGetTicketPriorityList();
           }, 100);
         } else {
           self.setState({
@@ -1305,9 +1306,14 @@ class MyTicket extends Component {
   handleGetTicketPriorityList() {
     let self = this;
     axios({
-      method: "get",
-      url: config.apiUrl + "/Priority/GetPriorityList",
+      method: "post",
+      // url: config.apiUrl + "/Priority/GetPriorityList",
+      url: config.apiUrl + "/SLA/ValidateSLAByIssueTypeID",
       headers: authHeader(),
+      params: {
+        issueTypeID: 0,
+        ticketID: this.state.ticket_Id,
+      },
     })
       .then(function(res) {
         let status = res.data.message;

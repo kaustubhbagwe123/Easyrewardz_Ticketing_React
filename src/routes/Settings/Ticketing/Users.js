@@ -1679,6 +1679,7 @@ class Users extends Component {
   }
 
   handleValidationEmailIdMob() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.selectUserName.length > 0 &&
@@ -1731,11 +1732,23 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        usernameCompulsion: "Please enter user name.",
-        firstnameCompulsion: "Please enter first name.",
+        usernameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterusername
+            : "Please enter user name.",
+        firstnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterfirstname
+            : "Please enter first name.",
         // lastnameCompulsion: "Please enter last name.",
-        mobilenumberCompulsion: "Please enter mobile number.",
-        emailCompulsion: "Please enter emailID.",
+        mobilenumberCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number.",
+        emailCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.label.pleaseenteremailid
+            : "Please enter emailID.",
       });
     }
   }
@@ -1792,11 +1805,23 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        usernameCompulsion: "Please enter user name.",
-        firstnameCompulsion: "Please enter first name.",
+        usernameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterusername
+            : "Please enter user name.",
+        firstnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterfirstname
+            : "Please enter first name.",
         // lastnameCompulsion: "Please enter last name.",
-        mobilenumberCompulsion: "Please enter mobile number.",
-        emailCompulsion: "Please enter emailID.",
+        mobilenumberCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number.",
+        emailCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.label.pleaseenteremailid
+            : "Please enter emailID.",
       });
     }
   }
@@ -1856,11 +1881,23 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        usernameCompulsion: "Please enter user name.",
-        firstnameCompulsion: "Please enter first name.",
+        usernameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterusername
+            : "Please enter user name.",
+        firstnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterfirstname
+            : "Please enter first name.",
         // lastnameCompulsion: "Please enter last name.",
-        mobilenumberCompulsion: "Please enter mobile number.",
-        emailCompulsion: "Please enter emailID.",
+        mobilenumberCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number.",
+        emailCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.label.pleaseenteremailid
+            : "Please enter emailID.",
       });
     }
   }
@@ -1898,7 +1935,11 @@ class Users extends Component {
                   : "Record updated successfully"
               );
             } else {
-              NotificationManager.error("Please Add Personal Details.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.pleaseaddpersonaldetails
+                  : "Please Add Personal Details"
+              );
             }
           } else {
             if (Msg === "Success") {
@@ -1913,7 +1954,11 @@ class Users extends Component {
               });
               self.handleGetUserList();
             } else {
-              NotificationManager.error("Please Add Personal Details.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.pleaseaddpersonaldetails
+                  : "Please Add Personal Details"
+              );
             }
           }
         })
@@ -1922,14 +1967,24 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        userdesignCompulsion: "Please select designation.",
-        reporteeDesignCompulsion: "Please select reportee designation.",
-        reportToCompulsion: "Please select reportee",
+        userdesignCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectdesignation
+            : "Please select designation.",
+        reporteeDesignCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectreporteedesignation
+            : "Please select reportee designation.",
+        reportToCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectreportee
+            : "Please select reportee.",
       });
     }
   }
 
   handleAddMapCategory() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     var radiob = true;
     var agentb = true;
@@ -2043,10 +2098,18 @@ class Users extends Component {
 
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("User Created successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.usercreatedsuccessfully
+                : "User Created successfully"
+            );
             self.handleSendMail(self.state.getID);
           } else {
-            NotificationManager.error("User Not Created .");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.usernotcreated
+                : "User Not Created"
+            );
           }
           self.setState({
             selectUserName: "",
@@ -2088,20 +2151,42 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        brandCompulsion: "Please select brands",
-        categoryCompulsion: "Please select category",
-        subcategoryCompulsion: "Please select subcategory",
-        isuuetypeCompulsion: "Please select issuetype",
-        crmroleCompulsion: "Please select  crm roles",
+        brandCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectbrands
+            : "Please select brands.",
+        categoryCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectcategory
+            : "Please select category.",
+        subcategoryCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectsubcategory
+            : "Please select subcategory.",
+        isuuetypeCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please select issuetype.",
+        crmroleCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectcrmroles
+            : "Please select  crm roles.",
         // copyescCompulsion: "Please select copy escalation",
         // assignescCompulsion: "Please select assign escalation",
-        RadioCompulsion: "Please select any option.",
-        agentCompulsion: "Please select agent",
+        RadioCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectanyoption
+            : "Please select any option.",
+        agentCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectagent
+            : "Please select agent.",
       });
     }
   }
 
   handleDeleteUser(id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
 
@@ -2117,9 +2202,17 @@ class Users extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordinuse
+              : "Record in use"
+          );
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record Deleted Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record Deleted Successfully"
+          );
           self.handleGetUserList();
         }
       })
@@ -2128,6 +2221,7 @@ class Users extends Component {
       });
   }
   handleSendMail(id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
 
@@ -2143,7 +2237,11 @@ class Users extends Component {
         debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
-          NotificationManager.success("Please Check Email.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.pleasecheckemail
+              : "Please Check Email"
+          );
         }
       })
       .catch((data) => {
@@ -2151,6 +2249,7 @@ class Users extends Component {
       });
   }
   handleUpdateUser() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
 
     var radiob = true;
@@ -2310,7 +2409,11 @@ class Users extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record updated successfully"
+            );
             if (self.state.GetUserData.isActive === false) {
               self.handleSendMail(self.state.userEditData.userId);
             }
@@ -2320,7 +2423,11 @@ class Users extends Component {
               multisubcategoryIDs: finalSubCategoryId,
             });
           } else {
-            NotificationManager.error("Record not Updated.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordnotupdated
+                : "Record Not Updated"
+            );
           }
           self.closeEditModal();
           self.handleGetUserList();
@@ -2330,23 +2437,65 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        editusernameCompulsion: "Please enter user name.",
-        editfirstnameCompulsion: "Please enter first name.",
+        editusernameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterusername
+            : "Please enter user name.",
+        editfirstnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterfirstname
+            : "Please enter first name.",
         // editlastnameCompulsion: "Please enter last name.",
-        editmobilenumberCompulsion: "Please enter mobile number.",
-        editemailCompulsion: "Please enter emailID.",
-        edituserdesignCompulsion: "Please select designation.",
-        editreporteeDesignCompulsion: "Please select reportee designation.",
-        editreportToCompulsion: "Please select reportee",
-        editbrandCompulsion: "Please select brands",
-        editcategoryCompulsion: "Please select category",
-        editsubcategoryCompulsion: "Please select subcategory",
-        editisuuetypeCompulsion: "Please select issuetype",
-        editcrmroleCompulsion: "Please select  crm roles",
-        editRadioCompulsion: "Please select any option.",
+        editmobilenumberCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number.",
+        editemailCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.label.pleaseenteremailid
+            : "Please enter emailID.",
+        edituserdesignCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectdesignation
+            : "Please select designation.",
+        editreporteeDesignCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectreporteedesignation
+            : "Please select reportee designation.",
+        editreportToCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectreportee
+            : "Please select reportee.",
+        editbrandCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectbrands
+            : "Please select brands.",
+        editcategoryCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectcategory
+            : "Please select category.",
+        editsubcategoryCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectsubcategory
+            : "Please select subcategory.",
+        editisuuetypeCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please select issuetype.",
+        editcrmroleCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectcrmroles
+            : "Please select  crm roles.",
+        editRadioCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectanyoption
+            : "Please select any option.",
         // editcopyescCompulsion: "Please select copy escalation",
         // editassignescCompulsion: "Please select assign escalation",
-        editagentCompulsion: "Please select agent",
+        editagentCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectagent
+            : "Please select agent.",
       });
     }
   }
@@ -2367,10 +2516,22 @@ class Users extends Component {
       });
     } else {
       this.setState({
-        editusernameCompulsion: "Please enter user name.",
-        editfirstnameCompulsion: "Please enter first name.",
-        editmobilenumberCompulsion: "Please enter mobile number.",
-        editemailCompulsion: "Please enter emailID.",
+        editusernameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterusername
+            : "Please enter user name.",
+        editfirstnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterfirstname
+            : "Please enter first name.",
+        editmobilenumberCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number.",
+        editemailCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.label.pleaseenteremailid
+            : "Please enter emailID.",
       });
     }
   };
@@ -2395,9 +2556,18 @@ class Users extends Component {
       });
     } else {
       this.setState({
-        edituserdesignCompulsion: "Please select designation.",
-        editreporteeDesignCompulsion: "Please select reportee designation.",
-        editreportToCompulsion: "Please select report.",
+        edituserdesignCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectdesignation
+            : "Please select designation.",
+        editreporteeDesignCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectreporteedesignation
+            : "Please select reportee designation.",
+        editreportToCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectreportee
+            : "Please select reportee.",
       });
     }
   };
@@ -2488,15 +2658,21 @@ class Users extends Component {
   }
 
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
       isOpen: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
@@ -2522,7 +2698,11 @@ class Users extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
             self.setState({
               fileName: "",
               fileSize: "",
@@ -2537,7 +2717,11 @@ class Users extends Component {
               // isFileUploadFail: true,
               // progressValue: 0
             });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((data) => {
@@ -2553,7 +2737,10 @@ class Users extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: "Please select file.",
+        bulkuploadCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfile
+            : "Please select file.",
       });
     }
   }
@@ -2866,7 +3053,9 @@ class Users extends Component {
                     />
                     {this.state.EditPhoneFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Mobile Number.
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.pleaseentervalidmobilenumber
+                          : "Please enter valid Mobile Number."}
                       </p>
                     )}
                     {this.state.userEditData.mobile_Number === "" && (
@@ -2892,7 +3081,9 @@ class Users extends Component {
                     />
                     {this.state.editEmailFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Email Id.
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.pleaseentervalidemailid
+                          : "Please enter valid Email Id."}
                       </p>
                     )}
                     {this.state.userEditData.email_ID === "" && (
@@ -3929,7 +4120,10 @@ class Users extends Component {
                         />
                         {this.state.phoneFlag === false && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            Please enter valid Mobile Number.
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .pleaseentervalidmobilenumber
+                              : "Please enter valid Mobile Number."}
                           </p>
                         )}
                         {this.state.selectMobile.length === 0 && (
@@ -3961,7 +4155,9 @@ class Users extends Component {
                         />
                         {this.state.emailFlag === false && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            Please enter valid Email Id.
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.pleaseentervalidemailid
+                              : "Please enter valid Email Id."}
                           </p>
                         )}
                         {this.state.selectEmail.length === 0 && (
