@@ -797,8 +797,11 @@ class Reports extends Component {
   }
   ScheduleOpenModel = () => {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please enter report name");
+      NotificationManager.error(TranslationContext !== undefined
+        ? TranslationContext.alertmessage.pleaseenterreportname
+        : "Please enter report name");
     } else {
       if (this.state.selectedTeamMemberCommaSeperated) {
         var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
@@ -2021,6 +2024,7 @@ class Reports extends Component {
   };
   sentMail = () => {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.validator.allValid()) {
       axios({
@@ -2034,7 +2038,9 @@ class Reports extends Component {
       })
         .then(function (res) {
           debugger;
-          NotificationManager.success("Email has been sent");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.emailhasbeensend
+            : "Email has been sent");
           self.setState({
             loadingDownload: false,
           });
@@ -2421,6 +2427,7 @@ class Reports extends Component {
   };
   handleDeleteReport(id) {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
 
     axios({
@@ -2435,7 +2442,9 @@ class Reports extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Deleted successfully.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.recorddeletedsuccessfully
+            : "Record Deleted successfully.");
           self.handleReportList();
         }
       })
@@ -2546,12 +2555,15 @@ class Reports extends Component {
 
   handleSave() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var SearchParams = {};
 
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (self.state.selectedReportName == "") {
-      NotificationManager.error("Please enter report name");
+      NotificationManager.error(TranslationContext !== undefined
+        ? TranslationContext.alertmessage.pleaseenterreportname
+        : "Please enter report name");
       return;
     }
     self = this;
@@ -2574,7 +2586,9 @@ class Reports extends Component {
             self.handleReportList();
             self.handleNextPopupClose();
             NotificationManager.success(
-              "Report saved successfully for download."
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.reportsavedsuccessfullyfordown
+                : "Report saved successfully for download."
             );
           })
           .catch((data) => {
@@ -2632,7 +2646,9 @@ class Reports extends Component {
               self.handleReportList();
               self.setState({ Schedule_ID: scheduleId });
               self.setState({ AddReportPopup: false });
-              NotificationManager.success("Report saved successfully.");
+              NotificationManager.success(TranslationContext !== undefined
+                ? TranslationContext.alertmessage.reportsavedsuccessfully
+                : "Report saved successfully.");
               self.setState({
                 ReportParams: {},
                 selectedScheduleTime: "",
@@ -2649,7 +2665,9 @@ class Reports extends Component {
               });
             } else if (status == "duplicate") {
               self.setState({ Schedule_ID: 0 });
-              NotificationManager.error("Report name already exist.");
+              NotificationManager.error(TranslationContext !== undefined
+                ? TranslationContext.alertmessage.reportnamealreadyexist
+                : "Report name already exist.");
             }
           })
           .catch((data) => {
@@ -2664,6 +2682,7 @@ class Reports extends Component {
   }
 
   handleInsertReport() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var SearchParams = {};
 
@@ -2736,7 +2755,9 @@ class Reports extends Component {
             // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
-            NotificationManager.success("Scheduler created successfully.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.schedulercreatedsuccessfully
+              : "Scheduler created successfully.");
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
@@ -2752,7 +2773,9 @@ class Reports extends Component {
             });
           } else if (status == "duplicate") {
             self.setState({ Schedule_ID: 0 });
-            NotificationManager.error("Report name already exist.");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.reportnamealreadyexist
+              : "Report name already exist.");
           }
         })
         .catch((data) => {
@@ -2760,21 +2783,31 @@ class Reports extends Component {
         });
     } else {
       if (this.state.selectedReportName == "") {
-        NotificationManager.error("Please add report name.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseaddreportname
+          : "Please add report name.");
         return false;
       }
       if (this.state.selectedTeamMemberCommaSeperated == undefined &&
         this.state.selectedTeamMemberCommaSeperated != "") {
-        NotificationManager.error("Please add team name for schedule.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseaddteamnameforscheduler
+          : "Please add team name for schedule.");
       }
       if (this.state.selectScheduleDate == "") {
-        NotificationManager.error("Please select schedule type.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectscheduletype
+          : "Please select schedule type.");
       }
       if (this.state.selectedScheduleTime == "") {
-        NotificationManager.error("Please select schedule time.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectscheduletime
+          : "Please select schedule time.");
       }
       if (SearchParams === "") {
-        NotificationManager.error("Please add report for create scheduler.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseaddreportforscheduler
+          : "Please add report for create scheduler.");
       }
     }
   }
@@ -4108,7 +4141,9 @@ class Reports extends Component {
               </div>
               <div>
                 <div id="dvAssignedTo" className="cls-hide ticketreport">
-                  Assigned To
+                  {TranslationContext !== undefined
+                    ? TranslationContext.div.assignedto
+                    : "Assigned To"}
                   <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
                     <Select
                       getOptionLabel={(option) => option.fullName}
@@ -4116,7 +4151,9 @@ class Reports extends Component {
                         (option) => option.userID //id
                       }
                       options={this.state.AssignToData}
-                      placeholder="Team Member"
+                      placeholder={TranslationContext !== undefined
+                        ? TranslationContext.p.teammember
+                        : "Team Member"}
                       // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       onChange={this.setDefaultTeamMember.bind(this)}
@@ -4132,7 +4169,9 @@ class Reports extends Component {
                   ></span>
                 </div>
                 <div id="dvMultiStatus" className="cls-hide ticketreport">
-                  Ticket Status
+                  {TranslationContext !== undefined
+                    ? TranslationContext.div.ticketstatus
+                    : "Ticket Status"}
                   <div className="normal-dropdown dropdown-setting1 schedule-multi mt-2">
                     <Select
                       getOptionLabel={(option) => option.ticketStatusName}
@@ -4140,7 +4179,9 @@ class Reports extends Component {
                         (option) => option.ticketStatusID //id
                       }
                       options={this.state.TicketStatusData}
-                      placeholder="Ticket Status"
+                      placeholder={TranslationContext !== undefined
+                        ? TranslationContext.div.ticketstatus
+                        : "Ticket Status"}
                       // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       onChange={this.setDefaultMutiStatus.bind(this)}
@@ -4160,12 +4201,16 @@ class Reports extends Component {
                 id="TicketClosedFrom"
                 className="cls-hide ticketreport down-tic-rep"
               >
-                Ticket Closed From
+                {TranslationContext !== undefined
+                  ? TranslationContext.div.ticketclosedfrom
+                  : "Ticket Closed From"}
                 <div className="ticketreportdat mt-2">
                   <DatePicker
                     selected={this.state.TicketClosedFrom}
                     onChange={this.handleTicketClosedFrom.bind(this)}
-                    placeholderText="Ticket Closed From"
+                    placeholderText={TranslationContext !== undefined
+                      ? TranslationContext.div.ticketclosedfrom
+                      : "Ticket Closed From"}
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4182,12 +4227,16 @@ class Reports extends Component {
                 id="TicketClosedTo"
                 className="cls-hide ticketreport down-tic-rep"
               >
-                Ticket Closed To
+                {TranslationContext !== undefined
+                  ? TranslationContext.div.ticketclosedto
+                  : "Ticket Closed To"}
                 <div className="ticketreportdat mt-2">
                   <DatePicker
                     selected={this.state.TicketClosedTo}
                     onChange={this.handleTicketClosedTo.bind(this)}
-                    placeholderText="Ticket Closed To"
+                    placeholderText={TranslationContext !== undefined
+                      ? TranslationContext.div.ticketclosedto
+                      : "Ticket Closed To"}
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4201,12 +4250,16 @@ class Reports extends Component {
                 ></span>
               </div>
               <div id="FromDate" className="cls-hide ticketreport down-tic-rep">
-                Ticket From Date
+                {TranslationContext !== undefined
+                  ? TranslationContext.div.ticketfromdate
+                  : "Ticket From Date"}
                 <div className="ticketreportdat mt-2">
                   <DatePicker
                     selected={this.state.TicketCreatedFromDate}
                     onChange={this.handleTicketCreateDate.bind(this)}
-                    placeholderText="Creation Date"
+                    placeholderText={TranslationContext !== undefined
+                      ? TranslationContext.p.createddate
+                      : "Creation Date"}
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4220,12 +4273,16 @@ class Reports extends Component {
                 ></span>
               </div>
               <div className="ticketreport down-tic-rep">
-                Ticket To Date
+                {TranslationContext !== undefined
+                  ? TranslationContext.div.tickettodate
+                  : "Ticket To Date"}
                 <div className="ticketreportdat mt-2">
                   <DatePicker
                     selected={this.state.TicketCreatedEndDate}
                     onChange={this.handleTicketCreateToDate.bind(this)}
-                    placeholderText="To Date"
+                    placeholderText={TranslationContext !== undefined
+                      ? TranslationContext.div.todate
+                      : "To Date"}
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4241,7 +4298,9 @@ class Reports extends Component {
                 ></span>
               </div>
               <div className="ticketreport">
-                Ticket Source
+                {TranslationContext !== undefined
+                  ? TranslationContext.div.ticketsource
+                  : "Ticket Source"}
                 <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
                   <Select
                     getOptionLabel={(option) => option.ticketSourceName}
@@ -4249,7 +4308,9 @@ class Reports extends Component {
                       (option) => option.ticketSourceId //id
                     }
                     options={this.state.TicketSourceData}
-                    placeholder="Ticket Source"
+                    placeholder={TranslationContext !== undefined
+                      ? TranslationContext.div.ticketsource
+                      : "Ticket Source"}
                     // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setCreatedTicketSource.bind(this)}
@@ -4265,7 +4326,9 @@ class Reports extends Component {
                 ></span>
               </div>
               <div id="TicketStatus" className="ticketreport cls-hide">
-                Status
+                {TranslationContext !== undefined
+                  ? TranslationContext.div.status
+                  : "Status"}
                 <div className="mt-2">
                   <select
                     id="drpDefaultStatus"
@@ -4274,7 +4337,9 @@ class Reports extends Component {
                     value={this.state.selectedDefaultTicketStatus}
                     onChange={this.setDefaultTicketStatus}
                   >
-                    <option> Status</option>
+                    <option>{TranslationContext !== undefined
+                      ? TranslationContext.div.status
+                      : "Status"}</option>
                     {this.state.TicketStatusData !== null &&
                       this.state.TicketStatusData.map((item, i) => (
                         <option key={i} value={item.ticketStatusID}>
@@ -4311,13 +4376,19 @@ class Reports extends Component {
                     ""
                   )}
                 <label className="addLable">
-                  {this.state.loadingDownload ? "Please Wait ..." : "Download"}
+                  {this.state.loadingDownload ? TranslationContext !== undefined
+                    ? TranslationContext.tip.pleasewait
+                    : "Please Wait ..." : TranslationContext !== undefined
+                      ? TranslationContext.button.download
+                      : "Download"}
                 </label>
               </button>
             </div>
             <div onClick={this.handleDefaultPopupClose}>
               <button type="button" className="scheduleBtncancel mt-3 w-100">
-                CANCEL
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.cancel
+                  : "CANCEL"}
               </button>
             </div>
           </Modal>
@@ -5000,14 +5071,19 @@ class Reports extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                            Delete file?
-                                      </p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.deletefile
+                                              : "Delete file?"}
+                                          </p>
                                           <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
-                                      </p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.areyousuredeletefile
+                                              : "Are you sure you want to delete this file?"}
+                                          </p>
                                           <div className="del-can">
-                                            <a>CANCEL</a>
+                                            <a>{TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}</a>
                                             <button
                                               className="butn"
                                               onClick={this.handleDeleteReport.bind(
@@ -5015,8 +5091,10 @@ class Reports extends Component {
                                                 row.original.reportID
                                               )}
                                             >
-                                              Delete
-                                        </button>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button.delete
+                                                : "Delete"}
+                                            </button>
                                           </div>
                                         </div>
                                       </div>
@@ -5045,7 +5123,9 @@ class Reports extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.edit
+                                      : "EDIT"}
                                   </button>
                                 )}
                             </div>
