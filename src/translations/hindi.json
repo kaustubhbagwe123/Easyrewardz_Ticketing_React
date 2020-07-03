@@ -1567,9 +1567,7 @@
     "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें",
     "pleaseenteralerttype": "कृपया अलर्ट टाइप दर्ज करें",
     "pleaseselectcommunicationmode": "कृपया किसी भी संचार मोड का चयन करें",
-    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।",
-    "pleaseselectcategory": "कृपया श्रेणी का चयन करें।",
-    "pleaseselectsubcategory": "कृपया उपश्रेणी का चयन करें"
+    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।"
   },
   "alertmessage": {
     "usernotcreated": "उपयोगकर्ता नहीं बनाया गया",
