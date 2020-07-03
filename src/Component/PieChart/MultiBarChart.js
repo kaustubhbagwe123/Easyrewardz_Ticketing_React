@@ -67,7 +67,7 @@ class MultiBarChart extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
+   
     // let self = this;
     // axios({
     //   method: "post",
@@ -80,7 +80,7 @@ class MultiBarChart extends Component {
     //     BrandID: "26, 31"
     //   }
     // }).then(function(res) {
-      debugger;
+      
       var propsData = this.props.data;
       if (propsData !== null && propsData !== undefined) {
         let categories = [],
