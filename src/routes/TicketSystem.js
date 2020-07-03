@@ -213,7 +213,7 @@ class TicketSystem extends Component {
       }
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
-      this.handleGetTicketPriorityList();
+      // this.handleGetTicketPriorityList();
       this.handleGetAgentList();
       this.handlePlaceholderList();
     } else {
@@ -481,7 +481,6 @@ class TicketSystem extends Component {
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
-  
       if (this.state.CustData.altEmail === this.state.CustData.custEmailId) {
         NotificationManager.error(
           TranslationContext !== undefined
@@ -724,12 +723,19 @@ class TicketSystem extends Component {
   }
   handleGetTicketPriorityList() {
     let self = this;
+    debugger;
     axios({
-      method: "get",
-      url: config.apiUrl + "/Priority/GetPriorityList",
+      method: "post",
+      // url: config.apiUrl + "/Priority/GetPriorityList",
+      url: config.apiUrl + "/SLA/ValidateSLAByIssueTypeID",
       headers: authHeader(),
+      params: {
+        issueTypeID: Number(this.state.selectedIssueType),
+        ticketID: 0,
+      },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1449,6 +1455,8 @@ class TicketSystem extends Component {
       SubCategoryData: [],
       selectedSubCategory: "",
       IssueTypeData: [],
+      TicketPriorityData: [],
+      selectedTicketPriority: 0,
     });
     this.handleGetCategoryList(value);
   };
@@ -1459,6 +1467,7 @@ class TicketSystem extends Component {
     setTimeout(() => {
       if (this.state.selectedIssueType) {
         this.handleCkEditorTemplate();
+        this.handleGetTicketPriorityList();
       }
     }, 1);
   };
@@ -1480,6 +1489,8 @@ class TicketSystem extends Component {
       selectedCategory: value,
       SubCategoryData: [],
       IssueTypeData: [],
+      TicketPriorityData: [],
+      selectedTicketPriority: 0,
     });
     setTimeout(() => {
       if (this.state.selectedCategory) {
@@ -1490,6 +1501,8 @@ class TicketSystem extends Component {
           selectedIssueType: "",
           selectedSubCategory: "",
           SubCategoryData: [],
+          TicketPriorityData: [],
+          selectedTicketPriority: 0,
         });
       }
     }, 1);
@@ -1513,13 +1526,23 @@ class TicketSystem extends Component {
   setSubCategoryValue = (e) => {
     ////
     let value = e.currentTarget.value;
-    this.setState({ selectedSubCategory: value, IssueTypeData: [] });
+    this.setState({
+      selectedSubCategory: value,
+      IssueTypeData: [],
+      TicketPriorityData: [],
+      selectedTicketPriority: 0,
+    });
 
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
         this.handleGetIssueTypeList();
       } else {
-        this.setState({ IssueTypeData: [], selectedIssueType: "" });
+        this.setState({
+          IssueTypeData: [],
+          selectedIssueType: "",
+          TicketPriorityData: [],
+          selectedTicketPriority: 0,
+        });
       }
     }, 1);
   };
@@ -2365,9 +2388,10 @@ class TicketSystem extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard.files
-                                      : "files"}
+                                {this.state.fileText}{" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.files
+                                  : "files"}
                               </label>
                             </li>
                             <li>
@@ -2496,7 +2520,6 @@ class TicketSystem extends Component {
                             onChange={this.setAssignedToValue.bind(this)}
                           >
                             <option value="0">
-                              
                               {TranslationContext !== undefined
                                 ? TranslationContext.link.users
                                 : "Users"}
@@ -2518,7 +2541,6 @@ class TicketSystem extends Component {
                             onChange={this.setPlaceholderValue.bind(this)}
                           >
                             <option value="0">
-                              
                               {TranslationContext !== undefined
                                 ? TranslationContext.link.placeholders
                                 : "Placeholders"}
@@ -2741,9 +2763,10 @@ class TicketSystem extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard.files
-                                      : "files"}
+                                {this.state.fileText}{" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.files
+                                  : "files"}
                               </label>
                             </li>
                             <li>
