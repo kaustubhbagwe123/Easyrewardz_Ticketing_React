@@ -1810,7 +1810,9 @@
     "theassigntofieldiscompulsory":"क्षेत्र को असाइन करना अनिवार्य है।",
     "thepriorityfieldiscompulsory":"प्राथमिकता क्षेत्र अनिवार्य है।",
     "pleaseaddcomment":"कृपया टिप्पणी जोड़ें।",
-    "duedate":"नियत तारीख"
+    "duedate":"नियत तारीख",
+    "pleaseenterpriorityname":"कृपया वरीयता नाम दर्ज करें।",
+    "priorityalreadyexist":"प्राथमिकता पहले से मौजूद है!"
 },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."
