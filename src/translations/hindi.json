@@ -1545,6 +1545,17 @@
     "appointmentdays": "नियुक्ति के दिन"
   },
   "validation": {
+    "pleaseselectagent": "कृपया एजेंट चुनें।",
+    "pleaseselectanyoption": "कृपया कोई भी विकल्प चुनें।",
+    "pleaseselectcrmroles": "कृपया crm भूमिकाओं का चयन करें।",
+    "pleaseselectsubcategory": "कृपया उपश्रेणी का चयन करें।",
+    "pleaseselectcategory": "कृपया श्रेणी का चयन करें।",
+    "pleaseselectbrands": "कृपया ब्रांडों का चयन करें।",
+    "pleaseselectreportee": "कृपया रिपोर्ट का चयन करें।",
+    "pleaseselectreporteedesignation": "कृपया रिपोर्ट पदनाम का चयन करें।",
+    "pleaseselectdesignation": "कृपया पदनाम का चयन करें।",
+    "pleaseenterfirstname": "कृपया पहला नाम दर्ज करें।",
+    "pleaseenterusername": "कृपया उपयोगकर्ता नाम दर्ज करें।",
     "designationnamefieldiscompulsory": "पदनाम नाम फ़ील्ड अनिवार्य है।",
     "pleaseselectissuetype": "कृपया समस्या प्रकार चुनें।",
     "required": "अपेक्षित।",
@@ -1555,6 +1566,9 @@
     "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें"
   },
   "alertmessage": {
+    "usernotcreated": "उपयोगकर्ता नहीं बनाया गया",
+    "usercreatedsuccessfully": "उपयोगकर्ता सफलतापूर्वक बनाया गया",
+    "pleaseaddpersonaldetails": "कृपया व्यक्तिगत विवरण जोड़ें",
     "templateupdatedsuccessfully": "टेम्प्लेट सफलतापूर्वक अपडेट किया गया।",
     "templatenotupdate": "टेम्प्लेट अपडेट नहीं हुआ",
     "templatedeletedsuccessfully": "टेम्प्लेट सफलतापूर्वक हटा दिया गया।",
