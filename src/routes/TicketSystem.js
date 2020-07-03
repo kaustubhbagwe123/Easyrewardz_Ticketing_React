@@ -481,6 +481,7 @@ class TicketSystem extends Component {
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
+  
       if (this.state.CustData.altEmail === this.state.CustData.custEmailId) {
         NotificationManager.error(
           TranslationContext !== undefined
@@ -2364,7 +2365,9 @@ class TicketSystem extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
+                                {this.state.fileText} {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard.files
+                                      : "files"}
                               </label>
                             </li>
                             <li>
@@ -2493,7 +2496,7 @@ class TicketSystem extends Component {
                             onChange={this.setAssignedToValue.bind(this)}
                           >
                             <option value="0">
-                              {" "}
+                              
                               {TranslationContext !== undefined
                                 ? TranslationContext.link.users
                                 : "Users"}
@@ -2515,7 +2518,7 @@ class TicketSystem extends Component {
                             onChange={this.setPlaceholderValue.bind(this)}
                           >
                             <option value="0">
-                              {" "}
+                              
                               {TranslationContext !== undefined
                                 ? TranslationContext.link.placeholders
                                 : "Placeholders"}
@@ -2597,7 +2600,6 @@ class TicketSystem extends Component {
                         onChange={this.setAssignedToValue.bind(this)}
                       >
                         <option value="0">
-                          {" "}
                           {TranslationContext !== undefined
                             ? TranslationContext.link.users
                             : "Users"}
@@ -2739,7 +2741,9 @@ class TicketSystem extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
+                                {this.state.fileText} {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard.files
+                                      : "files"}
                               </label>
                             </li>
                             <li>
@@ -3036,6 +3040,7 @@ class TicketSystem extends Component {
                                   : "Full Name"
                               }
                               name="customername"
+                              autoComplete="off"
                               value={this.state.CustData.customername}
                               onChange={this.handleOnChangeData}
                             />
@@ -3082,11 +3087,11 @@ class TicketSystem extends Component {
                               onChange={this.handleOnChangeData}
                               disabled
                             />
-                            {this.validator.message(
+                            {/* {this.validator.message(
                               "Email Id",
                               this.state.CustData.custEmailId,
                               "required|email"
-                            )}
+                            )} */}
                           </div>
                           <div className="col-md-6 radio-btn-margin">
                             <Radio.Group
@@ -3145,6 +3150,7 @@ class TicketSystem extends Component {
                                   : "Alternate Number"
                               }
                               name="altNo"
+                              autoComplete="off"
                               value={this.state.CustData.altNo}
                               onChange={this.handleOnChangeData}
                             />
@@ -3164,6 +3170,7 @@ class TicketSystem extends Component {
                                   : "Alternate Email"
                               }
                               name="altEmail"
+                              autoComplete="off"
                               value={this.state.CustData.altEmail}
                               onChange={this.handleOnChangeData}
                             />

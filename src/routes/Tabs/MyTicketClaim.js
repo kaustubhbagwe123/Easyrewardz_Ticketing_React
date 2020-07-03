@@ -11,6 +11,8 @@ import config from "./../../helpers/config";
 import ReactTable from "react-table";
 import StoreImg from "./../../assets/Images/store.png";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class MyTicketClaim extends Component {
   constructor(props) {
@@ -27,13 +29,13 @@ class MyTicketClaim extends Component {
       claimAttachament: "",
       cliamId: 0,
       claimCommentlist: [],
+      translateLanguage: {},
     };
 
     this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
   }
 
   componentDidMount() {
-    debugger;
     if (this.props.claimData.claimDeatils.ticketId !== 0) {
       var ticketId = this.props.claimData.claimDeatils.ticketId;
       var tabId = this.props.claimData.claimDeatils.claimTabId;
@@ -45,10 +47,16 @@ class MyTicketClaim extends Component {
     } else {
       this.props.history.push("myTicketlist");
     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   handleGetClaimTabDetails(Id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -59,7 +67,6 @@ class MyTicketClaim extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -74,7 +81,6 @@ class MyTicketClaim extends Component {
   }
 
   handleGetClaimRecordByClaimID(claimId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -85,7 +91,6 @@ class MyTicketClaim extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         var claimOrderData = [];
@@ -138,7 +143,7 @@ class MyTicketClaim extends Component {
 
   ///handle claim comment in claim details
   handleClaimAddComments() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -151,16 +156,23 @@ class MyTicketClaim extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Comment added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.commentaddedsuccessfully
+              : "Comment added successfully."
+          );
           self.handleGetClaimCommentsList();
           self.setState({
-            claimAddComment:""
-          })
+            claimAddComment: "",
+          });
         } else {
-          NotificationManager.error("Comment not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.commentnotadded
+              : "Comment not added."
+          );
         }
       })
       .catch((data) => {
@@ -170,7 +182,6 @@ class MyTicketClaim extends Component {
 
   ///handle Get claim comment in claim details
   handleGetClaimCommentsList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -181,7 +192,6 @@ class MyTicketClaim extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -199,6 +209,7 @@ class MyTicketClaim extends Component {
       });
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="table-cntr mt-3 MyTicketClaimReact">
@@ -206,7 +217,13 @@ class MyTicketClaim extends Component {
             data={this.state.claimDetailsData}
             columns={[
               {
-                Header: <span>ID</span>,
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.id
+                      : "ID"}
+                  </span>
+                ),
                 accessor: "ticketClaimID",
                 Cell: (row) => {
                   return (
@@ -222,7 +239,13 @@ class MyTicketClaim extends Component {
                 },
               },
               {
-                Header: <span>Status</span>,
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.status
+                      : "Status"}
+                  </span>
+                ),
                 accessor: "taskStatus",
                 Cell: (row) => {
                   if (row.original.taskStatus === "Open") {
@@ -253,13 +276,21 @@ class MyTicketClaim extends Component {
                 },
               },
               {
-                Header: <span>Claim Issue Type</span>,
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.claimissueType
+                      : "Claim Issue Type"}
+                  </span>
+                ),
                 accessor: "claimIssueType",
               },
               {
                 Header: (
                   <span>
-                    Category
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.category
+                      : "Category"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -272,15 +303,27 @@ class MyTicketClaim extends Component {
                         <div className="dash-creation-popup-cntr">
                           <ul className="dash-category-popup dashnewpopup">
                             <li>
-                              <p>Brand</p>
+                              <p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.brand
+                                  : "Brand"}
+                              </p>
                               <p>{row.original.brandName}</p>
                             </li>
                             <li>
-                              <p>Category</p>
+                              <p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.category
+                                  : "Category"}
+                              </p>
                               <p>{row.original.category}</p>
                             </li>
                             <li>
-                              <p>Sub Category</p>
+                              <p>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.subcategory
+                                  : "Sub Category"}
+                              </p>
                               <p>{row.original.subCategoryName}</p>
                             </li>
                           </ul>
@@ -300,7 +343,9 @@ class MyTicketClaim extends Component {
               {
                 Header: (
                   <span>
-                    Raised By
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.raisedby
+                      : "Raised By"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -309,7 +354,9 @@ class MyTicketClaim extends Component {
               {
                 Header: (
                   <span>
-                    Creation on
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.creationon
+                      : "Creation On"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -324,24 +371,36 @@ class MyTicketClaim extends Component {
                             <div>
                               <b>
                                 <p className="title">
-                                  Created By:&nbsp;
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.createdby
+                                    : "Created by"}
+                                  :&nbsp;
                                   {row.original.raisedBy}
                                 </p>
                               </b>
                               <p className="sub-title">
-                                Created Date:&nbsp;
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.createddate
+                                  : "Created Date"}
+                                :&nbsp;
                                 {row.original.creationOn}
                               </p>
                             </div>
                             <div>
                               <b>
                                 <p className="title">
-                                  Updated By:&nbsp;
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.updatedby
+                                    : "Updated by"}
+                                  :&nbsp;
                                   {row.original.modifiedBy}
                                 </p>
                               </b>
                               <p className="sub-title">
-                                Updated Date:&nbsp;
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.updateddate
+                                  : "Updated Date"}
+                                :&nbsp;
                                 {row.original.modifiedDate}
                               </p>
                             </div>
@@ -362,7 +421,9 @@ class MyTicketClaim extends Component {
               {
                 Header: (
                   <span>
-                    Assign to
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.assignto
+                      : "Assign to"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -391,12 +452,19 @@ class MyTicketClaim extends Component {
                 className="black-left-arrow"
                 onClick={this.handleClaimDetailsModalClose.bind(this)}
               />
-              <label className="claim-details">Claim Details</label>
+              <label className="claim-details">
+                {TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard.claimdetails
+                  : "Claim Details"}
+              </label>
             </div>
             <hr className="claimline" />
             <div className="claimrowmargin">
               <label className="id-a-22134">
-                ID - {this.state.claimDetails.claimID}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.id
+                  : "ID"}
+                - {this.state.claimDetails.claimID}
               </label>
             </div>
 
@@ -404,16 +472,32 @@ class MyTicketClaim extends Component {
               <div className=" col-md-8" style={{ marginLeft: "25px" }}>
                 <div className="row">
                   <div className="col-md-3">
-                    <label className="claim-category">CLAIM CATEGORY</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.claimcategory
+                        : "Claim Category"}
+                    </label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-category">SUB CATEGORY</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.subcategory
+                        : "Sub Category"}
+                    </label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-category">CLAIM TYPE</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.claimtype
+                        : "CLAIM TYPE"}
+                    </label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-category">CLAIM ASKED FOR %</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.claimaskedfor
+                        : "CLAIM ASKED FOR %"}{" "}
+                    </label>
                   </div>
                 </div>
                 <div className="row recent">
@@ -440,16 +524,32 @@ class MyTicketClaim extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-3">
-                    <label className="claim-category">CUSTOMER NAME</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.customername
+                        : "CUSTOMER NAME"}
+                    </label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-category">PHONE NUMBER</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.phonenumber
+                        : "PHONE NUMBER"}
+                    </label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-category">EMAIL</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.email
+                        : "EMAIL"}
+                    </label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-category">GENDER</label>
+                    <label className="claim-category">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.gender
+                        : "GENDER"}
+                    </label>
                   </div>
                 </div>
                 <div className="row">
@@ -477,7 +577,11 @@ class MyTicketClaim extends Component {
               </div>
               <div className="col-md-3">
                 <div>
-                  <label className="attached-image">ATTACHED IMAGES</label>
+                  <label className="attached-image">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.attachedimages
+                      : "ATTACHED IMAGES"}
+                  </label>
                 </div>
                 <div className="batashoes-icon">
                   {this.state.claimAttachament !== "" ? (
@@ -493,12 +597,19 @@ class MyTicketClaim extends Component {
             >
               <div className="claim-status-table-header">
                 <label className="claim-status-open">
-                  Claim Status : {this.state.claimDetails.status}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.claimstatus
+                    : "Claim Status"}{" "}
+                  : {this.state.claimDetails.status}
                 </label>
               </div>
 
               <div className="row">
-                <label className="order-details">Order details</label>
+                <label className="order-details">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.orderdetails
+                    : "Order Details"}
+                </label>
               </div>
 
               <hr />
@@ -508,31 +619,73 @@ class MyTicketClaim extends Component {
                     data={this.state.claimOrderData}
                     columns={[
                       {
-                        Header: <span>Invoice Number</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.invoicenumber
+                              : "Invoice Number"}
+                          </span>
+                        ),
                         accessor: "invoiceNumber",
                       },
                       {
-                        Header: <span>Invoice Date</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.invoicedate
+                              : "Invoice Date"}
+                          </span>
+                        ),
                         accessor: "dateFormat",
                       },
                       {
-                        Header: <span>Item Count</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemcount
+                              : "Item Count"}
+                          </span>
+                        ),
                         accessor: "itemCount",
                       },
                       {
-                        Header: <span>Item Price</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemprice
+                              : "Item Price"}
+                          </span>
+                        ),
                         accessor: "itemPrice",
                       },
                       {
-                        Header: <span>Price Paid</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.pricepaid
+                              : "Price Paid"}
+                          </span>
+                        ),
                         accessor: "pricePaid",
                       },
                       {
-                        Header: <span>Store Code</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.storecode
+                              : "Store Code"}
+                          </span>
+                        ),
                         accessor: "storeCode",
                       },
                       {
-                        Header: <span>Store Addres</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.storeaddress
+                              : "Store Address"}
+                          </span>
+                        ),
                         accessor: "storeAddress",
                       },
                     ]}
@@ -554,19 +707,27 @@ class MyTicketClaim extends Component {
                                 accessor: "articleNumber",
                               },
                               {
-                                Header: <span>Product Name</span>,
+                                Header: <span>{TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.productname
+                                  : "Product Name"}</span>,
                                 accessor: "articleName",
                               },
                               {
-                                Header: <span>Price</span>,
+                                Header: <span>{TranslationContext !== undefined
+                                  ? TranslationContext.label.price
+                                  : "Price"}</span>,
                                 accessor: "itemPrice",
                               },
                               {
-                                Header: <span>Price Paid</span>,
+                                Header: <span>{TranslationContext !== undefined
+                                  ? TranslationContext.span.pricepaid
+                                  : "Price Paid"}</span>,
                                 accessor: "pricePaid",
                               },
                               {
-                                Header: <span>Discount</span>,
+                                Header: <span>{ TranslationContext !== undefined
+                                  ? TranslationContext.label.discount
+                                  : "Discount"}</span>,
                                 accessor: "discount",
                               },
                               {
@@ -602,7 +763,9 @@ class MyTicketClaim extends Component {
                       type="button"
                       onClick={this.handleClaimAddComments.bind(this)}
                     >
-                      ADD COMMENT
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.addcomment
+                        : "Add Comment"}
                     </button>
                   </div>
                 </div>
@@ -625,18 +788,19 @@ class MyTicketClaim extends Component {
                               />
                             </div>
                             <label className="varun-taskDrawer">
-                             {item.name}
-                              <span className="addTask-time-ago">{item.datetime}</span>
+                              {item.name}
+                              <span className="addTask-time-ago">
+                                {item.datetime}
+                              </span>
                             </label>
 
                             <label className="task-drawer-lnl">
-                            {item.comment}
+                              {item.comment}
                             </label>
                           </div>
                         </div>
                       );
                     })}
-
                 </div>
               </div>
             </div>

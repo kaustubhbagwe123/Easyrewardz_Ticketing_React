@@ -3947,7 +3947,7 @@ class MyTicket extends Component {
                               </div>
                               <div className="col-md-6 namepad">
                                 <label className="fullna">
-                                  {" "}
+                                 
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label.mobilenumber
                                     : "Mobile Number"}
@@ -4162,7 +4162,7 @@ class MyTicket extends Component {
                               name="ticketStatusID"
                             >
                               <option>
-                                {" "}
+                               
                                 {TranslationContext !== undefined
                                   ? TranslationContext.div.ticketstatus
                                   : "Ticket Status"}
@@ -4340,7 +4340,7 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                              {" "}
+                             
                               {TranslationContext !== undefined
                                 ? TranslationContext.label.subcategory
                                 : "Sub Category"}
@@ -4388,7 +4388,7 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                              {" "}
+                             
                               {TranslationContext !== undefined
                                 ? TranslationContext.label.issuetype
                                 : "Issue Type"}
@@ -4600,9 +4600,9 @@ class MyTicket extends Component {
                                   }}
                                 >
                                   <label className="orderdetailpopup">
-                                  {TranslationContext !== undefined
-                      ? TranslationContext.option.yes
-                      : "Yes"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.yes
+                                      : "Yes"}
                                   </label>
                                   <div
                                     className={
@@ -4622,9 +4622,11 @@ class MyTicket extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <label className="orderdetailpopup">{TranslationContext !== undefined
-                      ? TranslationContext.option.no
-                      : "No"}</label>
+                                  <label className="orderdetailpopup">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.no
+                                      : "No"}
+                                  </label>
                                   <div
                                     className="storeplusline13"
                                     onClick={this.HandleStoreModalClose.bind(
@@ -4659,7 +4661,8 @@ class MyTicket extends Component {
                                   className="systemordersearch"
                                   placeholder={
                                     TranslationContext !== undefined
-                                      ? TranslationContext.label.searchbynamepincodecode
+                                      ? TranslationContext.label
+                                          .searchbynamepincodecode
                                       : "Search By Store Name, Pin Code, Store Code"
                                   }
                                   value={this.state.SearchStore}
@@ -4688,11 +4691,9 @@ class MyTicket extends Component {
                                     this
                                   )}
                                 >
-                                 {
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.button.attachstore
-                                      : "Attach Store"
-                                  }
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.attachstore
+                                    : "Attach Store"}
                                 </button>
                               </div>
                             </div>
@@ -4713,9 +4714,9 @@ class MyTicket extends Component {
                                         aria-controls="storedetail-tab"
                                         aria-selected="true"
                                       >
-                                       {TranslationContext !== undefined
-                            ? TranslationContext.a.storedetails
-                            : "Store Details"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.storedetails
+                                          : "Store Details"}
                                       </a>
                                     </li>
                                     {this.state.selectedStoreData.length > 0 ||
@@ -4730,8 +4731,8 @@ class MyTicket extends Component {
                                           aria-selected="false"
                                         >
                                           {TranslationContext !== undefined
-                              ? TranslationContext.a.selectedstore
-                              : "Selected Store"}
+                                            ? TranslationContext.a.selectedstore
+                                            : "Selected Store"}
                                         </a>
                                       </li>
                                     ) : null}
@@ -4791,27 +4792,58 @@ class MyTicket extends Component {
                                         width: 20,
                                       },
                                       {
-                                        Header: <span>{TranslationContext !== undefined
-                                          ? TranslationContext.label.storecode
-                                          : "Store Code"}</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>{TranslationContext !== undefined
-                                          ? TranslationContext.label.storename
-                                          : "Store Name"}</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storename
+                                              : "Store Name"}
+                                          </span>
+                                        ),
                                         accessor: "storeName",
                                       },
                                       {
-                                        Header: <span>Store Pin Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storepincode
+                                              : "Store Pin Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Email ID</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeemailid
+                                              : "Store Email ID"}
+                                          </span>
+                                        ),
                                         accessor: "storeEmailID",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "address",
                                       },
                                     ]}
@@ -4877,7 +4909,13 @@ class MyTicket extends Component {
                                         },
                                       },
                                       {
-                                        Header: <span>Purpose</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.purpose
+                                              : "Purpose"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 160,
                                         Cell: (row) => (
@@ -4900,29 +4938,71 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Name</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storename
+                                              : "Store Name"}
+                                          </span>
+                                        ),
                                         accessor: "storeName",
                                       },
                                       {
-                                        Header: <span>Store Pin Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storepincode
+                                              : "Store Pin Code"}
+                                          </span>
+                                        ),
                                         accessor: "pincode",
                                       },
                                       {
-                                        Header: <span>Store Email ID</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeemailid
+                                              : "Store Email ID"}
+                                          </span>
+                                        ),
                                         accessor: "storeEmailID",
                                         minWidth: 190,
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "address",
                                         minWidth: 140,
                                       },
                                       {
-                                        Header: <span>Visit Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .visitdate
+                                              : "Visit Date"}
+                                          </span>
+                                        ),
                                         accessor: "storeVisitDate",
                                         minWidth: 150,
                                         Cell: (row) => {
@@ -4979,7 +5059,11 @@ class MyTicket extends Component {
                           </Modal>
                         </div>
                         <div className="">
-                          <label className="label-4">Product</label>
+                          <label className="label-4">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.product
+                              : "Product"}
+                          </label>
                           <a
                             href="#!"
                             className="bata-rajouri-garden d-inline-block"
@@ -4987,7 +5071,9 @@ class MyTicket extends Component {
                           >
                             {this.state.ProductName === "" ? (
                               <label className="label-4">
-                                No Product Attached
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.noproductattached
+                                  : "No Product Attached"}
                               </label>
                             ) : (
                               this.state.ProductName
@@ -5018,7 +5104,12 @@ class MyTicket extends Component {
                                 style={{ height: "54px" }}
                               >
                                 <label style={{ marginTop: "7px" }}>
-                                  <b>Customer Want to attach order</b>
+                                  <b>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .customerwanttoattachorder
+                                      : "Customer Want to attach order"}
+                                  </b>
                                 </label>
                                 <div
                                   className="claimplus"
@@ -5046,7 +5137,9 @@ class MyTicket extends Component {
                             >
                               <div className="col-md-6">
                                 <label className="orderdetailpopup">
-                                  Order Details
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.orderdetails
+                                    : "Order Details"}
                                 </label>
                               </div>
                               <div className="col-md-3">
@@ -5057,7 +5150,9 @@ class MyTicket extends Component {
                                   }}
                                 >
                                   <label className="orderdetailpopup">
-                                    Order
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.order
+                                      : "Order"}
                                   </label>
                                   <div
                                     className={
@@ -5080,7 +5175,9 @@ class MyTicket extends Component {
                                     </div>
                                   </div>
                                   <label className="orderdetailpopup">
-                                    Item
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.item
+                                      : "Item"}
                                   </label>
                                 </div>
                               </div>
@@ -5094,7 +5191,12 @@ class MyTicket extends Component {
                                 <input
                                   type="text"
                                   className="searchtextpopup"
-                                  placeholder="Search Order"
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .searchorderbyordernumber
+                                      : "Search Order By Order Number"
+                                  }
                                   name="orderNumber"
                                   value={this.state.orderNumber}
                                   onChange={this.handleNoteOnChange}
@@ -5129,7 +5231,9 @@ class MyTicket extends Component {
                                         aria-selected="true"
                                         onClick={this.handleSetDataTab}
                                       >
-                                        Product Details
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.productdetails
+                                          : "Product Details"}
                                       </a>
                                     </li>
                                     {this.state.SelectedAllOrder.length > 0 ? (
@@ -5143,7 +5247,10 @@ class MyTicket extends Component {
                                           aria-selected="false"
                                           onClick={this.handleSetDataTab}
                                         >
-                                          Selected Product
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.a
+                                                .selectedproduct
+                                            : "Selected Product"}
                                         </a>
                                       </li>
                                     ) : null}
@@ -5161,7 +5268,10 @@ class MyTicket extends Component {
                                         this
                                       )}
                                     >
-                                      Attach Product
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .attachproduct
+                                        : "Attach Product"}
                                     </button>
                                   </div>
                                   {/* ) : null} */}
@@ -5219,37 +5329,92 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 150,
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                         minWidth: 120,
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5323,37 +5488,92 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 150,
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                         minWidth: 120,
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5420,34 +5640,76 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Number</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlenumber
+                                                      : "Article Number"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleNumber",
                                                 minWidth: 140,
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Name</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlename
+                                                      : "Article Name"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleName",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article MRP</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .articlemrp
+                                                      : "Article MRP"}
+                                                  </span>
                                                 ),
                                                 accessor: "itemPrice",
                                               },
                                               {
-                                                Header: <span>Price Paid</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .pricepaid
+                                                      : "Price Paid"}
+                                                  </span>
+                                                ),
                                                 accessor: "pricePaid",
                                               },
                                               {
-                                                Header: <span>Discount</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .discount
+                                                      : "Discount"}
+                                                  </span>
+                                                ),
                                                 accessor: "discount",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Required Size</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .requiredsize
+                                                      : "Required Size"}
+                                                  </span>
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: (row) => {
@@ -5565,37 +5827,92 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 150,
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                         minWidth: 120,
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5669,35 +5986,90 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5761,34 +6133,76 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Number</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlenumber
+                                                      : "Article Number"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleNumber",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Name</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlename
+                                                      : "Article Name"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleName",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article MRP</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .articlemrp
+                                                      : "Article MRP"}
+                                                  </span>
                                                 ),
                                                 accessor: "itemPrice",
                                               },
                                               {
-                                                Header: <span>Price Paid</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .pricepaid
+                                                      : "Price Paid"}
+                                                  </span>
+                                                ),
                                                 accessor: "pricePaid",
                                               },
                                               {
-                                                Header: <span>Discount</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .discount
+                                                      : "Discount"}
+                                                  </span>
+                                                ),
                                                 accessor: "discount",
                                                 sortable: true,
                                               },
                                               {
                                                 Header: (
-                                                  <span>Required Size</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .requiredsize
+                                                      : "Required Size"}
+                                                  </span>
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: (row) => {
@@ -5848,7 +6262,10 @@ class MyTicket extends Component {
               <div className="rectangle-3 text-editor">
                 <div className="row mt-2">
                   <label className="ticket-title-where mb-0">
-                    Ticket Title:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.tickettitle
+                      : "Ticket Title"}
+                    :
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -5858,7 +6275,10 @@ class MyTicket extends Component {
                 </div>
                 <div className="row mt-3">
                   <label className="ticket-title-where mb-0">
-                    Ticket Details:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.ticketdetails
+                      : "Ticket Details"}
+                    :
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -6081,7 +6501,10 @@ class MyTicket extends Component {
                         data-toggle="dropdown"
                         onClick={this.handleTemplateBindByIssueType.bind(this)}
                       >
-                        <FontAwesomeIcon icon={faCalculator} /> Template
+                        <FontAwesomeIcon icon={faCalculator} />{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.template
+                          : "Template"}
                       </button>
                       <ul className="dropdown-menu">
                         {this.state.CkEditorTemplateData !== null &&
@@ -6107,7 +6530,11 @@ class MyTicket extends Component {
                         value="0"
                         onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
                       >
-                        <option value="0">Users</option>
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.link.users
+                            : "Users"}
+                        </option>
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
@@ -6122,7 +6549,11 @@ class MyTicket extends Component {
                         value="0"
                         onChange={this.setPlaceholderValue.bind(this)}
                       >
-                        <option value="0">Placeholders</option>
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.link.placeholders
+                            : "Placeholders"}
+                        </option>
                         {this.state.placeholderData !== null &&
                           this.state.placeholderData.map((item, i) => (
                             <option key={i} value={item.mailParameterID}>
@@ -6248,7 +6679,11 @@ class MyTicket extends Component {
                                   htmlFor="fil-open"
                                   style={{ paddingLeft: "25px" }}
                                 >
-                                  <span>Inform Store</span>
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.informstore
+                                      : "Inform Store"}
+                                  </span>
                                 </label>
                               </div>
                             </li>
@@ -6276,7 +6711,10 @@ class MyTicket extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
+                                {this.state.fileText}{" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.files
+                                  : "files"}
                               </label>
                             </li>
                             <li style={{ float: "right" }}>
@@ -6285,7 +6723,9 @@ class MyTicket extends Component {
                                 type="button"
                                 onClick={this.handleSendMailData.bind(this, 2)}
                               >
-                                Send
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.send
+                                  : "Send"}
                               </button>
                             </li>
                           </ul>
@@ -6310,9 +6750,16 @@ class MyTicket extends Component {
                               alt="KnowledgeLogo"
                               className="knoim1"
                             />
-                            KNOWLEGE BASE
+                            {TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard
+                                  .knowlegebase
+                              : "KNOWLEGE BASE"}
                           </h5>
-                          <p>Message</p>
+                          <p>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.title.message
+                              : "Message"}
+                          </p>
 
                           <div id="kb-accordion">
                             {this.state.KbPopupData !== null &&
@@ -6350,7 +6797,9 @@ class MyTicket extends Component {
                                           alt=""
                                           className="copyblue-kb"
                                         />
-                                        Copy
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.copy
+                                          : "Copy"}
                                       </a>
                                     </CopyToClipboard>
                                     {this.state.copied ? (
@@ -6358,7 +6807,9 @@ class MyTicket extends Component {
                                         className="ml-2"
                                         style={{ color: "red" }}
                                       >
-                                        Copied.
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.copied
+                                          : "Copied."}
                                       </span>
                                     ) : null}
                                   </div>
@@ -6375,14 +6826,23 @@ class MyTicket extends Component {
                             className="cancalImg-kb"
                             onClick={this.HandleKbLinkModalClose.bind(this)}
                           />
-                          <h5>KB TEMPLATE</h5>
+                          <h5>
+                           
+                            {TranslationContext !== undefined
+                              ? TranslationContext.h5.kbtemplate
+                              : "KB TEMPLATE"}
+                          </h5>
                           <div className="form-group">
                             <select
                               value={this.state.selectedCategoryKB}
                               onChange={this.setCategoryValueKB}
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
-                              <option>Category</option>
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.category
+                                  : "Category"}
+                              </option>
                               {this.state.CategoryData !== null &&
                                 this.state.CategoryData.map((item, i) => (
                                   <option key={i} value={item.categoryID}>
@@ -6397,7 +6857,12 @@ class MyTicket extends Component {
                               onChange={this.setSubCategoryValueKB}
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
-                              <option>Sub-Category</option>
+                              <option>
+                               
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.subcategory
+                                  : "Sub Category"}
+                              </option>
                               {this.state.SubCategoryData !== null &&
                                 this.state.SubCategoryData.map((item, i) => (
                                   <option key={i} value={item.subCategoryID}>
@@ -6412,7 +6877,12 @@ class MyTicket extends Component {
                               onChange={this.setIssueTypeValueKB}
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
-                              <option>Type</option>
+                              <option>
+                               
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.type
+                                  : "Type"}
+                              </option>
                               {this.state.IssueTypeData !== null &&
                                 this.state.IssueTypeData.map((item, i) => (
                                   <option key={i} value={item.issueTypeID}>
@@ -6426,7 +6896,9 @@ class MyTicket extends Component {
                               onClick={this.handleKbLinkPopupSearch}
                               className="kblink-search"
                             >
-                              SEARCH
+                              {TranslationContext !== undefined
+                                ? TranslationContext.small.search
+                                : "SEARCH"}
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
@@ -6434,7 +6906,9 @@ class MyTicket extends Component {
                               href="#!"
                               className="copyblue-kbtext d-inline-block"
                             >
-                              VIEW POLICY
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewpolicy
+                                : "VIEW POLICY"}
                               <img
                                 src={ViewBlue}
                                 alt="viewpolicy"
@@ -6515,7 +6989,10 @@ class MyTicket extends Component {
                             aria-controls="Message-tab"
                             aria-selected="true"
                           >
-                            Message:
+                            {TranslationContext !== undefined
+                              ? TranslationContext.title.message
+                              : "Message"}
+                            :
                             {this.state.tabCounts.messages < 9
                               ? "0" + this.state.tabCounts.messages
                               : this.state.tabCounts.messages}
@@ -6532,7 +7009,10 @@ class MyTicket extends Component {
                             name="Notes"
                             onClick={this.handleGetTabsName}
                           >
-                            Notes:
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.notes
+                              : "Notes"}
+                            :
                             {this.state.Notesdetails.length < 9
                               ? "0" + this.state.Notesdetails.length
                               : this.state.Notesdetails.length}
@@ -6549,7 +7029,10 @@ class MyTicket extends Component {
                             name="Task"
                             onClick={this.handleGetTabsName}
                           >
-                            Task:
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.task
+                              : "Task"}
+                            :
                             {this.state.tabCounts.task < 9
                               ? "0" + this.state.tabCounts.task
                               : this.state.tabCounts.task}
@@ -6566,7 +7049,10 @@ class MyTicket extends Component {
                             name="Claim"
                             onClick={this.handleGetTabsName}
                           >
-                            Claim:
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claim
+                              : "Claim"}
+                            :
                             {this.state.tabCounts.claim < 9
                               ? "0" + this.state.tabCounts.claim
                               : this.state.tabCounts.claim}
@@ -6605,13 +7091,26 @@ class MyTicket extends Component {
                   >
                     <div className="row message-header">
                       <div className="col-12 col-xs-12 col-sm-3">
-                        <label className="user-label">User</label>
+                        <label className="user-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.user
+                            : "User"}
+                        </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-7">
-                        <label className="message-label">Message</label>
+                        <label className="message-label">
+                         
+                          {TranslationContext !== undefined
+                            ? TranslationContext.title.message
+                            : "Message"}
+                        </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-2">
-                        <label className="action-label">Action</label>
+                        <label className="action-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.action
+                            : "Action"}
+                        </label>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
@@ -6627,7 +7126,9 @@ class MyTicket extends Component {
                           className="comment-text"
                           onClick={this.handleFreeTextCommentOpen.bind(this)}
                         >
-                          Comment
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.comment
+                            : "Comment"}
                         </a>
                       </div>
                     </div>
@@ -6711,7 +7212,12 @@ class MyTicket extends Component {
                                                     marginLeft: "7px",
                                                   }}
                                                 >
-                                                  Reassign to &nbsp;
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .reassignto
+                                                    : "Reassign to"}{" "}
+                                                  &nbsp;
                                                   <span className="solved-by-naman-r">
                                                     {
                                                       details
@@ -6871,7 +7377,10 @@ class MyTicket extends Component {
                                                     .mailID
                                                 )}
                                               >
-                                                Reply
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a.reply
+                                                  : "Reply"}
                                               </a>
                                             ) : null}
 
@@ -6884,7 +7393,9 @@ class MyTicket extends Component {
                                                   .mailID
                                               )}
                                             >
-                                              Comment
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.comment
+                                                : "Comment"}
                                             </a>
                                           </div>
                                           <div
@@ -7010,7 +7521,11 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.comment
+                                : "Comment"}
+                            </label>
                           </div>
                           <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
                             <select
@@ -7021,7 +7536,12 @@ class MyTicket extends Component {
                                 "comment"
                               )}
                             >
-                              <option value="0">Users</option>
+                              <option value="0">
+                               
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.users
+                                  : "Users"}
+                              </option>
                               {this.state.AssignToData !== null &&
                                 this.state.AssignToData.map((item, i) => (
                                   <option key={i} value={item.userID}>
@@ -7068,7 +7588,9 @@ class MyTicket extends Component {
                             className="SendCommentBtn1"
                             onClick={this.handleSendMailData.bind(this, 3)}
                           >
-                            SEND
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.send
+                              : "SEND"}
                           </button>
                         </div>
                       </div>
@@ -7167,7 +7689,11 @@ class MyTicket extends Component {
                                   "rply"
                                 )}
                               >
-                                <option value="0">Users</option>
+                                <option value="0">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.link.users
+                                    : "Users"}
+                                </option>
                                 {this.state.AssignToData !== null &&
                                   this.state.AssignToData.map((item, i) => (
                                     <option key={i} value={item.userID}>
@@ -7203,7 +7729,9 @@ class MyTicket extends Component {
                                   )}
                                 >
                                   <FontAwesomeIcon icon={faCalculator} />
-                                  Template
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.template
+                                    : "Template"}
                                 </button>
                                 <ul className="dropdown-menu">
                                   {this.state.ReplyCKEditoertemplat !== null &&
@@ -7302,7 +7830,12 @@ class MyTicket extends Component {
                                     htmlFor="custRply"
                                     style={{ paddingLeft: "25px" }}
                                   >
-                                    <span>Inform Store</span>
+                                    <span>
+                                     
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.informstore
+                                        : "Inform Store"}
+                                    </span>
                                   </label>
                                 </div>
                               </li>
@@ -7332,7 +7865,11 @@ class MyTicket extends Component {
                                   </label>
                                 </span>
                                 <label style={{ color: "#2561a8" }}>
-                                  {this.state.ReplyfileText} files
+                                  {this.state.ReplyfileText}{" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .files
+                                    : "files"}
                                 </label>
                               </li>
                               <li className="w-100"></li>
@@ -7404,7 +7941,9 @@ class MyTicket extends Component {
                         type="button"
                         onClick={this.handleSendMailData.bind(this, 1)}
                       >
-                        Send
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.send
+                          : "Send"}
                       </button>
                     </Modal>
                     <Modal
@@ -7420,7 +7959,11 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.comment
+                                : "Comment"}
+                            </label>
                           </div>
                           <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
                             <select
@@ -7431,7 +7974,11 @@ class MyTicket extends Component {
                                 "freeCmd"
                               )}
                             >
-                              <option value="0">Users</option>
+                              <option value="0">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.users
+                                  : "Users"}
+                              </option>
                               {this.state.AssignToData !== null &&
                                 this.state.AssignToData.map((item, i) => (
                                   <option key={i} value={item.userID}>
@@ -7479,7 +8026,9 @@ class MyTicket extends Component {
                             className="SendCommentBtn1"
                             onClick={this.handleSendMailData.bind(this)}
                           >
-                            SEND
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.send
+                              : "SEND"}
                           </button>
                         </div>
                       </div>
@@ -7534,7 +8083,11 @@ class MyTicket extends Component {
                               ? "Add-Notes-textarea iskbticket"
                               : "Add-Notes-textarea"
                           }
-                          placeholder="Add Notes"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.addnotes
+                              : "Add Notes"
+                          }
                           name="NoteAddComment"
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
@@ -7559,7 +8112,9 @@ class MyTicket extends Component {
                           onClick={this.handleNoteAddComments.bind(this)}
                           style={{ marginTop: "5px" }}
                         >
-                          ADD COMMENT
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.addcomments
+                            : "ADD COMMENT"}
                         </button>
                       </div>
 
@@ -7781,7 +8336,6 @@ class MyTicket extends Component {
                   </li>
                   <li className="SubL">
                     <label className="More">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.label.more
                         : "More"}

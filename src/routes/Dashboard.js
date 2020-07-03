@@ -397,7 +397,7 @@ class Dashboard extends Component {
   componentDidMount() {
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
-    // this.ViewSearchData();
+    this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
@@ -3322,6 +3322,7 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
+        
         let status = res.data.message;
         let data = res.data.responseData;
 

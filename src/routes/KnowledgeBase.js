@@ -1326,7 +1326,6 @@ class KnowledgeBase extends Component {
   }
 
   handleSeaechKB() {
-    debugger;
     if (
       this.state.selectedCategory > 0 &&
       this.state.selectedSubCategory > 0 &&
