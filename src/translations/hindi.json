@@ -1724,7 +1724,20 @@
     "requiredsize":"आवश्यक आकार",
     "purchasefromstorename":"दुकान के नाम से खरीद",
     "purchasefromstoreaddres":"स्टोर के पते से खरीद",
-    "articlemrp":"लेख एम.आर.पी."
+    "articlemrp":"लेख एम.आर.पी.",
+    "customerwanttovisitstore":"ग्राहक स्टोर पर जाना चाहते हैं",
+    "customeralreadyvisitedstore":"ग्राहक पहले से ही दुकान का दौरा किया",
+    "wecouldntfindthestoredetailswith":"हम के साथ दुकान विवरण नहीं मिल सका",
+    "thisstoreidsearchanotherstore":"यह स्टोर आईडी, दूसरा स्टोर खोजें",
+    "addstore":"स्टोर जोड़ें",
+    "categoryfieldiscompulsory":"श्रेणी क्षेत्र अनिवार्य है।",
+    "subcategoryfieldiscompulsory":"सब कैटेगरी फील्ड अनिवार्य है।",
+    "issuetypefieldiscompulsory":"इश्यू टाइप फील्ड अनिवार्य है।",
+    "tickettitlefieldiscompulsory":"टिकट टाइटल फील्ड अनिवार्य है।",
+    "ticketdetailsfieldiscompulsory":"टिकट विवरण क्षेत्र अनिवार्य है।",
+    "brandfieldiscompulsory":"ब्रांड फील्ड अनिवार्य है।",
+    "channelofpurchasefieldiscompulsory":"क्रय क्षेत्र का चैनल अनिवार्य है।",
+    "pleaseselectticketpriority":"कृपया टिकट प्राथमिकता चुनें।"
 },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."

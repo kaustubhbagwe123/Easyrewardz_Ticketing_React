@@ -477,12 +477,16 @@ class TicketSystem extends Component {
     }
   }
   handleUpdateCustomer() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
       if (this.state.CustData.altEmail === this.state.CustData.custEmailId) {
         NotificationManager.error(
-          "Email ID and Alternate Email ID fields cannot be same."
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard
+                .emailidandalternateemailidfieldscannotbesame
+            : "Email ID and Alternate Email ID fields cannot be same."
         );
       } else {
         axios({
@@ -506,7 +510,11 @@ class TicketSystem extends Component {
           .then(function(res) {
             let Message = res.data.message;
             if (Message === "Success") {
-              NotificationManager.success("Record updated successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                  : "Record updated successfully."
+              );
               self.componentDidMount();
               self.handleEditCustomerClose.bind(this);
             }
@@ -586,6 +594,7 @@ class TicketSystem extends Component {
       });
   }
   handleKbLinkPopupSearch() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.selectedCategoryKB.length > 0 &&
       this.state.selectedSubCategoryKB.length > 0 &&
@@ -614,9 +623,18 @@ class TicketSystem extends Component {
         });
     } else {
       this.setState({
-        categoryKbCompulsion: "Category field is compulsory.",
-        subCategoryKbCompulsion: "Sub Category field is compulsory.",
-        issueTypeKbCompulsion: "Issue Type field is compulsory.",
+        categoryKbCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.categoryfieldiscompulsory
+            : "Category field is compulsory.",
+        subCategoryKbCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.subcategoryfieldiscompulsory
+            : "Sub Category field is compulsory.",
+        issueTypeKbCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.issuetypefieldiscompulsory
+            : "Issue Type field is compulsory.",
       });
     }
   }
@@ -1016,7 +1034,7 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.selectedTicketPriority > 0) {
       if (
         this.state.titleSuggValue.length > 0 &&
@@ -1341,17 +1359,37 @@ class TicketSystem extends Component {
         }
       } else {
         this.setState({
-          ticketTitleCompulsion: "Ticket Title field is compulsory.",
-          ticketDetailsCompulsion: "Ticket Details field is compulsory.",
-          ticketBrandCompulsion: "Brand field is compulsory.",
-          ticketCategoryCompulsion: "Category field is compulsory.",
-          ticketSubCategoryCompulsion: "Sub Category field is compulsory.",
-          ticketIssueTypeCompulsion: "Issue Type field is compulsory.",
-          channelPurchaseCompulsion: "Channel of Purchase field is compulsory.",
+          ticketTitleCompulsion: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.tickettitlefieldiscompulsory
+          : "Ticket Title field is compulsory.",
+          ticketDetailsCompulsion: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.ticketdetailsfieldiscompulsory
+          : "Ticket Details field is compulsory.",
+          ticketBrandCompulsion: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.brandfieldiscompulsory
+          : "Brand field is compulsory.",
+          ticketCategoryCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.categoryfieldiscompulsory
+              : "Category field is compulsory.",
+          ticketSubCategoryCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard
+                  .subcategoryfieldiscompulsory
+              : "Sub Category field is compulsory.",
+          ticketIssueTypeCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.issuetypefieldiscompulsory
+              : "Issue Type field is compulsory.",
+          channelPurchaseCompulsion: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.channelofpurchasefieldiscompulsory
+          : "Channel of Purchase field is compulsory.",
         });
       }
     } else {
-      NotificationManager.error("Please Select Ticket Priority.", "", 2000);
+      NotificationManager.error(TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.pleaseselectticketpriority
+        : "Please Select Ticket Priority.", "", 2000);
     }
 
     // Don't remove this function

@@ -34,7 +34,7 @@ class TicketSystemStore extends Component {
       byValideStoreData: "",
       modifiedDate: "",
       CustStoreStatusDrop: "0",
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
@@ -78,7 +78,7 @@ class TicketSystemStore extends Component {
         TicketID: ID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -160,6 +160,7 @@ class TicketSystemStore extends Component {
     }
   };
   handleSearchStoreDetails(e) {
+    const TranslationContext = this.state.translateLanguage.default;
     e.preventDefault();
     if (this.state.SwitchBtnStatus === false) {
       let self = this;
@@ -172,7 +173,7 @@ class TicketSystemStore extends Component {
             SearchText: this.state.SrchStoreNameCode.trim(),
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let data = res.data.responseData;
             let Msg = res.data.message;
@@ -191,7 +192,10 @@ class TicketSystemStore extends Component {
           });
       } else {
         self.setState({
-          byValideStoreData: "Please Enter Store Details.",
+          byValideStoreData:
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.pleaseenterstoredetails
+              : "Please Enter Store Details.",
         });
       }
     }
@@ -310,8 +314,18 @@ class TicketSystemStore extends Component {
                   value={this.state.CustStoreStatusDrop}
                   onChange={this.hanldeStatusChange.bind(this)}
                 >
-                  <option value="0">Customer Want to visit store</option>
-                  <option value="1">Customer Already visited store</option>
+                  <option value="0">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .customerwanttovisitstore
+                      : "Customer Want to visit store"}
+                  </option>
+                  <option value="1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .customeralreadyvisitedstore
+                      : "Customer Already visited store"}
+                  </option>
                 </select>
               </div>
               <div className="col-12 col-lg-3 col-xl-3">
@@ -366,8 +380,18 @@ class TicketSystemStore extends Component {
                     onChange={this.handleCustomerStoreStatus}
                     value={this.state.CustStoreStatusDrop}
                   >
-                    <option value="0">Customer Want to visit store</option>
-                    <option value="1">Customer Already visited store</option>
+                    <option value="0">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .customerwanttovisitstore
+                        : "Customer Want to visit store"}
+                    </option>
+                    <option value="1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .customeralreadyvisitedstore
+                        : "Customer Already visited store"}
+                    </option>
                   </select>
                   <div
                     style={{
@@ -426,9 +450,11 @@ class TicketSystemStore extends Component {
                   <input
                     type="text"
                     className="systemordersearch"
-                    placeholder={TranslationContext !== undefined
-                      ? TranslationContext.label.searchbynamepincodecode
-                      : "Search By Store Name, Pin Code, Store Code"}
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.searchbynamepincodecode
+                        : "Search By Store Name, Pin Code, Store Code"
+                    }
                     // value={this.state.filterAll}
                     // onChange={this.filterAll}
                     name="SrchStoreNameCode"
@@ -486,7 +512,9 @@ class TicketSystemStore extends Component {
                             aria-controls="selectedstore-tab"
                             aria-selected="false"
                           >
-                            Selected Store
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.selectedstore
+                              : "Selected Store"}
                           </a>
                         </li>
                       ) : null}
@@ -538,33 +566,38 @@ class TicketSystemStore extends Component {
                           },
                         },
                         {
-                          title: TranslationContext !== undefined
-                            ? TranslationContext.label.storecode
-                            : "Store Code",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storecode
+                              : "Store Code",
                           dataIndex: "storeCode",
                         },
                         {
-                          title: TranslationContext !== undefined
-                            ? TranslationContext.label.storename
-                            : "Store Name",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storename
+                              : "Store Name",
                           dataIndex: "storeName",
                         },
                         {
-                          title: TranslationContext !== undefined
-                            ? TranslationContext.label.storepincode
-                            : "Store Pin Code",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storepincode
+                              : "Store Pin Code",
                           dataIndex: "pincode",
                         },
                         {
-                          title: TranslationContext !== undefined
-                            ? TranslationContext.span.storeemailid
-                            : "Store Email ID",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.storeemailid
+                              : "Store Email ID",
                           dataIndex: "storeEmailID",
                         },
                         {
-                          title: TranslationContext !== undefined
-                            ? TranslationContext.label.storeaddress
-                            : "Store Address",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storeaddress
+                              : "Store Address",
                           dataIndex: "address",
                         },
                       ]}
@@ -615,7 +648,9 @@ class TicketSystemStore extends Component {
                           },
                         },
                         {
-                          title: "Purpose",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.span.purpose
+                          : "Purpose",
                           // dataIndex: "lpassStoreID",
                           render: (row, data) => {
                             return (
@@ -633,27 +668,39 @@ class TicketSystemStore extends Component {
                           },
                         },
                         {
-                          title: "Store Code",
+                          title:TranslationContext !== undefined
+                          ? TranslationContext.label.storecode
+                          : "Store Code",
                           dataIndex: "storeCode",
                         },
                         {
-                          title: "Store Name",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.label.storename
+                          : "Store Name",
                           dataIndex: "storeName",
                         },
                         {
-                          title: "Store Pin Code",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.label.storepincode
+                          : "Store Pin Code",
                           dataIndex: "pincode",
                         },
                         {
-                          title: "Store Email ID",
+                          title:  TranslationContext !== undefined
+                          ? TranslationContext.span.storeemailid
+                          : "Store Email ID",
                           dataIndex: "storeEmailID",
                         },
                         {
-                          title: "Store Addres",
+                          title: TranslationContext !== undefined
+                          ? TranslationContext.label.storeaddress
+                          : "Store Address",
                           dataIndex: "address",
                         },
                         {
-                          title: "Visit Date",
+                          title:  TranslationContext !== undefined
+                          ? TranslationContext.span.visitdate
+                          : "Visit Date",
                           dataIndex: "storeVisitDate",
                           render: (row, data) => {
                             var storeId = 0;
@@ -703,9 +750,11 @@ class TicketSystemStore extends Component {
                     <input
                       type="text"
                       className="systemordersearch"
-                      placeholder={TranslationContext !== undefined
-                        ? TranslationContext.label.searchbynamepincodecode
-                        : "Search By Store Name, Pin Code, Store Code"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.searchbynamepincodecode
+                          : "Search By Store Name, Pin Code, Store Code"
+                      }
                       name="SrchStoreNameCode"
                       value={this.state.SrchStoreNameCode}
                       onChange={this.handleStoreChange}
@@ -747,8 +796,17 @@ class TicketSystemStore extends Component {
                     className="lbl-count-foundData"
                     style={{ fontSize: "22px" }}
                   >
-                    We couldn't find the store details with
-                    <br /> <span> this store Id,Search another store</span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .wecouldntfindthestoredetailswith
+                      : "We couldn't find the store details with"}
+                    <br />
+                    <span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .thisstoreidsearchanotherstore
+                        : "this store Id,Search another store"}
+                    </span>
                   </label>
                 </div>
               </div>
@@ -773,7 +831,9 @@ class TicketSystemStore extends Component {
                           aria-controls="storeSubdetail-tab"
                           aria-selected="true"
                         >
-                          Store Details
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.storedetails
+                            : "Store Details"}
                         </a>
                       </li>
                       {this.state.AddSelectDetail === true ? (
@@ -786,7 +846,9 @@ class TicketSystemStore extends Component {
                             aria-controls="selectedSubstore-tab"
                             aria-selected="false"
                           >
-                            Selected Store
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.selectedstore
+                              : "Selected Store"}
                           </a>
                         </li>
                       ) : null}
@@ -837,23 +899,33 @@ class TicketSystemStore extends Component {
                             },
                           },
                           {
-                            title: "Store Code",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.label.storecode
+                            : "Store Code",
                             dataIndex: "storeCode",
                           },
                           {
-                            title: "Store Name",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.label.storename
+                            : "Store Name",
                             dataIndex: "storeName",
                           },
                           {
-                            title: "Store Pin Code",
+                            title:  TranslationContext !== undefined
+                            ? TranslationContext.label.storepincode
+                            : "Store Pin Code",
                             dataIndex: "pincode",
                           },
                           {
-                            title: "Store Email ID",
+                            title:  TranslationContext !== undefined
+                            ? TranslationContext.span.storeemailid
+                            : "Store Email ID",
                             dataIndex: "storeEmailID",
                           },
                           {
-                            title: "Store Addres",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.label.storeaddress
+                            : "Store Address",
                             dataIndex: "address",
                           },
                         ]}
@@ -870,7 +942,9 @@ class TicketSystemStore extends Component {
                             this
                           )}
                         >
-                          ADD STORE
+                          {TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard.addstore
+                            : "ADD STORE"}
                         </button>
                       </div>
                     ) : null}
@@ -917,7 +991,9 @@ class TicketSystemStore extends Component {
                             },
                           },
                           {
-                            title: "Purpose",
+                            title:  TranslationContext !== undefined
+                            ? TranslationContext.span.purpose
+                            : "Purpose",
                             dataIndex: "storeID2",
                             render: (row, data) => {
                               return (
@@ -937,27 +1013,39 @@ class TicketSystemStore extends Component {
                             },
                           },
                           {
-                            title: "Store Code",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.label.storecode
+                            : "Store Code",
                             dataIndex: "storeCode",
                           },
                           {
-                            title: "Store Name",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.label.storename
+                            : "Store Name",
                             dataIndex: "storeName",
                           },
                           {
-                            title: "Store Pin Code",
+                            title:  TranslationContext !== undefined
+                            ? TranslationContext.label.storepincode
+                            : "Store Pin Code",
                             dataIndex: "pincode",
                           },
                           {
-                            title: "Store Email ID",
+                            title:  TranslationContext !== undefined
+                            ? TranslationContext.span.storeemailid
+                            : "Store Email ID",
                             dataIndex: "storeEmailID",
                           },
                           {
-                            title: "Store Addres",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.label.storeaddress
+                            : "Store Address",
                             dataIndex: "address",
                           },
                           {
-                            title: "Visit Date",
+                            title: TranslationContext !== undefined
+                            ? TranslationContext.span.visitdate
+                            : "Visit Date",
                             dataIndex: "storeVisitDate",
                             render: (row, data) => {
                               var storeId = 0;
