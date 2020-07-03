@@ -24,7 +24,7 @@ class OpenByPriorityPie extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
+   
     // let self = this;
     // axios({
     //   method: "post",
@@ -37,7 +37,7 @@ class OpenByPriorityPie extends Component {
     //     BrandID: "26, 31"
     //   }
     // }).then(function(res) {
-      debugger;
+      
       var propsData = this.props.data;
       let values = [];
       // let DashboardBillGraphData = res.data.responseData.priorityChart;

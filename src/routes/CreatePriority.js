@@ -1454,9 +1454,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyName",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.label.priorityname
-                                    : "Priority Name",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.priorityname
+                                        : "Priority Name",
                                   });
                                 } else {
                                   this.setState({
@@ -1466,9 +1467,10 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyName",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.label.priorityname
-                                    : "Priority Name",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.priorityname
+                                        : "Priority Name",
                                   });
                                 }
                               },
@@ -1506,9 +1508,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "createdBy",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.label.createdby
-                                    : "Created By",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.createdby
+                                        : "Created By",
                                   });
                                 } else {
                                   this.setState({
@@ -1517,9 +1520,10 @@ class CreatePriority extends Component {
                                     spriortyStatusFilterCheckbox: "",
                                     StatusModel: true,
                                     sortColumn: "createdBy",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.label.createdby
-                                    : "Created By",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.createdby
+                                        : "Created By",
                                   });
                                 }
                               },
@@ -1595,9 +1599,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "createdDate",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.th.createddate
-                                    : "Created Date",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.th.createddate
+                                        : "Created Date",
                                   });
                                 } else {
                                   this.setState({
@@ -1607,9 +1612,10 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "createdDate",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.th.createddate
-                                    : "Created Date",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.th.createddate
+                                        : "Created Date",
                                   });
                                 }
                               },
@@ -1651,9 +1657,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.label.status
-                                    : "Status",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.status
+                                        : "Status",
                                   });
                                 } else {
                                   this.setState({
@@ -1663,9 +1670,10 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: TranslationContext !== undefined
-                                    ? TranslationContext.label.status
-                                    : "Status",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.status
+                                        : "Status",
                                   });
                                 }
                               },

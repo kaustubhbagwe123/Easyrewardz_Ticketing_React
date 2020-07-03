@@ -77,7 +77,7 @@ class TicketToBillBarGraph extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
+   
    
       var propsData = this.props.data;
       let categories = [],

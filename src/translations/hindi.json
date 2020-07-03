@@ -469,7 +469,8 @@
     "entercustphonenoemailid": "ग्राहक फोन नंबर, ईमेल आईडी दर्ज करें",
     "contactdetailsemails": "संपर्क विवरण: ईमेल",
     "contactdetailsphones": "संपर्क विवरण: फोन",
-    "editbrand": "ब्रांड संपादित करें"
+    "editbrand": "ब्रांड संपादित करें",
+    "createcategory": "श्रेणी बनाएँ"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -1563,7 +1564,12 @@
     "pleaseenterbrandcode": "कृपया ब्रांड कोड दर्ज करें।",
     "pleaseenterbrandname": "कृपया ब्रांड नाम दर्ज करें।",
     "pleaseselectstatus": "कृपया पहले स्टेटस चुने।",
-    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें"
+    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें",
+    "pleaseenteralerttype": "कृपया अलर्ट टाइप दर्ज करें",
+    "pleaseselectcommunicationmode": "कृपया किसी भी संचार मोड का चयन करें",
+    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।",
+    "pleaseselectcategory": "कृपया श्रेणी का चयन करें।",
+    "pleaseselectsubcategory": "कृपया उपश्रेणी का चयन करें"
   },
   "alertmessage": {
     "usernotcreated": "उपयोगकर्ता नहीं बनाया गया",
@@ -1642,6 +1648,7 @@
     "alertnotdeleted": "अलर्ट हटाया नहीं गया",
     "alertupdatedsuccessfully": "चेतावनी सफलतापूर्वक अपडेट की गई।",
     "alertnotupdated": "चेतावनी अपडेट नहीं की गई।",
+    "alertalreadyexist": "अलर्ट पहले से मौजूद है!",
     "imageaddedsuccessfully": "चित्र सफलतापूर्वक जोड़ा गया।",
     "imagerejectedsuccessfully": "चित्र सफलतापूर्वक अस्वीकार।",
     "campaigndeletedsuccessfully": "अभियान सफलतापूर्वक हटा दिया गया।",
@@ -1716,7 +1723,10 @@
     "brandaddedsuccessfully": "ब्रांड सफलतापूर्वक जोड़ा गया।",
     "branddeletesuccessfully": "ब्रांड सफलतापूर्वक हटाएं।",
     "brandupdatedsuccessfully": "ब्रांड सफलतापूर्वक अपडेट किया गया।",
-    "brandnotupdated": "ब्रांड अपडेट नहीं हुआ।"
+    "brandnotupdated": "ब्रांड अपडेट नहीं हुआ।",
+    "pleaseselectsubcategory": "कृपया उपश्रेणी का चयन करें",
+    "pleaseselectcategory": "कृपया श्रेणी का चयन करें।",
+    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।"
   },
   "ticketingDashboard": {
     "viewMoreInsights": "अधिक जानकारी देखें",

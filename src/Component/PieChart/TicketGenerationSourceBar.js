@@ -57,7 +57,7 @@ class TicketGenerationSourceBar extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
+   
     // let self = this;
     // axios({
     //   method: "post",
@@ -70,7 +70,7 @@ class TicketGenerationSourceBar extends Component {
     //     BrandID: "26, 31"
     //   }
     // }).then(function(res) {
-      debugger;
+      
       var propsData = this.props.data;
       let categories = [],
         totalCountData = [];
