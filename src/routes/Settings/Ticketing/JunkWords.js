@@ -124,6 +124,7 @@ class JunkWords extends Component {
   };
 
   handleSaveJunkWords = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -138,7 +139,11 @@ class JunkWords extends Component {
         .then(function(res) {
           if (res.data.message === "Success") {
             self.setState({ loading: true });
-            NotificationManager.success("Record saved successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordsavedsuccessfully
+                : "Record saved successfully"
+            );
             self.handleJunkWordsList();
             self.handleAddJunkClose();
           } else {
@@ -159,6 +164,7 @@ class JunkWords extends Component {
   }
 
   handleUpdateJunkWords = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -173,7 +179,11 @@ class JunkWords extends Component {
       })
         .then(function(res) {
           if (res.data.message === "Success") {
-            NotificationManager.success("Record updated successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record updated successfully"
+            );
             self.handleAddJunkClose();
             self.handleJunkWordsList();
           } else {
@@ -187,6 +197,7 @@ class JunkWords extends Component {
   };
 
   handleDeleteJunkWords(junkKeywordID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -198,7 +209,11 @@ class JunkWords extends Component {
     })
       .then(function(res) {
         if (res.data.message === "Success") {
-          NotificationManager.success("Record deleted successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record deleted successfully"
+          );
           self.handleJunkWordsList();
         } else {
           NotificationManager.error(res.data.message);

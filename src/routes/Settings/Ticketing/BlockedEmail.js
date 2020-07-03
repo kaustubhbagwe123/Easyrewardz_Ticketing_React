@@ -191,6 +191,7 @@ class BlockEmail extends Component {
   };
 
   handleSaveBlockEmail = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -205,7 +206,11 @@ class BlockEmail extends Component {
         .then(function(res) {
           if (res.data.message === "Success") {
             self.setState({ loading: true });
-            NotificationManager.success("Record saved successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordsavedsuccessfully
+                : "Record saved successfully"
+            );
             self.handleAddEmailClose();
             self.handleBlockEmailList();
           } else {
@@ -226,6 +231,7 @@ class BlockEmail extends Component {
   }
 
   handleUpdateBlockEmail = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -240,7 +246,11 @@ class BlockEmail extends Component {
       })
         .then(function(res) {
           if (res.data.message === "Success") {
-            NotificationManager.success("Record updated successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record updated successfully"
+            );
             self.handleAddEmailClose();
             self.handleBlockEmailList();
           } else {
@@ -254,6 +264,7 @@ class BlockEmail extends Component {
   };
 
   handleDeleteBlockEmail(blockEmailID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -266,7 +277,11 @@ class BlockEmail extends Component {
       .then(function(res) {
         debugger;
         if (res.data.message === "Success") {
-          NotificationManager.success("Record deleted successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record deleted successfully"
+          );
           self.handleBlockEmailList();
         } else {
           NotificationManager.error(res.data.message);

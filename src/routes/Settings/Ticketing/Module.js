@@ -7,6 +7,8 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class Module extends Component {
   constructor(props) {
@@ -23,6 +25,7 @@ class Module extends Component {
       modulesItemsMyticket: [],
       selTab: "",
       loading: false,
+      translateLanguage: {},
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleGetModulesNames = this.handleGetModulesNames.bind(this);
@@ -42,6 +45,13 @@ class Module extends Component {
   componentDidMount() {
     this.handleGetModulesNames();
     // this.handleGetModulesItems();
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   checkModule = async (moduleItemID, moduleID) => {
@@ -108,6 +118,7 @@ class Module extends Component {
   };
 
   handleUpdatedModule(id) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var activeitem = "";
     var inactiveitem = "";
@@ -138,9 +149,17 @@ class Module extends Component {
       .then(function(res) {
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Updated successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated successfully."
+          );
         } else {
-          NotificationManager.error("Record Not Updated");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordnotupdated
+              : "Record Not Updated."
+          );
         }
         self.setState({
           activeID: [],
@@ -160,7 +179,7 @@ class Module extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let moduleID = data[0].moduleID;
@@ -219,7 +238,7 @@ class Module extends Component {
       },
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -245,20 +264,27 @@ class Module extends Component {
   };
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.a.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Modules
+            {TranslationContext !== undefined
+              ? TranslationContext.strong.modules
+              : "Modules"}
           </Link>
         </div>
 
@@ -276,10 +302,14 @@ class Module extends Component {
                       <Tab label={name.moduleName} key={i}>
                         <div className="switch switch-primary">
                           <label className="moduleswitchtext-main">
-                            Field Name
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.fieldname
+                              : "Field Name"}
                           </label>
                           <label className="moduleswitchtext-main1">
-                            Show/Hide
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.showhide
+                              : "Show/Hide"}
                           </label>
                         </div>
 
