@@ -55,14 +55,18 @@ ReactDOM.render(
     <Route path="/qa" component={QAApp} />
     <Route exact path="/" component={ProgramCodeSignIn} />
     <Route exact path="/SignIn" component={SignIn} />
-    <Route exact path="/LanguageSelection" component={TicketingLanguageSelection} />
+    <Route
+      exact
+      path="/LanguageSelection"
+      component={TicketingLanguageSelection}
+    />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/ChangePassword" component={ChangePassword} />
     <Route exact path="/storeChangePassword" component={StoreChangePassword} />
     <Route exact path="/languageSelection" component={LanguageSelection} />
     <Route exact path="/StoreProgramCode" component={StoreProgramCode} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
-    <Route exact path="/storeForgotpassword" component={StoreForgotPassword} /> 
+    <Route exact path="/storeForgotpassword" component={StoreForgotPassword} />
     <Route
       exact
       path="/storeUserForgotPassword"

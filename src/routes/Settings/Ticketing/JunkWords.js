@@ -45,7 +45,7 @@ class JunkWords extends Component {
       filterTxtValue: "",
       tempJunkWordsData: [],
       sortColumn: "",
-      sortHeader: ""
+      sortHeader: "",
     };
   }
 
@@ -59,7 +59,7 @@ class JunkWords extends Component {
       errors: {},
       JunkKeywordID: 0,
       JunkWords: "",
-      Reason: ""
+      Reason: "",
     });
   };
 
@@ -88,7 +88,7 @@ class JunkWords extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/JunkWords/ListJunkWords",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -96,19 +96,19 @@ class JunkWords extends Component {
         var data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            JunkWordsData: data
+            JunkWordsData: data,
           });
         }
         self.setState({
-          loading: false
+          loading: false,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
 
@@ -121,8 +121,8 @@ class JunkWords extends Component {
         headers: authHeader(),
         data: {
           JunkKeyword: this.state.JunkWords,
-          Reason: this.state.Reason
-        }
+          Reason: this.state.Reason,
+        },
       })
         .then(function(res) {
           if (res.data.message === "Success") {
@@ -134,7 +134,7 @@ class JunkWords extends Component {
             NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
@@ -157,8 +157,8 @@ class JunkWords extends Component {
         data: {
           JunkKeywordID: this.state.JunkKeywordID,
           JunkKeyword: this.state.JunkWords,
-          Reason: this.state.Reason
-        }
+          Reason: this.state.Reason,
+        },
       })
         .then(function(res) {
           if (res.data.message === "Success") {
@@ -169,7 +169,7 @@ class JunkWords extends Component {
             NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
@@ -183,7 +183,7 @@ class JunkWords extends Component {
         config.apiUrl +
         "/JunkWords/DeleteJunkWords?junkKeywordID=" +
         junkKeywordID,
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         if (res.data.message === "Success") {
@@ -193,7 +193,7 @@ class JunkWords extends Component {
           NotificationManager.error(res.data.message);
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -234,7 +234,7 @@ class JunkWords extends Component {
 
     this.setState({
       isortA: true,
-      JunkWordsData: itemsArray
+      JunkWordsData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -279,7 +279,7 @@ class JunkWords extends Component {
 
     this.setState({
       isortA: true,
-      JunkWordsData: itemsArray
+      JunkWordsData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -421,7 +421,7 @@ class JunkWords extends Component {
       issueColor: "",
       nameColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -431,7 +431,7 @@ class JunkWords extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.junkKeyword === sItems[i]
+              (a) => a.junkKeyword === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -442,14 +442,14 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column"
+        issueColor: "sort-column",
       });
     } else if (column === "reason") {
       var sItems = sreasonFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.reason === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.reason === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -459,14 +459,14 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        nameColor: "sort-column"
+        nameColor: "sort-column",
       });
     } else if (column === "enteredDate") {
       var sItems = senteredDateFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.Date === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.Date === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -476,14 +476,16 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     } else if (column === "enteredBy") {
       var sItems = senteredByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.enteredBy === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.enteredBy === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -493,12 +495,12 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempJunkWordsData: itemsArray
+      tempJunkWordsData: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -513,7 +515,7 @@ class JunkWords extends Component {
         sortFilterjunkKeyword: this.state.sortjunkKeyword,
         sortFilterreason: this.state.sortreason,
         sortFilterenteredDate: this.state.sortenteredBy,
-        sortFilterenteredBy: this.state.sortenteredBy
+        sortFilterenteredBy: this.state.sortenteredBy,
       });
       if (this.state.sortColumn === "junkKeyword") {
         if (this.state.sjunkKeywordFilterCheckbox === "") {
@@ -521,7 +523,7 @@ class JunkWords extends Component {
           this.setState({
             sreasonFilterCheckbox: "",
             senteredDateFilterCheckbox: "",
-            senteredByFilterCheckbox: ""
+            senteredByFilterCheckbox: "",
           });
         }
       }
@@ -531,7 +533,7 @@ class JunkWords extends Component {
           this.setState({
             sjunkKeywordFilterCheckbox: "",
             senteredDateFilterCheckbox: "",
-            senteredByFilterCheckbox: ""
+            senteredByFilterCheckbox: "",
           });
         }
       }
@@ -541,7 +543,7 @@ class JunkWords extends Component {
           this.setState({
             sjunkKeywordFilterCheckbox: "",
             sreasonFilterCheckbox: "",
-            senteredByFilterCheckbox: ""
+            senteredByFilterCheckbox: "",
           });
         }
       }
@@ -551,7 +553,7 @@ class JunkWords extends Component {
           this.setState({
             sjunkKeywordFilterCheckbox: "",
             sreasonFilterCheckbox: "",
-            senteredDateFilterCheckbox: ""
+            senteredDateFilterCheckbox: "",
           });
         }
       }
@@ -565,7 +567,7 @@ class JunkWords extends Component {
         sortFilterjunkKeyword: this.state.sortjunkKeyword,
         sortFilterreason: this.state.sortreason,
         sortFilterenteredDate: this.state.sortenteredBy,
-        sortFilterenteredBy: this.state.sortenteredBy
+        sortFilterenteredBy: this.state.sortenteredBy,
       });
     }
   }
@@ -589,7 +591,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -599,7 +601,7 @@ class JunkWords extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -612,7 +614,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -621,7 +623,7 @@ class JunkWords extends Component {
           senteredByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -634,7 +636,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -643,7 +645,7 @@ class JunkWords extends Component {
           senteredByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -656,7 +658,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -665,7 +667,7 @@ class JunkWords extends Component {
           senteredDateFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -679,14 +681,14 @@ class JunkWords extends Component {
         this.state.sortjunkKeyword,
         e.target.value,
         {
-          keys: ["junkKeyword"]
+          keys: ["junkKeyword"],
         }
       );
       if (sortFilterjunkKeyword.length > 0) {
         this.setState({ sortFilterjunkKeyword });
       } else {
         this.setState({
-          sortFilterjunkKeyword: this.state.sortjunkKeyword
+          sortFilterjunkKeyword: this.state.sortjunkKeyword,
         });
       }
     }
@@ -695,14 +697,14 @@ class JunkWords extends Component {
         this.state.sortreason,
         e.target.value,
         {
-          keys: ["reason"]
+          keys: ["reason"],
         }
       );
       if (sortFilterreason.length > 0) {
         this.setState({ sortFilterreason });
       } else {
         this.setState({
-          sortFilterreason: this.state.sortreason
+          sortFilterreason: this.state.sortreason,
         });
       }
     }
@@ -716,7 +718,7 @@ class JunkWords extends Component {
         this.setState({ sortFilterenteredDate });
       } else {
         this.setState({
-          sortFilterenteredDate: this.state.sortenteredDate
+          sortFilterenteredDate: this.state.sortenteredDate,
         });
       }
     }
@@ -730,7 +732,7 @@ class JunkWords extends Component {
         this.setState({ sortFilterenteredBy });
       } else {
         this.setState({
-          sortFilterenteredBy: this.state.sortenteredBy
+          sortFilterenteredBy: this.state.sortenteredBy,
         });
       }
     }
@@ -925,15 +927,21 @@ class JunkWords extends Component {
             </Modal>
           </div>
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.a.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Junk Words
+            {TranslationContext !== undefined
+              ? TranslationContext.strong.junkwords
+              : "Junk Words"}
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -942,7 +950,10 @@ class JunkWords extends Component {
                 className="addplusbtnReport"
                 onClick={this.AddNewJunkWords}
               >
-                + Add New
+                +&nbsp;
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.addnew
+                  : "Add New"}
               </button>
             </div>
           </div>
@@ -1046,7 +1057,7 @@ class JunkWords extends Component {
                         </span>
                       ),
                       sortable: false,
-                      accessor: "junkKeyword"
+                      accessor: "junkKeyword",
                     },
                     {
                       Header: (
@@ -1062,7 +1073,7 @@ class JunkWords extends Component {
                         </span>
                       ),
                       sortable: false,
-                      accessor: "reason"
+                      accessor: "reason",
                     },
                     {
                       Header: (
@@ -1078,7 +1089,7 @@ class JunkWords extends Component {
                         </span>
                       ),
                       sortable: false,
-                      accessor: "enteredDate"
+                      accessor: "enteredDate",
                     },
                     {
                       Header: (
@@ -1095,12 +1106,12 @@ class JunkWords extends Component {
                       ),
                       accessor: "enteredBy",
                       sortable: false,
-                      Cell: row => {
+                      Cell: (row) => {
                         var ids = row.original["Id"];
                         return (
                           <div>
                             <span>
-                            {row.original.enteredBy}
+                              {row.original.enteredBy}
                               <Popover
                                 content={
                                   <>
@@ -1111,8 +1122,7 @@ class JunkWords extends Component {
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Updated Date:{" "}
-                                        {row.original.modifyDate}
+                                        Updated Date: {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>
@@ -1129,13 +1139,13 @@ class JunkWords extends Component {
                             </span>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
                       Header: <span>Actions</span>,
                       sortable: false,
                       accessor: "actionReport",
-                      Cell: row => (
+                      Cell: (row) => (
                         <div className="report-action">
                           <div>
                             <Popover
@@ -1190,8 +1200,8 @@ class JunkWords extends Component {
                             </button>
                           </div>
                         </div>
-                      )
-                    }
+                      ),
+                    },
                   ]}
                   resizable={false}
                   defaultPageSize={10}
