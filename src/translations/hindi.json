@@ -1771,7 +1771,13 @@
     "commentfieldiscompulsory":"टिप्पणी क्षेत्र अनिवार्य है।",
     "ticketaddedinknowledgebase":"नॉलेजबेस में टिकट जोड़ा गया।",
     "timedate":"समय तिथि",
-    "opentickets":"टिकट खोलें"
+    "opentickets":"टिकट खोलें",
+    "totaltickets":"कुल टिकट",
+    "needtochangem":"मीटर बदलने की आवश्यकता ...",
+    "addthisticketinknowledgebase":"नॉलेज बेस में यह टिकट जोड़ें?",
+    "targetclosuredate":"लक्ष्य बंद करने की तारीख",
+    "selectticketactiontype":"टिकट एक्शन टाइप चुनें",
+    "nostorattached":"कोई स्टोर संलग्न नहीं है"
 },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."

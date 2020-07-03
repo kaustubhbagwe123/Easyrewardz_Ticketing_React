@@ -614,9 +614,11 @@ class TicketSystem extends Component {
         .then(function(res) {
           let KbPopupData = res.data.responseData;
           if (KbPopupData.length === 0 || KbPopupData === null) {
-            NotificationManager.error( TranslationContext !== undefined
-              ? TranslationContext.label.norecordfound
-              : "No Record Found.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.label.norecordfound
+                : "No Record Found."
+            );
           }
           self.setState({ KbPopupData: KbPopupData });
         })
@@ -1361,15 +1363,20 @@ class TicketSystem extends Component {
         }
       } else {
         this.setState({
-          ticketTitleCompulsion: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.tickettitlefieldiscompulsory
-          : "Ticket Title field is compulsory.",
-          ticketDetailsCompulsion: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.ticketdetailsfieldiscompulsory
-          : "Ticket Details field is compulsory.",
-          ticketBrandCompulsion: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.brandfieldiscompulsory
-          : "Brand field is compulsory.",
+          ticketTitleCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard
+                  .tickettitlefieldiscompulsory
+              : "Ticket Title field is compulsory.",
+          ticketDetailsCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard
+                  .ticketdetailsfieldiscompulsory
+              : "Ticket Details field is compulsory.",
+          ticketBrandCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.brandfieldiscompulsory
+              : "Brand field is compulsory.",
           ticketCategoryCompulsion:
             TranslationContext !== undefined
               ? TranslationContext.ticketingDashboard.categoryfieldiscompulsory
@@ -1383,15 +1390,21 @@ class TicketSystem extends Component {
             TranslationContext !== undefined
               ? TranslationContext.ticketingDashboard.issuetypefieldiscompulsory
               : "Issue Type field is compulsory.",
-          channelPurchaseCompulsion: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.channelofpurchasefieldiscompulsory
-          : "Channel of Purchase field is compulsory.",
+          channelPurchaseCompulsion:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard
+                  .channelofpurchasefieldiscompulsory
+              : "Channel of Purchase field is compulsory.",
         });
       }
     } else {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.pleaseselectticketpriority
-        : "Please Select Ticket Priority.", "", 2000);
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.pleaseselectticketpriority
+          : "Please Select Ticket Priority.",
+        "",
+        2000
+      );
     }
 
     // Don't remove this function
@@ -2694,7 +2707,11 @@ class TicketSystem extends Component {
                                   htmlFor="fil-open"
                                   style={{ paddingLeft: "25px" }}
                                 >
-                                  <span>Inform Store</span>
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.informstore
+                                      : "Inform Store"}
+                                  </span>
                                 </label>
                               </div>
                             </li>
