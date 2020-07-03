@@ -1266,7 +1266,8 @@
     "all": "सब",
     "fileuploadlogs": "फ़ाइल अपलोड लॉग",
     "order": "गण",
-    "cardassets":"कार्ड एसेट्स"
+    "cardassets":"कार्ड एसेट्स",
+    "placeholders":"प्लेसहोल्डर"
   },
   "mybutton": {
     "edit": "संपादित करें"
@@ -1380,7 +1381,9 @@
     "SelectResponse":"प्रतिक्रिया चुनें",
     "days":"दिन",
     "am":"ए एम",
-    "pm":"पी एम"
+    "pm":"पी एम",
+    "selectchannelofpurchase":"खरीद का चैनल चुनें",
+    "kblink":"केबी लिंक"
     
   },
   "radio": {
@@ -1699,8 +1702,31 @@
     "purchasestorecodeaddress":"खरीद स्टोर कोड / पता",
     "addremarks":"टिप्पणी जोड़ें",
     "agentselectionisrequired":"एजेंट चयन आवश्यक है",
-    "allfieldsarerequired":"सभी फ़ील्ड आवश्यक हैं"
-  },
+    "allfieldsarerequired":"सभी फ़ील्ड आवश्यक हैं",
+    "draftcreationdate":"ड्राफ्ट निर्माण तिथि",
+    "wecouldntfindthecustomerwiththis":"हम इसके साथ ग्राहक नहीं ढूंढ सके",
+    "phonenumberemailId":"फोन नंबर, ईमेल आईडी",
+    "addcustomer":"ग्राहक जोड़ें",
+    "addnewcustomer":"नया ग्राहक जोड़ें",
+    "newcustomeraddedsuccessfully":"नए ग्राहक को सफलतापूर्वक जोड़ा गया।",
+    "emailidandalternateemailidfieldscannotbesame":"ईमेल आईडी और वैकल्पिक ईमेल आईडी फ़ील्ड समान नहीं हो सकते।",
+    "searchfieldiscompulsory":"खोज क्षेत्र अनिवार्य है",
+    "selectbrand":"ब्रांड का चयन करें",
+    "writeyournotehere":"अपना नोट यहाँ लिखें",
+    "knowlegebase":"ज्ञानधार",
+    "onlynumericvalueallow":"केवल संख्यात्मक मान की अनुमति है",
+    "addmanually":"मैन्युअल रूप से जोड़ें",
+    "wecouldntfindtheorderdetailswith":"हमें ऑर्डर विवरण नहीं मिला",
+    "thisorderid":"यह क्रम क्रमांक ई.डी.",
+    "billid":"बिल आईडी",
+    "productbarcode":"उत्पाद बार कोड",
+    "modepayment":"भुगतान का प्रकार",
+    "mrp":"एम आर पी",
+    "requiredsize":"आवश्यक आकार",
+    "purchasefromstorename":"दुकान के नाम से खरीद",
+    "purchasefromstoreaddres":"स्टोर के पते से खरीद",
+    "articlemrp":"लेख एम.आर.पी."
+},
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."
     }
