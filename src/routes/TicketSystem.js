@@ -2364,7 +2364,9 @@ class TicketSystem extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
+                                {this.state.fileText} {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard.files
+                                      : "files"}
                               </label>
                             </li>
                             <li>
@@ -2493,7 +2495,7 @@ class TicketSystem extends Component {
                             onChange={this.setAssignedToValue.bind(this)}
                           >
                             <option value="0">
-                              {" "}
+                              
                               {TranslationContext !== undefined
                                 ? TranslationContext.link.users
                                 : "Users"}
@@ -2515,7 +2517,7 @@ class TicketSystem extends Component {
                             onChange={this.setPlaceholderValue.bind(this)}
                           >
                             <option value="0">
-                              {" "}
+                              
                               {TranslationContext !== undefined
                                 ? TranslationContext.link.placeholders
                                 : "Placeholders"}
@@ -2597,7 +2599,6 @@ class TicketSystem extends Component {
                         onChange={this.setAssignedToValue.bind(this)}
                       >
                         <option value="0">
-                          {" "}
                           {TranslationContext !== undefined
                             ? TranslationContext.link.users
                             : "Users"}
@@ -2739,7 +2740,9 @@ class TicketSystem extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
+                                {this.state.fileText} {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard.files
+                                      : "files"}
                               </label>
                             </li>
                             <li>

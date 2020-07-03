@@ -1786,7 +1786,21 @@
     "addthisticketinknowledgebase":"नॉलेज बेस में यह टिकट जोड़ें?",
     "targetclosuredate":"लक्ष्य बंद करने की तारीख",
     "selectticketactiontype":"टिकट एक्शन टाइप चुनें",
-    "nostorattached":"कोई स्टोर संलग्न नहीं है"
+    "nostorattached":"कोई स्टोर संलग्न नहीं है",
+    "files":"फ़ाइलें",
+    "claimdetails":"दावा विवरण",
+    "attachedimages":"संलग्न चित्र",
+    "productname":"उत्पाद का नाम",
+    "taskcreatedsuccessfully":"टास्क सफलतापूर्वक बनाया गया।",
+    "tasknotcreated":"कार्य नहीं बनाया गया।",
+    "thetitlefieldiscompulsory":"शीर्षक फ़ील्ड अनिवार्य है।",
+    "thedescriptionfieldiscompulsory":"विवरण फ़ील्ड अनिवार्य है।",
+    "thedepartmentfieldiscompulsory":"विभाग का क्षेत्र अनिवार्य है।",
+    "thefunctionfieldiscompulsory":"कार्य क्षेत्र अनिवार्य है।",
+    "theassigntofieldiscompulsory":"क्षेत्र को असाइन करना अनिवार्य है।",
+    "thepriorityfieldiscompulsory":"प्राथमिकता क्षेत्र अनिवार्य है।",
+    "pleaseaddcomment":"कृपया टिप्पणी जोड़ें।",
+    "duedate":"नियत तारीख"
 },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."
