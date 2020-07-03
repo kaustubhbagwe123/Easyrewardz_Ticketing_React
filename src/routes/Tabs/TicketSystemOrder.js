@@ -12,7 +12,7 @@ import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
-import moment from "moment";
+// import moment from "moment";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
 // import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
@@ -74,7 +74,7 @@ class TicketSystemOrder extends Component {
       SelectedAllItem: [],
       saveLoader: false,
       selectedInvoiceNo: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -137,7 +137,7 @@ class TicketSystemOrder extends Component {
         TicketID: ticketIDS,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
@@ -179,7 +179,7 @@ class TicketSystemOrder extends Component {
       });
   }
   handleRequireSize(e, rowData) {
-    //
+    const TranslationContext = this.state.translateLanguage.default;
     var id = rowData.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var reg = /^[0-9\b]+$/;
@@ -193,7 +193,11 @@ class TicketSystemOrder extends Component {
 
       this.setState({ OrderSubItem });
     } else {
-      NotificationManager.error("Only numeric value allow.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.onlynumericvalueallow
+          : "Only numeric value allow."
+      );
     }
   }
 
@@ -204,8 +208,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader(),
     })
-      .then(function (res) {
-        //
+      .then(function(res) {
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
@@ -215,7 +218,6 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderTableOpen() {
-    //
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
@@ -258,13 +260,11 @@ class TicketSystemOrder extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   setTicketSourceValue = (e) => {
-    //
     let value = e.currentTarget.value;
     this.setState({ selectedTicketSource: value });
   };
 
   handleCheckOrder = (e) => {
-    //
     this.setState({
       custAttachOrder: this.state.custAttachOrder === 1 ? 0 : 1,
       orderDetailsData: [],
@@ -285,8 +285,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader(),
     })
-      .then(function (res) {
-        //
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -304,15 +303,13 @@ class TicketSystemOrder extends Component {
       });
   }
   handleGetManuallyTableData() {
-    //
     let self = this;
     axios({
       method: "post",
       headers: authHeader(),
       url: config.apiUrl + "/Master/getPaymentMode",
     })
-      .then(function (res) {
-        //
+      .then(function(res) {
         let finalData = res.data.data;
         self.setState({ finalData: finalData });
       })
@@ -339,7 +336,7 @@ class TicketSystemOrder extends Component {
             CustomerID: CustID,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let Msg = res.data.message;
             let mainData = res.data.responseData;
@@ -380,7 +377,7 @@ class TicketSystemOrder extends Component {
             CustomerID: CustID,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             //
             let Msg = res.data.message;
             let mainData = res.data.responseData;
@@ -419,7 +416,7 @@ class TicketSystemOrder extends Component {
           CustomerID: CustID,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           // let Msg = res.data.message;
           let mainData = res.data.responseData;
@@ -477,7 +474,7 @@ class TicketSystemOrder extends Component {
           RequireSize: this.state.requiredSize,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
 
@@ -503,9 +500,11 @@ class TicketSystemOrder extends Component {
               saveLoader: false,
             });
           } else {
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.span.ordernotadded
-              : "Order not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.span.ordernotadded
+                : "Order not added."
+            );
             self.setState({
               saveLoader: false,
             });
@@ -541,7 +540,7 @@ class TicketSystemOrder extends Component {
           SearchText: SearchData[field],
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           //
           let status = res.data.message;
           var data = res.data.responseData;
@@ -586,7 +585,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/getPaymentMode",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let modeData = res.data.responseData;
         self.setState({ modeData: modeData });
       })
@@ -745,7 +744,7 @@ class TicketSystemOrder extends Component {
           InvoiceDate: rowData.invoiceDate,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
@@ -1241,7 +1240,8 @@ class TicketSystemOrder extends Component {
                       <b>
                         {TranslationContext !== undefined
                           ? TranslationContext.label.customerwanttoattachorder
-                          : "Customer Want to attach order"}</b>
+                          : "Customer Want to attach order"}
+                      </b>
                     </label>
                   </div>
                   <div className="col-md-6 d-flex justify-content-end">
@@ -1335,16 +1335,18 @@ class TicketSystemOrder extends Component {
                 <input
                   type="text"
                   className="searchtextpopup"
-                  placeholder={TranslationContext !== undefined
-                    ? TranslationContext.label.searchorder
-                    : "Search Order"}
+                  placeholder={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.searchorder
+                      : "Search Order"
+                  }
                   name="ModalorderNumber"
                   value={this.state.ModalorderNumber}
                   autoComplete="off"
                   onChange={this.handleOrderChange.bind(this)}
                   disabled={this.state.custAttachOrder === 1 ? true : false}
-                // value={this.state.filterAll}
-                // onChange={this.filterAll}
+                  // value={this.state.filterAll}
+                  // onChange={this.filterAll}
                 />
                 <img
                   src={SearchBlackImg}
@@ -1395,51 +1397,59 @@ class TicketSystemOrder extends Component {
                     },
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.invoicenumber
-                      : "Invoice Number",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicenumber
+                        : "Invoice Number",
                     dataIndex: "invoiceNumber",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.invoicedate
-                      : "Invoice Date",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicedate
+                        : "Invoice Date",
                     dataIndex: "dateFormat",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.itemcount
-                      : "Item Count",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemcount
+                        : "Item Count",
                     dataIndex: "itemCount",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.itemprice
-                      : "Item Price",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemprice
+                        : "Item Price",
                     dataIndex: "ordeItemPrice",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.pricepaid
-                      : "Price Paid",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.pricepaid
+                        : "Price Paid",
                     dataIndex: "orderPricePaid",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.storecode
-                      : "Store Code",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storecode
+                        : "Store Code",
                     dataIndex: "storeCode",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.storeaddress
-                      : "Store Address",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storeaddress
+                        : "Store Address",
                     dataIndex: "storeAddress",
                   },
                   {
-                    title: TranslationContext !== undefined
-                      ? TranslationContext.span.discount
-                      : "Discount",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.discount
+                        : "Discount",
                     dataIndex: "discount",
                   },
                 ]}
@@ -1482,31 +1492,52 @@ class TicketSystemOrder extends Component {
                     },
                   },
                   {
-                    title: "Invoice Number",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicenumber
+                        : "Invoice Number",
                     dataIndex: "invoiceNumber",
                   },
                   {
-                    title: "Invoice Date",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicedate
+                        : "Invoice Date",
                     dataIndex: "dateFormat",
                   },
                   {
-                    title: "Item Count",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemcount
+                        : "Item Count",
                     dataIndex: "itemCount",
                   },
                   {
-                    title: "Item Price",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemprice
+                        : "Item Price",
                     dataIndex: "ordeItemPrice",
                   },
                   {
-                    title: "Price Paid",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.pricepaid
+                        : "Price Paid",
                     dataIndex: "orderPricePaid",
                   },
                   {
-                    title: "Store Code",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storecode
+                        : "Store Code",
                     dataIndex: "storeCode",
                   },
                   {
-                    title: "Store Address",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storeaddress
+                        : "Store Address",
                     dataIndex: "storeAddress",
                   },
                   {
@@ -1535,7 +1566,7 @@ class TicketSystemOrder extends Component {
                                   name="AllItem"
                                   checked={
                                     this.state.CheckBoxAllItem[
-                                    item.articleNumber
+                                      item.articleNumber
                                     ] === true
                                   }
                                   onChange={this.checkIndividualItem.bind(
@@ -1564,7 +1595,10 @@ class TicketSystemOrder extends Component {
                           dataIndex: "itemPrice",
                         },
                         {
-                          title: "Price Paid",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.pricepaid
+                              : "Price Paid",
                           dataIndex: "pricePaid",
                         },
                         {
@@ -1617,9 +1651,11 @@ class TicketSystemOrder extends Component {
                       <input
                         type="text"
                         className="systemordersearch"
-                        placeholder={TranslationContext !== undefined
-                          ? TranslationContext.label.searchorderbyordernumber
-                          : "Search Order By Order Number"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.searchorderbyordernumber
+                            : "Search Order By Order Number"
+                        }
                         name="orderNumber"
                         value={this.state.orderNumber}
                         autoComplete="off"
@@ -1634,7 +1670,7 @@ class TicketSystemOrder extends Component {
                         alt="Search"
                         className="systemorder-imgsearch"
                         onClick={this.handleOrderSearchData.bind(this, "1")}
-                      // disabled={this.state.custAttachOrder === 1 ? true : false}
+                        // disabled={this.state.custAttachOrder === 1 ? true : false}
                       />
                     </div>
                   </form>
@@ -1660,8 +1696,16 @@ class TicketSystemOrder extends Component {
                     />
                     <br />
                     <label className="lbl-count-foundData">
-                      We couldn't find the order details with
-                      <br /> <span> this order Id</span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .wecouldntfindtheorderdetailswith
+                        : "We couldn't find the order details with"}
+                      <br />
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard.thisorderid
+                          : "this order Id"}
+                      </span>
                     </label>
                   </div>
                   <div className="addmanualbtn">
@@ -1670,7 +1714,9 @@ class TicketSystemOrder extends Component {
                       className="addmanual"
                       onClick={this.handleChangeToggle.bind(this)}
                     >
-                      Add Manually
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.addmanually
+                        : "Add Manually"}
                     </button>
                   </div>
                 </div>
@@ -1682,7 +1728,11 @@ class TicketSystemOrder extends Component {
             <div>
               <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
                 <div className="col-md-6">
-                  <label className="addmanuallytext">Add Manually</label>
+                  <label className="addmanuallytext">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.addmanually
+                      : "Add Manually"}
+                  </label>
                 </div>
               </div>
               <div className="row m-b-10 m-l-10 m-r-10">
@@ -1690,7 +1740,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Order ID"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.p.orderid
+                        : "Order ID"
+                    }
                     name="orderId"
                     maxLength={10}
                     value={this.state.orderId}
@@ -1706,7 +1760,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Bill ID"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.billid
+                        : "Bill ID"
+                    }
                     name="billId"
                     maxLength={10}
                     value={this.state.billId}
@@ -1725,7 +1783,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Product Bar Code"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.productbarcode
+                        : "Product Bar Code"
+                    }
                     name="productBarCode"
                     maxLength={10}
                     value={this.state.productBarCode}
@@ -1757,7 +1819,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.setTicketSourceValue}
                     className="category-select-system dropdown-label"
                   >
-                    <option>Channel Of Purchase</option>
+                    <option>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.channelofpurchase
+                        : "Channel Of Purchase"}
+                    </option>
                     {this.state.ChannelOfPurchaseData !== null &&
                       this.state.ChannelOfPurchaseData.map((item, i) => (
                         <option key={i} value={item.channelOfPurchaseID}>
@@ -1784,7 +1850,9 @@ class TicketSystemOrder extends Component {
                       value=""
                       className="select-sub-category-placeholder"
                     >
-                      Mode Of Payment
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.modepayment
+                        : "Mode Of Payment"}
                     </option>
                     {this.state.modeData !== null &&
                       this.state.modeData.map((item, i) => (
@@ -1807,11 +1875,15 @@ class TicketSystemOrder extends Component {
                   <DatePicker
                     selected={this.state.OrderCreatDate}
                     onChange={this.handleByDateCreate}
-                    placeholderText="Date"
+                    placeholderText={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.date
+                        : "Date"
+                    }
                     showMonthDropdown
                     showYearDropdown
                     className="addmanuallytext1"
-                  // className="form-control"
+                    // className="form-control"
                   />
                   {this.validator.message(
                     "Date",
@@ -1826,7 +1898,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="MRP"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.mrp
+                        : "MRP"
+                    }
                     name="orderMRP"
                     value={this.state.orderMRP}
                     onChange={this.handleNumberOnchange}
@@ -1843,7 +1919,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Price Paid"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.pricepaid
+                        : "Price Paid"
+                    }
                     name="pricePaid"
                     value={this.state.pricePaid}
                     onChange={this.handleNumberOnchange}
@@ -1863,7 +1943,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Discount"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.discount
+                        : "Discount"
+                    }
                     name="discount"
                     value={this.state.discount}
                     onChange={this.handleNumberOnchange}
@@ -1880,7 +1964,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Size"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.size
+                        : "Size"
+                    }
                     name="size"
                     value={this.state.size}
                     // onChange={this.handleNumberOnchange}
@@ -1897,7 +1985,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Required Size"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.requiredsize
+                        : "Required Size"
+                    }
                     name="requiredSize"
                     value={this.state.requiredSize}
                     // onChange={this.handleNumberOnchange}
@@ -1934,10 +2026,15 @@ class TicketSystemOrder extends Component {
                         {item.storeName}
                       </div>
                     )}
-                    renderInput={function (props) {
+                    renderInput={function(props) {
                       return (
                         <input
-                          placeholder="Purchase from Store name"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard
+                                  .purchasefromstorename
+                              : "Purchase from Store name"
+                          }
                           className="addmanuallytext1"
                           type="text"
                           {...props}
@@ -1971,7 +2068,12 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Purchase from Store Addres"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .purchasefromstoreaddres
+                        : "Purchase from Store Address"
+                    }
                     name="purchaseFrmStorAddress"
                     value={this.state.StorAddress.address}
                     // onChange={this.handleManuallyOnchange}
@@ -1986,7 +2088,7 @@ class TicketSystemOrder extends Component {
                     type="button"
                     className="addmanual m-t-15"
                     onClick={this.hadleAddManuallyOrderData.bind(this)}
-                  // disabled={this.state.saveLoader}
+                    // disabled={this.state.saveLoader}
                   >
                     {/* {this.state.saveLoader ? (
                       <FontAwesomeIcon
@@ -1997,7 +2099,9 @@ class TicketSystemOrder extends Component {
                     ) : (
                       ""
                     )} */}
-                    SAVE
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.save
+                      : "SAVE"}
                   </button>
                 </div>
                 <div className="col-md-3">
@@ -2006,7 +2110,9 @@ class TicketSystemOrder extends Component {
                     className="addmanual m-t-15"
                     onClick={this.handleChangeToggle.bind(this)}
                   >
-                    CANCEL
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.cancel
+                      : "CANCEL"}
                   </button>
                 </div>
               </div>
@@ -2023,7 +2129,9 @@ class TicketSystemOrder extends Component {
                     className="orderdetailpopup"
                     style={{ marginTop: "3px" }}
                   >
-                    Order Details
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.orderdetails
+                      : "Order Details"}
                   </label>
                 </div>
                 <div className="col-md-3">
@@ -2032,7 +2140,9 @@ class TicketSystemOrder extends Component {
                       className="orderdetailpopup"
                       style={{ marginTop: "3px" }}
                     >
-                      Order
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.order
+                        : "Order"}
                     </label>
                     <div className="orderswitch orderswitchitem">
                       <div className="switch switch-primary d-inline">
@@ -2053,7 +2163,9 @@ class TicketSystemOrder extends Component {
                       className="orderdetailpopup"
                       style={{ marginTop: "3px" }}
                     >
-                      Item
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.item
+                        : "Item"}
                     </label>
                   </div>
                 </div>
@@ -2090,35 +2202,59 @@ class TicketSystemOrder extends Component {
                       },
                     },
                     {
-                      title: "Invoice Number",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicenumber
+                          : "Invoice Number",
                       dataIndex: "invoiceNumber",
                     },
                     {
-                      title: "Invoice Date",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicedate
+                          : "Invoice Date",
                       dataIndex: "dateFormat",
                     },
                     {
-                      title: "Item Count",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemcount
+                          : "Item Count",
                       dataIndex: "itemCount",
                     },
                     {
-                      title: "Item Price",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemprice
+                          : "Item Price",
                       dataIndex: "ordeItemPrice",
                     },
                     {
-                      title: "Price Paid",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.pricepaid
+                          : "Price Paid",
                       dataIndex: "orderPricePaid",
                     },
                     {
-                      title: "Store Code",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storecode
+                          : "Store Code",
                       dataIndex: "storeCode",
                     },
                     {
-                      title: "Store Address",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storeaddress
+                          : "Store Address",
                       dataIndex: "storeAddress",
                     },
                     {
-                      title: "Discount",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.discount
+                          : "Discount",
                       dataIndex: "discount",
                     },
                   ]}
@@ -2161,35 +2297,59 @@ class TicketSystemOrder extends Component {
                       },
                     },
                     {
-                      title: "Invoice Number",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicenumber
+                          : "Invoice Number",
                       dataIndex: "invoiceNumber",
                     },
                     {
-                      title: "Invoice Date",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicedate
+                          : "Invoice Date",
                       dataIndex: "dateFormat",
                     },
                     {
-                      title: "Item Count",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemcount
+                          : "Item Count",
                       dataIndex: "itemCount",
                     },
                     {
-                      title: "Item Price",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemprice
+                          : "Item Price",
                       dataIndex: "ordeItemPrice",
                     },
                     {
-                      title: "Price Paid",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.pricepaid
+                          : "Price Paid",
                       dataIndex: "orderPricePaid",
                     },
                     {
-                      title: "Store Code",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storecode
+                          : "Store Code",
                       dataIndex: "storeCode",
                     },
                     {
-                      title: "Store Address",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storeaddress
+                          : "Store Address",
                       dataIndex: "storeAddress",
                     },
                     {
-                      title: "Discount",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.discount
+                          : "Discount",
                       dataIndex: "discount",
                     },
                   ]}
@@ -2214,7 +2374,7 @@ class TicketSystemOrder extends Component {
                                     name="AllItem"
                                     checked={
                                       this.state.CheckBoxAllItem[
-                                      item.articleNumber
+                                        item.articleNumber
                                       ] === true
                                     }
                                     onChange={this.checkIndividualItem.bind(
@@ -2231,27 +2391,47 @@ class TicketSystemOrder extends Component {
                             },
                           },
                           {
-                            title: "Article Number",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.articlenumber
+                                : "Article Number",
                             dataIndex: "articleNumber",
                           },
                           {
-                            title: "Article Name",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.articlename
+                                : "Article Name",
                             dataIndex: "articleName",
                           },
                           {
-                            title: "Article MRP",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard
+                                    .articlemrp
+                                : "Article MRP",
                             dataIndex: "itemPrice",
                           },
                           {
-                            title: "Price Paid",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.pricepaid
+                                : "Price Paid",
                             dataIndex: "pricePaid",
                           },
                           {
-                            title: "Discount",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.discount
+                                : "Discount",
                             dataIndex: "discount",
                           },
                           {
-                            title: "Required Size",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard
+                                    .requiredsize
+                                : "Required Size",
                             dataIndex: "requireSize",
                             render: (data, record) => {
                               return (
@@ -2284,7 +2464,6 @@ class TicketSystemOrder extends Component {
             </div>
           ) : null}
         </div>
-        {/* <NotificationContainer /> */}
       </div>
     );
   }

@@ -27,7 +27,7 @@ class TicketSystemTask extends Component {
       selectedFunction: "",
       selectedAssignTo: "",
       selectedPriority: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -73,7 +73,7 @@ class TicketSystemTask extends Component {
         TicketId: Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -107,7 +107,7 @@ class TicketSystemTask extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -130,7 +130,7 @@ class TicketSystemTask extends Component {
         DepartmentId: this.state.selectedDepartment,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -148,7 +148,7 @@ class TicketSystemTask extends Component {
         Function_ID: this.state.selectedFunction,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -168,7 +168,7 @@ class TicketSystemTask extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -265,9 +265,11 @@ class TicketSystemTask extends Component {
           selectedAssignTo: "",
           selectedPriority: "",
         });
-        NotificationManager.success(TranslationContext !== undefined
-          ? TranslationContext.span.taskcreatedsuccfully
-          : "Task created successfully.");
+        NotificationManager.success(
+          TranslationContext !== undefined
+            ? TranslationContext.span.taskcreatedsuccfully
+            : "Task created successfully."
+        );
         this.validator.hideMessages();
       }
     } else {
@@ -323,9 +325,11 @@ class TicketSystemTask extends Component {
                         <input
                           type="text"
                           className="txt-1"
-                          placeholder={TranslationContext !== undefined
-                            ? TranslationContext.label.tasktitle
-                            : "Task Title"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.tasktitle
+                              : "Task Title"
+                          }
                           name="taskTitle"
                           value={this.state.taskfield.taskTitle}
                           onChange={this.checkTaskTitDesc.bind(
@@ -344,9 +348,11 @@ class TicketSystemTask extends Component {
                       <div className="col-md-12">
                         <textarea
                           className="addNote-textarea-system"
-                          placeholder={TranslationContext !== undefined
-                            ? TranslationContext.label.taskdescription
-                            : "Task Description"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.taskdescription
+                              : "Task Description"
+                          }
                           name="taskDescription"
                           maxLength={250}
                           value={this.state.taskfield.taskDescription}
@@ -374,7 +380,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-category-placeholder"
                           >
-                            Department
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.department
+                              : "Department"}
                           </option>
                           {this.state.DepartmentData !== null &&
                             this.state.DepartmentData.map((item, i) => (
@@ -404,7 +412,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-sub-category-placeholder"
                           >
-                            Function
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.function
+                              : "Function"}
                           </option>
                           {this.state.FunctionData !== null &&
                             this.state.FunctionData.map((item, i) => (
@@ -436,7 +446,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-category-placeholder"
                           >
-                            Assign To
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.assignto
+                              : "Assign To"}
                           </option>
                           {this.state.AssignToData !== null &&
                             this.state.AssignToData.map((item, i) => (
@@ -466,7 +478,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-sub-category-placeholder"
                           >
-                            Priority
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.priority
+                              : "Priority"}
                           </option>
                           {this.state.TicketPriorityData !== null &&
                             this.state.TicketPriorityData.map((item, i) => (
@@ -529,27 +543,31 @@ class TicketSystemTask extends Component {
                     <Table
                       columns={[
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.id
-                          : "ID",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.id
+                              : "ID",
                           dataIndex: "ID",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.tasktitle
-                          : "Task Title",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.tasktitle
+                              : "Task Title",
                           dataIndex: "taskTitle",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.assignto
-                          : "Assign To",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.assignto
+                              : "Assign To",
                           dataIndex: "assignName",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.actions
-                          : "Actions",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions",
                           dataIndex: "",
                           render: (row, data) => {
                             var ids = row.ID;
@@ -563,14 +581,24 @@ class TicketSystemTask extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file ?"}
+                                          
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
-                                          <a href="#!">CANCEL</a>
+                                          <a href="#!">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             type="button"
@@ -579,7 +607,9 @@ class TicketSystemTask extends Component {
                                               ids
                                             )}
                                           >
-                                            Delete
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>

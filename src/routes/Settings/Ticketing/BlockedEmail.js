@@ -16,6 +16,8 @@ import config from "../../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class BlockEmail extends Component {
   constructor(props) {
@@ -45,7 +47,8 @@ class BlockEmail extends Component {
       filterTxtValue: "",
       tempdatablockemail: [],
       sortColumn: "",
-      sortHeader: ""
+      sortHeader: "",
+      translateLanguage: {},
     };
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -53,6 +56,14 @@ class BlockEmail extends Component {
 
   componentDidMount() {
     this.handleBlockEmailList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   AddNewEmailID = () => {
@@ -62,7 +73,7 @@ class BlockEmail extends Component {
       errors: {},
       BlockEmailID: 0,
       EmailIDs: "",
-      Reason: ""
+      Reason: "",
     });
   };
 
@@ -71,25 +82,35 @@ class BlockEmail extends Component {
   };
 
   handleValidation() {
+    const TranslationContext = this.state.translateLanguage.default;
     let errors = this.state.errors;
     let formIsValid = true;
     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!this.state.EmailIDs) {
       formIsValid = false;
-      errors["EmailIDs"] = "Please enter email id";
+      errors["EmailIDs"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenteremailid
+          : "Please enter email id";
     } else {
       var emailIds = this.state.EmailIDs;
       var arr = emailIds.split(",");
-      arr.forEach(element => {
+      arr.forEach((element) => {
         if (!re.test(element)) {
           formIsValid = false;
-          errors["EmailIDs"] = "Invalid email id";
+          errors["EmailIDs"] =
+            TranslationContext !== undefined
+              ? TranslationContext.label.invalidemailid
+              : "Invalid email id";
         }
       });
     }
     if (!this.state.Reason) {
       formIsValid = false;
-      errors["Reason"] = "Please enter reason";
+      errors["Reason"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenterreason
+          : "Please enter reason";
     }
     this.setState({ errors: errors });
     return formIsValid;
@@ -101,7 +122,7 @@ class BlockEmail extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/BlockEmail/ListEmailBlock",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -109,7 +130,7 @@ class BlockEmail extends Component {
         var data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            BlockEmailData: data
+            BlockEmailData: data,
           });
         }
         if (data != null) {
@@ -167,19 +188,20 @@ class BlockEmail extends Component {
           }
         }
         self.setState({
-          loading: false
+          loading: false,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
 
   handleSaveBlockEmail = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -188,20 +210,24 @@ class BlockEmail extends Component {
         headers: authHeader(),
         data: {
           EmailID: this.state.EmailIDs,
-          Reason: this.state.Reason
-        }
+          Reason: this.state.Reason,
+        },
       })
         .then(function(res) {
           if (res.data.message === "Success") {
             self.setState({ loading: true });
-            NotificationManager.success("Record saved successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordsavedsuccessfully
+                : "Record saved successfully"
+            );
             self.handleAddEmailClose();
             self.handleBlockEmailList();
           } else {
             NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
@@ -215,6 +241,7 @@ class BlockEmail extends Component {
   }
 
   handleUpdateBlockEmail = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -224,25 +251,30 @@ class BlockEmail extends Component {
         data: {
           BlockEmailID: this.state.BlockEmailID,
           EmailID: this.state.EmailIDs,
-          Reason: this.state.Reason
-        }
+          Reason: this.state.Reason,
+        },
       })
         .then(function(res) {
           if (res.data.message === "Success") {
-            NotificationManager.success("Record updated successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record updated successfully"
+            );
             self.handleAddEmailClose();
             self.handleBlockEmailList();
           } else {
             NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
   };
 
   handleDeleteBlockEmail(blockEmailID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -250,18 +282,22 @@ class BlockEmail extends Component {
         config.apiUrl +
         "/BlockEmail/DeleteEmailBlock?blockEmailID=" +
         blockEmailID,
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         if (res.data.message === "Success") {
-          NotificationManager.success("Record deleted successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record deleted successfully"
+          );
           self.handleBlockEmailList();
         } else {
           NotificationManager.error(res.data.message);
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -301,7 +337,7 @@ class BlockEmail extends Component {
 
     this.setState({
       isortA: true,
-      BlockEmailData: itemsArray
+      BlockEmailData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -345,7 +381,7 @@ class BlockEmail extends Component {
 
     this.setState({
       isortA: true,
-      BlockEmailData: itemsArray
+      BlockEmailData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -480,7 +516,7 @@ class BlockEmail extends Component {
       issueColor: "",
       nameColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -489,7 +525,7 @@ class BlockEmail extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.emailID === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.emailID === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -499,14 +535,14 @@ class BlockEmail extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column"
+        issueColor: "sort-column",
       });
     } else if (column === "reason") {
       var sItems = sreasonFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.reason === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.reason === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -516,14 +552,14 @@ class BlockEmail extends Component {
         }
       }
       this.setState({
-        nameColor: "sort-column"
+        nameColor: "sort-column",
       });
     } else if (column === "blockedDate") {
       var sItems = sblockedDateFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.Date === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.Date === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -533,14 +569,16 @@ class BlockEmail extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     } else if (column === "blockedBy") {
       var sItems = sblockedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.blockedBy === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.blockedBy === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -550,12 +588,12 @@ class BlockEmail extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempdatablockemail: itemsArray
+      tempdatablockemail: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -567,7 +605,7 @@ class BlockEmail extends Component {
         StatusModel: false,
         BlockEmailData: this.state.tempdatablockemail,
         sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
       });
       if (this.state.sortColumn === "emailID") {
         if (this.state.semailIDFilterCheckbox === "") {
@@ -575,7 +613,7 @@ class BlockEmail extends Component {
           this.setState({
             sreasonFilterCheckbox: "",
             sblockedDateFilterCheckbox: "",
-            sblockedByFilterCheckbox: ""
+            sblockedByFilterCheckbox: "",
           });
         }
       }
@@ -585,7 +623,7 @@ class BlockEmail extends Component {
           this.setState({
             semailIDFilterCheckbox: "",
             sblockedDateFilterCheckbox: "",
-            sblockedByFilterCheckbox: ""
+            sblockedByFilterCheckbox: "",
           });
         }
       }
@@ -595,7 +633,7 @@ class BlockEmail extends Component {
           this.setState({
             semailIDFilterCheckbox: "",
             sreasonFilterCheckbox: "",
-            sblockedByFilterCheckbox: ""
+            sblockedByFilterCheckbox: "",
           });
         }
       }
@@ -605,7 +643,7 @@ class BlockEmail extends Component {
           this.setState({
             semailIDFilterCheckbox: "",
             sreasonFilterCheckbox: "",
-            sblockedDateFilterCheckbox: ""
+            sblockedDateFilterCheckbox: "",
           });
         }
       }
@@ -616,7 +654,7 @@ class BlockEmail extends Component {
           ? this.state.BlockEmailData
           : this.state.sortAllData,
         sFilterCheckbox: "",
-        filterTxtValue: ""
+        filterTxtValue: "",
       });
     }
   }
@@ -640,7 +678,7 @@ class BlockEmail extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -650,7 +688,7 @@ class BlockEmail extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -663,7 +701,7 @@ class BlockEmail extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -672,7 +710,7 @@ class BlockEmail extends Component {
           sblockedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -685,7 +723,7 @@ class BlockEmail extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -694,7 +732,7 @@ class BlockEmail extends Component {
           sblockedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -707,7 +745,7 @@ class BlockEmail extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -716,7 +754,7 @@ class BlockEmail extends Component {
           sblockedDateFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -730,14 +768,14 @@ class BlockEmail extends Component {
         this.state.sortemailID,
         e.target.value,
         {
-          keys: ["emailID"]
+          keys: ["emailID"],
         }
       );
       if (sortFilteremailID.length > 0) {
         this.setState({ sortFilteremailID });
       } else {
         this.setState({
-          sortFilteremailID: this.state.sortemailID
+          sortFilteremailID: this.state.sortemailID,
         });
       }
     }
@@ -746,14 +784,14 @@ class BlockEmail extends Component {
         this.state.sortreason,
         e.target.value,
         {
-          keys: ["reason"]
+          keys: ["reason"],
         }
       );
       if (sortFilterreason.length > 0) {
         this.setState({ sortFilterreason });
       } else {
         this.setState({
-          sortFilterreason: this.state.sortreason
+          sortFilterreason: this.state.sortreason,
         });
       }
     }
@@ -767,7 +805,7 @@ class BlockEmail extends Component {
         this.setState({ sortFilterblockedDate });
       } else {
         this.setState({
-          sortFilterblockedDate: this.state.sortblockedDate
+          sortFilterblockedDate: this.state.sortblockedDate,
         });
       }
     }
@@ -781,13 +819,14 @@ class BlockEmail extends Component {
         this.setState({ sortFilterblockedBy });
       } else {
         this.setState({
-          sortFilterblockedBy: this.state.sortblockedBy
+          sortFilterblockedBy: this.state.sortblockedBy,
         });
       }
     }
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const datablockemail = this.state.BlockEmailData;
 
     return (
@@ -815,7 +854,11 @@ class BlockEmail extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortatoz
+                        : "SORT BY A TO Z"}
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -825,7 +868,11 @@ class BlockEmail extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortztoa
+                        : "SORT BY Z TO A"}
+                    </p>
                   </div>
                 </div>
                 <a
@@ -833,10 +880,16 @@ class BlockEmail extends Component {
                   style={{ margin: "0 25px", textDecoration: "underline" }}
                   onClick={this.setSortCheckStatus.bind(this, "all")}
                 >
-                  clear search
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.clearsearch
+                    : "clear search"}
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.filterbytype
+                      : "FILTER BY TYPE"}
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -977,15 +1030,21 @@ class BlockEmail extends Component {
             </Modal>
           </div>
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.a.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Blocked Email ID
+            {TranslationContext !== undefined
+              ? TranslationContext.strong.blockedemailid
+              : "Blocked Email ID"}
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -994,7 +1053,10 @@ class BlockEmail extends Component {
                 className="addplusbtnReport"
                 onClick={this.AddNewEmailID}
               >
-                + Add New
+                +&nbsp;
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.addnew
+                  : "Add New"}
               </button>
             </div>
           </div>
@@ -1006,7 +1068,9 @@ class BlockEmail extends Component {
           >
             <div className="setting-tabs alert-tabs">
               <label style={{ marginLeft: "194px", fontSize: "large" }}>
-                Add New Email ID into Block List
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.addnewemailidintoblocklist
+                  : "Add New Email ID into Block List"}
               </label>
               <img
                 src={CancelImg}
@@ -1021,7 +1085,11 @@ class BlockEmail extends Component {
                   <div className="col-md-12">
                     <textarea
                       className="txt-1"
-                      placeholder="Enter Email ID"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enteremailid
+                          : "Enter Email ID"
+                      }
                       name="EmailIDs"
                       value={this.state.EmailIDs}
                       onChange={this.handleChange}
@@ -1035,7 +1103,11 @@ class BlockEmail extends Component {
                   <div className="col-md-12">
                     <textarea
                       className="txt-1"
-                      placeholder="Reason"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.reason
+                          : "Reason"
+                      }
                       name="Reason"
                       value={this.state.Reason}
                       onChange={this.handleChange}
@@ -1056,7 +1128,9 @@ class BlockEmail extends Component {
                     }
                     disabled={this.state.loading}
                   >
-                    SAVE
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.save
+                      : "SAVE"}
                     {/* {this.state.loading ? (
                             <FontAwesomeIcon
                               className="circular-loader"
@@ -1089,15 +1163,19 @@ class BlockEmail extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "emailID",
-                            "Email ID"
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.emailid
+                              : "Email Id"
                           )}
                         >
-                          Email Id
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.emailid
+                            : "Email Id"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
                       sortable: false,
-                      accessor: "emailID"
+                      accessor: "emailID",
                     },
                     {
                       Header: (
@@ -1105,15 +1183,19 @@ class BlockEmail extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "reason",
-                            "Reason"
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.reason
+                              : "Reason"
                           )}
                         >
-                          Reason
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.reason
+                            : "Reason"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
                       sortable: false,
-                      accessor: "reason"
+                      accessor: "reason",
                     },
                     {
                       Header: (
@@ -1121,15 +1203,19 @@ class BlockEmail extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "blockedDate",
-                            "Blocked Date"
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.blockeddate
+                              : "Blocked Date"
                           )}
                         >
-                          Blocked Date
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.blockeddate
+                            : "Blocked Date"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
                       sortable: false,
-                      accessor: "blockedDate"
+                      accessor: "blockedDate",
                     },
                     {
                       Header: (
@@ -1137,17 +1223,21 @@ class BlockEmail extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "blockedBy",
-                            "Blocked By"
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.blockedby
+                              : "Blocked By"
                           )}
                         >
-                          Blocked By
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.blockedby
+                            : "Blocked By"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
 
                       accessor: "blockedBy",
                       sortable: false,
-                      Cell: row => {
+                      Cell: (row) => {
                         var ids = row.original["Id"];
                         return (
                           <div>
@@ -1159,12 +1249,17 @@ class BlockEmail extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifyBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updatedby
+                                            : "Updated By"}
+                                          : {row.original.modifyBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Updated Date:{" "}
-                                        {row.original.modifyDate}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p.updateddate
+                                          : "Updated Date"}
+                                        : {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>
@@ -1181,13 +1276,19 @@ class BlockEmail extends Component {
                             </span>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
-                      Header: <span>Actions</span>,
+                      Header: (
+                        <span>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.actions
+                            : "Actions"}
+                        </span>
+                      ),
                       accessor: "actionReport",
                       sortable: false,
-                      Cell: row => (
+                      Cell: (row) => (
                         <div className="report-action">
                           <div>
                             <Popover
@@ -1198,13 +1299,23 @@ class BlockEmail extends Component {
                                   </div>
                                   <div>
                                     <p className="font-weight-bold blak-clr">
-                                      Delete file?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deletefile
+                                        : "Delete file?"}
                                     </p>
                                     <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this file?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureyouwanttodeletethisfile
+                                        : "Are you sure you want to delete this file"}
+                                      ?
                                     </p>
                                     <div className="del-can">
-                                      <a>CANCEL</a>
+                                      <a>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.cancel
+                                          : "CANCEL"}
+                                      </a>
                                       <button
                                         className="butn"
                                         onClick={this.handleDeleteBlockEmail.bind(
@@ -1212,7 +1323,9 @@ class BlockEmail extends Component {
                                           row.original.blockEmailID
                                         )}
                                       >
-                                        Delete
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.delete
+                                          : "Delete"}
                                       </button>
                                     </div>
                                   </div>
@@ -1237,12 +1350,14 @@ class BlockEmail extends Component {
                                 row.original
                               )}
                             >
-                              EDIT
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.edit
+                                : "EDIT"}
                             </button>
                           </div>
                         </div>
-                      )
-                    }
+                      ),
+                    },
                   ]}
                   resizable={false}
                   defaultPageSize={10}
