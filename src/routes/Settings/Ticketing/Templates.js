@@ -1511,10 +1511,14 @@ class Templates extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "templateName",
-                              "Template Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.templatename
+                                : "Template Name"
                             )}
                           >
-                            Name
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.name
+                              : "Name"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1531,7 +1535,9 @@ class Templates extends Component {
                             //   "IssueType"
                             // )}
                           >
-                            Issue Type
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.issuetype
+                              : "Issue Type"}
                             {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                           </span>
                         ),
@@ -1562,10 +1568,14 @@ class Templates extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.createdby
+                                : "Created By"
                             )}
                           >
-                            Created by
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.createdby
+                              : "Created by"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1626,10 +1636,14 @@ class Templates extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "templateStatus",
-                              "Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"
                             )}
                           >
-                            Status
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.status
+                              : "Status"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1637,7 +1651,10 @@ class Templates extends Component {
                         accessor: "templateStatus",
                       },
                       {
-                        Header: "Actions",
+                        Header:
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.actions
+                            : "Actions",
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1692,7 +1709,9 @@ class Templates extends Component {
                                     row.original
                                   )}
                                 >
-                                  EDIT
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.edit
+                                    : "EDIT"}
                                 </button>
                               </span>
                             </>

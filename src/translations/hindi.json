@@ -10,6 +10,7 @@
     "orders": "आदेश"
   },
   "label": {
+    "templatename": "टेम्पलेट नाम",
     "pleaseenteremailid": "कृपया ईमेल आईडी दर्ज करें",
     "pleaseenterreason": "कृपया कारण दर्ज करें",
     "invalidemailid": "अमान्य ईमेल आईडी",
