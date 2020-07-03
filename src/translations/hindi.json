@@ -468,7 +468,8 @@
     "writeyourtitlehere": "अपना शीर्षक यहाँ लिखें",
     "entercustphonenoemailid": "ग्राहक फोन नंबर, ईमेल आईडी दर्ज करें",
     "contactdetailsemails": "संपर्क विवरण: ईमेल",
-    "contactdetailsphones": "संपर्क विवरण: फोन"
+    "contactdetailsphones": "संपर्क विवरण: फोन",
+    "editbrand": "ब्रांड संपादित करें"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -1470,7 +1471,9 @@
     "canipurchaseadomainthroughgoogle": "क्या मैं गूगल के माध्यम से डोमेन खरीद सकता हूं?",
     "enterstorecode": "स्टोर कोड दर्ज करें",
     "enteraddress": "पता लिखिए",
-    "enterphoneno": "फ़ोन नंबर दर्ज करें"
+    "enterphoneno": "फ़ोन नंबर दर्ज करें",
+    "enterbrandcode": "ब्रांड कोड दर्ज करें",
+    "enterbrandname": "ब्रांड नाम दर्ज करें"
   },
   "title": {
     "campaignname": "अभियान का नाम",
@@ -1546,6 +1549,9 @@
     "pleaseselectissuetype": "कृपया समस्या प्रकार चुनें।",
     "required": "अपेक्षित।",
     "pleaseselectfile": "कृपया फ़ाइल चुनें।",
+    "pleaseenterbrandcode": "कृपया ब्रांड कोड दर्ज करें।",
+    "pleaseenterbrandname": "कृपया ब्रांड नाम दर्ज करें।",
+    "pleaseselectstatus": "कृपया पहले स्टेटस चुने।",
     "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें"
   },
   "alertmessage": {
@@ -1692,7 +1698,11 @@
     "pleaseaddteamnameforscheduler": "कृपया शेड्यूल के लिए टीम का नाम जोड़ें।",
     "pleaseselectscheduletype": "कृपया शेड्यूल प्रकार का चयन करें।",
     "pleaseselectscheduletime": "कृपया शेड्यूल समय का चयन करें।",
-    "pleaseaddreportforscheduler": "कृपया शेड्यूलर बनाने के लिए रिपोर्ट जोड़ें।"
+    "pleaseaddreportforscheduler": "कृपया शेड्यूलर बनाने के लिए रिपोर्ट जोड़ें।",
+    "brandaddedsuccessfully": "ब्रांड सफलतापूर्वक जोड़ा गया।",
+    "branddeletesuccessfully": "ब्रांड सफलतापूर्वक हटाएं।",
+    "brandupdatedsuccessfully": "ब्रांड सफलतापूर्वक अपडेट किया गया।",
+    "brandnotupdated": "ब्रांड अपडेट नहीं हुआ।"
   },
   "ticketingDashboard":{
     "viewMoreInsights":"अधिक जानकारी देखें",
