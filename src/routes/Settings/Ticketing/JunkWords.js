@@ -16,6 +16,8 @@ import config from "../../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class JunkWords extends Component {
   constructor(props) {
@@ -46,11 +48,20 @@ class JunkWords extends Component {
       tempJunkWordsData: [],
       sortColumn: "",
       sortHeader: "",
+      translateLanguage: {},
     };
   }
 
   componentDidMount() {
     this.handleJunkWordsList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   AddNewJunkWords = () => {
@@ -739,6 +750,7 @@ class JunkWords extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const datajunkwords = this.state.JunkWordsData;
     return (
       <Fragment>
@@ -763,7 +775,11 @@ class JunkWords extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortatoz
+                        : "SORT BY A TO Z"}
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -773,7 +789,11 @@ class JunkWords extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortztoa
+                        : "SORT BY Z TO A"}
+                    </p>
                   </div>
                 </div>
                 <a
@@ -781,10 +801,16 @@ class JunkWords extends Component {
                   style={{ margin: "0 25px", textDecoration: "underline" }}
                   onClick={this.setSortCheckStatus.bind(this, "all")}
                 >
-                  clear search
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.clearsearch
+                    : "clear search"}
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.filterbytype
+                      : "FILTER BY TYPE"}
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -965,7 +991,9 @@ class JunkWords extends Component {
           >
             <div className="setting-tabs alert-tabs">
               <label style={{ marginLeft: "227px", fontSize: "large" }}>
-                Add New Junk Words
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.addnewjunkwords
+                  : "Add New Junk Words"}
               </label>
               <img
                 src={CancelImg}
@@ -980,7 +1008,11 @@ class JunkWords extends Component {
                   <div className="col-md-12">
                     <textarea
                       className="txt-1"
-                      placeholder="Junk Words"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.strong.junkwords
+                          : "Junk Words"
+                      }
                       name="JunkWords"
                       value={this.state.JunkWords}
                       onChange={this.handleChange}
@@ -994,7 +1026,11 @@ class JunkWords extends Component {
                   <div className="col-md-12">
                     <textarea
                       className="txt-1"
-                      placeholder="Reason"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.reason
+                          : "Reason"
+                      }
                       name="Reason"
                       value={this.state.Reason}
                       onChange={this.handleChange}
@@ -1016,7 +1052,9 @@ class JunkWords extends Component {
                     }
                     disabled={this.state.loading}
                   >
-                    SAVE
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.save
+                      : "SAVE"}
                     {/* {this.state.loading ? (
                             <FontAwesomeIcon
                               className="circular-loader"
@@ -1049,10 +1087,14 @@ class JunkWords extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "junkKeyword",
-                            "Junk Words"
+                            TranslationContext !== undefined
+                              ? TranslationContext.strong.junkwords
+                              : "Junk Words"
                           )}
                         >
-                          Junk Words
+                          {TranslationContext !== undefined
+                            ? TranslationContext.strong.junkwords
+                            : "Junk Words"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1065,10 +1107,14 @@ class JunkWords extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "reason",
-                            "Reason"
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.reason
+                              : "Reason"
                           )}
                         >
-                          Reason
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.reason
+                            : "Reason"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1081,10 +1127,14 @@ class JunkWords extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "enteredDate",
-                            "Entered Date"
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.entereddate
+                              : "Entered Date"
                           )}
                         >
-                          Entered Date
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.entereddate
+                            : "Entered Date"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1097,10 +1147,14 @@ class JunkWords extends Component {
                           onClick={this.StatusOpenModel.bind(
                             this,
                             "enteredBy",
-                            "Entered By"
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.enteredby
+                              : "Entered By"
                           )}
                         >
-                          Entered By
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.enteredby
+                            : "Entered By"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -1118,11 +1172,17 @@ class JunkWords extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifyBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updatedby
+                                            : "Updated By"}
+                                          : {row.original.modifyBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Updated Date: {row.original.modifyDate}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p.updateddate
+                                          : "Updated Date"}
+                                        : {row.original.modifyDate}
                                       </p>
                                     </div>
                                   </>
@@ -1142,7 +1202,13 @@ class JunkWords extends Component {
                       },
                     },
                     {
-                      Header: <span>Actions</span>,
+                      Header: (
+                        <span>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.actions
+                            : "Actions"}
+                        </span>
+                      ),
                       sortable: false,
                       accessor: "actionReport",
                       Cell: (row) => (
@@ -1156,14 +1222,23 @@ class JunkWords extends Component {
                                   </div>
                                   <div>
                                     <p className="font-weight-bold blak-clr">
-                                      Delete record?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deleterecord
+                                        : "Delete record"}
+                                      ?
                                     </p>
                                     <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this
-                                      record?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousurewanttodeletethisrecord
+                                        : "Are you sure you want to delete this record?"}
                                     </p>
                                     <div className="del-can">
-                                      <a>CANCEL</a>
+                                      <a>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.cancel
+                                          : "CANCEL"}
+                                      </a>
                                       <button
                                         className="butn"
                                         onClick={this.handleDeleteJunkWords.bind(
@@ -1171,7 +1246,9 @@ class JunkWords extends Component {
                                           row.original.junkKeywordID
                                         )}
                                       >
-                                        Delete
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.delete
+                                          : "Delete"}
                                       </button>
                                     </div>
                                   </div>
@@ -1196,7 +1273,9 @@ class JunkWords extends Component {
                                 row.original
                               )}
                             >
-                              EDIT
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.edit
+                                : "EDIT"}
                             </button>
                           </div>
                         </div>
