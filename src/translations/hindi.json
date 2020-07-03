@@ -1031,7 +1031,8 @@
     "chatsessiontimeout": "चैट सत्र समय समाप्त",
     "historicalchattime": "ऐतिहासिक चैट समय",
     "setlimittypeboxofchatwindow": "चैट विंडो में लिखने की अधिकतम सीमा",
-    "sendviamessenger": "संदेशवाहक के माध्यम से भेजें"
+    "sendviamessenger": "संदेशवाहक के माध्यम से भेजें",
+    "todate": "तारीख तक"
   },
   "button": {
     "logout": "लॉगआउट",
@@ -1542,8 +1543,10 @@
   },
   "validation": {
     "designationnamefieldiscompulsory": "पदनाम नाम फ़ील्ड अनिवार्य है।",
-    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें",
-    "pleaseselectissuetype": "कृपया समस्या प्रकार का चयन करें"
+    "pleaseselectissuetype": "कृपया समस्या प्रकार चुनें।",
+    "required": "अपेक्षित।",
+    "pleaseselectfile": "कृपया फ़ाइल चुनें।",
+    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें"
   },
   "alertmessage": {
     "templateupdatedsuccessfully": "टेम्प्लेट सफलतापूर्वक अपडेट किया गया।",
@@ -1678,7 +1681,18 @@
     "storedeletedsuccessfully": "स्टोर सफलतापूर्वक हटा दिया गया।",
     "storeaddedsuccessfully": "स्टोर सफलतापूर्वक जोड़ा गया",
     "storenotadded": "स्टोर नहीं जोड़ा गया।",
-    "storeupdatedsuccessfully": "स्टोर सफलतापूर्वक अपडेट किया गया।"
+    "storeupdatedsuccessfully": "स्टोर सफलतापूर्वक अपडेट किया गया।",
+    "pleaseenterreportname": "कृपया रिपोर्ट नाम दर्ज करें",
+    "emailhasbeensend": "ईमेल भेजा जा चुका है",
+    "reportsavedsuccessfullyfordown": "रिपोर्ट डाउनलोड के लिए सफलतापूर्वक सहेजी गई।",
+    "reportsavedsuccessfully": "रिपोर्ट सफलतापूर्वक सहेजी गई",
+    "reportnamealreadyexist": "रिपोर्ट नाम पहले से मौजूद है।",
+    "schedulercreatedsuccessfully": "शेड्यूलर सफलतापूर्वक बनाया गया।",
+    "pleaseaddreportname": "कृपया रिपोर्ट नाम जोड़ें।",
+    "pleaseaddteamnameforscheduler": "कृपया शेड्यूल के लिए टीम का नाम जोड़ें।",
+    "pleaseselectscheduletype": "कृपया शेड्यूल प्रकार का चयन करें।",
+    "pleaseselectscheduletime": "कृपया शेड्यूल समय का चयन करें।",
+    "pleaseaddreportforscheduler": "कृपया शेड्यूलर बनाने के लिए रिपोर्ट जोड़ें।"
   },
   "ticketingDashboard": {
     "viewMoreInsights": "अधिक जानकारी देखें",
@@ -1736,7 +1750,37 @@
     "requiredsize": "आवश्यक आकार",
     "purchasefromstorename": "दुकान के नाम से खरीद",
     "purchasefromstoreaddres": "स्टोर के पते से खरीद",
-    "articlemrp": "लेख एम.आर.पी."
+    "articlemrp": "लेख एम.आर.पी.",
+    "customerwanttovisitstore": "ग्राहक स्टोर पर जाना चाहते हैं",
+    "customeralreadyvisitedstore": "ग्राहक पहले से ही दुकान का दौरा किया",
+    "wecouldntfindthestoredetailswith": "हम के साथ दुकान विवरण नहीं मिल सका",
+    "thisstoreidsearchanotherstore": "यह स्टोर आईडी, दूसरा स्टोर खोजें",
+    "addstore": "स्टोर जोड़ें",
+    "categoryfieldiscompulsory": "श्रेणी क्षेत्र अनिवार्य है।",
+    "subcategoryfieldiscompulsory": "सब कैटेगरी फील्ड अनिवार्य है।",
+    "issuetypefieldiscompulsory": "इश्यू टाइप फील्ड अनिवार्य है।",
+    "tickettitlefieldiscompulsory": "टिकट टाइटल फील्ड अनिवार्य है।",
+    "ticketdetailsfieldiscompulsory": "टिकट विवरण क्षेत्र अनिवार्य है।",
+    "brandfieldiscompulsory": "ब्रांड फील्ड अनिवार्य है।",
+    "channelofpurchasefieldiscompulsory": "क्रय क्षेत्र का चैनल अनिवार्य है।",
+    "pleaseselectticketpriority": "कृपया टिकट प्राथमिकता चुनें।",
+    "thetickethasbeenresolved": "टिकट को हल कर दिया गया है।",
+    "thetickethasbeenclosed": "टिकट को बंद कर दिया गया है।",
+    "ticketnotupdate": "टिकट अपडेट नहीं",
+    "unauthorizedaccess": "अनाधिकृत उपयोग!",
+    "thenotesfieldiscompulsory": "नोट्स फ़ील्ड अनिवार्य है।",
+    "storeattachedsuccessfully": "स्टोर सफलतापूर्वक संलग्न किया गया",
+    "storenotattached": "स्टोर संलग्न नहीं है",
+    "productattachedsuccessfully": "उत्पाद सफलतापूर्वक संलग्न है।",
+    "productnotattached": "उत्पाद संलग्न नहीं",
+    "pleaseselectatleastoneorder": "कृपया कम से कम एक आदेश का चयन करें।",
+    "mailsendsuccessfully": "मेल सफलतापूर्वक भेजें।",
+    "pleaseenterbodysection": "कृपया बॉडी सेक्शन दर्ज करें।",
+    "onlycharaterallowinbodysection": "बॉडी सेक्शन में केवल 2000 चार्जर की अनुमति।",
+    "commentfieldiscompulsory": "टिप्पणी क्षेत्र अनिवार्य है।",
+    "ticketaddedinknowledgebase": "नॉलेजबेस में टिकट जोड़ा गया।",
+    "timedate": "समय तिथि",
+    "opentickets": "टिकट खोलें"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."
