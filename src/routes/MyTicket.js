@@ -542,7 +542,7 @@ class MyTicket extends Component {
   };
 
   handleUpdateTicketStatus(ticStaId) {
-    // let self = this;
+    const TranslationContext = this.state.translateLanguage.default;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/Updateticketstatus",
@@ -556,9 +556,13 @@ class MyTicket extends Component {
         let status = res.data.status;
         if (status === true) {
           if (ticStaId === 103) {
-            NotificationManager.success("The ticket has been resolved.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.thetickethasbeenresolved
+              : "The ticket has been resolved.");
           } else if (ticStaId === 104) {
-            NotificationManager.success("The ticket has been closed.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.thetickethasbeenclosed
+              : "The ticket has been closed.");
           }
         }
       })
@@ -606,7 +610,6 @@ class MyTicket extends Component {
   }
 
   handleHasAttachmentFileData() {
-    //
     for (let i = 0; i < this.state.hasAttachmentFile.length; i++) {
       var data = [];
       if (data !== null) {
@@ -1059,14 +1062,18 @@ class MyTicket extends Component {
               self.props.history.push("myTicketlist");
             }
           } else {
-            NotificationManager.error("Ticket not update");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.ticketnotupdate
+              : "Ticket not update.");
           }
         })
         .catch((data) => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Unauthorized Access!");
+      NotificationManager.error(TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.unauthorizedaccess
+        : "Unauthorized Access!");
     }
   }
   handleRequireSize(e, rowData) {
@@ -1109,7 +1116,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
         var OrderSubItem = [];
@@ -1375,8 +1381,8 @@ class MyTicket extends Component {
       });
   }
   handleAssignTickets() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/AssignTickets",
@@ -1390,7 +1396,9 @@ class MyTicket extends Component {
       .then(function(res) {
         let messageData = res.data.message;
         if (messageData === "Success") {
-          NotificationManager.success("Tickets assigned successfully.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.ticketsassignedsuccessfully
+            : "Tickets assigned successfully.");
           self.HandlelabelModalClose();
           // self.handleReAssignCommentOpen();
           setTimeout(function() {
@@ -1613,7 +1621,9 @@ class MyTicket extends Component {
               notesCommentCompulsion: "",
             });
           } else {
-            NotificationManager.error("Comment not added.");
+            NotificationManager.error( TranslationContext !== undefined
+              ? TranslationContext.alertmessage.commentnotadded
+              : "Comment not added.");
           }
         })
         .catch((data) => {
@@ -1621,7 +1631,9 @@ class MyTicket extends Component {
         });
     } else {
       this.setState({
-        notesCommentCompulsion: "The Notes field is compulsory.",
+        notesCommentCompulsion: TranslationContext !== undefined
+        ? TranslationContext.alertmessage.thenotesfieldiscompulsory
+        : "The Notes field is compulsory.",
       });
     }
   }
@@ -1693,6 +1705,7 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1797,14 +1810,18 @@ class MyTicket extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Store attached successfully.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.storeattachedsuccessfully
+            : "Store attached successfully.");
           self.HandleStoreModalClose();
           self.handleGetTicketDetails(self.state.ticket_Id);
           self.setState({
             storeDetails: [],
           });
         } else {
-          NotificationManager.error("Store not attached");
+          NotificationManager.error(TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.storenotattached
+            : "Store not attached.");
         }
       })
       .catch((data) => {
@@ -1813,7 +1830,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       for (let k = 0; k < this.state.SelectedAllOrder.length; k++) {
@@ -1942,7 +1959,9 @@ class MyTicket extends Component {
           let status = res.data.message;
           // let details = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Product attached successfully.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.productattachedsuccessfully
+              : "Product attached successfully.");
             self.handleOrderTableClose();
             self.handleGetTicketDetails(self.state.ticket_Id);
             self.setState({
@@ -1950,14 +1969,18 @@ class MyTicket extends Component {
               orderDetailsData: [],
             });
           } else {
-            NotificationManager.error("Product not attached");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.productnotattached
+              : "Product not attached.");
           }
         })
         .catch((data) => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please select atleast one order.");
+      NotificationManager.error(TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.pleaseselectatleastoneorder
+        : "Please select atleast one order.");
     }
   }
   handleGetNotesTabDetails(ticket_Id) {
@@ -2046,6 +2069,7 @@ class MyTicket extends Component {
   }
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -2060,7 +2084,9 @@ class MyTicket extends Component {
       .then(function(res) {
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
-          NotificationManager.error("No Record Found.");
+          NotificationManager.error(TranslationContext !== undefined
+            ? TranslationContext.label.norecordfound
+            : "No Record Found.");
         }
         self.setState({ KbPopupData: KbPopupData });
       })
@@ -2236,7 +2262,9 @@ class MyTicket extends Component {
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
-              NotificationManager.success("Mail send successfully.");
+              NotificationManager.success(TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.mailsendsuccessfully
+                : "Mail send successfully.");
               self.setState({
                 mailFiled: {},
                 ReplyFileData: [],
@@ -2251,7 +2279,9 @@ class MyTicket extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Please Enter Body Section.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.pleaseenterbodysection
+          : "Please Enter Body Section.");
       }
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
@@ -2306,7 +2336,9 @@ class MyTicket extends Component {
                 self.handleProgressBarDetails(self.state.ticket_Id);
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
-                NotificationManager.success("Mail send successfully.");
+                NotificationManager.success(TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard.mailsendsuccessfully
+                  : "Mail send successfully.");
                 self.setState({
                   mailFiled: {},
                   // mailSubject: "",
@@ -2320,10 +2352,14 @@ class MyTicket extends Component {
               console.log(data);
             });
         } else {
-          NotificationManager.error("Please Enter Body Section.");
+          NotificationManager.error(TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseenterbodysection
+            : "Please Enter Body Section.");
         }
       } else {
-        NotificationManager.error("Only 2000 Charater Allow In Body Section.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.onlycharaterallowinbodysection
+          : "Only 2000 Charater Allow In Body Section.");
       }
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
@@ -2373,7 +2409,9 @@ class MyTicket extends Component {
           });
       } else {
         this.setState({
-          tckcmtMSGCompulsory: "Comment field is compulsory.",
+          tckcmtMSGCompulsory: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.commentfieldiscompulsory
+          : "Comment field is compulsory.",
         });
       }
     } else if (isSend === 4) {
@@ -2424,7 +2462,9 @@ class MyTicket extends Component {
           });
       } else {
         this.setState({
-          AssignCommentCompulsory: "Comment field is compulsory.",
+          AssignCommentCompulsory: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.commentfieldiscompulsory
+          : "Comment field is compulsory.",
         });
       }
     } else {
@@ -2470,7 +2510,9 @@ class MyTicket extends Component {
           });
       } else {
         this.setState({
-          freetextCommentCompulsory: "Comment field is compulsory.",
+          freetextCommentCompulsory: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.commentfieldiscompulsory
+          : "Comment field is compulsory.",
         });
       }
     }
@@ -3309,10 +3351,14 @@ class MyTicket extends Component {
               ? TranslationContext.alertmessage.ticketupdatedsuccessfully
               : "Ticket updated successfully."
           );
-          NotificationManager.success("Ticket Added in knowledgebase.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.ticketaddedinknowledgebase
+            : "Ticket Added in knowledgebase.");
           self.props.history.push("myTicketlist");
         } else {
-          NotificationManager.success("Ticket Added in knowledgebase.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.ticketaddedinknowledgebase
+            : "Ticket Added in knowledgebase.");
         }
       })
       .catch((error) => {
@@ -3321,6 +3367,7 @@ class MyTicket extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const {
       open,
       ticketDetailsData,
@@ -3382,9 +3429,13 @@ class MyTicket extends Component {
                       className="headphone"
                     />
                     <label className="id-abc-1234">
-                      ID - {ticketDetailsData.ticketID}
+                    {TranslationContext !== undefined
+                                    ? TranslationContext.label.id
+                                    : "ID"} - {ticketDetailsData.ticketID}
                       <span className="updated-2-d-ago">
-                        Updated {ticketDetailsData.updateDate}
+                      {TranslationContext !== undefined
+                                    ? TranslationContext.p.updated
+                                    : "Updated"} {ticketDetailsData.updateDate}
                       </span>
                     </label>
                     <a
@@ -3411,7 +3462,9 @@ class MyTicket extends Component {
                       overlayId="logout-ovrly"
                       classNames={{ modal: "historical-popup" }}
                     >
-                      <label className="lblHistorical">Ticket Historical</label>
+                      <label className="lblHistorical">{TranslationContext !== undefined
+                                    ? TranslationContext.label.tickethistorical
+                                    : "Ticket Historical"}</label>
                       <img
                         src={CancelImg}
                         alt="cancelImg"
@@ -3423,16 +3476,22 @@ class MyTicket extends Component {
                           data={historicalDetails}
                           columns={[
                             {
-                              Header: <span>Name</span>,
+                              Header: <span>{TranslationContext !== undefined
+                                ? TranslationContext.span.name
+                                : "Name"}</span>,
                               accessor: "name",
                               width: 150,
                             },
                             {
-                              Header: <span>Action</span>,
+                              Header: <span>{TranslationContext !== undefined
+                                ? TranslationContext.span.action
+                                : "Action"}</span>,
                               accessor: "action",
                             },
                             {
-                              Header: <span>Time & Date</span>,
+                              Header: <span>{TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard.timedate
+                                : "Time & Date"}</span>,
                               accessor: "dateandTime",
                               width: 200,
                               Cell: (row) => {
@@ -3493,7 +3552,9 @@ class MyTicket extends Component {
                         }
                         onClick={this.handleSubmitTicket.bind(this)}
                       >
-                        SUBMIT
+                        {TranslationContext !== undefined
+                                ? TranslationContext.button.submit
+                                : "SUBMIT"}
                       </button>
                     </div>
                   </div>
@@ -3517,16 +3578,23 @@ class MyTicket extends Component {
                         data={SearchAssignData}
                         columns={[
                           {
-                            Header: <span>Emp Id</span>,
+                            Header: <span>{TranslationContext !== undefined
+                              ? TranslationContext.span.empid
+                              : "Emp Id"}</span>,
                             accessor: "user_ID",
                             width: 80,
                           },
                           {
-                            Header: <span>Name</span>,
+                            Header: <span>{TranslationContext !== undefined
+                              ? TranslationContext.span.name
+                              : "Name"}</span>,
                             accessor: "agentName",
                           },
                           {
-                            Header: <span>Designation</span>,
+                            Header: <span>{TranslationContext !== undefined
+                              ? TranslationContext.label
+                                  .designation
+                              : "Designation"}</span>,
                             accessor: "designation",
                           },
                         ]}
@@ -3555,7 +3623,10 @@ class MyTicket extends Component {
                           className="btn btn-outline-primary"
                           onClick={this.handleReAssignCommentOpen.bind(this)}
                         >
-                          SELECT
+                          {TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
+                                                  .select
+                                              : "SELECT"}
                         </button>
                       </div>
                       <div
@@ -3582,7 +3653,10 @@ class MyTicket extends Component {
               <div className="commenttextborder">
                 <div className="comment-disp">
                   <div className="Commentlabel">
-                    <label className="Commentlabel1">Add Comment</label>
+                    <label className="Commentlabel1">{TranslationContext !== undefined
+                                              ? TranslationContext.button
+                                                  .addcomment
+                                              : "Add Comment"}</label>
                   </div>
                   <div>
                     <img
@@ -3614,7 +3688,10 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleSkipComment.bind(this)}
                   >
-                    SKIP
+                    {TranslationContext !== undefined
+                                              ? TranslationContext.button
+                                                  .skip
+                                              : "SKIP"}
                   </button>
                 </div>
                 <div className="SendCommentBtn">
@@ -3622,7 +3699,10 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleSendMailData.bind(this, 4)}
                   >
-                    ADD
+                    {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .add
+                                              : "ADD"}
                   </button>
                 </div>
               </div>
@@ -3632,7 +3712,11 @@ class MyTicket extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div style={{ padding: "15px" }}>
-                      <label className="mobile-number">Mobile Number</label>
+                      <label className="mobile-number">{
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.mobilenumber
+                                  : "Mobile Number"
+                              }</label>
                       <br />
                       <label className="mobile-no">
                         {ticketDetailsData.customerPhoneNumber}
@@ -3666,14 +3750,20 @@ class MyTicket extends Component {
                           </div>
                           <div className="row profilemodalrow">
                             <div className="col-md-6">
-                              <label className="profilemodal-text">Name</label>
+                              <label className="profilemodal-text">{TranslationContext !== undefined
+                              ? TranslationContext.span.name
+                              : "Name"}</label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerName}
                               </label>
                             </div>
                             <div className="col-md-6">
                               <label className="profilemodal-text">
-                                Mobile
+                              {
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.mobile
+                                        : "Mobile"
+                                    }
                               </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerPhoneNumber}
@@ -3682,7 +3772,11 @@ class MyTicket extends Component {
                           </div>
                           <div className="row profilemodalrow-1">
                             <div className="col-md-6">
-                              <label className="profilemodal-text">Email</label>
+                              <label className="profilemodal-text">{
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.a.email
+                                        : "Email"
+                                    }</label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerEmailId}
                               </label>
@@ -3690,7 +3784,9 @@ class MyTicket extends Component {
 
                             <div className="col-md-6">
                               <label className="profilemodal-text">
-                                Alternate Number
+                              {TranslationContext !== undefined
+                                    ? TranslationContext.label.alternatenumber
+                                    : "Alternate Number"}
                               </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.altNumber}
@@ -3702,7 +3798,9 @@ class MyTicket extends Component {
                               <label className="open-tickets-box-text">
                                 {ticketDetailsData.openTicket}
                                 <small className="open-tickets-box-textval">
-                                  Open Tickets
+                                {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard.opentickets
+                                    : "Open Tickets"}
                                 </small>
                               </label>
                             </div>
