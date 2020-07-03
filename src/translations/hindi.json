@@ -10,6 +10,9 @@
     "orders": "आदेश"
   },
   "label": {
+    "allselected": "सभी चयनित",
+    "selected": "चुन लिया",
+    "entername": "नाम दर्ज",
     "templatename": "टेम्पलेट नाम",
     "pleaseenteremailid": "कृपया ईमेल आईडी दर्ज करें",
     "pleaseenterreason": "कृपया कारण दर्ज करें",
@@ -1274,8 +1277,8 @@
     "all": "सब",
     "fileuploadlogs": "फ़ाइल अपलोड लॉग",
     "order": "गण",
-    "cardassets":"कार्ड एसेट्स",
-    "placeholders":"प्लेसहोल्डर"
+    "cardassets": "कार्ड एसेट्स",
+    "placeholders": "प्लेसहोल्डर"
   },
   "mybutton": {
     "edit": "संपादित करें"
@@ -1384,14 +1387,14 @@
     "ticketstatus": "टिकट की स्थिति",
     "selectcategory": "श्रेणी चुनें",
     "selectissuetype": "समस्या का प्रकार चुनें",
-    "allstoremember":"सभी स्टोर सदस्य",
-    "brand":"ब्रांड",
-    "SelectResponse":"प्रतिक्रिया चुनें",
-    "days":"दिन",
-    "am":"ए एम",
-    "pm":"पी एम",
-    "selectchannelofpurchase":"खरीद का चैनल चुनें",
-    "kblink":"केबी लिंक"
+    "allstoremember": "सभी स्टोर सदस्य",
+    "brand": "ब्रांड",
+    "SelectResponse": "प्रतिक्रिया चुनें",
+    "days": "दिन",
+    "am": "ए एम",
+    "pm": "पी एम",
+    "selectchannelofpurchase": "खरीद का चैनल चुनें",
+    "kblink": "केबी लिंक"
   },
   "radio": {
     "email": "ईमेल",
@@ -1541,17 +1544,23 @@
     "totalslot": "कुल स्लॉट",
     "appointmentdays": "नियुक्ति के दिन"
   },
-  "validation":{
-    "designationnamefieldiscompulsory":"पदनाम नाम फ़ील्ड अनिवार्य है।",
-    "pleaseselectissuetype":"कृपया समस्या प्रकार चुनें।",
+  "validation": {
+    "designationnamefieldiscompulsory": "पदनाम नाम फ़ील्ड अनिवार्य है।",
+    "pleaseselectissuetype": "कृपया समस्या प्रकार चुनें।",
     "required": "अपेक्षित।",
     "pleaseselectfile": "कृपया फ़ाइल चुनें।",
     "pleaseenterbrandcode": "कृपया ब्रांड कोड दर्ज करें।",
     "pleaseenterbrandname": "कृपया ब्रांड नाम दर्ज करें।",
-    "pleaseselectstatus": "कृपया पहले स्टेटस चुने।"
-
+    "pleaseselectstatus": "कृपया पहले स्टेटस चुने।",
+    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें"
   },
   "alertmessage": {
+    "templateupdatedsuccessfully": "टेम्प्लेट सफलतापूर्वक अपडेट किया गया।",
+    "templatenotupdate": "टेम्प्लेट अपडेट नहीं हुआ",
+    "templatedeletedsuccessfully": "टेम्प्लेट सफलतापूर्वक हटा दिया गया।",
+    "templatenotdeleted": "टेम्पलेट हटाया नहीं गया।",
+    "templateaddedsuccessfully": "टेम्पलेट सफलतापूर्वक जोड़ा गया।",
+    "templatenotadded": "टेम्पलेट नहीं जोड़ा गया।",
     "recordupdatedsuccessfully": "रिकॉर्ड सफलतापूर्वक अपडेट हो गया है।",
     "failed": "नहीं भेज पाये।",
     "smssentsuccessfully": "एसएमएस सफलतापूर्वक भेजा गया।",
@@ -1781,7 +1790,13 @@
     "commentfieldiscompulsory":"टिप्पणी क्षेत्र अनिवार्य है।",
     "ticketaddedinknowledgebase":"नॉलेजबेस में टिकट जोड़ा गया।",
     "timedate":"समय तिथि",
-    "opentickets":"टिकट खोलें"
+    "opentickets":"टिकट खोलें",
+    "totaltickets":"कुल टिकट",
+    "needtochangem":"मीटर बदलने की आवश्यकता ...",
+    "addthisticketinknowledgebase":"नॉलेज बेस में यह टिकट जोड़ें?",
+    "targetclosuredate":"लक्ष्य बंद करने की तारीख",
+    "selectticketactiontype":"टिकट एक्शन टाइप चुनें",
+    "nostorattached":"कोई स्टोर संलग्न नहीं है"
 },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."
