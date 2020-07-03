@@ -1028,7 +1028,8 @@
     "chatsessiontimeout": "चैट सत्र समय समाप्त",
     "historicalchattime": "ऐतिहासिक चैट समय",
     "setlimittypeboxofchatwindow": "चैट विंडो में लिखने की अधिकतम सीमा",
-    "sendviamessenger": "संदेशवाहक के माध्यम से भेजें"
+    "sendviamessenger": "संदेशवाहक के माध्यम से भेजें",
+    "todate": "तारीख तक"
   },
   "button": {
     "logout": "लॉगआउट",
@@ -1671,7 +1672,18 @@
     "storedeletedsuccessfully": "स्टोर सफलतापूर्वक हटा दिया गया।",
     "storeaddedsuccessfully": "स्टोर सफलतापूर्वक जोड़ा गया",
     "storenotadded": "स्टोर नहीं जोड़ा गया।",
-    "storeupdatedsuccessfully": "स्टोर सफलतापूर्वक अपडेट किया गया।"
+    "storeupdatedsuccessfully": "स्टोर सफलतापूर्वक अपडेट किया गया।",
+    "pleaseenterreportname": "कृपया रिपोर्ट नाम दर्ज करें",
+    "emailhasbeensend": "ईमेल भेजा जा चुका है",
+    "reportsavedsuccessfullyfordown": "रिपोर्ट डाउनलोड के लिए सफलतापूर्वक सहेजी गई।",
+    "reportsavedsuccessfully": "रिपोर्ट सफलतापूर्वक सहेजी गई",
+    "reportnamealreadyexist": "रिपोर्ट नाम पहले से मौजूद है।",
+    "schedulercreatedsuccessfully": "शेड्यूलर सफलतापूर्वक बनाया गया।",
+    "pleaseaddreportname": "कृपया रिपोर्ट नाम जोड़ें।",
+    "pleaseaddteamnameforscheduler": "कृपया शेड्यूल के लिए टीम का नाम जोड़ें।",
+    "pleaseselectscheduletype": "कृपया शेड्यूल प्रकार का चयन करें।",
+    "pleaseselectscheduletime": "कृपया शेड्यूल समय का चयन करें।",
+    "pleaseaddreportforscheduler": "कृपया शेड्यूलर बनाने के लिए रिपोर्ट जोड़ें।"
   },
   "ticketingDashboard":{
     "viewMoreInsights":"अधिक जानकारी देखें",
