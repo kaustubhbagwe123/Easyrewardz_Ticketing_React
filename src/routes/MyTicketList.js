@@ -4602,9 +4602,12 @@ class MyTicketList extends Component {
                                 overlayId="save-search-ovrly"
                               >
                                 <div className="save-search">
-                                  <p> {TranslationContext !== undefined
-                                ? TranslationContext.button.savesearch
-                                : "SAVE SEARCH"}</p>
+                                  <p>
+                                    {" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.savesearch
+                                      : "SAVE SEARCH"}
+                                  </p>
                                 </div>
                                 <div className="search-name">
                                   <input
@@ -4635,18 +4638,23 @@ class MyTicketList extends Component {
                                     onClick={this.SaveSearchData.bind(this)}
                                   >
                                     {TranslationContext !== undefined
-                                ? TranslationContext.label.save
-                                : "Save"}
+                                      ? TranslationContext.label.save
+                                      : "Save"}
                                   </button>
                                 </div>
                                 <div className="search-names">
                                   <div className="names-title">
-                                    <p> {TranslationContext !== undefined
-                                  ? TranslationContext.p.searchname
-                                  : "Search Name"}</p>
-                                    <p className="mar-comp">{TranslationContext !== undefined
-                                  ? TranslationContext.p.action
-                                  : "Action"}</p>
+                                    <p>
+                                      {" "}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.searchname
+                                        : "Search Name"}
+                                    </p>
+                                    <p className="mar-comp">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.action
+                                        : "Action"}
+                                    </p>
                                   </div>
                                   <ul>
                                     {/* <li> */}
@@ -4666,9 +4674,11 @@ class MyTicketList extends Component {
                                                   item.searchParamID
                                                 )}
                                               >
-                                                {TranslationContext !== undefined
-                                          ? TranslationContext.a.apply
-                                          : "APPLY"}F
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a.apply
+                                                  : "APPLY"}
+                                                F
                                               </a>
                                               <a
                                                 href="#!"
@@ -7381,7 +7391,7 @@ class MyTicketList extends Component {
                                                   undefined
                                                     ? TranslationContext.label
                                                         .createdby
-                                                    : "Created by"}
+                                                    : "Created by "}
                                                   {row.original.createdBy}
                                                 </p>
                                                 <p>{row.original.createdago}</p>
@@ -7392,7 +7402,7 @@ class MyTicketList extends Component {
                                                   undefined
                                                     ? TranslationContext.label
                                                         .assignedto
-                                                    : "Assigned to"}
+                                                    : "Assigned to "}
                                                   {row.original.assignedTo}
                                                 </p>
                                                 <p>
@@ -7405,7 +7415,7 @@ class MyTicketList extends Component {
                                                   undefined
                                                     ? TranslationContext.p
                                                         .updatedby
-                                                    : "Updated by"}
+                                                    : "Updated by "}
                                                   {row.original.updatedBy}
                                                 </p>
                                                 <p>{row.original.updatedago}</p>

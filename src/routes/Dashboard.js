@@ -1968,7 +1968,7 @@ class Dashboard extends Component {
     });
   }
   StatusCloseModel() {
-    debugger
+    debugger;
     this.setState({
       sortFilterTicketData: this.state.sortTicketData,
       sortFilterCategoryData: this.state.sortCategoryData,
@@ -2466,9 +2466,10 @@ class Dashboard extends Component {
       this.state.selectScheduleDate === "100"
     ) {
       this.setState({
-        scheduleRequired: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.allfieldsarerequired
-        : "All fields are required."
+        scheduleRequired:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.allfieldsarerequired
+            : "All fields are required.",
       });
     } else if (this.state.selectScheduleDate === "230") {
       if (
@@ -2477,9 +2478,10 @@ class Dashboard extends Component {
         this.state.selectedNoOfDay === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2492,9 +2494,10 @@ class Dashboard extends Component {
         this.state.selectedWeeklyDays === ""
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2507,9 +2510,10 @@ class Dashboard extends Component {
         this.state.selectedNoOfMonthForMonth === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2523,9 +2527,10 @@ class Dashboard extends Component {
         this.state.selectedNameOfDayForWeek.length === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2538,9 +2543,10 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2554,9 +2560,10 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForDailyYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-            ? TranslationContext.ticketingDashboard.allfieldsarerequired
-            : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2724,9 +2731,10 @@ class Dashboard extends Component {
         });
     } else {
       this.setState({
-        agentSelection: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.agentselectionisrequired
-          : "Agent Selection is required.",
+        agentSelection:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.agentselectionisrequired
+            : "Agent Selection is required.",
       });
     }
   }
@@ -3323,7 +3331,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -7843,7 +7850,7 @@ class Dashboard extends Component {
                                       <p>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label.createdby
-                                          : "Created by"}
+                                          : "Created by "}
                                         {row.original.createdBy}
                                       </p>
                                       <p>{row.original.createdago}</p>
@@ -7852,7 +7859,7 @@ class Dashboard extends Component {
                                       <p>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label.assignedto
-                                          : "Assigned to"}
+                                          : "Assigned to "}
                                         {row.original.assignedTo}
                                       </p>
                                       <p>{row.original.assignedago}</p>
@@ -7861,7 +7868,7 @@ class Dashboard extends Component {
                                       <p>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.p.updatedby
-                                          : "Updated by"}
+                                          : "Updated by "}
                                         {row.original.updatedBy}
                                       </p>
                                       <p>{row.original.updatedago}</p>
