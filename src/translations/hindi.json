@@ -7,7 +7,8 @@
     "appointment": "नियुक्ति",
     "myticket": "मेरा टिकट",
     "task": "कार्य",
-    "orders": "आदेश"
+    "orders": "आदेश",
+    "claim": "दावा"
   },
   "label": {
     "allselected": "सभी चयनित",
@@ -470,7 +471,16 @@
     "contactdetailsemails": "संपर्क विवरण: ईमेल",
     "contactdetailsphones": "संपर्क विवरण: फोन",
     "editbrand": "ब्रांड संपादित करें",
-    "createcategory": "श्रेणी बनाएँ"
+    "createcategory": "श्रेणी बनाएँ",
+    "claimstatusopen": "दावा स्थिति: खोलें",
+    "billid":"बिल आईडी",
+    "productbarcode": "उत्पाद बार कोड",
+    "mrp": "एम आर पी",
+    "pricepaid": "चुकाई गई कीमत",
+    "requiredsize": "आवश्यक आकार",
+    "purchasefromstorename": "दुकान के नाम से खरीद",
+    "purchasefromstoreaddres": "स्टोर के पते से खरीद",
+    "orderid": "आदेश आईडी"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -1034,7 +1044,8 @@
     "historicalchattime": "ऐतिहासिक चैट समय",
     "setlimittypeboxofchatwindow": "चैट विंडो में लिखने की अधिकतम सीमा",
     "sendviamessenger": "संदेशवाहक के माध्यम से भेजें",
-    "todate": "तारीख तक"
+    "todate": "तारीख तक",
+    "phonenumberemailidorderid": "(फोन नंबर, ईमेल आईडी, आदेश आईडी)"
   },
   "button": {
     "logout": "लॉगआउट",
@@ -1397,7 +1408,15 @@
     "selectchannelofpurchase": "खरीद का चैनल चुनें",
     "kblink": "केबी लिंक",
     "placeholders": "प्लेसहोल्डर",
-    "function": "समारोह"
+    "function": "समारोह",
+    "taskcreatedby": "द्वारा बनाया गया कार्य",
+    "tasktitle": "कार्य का शीर्षक",
+    "ticketmapped": "टिकट मैप किया गया",
+    "titleid": "शीर्षक आईडी",
+    "claimraisedon": "दावा उठाया गया",
+    "raisedby": "द्वारा उठाया",
+    "channelofpurchase": "खरीद का चैनल",
+    "modeofpayment": "भुगतान का प्रकार"
   },
   "radio": {
     "email": "ईमेल",
@@ -1476,7 +1495,9 @@
     "enteraddress": "पता लिखिए",
     "enterphoneno": "फ़ोन नंबर दर्ज करें",
     "enterbrandcode": "ब्रांड कोड दर्ज करें",
-    "enterbrandname": "ब्रांड नाम दर्ज करें"
+    "enterbrandname": "ब्रांड नाम दर्ज करें",
+    "titleid": "शीर्षक आईडी",
+    "claimraisedon": "दावा उठाया गया"
   },
   "title": {
     "campaignname": "अभियान का नाम",

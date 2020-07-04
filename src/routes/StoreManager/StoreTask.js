@@ -2479,10 +2479,10 @@ class StoreTask extends Component {
                   >
                     <small>
                       {this.state.FilterCollapse ? TranslationContext !== undefined
-                                    ? TranslationContext.label.search
-                                    : "Search" : TranslationContext !== undefined
-                                    ? TranslationContext.label.search
-                                    : "Search"}
+                        ? TranslationContext.small.search
+                        : "Search" : TranslationContext !== undefined
+                          ? TranslationContext.small.search
+                          : "Search"}
                     </small>
                     <img
                       className="search-icon"
@@ -2929,7 +2929,7 @@ class StoreTask extends Component {
                                       onChange={this.handleOnChange.bind(this)}
                                     >
                                       <option>
-                                      {TranslationContext !== undefined
+                                        {TranslationContext !== undefined
                                           ? TranslationContext.option.department
                                           : "Department"}
                                       </option>
@@ -2951,7 +2951,9 @@ class StoreTask extends Component {
                                   <div className="col-md-3">
                                     <input
                                       type="text"
-                                      placeholder="Task Title"
+                                      placeholder={TranslationContext !== undefined
+                                        ? TranslationContext.option.tasktitle
+                                        : "Task Title"}
                                       name="tasktitle"
                                       value={
                                         this.state.assignSearchData["tasktitle"]
@@ -2968,7 +2970,11 @@ class StoreTask extends Component {
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     >
-                                      <option>Funcation</option>
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.function
+                                          : "Function"}
+                                      </option>
                                       {this.state.funcationData !== null &&
                                         this.state.funcationData.map(
                                           (item, i) => (
@@ -2991,7 +2997,11 @@ class StoreTask extends Component {
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     >
-                                      <option>Task Created By</option>
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskcreatedby
+                                          : "Task Created By"}
+                                      </option>
                                       {this.state.userData !== null &&
                                         this.state.userData.map((item, i) => (
                                           <option
@@ -3013,7 +3023,11 @@ class StoreTask extends Component {
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     >
-                                      <option>Task Status</option>
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskcreatedby
+                                          : "Task Status"}
+                                      </option>
 
                                       {this.state.storeStatus !== null &&
                                         this.state.storeStatus.map((item, i) => (
@@ -3042,7 +3056,11 @@ class StoreTask extends Component {
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     >
-                                      <option>Task Priority</option>
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskpriority
+                                          : "Task Priority"}
+                                      </option>
                                       {this.state.priorityData !== null &&
                                         this.state.priorityData.map((item, i) => (
                                           <option
@@ -3070,10 +3088,10 @@ class StoreTask extends Component {
                   >
                     <small>
                       {this.state.FilterCollapse ? TranslationContext !== undefined
-                                    ? TranslationContext.label.search
-                                    : "Search" : TranslationContext !== undefined
-                                    ? TranslationContext.label.search
-                                    : "Search"}
+                        ? TranslationContext.small.search
+                        : "Search" : TranslationContext !== undefined
+                          ? TranslationContext.small.search
+                          : "Search"}
                     </small>
                     <img
                       className="search-icon"
@@ -3518,8 +3536,10 @@ class StoreTask extends Component {
                                       onChange={this.handleOnChange.bind(this)}
                                     >
                                       <option value="" selected>
-                                        Department
-                                    </option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.department
+                                          : "Department"}
+                                      </option>
                                       {this.state.departmentData !== null &&
                                         this.state.departmentData.map(
                                           (item, i) => (
@@ -3544,8 +3564,10 @@ class StoreTask extends Component {
                                       onChange={this.handleOnChange.bind(this)}
                                     >
                                       <option value="" selected>
-                                        Funcation
-                                    </option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.function
+                                          : "Function"}
+                                      </option>
                                       {this.state.funcationData !== null &&
                                         this.state.funcationData.map(
                                           (item, i) => (
@@ -3570,8 +3592,10 @@ class StoreTask extends Component {
                                       onChange={this.handleOnChange.bind(this)}
                                     >
                                       <option value="" selected>
-                                        Assign To
-                                    </option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.assignto
+                                          : "Assign to"}
+                                      </option>
                                       {this.state.assignToData !== null &&
                                         this.state.assignToData.map((item, i) => (
                                           <option
@@ -3587,7 +3611,9 @@ class StoreTask extends Component {
                                   <div className="col-md-3">
                                     <input
                                       type="text"
-                                      placeholder="Task Title"
+                                      placeholder={TranslationContext !== undefined
+                                        ? TranslationContext.option.tasktitle
+                                        : "Task Title"}
                                       name="tasktitle"
                                       value={
                                         this.state.ticketSearchData["tasktitle"]
@@ -3606,8 +3632,10 @@ class StoreTask extends Component {
                                       onChange={this.handleOnChange.bind(this)}
                                     >
                                       <option value="" selected>
-                                        Task Priority
-                                    </option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskpriority
+                                          : "Task Priority"}
+                                      </option>
                                       {this.state.priorityData !== null &&
                                         this.state.priorityData.map((item, i) => (
                                           <option
@@ -3636,8 +3664,10 @@ class StoreTask extends Component {
                                       onChange={this.handleOnChange.bind(this)}
                                     >
                                       <option value="" selected>
-                                        Task Status
-                                    </option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskstatus
+                                          : "Task Status"}
+                                      </option>
                                       {this.state.storeStatus !== null &&
                                         this.state.storeStatus.map((item, i) => (
                                           <option
@@ -3661,9 +3691,21 @@ class StoreTask extends Component {
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     >
-                                      <option value="">Task With Claim</option>
-                                      <option value={"Yes"}>Yes</option>
-                                      <option value={"No"}>No</option>
+                                      <option value="">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskwithclaim
+                                          : "Task With Claim"}
+                                      </option>
+                                      <option value={"Yes"}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.yes
+                                          : "Yes"}
+                                      </option>
+                                      <option value={"No"}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.no
+                                          : "No"}
+                                      </option>
                                     </select>
                                   </div>
 
@@ -3678,9 +3720,21 @@ class StoreTask extends Component {
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     >
-                                      <option value="">Task With Ticket</option>
-                                      <option value={"Yes"}>Yes</option>
-                                      <option value={"No"}>No</option>
+                                      <option value="">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskwithticket
+                                          : "Task With Ticket"}
+                                      </option>
+                                      <option value={"Yes"}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.yes
+                                          : "Yes"}
+                                      </option>
+                                      <option value={"No"}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.no
+                                          : "No"}
+                                      </option>
                                     </select>
                                   </div>
 
@@ -3733,10 +3787,10 @@ class StoreTask extends Component {
                   >
                     <small>
                       {this.state.FilterCollapse ? TranslationContext !== undefined
-                                    ? TranslationContext.label.search
-                                    : "Search" : TranslationContext !== undefined
-                                    ? TranslationContext.label.search
-                                    : "Search"}
+                        ? TranslationContext.small.search
+                        : "Search" : TranslationContext !== undefined
+                          ? TranslationContext.small.search
+                          : "Search"}
                     </small>
                     <img
                       className="search-icon"
