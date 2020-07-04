@@ -108,10 +108,67 @@ class JunkWords extends Component {
       url: config.apiUrl + "/JunkWords/ListJunkWords",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var status = res.data.message;
         var data = res.data.responseData;
+
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].junkKeyword]) {
+              distinct.push(data[i].junkKeyword);
+              unique[data[i].junkKeyword] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortjunkKeyword.push({ junkKeyword: distinct[i] });
+            self.state.sortFilterjunkKeyword.push({
+              junkKeyword: distinct[i],
+            });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].reason]) {
+              distinct.push(data[i].reason);
+              unique[data[i].reason] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortreason.push({ reason: distinct[i] });
+            self.state.sortFilterreason.push({ reason: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].enteredDate]) {
+              distinct.push(data[i].enteredDate);
+              unique[data[i].enteredDate] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortenteredDate.push({ enteredDate: distinct[i] });
+            self.state.sortFilterenteredDate.push({ enteredDate: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].enteredBy]) {
+              distinct.push(data[i].enteredBy);
+              unique[data[i].enteredBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortenteredBy.push({ enteredBy: distinct[i] });
+            self.state.sortFilterenteredBy.push({ enteredBy: distinct[i] });
+          }
+        }
         if (status === "Success") {
           self.setState({
             JunkWordsData: data,
@@ -143,7 +200,7 @@ class JunkWords extends Component {
           Reason: this.state.Reason,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.message === "Success") {
             self.setState({ loading: true });
             NotificationManager.success(
@@ -184,7 +241,7 @@ class JunkWords extends Component {
           Reason: this.state.Reason,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.message === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -214,7 +271,7 @@ class JunkWords extends Component {
         junkKeywordID,
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         if (res.data.message === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -859,115 +916,119 @@ class JunkWords extends Component {
                         onChange={this.setSortCheckStatus.bind(this, "all")}
                       />
                       <label htmlFor={"fil-open"}>
-                        <span className="table-btn table-blue-btn">ALL</span>
+                        <span className="table-btn table-blue-btn">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.all
+                            : "ALL"}
+                        </span>
                       </label>
                     </div>
                     {this.state.sortColumn === "junkKeyword"
                       ? this.state.sortFilterjunkKeyword !== null &&
-                        this.state.sortFilterjunkKeyword.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.junkKeyword}
-                              value={item.junkKeyword}
-                              checked={this.state.sjunkKeywordFilterCheckbox.includes(
-                                item.junkKeyword
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "junkKeyword",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.junkKeyword}>
-                              <span className="table-btn table-blue-btn">
-                                {item.junkKeyword}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterjunkKeyword.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.junkKeyword}
+                            value={item.junkKeyword}
+                            checked={this.state.sjunkKeywordFilterCheckbox.includes(
+                              item.junkKeyword
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "junkKeyword",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.junkKeyword}>
+                            <span className="table-btn table-blue-btn">
+                              {item.junkKeyword}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
 
                     {this.state.sortColumn === "reason"
                       ? this.state.sortFilterreason !== null &&
-                        this.state.sortFilterreason.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.reason}
-                              value={item.reason}
-                              checked={this.state.sreasonFilterCheckbox.includes(
-                                item.reason
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "reason",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.reason}>
-                              <span className="table-btn table-blue-btn">
-                                {item.reason}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterreason.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.reason}
+                            value={item.reason}
+                            checked={this.state.sreasonFilterCheckbox.includes(
+                              item.reason
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reason",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reason}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reason}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
 
                     {this.state.sortColumn === "enteredDate"
                       ? this.state.sortFilterenteredDate !== null &&
-                        this.state.sortFilterenteredDate.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.enteredDate}
-                              value={item.enteredDate}
-                              checked={this.state.senteredDateFilterCheckbox.includes(
-                                item.enteredDate
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "enteredDate",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.enteredDate}>
-                              <span className="table-btn table-blue-btn">
-                                {item.enteredDate}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterenteredDate.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.enteredDate}
+                            value={item.enteredDate}
+                            checked={this.state.senteredDateFilterCheckbox.includes(
+                              item.enteredDate
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "enteredDate",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.enteredDate}>
+                            <span className="table-btn table-blue-btn">
+                              {item.enteredDate}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
 
                     {this.state.sortColumn === "enteredBy"
                       ? this.state.sortFilterenteredBy !== null &&
-                        this.state.sortFilterenteredBy.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.enteredBy}
-                              value={item.enteredBy}
-                              checked={this.state.senteredByFilterCheckbox.includes(
-                                item.enteredBy
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "enteredBy",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.enteredBy}>
-                              <span className="table-btn table-blue-btn">
-                                {item.enteredBy}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterenteredBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.enteredBy}
+                            value={item.enteredBy}
+                            checked={this.state.senteredByFilterCheckbox.includes(
+                              item.enteredBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "enteredBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.enteredBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.enteredBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
                   </div>
                 </div>
@@ -1100,216 +1161,216 @@ class JunkWords extends Component {
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
               ) : (
-                <ReactTable
-                  data={datajunkwords}
-                  columns={[
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "junkKeyword",
-                            TranslationContext !== undefined
+                  <ReactTable
+                    data={datajunkwords}
+                    columns={[
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "junkKeyword",
+                              TranslationContext !== undefined
+                                ? TranslationContext.strong.junkwords
+                                : "Junk Words"
+                            )}
+                          >
+                            {TranslationContext !== undefined
                               ? TranslationContext.strong.junkwords
-                              : "Junk Words"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.strong.junkwords
-                            : "Junk Words"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "junkKeyword",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "reason",
-                            TranslationContext !== undefined
+                              : "Junk Words"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "junkKeyword",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "reason",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.reason
+                                : "Reason"
+                            )}
+                          >
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.reason
-                              : "Reason"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.reason
-                            : "Reason"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "reason",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "enteredDate",
-                            TranslationContext !== undefined
+                              : "Reason"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "reason",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "enteredDate",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.entereddate
+                                : "Entered Date"
+                            )}
+                          >
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.entereddate
-                              : "Entered Date"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.entereddate
-                            : "Entered Date"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "enteredDate",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "enteredBy",
-                            TranslationContext !== undefined
+                              : "Entered Date"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "enteredDate",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "enteredBy",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.enteredby
+                                : "Entered By"
+                            )}
+                          >
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.enteredby
-                              : "Entered By"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.enteredby
-                            : "Entered By"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "enteredBy",
-                      sortable: false,
-                      Cell: (row) => {
-                        var ids = row.original["Id"];
-                        return (
-                          <div>
-                            <span>
-                              {row.original.enteredBy}
+                              : "Entered By"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "enteredBy",
+                        sortable: false,
+                        Cell: (row) => {
+                          var ids = row.original["Id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.enteredBy}
+                                <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                          : {row.original.modifyBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                        : {row.original.modifyDate}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.actions
+                              : "Actions"}
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "actionReport",
+                        Cell: (row) => (
+                          <div className="report-action">
+                            <div>
                               <Popover
                                 content={
-                                  <>
-                                    <div>
-                                      <b>
-                                        <p className="title">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.p.updatedby
-                                            : "Updated By"}
-                                          : {row.original.modifyBy}
-                                        </p>
-                                      </b>
-                                      <p className="sub-title">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.p.updateddate
-                                          : "Updated Date"}
-                                        : {row.original.modifyDate}
-                                      </p>
+                                  <div className="samdel d-flex general-popover popover-body">
+                                    <div className="del-big-icon">
+                                      <img src={DelBigIcon} alt="del-icon" />
                                     </div>
-                                  </>
-                                }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon-cp"
-                                  src={BlackInfoIcon}
-                                  alt="info-icon"
-                                  id={ids}
-                                />
-                              </Popover>
-                            </span>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      Header: (
-                        <span>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.actions
-                            : "Actions"}
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "actionReport",
-                      Cell: (row) => (
-                        <div className="report-action">
-                          <div>
-                            <Popover
-                              content={
-                                <div className="samdel d-flex general-popover popover-body">
-                                  <div className="del-big-icon">
-                                    <img src={DelBigIcon} alt="del-icon" />
-                                  </div>
-                                  <div>
-                                    <p className="font-weight-bold blak-clr">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p.deleterecord
-                                        : "Delete record"}
+                                    <div>
+                                      <p className="font-weight-bold blak-clr">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p.deleterecord
+                                          : "Delete record"}
                                       ?
                                     </p>
-                                    <p className="mt-1 fs-12">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p
+                                      <p className="mt-1 fs-12">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p
                                             .areyousurewanttodeletethisrecord
-                                        : "Are you sure you want to delete this record?"}
-                                    </p>
-                                    <div className="del-can">
-                                      <a>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.button.cancel
-                                          : "CANCEL"}
-                                      </a>
-                                      <button
-                                        className="butn"
-                                        onClick={this.handleDeleteJunkWords.bind(
-                                          this,
-                                          row.original.junkKeywordID
-                                        )}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.delete
-                                          : "Delete"}
-                                      </button>
+                                          : "Are you sure you want to delete this record?"}
+                                      </p>
+                                      <div className="del-can">
+                                        <a>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.cancel
+                                            : "CANCEL"}
+                                        </a>
+                                        <button
+                                          className="butn"
+                                          onClick={this.handleDeleteJunkWords.bind(
+                                            this,
+                                            row.original.junkKeywordID
+                                          )}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.delete
+                                            : "Delete"}
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              }
-                              placement="bottom"
-                              trigger="click"
-                            >
-                              <img
-                                src={RedDeleteIcon}
-                                alt="del-icon"
-                                className="del-btn"
-                              />
-                            </Popover>
+                                }
+                                placement="bottom"
+                                trigger="click"
+                              >
+                                <img
+                                  src={RedDeleteIcon}
+                                  alt="del-icon"
+                                  className="del-btn"
+                                />
+                              </Popover>
+                            </div>
+                            <div>
+                              <button
+                                className="react-tabel-button editre"
+                                id="p-edit-pop-2"
+                                onClick={this.handleEditJunkWords.bind(
+                                  this,
+                                  row.original
+                                )}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.edit
+                                  : "EDIT"}
+                              </button>
+                            </div>
                           </div>
-                          <div>
-                            <button
-                              className="react-tabel-button editre"
-                              id="p-edit-pop-2"
-                              onClick={this.handleEditJunkWords.bind(
-                                this,
-                                row.original
-                              )}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.button.edit
-                                : "EDIT"}
-                            </button>
-                          </div>
-                        </div>
-                      ),
-                    },
-                  ]}
-                  resizable={false}
-                  defaultPageSize={10}
-                  showPagination={true}
-                  minRows={1}
-                />
-              )}
+                        ),
+                      },
+                    ]}
+                    resizable={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    minRows={1}
+                  />
+                )}
             </div>
           </div>
         </div>
