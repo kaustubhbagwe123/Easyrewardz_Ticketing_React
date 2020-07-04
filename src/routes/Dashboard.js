@@ -764,6 +764,7 @@ class Dashboard extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
+    debugger
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -1033,7 +1034,7 @@ class Dashboard extends Component {
     this.setState({
       tempSearchTicketData: itemsArray,
     });
-    // this.StatusCloseModel();
+    this.StatusCloseModel();
   };
 
   sortStatusAtoZ() {
@@ -2143,7 +2144,11 @@ class Dashboard extends Component {
       isWhite: false,
       isYellow: false,
       isGreen: false,
-      SearchTicketData: tempFinalSearchTicketData,
+      SearchTicketData:
+        tempColor.length > 0
+          ? tempFinalSearchTicketData
+          : tempSearchTicketData,
+      // SearchTicketData: tempFinalSearchTicketData,
     });
   }
   HandleChangeRedict() {
@@ -5166,10 +5171,10 @@ class Dashboard extends Component {
               className="table-cntr mt-3 mtictab table-responsive"
               style={{ overflow: "initial" }}
             >
-              <a href="#!" className="float-search" onClick={this.toggleSearch}>
+               <div className="float-search" onClick={this.toggleSearch}>
                 <small>{TitleChange}</small>
                 {ImgChange}
-              </a>
+              </div>
               <div>
                 <Collapse isOpen={this.state.collapseSearch}>
                   <Card>
