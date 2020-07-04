@@ -97,7 +97,7 @@ class Header extends Component {
         // }
       ],
       reportAccess: "none",
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
@@ -307,7 +307,10 @@ class Header extends Component {
     var page = path.split("/").pop();
     var accessdata = [];
     var dashboard = {
-      data: TranslationContext!==undefined?TranslationContext.nav.dashboard:"Dashboards",
+      data:
+        TranslationContext !== undefined
+          ? TranslationContext.nav.dashboard
+          : "Dashboards",
       urls: "dashboard",
       logoBlack: DashboardLogo,
       logoBlue: DashboardLogoBlue,
@@ -316,7 +319,10 @@ class Header extends Component {
       activeClass: page === "dashboard" ? "active single-menu" : "single-menu",
     };
     var myticket = {
-      data: TranslationContext!==undefined?TranslationContext.nav.myticket:"My Tickets",
+      data:
+        TranslationContext !== undefined
+          ? TranslationContext.nav.myticket
+          : "My Tickets",
       urls: "myTicketlist",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
@@ -326,7 +332,10 @@ class Header extends Component {
         page === "myTicketlist" ? "active single-menu" : "single-menu",
     };
     var knowledgebase = {
-      data: TranslationContext!==undefined?TranslationContext.nav.knowledge:"Knowledge Base",
+      data:
+        TranslationContext !== undefined
+          ? TranslationContext.nav.knowledge
+          : "Knowledge Base",
       urls: "knowledgebase",
       logoBlack: KnowledgeLogo,
       logoBlue: KnowledgeLogoBlue,
@@ -534,9 +543,11 @@ class Header extends Component {
           <input type="hidden" value={this.state.reportAccess} id="isReport" />
           <div className="d-flex">
             <div className="er">
-            <label className="er-label">
-              {TranslationContext !== undefined? TranslationContext.label.er:"ER"}
-            </label>
+              <label className="er-label">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.er
+                  : "ER"}
+              </label>
             </div>
             <div className="hamb-menu">
               <div className="dropdown">
@@ -1069,7 +1080,12 @@ class Header extends Component {
         >
           <div className="notifi-container">
             {this.state.notiCount === 0 && (
-              <p className="m-0 p-2">There are no notifications.</p>
+              <p className="m-0 p-2">
+                {TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard
+                      .therearenonotifications
+                  : "There are no notifications."}
+              </p>
             )}
             {this.state.notifiMessages.map((item, i) => {
               return (
@@ -1089,7 +1105,11 @@ class Header extends Component {
                           {this.state.NotifiTicketIds.map((data, j) => {
                             return (
                               <p key={j}>
-                                Ticket No. :
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .ticketno
+                                  : "Ticket No."}{" "}
+                                :
                                 <Link
                                   to={{
                                     pathname: "myticket",
@@ -1122,7 +1142,9 @@ class Header extends Component {
                           item
                         )}
                       >
-                        VIEW TICKETS
+                        {TranslationContext !== undefined
+                          ? TranslationContext.div.viewtickets
+                          : "VIEW TICKETS"}
                       </div>
                     </Popover>
                   </div>
@@ -1210,7 +1232,9 @@ class Header extends Component {
                     className="logout"
                     onClick={this.handleLogoutMethod.bind(this)}
                   >
-                    {TranslationContext !== undefined? TranslationContext.span.logout:"LOGOUT"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.logout
+                      : "LOGOUT"}
                   </button>
                 </div>
               </div>
@@ -1243,7 +1267,11 @@ class Header extends Component {
               <div className="d-block">
                 <div className="d-flex justify-content-between">
                   <div>
-                    <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.logintime:"Login Time"}</p>
+                    <p className="logout-label">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.logintime
+                        : "Login Time"}
+                    </p>
                     <p
                       className="font-weight-bold"
                       style={{ fontSize: "16px" }}
@@ -1253,7 +1281,11 @@ class Header extends Component {
                     </p>
                   </div>
                   <div>
-                    <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.logouttime:"Logout Time"}</p>
+                    <p className="logout-label">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.logouttime
+                        : "Logout Time"}
+                    </p>
                     <p
                       className="font-weight-bold"
                       style={{ fontSize: "16px", float: "right" }}
@@ -1279,7 +1311,11 @@ class Header extends Component {
               </div>
               <div>
                 <div>
-                  <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.slascore:"SLA SCORE"}</p>
+                  <p className="logout-label">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.slascore
+                      : "SLA SCORE"}
+                  </p>
                   <p className="font-weight-bold">{this.state.SLAScore}</p>
                 </div>
                 {/* <div>
@@ -1287,7 +1323,11 @@ class Header extends Component {
                   <p className="font-weight-bold">{this.state.CSatScore}</p>
                 </div> */}
                 <div>
-                  <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.avgresponsetime:"Avg Response time"}</p>
+                  <p className="logout-label">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.avgresponsetime
+                      : "Avg Response time"}
+                  </p>
                   <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
               </div>

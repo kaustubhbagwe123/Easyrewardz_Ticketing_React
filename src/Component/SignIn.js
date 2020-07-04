@@ -166,7 +166,7 @@ class SingIn extends Component {
             window.localStorage.setItem("token", res.data.responseData.token);
             window.localStorage.setItem("ERT", true);
             // self.handleCRMRole();
-            self.props.history.push("LanguageSelection");
+            self.props.history.push("TicketingLanguageSelection");
           } else {
             NotificationManager.error(
               "Username or password is invalid.",

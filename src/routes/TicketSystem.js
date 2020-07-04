@@ -156,6 +156,7 @@ class TicketSystem extends Component {
       ckCusrsorPosition: 0,
       ckCusrsorData: "",
       translateLanguage: {},
+      checkPriorityDetails: false,
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -738,10 +739,10 @@ class TicketSystem extends Component {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        if (status === "Success") {
+        if (status === "Success") { 
           self.setState({ TicketPriorityData: data });
         } else {
-          self.setState({ TicketPriorityData: [] });
+          self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
       })
       .catch((data) => {
@@ -1457,6 +1458,7 @@ class TicketSystem extends Component {
       IssueTypeData: [],
       TicketPriorityData: [],
       selectedTicketPriority: 0,
+      checkPriorityDetails:false
     });
     this.handleGetCategoryList(value);
   };
@@ -1491,6 +1493,7 @@ class TicketSystem extends Component {
       IssueTypeData: [],
       TicketPriorityData: [],
       selectedTicketPriority: 0,
+      checkPriorityDetails:false
     });
     setTimeout(() => {
       if (this.state.selectedCategory) {
@@ -1503,6 +1506,7 @@ class TicketSystem extends Component {
           SubCategoryData: [],
           TicketPriorityData: [],
           selectedTicketPriority: 0,
+          checkPriorityDetails:false
         });
       }
     }, 1);
@@ -1531,6 +1535,7 @@ class TicketSystem extends Component {
       IssueTypeData: [],
       TicketPriorityData: [],
       selectedTicketPriority: 0,
+      checkPriorityDetails:false
     });
 
     setTimeout(() => {
@@ -1542,6 +1547,7 @@ class TicketSystem extends Component {
           selectedIssueType: "",
           TicketPriorityData: [],
           selectedTicketPriority: 0,
+          checkPriorityDetails:false
         });
       }
     }, 1);
@@ -1648,6 +1654,7 @@ class TicketSystem extends Component {
             self.handleGetCategoryList();
             self.handleGetSubCategoryList();
             self.handleGetIssueTypeList();
+            self.handleGetTicketPriorityList();
             self.handleOnLoadFiles();
           }, 100);
         } else {
@@ -2072,6 +2079,13 @@ class TicketSystem extends Component {
                               </label>
                             </div>
                           ))}
+                        {this.state.checkPriorityDetails && (
+                          <p style={{ color: "red", marginTop: "15px" }}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.slahasnotbeencreated
+                              : "SLA has not been created"}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="col-md-6">
