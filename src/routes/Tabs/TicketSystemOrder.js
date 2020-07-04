@@ -1541,9 +1541,10 @@ class TicketSystemOrder extends Component {
                     dataIndex: "storeAddress",
                   },
                   {
-                    title: TranslationContext !== undefined
-                    ? TranslationContext.span.discount
-                    : "Discount",
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.discount
+                        : "Discount",
                     dataIndex: "discount",
                   },
                 ]}
@@ -1585,22 +1586,24 @@ class TicketSystemOrder extends Component {
                           },
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.articlenumber
-                          : "Article Number",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.articlenumber
+                              : "Article Number",
                           dataIndex: "articleNumber",
                         },
                         {
-                          title:  TranslationContext !== undefined
-                          ? TranslationContext.span.articlename
-                          : "Article Name",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.articlename
+                              : "Article Name",
                           dataIndex: "articleName",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.ticketingDashboard
-                              .articlemrp
-                          : "Article MRP",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.articlemrp
+                              : "Article MRP",
                           dataIndex: "itemPrice",
                         },
                         {
@@ -1611,16 +1614,18 @@ class TicketSystemOrder extends Component {
                           dataIndex: "pricePaid",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.discount
-                          : "Discount",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.discount
+                              : "Discount",
                           dataIndex: "discount",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.ticketingDashboard
-                              .requiredsize
-                          : "Required Size",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard
+                                  .requiredsize
+                              : "Required Size",
                           dataIndex: "requireSize",
                           render: (data, record) => {
                             return (
@@ -2097,7 +2102,7 @@ class TicketSystemOrder extends Component {
               </div>
 
               <div className="row m-b-10 m-l-10 m-r-10">
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <button
                     type="button"
                     className="addmanual m-t-15"
@@ -2118,7 +2123,7 @@ class TicketSystemOrder extends Component {
                       : "SAVE"}
                   </button>
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <button
                     type="button"
                     className="addmanual m-t-15"
