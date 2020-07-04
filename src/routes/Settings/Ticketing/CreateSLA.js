@@ -93,7 +93,7 @@ class CreateSLA extends Component {
       sisSLAActiveFilterCheckbox: "",
       isortA: false,
       bulkuploadLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
@@ -697,7 +697,7 @@ class CreateSLA extends Component {
         SearchText: this.state.SearchText,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
@@ -740,7 +740,7 @@ class CreateSLA extends Component {
         SLAFor: 1,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -805,7 +805,7 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -867,7 +867,7 @@ class CreateSLA extends Component {
         SLAId: SLAId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -965,13 +965,15 @@ class CreateSLA extends Component {
           SLAFor: 1,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.slaaddeddsuccessfully
-              : "SLA added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.slaaddeddsuccessfully
+                : "SLA added successfully."
+            );
             self.setState({
               // selectedSlaIssueType: 0,
               SlaIsActive: "true",
@@ -992,12 +994,14 @@ class CreateSLA extends Component {
         });
     } else {
       this.setState({
-        issueTypeCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.pleaseselectissuetype
-          : "Please select issue type.",
-        slaTargetCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.required
-          : "Required.",
+        issueTypeCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please select issue type.",
+        slaTargetCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.required
+            : "Required.",
       });
     }
   }
@@ -1014,18 +1018,22 @@ class CreateSLA extends Component {
         SLAID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.sladeletedsuccessfully
-            : "SLA deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.sladeletedsuccessfully
+              : "SLA deleted successfully."
+          );
           self.handleGetSLA();
         } else {
-          NotificationManager.error(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.slanotdeleted
-            : "SLA not deleted.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slanotdeleted
+              : "SLA not deleted."
+          );
         }
       })
       .catch((data) => {
@@ -1139,28 +1147,34 @@ class CreateSLA extends Component {
       headers: authHeader(),
       data: inputParamter,
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.slaupdatesuccessfully
-            : "SLA Updated Successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slaupdatesuccessfully
+              : "SLA Updated Successfully"
+          );
           self.handleGetSLA();
         } else {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.slanotupdated
-            : "SLA Not Updated");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slanotupdated
+              : "SLA Not Updated"
+          );
         }
       })
       .catch((response) => {
         self.setState({ editSaveLoading: false, editmodel: false });
-        NotificationManager.success(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.slanotupdated
-          : "SLA Not Updated");
+        NotificationManager.success(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.slanotupdated
+            : "SLA Not Updated"
+        );
         console.log(response);
       });
     // } else {
@@ -1238,14 +1252,16 @@ class CreateSLA extends Component {
         //   this.updateUploadProgress(Math.round(progress));
         // }
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.fileuploadedsuccessfully
-              : "File uploaded successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
             self.setState({
               fileName: "",
               fileSize: "",
@@ -1260,9 +1276,11 @@ class CreateSLA extends Component {
               // isFileUploadFail: true,
               progressValue: 0,
             });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.filenotuploaded
-              : "File not uploaded.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((data) => {
@@ -1278,9 +1296,10 @@ class CreateSLA extends Component {
         });
     } else {
       this.setState({
-        bulkuploadCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.pleaseselectfile
-          : "Please select file.",
+        bulkuploadCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfile
+            : "Please select file.",
       });
     }
   }
@@ -1295,9 +1314,11 @@ class CreateSLA extends Component {
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success(TranslationContext !== undefined
-      ? TranslationContext.alertmessage.filedeletedsuccessfully
-      : "File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   render() {
@@ -1324,9 +1345,11 @@ class CreateSLA extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortatoz
-                    : "SORT BY A TO Z"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1336,9 +1359,11 @@ class CreateSLA extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortztoa
-                    : "SORT BY Z TO A"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1351,9 +1376,11 @@ class CreateSLA extends Component {
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p>{TranslationContext !== undefined
-                  ? TranslationContext.p.filterbytype
-                  : "FILTER BY TYPE"}</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1386,83 +1413,83 @@ class CreateSLA extends Component {
                   </div>
                   {this.state.sortColumn === "issueTpeName"
                     ? this.state.sortFilterIssueType !== null &&
-                    this.state.sortFilterIssueType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.issueTpeName}
-                          value={item.issueTpeName}
-                          checked={this.state.sissueTpeNameFilterCheckbox.includes(
-                            item.issueTpeName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "issueTpeName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.issueTpeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.issueTpeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterIssueType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.issueTpeName}
+                            value={item.issueTpeName}
+                            checked={this.state.sissueTpeNameFilterCheckbox.includes(
+                              item.issueTpeName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "issueTpeName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.issueTpeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.issueTpeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFilterCreatedBy !== null &&
-                    this.state.sortFilterCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "isSLAActive"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.isSLAActive}
-                          value={item.isSLAActive}
-                          checked={this.state.sisSLAActiveFilterCheckbox.includes(
-                            item.isSLAActive
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "isSLAActive",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.isSLAActive}>
-                          <span className="table-btn table-blue-btn">
-                            {item.isSLAActive}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.isSLAActive}
+                            value={item.isSLAActive}
+                            checked={this.state.sisSLAActiveFilterCheckbox.includes(
+                              item.isSLAActive
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "isSLAActive",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.isSLAActive}>
+                            <span className="table-btn table-blue-btn">
+                              {item.isSLAActive}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -1528,24 +1555,36 @@ class CreateSLA extends Component {
                                     <>
                                       <div>
                                         <p className="title">
-                                          <b> {TranslationContext !== undefined
-                                            ? TranslationContext.b.brand
-                                            : "Brand"}: </b>
+                                          <b>
+                                            {" "}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.brand
+                                              : "Brand"}
+                                            :{" "}
+                                          </b>
                                           {row.original.brandName}
                                         </p>
 
                                         <p className="sub-title">
-                                          <b>{TranslationContext !== undefined
-                                            ? TranslationContext.label.category
-                                            : "Category"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .category
+                                              : "Category"}
+                                            :{" "}
+                                          </b>
                                           {row.original.categoryName}
                                         </p>
                                       </div>
                                       <div>
                                         <p className="sub-title">
-                                          <b>{TranslationContext !== undefined
-                                            ? TranslationContext.label.subcategory
-                                            : "Sub Category"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .subcategory
+                                              : "Sub Category"}
+                                            :{" "}
+                                          </b>
                                           {row.original.subCategoryName}
                                         </p>
                                       </div>
@@ -1583,7 +1622,7 @@ class CreateSLA extends Component {
                             priorityName = "";
                           for (let i = 0; i < slaTarget.length; i++) {
                             priorityNameComma +=
-                              slaTarget[i].priorityName + ",";
+                              slaTarget[i].priorityName + ", ";
                           }
                           priorityName = priorityNameComma.substring(
                             0,
@@ -1600,18 +1639,21 @@ class CreateSLA extends Component {
                                         <div>
                                           <label className="slatargettext-1">
                                             {TranslationContext !== undefined
-                                              ? TranslationContext.label.slatargets
+                                              ? TranslationContext.label
+                                                  .slatargets
                                               : "SLA TARGETS"}
                                           </label>
                                         </div>
                                         <div>
                                           <label className="createhead-text-1">
                                             {TranslationContext !== undefined
-                                              ? TranslationContext.label.priority
+                                              ? TranslationContext.label
+                                                  .priority
                                               : "Priority"}
                                           </label>
                                           <label className="createhead-text-1">
-                                            %{TranslationContext !== undefined
+                                            %
+                                            {TranslationContext !== undefined
                                               ? TranslationContext.label.sla
                                               : "SLA"}
                                           </label>
@@ -1655,8 +1697,8 @@ class CreateSLA extends Component {
                                     />
                                   </Popover>
                                 ) : (
-                                    ""
-                                  )}
+                                  ""
+                                )}
                               </span>
                             </div>
                           );
@@ -1697,14 +1739,15 @@ class CreateSLA extends Component {
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.createdby
-                                              : "Created By"}: {row.original.createdBy}
+                                              : "Created By"}
+                                            : {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.createddate
-                                            : "Created Date"}:{" "}
-                                          {row.original.createdDate}
+                                            : "Created Date"}
+                                          : {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
@@ -1712,15 +1755,15 @@ class CreateSLA extends Component {
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
-                                              : "Updated By"}:{" "}
-                                            {row.original.modifiedBy}
+                                              : "Updated By"}
+                                            : {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.updateddate
-                                            : "Updated Date"}:{" "}
-                                          {row.original.modifiedDate}
+                                            : "Updated Date"}
+                                          : {row.original.modifiedDate}
                                         </p>
                                       </div>
                                     </>
@@ -1762,9 +1805,13 @@ class CreateSLA extends Component {
                         accessor: "isSLAActive",
                       },
                       {
-                        Header: <span>{TranslationContext !== undefined
-                          ? TranslationContext.span.action
-                          : "Actions"}</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.action
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actiondept",
                         sortable: false,
                         Cell: (row) => {
@@ -1786,7 +1833,8 @@ class CreateSLA extends Component {
                                         </p>
                                         <p className="mt-1 fs-12">
                                           {TranslationContext !== undefined
-                                            ? TranslationContext.p.areyousuredeletefile
+                                            ? TranslationContext.p
+                                                .areyousuredeletefile
                                             : "Are you sure you want to delete this file?"}
                                         </p>
                                         <div className="del-can">
@@ -1988,7 +2036,8 @@ class CreateSLA extends Component {
                       <label className="slatargettext">
                         {TranslationContext !== undefined
                           ? TranslationContext.label.slatargets
-                          : "SLA Targets"}</label>
+                          : "SLA Targets"}
+                      </label>
                     </div>
                     <div className="slatargetRow-1">
                       <label className="createhead-text-new  createhead-cus">
@@ -1997,11 +2046,14 @@ class CreateSLA extends Component {
                           : "Priority"}
                       </label>
                       <label className="createhead-text">
-                        %{TranslationContext !== undefined
+                        %
+                        {TranslationContext !== undefined
                           ? TranslationContext.label.sla
-                          : "SLA"} <br /> {TranslationContext !== undefined
-                            ? TranslationContext.label.breach
-                            : "Breach"}
+                          : "SLA"}{" "}
+                        <br />{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.breach
+                          : "Breach"}
                       </label>
                       <label className="createhead-text">
                         {TranslationContext !== undefined
@@ -2230,7 +2282,8 @@ class CreateSLA extends Component {
                                     </p>
                                     <p className="mt-1 fs-12">
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.p.areyousuredeletefile
+                                        ? TranslationContext.p
+                                            .areyousuredeletefile
                                         : "Are you sure you want to delete this file?"}
                                     </p>
                                     <div className="del-can">
@@ -2259,30 +2312,30 @@ class CreateSLA extends Component {
                             </div>
                           </div>
                           {this.state.fileN.length > 0 &&
-                            this.state.isFileUploadFail ? (
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
-                                  <a
-                                    className="file-retry"
-                                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.retry
-                                      : "Retry"}
-                                  </a>
-                                </div>
-                                <div>
-                                  <span className="file-failed">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.failed
-                                      : "Failed"}
-                                  </span>
-                                </div>
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.retry
+                                    : "Retry"}
+                                </a>
                               </div>
-                            ) : null}
+                              <div>
+                                <span className="file-failed">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.failed
+                                    : "Failed"}
+                                </span>
+                              </div>
+                            </div>
+                          ) : null}
                           {this.state.showProgress ? (
                             <div className="file-cntr">
                               <div className="file-dtls">
@@ -2345,9 +2398,12 @@ class CreateSLA extends Component {
             </label>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">{TranslationContext !== undefined
-                  ? TranslationContext.label.brandname
-                  : "Brand Name"}: </label>
+                <label className="createhead-text-new">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.brandname
+                    : "Brand Name"}
+                  :{" "}
+                </label>
                 <label className="createhead-text-1">
                   {this.state.brandName}
                 </label>
@@ -2356,7 +2412,9 @@ class CreateSLA extends Component {
                 <label className="createhead-text-new">
                   {TranslationContext !== undefined
                     ? TranslationContext.label.categoryname
-                    : "Category Name"}: </label>
+                    : "Category Name"}
+                  :{" "}
+                </label>
                 <label className="createhead-text-1">
                   {this.state.categoryName}
                 </label>
@@ -2367,7 +2425,8 @@ class CreateSLA extends Component {
                 <label className="createhead-text-new">
                   {TranslationContext !== undefined
                     ? TranslationContext.label.subcategoryname
-                    : "Sub Category Name"}:{" "}
+                    : "Sub Category Name"}
+                  :{" "}
                 </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
@@ -2377,8 +2436,9 @@ class CreateSLA extends Component {
                 <label className="createhead-text-new">
                   {TranslationContext !== undefined
                     ? TranslationContext.label.issuetype
-                    : "Issue Type"}:
-                  </label>
+                    : "Issue Type"}
+                  :
+                </label>
                 <label className="createhead-text-1">
                   {this.state.issueTypeName}
                 </label>
@@ -2399,11 +2459,14 @@ class CreateSLA extends Component {
                   : "Priority"}
               </label>
               <label className="createhead-text">
-                %{TranslationContext !== undefined
+                %
+                {TranslationContext !== undefined
                   ? TranslationContext.label.sla
-                  : "SLA"} <br /> {TranslationContext !== undefined
-                    ? TranslationContext.label.breach
-                    : "Breach"}
+                  : "SLA"}{" "}
+                <br />{" "}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.breach
+                  : "Breach"}
               </label>
               <label className="createhead-text">
                 {TranslationContext !== undefined
@@ -2562,8 +2625,8 @@ class CreateSLA extends Component {
                     spin
                   />
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
                 <label className="pop-over-btnsave-text">
                   {TranslationContext !== undefined
                     ? TranslationContext.label.save
