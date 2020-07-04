@@ -480,7 +480,9 @@
     "requiredsize": "आवश्यक आकार",
     "purchasefromstorename": "दुकान के नाम से खरीद",
     "purchasefromstoreaddres": "स्टोर के पते से खरीद",
-    "orderid": "आदेश आईडी"
+    "orderid": "आदेश आईडी",
+    "claimaskedfor%": "दावा किया गया %",
+    "claimpercentage": "दावा प्रतिशत"
   },
   "text": {
     "brand": "ब्रांड :",

@@ -2068,14 +2068,22 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="row m-0 w-100">
                       <div className="form-group col-md-4">
-                        <label className="label-6">Brand</label>
+                        <label className="label-6">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.brand
+                            : "Brand"}
+                        </label>
                         <select
                           id="inputState"
                           className="form-control dropdown-label"
                           value={this.state.selectBrand}
                           onChange={this.handleBrandChange}
                         >
-                          <option value={0}>select</option>
+                          <option value={0}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "select"}
+                          </option>
                           {this.state.brandData !== null &&
                             this.state.brandData.map((item, i) => (
                               <option
@@ -2092,14 +2100,22 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                       <div className="form-group col-md-4">
-                        <label className="label-6">Claim Category</label>
+                        <label className="label-6">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimcategory
+                            : "Claim Category"}
+                        </label>
                         <select
                           id="inputState"
                           className="form-control dropdown-label"
                           onChange={this.handleCategoryChange}
                           value={this.state.list1Value}
                         >
-                          <option value={0}>select</option>
+                          <option value={0}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "select"}
+                          </option>
                           {this.state.categoryDropData !== null &&
                             this.state.categoryDropData.map((item, i) => (
                               <option
@@ -2117,7 +2133,11 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                       <div className="form-group col-md-4">
-                        <label className="label-6">Sub Category</label>
+                        <label className="label-6">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.subcategory
+                            : "Sub Category"}
+                        </label>
 
                         <select
                           id="inputState"
@@ -2125,7 +2145,11 @@ class RaiseClaim extends Component {
                           onChange={this.handleSubCatOnChange}
                           value={this.state.ListOfSubCate}
                         >
-                          <option value={0}>select</option>
+                          <option value={0}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "select"}
+                          </option>
                           {this.state.SubCategoryDropData !== null &&
                             this.state.SubCategoryDropData.map((item, i) => (
                               <option
@@ -2142,14 +2166,22 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                       <div className="form-group col-md-4">
-                        <label className="label-6">Claim Type</label>
+                        <label className="label-6">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.claimtype
+                            : "Claim Type"}
+                        </label>
                         <select
                           id="inputState"
                           className="form-control dropdown-label"
                           onChange={this.handleIssueOnChange}
                           value={this.state.ListOfIssue}
                         >
-                          <option value={0}>select</option>
+                          <option value={0}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "select"}
+                          </option>
                           {this.state.ListOfIssueData !== null &&
                             this.state.ListOfIssueData.map((item, i) => (
                               <option
@@ -2168,11 +2200,17 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="row m-0">
                       <div className="form-group col-md-4">
-                        <label className="label-6"> Claim Asked for %</label>
+                        <label className="label-6">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimaskedfor
+                            : "Claim Asked for %"}
+                        </label>
                         <input
                           type="text"
                           className="form-control textBox"
-                          placeholder="Claim Percentage"
+                          placeholder={TranslationContext !== undefined
+                            ? TranslationContext.label.claimpercentage
+                            : "Claim Percentage"}
                           name="claimPercentage"
                           onKeyUp={this.handlePercentageOnChange}
                           value={this.state.claimPercentage}
@@ -2194,7 +2232,9 @@ class RaiseClaim extends Component {
                           className=" form-control btn-btn-claim"
                           style={{ marginTop: "0" }}
                         >
-                          Attach Product Image
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.attachproductimage
+                            : "Attach Product Image"}
                         </label>
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.errors["productImg"]}
@@ -2203,7 +2243,11 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="row m-0">
                       <div className="form-group col-md-4">
-                        <label className="label-6">Attached Image</label>
+                        <label className="label-6">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.attachedimage
+                            : "Attached Image"}
+                        </label>
                       </div>
                     </div>
                     <div className="col-md-12">
@@ -2221,7 +2265,11 @@ class RaiseClaim extends Component {
               <div className="col-md-3">
                 <div className="card card-radius2" style={{ padding: "20px" }}>
                   <label>
-                    <b>CUSTOMER NAME</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.customername
+                        : "CUSTOMER NAME"}
+                    </b>
                   </label>
 
                   <label>
@@ -2236,27 +2284,47 @@ class RaiseClaim extends Component {
                   </label>
                   <br />
                   <label>
-                    <b>PHONE NUMBER</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.phonenumber
+                        : "PHONE NUMBER"}
+                    </b>
                   </label>
                   <label>{customerData.customerPhoneNumber}</label>
                   <br />
                   <label>
-                    <b>ALTERNATE NUMBER</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.alternatenumber
+                        : "ALTERNATE NUMBER"}
+                    </b>
                   </label>
                   <label>{customerData.altNumber}</label>
                   <br />
                   <label>
-                    <b>EMAIL</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.email
+                        : "EMAIL"}
+                    </b>
                   </label>
                   <label>{customerData.customerEmailId}</label>
                   <br />
                   <label>
-                    <b>ALTERNATE EMAIL</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.alternateemail
+                        : "ALTERNATE EMAIL"}
+                    </b>
                   </label>
                   <label>{customerData.altEmailID}</label>
                   <br />
                   <label>
-                    <b>GENDER</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.gender
+                        : "GENDER"}
+                    </b>
                   </label>
                   {this.state.ticketId > 0 ? (
                     <label>{customerData.gender}</label>
