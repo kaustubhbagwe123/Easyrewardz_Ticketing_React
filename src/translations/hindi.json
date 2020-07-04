@@ -1839,7 +1839,10 @@
     "slahasnotbeencreated":"SLA नहीं बनाया गया है",
     "ticketno":"टिकट नं।",
     "therearenonotifications":"कोई सूचना नहीं है।",
-    "profileupdatedsuccessfully":"प्रोफाइल को सफलतापूर्वक अपडेट किया गया।"
+    "profileupdatedsuccessfully":"प्रोफाइल को सफलतापूर्वक अपडेट किया गया।",
+    "enteremail":"ईमेल दर्ज करें",
+    "upload":"डालना",
+    "change":"परिवर्तन"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."

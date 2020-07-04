@@ -203,21 +203,6 @@ class LanguageSelection extends Component {
                     })
                   : null}
 
-                {/* <button class="langbtn" value="hindi">
-                  हिन्दी
-                </button>
-                <button class="langbtn" value="marathi">
-                  मराठी
-                </button>
-                <button class="langbtn" value="punjabi">
-                  ਪੰਜਾਬੀ
-                </button>
-                <button class="langbtn" value="gujrati">
-                  ગુજરાતી
-                </button>
-                <button class="langbtn" value="telugu">
-                  తెలుగు
-                </button> */}
               </div>
               <button
                 type="submit"

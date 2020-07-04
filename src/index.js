@@ -57,7 +57,7 @@ ReactDOM.render(
     <Route exact path="/SignIn" component={SignIn} />
     <Route
       exact
-      path="/LanguageSelection"
+      path="/TicketingLanguageSelection"
       component={TicketingLanguageSelection}
     />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />

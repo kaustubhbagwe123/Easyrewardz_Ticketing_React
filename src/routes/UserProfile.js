@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from "react";
 import ProfileImg from "./../assets/Images/UserIcon.png";
-import Modal from "react-responsive-modal";
-import CancelImg from "./../assets/Images/Circle-cancel.png";
-import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import { authHeader } from "./../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -17,7 +14,6 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
-      open: false,
       fileName: [],
       selectedUserID: 0,
       selectedProfilePicture: "",
@@ -56,14 +52,8 @@ class UserProfile extends Component {
       this.state.translateLanguage = {};
     }
   }
-  onOpenModal = () => {
-    this.setState({ open: true });
-  };
-  onCloseModal() {
-    this.setState({ open: false });
-  }
+
   fileUpload(e) {
-    debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
@@ -83,7 +73,6 @@ class UserProfile extends Component {
     e.preventDefault();
   };
   setUserData = (e) => {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -97,7 +86,6 @@ class UserProfile extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let designationdata = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -147,7 +135,6 @@ class UserProfile extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
@@ -230,7 +217,6 @@ class UserProfile extends Component {
         data: formData,
       })
         .then(function(res) {
-          debugger;
           let msg = res.data.message;
           let data = res.data.responseData;
           if (msg === "Success") {
@@ -274,7 +260,6 @@ class UserProfile extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="container-fluid">
           {this.state.loading && (
             <div className="loader-icon-cntr-ovrlay">
@@ -324,11 +309,16 @@ class UserProfile extends Component {
                           onDragEnter={this.fileDragEnter}
                           onChange={this.fileUpload.bind(this)}
                         >
-                     
-                          {this.state.imgFlag === "" ? "Upload" : "Change"}
+                          {this.state.imgFlag === ""
+                            ? TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.upload
+                              : "Upload"
+                            : TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard.change
+                            : "Change"}&nbsp;
                           {TranslationContext !== undefined
-        ? TranslationContext.label.photo
-        : "Photo"}
+                            ? TranslationContext.label.photo
+                            : "Photo"}
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -359,8 +349,8 @@ class UserProfile extends Component {
                           // onChange={this.fileUpload.bind(this)}
                         >
                           {TranslationContext !== undefined
-        ? TranslationContext.label.deletephoto
-        : "Delete Photo"}
+                            ? TranslationContext.label.deletephoto
+                            : "Delete Photo"}
                         </label>
                       )}
                       {this.state.fileName.length === 0 && (
@@ -374,19 +364,17 @@ class UserProfile extends Component {
                   <div className="centerprofile col-md-5">
                     <div className="divSpace">
                       <div className="">
-                        <label className="designation-name">{
-                                            TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .firstname
-                                              : "First Name"
-                                          }</label>
+                        <label className="designation-name">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.firstname
+                            : "First Name"}
+                        </label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
                           placeholder={
                             TranslationContext !== undefined
-                              ? TranslationContext.label
-                                  .firstname
+                              ? TranslationContext.label.entername
                               : "Enter Name"
                           }
                           name="selectedFirstName"
@@ -403,11 +391,19 @@ class UserProfile extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="">
-                        <label className="designation-name">Last Name</label>
+                        <label className="designation-name">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.lastname
+                            : "Last Name"}
+                        </label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
-                          placeholder="Enter Name"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.entername
+                              : "Enter Name"
+                          }
                           name="selectedLastName"
                           value={this.state.selectedLastName}
                           onChange={this.setUserData.bind(this)}
@@ -422,11 +418,19 @@ class UserProfile extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="">
-                        <label className="reports-to">Mobile No.</label>
+                        <label className="reports-to">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.mobileno
+                            : "Mobile No."}
+                        </label>
                         <input
                           type="text"
                           className="txt-1"
-                          placeholder="Enter Mobile Number"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.entermobilenumber
+                              : "Enter Mobile Number"
+                          }
                           name="selectedMobile"
                           value={this.state.selectedMobile}
                           onChange={this.setUserData.bind(this)}
@@ -441,11 +445,19 @@ class UserProfile extends Component {
 
                     <div className="divSpace">
                       <div className="">
-                        <label className="reports-to">Email ID</label>
+                        <label className="reports-to">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.emailid
+                            : "Email ID"}
+                        </label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
-                          placeholder="Enter Email"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.enteremail
+                              : "Enter Email"
+                          }
                           name="selectedEmailID"
                           value={this.state.selectedEmailID}
                           onChange={this.setUserData.bind(this)}
@@ -461,7 +473,11 @@ class UserProfile extends Component {
 
                     <div className="divSpace">
                       <div className="">
-                        <label className="reports-to">Designation</label>
+                        <label className="reports-to">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.designation
+                            : "Designation"}
+                        </label>
                         <select
                           className="add-select-category cursor-disabled"
                           name="selectedDesignation"
@@ -469,7 +485,11 @@ class UserProfile extends Component {
                           onChange={this.setUserData.bind(this)}
                           disabled
                         >
-                          <option value="">Select Designation</option>
+                          <option value="">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.selectdesignation
+                              : "Select Designation"}
+                          </option>
                           {this.state.DesignationData !== null &&
                             this.state.DesignationData.map((item, i) => (
                               <option key={i} value={item.designationID}>
@@ -490,7 +510,9 @@ class UserProfile extends Component {
                         className="CreateADDBtn"
                         onClick={this.handleEditUserProfile.bind(this)}
                       >
-                        SAVE
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.save
+                          : "SAVE"}
                       </button>
                     </div>
                   </div>
@@ -498,80 +520,12 @@ class UserProfile extends Component {
                     className="userChangePW"
                     //onClick={this.redirectToChangePassword}
                   >
-                    <Link to="/changePassword">Change Password</Link>
+                    <Link to="/changePassword">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.changepassword
+                        : "Change Password"}
+                    </Link>
                   </div>
-
-                  {/* <div className="row">
-                    <div className="col-md-12" style={{ textAlign: "center" }}>
-                      <label
-                        className="forwardpasstext"
-                        onClick={this.onOpenModal.bind(this)}
-                      >
-                        Change Password
-                      </label>
-                    </div>
-                  </div> */}
-                  <Modal
-                    open={this.state.open}
-                    onClose={this.onCloseModal.bind(this)}
-                    closeIconId="sdsg"
-                    modalId="ProfileForgot-popup"
-                    overlayId="logout-ovrly"
-                  >
-                    <img
-                      src={CancelImg}
-                      alt="cancelImg"
-                      className="cancalImg"
-                      onClick={this.onCloseModal.bind(this)}
-                    />
-                    <div className="modalforgotpadding">
-                      <div className="divSpace">
-                        <label className="Changepasswordheader">
-                          Change Password
-                        </label>
-                      </div>
-
-                      <div className="divSpace">
-                        <div className="">
-                          <label className="designation-name">
-                            Current Password
-                          </label>
-                          <input
-                            type="password"
-                            className="txt-1"
-                            placeholder="Enter Current Password"
-                          />
-                        </div>
-                      </div>
-                      <div className="divSpace">
-                        <div className="">
-                          <label className="reports-to">New Password</label>
-                          <img
-                            className="info-icon-cp"
-                            src={BlackInfoIcon}
-                            alt="info-icon"
-                          />
-                          <input
-                            type="password"
-                            className="txt-1"
-                            placeholder="Enter New Password"
-                          />
-                        </div>
-                      </div>
-                      <div className="chatconfigbtn">
-                        <button className="CreateADDBtn">
-                          <label className="addLable">SAVE</label>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* <img
-                    src={CancelImg}
-                    alt="cancelImg"
-                    className="cancalImg"
-                    onClick={this.onCloseModal.bind(this)}
-                  /> */}
-                  </Modal>
                 </div>
               </div>
             </div>
