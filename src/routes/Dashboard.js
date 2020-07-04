@@ -1968,6 +1968,7 @@ class Dashboard extends Component {
     });
   }
   StatusCloseModel() {
+    debugger
     this.setState({
       sortFilterTicketData: this.state.sortTicketData,
       sortFilterCategoryData: this.state.sortCategoryData,
@@ -4175,7 +4176,6 @@ class Dashboard extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                    {" "}
                     {TranslationContext !== undefined
                       ? TranslationContext.p.sortztoa
                       : "SORT BY Z TO A"}
@@ -4224,7 +4224,7 @@ class Dashboard extends Component {
                   {this.state.sortColumnName === "status"
                     ? this.state.sortFilterTicketData !== null &&
                       this.state.sortFilterTicketData.map((item, i) => (
-                        <div className="filter-checkbox">
+                        <div className="filter-checkbox" key={i}>
                           <input
                             type="checkbox"
                             name="filter-type"
@@ -4332,7 +4332,7 @@ class Dashboard extends Component {
                   {this.state.sortColumnName === "assignedTo"
                     ? this.state.sortFilterAssigneeData !== null &&
                       this.state.sortFilterAssigneeData.map((item, i) => (
-                        <div className="filter-checkbox">
+                        <div className="filter-checkbox" key={i}>
                           <input
                             type="checkbox"
                             name="filter-type"

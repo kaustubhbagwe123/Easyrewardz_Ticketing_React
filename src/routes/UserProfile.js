@@ -9,6 +9,8 @@ import config from "./../helpers/config";
 import { transferData } from "./../helpers/transferData";
 import { NotificationManager } from "react-notifications";
 import { Link } from "react-router-dom";
+import * as translationHI from "../translations/hindi";
+import * as translationMA from "../translations/marathi";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ class UserProfile extends Component {
       DesignationCompulsion: "",
       imgFlag: "",
       loading: true,
+      translateLanguage: {},
     };
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleEditUserProfile = this.handleEditUserProfile.bind(this);
@@ -42,10 +45,16 @@ class UserProfile extends Component {
     this.redirectToChangePassword = this.redirectToChangePassword.bind(this);
   }
   componentDidMount() {
-    // debugger;
-    console.log(transferData);
     this.handleGetUserProfileData();
     this.handleGetDesignationList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   onOpenModal = () => {
     this.setState({ open: true });
@@ -81,8 +90,6 @@ class UserProfile extends Component {
   };
 
   handleGetDesignationList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -105,7 +112,6 @@ class UserProfile extends Component {
   }
 
   setGetProfileData = (data) => {
-    debugger;
     let self = this;
     var userData = data[0];
     this.state.selectedUserID = userData.userId;
@@ -134,8 +140,6 @@ class UserProfile extends Component {
   };
 
   handleGetUserProfileData() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -163,8 +167,6 @@ class UserProfile extends Component {
   }
 
   handleDeleteProfilePic() {
-    debugger;
-
     let self = this;
     self.setState({
       loading: true,
@@ -175,7 +177,6 @@ class UserProfile extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         if (status === "Success") {
           var image = self.state.selectedProfilePicture.split("/");
@@ -199,7 +200,7 @@ class UserProfile extends Component {
   }
 
   handleEditUserProfile() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       // this.state.fileName.length > 0 &&
       // this.state.selectedFirstName.length > 0 &&
@@ -233,7 +234,12 @@ class UserProfile extends Component {
           let msg = res.data.message;
           let data = res.data.responseData;
           if (msg === "Success") {
-            NotificationManager.success("Profile updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard
+                    .profileupdatedsuccessfully
+                : "Profile updated successfully."
+            );
             transferData.sendProfilePic(data.profilePath);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
@@ -248,7 +254,10 @@ class UserProfile extends Component {
         // fileNameCompulsion: "Please select profile picture.",
         // FirstNameCompulsion: "Please enter first name.",
         // LastNameCompulsion: "Please enter last name.",
-        MobileCompulsion: "Please enter mobile number.",
+        MobileCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number.",
         // EmailIDCompulsion: "Please enter emailID.",
         // DesignationCompulsion: "Please select designation."
       });
@@ -256,14 +265,13 @@ class UserProfile extends Component {
   }
 
   redirectToChangePassword() {
-    debugger;
-
     setTimeout(function() {
       this.props.history.push("/changePassword");
     }, 400);
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
@@ -316,11 +324,11 @@ class UserProfile extends Component {
                           onDragEnter={this.fileDragEnter}
                           onChange={this.fileUpload.bind(this)}
                         >
-                          {/* <div className="file-icon">
-                        <img src="{FileUpload}" alt="file-upload" />
-                      </div> */}
-                          {this.state.imgFlag === "" ? "Upload" : "Change"}{" "}
-                          Photo
+                     
+                          {this.state.imgFlag === "" ? "Upload" : "Change"}
+                          {TranslationContext !== undefined
+        ? TranslationContext.label.photo
+        : "Photo"}
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -350,7 +358,9 @@ class UserProfile extends Component {
                           className="uploadtextprofile1"
                           // onChange={this.fileUpload.bind(this)}
                         >
-                          Delete Photo
+                          {TranslationContext !== undefined
+        ? TranslationContext.label.deletephoto
+        : "Delete Photo"}
                         </label>
                       )}
                       {this.state.fileName.length === 0 && (
@@ -364,11 +374,21 @@ class UserProfile extends Component {
                   <div className="centerprofile col-md-5">
                     <div className="divSpace">
                       <div className="">
-                        <label className="designation-name">First Name</label>
+                        <label className="designation-name">{
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .firstname
+                                              : "First Name"
+                                          }</label>
                         <input
                           type="text"
                           className="txt-1 cursor-disabled"
-                          placeholder="Enter Name"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label
+                                  .firstname
+                              : "Enter Name"
+                          }
                           name="selectedFirstName"
                           value={this.state.selectedFirstName}
                           onChange={this.setUserData.bind(this)}

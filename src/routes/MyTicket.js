@@ -211,6 +211,7 @@ class MyTicket extends Component {
       selectedInvoiceNo: "",
       isSystemGenerated: false,
       translateLanguage: {},
+      checkPriorityDetails: false,
     };
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
@@ -484,7 +485,7 @@ class MyTicket extends Component {
             self.handleGetSubCategoryList();
             self.handleGetIssueTypeList();
             self.handleOnLoadFiles();
-            self.handleGetTicketPriorityList();
+            self.handleGetTicketPriorityList(self.state.ticket_Id);
           }, 100);
         } else {
           self.setState({
@@ -1031,52 +1032,61 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketDetails() {
+    debugger
     const TranslationContext = this.state.translateLanguage.default;
 
     if (this.state.statusValidate) {
-      let self = this;
-      this.setState({ KnowledgeBaseModal: false });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/Updateticketstatus",
-        headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
-          StatusID: this.state.selectetedParameters.ticketStatusID,
-          BrandID: this.state.selectetedParameters.brandID,
-          CategoryID: this.state.selectetedParameters.categoryID,
-          SubCategoryID: this.state.selectetedParameters.subCategoryID,
-          IssueTypeID: this.state.selectetedParameters.issueTypeID,
-          PriortyID: this.state.selectetedParameters.priorityID,
-          ChannelOfPurchaseID: this.state.selectetedParameters
-            .channelOfPurchaseID,
-          TicketActionID: this.state.selectetedParameters.ticketActionTypeID,
-        },
-      })
-        .then(function(res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            if (self.state.isaddKnowledge) {
-              self.handleAddKnwoldgeBase();
-            } else {
-              NotificationManager.success(
-                TranslationContext !== undefined
-                  ? TranslationContext.alertmessage.ticketupdatedsuccessfully
-                  : "Ticket updated successfully."
-              );
-              self.props.history.push("myTicketlist");
-            }
-          } else {
-            NotificationManager.error(
-              TranslationContext !== undefined
-                ? TranslationContext.ticketingDashboard.ticketnotupdate
-                : "Ticket not update."
-            );
-          }
+      if (this.state.checkPriorityDetails===false) {
+        let self = this;
+        this.setState({ KnowledgeBaseModal: false });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/Updateticketstatus",
+          headers: authHeader(),
+          data: {
+            TicketID: this.state.ticket_Id,
+            StatusID: this.state.selectetedParameters.ticketStatusID,
+            BrandID: this.state.selectetedParameters.brandID,
+            CategoryID: this.state.selectetedParameters.categoryID,
+            SubCategoryID: this.state.selectetedParameters.subCategoryID,
+            IssueTypeID: this.state.selectetedParameters.issueTypeID,
+            PriortyID: this.state.selectetedParameters.priorityID,
+            ChannelOfPurchaseID: this.state.selectetedParameters
+              .channelOfPurchaseID,
+            TicketActionID: this.state.selectetedParameters.ticketActionTypeID,
+          },
         })
-        .catch((data) => {
-          console.log(data);
-        });
+          .then(function(res) {
+            let status = res.data.message;
+            if (status === "Success") {
+              if (self.state.isaddKnowledge) {
+                self.handleAddKnwoldgeBase();
+              } else {
+                NotificationManager.success(
+                  TranslationContext !== undefined
+                    ? TranslationContext.alertmessage.ticketupdatedsuccessfully
+                    : "Ticket updated successfully."
+                );
+                self.props.history.push("myTicketlist");
+              }
+            } else {
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard.ticketnotupdate
+                  : "Ticket not update."
+              );
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.slahasnotbeencreated
+            : "SLA has not been created"
+        );
+      }
     } else {
       NotificationManager.error(
         TranslationContext !== undefined
@@ -1208,6 +1218,8 @@ class MyTicket extends Component {
         CategoryData: [],
         SubCategoryData: [],
         IssueTypeData: [],
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
       setTimeout(() => {
         if (this.state.selectetedParameters.brandID) {
@@ -1220,6 +1232,8 @@ class MyTicket extends Component {
         selectetedParameters: data,
         SubCategoryData: [],
         IssueTypeData: [],
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
       setTimeout(() => {
         if (this.state.selectetedParameters.categoryID) {
@@ -1231,6 +1245,8 @@ class MyTicket extends Component {
       this.setState({
         selectetedParameters: data,
         IssueTypeData: [],
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
 
       setTimeout(() => {
@@ -1247,7 +1263,12 @@ class MyTicket extends Component {
       data[name] = Value;
       this.setState({
         selectetedParameters: data,
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
+      setTimeout(() => {
+        this.handleGetTicketPriorityList(0);
+      }, 2);
     } else if (name === "ticketActionTypeID") {
       data[name] = Value;
       this.setState({
@@ -1303,7 +1324,7 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
-  handleGetTicketPriorityList() {
+  handleGetTicketPriorityList(ticketid) {
     let self = this;
     axios({
       method: "post",
@@ -1311,17 +1332,18 @@ class MyTicket extends Component {
       url: config.apiUrl + "/SLA/ValidateSLAByIssueTypeID",
       headers: authHeader(),
       params: {
-        issueTypeID: 0,
-        ticketID: this.state.ticket_Id,
+        issueTypeID: this.state.selectetedParameters.issueTypeID,
+        ticketID: ticketid,
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({ TicketPriorityData: data });
         } else {
-          self.setState({ TicketPriorityData: [] });
+          self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
       })
       .catch((data) => {
@@ -3953,7 +3975,6 @@ class MyTicket extends Component {
                               </div>
                               <div className="col-md-6 namepad">
                                 <label className="fullna">
-                                 
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label.mobilenumber
                                     : "Mobile Number"}
@@ -4168,7 +4189,6 @@ class MyTicket extends Component {
                               name="ticketStatusID"
                             >
                               <option>
-                               
                                 {TranslationContext !== undefined
                                   ? TranslationContext.div.ticketstatus
                                   : "Ticket Status"}
@@ -4240,6 +4260,14 @@ class MyTicket extends Component {
                                   }
                                 })}
                             </select>
+                            {this.state.checkPriorityDetails && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .slahasnotbeencreated
+                                  : "SLA has not been created"}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
@@ -4346,7 +4374,6 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                             
                               {TranslationContext !== undefined
                                 ? TranslationContext.label.subcategory
                                 : "Sub Category"}
@@ -4394,7 +4421,6 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                             
                               {TranslationContext !== undefined
                                 ? TranslationContext.label.issuetype
                                 : "Issue Type"}
@@ -6833,7 +6859,6 @@ class MyTicket extends Component {
                             onClick={this.HandleKbLinkModalClose.bind(this)}
                           />
                           <h5>
-                           
                             {TranslationContext !== undefined
                               ? TranslationContext.h5.kbtemplate
                               : "KB TEMPLATE"}
@@ -6864,7 +6889,6 @@ class MyTicket extends Component {
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
                               <option>
-                               
                                 {TranslationContext !== undefined
                                   ? TranslationContext.label.subcategory
                                   : "Sub Category"}
@@ -6884,7 +6908,6 @@ class MyTicket extends Component {
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
                               <option>
-                               
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.type
                                   : "Type"}
@@ -7105,7 +7128,6 @@ class MyTicket extends Component {
                       </div>
                       <div className="col-12 col-xs-12 col-sm-7">
                         <label className="message-label">
-                         
                           {TranslationContext !== undefined
                             ? TranslationContext.title.message
                             : "Message"}
@@ -7543,7 +7565,6 @@ class MyTicket extends Component {
                               )}
                             >
                               <option value="0">
-                               
                                 {TranslationContext !== undefined
                                   ? TranslationContext.link.users
                                   : "Users"}
@@ -7837,7 +7858,6 @@ class MyTicket extends Component {
                                     style={{ paddingLeft: "25px" }}
                                   >
                                     <span>
-                                     
                                       {TranslationContext !== undefined
                                         ? TranslationContext.span.informstore
                                         : "Inform Store"}
