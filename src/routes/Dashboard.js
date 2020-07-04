@@ -764,6 +764,7 @@ class Dashboard extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
+    debugger
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -1033,7 +1034,7 @@ class Dashboard extends Component {
     this.setState({
       tempSearchTicketData: itemsArray,
     });
-    // this.StatusCloseModel();
+    this.StatusCloseModel();
   };
 
   sortStatusAtoZ() {
@@ -1968,7 +1969,7 @@ class Dashboard extends Component {
     });
   }
   StatusCloseModel() {
-    debugger
+    debugger;
     this.setState({
       sortFilterTicketData: this.state.sortTicketData,
       sortFilterCategoryData: this.state.sortCategoryData,
@@ -2143,7 +2144,11 @@ class Dashboard extends Component {
       isWhite: false,
       isYellow: false,
       isGreen: false,
-      SearchTicketData: tempFinalSearchTicketData,
+      SearchTicketData:
+        tempColor.length > 0
+          ? tempFinalSearchTicketData
+          : tempSearchTicketData,
+      // SearchTicketData: tempFinalSearchTicketData,
     });
   }
   HandleChangeRedict() {
@@ -2466,9 +2471,10 @@ class Dashboard extends Component {
       this.state.selectScheduleDate === "100"
     ) {
       this.setState({
-        scheduleRequired: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.allfieldsarerequired
-        : "All fields are required."
+        scheduleRequired:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.allfieldsarerequired
+            : "All fields are required.",
       });
     } else if (this.state.selectScheduleDate === "230") {
       if (
@@ -2477,9 +2483,10 @@ class Dashboard extends Component {
         this.state.selectedNoOfDay === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2492,9 +2499,10 @@ class Dashboard extends Component {
         this.state.selectedWeeklyDays === ""
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2507,9 +2515,10 @@ class Dashboard extends Component {
         this.state.selectedNoOfMonthForMonth === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2523,9 +2532,10 @@ class Dashboard extends Component {
         this.state.selectedNameOfDayForWeek.length === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2538,9 +2548,10 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.allfieldsarerequired
-          : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2554,9 +2565,10 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForDailyYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: TranslationContext !== undefined
-            ? TranslationContext.ticketingDashboard.allfieldsarerequired
-            : "All fields are required."
+          scheduleRequired:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.allfieldsarerequired
+              : "All fields are required.",
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2724,9 +2736,10 @@ class Dashboard extends Component {
         });
     } else {
       this.setState({
-        agentSelection: TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.agentselectionisrequired
-          : "Agent Selection is required.",
+        agentSelection:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.agentselectionisrequired
+            : "Agent Selection is required.",
       });
     }
   }
@@ -3323,7 +3336,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -5159,10 +5171,10 @@ class Dashboard extends Component {
               className="table-cntr mt-3 mtictab table-responsive"
               style={{ overflow: "initial" }}
             >
-              <a href="#!" className="float-search" onClick={this.toggleSearch}>
+               <div className="float-search" onClick={this.toggleSearch}>
                 <small>{TitleChange}</small>
                 {ImgChange}
-              </a>
+              </div>
               <div>
                 <Collapse isOpen={this.state.collapseSearch}>
                   <Card>

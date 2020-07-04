@@ -49,7 +49,7 @@ import TicketingLanguageSelection from "./Component/TicketingLanguageSelection";
 ReactDOM.render(
   <Router>
     {/* if required the only on uncomment this code and your system do not push this line*/}
-    {/* <Route exact path="/" component={ModuleSelect} /> */}
+    <Route exact path="/" component={ModuleSelect} />
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />
