@@ -739,7 +739,7 @@ class TicketSystem extends Component {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-        if (status === "Success") { 
+        if (status === "Success") {
           self.setState({ TicketPriorityData: data });
         } else {
           self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
@@ -1458,7 +1458,7 @@ class TicketSystem extends Component {
       IssueTypeData: [],
       TicketPriorityData: [],
       selectedTicketPriority: 0,
-      checkPriorityDetails:false
+      checkPriorityDetails: false,
     });
     this.handleGetCategoryList(value);
   };
@@ -1493,7 +1493,7 @@ class TicketSystem extends Component {
       IssueTypeData: [],
       TicketPriorityData: [],
       selectedTicketPriority: 0,
-      checkPriorityDetails:false
+      checkPriorityDetails: false,
     });
     setTimeout(() => {
       if (this.state.selectedCategory) {
@@ -1506,7 +1506,7 @@ class TicketSystem extends Component {
           SubCategoryData: [],
           TicketPriorityData: [],
           selectedTicketPriority: 0,
-          checkPriorityDetails:false
+          checkPriorityDetails: false,
         });
       }
     }, 1);
@@ -1535,7 +1535,7 @@ class TicketSystem extends Component {
       IssueTypeData: [],
       TicketPriorityData: [],
       selectedTicketPriority: 0,
-      checkPriorityDetails:false
+      checkPriorityDetails: false,
     });
 
     setTimeout(() => {
@@ -1547,7 +1547,7 @@ class TicketSystem extends Component {
           selectedIssueType: "",
           TicketPriorityData: [],
           selectedTicketPriority: 0,
-          checkPriorityDetails:false
+          checkPriorityDetails: false,
         });
       }
     }, 1);
@@ -2082,7 +2082,8 @@ class TicketSystem extends Component {
                         {this.state.checkPriorityDetails && (
                           <p style={{ color: "red", marginTop: "15px" }}>
                             {TranslationContext !== undefined
-                              ? TranslationContext.ticketingDashboard.slahasnotbeencreated
+                              ? TranslationContext.ticketingDashboard
+                                  .slahasnotbeencreated
                               : "SLA has not been created"}
                           </p>
                         )}
@@ -2334,6 +2335,7 @@ class TicketSystem extends Component {
                       <img
                         src={MinusImg}
                         alt="Arrow"
+                        style={{ padding: "2px 0" }}
                         onClick={this.handleExpandedCkClose.bind(this)}
                         className="ck-expand"
                       />
@@ -2491,7 +2493,11 @@ class TicketSystem extends Component {
                           <ul className="dropdown-menu">
                             {this.state.CkEditorTemplateData !== null &&
                               this.state.CkEditorTemplateData.map((item, i) => (
-                                <li key={i} value={item.templateID}>
+                                <li
+                                  style={{ display: "block" }}
+                                  key={i}
+                                  value={item.templateID}
+                                >
                                   <a
                                     onClick={this.handleCkEditorTemplateData.bind(
                                       this,
@@ -2593,7 +2599,11 @@ class TicketSystem extends Component {
                       <ul className="dropdown-menu">
                         {this.state.CkEditorTemplateData !== null &&
                           this.state.CkEditorTemplateData.map((item, i) => (
-                            <li key={i} value={item.templateID}>
+                            <li
+                              style={{ display: "block" }}
+                              key={i}
+                              value={item.templateID}
+                            >
                               <a
                                 onClick={this.handleCkEditorTemplateData.bind(
                                   this,

@@ -256,6 +256,9 @@ class AddSearchMyTicket extends Component {
       dob: date,
     });
   }
+  handlebackprev() {
+    this.props.history.push("myTicketList");
+  }
 
   addCustomerData = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
@@ -270,6 +273,7 @@ class AddSearchMyTicket extends Component {
             src={ArrowCircleImg}
             alt="ArrowCircle"
             className="arrowImg-addSearch"
+            onClick={this.handlebackprev.bind(this)}
           />
           <label className="label-addsearch">
             {TranslationContext !== undefined
