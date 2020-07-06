@@ -516,7 +516,7 @@ class ShipmentTab extends Component {
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
                               <p>Charges :</p>
-                              <p className="username-mar">200 INR</p>
+                              <p className="username-mar">200 &#8377;</p>
                             </div>
                           </div>
                         }
@@ -809,7 +809,7 @@ class ShipmentTab extends Component {
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between">
                                   <p>Charges :</p>
-                                  <p className="username-mar">200 INR</p>
+                                  <p className="username-mar">200 &#8377;</p>
                                 </div>
                               </div>
                             }
