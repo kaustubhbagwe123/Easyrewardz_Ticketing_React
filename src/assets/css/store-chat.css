@@ -491,7 +491,7 @@ p {
 /* chat trail ends */
 
 /* ck editor starts */
-.cke_toolbox {
+/* .cke_toolbox {
   display: flex;
   overflow: auto;
 }
@@ -504,7 +504,7 @@ p {
 }
 .cke_bottom {
   display: none !important;
-}
+} */
 /* ck editor ends */
 
 /* mobile search starts */
@@ -1142,13 +1142,13 @@ p {
   /* right side part ends */
 
   /* ck editor starts */
-  .cke_top {
+  /* .cke_top {
     padding: 0 !important;
     padding-right: 8px !important;
   }
   .cke_toolgroup {
     margin-bottom: 1px !important;
-  }
+  } */
   /* ck editor ends */
 
   /* card modal starts */
