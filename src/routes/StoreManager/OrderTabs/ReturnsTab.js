@@ -23,37 +23,43 @@ class ReturnTab extends Component {
       filterOrderReturnsStatus: false,
       statusFilterData: [],
       strStatus: "",
-      translateLanguage: {}
+      translateLanguage: {},
+      orderSearchText: "",
     };
   }
 
   componentDidMount() {
     this.handleGetOrderReturnsData();
     this.handleGetOrderStatusFilterData();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
+  handleReturnSearch = (searchData) => {
+    this.setState({
+      orderSearchText: searchData,
+    });
+  };
+
+  /// handle Get grid data
   handleGetOrderReturnsData() {
     let self = this;
     var pageNumber = this.state.currentPage;
     this.setState({
       returnsLoading: true,
-      filterOrderReturnsStatus: false
+      filterOrderReturnsStatus: false,
     });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderReturnDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText,
         PageNo: pageNumber,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
@@ -147,17 +153,26 @@ class ReturnTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.awbno:"AWB No.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.awbno
+                    : "AWB No.",
                 dataIndex: "awbNo",
-                key:"awbNo"
+                key: "awbNo",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice No.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.invoiceno
+                    : "Invoice No.",
                 dataIndex: "invoiceNo",
                 className: "order-desktop",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.customer
+                    : "Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -169,7 +184,10 @@ class ReturnTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.items:"Items",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.items
+                    : "Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -180,19 +198,31 @@ class ReturnTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title:  TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Item Name",
                                 dataIndex: "itemName",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -215,7 +245,10 @@ class ReturnTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.date
+                    : "Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -227,9 +260,13 @@ class ReturnTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.status
+                    : "Status",
                 dataIndex: "statusName",
-                className: "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                className:
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 filterDropdown: () => {
                   return (
                     <div className="campaign-status-drpdwn">
@@ -260,8 +297,9 @@ class ReturnTab extends Component {
                           className="btn-apply-status"
                           onClick={this.handleGetOrderReturnsData.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
                         </button>
                         <button
                           className="btn-cancel-status"
@@ -269,8 +307,9 @@ class ReturnTab extends Component {
                             this.setState({ filterOrderReturnsStatus: false })
                           }
                         >
-                           {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                       </div>
                     </div>
@@ -286,17 +325,22 @@ class ReturnTab extends Component {
                 ),
               },
               {
-                title:  TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Action",
                 render: () => {
                   return (
                     <div className="d-flex">
                       <button className="butn order-grid-butn order-grid-butn-orange">
-                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.cancel
+                          : "Cancel"}
                       </button>
                       <button className="butn order-grid-butn order-grid-butn-yellow retry-butn ml-2">
-                      {TranslationContext!==undefined?TranslationContext.button.retry:"Retry"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.retry
+                          : "Retry"}
                       </button>
                     </div>
                   );
@@ -308,21 +352,37 @@ class ReturnTab extends Component {
                 <div className="order-expanded-cntr">
                   <div className="row">
                     <div className="col-6">
-                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.invoiceno:"Invoice No."}</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.invoiceno
+                          : "Invoice No."}
+                      </p>
                       <p>{row.invoiceNo}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.customer:"Customer"}</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.customer
+                          : "Customer"}
+                      </p>
                       <p>{row.customerName},</p>
                       <p className="order-small-font">{row.mobileNumber}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.date:"Date"}</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.date
+                          : "Date"}
+                      </p>
                       <p>{row.date}</p>
                       <p className="order-small-font">{row.time}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.status:"Status"}</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.status
+                          : "Status"}
+                      </p>
                       <p>{row.statusName}</p>
                     </div>
                   </div>
@@ -354,7 +414,11 @@ class ReturnTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>{TranslationContext!==undefined?TranslationContext.p.itemperpage:"Items per page"}</p>
+              <p>
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.itemperpage
+                  : "Items per page"}
+              </p>
             </div>
           </div>
         </div>

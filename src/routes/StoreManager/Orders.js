@@ -128,6 +128,11 @@ class Orders extends Component {
     } else if (this.state.selectedTabs === 4) {
       this.refs.DeliveredTab.handleDeliveredSearch(this.state.orderAllSearch);
     } else if (this.state.selectedTabs === 5) {
+      this.refs.ShipmentAssignedTab.handleShipmentAssignSearch(
+        this.state.orderAllSearch
+      );
+    } else if (this.state.selectedTabs === 6) {
+      this.refs.ReturnsTab.handleReturnSearch(this.state.orderAllSearch);
     }
   }
 
@@ -524,7 +529,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shipment-assigned-tab"
           >
-            {this.state.selectedTabs === 5 ? <ShipmentAssignedTab /> : null}
+            {this.state.selectedTabs === 5 ? (
+              <ShipmentAssignedTab ref="ShipmentAssignedTab" />
+            ) : null}
           </div>
           <div
             className={
@@ -536,7 +543,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="returns-tab"
           >
-            {this.state.selectedTabs === 6 ? <ReturnsTab /> : null}
+            {this.state.selectedTabs === 6 ? (
+              <ReturnsTab ref="ReturnsTab" />
+            ) : null}
           </div>
           <div
             className={
