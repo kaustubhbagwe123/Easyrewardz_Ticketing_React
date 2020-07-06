@@ -116,8 +116,19 @@ class Orders extends Component {
       });
   }
   handleSeachAllData(e) {
-    e.preventDefault()
-    this.refs.OrderTab.handleOrderSearch(this.state.orderAllSearch);
+    e.preventDefault();
+    if (this.state.selectedTabs === 1) {
+      this.refs.ShoppingBagTab.handleShoppingBagSearch(
+        this.state.orderAllSearch
+      );
+    } else if (this.state.selectedTabs === 2) {
+      this.refs.OrderTab.handleOrderSearch(this.state.orderAllSearch);
+    } else if (this.state.selectedTabs === 3) {
+      this.refs.ShipmentTab.handleShipmentSearch(this.state.orderAllSearch);
+    } else if (this.state.selectedTabs === 4) {
+      this.refs.DeliveredTab.handleDeliveredSearch(this.state.orderAllSearch);
+    } else if (this.state.selectedTabs === 5) {
+    }
   }
 
   render() {
@@ -459,7 +470,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shopping-bag-tab"
           >
-            {this.state.selectedTabs === 1 ? <ShoppingBagTab /> : null}
+            {this.state.selectedTabs === 1 ? (
+              <ShoppingBagTab ref="ShoppingBagTab" />
+            ) : null}
           </div>
           <div
             className={
@@ -483,7 +496,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shipment-tab"
           >
-            {this.state.selectedTabs === 3 ? <ShipmentTab /> : null}
+            {this.state.selectedTabs === 3 ? (
+              <ShipmentTab ref="ShipmentTab" />
+            ) : null}
           </div>
           <div
             className={
@@ -495,7 +510,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            {this.state.selectedTabs === 4 ? <DeliveredTab /> : null}
+            {this.state.selectedTabs === 4 ? (
+              <DeliveredTab ref="DeliveredTab" />
+            ) : null}
           </div>
           <div
             className={

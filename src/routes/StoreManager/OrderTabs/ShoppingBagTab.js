@@ -33,6 +33,7 @@ class ShoppingBagTab extends Component {
       ShopCancelComment: "",
       invoiceNo: "",
       amountNo: "",
+      orderSearchText: "",
     };
   }
 
@@ -48,7 +49,16 @@ class ShoppingBagTab extends Component {
       this.state.translateLanguage = {};
     }
   }
-
+  
+  /// search data 
+  handleShoppingBagSearch = (searchData) => {
+    this.setState({
+      orderSearchText: searchData,
+    });
+    setTimeout(() => {
+      this.handleGetShoppingBagGridData()
+    }, 5);
+  };
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetShoppingBagGridData(filter) {
@@ -61,7 +71,7 @@ class ShoppingBagTab extends Component {
       url: config.apiUrl + "/HSOrder/GetShoppingBagDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText,
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,

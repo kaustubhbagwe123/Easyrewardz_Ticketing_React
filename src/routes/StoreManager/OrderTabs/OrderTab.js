@@ -60,20 +60,20 @@ class OrderTab extends Component {
       this.state.translateLanguage = {};
     }
   }
+
+  /// search data 
   handleOrderSearch = (searchData) => {
-    debugger
     this.setState({
       orderSearchText: searchData,
     });
     setTimeout(() => {
       this.handleGetOrderTabGridData();
-    }, 100);
+    }, 5);
   };
 
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
-    debugger;
     let self = this;
     this.setState({
       OrderTabLoading: true,

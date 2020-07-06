@@ -38,6 +38,7 @@ class ShipmentTab extends Component {
       airWayBill2ndTab: false,
       IsStoreDelivery: false,
       createShipmentBtnDisbaled: false,
+      orderSearchText: "",
     };
   }
 
@@ -52,6 +53,15 @@ class ShipmentTab extends Component {
       this.state.translateLanguage = {};
     }
   }
+  /// search data
+  handleShipmentSearch = (searchData) => {
+    this.setState({
+      orderSearchText: searchData,
+    });
+    setTimeout(() => {
+      this.handleGetShipmentTabGridData();
+    }, 5);
+  };
 
   ///-----------------------API function Start--------------------------
   handleGetShipmentTabGridData(filter) {
@@ -64,7 +74,7 @@ class ShipmentTab extends Component {
       url: config.apiUrl + "/HSOrder/GetShipmentDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText,
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
