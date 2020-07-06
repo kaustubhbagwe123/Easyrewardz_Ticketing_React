@@ -4,6 +4,7 @@ import { Table, Popover, Popconfirm } from "antd";
 import Modal from "react-responsive-modal";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
+import OrderInfo from "./../../../assets/Images/order-info.png";
 import CardTick from "./../../../assets/Images/card-tick.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
@@ -500,9 +501,34 @@ class ShipmentTab extends Component {
                   "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 render: (row, item) => {
                   return (
-                    <>
+                    <div className="d-flex align-items-center">
                       <p>{item.statusName}</p>
-                    </>
+                      <Popover
+                        content={
+                          <div className="order-tab-popover shipment-status-popover">
+                            <div className="d-flex align-items-center justify-content-between">
+                              <p>Expected Pickup Date :</p>
+                              <p className="username-mar">22/04/20 at 20:15</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <p>Expected Schedule Date :</p>
+                              <p className="username-mar">10/05/20 at 08:50</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <p>Charges :</p>
+                              <p className="username-mar">200 INR</p>
+                            </div>
+                          </div>
+                        }
+                        trigger="click"
+                        overlayClassName="order-popover shopping-popover-cancel"
+                        onVisibleChange={(visible) =>
+                          this.setState({ orderPopoverOverlay: visible })
+                        }
+                      >
+                        <img src={OrderInfo} className="order-info" />
+                      </Popover>
+                    </div>
                   );
                 },
                 filterDropdown: (data, row) => {
@@ -764,7 +790,38 @@ class ShipmentTab extends Component {
                               : "Status"}
                           </b>
                         </label>
-                        <label>{row.statusName}</label>
+                        <div className="d-flex align-items-center">
+                          <label>{row.statusName}</label>
+                          <Popover
+                            content={
+                              <div className="order-tab-popover shipment-status-popover">
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>Expected Pickup Date :</p>
+                                  <p className="username-mar">
+                                    22/04/20 at 20:15
+                                  </p>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>Expected Schedule Date :</p>
+                                  <p className="username-mar">
+                                    10/05/20 at 08:50
+                                  </p>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>Charges :</p>
+                                  <p className="username-mar">200 INR</p>
+                                </div>
+                              </div>
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover shopping-popover-cancel"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderInfo} className="order-info" />
+                          </Popover>
+                        </div>
                       </td>
                     </tr>
                     <tr>

@@ -685,6 +685,15 @@
 .shipment-table-popup .ant-table-row-cell-last .ant-table-header-column {
   width: 100%;
 }
+.shipment-status-popover .username-mar {
+  flex: 0 0 40%;
+}
+.shipment-status-popover div {
+  margin-bottom: 5px;
+}
+.shipment-status-popover div:last-child {
+  margin-bottom: 0px;
+}
 
 /* chetan css ends */
 
