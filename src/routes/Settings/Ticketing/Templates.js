@@ -27,6 +27,8 @@ import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class Templates extends Component {
   constructor(props) {
@@ -92,6 +94,7 @@ class Templates extends Component {
       ckCusrsorPosition: 0,
       ckCusrsorData: "",
       isortA: false,
+      translateLanguage: {},
     };
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -111,6 +114,14 @@ class Templates extends Component {
     this.handleGetTemplate();
     this.handleGetSLAIssueType();
     this.handlePlaceholderList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
     debugger;
@@ -225,6 +236,8 @@ class Templates extends Component {
   }
 
   handleUpdateTemplate() {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     let self = this;
     var activeStatus = false;
@@ -260,7 +273,11 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template updated successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.templateupdatedsuccessfully
+              : "Template updated successfully."
+          );
           self.handleGetTemplate();
           self.setState({
             editSaveLoading: false,
@@ -276,7 +293,11 @@ class Templates extends Component {
             ConfigTabsModal: false,
             isEdit: false,
           });
-          NotificationManager.error("Template not update.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.templatenotupdate
+              : "Template not update."
+          );
         }
       })
       .catch((data) => {
@@ -741,13 +762,20 @@ class Templates extends Component {
     });
   }
   handleOnChangeEditData = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     var name = e.target.name;
     var value = e.target.value;
     var data = this.state.templateEdit;
     if (name === "TemplateName" && value === "") {
       data[name] = value;
-      this.setState({ editTemplateName: "Please Enter Templates Name" });
+      this.setState({
+        editTemplateName:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseentertemplatename
+            : "Please Enter Template Name",
+      });
     } else {
       data[name] = value;
       this.setState({ editTemplateName: "" });
@@ -776,6 +804,8 @@ class Templates extends Component {
   //   }
   // };
   selectIndividualSLA = async (issueId, event) => {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
@@ -791,7 +821,12 @@ class Templates extends Component {
         indiSla,
       });
       document.getElementById("issueTypeValue").textContent =
-        this.state.indiSla.split(",").length - 1 + " selected";
+        this.state.indiSla.split(",").length -
+        1 +
+        " " +
+        (TranslationContext !== undefined
+          ? TranslationContext.label.selected
+          : "selected");
     } else {
       // var indiSla = this.state.indiSla;
       // var separator = ",";
@@ -807,13 +842,23 @@ class Templates extends Component {
       });
       if (this.state.indiSla.split(",").length - 1 !== 0) {
         document.getElementById("issueTypeValue").textContent =
-          this.state.indiSla.split(",").length - 1 + " selected";
+          this.state.indiSla.split(",").length -
+          1 +
+          " " +
+          (TranslationContext !== undefined
+            ? TranslationContext.label.selected
+            : "selected");
       } else {
-        document.getElementById("issueTypeValue").textContent = "Select";
+        document.getElementById("issueTypeValue").textContent =
+          TranslationContext !== undefined
+            ? TranslationContext.button.select
+            : "Select";
       }
     }
   };
   selectAboveIndividualSLA = async (issueId, event) => {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
@@ -828,7 +873,12 @@ class Templates extends Component {
         indiSla,
       });
       document.getElementById("issueTypeValue").textContent =
-        this.state.indiSla.split(",").length - 1 + " selected";
+        this.state.indiSla.split(",").length -
+        1 +
+        " " +
+        (TranslationContext !== undefined
+          ? TranslationContext.label.selected
+          : "selected");
     } else {
       // var indiSla = this.state.indiSla;
       // var separator = ",";
@@ -844,9 +894,17 @@ class Templates extends Component {
       });
       if (this.state.indiSla.split(",").length - 1 !== 0) {
         document.getElementById("issueTypeValue").textContent =
-          this.state.indiSla.split(",").length - 1 + " selected";
+          this.state.indiSla.split(",").length -
+          1 +
+          " " +
+          (TranslationContext !== undefined
+            ? TranslationContext.label.selected
+            : "selected");
       } else {
-        document.getElementById("issueTypeValue").textContent = "Select";
+        document.getElementById("issueTypeValue").textContent =
+          TranslationContext !== undefined
+            ? TranslationContext.button.select
+            : "Select";
       }
     }
   };
@@ -873,10 +931,15 @@ class Templates extends Component {
     this.handleGetSLAIssueType();
   };
   selectAllSLA = async (event) => {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     var indiSla = "";
     var checkboxes = document.getElementsByName("allSla");
-    document.getElementById("issueTypeValue").textContent = "All Selected";
+    document.getElementById("issueTypeValue").textContent =
+      TranslationContext !== undefined
+        ? TranslationContext.label.allselected
+        : "All Selected";
     for (var i in checkboxes) {
       if (checkboxes[i].checked === false) {
         checkboxes[i].checked = true;
@@ -894,9 +957,14 @@ class Templates extends Component {
   };
 
   selectNoSLA = async (event) => {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     var checkboxes = document.getElementsByName("allSla");
-    document.getElementById("issueTypeValue").textContent = "Select";
+    document.getElementById("issueTypeValue").textContent =
+      TranslationContext !== undefined
+        ? TranslationContext.button.select
+        : "Select";
     for (var i in checkboxes) {
       if (checkboxes[i].checked === true) {
         checkboxes[i].checked = false;
@@ -933,11 +1001,16 @@ class Templates extends Component {
   }
 
   setEditIssueType = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     if (e) {
       if (e.length === 0) {
         this.setState({
-          editIssueTypeSelect: "Please Select Issue Type",
+          editIssueTypeSelect:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectissuetype
+              : "Please Select IssueType",
           editIssueType: e,
         });
       } else {
@@ -949,7 +1022,10 @@ class Templates extends Component {
     } else {
       this.setState({
         editIssueType: e,
-        editIssueTypeSelect: "Please Select Issue Type",
+        editIssueTypeSelect:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please Select IssueType",
       });
     }
   };
@@ -1010,6 +1086,8 @@ class Templates extends Component {
   }
 
   deleteTemplate(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     let self = this;
     axios({
@@ -1024,10 +1102,18 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.templatedeletedsuccessfully
+              : "Template deleted successfully."
+          );
           self.handleGetTemplate();
         } else {
-          NotificationManager.error("Template not deleted.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.templatenotdeleted
+              : "Template not deleted."
+          );
         }
       })
       .catch((data) => {
@@ -1036,6 +1122,8 @@ class Templates extends Component {
   }
 
   createTemplate() {
+    const TranslationContext = this.state.translateLanguage.default;
+
     debugger;
     // if (
     //   this.state.editorContent.length > 0 &&
@@ -1067,7 +1155,11 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.templateaddedsuccessfully
+              : "Template added successfully."
+          );
           self.handleGetTemplate();
           self.setState({
             TemplateSubject: "",
@@ -1082,7 +1174,11 @@ class Templates extends Component {
           });
           self.selectNoSLA();
         } else {
-          NotificationManager.error("Template Not Added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.templatenotadded
+              : "Template Not Added."
+          );
           this.setState({
             TemplateSubject: "",
             editorContent: "",
@@ -1179,6 +1275,7 @@ class Templates extends Component {
   }
 
   handleConfigureTabsOpen() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.TemplateName.length > 0 &&
@@ -1189,8 +1286,14 @@ class Templates extends Component {
       this.handleGetAgentList();
     } else {
       this.setState({
-        templatenamecopulsion: "Please Enter Template Name",
-        issurtupeCompulsory: "Plaese Select IssueType",
+        templatenamecopulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseentertemplatename
+            : "Please Enter Template Name",
+        issurtupeCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please Select IssueType",
       });
     }
   }
@@ -1281,6 +1384,8 @@ class Templates extends Component {
     }
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
+
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1305,7 +1410,11 @@ class Templates extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1315,7 +1424,11 @@ class Templates extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1323,10 +1436,16 @@ class Templates extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1465,15 +1584,21 @@ class Templates extends Component {
 
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.a.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Templates
+            {TranslationContext !== undefined
+              ? TranslationContext.strong.templates
+              : "Templates"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1492,10 +1617,14 @@ class Templates extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "templateName",
-                              "Template Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.templatename
+                                : "Template Name"
                             )}
                           >
-                            Name
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.name
+                              : "Name"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1512,7 +1641,9 @@ class Templates extends Component {
                             //   "IssueType"
                             // )}
                           >
-                            Issue Type
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.issuetype
+                              : "Issue Type"}
                             {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                           </span>
                         ),
@@ -1543,10 +1674,14 @@ class Templates extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.createdby
+                                : "Created By"
                             )}
                           >
-                            Created by
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.createdby
+                              : "Created by"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1563,24 +1698,34 @@ class Templates extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .createdby
+                                              : "Created By"}
+                                            : {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
-                                          {row.original.createdDate}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}
+                                          : {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
-                                            {row.original.modifiedBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                            : {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
-                                          {row.original.modifiedDate}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                          : {row.original.modifiedDate}
                                         </p>
                                       </div>
                                     </>
@@ -1607,10 +1752,14 @@ class Templates extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "templateStatus",
-                              "Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"
                             )}
                           >
-                            Status
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.status
+                              : "Status"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1618,7 +1767,10 @@ class Templates extends Component {
                         accessor: "templateStatus",
                       },
                       {
-                        Header: "Actions",
+                        Header:
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.actions
+                            : "Actions",
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1633,14 +1785,23 @@ class Templates extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file?"}
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteTemplate.bind(
@@ -1648,7 +1809,9 @@ class Templates extends Component {
                                               row.original.templateID
                                             )}
                                           >
-                                            Delete
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1673,7 +1836,9 @@ class Templates extends Component {
                                     row.original
                                   )}
                                 >
-                                  EDIT
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.edit
+                                    : "EDIT"}
                                 </button>
                               </span>
                             </>
@@ -1691,14 +1856,24 @@ class Templates extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
-                      CREATE TEMPLATES
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createtemlate
+                        : "CREATE TEMPLATES"}
                     </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Name</label>
+                      <label className="designation-name">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.name
+                          : "Name"}
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder="Enter Name"
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.entername
+                            : "Enter Name"
+                        }
                         maxLength={50}
                         value={this.state.TemplateName}
                         onChange={this.handleTemplateName}
@@ -1712,7 +1887,11 @@ class Templates extends Component {
                     <div className="divSpace">
                       <div className="divSpace">
                         <div className="dropDrownSpace issuetype-cusdrp">
-                          <label className="reports-to">Issue Type</label>
+                          <label className="reports-to">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.issuetype
+                              : "Issue Type"}
+                          </label>
                           <div className="dropdown">
                             <button
                               className="btn issuesladrop"
@@ -1720,7 +1899,9 @@ class Templates extends Component {
                               id="issueTypeValue"
                               onClick={this.handleSlaButton}
                             >
-                              Select
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.select
+                                : "Select"}
                               <span className="caret"></span>
                             </button>
                             {this.state.indiSla === "" && (
@@ -1740,7 +1921,11 @@ class Templates extends Component {
                                   <input
                                     type="text"
                                     className="searchf"
-                                    placeholder="Search"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.search
+                                        : "Search"
+                                    }
                                     maxLength={25}
                                     name="store_code"
                                     onChange={this.handleSearchSla}
@@ -1760,14 +1945,18 @@ class Templates extends Component {
                                       <label
                                         onClick={this.selectAllSLA.bind(this)}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     </li>
                                     <li>
                                       <label
                                         onClick={this.selectNoSLA.bind(this)}
                                       >
-                                        Clear
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.clear
+                                          : "Clear"}
                                       </label>
                                     </li>
                                   </ul>
@@ -1812,7 +2001,9 @@ class Templates extends Component {
                                       className="cancel"
                                       onClick={this.handleSlaButton}
                                     >
-                                      Cancel
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.cancel
+                                        : "Cancel"}
                                     </button>
                                   </li>
                                   <li style={{ float: "right" }}>
@@ -1820,7 +2011,9 @@ class Templates extends Component {
                                       className="done"
                                       onClick={this.handleSlaButton}
                                     >
-                                      Done
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.done
+                                        : "Done"}
                                     </button>
                                   </li>
                                 </ul>
@@ -1857,15 +2050,27 @@ class Templates extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.status
+                            : "Status"}
+                        </label>
                         <select
                           id="inputState"
                           className="form-control dropdown-setting"
                           value={this.state.TemplateIsActive}
                           onChange={this.handleTemplateIsActive}
                         >
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
+                          <option value="true">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.active
+                              : "Active"}
+                          </option>
+                          <option value="false">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.inactive
+                              : "Inactive"}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -1874,8 +2079,9 @@ class Templates extends Component {
                         className="CreateADDBtn"
                         onClick={this.handleConfigureTabsOpen.bind(this)}
                       >
-                        CONFIGURE TEMPLATE
-                        {/* <label className="addLable">CONFIGURE TEMPLATE</label> */}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.configuretemplate
+                          : "CONFIGURE TEMPLATE"}
                       </button>
                       <Modal
                         size="lg"
@@ -1887,7 +2093,10 @@ class Templates extends Component {
                           <div className="row config-tab">
                             <div className="col-md-9 templateName">
                               <label className="template-text">
-                                TEMPLATE NAME :{" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.templatename
+                                  : "TEMPLATE NAME"}{" "}
+                                :{" "}
                                 {this.state.isEdit
                                   ? this.state.templateEdit.TemplateName
                                   : this.state.TemplateName}
@@ -1945,7 +2154,11 @@ class Templates extends Component {
                               value="0"
                               onChange={this.setPlaceholderValue.bind(this)}
                             >
-                              <option value="0">Placeholders</option>
+                              <option value="0">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.placeholders
+                                  : "Placeholders"}
+                              </option>
                               {this.state.placeholderData !== null &&
                                 this.state.placeholderData.map((item, i) => (
                                   <option key={i} value={item.mailParameterID}>
@@ -1990,7 +2203,9 @@ class Templates extends Component {
                               ) : (
                                 ""
                               )}
-                              SAVE & NEXT
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.saveandnext
+                                : "SAVE & NEXT"}
                             </button>
                           </div>
                         </Modal.Body>
@@ -2009,14 +2224,26 @@ class Templates extends Component {
             >
               <div className="edtpadding">
                 <div className="">
-                  <label className="popover-header-text">EDIT TEMPLATES</label>
+                  <label className="popover-header-text">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.edittemplate
+                      : "EDIT TEMPLATES"}
+                  </label>
                 </div>
                 <div className="pop-over-div">
-                  <label className="edit-label-1">Name</label>
+                  <label className="edit-label-1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.name
+                      : "Name"}
+                  </label>
                   <input
                     type="text"
                     className="txt-edit-popover"
-                    placeholder="Enter Name"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.entername
+                        : "Enter Name"
+                    }
                     maxLength={25}
                     name="TemplateName"
                     value={this.state.templateEdit.TemplateName}
@@ -2029,14 +2256,22 @@ class Templates extends Component {
                   </p>
                 )}
                 <div className="pop-over-div">
-                  <label className="edit-label-1">Issue Type</label>
+                  <label className="edit-label-1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.issuetype
+                      : "Issue Type"}
+                  </label>
                   <Select
                     getOptionLabel={(option) => option.issueTypeName}
                     getOptionValue={
                       (option) => option.issueTypeID //id
                     }
                     options={this.state.slaIssueType}
-                    placeholder="Select"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"
+                    }
                     closeMenuOnSelect={false}
                     onChange={this.setEditIssueType}
                     value={this.state.editIssueType}
@@ -2049,7 +2284,11 @@ class Templates extends Component {
                   </p>
                 )}
                 <div className="pop-over-div">
-                  <label className="edit-label-1">Status</label>
+                  <label className="edit-label-1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.status
+                      : "Status"}
+                  </label>
                   <select
                     id="inputStatus"
                     className="edit-dropDwon dropdown-setting"
@@ -2057,21 +2296,33 @@ class Templates extends Component {
                     value={this.state.templateEdit.template_Status}
                     onChange={this.handleOnChangeEditData}
                   >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="Active">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.option.active
+                        : "Active"}
+                    </option>
+                    <option value="Inactive">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.option.inactive
+                        : "Inactive"}
+                    </option>
                   </select>
                 </div>
                 <br />
                 <div className="text-center">
                   <a className="pop-over-cancle" onClick={this.toggleEditModal}>
-                    CANCEL
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.cancel
+                      : "CANCEL"}
                   </a>
                   <button className="pop-over-button FlNone">
                     <label
                       className="pop-over-btnsave-text"
                       onClick={this.handleEditSave}
                     >
-                      SAVE
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.save
+                        : "SAVE"}
                     </label>
                   </button>
                 </div>
