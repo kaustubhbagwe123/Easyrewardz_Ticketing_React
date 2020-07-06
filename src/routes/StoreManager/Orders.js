@@ -26,6 +26,7 @@ class Orders extends Component {
       shoppingBagVisible: false,
       mobileTabShopping: false,
       orderAllSearch: "",
+      isSearch: false,
     };
   }
   componentWillMount() {
@@ -115,9 +116,8 @@ class Orders extends Component {
       });
   }
   handleSeachAllData(e) {
-    debugger;
-    e.preventDefault();
-  
+    e.preventDefault()
+    this.refs.OrderTab.handleOrderSearch(this.state.orderAllSearch);
   }
 
   render() {
@@ -471,9 +471,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            {this.state.selectedTabs === 2 ? (
-              <OrderTab />
-            ) : null}
+            {this.state.selectedTabs === 2 ? <OrderTab ref="OrderTab" /> : null}
           </div>
           <div
             className={
