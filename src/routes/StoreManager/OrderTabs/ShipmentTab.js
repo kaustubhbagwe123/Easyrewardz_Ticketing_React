@@ -814,7 +814,7 @@ class ShipmentTab extends Component {
                               </div>
                             }
                             trigger="click"
-                            overlayClassName="order-popover shopping-popover-cancel"
+                            overlayClassName="order-popover shopping-popover-cancel shipment-popover-cancel"
                             onVisibleChange={(visible) =>
                               this.setState({ orderPopoverOverlay: visible })
                             }
