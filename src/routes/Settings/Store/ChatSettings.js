@@ -12,7 +12,7 @@ import * as translationMA from "../../../translations/marathi";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeUp ,faVolumeDown } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeUp, faVolumeDown } from "@fortawesome/free-solid-svg-icons";
 
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
@@ -43,6 +43,15 @@ class ChatSettings extends Component {
       isAutoMatic: false,
       approvalTypeData: [],
       limitText: "",
+      chatSoundData: [],
+      newChatSoundVolume: 0,
+      newMessageSoundVolume: 0,
+      isNotiNewChat: false,
+      isNotiNewMessage: false,
+      newChatSoundID: 0,
+      newMessageSoundID: 0,
+      buttonClickCSS: 0,
+      nsId:0,
     };
   }
 
@@ -394,7 +403,135 @@ class ChatSettings extends Component {
         console.log(response, "---handleGetCardImageApproval");
       });
   }
+  ////handle tab change
+  handleTabChange = (lable) => {
+    this.setState({
+      selectedTab: lable,
+    });
+    if (lable === "Notifications & Sounds") {
+      this.handleGetChatSoundList();
+      this.handleGetChatSoundNotiSetting();
+    }
+  };
 
+  ////handle get chat sound list data
+  handleGetChatSoundList = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatSoundList",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var chatSoundData = response.data.responseData;
+        if (message === "Success" && chatSoundData) {
+          self.setState({ chatSoundData });
+        } else {
+          self.setState({ chatSoundData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatSoundList");
+      });
+  };
+  ////handle get chat sound notification setting
+  handleGetChatSoundNotiSetting = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatSoundNotiSetting",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.setState({
+            newChatSoundID: responseData.newChatSoundID || 0,
+            newMessageSoundID: responseData.newMessageSoundID || 0,
+            newChatSoundVolume: responseData.newChatSoundVolume || 0,
+            newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
+            isNotiNewChat: responseData.isNotiNewChat || false,
+            isNotiNewMessage: responseData.isNotiNewMessage || false,
+            nsId:responseData.id || false,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatSoundNotiSetting");
+      });
+  };
+  ////handle update chat notification settings
+  handleUpdateChatSoundNotiSetting = () => {
+    let self = this;
+    debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/UpdateChatSoundNotiSetting",
+      headers: authHeader(),
+      data: {
+        
+        NewChatSoundID: this.state.newChatSoundID,
+        NewChatSoundVolume: this.state.newChatSoundVolume,
+        NewMessageSoundID: this.state.newMessageSoundID,
+        NewMessageSoundVolume: this.state.newMessageSoundVolume,
+        IsNotiNewChat: this.state.isNotiNewChat,
+        IsNotiNewMessage: this.state.isNotiNewMessage,
+        ID:this.state.nsId
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        debugger;
+        if (message === "Success" && responseData) {
+          NotificationManager.success("Record Updated Successfully");
+          self.handleGetChatSoundNotiSetting()
+        } else {
+          NotificationManager.error("Record Not Updated");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleUpdateChatSoundNotiSetting");
+      });
+  };
+  ////handle chat assinged volumn change
+  handleChatAssingedVolumnChange = (e) => {
+    this.setState({ newChatSoundVolume: e });
+  };
+  ////handle new message volumn change
+  handleNewMessageVolumnChange = (e) => {
+    this.setState({ newMessageSoundVolume: e });
+  };
+  ////handle button click to set css
+  handleButtonClick = (no) => {
+    this.setState({ buttonClickCSS: no });
+    if (no === 3) {
+      this.handleUpdateChatSoundNotiSetting();
+    }
+  };
+  ////handle sound dropdown change
+  handleSoundDropdownChange = (e) => {
+    var value = e.target.value;
+    var name = e.target.name;
+    if (name === "newChatSoundID") {
+      this.setState({ newChatSoundID: value });
+    } else {
+      this.setState({ newMessageSoundID: value });
+    }
+  };
+
+  ////handle notification checkbox change
+  handleNotificationCheckboxChange = (e) => {
+    debugger;
+    var name = e.target.name;
+    if (name === "isNotiNewChat") {
+      this.setState({ isNotiNewChat: e.target.checked });
+    } else {
+      this.setState({ isNotiNewMessage: e.target.checked });
+    }
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -428,16 +565,16 @@ class ChatSettings extends Component {
           <div className="module-tabs chat-tabslst">
             <section>
               <Tabs
-                onSelect={(index, label) =>
-                  this.setState({ selectedTab: label })
-                }
+                onSelect={(index, label) => {
+                  this.handleTabChange(label);
+                }}
                 selected={this.state.selectedTab}
               >
                 <Tab
                   label={
                     TranslationContext !== undefined
                       ? TranslationContext.label.chat
-                      : "CHAT"
+                      : "Chat"
                   }
                 >
                   <div className="row chattab-card">
@@ -681,10 +818,13 @@ class ChatSettings extends Component {
                   label={
                     TranslationContext !== undefined
                       ? TranslationContext.label.charditemconfiguration
-                      : "CARD ITEM CONFIGURATION"
+                      : "Card Item Configuration"
                   }
                 >
-                  <div className="row chattab-card">
+                  <div
+                    className="row chattab-card"
+                    style={{ marginBottom: "15px" }}
+                  >
                     <div className="col-md-12">
                       <div className="card" style={{ height: "auto" }}>
                         <div className="row">
@@ -825,7 +965,7 @@ class ChatSettings extends Component {
                   label={
                     TranslationContext !== undefined
                       ? TranslationContext.label.cardassestsconfiguration
-                      : "CARD ASSETS CONFIGURATION"
+                      : "Card Assets Configuration"
                   }
                 >
                   <div className="row chattab-card">
@@ -902,8 +1042,11 @@ class ChatSettings extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={"SOUND & NOTIFICATIONS"}>
-                  <div className="row chattab-card">
+                <Tab label={"Notifications & Sounds"}>
+                  <div
+                    className="row chattab-card"
+                    style={{ marginBottom: "15px" }}
+                  >
                     <div className="col-md-12">
                       <div
                         className="card sncheck"
@@ -917,11 +1060,23 @@ class ChatSettings extends Component {
                           your browser setting to allow notification
                         </p>
                         <label className="sns-lbl">Chat Assigned</label>
-                        <Checkbox className="">
+                        <Checkbox
+                          name="isNotiNewChat"
+                          checked={this.state.isNotiNewChat}
+                          onChange={this.handleNotificationCheckboxChange.bind(
+                            this
+                          )}
+                        >
                           Show notifications for new chat assigned
                         </Checkbox>
                         <label className="sns-lbl">New Messages</label>
-                        <Checkbox>
+                        <Checkbox
+                          name="isNotiNewMessage"
+                          checked={this.state.isNotiNewMessage}
+                          onChange={this.handleNotificationCheckboxChange.bind(
+                            this
+                          )}
+                        >
                           Show notification for new message in ongoing
                         </Checkbox>
                       </div>
@@ -941,26 +1096,64 @@ class ChatSettings extends Component {
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
+                              value={this.state.newChatSoundID}
+                              name="newChatSoundID"
+                              onChange={this.handleSoundDropdownChange.bind(
+                                this
+                              )}
                             >
                               <option>Select</option>
+                              {this.state.chatSoundData
+                                ? this.state.chatSoundData.map((item, i) => {
+                                    return (
+                                      <option key={i} value={item.soundID}>
+                                        {item.soundFileName}
+                                      </option>
+                                    );
+                                  })
+                                : null}
                             </select>
                           </div>
-                          <div className="col-md-3 vlm-ctrl">
-                            <label>Sound Controller</label>
-                            <div>
-                              <FontAwesomeIcon icon={faVolumeDown} />
-                              <div className="slider orientation-reversed">
-                                <div className="slider-group">
-                                  <div className="slider-horizontal">
-                                    <Slider
-                                      min={0}
-                                      max={10}
-                                      orientation="horizontal"
-                                    />
+                          <div className="col-md-4 vlm-ctrl">
+                            <label style={{ paddingLeft: "" }}>
+                              Sound Controller
+                            </label>
+                            <div className="row">
+                              <div
+                                className="col-md-2"
+                                style={{
+                                  paddingLeft: "32px",
+                                  paddingTop: "23px",
+                                }}
+                              >
+                                <FontAwesomeIcon icon={faVolumeDown} />
+                              </div>
+                              <div
+                                className="col-md-8"
+                                style={{ paddingTop: "12px" }}
+                              >
+                                <div className="slider orientation-reversed">
+                                  <div className="slider-group">
+                                    <div className="slider-horizontal">
+                                      <Slider
+                                        min={0}
+                                        max={100}
+                                        value={this.state.newChatSoundVolume}
+                                        onChange={
+                                          this.handleChatAssingedVolumnChange
+                                        }
+                                        orientation="horizontal"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                              <FontAwesomeIcon icon={faVolumeUp} />
+                              <div
+                                className="col-md-2"
+                                style={{ paddingTop: "23px" }}
+                              >
+                                <FontAwesomeIcon icon={faVolumeUp} />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -970,28 +1163,110 @@ class ChatSettings extends Component {
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
+                              value={this.state.newMessageSoundID}
+                              name="newMessageSoundID"
+                              onChange={this.handleSoundDropdownChange.bind(
+                                this
+                              )}
                             >
                               <option>Select</option>
+                              {this.state.chatSoundData
+                                ? this.state.chatSoundData.map((item, i) => {
+                                    return (
+                                      <option key={i} value={item.soundID}>
+                                        {item.soundFileName}
+                                      </option>
+                                    );
+                                  })
+                                : null}
                             </select>
                           </div>
-                          <div className="col-md-3 vlm-ctrl">
-                            <label>Sound Controller</label>
-                            <div>
-                              <FontAwesomeIcon icon={faVolumeDown} />
-                              <div className="slider orientation-reversed">
-                                <div className="slider-group">
-                                  <div className="slider-horizontal">
-                                    <Slider
-                                      min={0}
-                                      max={10}
-                                      orientation="horizontal"
-                                    />
+                          <div className="col-md-4 vlm-ctrl">
+                            <label style={{ paddingLeft: "" }}>
+                              Sound Controller
+                            </label>
+                            <div className="row">
+                              <div
+                                className="col-md-2"
+                                style={{
+                                  paddingLeft: "32px",
+                                  paddingTop: "23px",
+                                }}
+                              >
+                                <FontAwesomeIcon icon={faVolumeDown} />
+                              </div>
+                              <div
+                                className="col-md-8"
+                                style={{ paddingTop: "12px" }}
+                              >
+                                <div className="slider orientation-reversed">
+                                  <div className="slider-group">
+                                    <div className="slider-horizontal">
+                                      <Slider
+                                        min={0}
+                                        max={100}
+                                        value={this.state.newMessageSoundVolume}
+                                        onChange={
+                                          this.handleNewMessageVolumnChange
+                                        }
+                                        orientation="horizontal"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                              <FontAwesomeIcon icon={faVolumeUp} />
+                              <div
+                                className="col-md-2"
+                                style={{ paddingTop: "23px" }}
+                              >
+                                <FontAwesomeIcon icon={faVolumeUp} />
+                              </div>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                      <div
+                        className="card"
+                        style={{
+                          padding: "35px",
+                          paddingTop: "0",
+                          height: "auto",
+                        }}
+                      >
+                        <div className="">
+                          <button
+                            onClick={this.handleButtonClick.bind(this, 1)}
+                            className={
+                              this.state.buttonClickCSS == 1
+                                ? "butn sn-btn-mr"
+                                : "butn sn-btn-inactive"
+                            }
+                            type="button"
+                          >
+                            CANCEL
+                          </button>
+                          <button
+                            onClick={this.handleButtonClick.bind(this, 2)}
+                            className={
+                              this.state.buttonClickCSS == 2
+                                ? "butn sn-btn-mr"
+                                : "butn sn-btn-inactive"
+                            }
+                            type="button"
+                          >
+                            REST DEFUALT
+                          </button>
+                          <button
+                            onClick={this.handleButtonClick.bind(this, 3)}
+                            className={
+                              this.state.buttonClickCSS == 3
+                                ? "butn sn-btn-mr"
+                                : "butn sn-btn-inactive"
+                            }
+                            type="button"
+                          >
+                            SAVE CHAGNES
+                          </button>
                         </div>
                       </div>
                     </div>

@@ -116,7 +116,8 @@ class Orders extends Component {
       });
   }
   handleSeachAllData(e) {
-    this.refs.OrderTab.handleGetOrderTabGridData(this.state.orderAllSearch);
+    e.preventDefault()
+    this.refs.OrderTab.handleOrderSearch(this.state.orderAllSearch);
   }
 
   render() {

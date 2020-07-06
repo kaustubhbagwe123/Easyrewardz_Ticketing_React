@@ -44,6 +44,7 @@ import StoreUserForgotPassword from "./Component/Store/StoreUserForgotPassword";
 import ModuleSelect from "./Component/ModuleSelect";
 import StoreChangePassword from "./Component/Store/ChangePassword";
 import LanguageSelection from "./Component/Store/LanguageSelection";
+import TicketingLanguageSelection from "./Component/TicketingLanguageSelection";
 
 ReactDOM.render(
   <Router>
@@ -52,8 +53,13 @@ ReactDOM.render(
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />
-    <Route exact path="/ProgramCodeSignIn" component={ProgramCodeSignIn} />
+    <Route exact path="/programCodeSignIn" component={ProgramCodeSignIn} />
     <Route exact path="/SignIn" component={SignIn} />
+    <Route
+      exact
+      path="/TicketingLanguageSelection"
+      component={TicketingLanguageSelection}
+    />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/ChangePassword" component={ChangePassword} />
     <Route exact path="/storeChangePassword" component={StoreChangePassword} />
