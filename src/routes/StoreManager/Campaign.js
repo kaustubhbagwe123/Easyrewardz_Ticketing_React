@@ -14,6 +14,7 @@ import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
+import ReactTable from "react-table";
 
 class Campaign extends Component {
   constructor(props) {
@@ -43,7 +44,12 @@ class Campaign extends Component {
       CampaignStatusFilter: false,
       strCampStatus: "",
       custNameModal: false,
-      sortCustName: ""
+      sortCustName: "",
+      lastTransactionItem: [],
+      lasttransactiondetails: {},
+      customerName:"",
+      customerNumber: "",
+      useratvdetails: {}
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -764,10 +770,54 @@ class Campaign extends Component {
     {
       sortName += strTag[i].charAt(0).toUpperCase();
     }
-    this.setState({
-      custNameModal: true,
-      sortCustName: sortName
-    });
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreCustomerpopupDetails",
+      headers: authHeader(),
+    }).then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          if (data.lasttransactiondetails !== null) {
+            if (data.lasttransactiondetails.itemDetails !== null) {
+              self.setState({
+                lastTransactionItem: data.lasttransactiondetails.itemDetails
+              });
+            } else {
+              self.setState({
+                lastTransactionItem: []
+              });
+            }
+          } else {
+            self.setState({
+              lastTransactionItem: []
+            });
+          }
+
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: rowData,
+            useratvdetails: data.useratvdetails,
+            lasttransactiondetails: data.lasttransactiondetails,
+            sortCustName: sortName,
+            customerName: rowData.customerName,
+            customerNumber: rowData.customerPhoneNumber
+          });          
+        } else {
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: {},
+            useratvdetails: {},
+            lasttransactiondetails: {}
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   }
 
   handleCustomerNameModalClose() {
@@ -1518,12 +1568,12 @@ class Campaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>
-
+                  {this.state.customerName}{" "}
                   <span>
-
+                  {this.state.customerNumber}
                   </span>
                 </h3>
-                <p></p>
+                <p>{this.state.useratvdetails.tiername}</p>
               </div>
             </div>
           </div>
@@ -1531,51 +1581,50 @@ class Campaign extends Component {
             <div className="col-12 col-md-6">
 
               <div className="lifetimevalue lt-single">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <h4>
-
-
-                        </h4>
-                        <label>
-
-                        </label>
-                      </td>
-                      <td>
-                        <h4>
-
-
-                        </h4>
-                        <label>
-
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h4>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h4.lifetimevalue
+                                  : "Lifetime Value"}
+                              </h4>
+                              <label>
+                                {this.state.useratvdetails.lifeTimeValue !==
+                                null ? (
+                                  <>
+                                    ₹{this.state.useratvdetails.lifeTimeValue}
+                                  </>
+                                ) : (
+                                  "₹0"
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              <h4>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h4.visitcount
+                                  : "Visit Count"}
+                              </h4>
+                              <label>
+                                {this.state.useratvdetails.visitCount !==
+                                null ? (
+                                  <>
+                                    {this.state.useratvdetails.visitCount < 9
+                                      ? "0" +
+                                        this.state.useratvdetails.visitCount
+                                      : this.state.useratvdetails.visitCount}
+                                  </>
+                                ) : (
+                                  "0"
+                                )}
+                              </label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
               </div>
-
-
-
-              <div
-
-              >
-
-                <h4>
-
-                </h4>
-
-                <p
-                  id="insight-data"
-
-                >
-
-                </p>
-
-              </div>
-
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
@@ -1584,12 +1633,165 @@ class Campaign extends Component {
 
                     role="tablist"
                   >
-
+                  {this.state.lastTransactionItem.length > 0 ? (
+                      <li className="nav-item fo">
+                        <a
+                          className="nav-link active"
+                          data-toggle="tab"
+                          href="#lastTransaction-tab"
+                          role="tab"
+                          aria-controls="lastTransaction-tab"
+                          aria-selected="false"
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.lasttransaction
+                            : "Last Transaction"}
+                        </a>
+                      </li>
+                    ) : null}
 
 
                   </ul>
                 </div>
                 <div className="tab-content p-0">
+                   <div
+                    className="tab-pane fade show active"
+                    id="lastTransaction-tab"
+                    role="tabpanel"
+                    aria-labelledby="lastTransaction-tab"
+                  >
+                    <div>
+                      {this.state.lasttransactiondetails !== null ? (
+                        <>
+                          {this.state.lasttransactiondetails.amount !== "" && this.state.lasttransactiondetails.amount!== null ? (
+                            <div className="transactionbox">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.billno
+                                          : "Bill No."}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billNo
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.amount
+                                          : "Amount"}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .amount
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.store
+                                          : "Store"}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .storeName
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.date
+                                          : "Date"}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billDate
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div className="trasactablist">
+                                <div className="myTicket-table remov agentlist last-trans-table">
+                                  <ReactTable
+                                    className="limit-react-table-body tabscrol"
+                                    data={this.state.lastTransactionItem}
+                                    columns={[
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.article
+                                              : "Article"}
+                                          </span>
+                                        ),
+                                        accessor: "article",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.qty
+                                              : "Qty."}
+                                          </span>
+                                        ),
+                                        accessor: "quantity",
+                                        width: 60,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.amount
+                                              : "Amount"}
+                                          </span>
+                                        ),
+                                        accessor: "amount",
+                                        width: 80,
+                                      },
+                                    ]}
+                                    minRows={2}
+                                    // defaultPageSize={5}
+                                    showPagination={false}
+                                    resizable={false}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <label className="ChecknoDataCamp">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.norecordfound
+                                : "No Record Found"}
+                            </label>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <label className="ChecknoDataCamp">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.norecordfound
+                              : "No Record Found"}
+                          </label>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>

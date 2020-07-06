@@ -195,8 +195,9 @@ class StoreReports extends Component {
       sreportStatusFilterCheckbox: "",
       isortA: false,
       translateLanguage: {},
-      regionData: [],
-      campaignRegion: "0"
+      regionZoneData: [],
+      campaignRegion: "0",
+      campaignZone: "0"
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -1331,7 +1332,8 @@ class StoreReports extends Component {
             ? null
             : moment(this.state.campaignEndDateTo).format("YYYY-MM-DD"),
         CampaignStatusids: this.state.indiCampaignStatus,
-        CampaignRegion: this.state.campaignRegion
+        CampaignRegion: this.state.campaignRegion,
+        CampaignZone: this.state.campaignZone
       };
     }
     this.setState({ ReportParams: paramData });
@@ -3077,7 +3079,7 @@ class StoreReports extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Master/getregionlist",
+      url: config.apiUrl + "/Master/getRegionZoneList",
       headers: authHeader(),
     })
       .then(function(response) {
@@ -3085,7 +3087,11 @@ class StoreReports extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({ regionData: responseData });
+          self.setState({ 
+            regionZoneData: responseData, 
+            campaignRegion: responseData[0].regionID,
+            campaignZone: responseData[0].zoneID
+          });
         }
       })
       .catch((response) => {
@@ -5245,12 +5251,33 @@ class StoreReports extends Component {
                         name="campaignRegion"
                         value={this.state.campaignRegion}
                         onChange={this.handleOnChangeData}
+                        disabled={true}
                       >
                         
                         <option value="0">Select</option>
-                        {this.state.regionData !== null &&
-                          this.state.regionData.map((item, i) => (
+                        {this.state.regionZoneData !== null &&
+                          this.state.regionZoneData.map((item, i) => (
                             <option value={item.regionID}>{item.regionName}</option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="col-md-4 ticketstrReport">
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.campaignassignedto
+                          : "Zone"}
+                      </label>
+                      <select
+                        name="campaignZone"
+                        value={this.state.campaignZone}
+                        onChange={this.handleOnChangeData}
+                        disabled={true}
+                      >
+                        
+                        <option value="0">Select</option>
+                        {this.state.regionZoneData !== null &&
+                          this.state.regionZoneData.map((item, i) => (
+                            <option value={item.zoneID}>{item.zoneName}</option>
                           ))}
                       </select>
                     </div>
