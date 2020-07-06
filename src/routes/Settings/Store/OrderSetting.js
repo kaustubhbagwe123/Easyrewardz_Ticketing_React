@@ -21,6 +21,15 @@ class OrderSetting extends Component {
       orderConfigData: {},
       selTab: "Module Configuration",
       translateLanguage: {},
+      OrdTemplatename: "",
+      OrdTempHeight: "",
+      OrdTempLength: "",
+      OrdTempBreadth: "",
+      OrdTempWeight: "",
+      selectedOrdHeight: "cm",
+      selectedOrdLength: "cm",
+      selectedOrdBreadth: "cm",
+      selectedOrdWeight: "Kg",
     };
   }
 
@@ -295,7 +304,111 @@ class OrderSetting extends Component {
       this.setState({ orderConfigData });
     }
   }
+  /// handle inputchange
+  handleInputOnchange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
+  /// handle input valiadtion change
+  handleInputValidationChange(e) {
+    var values = e.target.value;
+    var names = e.target.name;
 
+    if (isNaN(values)) {
+      return false;
+    }
+    var splitText = values.split(".");
+    var index = values.indexOf(".");
+
+    if (index !== -1) {
+      if (splitText) {
+        if (splitText[1].length <= 2) {
+          if (index !== -1 && splitText.length === 2) {
+            if (names === "OrdTempHeight") {
+              this.setState({
+                OrdTempHeight: values,
+              });
+            } else if (names === "OrdTempLength") {
+              this.setState({
+                OrdTempLength: values,
+              });
+            } else if (names === "OrdTempBreadth") {
+              this.setState({
+                OrdTempBreadth: values,
+              });
+            } else if (names === "OrdTempWeight") {
+              this.setState({
+                OrdTempWeight: values,
+              });
+            }
+          }
+        } else {
+          return false;
+        }
+      } else {
+        if (names === "OrdTempHeight") {
+          this.setState({
+            OrdTempHeight: values,
+          });
+        } else if (names === "OrdTempLength") {
+          this.setState({
+            OrdTempLength: values,
+          });
+        } else if (names === "OrdTempBreadth") {
+          this.setState({
+            OrdTempBreadth: values,
+          });
+        } else if (names === "OrdTempWeight") {
+          this.setState({
+            OrdTempWeight: values,
+          });
+        }
+      }
+    } else {
+      if (names === "OrdTempHeight") {
+        this.setState({
+          OrdTempHeight: values,
+        });
+      } else if (names === "OrdTempLength") {
+        this.setState({
+          OrdTempLength: values,
+        });
+      } else if (names === "OrdTempBreadth") {
+        this.setState({
+          OrdTempBreadth: values,
+        });
+      } else if (names === "OrdTempWeight") {
+        this.setState({
+          OrdTempWeight: values,
+        });
+      }
+    }
+  }
+
+  /// handle drop down change
+  handleDropDownChange(e) {
+    var names = e.target.name;
+    var values = e.target.value;
+
+    if (names === "selectedOrdHeight") {
+      this.setState({
+        selectedOrdHeight: values,
+      });
+    } else if (names === "selectedOrdLength") {
+      this.setState({
+        selectedOrdLength: values,
+      });
+    } else if (names === "selectedOrdBreadth") {
+      this.setState({
+        selectedOrdBreadth: values,
+      });
+    } else if (names === "selectedOrdWeight") {
+      this.setState({
+        selectedOrdWeight: values,
+      });
+    }
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -1140,6 +1253,12 @@ class OrderSetting extends Component {
                                         type="text"
                                         placeholder="Enter Template Name"
                                         autoComplete="off"
+                                        maxLength={250}
+                                        name="OrdTemplatename"
+                                        value={this.state.OrdTemplatename}
+                                        onChange={this.handleInputOnchange.bind(
+                                          this
+                                        )}
                                       />
                                       {/* {this.state.maxCapacity === "" && (
                                       <p
@@ -1161,10 +1280,24 @@ class OrderSetting extends Component {
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempHeight"
+                                          value={this.state.OrdTempHeight}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdHeight}
+                                          name="selectedOrdHeight"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
                                           <option value="cm">cm</option>
-                                          <option value="m">m</option>
+                                          <option value="feet">feet</option>
+                                          <option value="inch">inch</option>
                                         </select>
                                       </div>
                                       {/* {this.state.maxCapacity === "" && (
@@ -1187,10 +1320,24 @@ class OrderSetting extends Component {
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempLength"
+                                          value={this.state.OrdTempLength}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdLength}
+                                          name="selectedOrdLength"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
                                           <option value="cm">cm</option>
-                                          <option value="m">m</option>
+                                          <option value="feet">feet</option>
+                                          <option value="inch">inch</option>
                                         </select>
                                       </div>
                                       {/* {this.state.maxCapacity === "" && (
@@ -1213,10 +1360,24 @@ class OrderSetting extends Component {
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempBreadth"
+                                          value={this.state.OrdTempBreadth}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdBreadth}
+                                          name="selectedOrdBreadth"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
                                           <option value="cm">cm</option>
-                                          <option value="m">m</option>
+                                          <option value="feet">feet</option>
+                                          <option value="inch">inch</option>
                                         </select>
                                       </div>
                                       {/* {this.state.maxCapacity === "" && (
@@ -1239,10 +1400,24 @@ class OrderSetting extends Component {
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempWeight"
+                                          value={this.state.OrdTempWeight}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
-                                          <option value="kg">kg</option>
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdWeight}
+                                          name="selectedOrdWeight"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
+                                          <option value="Kg">Kg</option>
                                           <option value="g">g</option>
+                                          <option value="lbs">lbs</option>
                                         </select>
                                       </div>
                                       {/* {this.state.maxCapacity === "" && (

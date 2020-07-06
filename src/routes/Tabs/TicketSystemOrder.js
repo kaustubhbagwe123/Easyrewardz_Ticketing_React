@@ -626,7 +626,6 @@ class TicketSystemOrder extends Component {
     });
   }
   handleNumberOnchange = (e) => {
-    //
     var values = e.target.value;
     var names = e.target.name;
 
