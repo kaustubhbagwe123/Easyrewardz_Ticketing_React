@@ -195,6 +195,8 @@ class StoreReports extends Component {
       sreportStatusFilterCheckbox: "",
       isortA: false,
       translateLanguage: {},
+      regionData: [],
+      campaignRegion: "0"
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -230,6 +232,7 @@ class StoreReports extends Component {
     this.handleGetStoreReports();
     this.handleGetUser();
     this.handleGetCampaignName();
+    this.handleGetRegion();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -1328,6 +1331,7 @@ class StoreReports extends Component {
             ? null
             : moment(this.state.campaignEndDateTo).format("YYYY-MM-DD"),
         CampaignStatusids: this.state.indiCampaignStatus,
+        CampaignRegion: this.state.campaignRegion
       };
     }
     this.setState({ ReportParams: paramData });
@@ -3066,6 +3070,27 @@ class StoreReports extends Component {
       storeReportData: this.state.sortAllData,
       tempReportData: [],
     });
+  }
+
+  handleGetRegion() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Master/getregionlist",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData.length > 0) {
+          self.setState({ regionData: responseData });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   }
 
   render() {
@@ -5210,6 +5235,26 @@ class StoreReports extends Component {
                         </div>
                       </div>
                     </div>
+                    <div className="col-md-4 ticketstrReport">
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.campaignassignedto
+                          : "Region"}
+                      </label>
+                      <select
+                        name="campaignRegion"
+                        value={this.state.campaignRegion}
+                        onChange={this.handleOnChangeData}
+                      >
+                        
+                        <option value="0">Select</option>
+                        {this.state.regionData !== null &&
+                          this.state.regionData.map((item, i) => (
+                            <option value={item.regionID}>{item.regionName}</option>
+                          ))}
+                      </select>
+                    </div>
+
                   </div>
                   <div className="row nextbutton1">
                     <div className="nextbutton">
