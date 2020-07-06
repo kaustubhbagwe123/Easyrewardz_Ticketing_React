@@ -4,6 +4,9 @@ import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
+import { Popover, Table } from "antd";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
@@ -76,7 +79,11 @@ class OrderSetting extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.moduleupdatedsuccessfully:"Module Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.moduleupdatedsuccessfully
+              : "Module Updated Successfully."
+          );
         }
       })
       .catch((data) => {
@@ -166,15 +173,23 @@ class OrderSetting extends Component {
         UnDeliverable: this.state.orderConfigData.unDeliverable,
         UnDeliverableText: this.state.orderConfigData.unDeliverableText,
         StoreDeliveryText: this.state.orderConfigData.storeDeliveryText,
-        PaymentTenantCodeText:this.state.orderConfigData.paymentTenantCodeText,
+        PaymentTenantCodeText: this.state.orderConfigData.paymentTenantCodeText,
       },
     })
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.orderupdatedsuccessfully:"Order Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.orderupdatedsuccessfully
+              : "Order Updated Successfully."
+          );
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.ordernotupdated:"Order Not Updated.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.ordernotupdated
+              : "Order Not Updated."
+          );
         }
       })
       .catch((data) => {
@@ -516,7 +531,7 @@ class OrderSetting extends Component {
                                           maxLength={500}
                                           value={
                                             this.state.orderConfigData
-                                              .paymentTenantCodeText 
+                                              .paymentTenantCodeText
                                           }
                                           onChange={this.OrderSettingOnChange.bind(
                                             this
@@ -552,8 +567,10 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        
-                                        {TranslationContext!==undefined?TranslationContext.label.storeasdeliverypartner:"Store as Delivery Partner"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .storeasdeliverypartner
+                                          : "Store as Delivery Partner"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -576,8 +593,10 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.alertcommunicationviawhatsapp:"Alert Communication via Whatsapp"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .alertcommunicationviawhatsapp
+                                          : "Alert Communication via Whatsapp"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -600,9 +619,10 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        
-                                        {TranslationContext!==undefined?TranslationContext.label.alertcommunicationviasms:"Alert Communication via SMS"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .alertcommunicationviasms
+                                          : "Alert Communication via SMS"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -654,7 +674,14 @@ class OrderSetting extends Component {
                                           ? TranslationContext.td
                                               .clickwillbeenabledafter
                                           : "Click will be enabled after"}
-                                        <span>({TranslationContext!==undefined?TranslationContext.span.paymentsendlinkbutton:"Payment send link button"})</span>
+                                        <span>
+                                          (
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .paymentsendlinkbutton
+                                            : "Payment send link button"}
+                                          )
+                                        </span>
                                       </td>
                                       <td>
                                         <input
@@ -727,7 +754,13 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.smsandwhatsapp:"SMS & WhatsApp"}>
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.smsandwhatsapp
+                      : "SMS & WhatsApp"
+                  }
+                >
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -735,13 +768,19 @@ class OrderSetting extends Component {
                           <div className="row">
                             <div className="col-md-5">
                               <div className="right-sect-div">
-                                <h3>{TranslationContext!==undefined?TranslationContext.h3.smsandwhatsapp:"SMS & WhatsApp"}</h3>
+                                <h3>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3.smsandwhatsapp
+                                    : "SMS & WhatsApp"}
+                                </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.shoppingbagconvertedtoorder:"Shopping bag Converted to Order"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .shoppingbagconvertedtoorder
+                                          : "Shopping bag Converted to Order"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -783,9 +822,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.awbassigned:"Awb Assigned"}
-                                       
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.awbassigned
+                                          : "Awb Assigned"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -843,8 +882,10 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.pickupscheduledgenerated:"Pickup Scheduled/Generated"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .pickupscheduledgenerated
+                                          : "Pickup Scheduled/Generated"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -886,8 +927,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.shipped:"Shipped"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.shipped
+                                          : "Shipped"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -927,8 +969,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.delivered:"Delivered"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.delivered
+                                          : "Delivered"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -968,8 +1011,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.cancelled:"Cancelled"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.cancelled
+                                          : "Cancelled"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -1009,8 +1053,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                      {TranslationContext!==undefined?TranslationContext.label.undelivered:"Undelivered"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.undelivered
+                                          : "Undelivered"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -1062,6 +1107,301 @@ class OrderSetting extends Component {
                                     : "UPDATE"}
                                 </button>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label="Shipping Template">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-8 m-auto">
+                              <div
+                                className="right-sect-div"
+                                style={{ padding: "20px" }}
+                              >
+                                <div
+                                  className="row cmpaign-channel-table lbl-fnt-w-400 full-wid-inp"
+                                  style={{ margin: "0px" }}
+                                >
+                                  <div className="col-md-12">
+                                    <h3>Shipping Template</h3>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="mx-slt-div m-0 px-0">
+                                      <label>Template Name</label>
+                                      <input
+                                        className="mx-slt-txt"
+                                        type="text"
+                                        placeholder="Enter Template Name"
+                                        autoComplete="off"
+                                      />
+                                      {/* {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )} */}
+                                    </div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <div className="mx-slt-div m-0 px-0">
+                                      <label>Height</label>
+                                      <div className="d-flex">
+                                        <input
+                                          className="mx-slt-txt slot-hour"
+                                          type="text"
+                                          autoComplete="off"
+                                        />
+                                        <select className="slot-shift">
+                                          <option value="cm">cm</option>
+                                          <option value="m">m</option>
+                                        </select>
+                                      </div>
+                                      {/* {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )} */}
+                                    </div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <div className="mx-slt-div m-0 px-0">
+                                      <label>Length</label>
+                                      <div className="d-flex">
+                                        <input
+                                          className="mx-slt-txt slot-hour"
+                                          type="text"
+                                          autoComplete="off"
+                                        />
+                                        <select className="slot-shift">
+                                          <option value="cm">cm</option>
+                                          <option value="m">m</option>
+                                        </select>
+                                      </div>
+                                      {/* {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )} */}
+                                    </div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <div className="mx-slt-div m-0 px-0">
+                                      <label>Breadth</label>
+                                      <div className="d-flex">
+                                        <input
+                                          className="mx-slt-txt slot-hour"
+                                          type="text"
+                                          autoComplete="off"
+                                        />
+                                        <select className="slot-shift">
+                                          <option value="cm">cm</option>
+                                          <option value="m">m</option>
+                                        </select>
+                                      </div>
+                                      {/* {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )} */}
+                                    </div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <div className="mx-slt-div m-0 px-0">
+                                      <label>Weight</label>
+                                      <div className="d-flex">
+                                        <input
+                                          className="mx-slt-txt slot-hour"
+                                          type="text"
+                                          autoComplete="off"
+                                        />
+                                        <select className="slot-shift">
+                                          <option value="kg">kg</option>
+                                          <option value="g">g</option>
+                                        </select>
+                                      </div>
+                                      {/* {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )} */}
+                                    </div>
+                                  </div>
+                                  <div className="col-md-12 my-3">
+                                    <button
+                                      className="Schedulenext1 w-100 mb-0"
+                                      type="button"
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.submit
+                                        : "SUBMIT"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12">
+                              <Table
+                                loading={this.state.loading}
+                                noDataContent="No Record Found"
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                columns={[
+                                  {
+                                    title: "Template Name",
+
+                                    dataIndex: "slotSettingID",
+                                  },
+                                  {
+                                    title: "Height",
+                                    dataIndex: "storeCode",
+                                  },
+                                  {
+                                    title: "Length",
+                                    dataIndex: "storeTimimg",
+                                  },
+                                  {
+                                    title: "Breadth",
+                                    dataIndex: "nonOperationalTimimg",
+                                  },
+                                  {
+                                    title: "Weight",
+                                    dataIndex: "storeSlotDuration",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.actions
+                                        : "Actions",
+
+                                    render: (row, rowData) => {
+                                      var ids = row;
+                                      return (
+                                        <>
+                                          <span>
+                                            <Popover
+                                              content={
+                                                <div className="d-flex general-popover popover-body">
+                                                  <div className="del-big-icon">
+                                                    <img
+                                                      src={DelBigIcon}
+                                                      alt="del-icon"
+                                                    />
+                                                  </div>
+                                                  <div>
+                                                    <p className="font-weight-bold blak-clr">
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .deletefile
+                                                        : "Delete file"}
+                                                      ?
+                                                    </p>
+                                                    <p className="mt-1 fs-12">
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .areyousureyouwanttodeletethisfile
+                                                        : "Are you sure you want to delete this file"}
+                                                      ?
+                                                    </p>
+                                                    <div className="del-can">
+                                                      <a href={Demo.BLANK_LINK}>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.a
+                                                              .cancel
+                                                          : "CANCEL"}
+                                                      </a>
+                                                      <button
+                                                        className="butn"
+                                                        onClick={this.handleDeleteTimeSlot.bind(
+                                                          this,
+                                                          rowData.slotSettingID
+                                                        )}
+                                                      >
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.delete
+                                                          : "Delete"}
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              }
+                                              placement="bottom"
+                                              trigger="click"
+                                            >
+                                              <img
+                                                src={RedDeleteIcon}
+                                                alt="del-icon"
+                                                className="del-btn"
+                                                id={ids}
+                                              />
+                                            </Popover>
+
+                                            <button
+                                              className="react-tabel-button editre"
+                                              onClick={this.openSlotEditModal.bind(
+                                                this,
+                                                rowData.slotSettingID,
+                                                rowData.storeId
+                                              )}
+                                            >
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button.edit
+                                                : "EDIT"}
+                                            </button>
+                                          </span>
+                                        </>
+                                      );
+                                    },
+                                  },
+                                ]}
+                                // rowKey={(record) => {
+                                //   if (record.slotSettingID) {
+                                //     uid = uid + 1;
+                                //     return record.slotSettingID + "i" + uid;
+                                //   } else {
+                                //     uid = uid + 1;
+                                //     return "i" + uid;
+                                //   }
+                                // }}
+                                pagination={{ defaultPageSize: 10 }}
+                                dataSource={this.state.TimeSlotGridData}
+                              ></Table>
                             </div>
                           </div>
                         </div>

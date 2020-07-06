@@ -3626,7 +3626,13 @@
   width: 50% !important;
   margin-top: 7px !important;
 }
-
+.full-wid-inp input {
+  width: 100% !important;
+}
+.full-wid-inp select {
+  margin-top: 7px;
+  font-size: 14px;
+}
 .ap-select {
   background: none !important;
   padding: 5px 7px !important;
