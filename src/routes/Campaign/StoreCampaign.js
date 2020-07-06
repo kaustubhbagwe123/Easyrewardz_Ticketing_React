@@ -28,7 +28,7 @@ import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
 import ReactHtmlParser from "react-html-parser";
 // import Pagination from "./CampaignPagination";
- 
+
 class StoreCampaign extends Component {
   constructor(props) {
     super(props);
@@ -1104,7 +1104,6 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1128,20 +1127,25 @@ class StoreCampaign extends Component {
           } else {
             sortName += strTag[1].charAt(0).toUpperCase();
           }
-          if (
-            // data.lasttransactiondetails.itemDetails.length > 0 ||
-            data.lasttransactiondetails.itemDetails !== null
-          ) {
-            self.setState({
-              lastTransactionItem: data.lasttransactiondetails.itemDetails,
-              showLastTransactiondtab: false,
-            });
+          if (data.lasttransactiondetails !== null) {
+            if (data.lasttransactiondetails.itemDetails !== null) {
+              self.setState({
+                lastTransactionItem: data.lasttransactiondetails.itemDetails,
+                showLastTransactiondtab: false,
+              });
+            } else {
+              self.setState({
+                lastTransactionItem: [],
+                showLastTransactiondtab: true,
+              });
+            }
           } else {
             self.setState({
               lastTransactionItem: [],
               showLastTransactiondtab: true,
             });
           }
+
           if (data.campaignrecommended[0].itemCode !== "") {
             self.setState({
               showRecommandedtab: true,
@@ -1161,13 +1165,21 @@ class StoreCampaign extends Component {
             shareCampaignViaSettingModal: data.shareCampaignViaSettingModal,
             sortCustName: sortName,
           });
-          if (data.campaignkeyinsight.insightText.length > 0) {
-            if (
-              document.getElementById("insight-data").offsetWidth <
-              document.getElementById("insight-data").scrollWidth
-            ) {
-              self.setState({ insightShowImg: true });
+          if (data.campaignkeyinsight !== null) {
+            if (data.campaignkeyinsight.insightText.length > 0) {
+              if (
+                document.getElementById("insight-data").offsetWidth <
+                document.getElementById("insight-data").scrollWidth
+              ) {
+                self.setState({
+                  insightShowImg: true,
+                });
+              }
             }
+          } else {
+            self.setState({
+              insightShowImg: false,
+            });
           }
         } else {
           self.setState({
@@ -1418,11 +1430,9 @@ class StoreCampaign extends Component {
       <div className="custom-tableak">
         <div className="table-cntr store">
           <Table
-            
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                
                 title: "Campaign Name",
                 dataIndex: "campaignName",
                 className: "camp-status-header camp-status-header-cust-name",
@@ -1472,10 +1482,8 @@ class StoreCampaign extends Component {
               {
                 title: "Customers",
                 dataIndex: "customerCount",
-                
               },
               {
-                
                 title: "Campaign Script",
                 dataIndex: "campaignScript",
                 className: "table-coloum-hide",
@@ -1533,13 +1541,11 @@ class StoreCampaign extends Component {
                 },
               },
               {
-                
                 title: "Campaign Period",
                 dataIndex: "campaingPeriod",
                 className: "table-coloum-hide",
               },
               {
-                
                 title: "Status",
                 dataIndex: "status",
                 className: "camp-status-header camp-status-header-statusFilter",
@@ -1620,7 +1626,7 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Actions",
-                
+
                 render: (row, item) => {
                   return (
                     <Popover
@@ -1688,14 +1694,12 @@ class StoreCampaign extends Component {
               return (
                 <div>
                   <Table
-                    
                     dataSource={this.state.CampChildTableData.filter(
                       (x) => x.campaignScriptID === row.campaignID
                     )}
                     className="midalResponseAction"
                     columns={[
                       {
-                        
                         title: "Customer Name",
                         className:
                           "camp-status-header camp-status-header-cust-name",
@@ -1756,13 +1760,11 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        
                         title: "Date",
                         dataIndex: "campaignDate",
                         className: "table-coloum-hide",
                       },
                       {
-                        
                         title: "Response",
                         className: "table-coloum-hide",
                         render: (row, item) => {
@@ -1792,7 +1794,6 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        
                         title: "Status",
                         dataIndex: "statusName",
                         className: "camp-status-header",
@@ -1951,7 +1952,7 @@ class StoreCampaign extends Component {
                             >
                               <div className="date-time-resp">
                                 <DatePicker
-                                  id={"startDate"+item.id}
+                                  id={"startDate" + item.id}
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
@@ -2129,7 +2130,7 @@ class StoreCampaign extends Component {
                                   >
                                     <div className="date-time-resp">
                                       <DatePicker
-                                        id={"startDate"+item.id}
+                                        id={"startDate" + item.id}
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
@@ -2323,108 +2324,161 @@ class StoreCampaign extends Component {
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-              {this.state.campaignkeyinsight.insightText === "" ? (
-                <div className="lifetimevalue lt-single">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <h4>Lifetime Value</h4>
-                          <label>
-                            {this.state.useratvdetails.lifeTimeValue !==
-                            null ? (
-                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
-                            ) : (
-                              "₹0"
-                            )}
-                          </label>
-                        </td>
-                        <td>
-                          <h4>Visit Count</h4>
-                          <label>
-                            {this.state.useratvdetails.visitCount !== null ? (
-                              <>
-                                {this.state.useratvdetails.visitCount < 9
-                                  ? "0" + this.state.useratvdetails.visitCount
-                                  : this.state.useratvdetails.visitCount}
-                              </>
-                            ) : (
-                              "0"
-                            )}
-                          </label>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              {this.state.campaignkeyinsight !== null ? (
+                <>
+                  {this.state.campaignkeyinsight.insightText === "" ? (
+                    <div className="lifetimevalue lt-single">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h4>Lifetime Value</h4>
+                              <label>
+                                {this.state.useratvdetails.lifeTimeValue !==
+                                null ? (
+                                  <>
+                                    ₹{this.state.useratvdetails.lifeTimeValue}
+                                  </>
+                                ) : (
+                                  "₹0"
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              <h4>Visit Count</h4>
+                              <label>
+                                {this.state.useratvdetails.visitCount !==
+                                null ? (
+                                  <>
+                                    {this.state.useratvdetails.visitCount < 9
+                                      ? "0" +
+                                        this.state.useratvdetails.visitCount
+                                      : this.state.useratvdetails.visitCount}
+                                  </>
+                                ) : (
+                                  "0"
+                                )}
+                              </label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="lifetimevalue">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h4>Lifetime Value</h4>
+                              <label>
+                                {this.state.useratvdetails.lifeTimeValue !==
+                                null ? (
+                                  <>
+                                    ₹{this.state.useratvdetails.lifeTimeValue}
+                                  </>
+                                ) : (
+                                  "₹0"
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              <h4>Visit Count</h4>
+                              <label>
+                                {this.state.useratvdetails.visitCount !==
+                                null ? (
+                                  <>
+                                    {this.state.useratvdetails.visitCount < 9
+                                      ? "0" +
+                                        this.state.useratvdetails.visitCount
+                                      : this.state.useratvdetails.visitCount}
+                                  </>
+                                ) : (
+                                  "0"
+                                )}
+                              </label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
               ) : (
-                <div className="lifetimevalue">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <h4>Lifetime Value</h4>
-                          <label>
-                            {this.state.useratvdetails.lifeTimeValue !==
-                            null ? (
-                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
-                            ) : (
-                              "₹0"
-                            )}
-                          </label>
-                        </td>
-                        <td>
-                          <h4>Visit Count</h4>
-                          <label>
-                            {this.state.useratvdetails.visitCount !== null ? (
-                              <>
-                                {this.state.useratvdetails.visitCount < 9
-                                  ? "0" + this.state.useratvdetails.visitCount
-                                  : this.state.useratvdetails.visitCount}
-                              </>
-                            ) : (
-                              "0"
-                            )}
-                          </label>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <>
+                  {" "}
+                  <div className="lifetimevalue lt-single">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <h4>Lifetime Value</h4>
+                            <label>
+                              {this.state.useratvdetails.lifeTimeValue !==
+                              null ? (
+                                <>₹{this.state.useratvdetails.lifeTimeValue}</>
+                              ) : (
+                                "₹0"
+                              )}
+                            </label>
+                          </td>
+                          <td>
+                            <h4>Visit Count</h4>
+                            <label>
+                              {this.state.useratvdetails.visitCount !== null ? (
+                                <>
+                                  {this.state.useratvdetails.visitCount < 9
+                                    ? "0" + this.state.useratvdetails.visitCount
+                                    : this.state.useratvdetails.visitCount}
+                                </>
+                              ) : (
+                                "0"
+                              )}
+                            </label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               )}
 
-              {this.state.campaignkeyinsight.insightText !== "" ? (
-                <div
-                  className={
-                    this.state.campaignkeyinsight.showKeyInsights
-                      ? "keyinsights"
-                      : "keyinsights keyinsights-big"
-                  }
-                >
-                  {this.state.campaignkeyinsight.showKeyInsights && (
-                    <h4>Key Insights</h4>
-                  )}
-                  <p
-                    id="insight-data"
-                    className={
-                      this.state.handleArrowImg ? "full-data-insight" : ""
-                    }
-                  >
-                    {this.state.campaignkeyinsight.insightText}
-                  </p>
-                  {this.state.insightShowImg && (
-                    <img
+              {this.state.campaignkeyinsight !== null ? (
+                <>
+                  {this.state.campaignkeyinsight.insightText !== "" ? (
+                    <div
                       className={
-                        this.state.handleArrowImg
-                          ? "keyingsightdrp keyingsightdrp-invert"
-                          : "keyingsightdrp"
+                        this.state.campaignkeyinsight.showKeyInsights
+                          ? "keyinsights"
+                          : "keyinsights keyinsights-big"
                       }
-                      src={Dropdown3}
-                      alt="Down Arrow"
-                      onClick={this.handleArrowImg.bind(this)}
-                    />
-                  )}
-                </div>
+                    >
+                      {this.state.campaignkeyinsight.showKeyInsights && (
+                        <h4>Key Insights</h4>
+                      )}
+                      <p
+                        id="insight-data"
+                        className={
+                          this.state.handleArrowImg ? "full-data-insight" : ""
+                        }
+                      >
+                        {this.state.campaignkeyinsight.insightText}
+                      </p>
+                      {this.state.insightShowImg && (
+                        <img
+                          className={
+                            this.state.handleArrowImg
+                              ? "keyingsightdrp keyingsightdrp-invert"
+                              : "keyingsightdrp"
+                          }
+                          src={Dropdown3}
+                          alt="Down Arrow"
+                          onClick={this.handleArrowImg.bind(this)}
+                        />
+                      )}
+                    </div>
+                  ) : null}
+                </>
               ) : null}
             </div>
             <div className="col-12 col-md-6">
@@ -2746,76 +2800,95 @@ class StoreCampaign extends Component {
                     aria-labelledby="lastTransaction-tab"
                   >
                     <div>
-                      {this.state.lasttransactiondetails.amount !== "" ? (
-                        <div className="transactionbox">
-                          <table>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <h5>Bill No.</h5>
-                                  <label>
-                                    {this.state.lasttransactiondetails.billNo}
-                                  </label>
-                                </td>
-                                <td>
-                                  <h5>Amount</h5>
-                                  <label>
-                                    {this.state.lasttransactiondetails.amount}
-                                  </label>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <h5>Store</h5>
-                                  <label>
-                                    {
-                                      this.state.lasttransactiondetails
-                                        .storeName
-                                    }
-                                  </label>
-                                </td>
-                                <td>
-                                  <h5>Date</h5>
-                                  <label>
-                                    {this.state.lasttransactiondetails.billDate}
-                                  </label>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <div className="trasactablist">
-                            <div className="myTicket-table remov agentlist last-trans-table">
-                              <ReactTable
-                                className="limit-react-table-body tabscrol"
-                                data={this.state.lastTransactionItem}
-                                columns={[
-                                  {
-                                    Header: <span>Article</span>,
-                                    accessor: "article",
-                                  },
-                                  {
-                                    Header: <span>Qty.</span>,
-                                    accessor: "quantity",
-                                    width: 60,
-                                  },
-                                  {
-                                    Header: <span>Amount</span>,
-                                    accessor: "amount",
-                                    width: 80,
-                                  },
-                                ]}
-                                minRows={2}
-                                // defaultPageSize={5}
-                                showPagination={false}
-                                resizable={false}
-                              />
+                      {this.state.lasttransactiondetails !== null ? (
+                        <>
+                          {this.state.lasttransactiondetails.amount !== "" ? (
+                            <div className="transactionbox">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h5>Bill No.</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billNo
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>Amount</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .amount
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <h5>Store</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .storeName
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>Date</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billDate
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div className="trasactablist">
+                                <div className="myTicket-table remov agentlist last-trans-table">
+                                  <ReactTable
+                                    className="limit-react-table-body tabscrol"
+                                    data={this.state.lastTransactionItem}
+                                    columns={[
+                                      {
+                                        Header: <span>Article</span>,
+                                        accessor: "article",
+                                      },
+                                      {
+                                        Header: <span>Qty.</span>,
+                                        accessor: "quantity",
+                                        width: 60,
+                                      },
+                                      {
+                                        Header: <span>Amount</span>,
+                                        accessor: "amount",
+                                        width: 80,
+                                      },
+                                    ]}
+                                    minRows={2}
+                                    // defaultPageSize={5}
+                                    showPagination={false}
+                                    resizable={false}
+                                  />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          ) : (
+                            <label className="ChecknoDataCamp">
+                              No Record Found
+                            </label>
+                          )}
+                        </>
                       ) : (
-                        <label className="ChecknoDataCamp">
-                          No Record Found
-                        </label>
+                        <>
+                          <label className="ChecknoDataCamp">
+                            No Record Found
+                          </label>
+                        </>
                       )}
                     </div>
                   </div>
