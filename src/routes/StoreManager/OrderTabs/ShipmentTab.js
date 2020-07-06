@@ -38,6 +38,7 @@ class ShipmentTab extends Component {
       airWayBill2ndTab: false,
       IsStoreDelivery: false,
       createShipmentBtnDisbaled: false,
+      orderSearchText: "",
     };
   }
 
@@ -52,6 +53,15 @@ class ShipmentTab extends Component {
       this.state.translateLanguage = {};
     }
   }
+  /// search data
+  handleShipmentSearch = (searchData) => {
+    this.setState({
+      orderSearchText: searchData,
+    });
+    setTimeout(() => {
+      this.handleGetShipmentTabGridData();
+    }, 5);
+  };
 
   ///-----------------------API function Start--------------------------
   handleGetShipmentTabGridData(filter) {
@@ -64,7 +74,7 @@ class ShipmentTab extends Component {
       url: config.apiUrl + "/HSOrder/GetShipmentDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText,
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
@@ -897,7 +907,7 @@ class ShipmentTab extends Component {
                         </span>
                         <div className="table-responsive">
                           <Table
-                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
+                            className="components-table-demo-nested shipment-table-popup antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
                             columns={[
                               {
                                 title:
@@ -938,6 +948,17 @@ class ShipmentTab extends Component {
                                     ? TranslationContext.title.itemquantity
                                     : "Article Quantity",
                                 dataIndex: "quantity",
+                              },
+                              {
+                                title: () => (
+                                  <select className="shipment-table-dropdown">
+                                    <option value="temp*">Template *</option>
+                                    <option value="temp1">Template 1</option>
+                                    <option value="temp2">Template 2</option>
+                                    <option value="temp3">Template 3</option>
+                                    <option value="temp4">Template 4</option>
+                                  </select>
+                                ),
                               },
                             ]}
                             scroll={{ y: 240 }}

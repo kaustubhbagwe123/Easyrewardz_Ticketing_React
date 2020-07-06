@@ -22,6 +22,7 @@ class ShipmentAssignedTab extends Component {
       ShipAssignLoading: false,
       translateLanguage: {},
       orderIDs: [41814156],
+      orderSearchText: "",
     };
   }
   componentDidMount() {
@@ -34,6 +35,17 @@ class ShipmentAssignedTab extends Component {
       this.state.translateLanguage = {};
     }
   }
+
+  handleShipmentAssignSearch = (searchData) => {
+    this.setState({
+      orderSearchText: searchData,
+    });
+    setTimeout(() => {
+      this.handleGetShipmentAssignedData()
+    }, 5);
+  };
+
+  /// Handle Get grid data
   handleGetShipmentAssignedData() {
     let self = this;
     this.setState({
@@ -44,7 +56,7 @@ class ShipmentAssignedTab extends Component {
       url: config.apiUrl + "/HSOrder/GetShipmentAssignedDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText,
         PageNo: this.state.assignCurrentPage,
         PageSize: this.state.assignPostsPerPage,
         FilterReferenceNo: "",
@@ -82,7 +94,7 @@ class ShipmentAssignedTab extends Component {
   handleAssignedPageItemchange = async (e) => {
     await this.setState({
       assignPostsPerPage: e.target.value,
-      assignCurrentPage:1
+      assignCurrentPage: 1,
     });
 
     this.handleGetShipmentAssignedData();
@@ -120,22 +132,38 @@ class ShipmentAssignedTab extends Component {
     let self = this;
     if (row.awbNo !== "" && row.courierPartner.toLowerCase() !== "store") {
       if (row.referenceNo === "") {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterpod:"Please enter POD.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterpod
+            : "Please enter POD."
+        );
         return false;
       }
     } else {
       if (row.storeName === "") {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstorename:"Please enter store name.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterstorename
+            : "Please enter store name."
+        );
         return false;
       }
 
       if (row.staffName === "") {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstaffname:"Please enter staff name.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterstaffname
+            : "Please enter staff name."
+        );
         return false;
       }
 
       if (row.mobileNumber === "") {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentermobilenumber:"Please enter mobile number.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentermobilenumber
+            : "Please enter mobile number."
+        );
         return false;
       }
     }
@@ -157,11 +185,15 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully."
+          );
           self.setState({
             orderPopoverOverlay: false,
           });
-        }else{
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -186,11 +218,15 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully."
+          );
           self.setState({
             orderPopoverOverlay: false,
           });
-        }else{
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -215,11 +251,15 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully."
+          );
           self.setState({
             orderPopoverOverlay: false,
           });
-        }else{
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -229,7 +269,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handlePrintManifest(orderIds) {
-
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintManifest",
@@ -252,7 +291,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handlePrintLabel(shipmentId) {
-
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintLabel",
@@ -325,8 +363,9 @@ class ShipmentAssignedTab extends Component {
                           item.courierPartnerOrderID
                         )}
                       >
-                         {TranslationContext!==undefined?TranslationContext.button.printmanifest:"Print Manifest"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.printmanifest
+                          : "Print Manifest"}
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
@@ -335,14 +374,14 @@ class ShipmentAssignedTab extends Component {
                           item.courierPartnerShipmentID
                         )}
                       >
-                         {TranslationContext!==undefined?TranslationContext.button.printlabel:"Print Label"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.printlabel
+                          : "Print Label"}
                       </button>
-                      <button
-                        className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
-                      >
-                        {TranslationContext!==undefined?TranslationContext.button.printinvoice:"Print Invoice"}
-                        
+                      <button className="butn order-grid-butn order-grid-butn-green assign-grid-btn">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.printinvoice
+                          : "Print Invoice"}
                       </button>
                     </div>
                   ) : (
@@ -448,8 +487,9 @@ class ShipmentAssignedTab extends Component {
                             : true
                         }
                       >
-                        {TranslationContext!==undefined?TranslationContext.button.rto:"RTO"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.rto
+                          : "RTO"}
                       </button>
                       <button
                         className={
@@ -471,8 +511,9 @@ class ShipmentAssignedTab extends Component {
                             : true
                         }
                       >
-                         {TranslationContext!==undefined?TranslationContext.button.delivered:"Delivered"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.delivered
+                          : "Delivered"}
                       </button>
                     </div>
                   );
@@ -488,8 +529,11 @@ class ShipmentAssignedTab extends Component {
                       <tr>
                         <td>
                           <label>
-                            <b>{TranslationContext !== undefined ?
-                            TranslationContext.title.courierpartner : "Courier Partner"}</b>
+                            <b>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.title.courierpartner
+                                : "Courier Partner"}
+                            </b>
                           </label>
                           <label>{row.courierPartner}</label>
                         </td>

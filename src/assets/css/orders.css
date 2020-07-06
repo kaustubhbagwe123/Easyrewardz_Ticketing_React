@@ -328,6 +328,16 @@
   margin-top: 15px;
   text-align: right;
 }
+.shipment-table-dropdown {
+  background: #fff url("./../Images/table-arr.png") no-repeat right 8px center !important;
+  background-size: 9px !important;
+  margin: 0 !important;
+  border: 1px solid #d6d3d3 !important;
+  border-radius: 4px !important;
+  height: auto !important;
+  padding: 8px 25px 8px 10px !important;
+  font-weight: 700;
+}
 .arti-check {
   margin-right: 7px;
 }
@@ -621,6 +631,14 @@
 /* .order-popover-address .ant-popover-inner {
   width: 400px;
 } */
+.non-deliverable {
+  color: red !important;
+  font-weight: 400 !important;
+  margin-bottom: 0px;
+  line-height: 1;
+  margin-top: 15px;
+  text-align: center;
+}
 .popover-radio-cntr label {
   color: #4a4a4a;
 }
@@ -638,15 +656,19 @@
   background-image: url("./../Images/radio-checked.png");
 }
 .popover-radio-cntr {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
+  /* display: flex;
+  align-items: center; */
+  /* margin-top: 10px; */
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 .popover-radio-cntr > div {
-  margin-right: 25px;
+  /* margin-right: 25px; */
+  margin-bottom: 5px;
 }
 .popover-radio-cntr > div:last-child {
-  margin-right: 0px;
+  /* margin-right: 0px; */
+  margin-bottom: 0;
 }
 .antd-table-order .ant-table-row-expand-icon {
   display: none !important;
@@ -657,6 +679,13 @@
 }
 /* order ends */
 
+.shipment-table-popup .ant-table-row-cell-last {
+  width: 140px !important;
+}
+.shipment-table-popup .ant-table-row-cell-last .ant-table-header-column {
+  width: 100%;
+}
+
 /* chetan css ends */
 
 /* responsive starts */
@@ -666,6 +695,10 @@
 
 @media all and (max-width: 576px) {
   /* chetan css starts */
+
+  .shipment-table-popup .ant-table-row-cell-last {
+    width: 130px !important;
+  }
 
   /* order starts */
   .order-search,
@@ -772,7 +805,8 @@
     height: 30px;
     width: 100px;
   }
-  #delivered-tab .custom-antd-table.antd-table-campaign.antd-table-order
+  #delivered-tab
+    .custom-antd-table.antd-table-campaign.antd-table-order
     .ant-table-thead
     > tr
     > th {
@@ -780,7 +814,8 @@
     height: 30px;
     width: auto;
   }
-  #shipment-assigned-tab .custom-antd-table.antd-table-campaign.antd-table-order
+  #shipment-assigned-tab
+    .custom-antd-table.antd-table-campaign.antd-table-order
     .ant-table-thead
     > tr
     > th {

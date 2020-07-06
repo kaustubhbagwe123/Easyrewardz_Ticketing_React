@@ -25,6 +25,7 @@ class DeliveredTab extends Component {
       orderPopoverOverlay: false,
       DeliveredLoading: false,
       translateLanguage: {},
+      orderSearchText: "",
     };
   }
   componentDidMount() {
@@ -38,25 +39,38 @@ class DeliveredTab extends Component {
       this.state.translateLanguage = {};
     }
   }
+
+  /// search data
+  handleDeliveredSearch = (searchData) => {
+    this.setState({
+      orderSearchText: searchData,
+    });
+
+    setTimeout(() => {
+      this.handleGetOrderDeliveredData();
+    }, 5);
+  };
+
+  /// handle Get grid data
   handleGetOrderDeliveredData() {
     let self = this;
     var pageNumber = this.state.currentPage;
     this.setState({
       DeliveredLoading: true,
-      filterOrderDeliveredStatus: false
+      filterOrderDeliveredStatus: false,
     });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText,
         PageNo: pageNumber,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -77,9 +91,10 @@ class DeliveredTab extends Component {
         console.log(data);
       });
   }
+
+  /// handle Get order status filter data
   handleGetOrderStatusFilterData() {
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
@@ -88,7 +103,7 @@ class DeliveredTab extends Component {
         pageID: 4,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -110,15 +125,17 @@ class DeliveredTab extends Component {
 
     this.handleGetOrderDeliveredData();
   };
-
+/// pagination per page item
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
-      currentPage: 1
+      currentPage: 1,
     });
 
     this.handleGetOrderDeliveredData();
   };
+
+  /// individual status check
   handleCheckDeliIndividualStatus() {
     var checkboxes = document.getElementsByName("DeliveredStatus");
     var strStatus = "";
@@ -152,7 +169,7 @@ class DeliveredTab extends Component {
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
                 dataIndex: "invoiceNo",
-                key: "invoiceNo"
+                key: "invoiceNo",
               },
               {
                 className: "table-coloum-hide",
@@ -328,16 +345,22 @@ class DeliveredTab extends Component {
                       <tr>
                         <td>
                           <label>
-                            <b>{TranslationContext !== undefined ?
-                            TranslationContext.label.date : "Date"}</b>
+                            <b>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.date
+                                : "Date"}
+                            </b>
                           </label>
                           <label>{row.date}</label>
                           <label className="order-small-font">{row.time}</label>
                         </td>
                         <td>
                           <label>
-                            <b>{TranslationContext !== undefined ?
-                            TranslationContext.label.customername : "Customer Name"}</b>
+                            <b>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.customername
+                                : "Customer Name"}
+                            </b>
                           </label>
                           <label>
                             <p>{row.customerName}</p>
@@ -346,8 +369,11 @@ class DeliveredTab extends Component {
                         </td>
                         <td>
                           <label>
-                            <b>{TranslationContext !== undefined ?
-                            TranslationContext.label.status : "Status"}</b>
+                            <b>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
+                            </b>
                           </label>
                           <label>{row.statusName}</label>
                         </td>

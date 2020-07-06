@@ -219,10 +219,13 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-           
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                  : "Record Updated Successfully."
+              );
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
@@ -239,7 +242,11 @@ class StoreCampaign extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectdateandtime:"Please Select Date and Time.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseselectdateandtime
+            : "Please Select Date and Time."
+        );
       }
     } else {
       if (responseID !== 0) {
@@ -258,10 +265,13 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                  : "Record Updated Successfully."
+              );
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
@@ -278,7 +288,11 @@ class StoreCampaign extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectresponse:"Please Select Response.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseselectresponse
+            : "Please Select Response."
+        );
       }
     }
   }
@@ -302,7 +316,11 @@ class StoreCampaign extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignclosedsuccessfully:"Campaign closed successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.campaignclosedsuccessfully
+              : "Campaign closed successfully."
+          );
           self.handleGetCampaignGridData();
         } else {
           self.setState({
@@ -976,11 +994,19 @@ class StoreCampaign extends Component {
               ""
             );
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.sentsuccessfully
+                : "Sent Successfully."
+            );
           }
         } else {
           if (message === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.sentsuccessfully
+                : "Sent Successfully."
+            );
             self.setState({
               custNameModal: false,
             });
@@ -991,7 +1017,11 @@ class StoreCampaign extends Component {
               ""
             );
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.failed
+                : "Failed"
+            );
           }
         }
         self.setState({
@@ -1035,16 +1065,28 @@ class StoreCampaign extends Component {
               responsiveShareVia: false,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.servertemporarilynotavailable:"Server temporarily not available.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.servertemporarilynotavailable
+                : "Server temporarily not available."
+            );
           }
         } else {
           if (message === "Success") {
             self.setState({
               custNameModal: false,
             });
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.smssentsuccessfully:"SMS Sent Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.smssentsuccessfully
+                : "SMS Sent Successfully."
+            );
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.smssentfailed:"SMS Send Failed.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.smssentfailed
+                : "SMS Send Failed."
+            );
           }
         }
         self.setState({
@@ -1086,7 +1128,11 @@ class StoreCampaign extends Component {
             custNameModal: false,
           });
           if (self.state.Respo_ChannelMessanger === false) {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.sentsuccessfully
+                : "Sent Successfully."
+            );
           }
           window.open("//" + data, "_blank");
           if (self.state.Respo_ChannelMessanger === true) {
@@ -1098,7 +1144,11 @@ class StoreCampaign extends Component {
             });
           }
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.servertemporarilynotavailable:"Server temporarily not available.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.servertemporarilynotavailable
+              : "Server temporarily not available."
+          );
         }
         self.setState({
           msngrDisable: false,
@@ -1124,6 +1174,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1152,7 +1203,7 @@ class StoreCampaign extends Component {
               showLastTransactiondtab: true,
             });
           }
-       
+
           if (data.campaignrecommended[0].itemCode !== "") {
             self.setState({
               showRecommandedtab: true,
@@ -1172,13 +1223,17 @@ class StoreCampaign extends Component {
             shareCampaignViaSettingModal: data.shareCampaignViaSettingModal,
             sortCustName: sortName,
           });
-          if (data.campaignkeyinsight.insightText.length > 0) {
-            if (
-              document.getElementById("insight-data").offsetWidth <
-              document.getElementById("insight-data").scrollWidth
-            ) {
-              self.setState({ insightShowImg: true });
+          if (data.campaignkeyinsight !== null) {
+            if (data.campaignkeyinsight.insightText.length > 0) {
+              if (
+                document.getElementById("insight-data").offsetWidth <
+                document.getElementById("insight-data").scrollWidth
+              ) {
+                self.setState({ insightShowImg: true });
+              }
             }
+          } else {
+            self.setState({ insightShowImg: false });
           }
         } else {
           self.setState({
@@ -1437,14 +1492,22 @@ class StoreCampaign extends Component {
         .then(function(response) {
           var message = response.data.message;
           if (message == "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.sentsuccessfully
+                : "Sent Successfully."
+            );
             self.handleGetBroadcastConfiguration(store_Code, campaign_Code);
             self.setState({
               broadcastChannel: "",
               broadChannelValidation: "",
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Failed.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.sentsuccessfully
+                : "Sent Failed."
+            );
           }
         })
         .catch((response) => {
@@ -1576,7 +1639,11 @@ class StoreCampaign extends Component {
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
-                              <label className="poptitle">{TranslationContext!==undefined?TranslationContext.label.ChatbotScript:"Chatbot Script"}</label>
+                              <label className="poptitle">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.ChatbotScript
+                                  : "Chatbot Script"}
+                              </label>
                               <label className="channelScript">
                                 {item.chatbotScript}
                               </label>
@@ -1591,7 +1658,9 @@ class StoreCampaign extends Component {
                             src={ChatbotS}
                             alt="Chatbot Icon"
                           />
-                          {TranslationContext!==undefined?TranslationContext.label.ChatbotScript:"Chatbot Script"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.ChatbotScript
+                            : "Chatbot Script"}
                         </a>
                       </Popover>
                       <Popover
@@ -1600,7 +1669,9 @@ class StoreCampaign extends Component {
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
                               <label className="poptitle">
-                              {TranslationContext!==undefined?TranslationContext.label.smsscript:"SMS Script"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.smsscript
+                                  : "SMS Script"}
                               </label>
                               <label className="channelScript">
                                 {item.smsScript}
@@ -1616,7 +1687,9 @@ class StoreCampaign extends Component {
                             src={Smsicon}
                             alt="Chatbot Icon"
                           />
-                           {TranslationContext!==undefined?TranslationContext.label.smsscript:"SMS Script"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.smsscript
+                            : "SMS Script"}
                         </a>
                       </Popover>
                     </div>
@@ -1755,7 +1828,10 @@ class StoreCampaign extends Component {
                                   <p>
                                     <label>{item.channelType}</label>
                                     <span>
-                                    {TranslationContext!==undefined?TranslationContext.label.ExecutedDate:"Executed Date"}: {item.executionDate}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.ExecutedDate
+                                        : "Executed Date"}
+                                      : {item.executionDate}
                                     </span>
                                   </p>
                                 </div>
@@ -1977,7 +2053,9 @@ class StoreCampaign extends Component {
                                 )}
                               >
                                 <option hidden>
-                                {TranslationContext!==undefined?TranslationContext.option.SelectResponse:"Select Response"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.SelectResponse
+                                    : "Select Response"}
                                 </option>
                                 {item.hsCampaignResponseList !== null &&
                                   item.hsCampaignResponseList.map(
@@ -2039,7 +2117,11 @@ class StoreCampaign extends Component {
                                   name="allStatus"
                                 />
                                 <label htmlFor="all-status">
-                                  <span className="ch1-text">{TranslationContext!==undefined?TranslationContext.option.all:"All"}</span>
+                                  <span className="ch1-text">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.all
+                                      : "All"}
+                                  </span>
                                 </label>
                               </li>
                               <li>
@@ -2056,7 +2138,11 @@ class StoreCampaign extends Component {
                                   attrIds={100}
                                 />
                                 <label htmlFor="status100">
-                                  <span className="ch1-text">{TranslationContext!==undefined?TranslationContext.span.Contacted:"Contacted"}</span>
+                                  <span className="ch1-text">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.Contacted
+                                      : "Contacted"}
+                                  </span>
                                 </label>
                               </li>
                               <li>
@@ -2074,7 +2160,9 @@ class StoreCampaign extends Component {
                                 />
                                 <label htmlFor="status101">
                                   <span className="ch1-text">
-                                  {TranslationContext!==undefined?TranslationContext.span.NotContacted:"Not Contacted"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.NotContacted
+                                      : "Not Contacted"}
                                   </span>
                                 </label>
                               </li>
@@ -2093,7 +2181,9 @@ class StoreCampaign extends Component {
                                 />
                                 <label htmlFor="status102">
                                   <span className="ch1-text">
-                                  {TranslationContext!==undefined?TranslationContext.span.FollowUp:"Follow Up"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.FollowUp
+                                      : "Follow Up"}
                                   </span>
                                 </label>
                               </li>
@@ -2112,7 +2202,9 @@ class StoreCampaign extends Component {
                                 />
                                 <label htmlFor="status103">
                                   <span className="ch1-text">
-                                  {TranslationContext!==undefined?TranslationContext.span.Converted:"Converted"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.Converted
+                                      : "Converted"}
                                   </span>
                                 </label>
                               </li>
@@ -2131,7 +2223,9 @@ class StoreCampaign extends Component {
                                 />
                                 <label htmlFor="status104">
                                   <span className="ch1-text">
-                                  {TranslationContext!==undefined?TranslationContext.span.Conversation:"Conversation"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.Conversation
+                                      : "Conversation"}
                                   </span>
                                 </label>
                               </li>
@@ -2194,7 +2288,12 @@ class StoreCampaign extends Component {
                                       ? "txtStore dateTimeStore"
                                       : "txtStore dateTimeStore disabled-link"
                                   }
-                                  placeholderText={TranslationContext!==undefined?TranslationContext.placeholder.selecttimeanddate:"Select Date &amp; Time"}
+                                  placeholderText={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.placeholder
+                                          .selecttimeanddate
+                                      : "Select Date &amp; Time"
+                                  }
                                 />
                               </div>
                             </div>
@@ -2232,8 +2331,9 @@ class StoreCampaign extends Component {
                                     type="button"
                                   >
                                     <label className="raise-ticketLbl">
-                                    {TranslationContext!==undefined?TranslationContext.span.RaiseTicket:"Raise Ticket"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.RaiseTicket
+                                        : "Raise Ticket"}
                                     </label>
                                   </button>
                                 </div>
@@ -2251,8 +2351,9 @@ class StoreCampaign extends Component {
                               <tr>
                                 <td>
                                   <label>
-                                  {TranslationContext!==undefined?TranslationContext.label.CustomerName:"Customer Name"}
-
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.CustomerName
+                                      : "Customer Name"}
                                   </label>
                                 </td>
                                 <td>
@@ -2273,8 +2374,9 @@ class StoreCampaign extends Component {
                               <tr>
                                 <td>
                                   <label>
-
-                                  {TranslationContext!==undefined?TranslationContext.label.date:"Date"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.date
+                                      : "Date"}
                                   </label>
                                 </td>
                                 <td>
@@ -2285,7 +2387,9 @@ class StoreCampaign extends Component {
                               <tr>
                                 <td>
                                   <label>
-                                  {TranslationContext!==undefined?TranslationContext.label.Response:"Response"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.Response
+                                      : "Response"}
                                   </label>
                                 </td>
                                 <td>
@@ -2299,7 +2403,10 @@ class StoreCampaign extends Component {
                                     )}
                                   >
                                     <option hidden>
-                                    {TranslationContext!==undefined?TranslationContext.option.SelectResponse:"Select Response"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .SelectResponse
+                                        : "Select Response"}
                                     </option>
                                     {row.hsCampaignResponseList !== null &&
                                       row.hsCampaignResponseList.map(
@@ -2319,8 +2426,9 @@ class StoreCampaign extends Component {
                               <tr>
                                 <td>
                                   <label>
-
-                                  {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.status
+                                      : "Status"}
                                   </label>
                                 </td>
                                 <td>
@@ -2349,8 +2457,10 @@ class StoreCampaign extends Component {
                               <tr>
                                 <td>
                                   <label>
-
-                                  {TranslationContext!==undefined?TranslationContext.label.callrescheduledto:"Call Rescheduled to"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .callrescheduledto
+                                      : "Call Rescheduled to"}
                                   </label>
                                 </td>
                                 <td>
@@ -2394,7 +2504,12 @@ class StoreCampaign extends Component {
                                             ? "txtStore dateTimeStore"
                                             : "txtStore dateTimeStore disabled-link"
                                         }
-                                        placeholderText= {TranslationContext!==undefined?TranslationContext.placeholder.selectdateandtime:"Select Date & Time"}
+                                        placeholderText={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.placeholder
+                                                .selectdateandtime
+                                            : "Select Date & Time"
+                                        }
                                       />
                                     </div>
                                   </div>
@@ -2415,15 +2530,17 @@ class StoreCampaign extends Component {
                                         row.campaignScriptID
                                       )}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.update:"Update"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.update
+                                        : "Update"}
                                     </button>
                                     <button
                                       className="raisedticket-Btn saveLabel"
                                       style={{ display: "none" }}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.raiseticket:"Raise Ticket"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.raiseticket
+                                        : "Raise Ticket"}
                                     </button>
                                   </div>
                                 </td>
@@ -2494,7 +2611,9 @@ class StoreCampaign extends Component {
                 <div className="">
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">
-                    {TranslationContext!==undefined?TranslationContext.label.ChatbotScript:"Chatbot Script"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.ChatbotScript
+                        : "Chatbot Script"}
                     </label>
                     <label class="channelScript">
                       {this.state.chatbotScript}
@@ -2502,7 +2621,10 @@ class StoreCampaign extends Component {
                   </div>
                   <div className="camperiod">
                     <h4>
-                    {TranslationContext!==undefined?TranslationContext.h4.campaignperiod:"Campaign Period"}<span>{this.state.campaingPeriod}</span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.h4.campaignperiod
+                        : "Campaign Period"}
+                      <span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -2511,14 +2633,17 @@ class StoreCampaign extends Component {
                 <div className="">
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">
-                    {TranslationContext!==undefined?TranslationContext.label.smsscript:"SMS Script"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.smsscript
+                        : "SMS Script"}
                     </label>
                     <label class="channelScript">{this.state.smsScript}</label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      
-                      {TranslationContext!==undefined?TranslationContext.h4.campaignperiod:"Campaign Period"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.h4.campaignperiod
+                        : "Campaign Period"}
                       <span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
@@ -2548,7 +2673,7 @@ class StoreCampaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>
-                  {this.state.shareCampaignViaSettingModal.customerName}{" "}
+                  {this.state.shareCampaignViaSettingModal.customerName}
                   <span>
                     {this.state.shareCampaignViaSettingModal.customerNumber}
                   </span>
@@ -2559,123 +2684,187 @@ class StoreCampaign extends Component {
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-              {this.state.campaignkeyinsight.insightText === "" ? (
-                <div className="lifetimevalue lt-single">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <h4>
-
-                          {TranslationContext!==undefined?TranslationContext.h4.lifetimevalue:"Lifetime Value"}
-                          </h4>
-                          <label>
-                            {this.state.useratvdetails.lifeTimeValue !==
-                            null ? (
-                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
-                            ) : (
-                              "₹0"
-                            )}
-                          </label>
-                        </td>
-                        <td>
-                          <h4>
-
-                          {TranslationContext!==undefined?TranslationContext.h4.visitcount:"Visit Count"}
-                          </h4>
-                          <label>
-                            {this.state.useratvdetails.visitCount !== null ? (
-                              <>
-                                {this.state.useratvdetails.visitCount < 9
-                                  ? "0" + this.state.useratvdetails.visitCount
-                                  : this.state.useratvdetails.visitCount}
-                              </>
-                            ) : (
-                              "0"
-                            )}
-                          </label>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="lifetimevalue">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <h4>
-
-                          {TranslationContext!==undefined?TranslationContext.h4.lifetimevalue:"Lifetime Value"}
-                          </h4>
-                          <label>
-                            {this.state.useratvdetails.lifeTimeValue !==
-                            null ? (
-                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
-                            ) : (
-                              "₹0"
-                            )}
-                          </label>
-                        </td>
-                        <td>
-                          <h4>
-
-                          {TranslationContext!==undefined?TranslationContext.h4.visitcount:"Visit Count"}
-                          </h4>
-                          <label>
-                            {this.state.useratvdetails.visitCount !== null ? (
-                              <>
-                                {this.state.useratvdetails.visitCount < 9
-                                  ? "0" + this.state.useratvdetails.visitCount
-                                  : this.state.useratvdetails.visitCount}
-                              </>
-                            ) : (
-                              "0"
-                            )}
-                          </label>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {this.state.campaignkeyinsight.insightText !== "" ? (
-                <div
-                  className={
-                    this.state.campaignkeyinsight.showKeyInsights
-                      ? "keyinsights"
-                      : "keyinsights keyinsights-big"
-                  }
-                >
-                  {this.state.campaignkeyinsight.showKeyInsights && (
-                    <h4>
-
-                  {TranslationContext!==undefined?TranslationContext.h4.keyinsights:"Key Insights"}
-                    </h4>
+              {this.state.campaignkeyinsight !== null ? (
+                <>
+                  {this.state.campaignkeyinsight.insightText === "" ? (
+                    <div className="lifetimevalue lt-single">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h4>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h4.lifetimevalue
+                                  : "Lifetime Value"}
+                              </h4>
+                              <label>
+                                {this.state.useratvdetails.lifeTimeValue !==
+                                null ? (
+                                  <>
+                                    ₹{this.state.useratvdetails.lifeTimeValue}
+                                  </>
+                                ) : (
+                                  "₹0"
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              <h4>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h4.visitcount
+                                  : "Visit Count"}
+                              </h4>
+                              <label>
+                                {this.state.useratvdetails.visitCount !==
+                                null ? (
+                                  <>
+                                    {this.state.useratvdetails.visitCount < 9
+                                      ? "0" +
+                                        this.state.useratvdetails.visitCount
+                                      : this.state.useratvdetails.visitCount}
+                                  </>
+                                ) : (
+                                  "0"
+                                )}
+                              </label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="lifetimevalue">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h4>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h4.lifetimevalue
+                                  : "Lifetime Value"}
+                              </h4>
+                              <label>
+                                {this.state.useratvdetails.lifeTimeValue !==
+                                null ? (
+                                  <>
+                                    ₹{this.state.useratvdetails.lifeTimeValue}
+                                  </>
+                                ) : (
+                                  "₹0"
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              <h4>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h4.visitcount
+                                  : "Visit Count"}
+                              </h4>
+                              <label>
+                                {this.state.useratvdetails.visitCount !==
+                                null ? (
+                                  <>
+                                    {this.state.useratvdetails.visitCount < 9
+                                      ? "0" +
+                                        this.state.useratvdetails.visitCount
+                                      : this.state.useratvdetails.visitCount}
+                                  </>
+                                ) : (
+                                  "0"
+                                )}
+                              </label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   )}
-                  <p
-                    id="insight-data"
-                    className={
-                      this.state.handleArrowImg ? "full-data-insight" : ""
-                    }
-                  >
-                    {this.state.campaignkeyinsight.insightText}
-                  </p>
-                  {this.state.insightShowImg && (
-                    <img
+                </>
+              ) : <> <div className="lifetimevalue lt-single">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <h4>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h4.lifetimevalue
+                          : "Lifetime Value"}
+                      </h4>
+                      <label>
+                        {this.state.useratvdetails.lifeTimeValue !==
+                        null ? (
+                          <>
+                            ₹{this.state.useratvdetails.lifeTimeValue}
+                          </>
+                        ) : (
+                          "₹0"
+                        )}
+                      </label>
+                    </td>
+                    <td>
+                      <h4>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h4.visitcount
+                          : "Visit Count"}
+                      </h4>
+                      <label>
+                        {this.state.useratvdetails.visitCount !==
+                        null ? (
+                          <>
+                            {this.state.useratvdetails.visitCount < 9
+                              ? "0" +
+                                this.state.useratvdetails.visitCount
+                              : this.state.useratvdetails.visitCount}
+                          </>
+                        ) : (
+                          "0"
+                        )}
+                      </label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div></>}
+              {this.state.campaignkeyinsight !== null ? (
+                <>
+                  {this.state.campaignkeyinsight.insightText !== "" ? (
+                    <div
                       className={
-                        this.state.handleArrowImg
-                          ? "keyingsightdrp keyingsightdrp-invert"
-                          : "keyingsightdrp"
+                        this.state.campaignkeyinsight.showKeyInsights
+                          ? "keyinsights"
+                          : "keyinsights keyinsights-big"
                       }
-                      src={Dropdown3}
-                      alt="Down Arrow"
-                      onClick={this.handleArrowImg.bind(this)}
-                    />
-                  )}
-                </div>
+                    >
+                      {this.state.campaignkeyinsight.showKeyInsights && (
+                        <h4>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.h4.keyinsights
+                            : "Key Insights"}
+                        </h4>
+                      )}
+                      <p
+                        id="insight-data"
+                        className={
+                          this.state.handleArrowImg ? "full-data-insight" : ""
+                        }
+                      >
+                        {this.state.campaignkeyinsight.insightText}
+                      </p>
+                      {this.state.insightShowImg && (
+                        <img
+                          className={
+                            this.state.handleArrowImg
+                              ? "keyingsightdrp keyingsightdrp-invert"
+                              : "keyingsightdrp"
+                          }
+                          src={Dropdown3}
+                          alt="Down Arrow"
+                          onClick={this.handleArrowImg.bind(this)}
+                        />
+                      )}
+                    </div>
+                  ) : null}
+                </>
               ) : null}
             </div>
             <div className="col-12 col-md-6">
@@ -2704,8 +2893,9 @@ class StoreCampaign extends Component {
                           aria-controls="recommended-tab"
                           aria-selected="true"
                         >
-                          {TranslationContext!==undefined?TranslationContext.a.recommended:"Recommended"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.recommended
+                            : "Recommended"}
                         </a>
                       </li>
                     ) : null}
@@ -2724,8 +2914,9 @@ class StoreCampaign extends Component {
                           aria-controls="lastTransaction-tab"
                           aria-selected="false"
                         >
-                           {TranslationContext!==undefined?TranslationContext.a.lasttransaction:"Last Transaction"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.lasttransaction
+                            : "Last Transaction"}
                         </a>
                       </li>
                     ) : null}
@@ -2762,9 +2953,12 @@ class StoreCampaign extends Component {
                                                 <div className="productdesc">
                                                   <h4>{FullProductName}</h4>
                                                   <p>
-                                                  {TranslationContext!==undefined?TranslationContext.p.lasttransaction:"Last Transaction"}-
-                                                     
-                                                    {item.itemCode}
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.p
+                                                          .lasttransaction
+                                                      : "Last Transaction"}
+                                                    -{item.itemCode}
                                                   </p>
                                                   <table>
                                                     <tbody>
@@ -2777,7 +2971,13 @@ class StoreCampaign extends Component {
                                                               }}
                                                             >
                                                               <label>
-                                                              {TranslationContext!==undefined?TranslationContext.label.colors:"Colors"}:
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .colors
+                                                                  : "Colors"}
+                                                                :
                                                               </label>
                                                             </td>
                                                             <td>
@@ -2856,7 +3056,13 @@ class StoreCampaign extends Component {
                                                           <tr>
                                                             <td>
                                                               <label>
-                                                              {TranslationContext!==undefined?TranslationContext.label.sizes:"Sizes"}:
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .sizes
+                                                                  : "Sizes"}
+                                                                :
                                                               </label>
                                                             </td>
                                                             <td>
@@ -2891,7 +3097,14 @@ class StoreCampaign extends Component {
                                                       ) : null}
                                                     </tbody>
                                                   </table>
-                                                  <h3>{TranslationContext!==undefined?TranslationContext.h3.inr:"INR"} {item.price}/-</h3>
+                                                  <h3>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.h3
+                                                          .inr
+                                                      : "INR"}
+                                                    {item.price}/-
+                                                  </h3>
                                                 </div>
                                               }
                                               placement="left"
@@ -2945,7 +3158,11 @@ class StoreCampaign extends Component {
                                 <tbody>
                                   <tr>
                                     <td>
-                                      <h5>{TranslationContext!==undefined?TranslationContext.h5.billno:"Bill No."}</h5>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.billno
+                                          : "Bill No."}
+                                      </h5>
                                       <label>
                                         {
                                           this.state.lasttransactiondetails
@@ -2955,7 +3172,9 @@ class StoreCampaign extends Component {
                                     </td>
                                     <td>
                                       <h5>
-                                      {TranslationContext!==undefined?TranslationContext.h5.amount:"Amount"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.amount
+                                          : "Amount"}
                                       </h5>
                                       <label>
                                         {
@@ -2968,8 +3187,9 @@ class StoreCampaign extends Component {
                                   <tr>
                                     <td>
                                       <h5>
-
-                                      {TranslationContext!==undefined?TranslationContext.h5.store:"Store"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.store
+                                          : "Store"}
                                       </h5>
                                       <label>
                                         {
@@ -2980,7 +3200,9 @@ class StoreCampaign extends Component {
                                     </td>
                                     <td>
                                       <h5>
-                                      {TranslationContext!==undefined?TranslationContext.h5.date:"Date"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.date
+                                          : "Date"}
                                       </h5>
                                       <label>
                                         {
@@ -2999,18 +3221,34 @@ class StoreCampaign extends Component {
                                     data={this.state.lastTransactionItem}
                                     columns={[
                                       {
-                                        Header: <span>
-                                           {TranslationContext!==undefined?TranslationContext.span.article:"Article"}
-                                        </span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.article
+                                              : "Article"}
+                                          </span>
+                                        ),
                                         accessor: "article",
                                       },
                                       {
-                                        Header: <span>{TranslationContext!==undefined?TranslationContext.span.qty:"Qty."}</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.qty
+                                              : "Qty."}
+                                          </span>
+                                        ),
                                         accessor: "quantity",
                                         width: 60,
                                       },
                                       {
-                                        Header: <span>{TranslationContext!==undefined?TranslationContext.span.amount:"Amount"}</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.amount
+                                              : "Amount"}
+                                          </span>
+                                        ),
                                         accessor: "amount",
                                         width: 80,
                                       },
@@ -3025,16 +3263,18 @@ class StoreCampaign extends Component {
                             </div>
                           ) : (
                             <label className="ChecknoDataCamp">
-                              {TranslationContext!==undefined?TranslationContext.label.norecordfound:"No Record Found"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.norecordfound
+                                : "No Record Found"}
                             </label>
-                          )}{" "}
+                          )}
                         </>
                       ) : (
                         <>
                           <label className="ChecknoDataCamp">
-                          {TranslationContext!==undefined?TranslationContext.label.norecordfound:"No Record Found"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.norecordfound
+                              : "No Record Found"}
                           </label>
                         </>
                       )}
@@ -3048,7 +3288,9 @@ class StoreCampaign extends Component {
             <div className="col-12">
               <div className="sharecamp">
                 <h4>
-                {TranslationContext!==undefined?TranslationContext.h4.sharecampaignvia:"Share Campaign Via"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.h4.sharecampaignvia
+                    : "Share Campaign Via"}
                 </h4>
                 <ul>
                   {this.state.shareCampaignViaSettingModal.smsFlag === true ? (
@@ -3065,8 +3307,9 @@ class StoreCampaign extends Component {
                       id={this.state.smsDisable ? "dis-sms" : ""}
                     >
                       <img className="ico" src={Sms1} alt="SMS Icon" />
-                      {TranslationContext!==undefined?TranslationContext.li.sms:"SMS"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.li.sms
+                        : "SMS"}
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.emailFlag ===
@@ -3079,8 +3322,9 @@ class StoreCampaign extends Component {
                       }
                     >
                       <img className="emailico" src={Email} alt="Email Icon" />
-                      {TranslationContext!==undefined?TranslationContext.li.email:"Email"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.li.email
+                        : "Email"}
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.messengerFlag ===
@@ -3099,8 +3343,9 @@ class StoreCampaign extends Component {
                       id={this.state.msngrDisable ? "dis-msngr" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      {TranslationContext!==undefined?TranslationContext.li.sendviamessage:"Send Via Messenger"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.li.sendviamessage
+                        : "Send Via Messenger"}
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.botFlag === true ? (
@@ -3117,8 +3362,9 @@ class StoreCampaign extends Component {
                       id={this.state.botDisable ? "dis-bot" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      {TranslationContext!==undefined?TranslationContext.li.sendviabot:"Send Via Bot"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.li.sendviabot
+                        : "Send Via Bot"}
                     </li>
                   ) : null}
                 </ul>
@@ -3129,8 +3375,9 @@ class StoreCampaign extends Component {
                   onClick={this.handleShareViaModalOpen.bind(this)}
                 >
                   <img className="shareviaimg" src={Sharevia} alt="Share Via" />
-                  {TranslationContext!==undefined?TranslationContext.li.sharevia:"Share Via"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.li.sharevia
+                    : "Share Via"}
                 </label>
               </div>
             </div>
@@ -3152,10 +3399,14 @@ class StoreCampaign extends Component {
           <div>
             <img className="tick" src={Tick} alt="Tick Icon" />
             <h3>
-            {TranslationContext!==undefined?TranslationContext.h3.sharedsuccessfully:"Shared Successfully!"}
+              {TranslationContext !== undefined
+                ? TranslationContext.h3.sharedsuccessfully
+                : "Shared Successfully!"}
             </h3>
             <p>
-            {TranslationContext!==undefined?TranslationContext.h3.yourmessagehasbeensharedsuccessfully:"Your Message has been shared successfully"}
+              {TranslationContext !== undefined
+                ? TranslationContext.h3.yourmessagehasbeensharedsuccessfully
+                : "Your Message has been shared successfully"}
             </p>
           </div>
         </Modal>
@@ -3182,7 +3433,9 @@ class StoreCampaign extends Component {
               <>
                 {this.state.campaignExecutionDetails.length > 0 ? (
                   <label className="broadcasttitle">
-                   {TranslationContext!==undefined?TranslationContext.label.recentcampaign:"Recent Campaigns"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.recentcampaign
+                      : "Recent Campaigns"}
                   </label>
                 ) : null}
 
@@ -3191,7 +3444,12 @@ class StoreCampaign extends Component {
                     <div className="broembox clearfix" key={b}>
                       <p>
                         <label>{item.channelType}</label>
-                        <span>{TranslationContext!==undefined?TranslationContext.span.executeddate:"Executed Date"}: {item.executionDate}</span>
+                        <span>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.executeddate
+                            : "Executed Date"}
+                          : {item.executionDate}
+                        </span>
                       </p>
                     </div>
                   ))}
@@ -3203,7 +3461,11 @@ class StoreCampaign extends Component {
                   ? TranslationContext.label.broadcastcampaigntocustomers
                   : "Broadcast Campaign to Customers"}
               </label>
-              <label className="broadcastsubtitle">{TranslationContext!==undefined?TranslationContext.label.choosechannel:"Choose Channel"}</label>
+              <label className="broadcastsubtitle">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.choosechannel
+                  : "Choose Channel"}
+              </label>
               <div>
                 <Radio.Group
                   onChange={this.handleBroadcastChange}
@@ -3218,8 +3480,9 @@ class StoreCampaign extends Component {
                           this.state.broadcastConfiguration.disableEmail
                         }
                       >
-                        {TranslationContext!==undefined?TranslationContext.radio.email:"Email"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.radio.email
+                          : "Email"}
                       </Radio>
                     </div>
                   ) : null}
@@ -3229,8 +3492,9 @@ class StoreCampaign extends Component {
                       value="SMS"
                       disabled={this.state.broadcastConfiguration.disableSMS}
                     >
-                      {TranslationContext!==undefined?TranslationContext.radio.sms:"SMS"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.radio.sms
+                        : "SMS"}
                     </Radio>
                   ) : null}
                   {this.state.broadcastConfiguration.whatsappFlag ? (
@@ -3241,8 +3505,9 @@ class StoreCampaign extends Component {
                         this.state.broadcastConfiguration.disableWhatsapp
                       }
                     >
-                       {TranslationContext!==undefined?TranslationContext.radio.whatsapp:"Whatsapp"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.radio.whatsapp
+                        : "Whatsapp"}
                     </Radio>
                   ) : null}
                 </Radio.Group>
@@ -3256,8 +3521,9 @@ class StoreCampaign extends Component {
                   this.state.campaignCode
                 )}
               >
-                {TranslationContext!==undefined?TranslationContext.button.execute:"Execute"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.execute
+                  : "Execute"}
               </button>
             </>
           </div>
@@ -3278,7 +3544,9 @@ class StoreCampaign extends Component {
           />
           <div>
             <h4>
-            {TranslationContext!==undefined?TranslationContext.h4.choosechannel:"Choose Channel"}
+              {TranslationContext !== undefined
+                ? TranslationContext.h4.choosechannel
+                : "Choose Channel"}
             </h4>
             <table className="w-100">
               <tbody>
@@ -3310,8 +3578,9 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelMessanger === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          {TranslationContext!==undefined?TranslationContext.div.sendviamessenger:"Send Via Messenger"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.sendviamessenger
+                            : "Send Via Messenger"}
                         </div>
                       </a>
                     </td>
@@ -3341,8 +3610,10 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelBot === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          
-                          {TranslationContext!==undefined?TranslationContext.div.sendviabot:"Send Via Bot"}
+
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.sendviabot
+                            : "Send Via Bot"}
                         </div>
                       </a>
                     </td>
@@ -3370,8 +3641,10 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelSMS === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          
-                          {TranslationContext!==undefined?TranslationContext.div.sms:"SMS"}
+
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.sms
+                            : "SMS"}
                         </div>
                       </a>
                     </td>
@@ -3398,8 +3671,10 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelEmail === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          
-                          {TranslationContext!==undefined?TranslationContext.div.email:"Email"}
+
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.email
+                            : "Email"}
                         </div>
                       </a>
                     </td>
@@ -3413,8 +3688,9 @@ class StoreCampaign extends Component {
                 onClick={this.handleShareNowOpenModal.bind(this)}
                 id={this.state.shareDisable ? "dis-share" : ""}
               >
-                 {TranslationContext!==undefined?TranslationContext.label.sharenow:"Share Now"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.sharenow
+                  : "Share Now"}
               </label>
             </div>
           </div>
@@ -3436,7 +3712,9 @@ class StoreCampaign extends Component {
           <div className="raise-ticket-popup">
             <div className="d-flex justify-content-between mb-2">
               <p className="blak-clr font-weight-bold m-0">
-              {TranslationContext!==undefined?TranslationContext.p.customerdetails:"Customer Details"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.customerdetails
+                  : "Customer Details"}
               </p>
               <p className="m-0">
                 Source:<span>Store</span>
