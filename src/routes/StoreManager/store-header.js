@@ -68,6 +68,7 @@ import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
 
 
+
 const { Option } = Select;
 var uid = 0;
 var i = 0;
@@ -176,6 +177,12 @@ class Header extends Component {
       isMainLoader: false,
       messageSuggestionTagsData: [],
       selectedTags: 0,
+      newChatSoundVolume: 0,
+      newMessageSoundVolume: 0,
+      isNotiNewChat: false,
+      isNotiNewMessage: false,
+      newChatSoundFile: "",
+      newMessageSoundFile: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -229,6 +236,7 @@ class Header extends Component {
       this.handleGetNotigfication();
       this.handleGetChatNotificationCount();
       this.handleGetChatSession();
+      this.handleGetChatSoundNotiSetting();
     }
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -1901,10 +1909,14 @@ class Header extends Component {
                   x.mobileNo === data[3].substring(2) &&
                   x.isCustEndChat === false
               );
-
+              debugger
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
+                  ////for current chat message
                   var chatId = 0;
+                  const Sound1Play = new Audio(self.state.newMessageSoundFile);
+                  // Sound1Play.volume=Math.round(self.state.newMessageSoundVolume/10)/10
+                  Sound1Play.play();
                   self.setState({ isCustEndChat: data[6] });
                   if (self.state.ongoingChatsData.length > 0) {
                     chatId = self.state.ongoingChatsData.filter(
@@ -1920,11 +1932,20 @@ class Header extends Component {
 
                   self.handleGetChatMessagesList(chatId);
                 } else {
+                  debugger
+                  /////for new ongoing message
+                  const Sound1Play = new Audio(self.state.newMessageSoundFile);
+                  // Sound1Play.volume=Math.round(self.state.newMessageSoundVolume/10)/10
+                  Sound1Play.play();
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
                   self.handleGetChatNotificationCount();
                 }
               } else {
+                ////new chat message
+                const Sound1Play = new Audio(self.state.newChatSoundFile);
+                // Sound1Play.volume=Math.round(self.state.newChatSoundVolume/10)/10
+                Sound1Play.play();
                 self.handleGetNewChat();
                 self.handleGetChatNotificationCount();
               }
@@ -2089,10 +2110,41 @@ class Header extends Component {
         console.log(response, "---handleEndCustomerChat");
       });
   }
-
+////handle tag button click
   handleTagsButtonClick = (tagsId) => {
     
     this.setState({ selectedTags: tagsId });
+  };
+  ////handle get chat sound notification setting
+  handleGetChatSoundNotiSetting = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatSoundNotiSetting",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        debugger
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          var index=responseData.newMessageSoundFile.lastIndexOf("/")+1
+          var index1=responseData.newChatSoundFile.lastIndexOf("/")+1
+          self.setState({
+            // newChatSoundFile: responseData.newChatSoundFile || "",
+            newChatSoundFile: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/"+responseData.newChatSoundFile.substr(index1)|| "",
+            // newMessageSoundFile: responseData.newMessageSoundFile || "",
+            newMessageSoundFile: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/"+responseData.newMessageSoundFile.substr(index)|| "",
+            newChatSoundVolume: responseData.newChatSoundVolume || 0,
+            newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
+            isNotiNewChat: responseData.isNotiNewChat || false,
+            isNotiNewMessage: responseData.isNotiNewMessage || false,            
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatSoundNotiSetting");
+      });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -3857,6 +3909,7 @@ class Header extends Component {
                                   {this.state.searchCardData.length > 0 ? (
                                     <div className="row m-0">
                                       <button
+                                      style={{cursor:"pointer"}}
                                         className="storeUpbtn"
                                         onClick={this.handleDownButtonClick.bind(
                                           this
