@@ -1,9 +1,5 @@
 let config = {
-<<<<<<< HEAD
-  // apiUrl: "https://localhost:44357/api",
-=======
   //apiUrl: "https://localhost:44357/api",
->>>>>>> 8c4674d319c741f843b6ce23fbe0d0dcd3cab570
   isHomeShope: true, /// make false when give Homeshop build for client
   isShowTaskTab: true, /// make false when give multiTenant build for client
 
