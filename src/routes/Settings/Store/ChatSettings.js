@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag.js";
-import { Select, Popover } from "antd";
+import { Select, Popover, Checkbox } from "antd";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import axios from "axios";
 import config from "./../../../helpers/config";
@@ -12,7 +12,10 @@ import * as translationMA from "../../../translations/marathi";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVolumeUp ,faVolumeDown } from "@fortawesome/free-solid-svg-icons";
 
+import Slider from "react-rangeslider";
+import "react-rangeslider/lib/index.css";
 const { Option } = Select;
 
 class ChatSettings extends Component {
@@ -903,17 +906,93 @@ class ChatSettings extends Component {
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div
-                        className="card"
+                        className="card sncheck"
                         style={{ padding: "35px", height: "auto" }}
                       >
                         <label className="snlbl-nlbl">Notification</label>
                         <hr className="sn-hr" />
-                        <p>
-                            Set your notification preference for when you are in
-                            or away from the system.You will need to configure
-                            your browser setting to allow notification
-                          </p>
-                        
+                        <p className="sn-p">
+                          Set your notification preference for when you are in
+                          or away from the system.You will need to configure
+                          your browser setting to allow notification
+                        </p>
+                        <label className="sns-lbl">Chat Assigned</label>
+                        <Checkbox className="">
+                          Show notifications for new chat assigned
+                        </Checkbox>
+                        <label className="sns-lbl">New Messages</label>
+                        <Checkbox>
+                          Show notification for new message in ongoing
+                        </Checkbox>
+                      </div>
+                      <div
+                        className="card"
+                        style={{
+                          padding: "35px",
+                          paddingTop: "0",
+                          height: "auto",
+                        }}
+                      >
+                        <label className="snlbl-nlbl">Sounds</label>
+                        <hr className="sn-hr" />
+                        <div className="row">
+                          <div className="col-md-3">
+                            <label className="sns-lbl">Chat Assigned</label>
+                            <select
+                              className="form-control dropdown-setting"
+                              style={{ marginBottom: "10px" }}
+                            >
+                              <option>Select</option>
+                            </select>
+                          </div>
+                          <div className="col-md-3 vlm-ctrl">
+                            <label>Sound Controller</label>
+                            <div>
+                              <FontAwesomeIcon icon={faVolumeDown} />
+                              <div className="slider orientation-reversed">
+                                <div className="slider-group">
+                                  <div className="slider-horizontal">
+                                    <Slider
+                                      min={0}
+                                      max={10}
+                                      orientation="horizontal"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <FontAwesomeIcon icon={faVolumeUp} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-3">
+                            <label className="sns-lbl">New Message</label>
+                            <select
+                              className="form-control dropdown-setting"
+                              style={{ marginBottom: "10px" }}
+                            >
+                              <option>Select</option>
+                            </select>
+                          </div>
+                          <div className="col-md-3 vlm-ctrl">
+                            <label>Sound Controller</label>
+                            <div>
+                              <FontAwesomeIcon icon={faVolumeDown} />
+                              <div className="slider orientation-reversed">
+                                <div className="slider-group">
+                                  <div className="slider-horizontal">
+                                    <Slider
+                                      min={0}
+                                      max={10}
+                                      orientation="horizontal"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <FontAwesomeIcon icon={faVolumeUp} />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
