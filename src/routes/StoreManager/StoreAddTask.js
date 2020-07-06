@@ -8,6 +8,8 @@ import {
   // NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+import * as translationHI from "./../../translations/hindi";
+import * as translationMA from "./../../translations/marathi";
 
 class StoreAddTask extends Component {
   constructor(props) {
@@ -31,11 +33,20 @@ class StoreAddTask extends Component {
       ispriority: "",
       isfuncation: "",
       isdepartment: "",
+      translateLanguage: {}
     };
   }
   componentDidMount() {
     this.handleGetDepartement();
     this.handleGetPriority();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   ////handle create task
   handleCreateTask() {
@@ -96,7 +107,7 @@ class StoreAddTask extends Component {
           headers: authHeader(),
           data: inputParams,
         })
-          .then(function(response) {
+          .then(function (response) {
             debugger;
             var message = response.data.message;
             var responseData = response.data.responseData;
@@ -131,7 +142,7 @@ class StoreAddTask extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var departmentData = response.data.responseData;
         if (message === "Success") {
@@ -154,7 +165,7 @@ class StoreAddTask extends Component {
       headers: authHeader(),
       params: { DepartmentId: DepartmentId },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var funcationData = response.data.responseData;
         if (message === "Success") {
@@ -180,7 +191,7 @@ class StoreAddTask extends Component {
         Function_ID: this.state.funcationID,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var assignToData = response.data.responseData;
         if (message === "Success" && assignToData.length > 0) {
@@ -202,7 +213,7 @@ class StoreAddTask extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var priorityData = response.data.responseData;
         if (message === "Success") {
@@ -309,13 +320,22 @@ class StoreAddTask extends Component {
   };
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="row card1">
           <div className="col-md-8">
             <div className="card" style={{ padding: "35px", height: "46.3vw" }}>
-              <label className="store-Edit-lblcre">Create Task</label>
-              <label className="store-Edit-lbl1"> Task Title</label>
+              <label className="store-Edit-lblcre">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.createtask
+                  : "Create Task"}
+              </label>
+              <label className="store-Edit-lbl1">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.tasktitle
+                  : "Task Title"}
+              </label>
               <input
                 type="text"
                 className="store-edit-txt"
@@ -332,7 +352,11 @@ class StoreAddTask extends Component {
 
               <div className="row">
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Department</label>
+                  <label className="store-Edit-lbl1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.department
+                      : "Department"}
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -340,7 +364,11 @@ class StoreAddTask extends Component {
                     onChange={this.handleOnchange}
                     name="department"
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.option.select
+                        : "Select"}
+                    </option>
                     {this.state.departmentData !== null &&
                       this.state.departmentData.map((item, i) => (
                         <option
@@ -359,7 +387,11 @@ class StoreAddTask extends Component {
                   )}
                 </div>
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Function</label>
+                  <label className="store-Edit-lbl1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.function
+                      : "Function"}
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -367,7 +399,11 @@ class StoreAddTask extends Component {
                     name="funcation"
                     onChange={this.handleOnchange}
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.option.select
+                        : "Select"}
+                    </option>
                     {this.state.funcationData !== null &&
                       this.state.funcationData.map((item, i) => (
                         <option
@@ -389,7 +425,11 @@ class StoreAddTask extends Component {
 
               <div className="row">
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Priority</label>
+                  <label className="store-Edit-lbl1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.priority
+                      : "Priority"}
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -397,7 +437,11 @@ class StoreAddTask extends Component {
                     onChange={this.handleOnchange}
                     value={this.state.priorityID}
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.option.select
+                        : "Select"}
+                    </option>
                     {this.state.priorityData !== null &&
                       this.state.priorityData.map((item, i) => (
                         <option
@@ -416,7 +460,11 @@ class StoreAddTask extends Component {
                   )}
                 </div>
                 <div className="col-md-6 store-mrg">
-                  <label className="store-Edit-lbl1">Assign to</label>
+                  <label className="store-Edit-lbl1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.assignto
+                      : "Assign to"}
+                  </label>
                   <select
                     id="inputState"
                     className="form-control dropdown-label"
@@ -445,14 +493,18 @@ class StoreAddTask extends Component {
 
               <div className="row">
                 <div className="col-md-12 store-mrg">
-                  <label className="store-Edit-lbl1">Task Details</label>
+                  <label className="store-Edit-lbl1">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.taskdetails
+                      : "Task Details"}
+                  </label>
                   <textarea
                     onChange={this.handleOnchange}
                     value={this.state.taskDetails}
                     name="taskdetails"
                     rows="8"
                     className="textarea-store"
-                    // placeholder="Customer History/Security Check when.."
+                  // placeholder="Customer History/Security Check when.."
                   ></textarea>
                   {this.state.istaskDetails !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
@@ -476,9 +528,11 @@ class StoreAddTask extends Component {
                         spin
                       />
                     ) : (
-                      ""
-                    )}
-                    SUBMIT TASK
+                        ""
+                      )}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.submittask
+                      : "SUBMIT TASK"}
                   </button>
                 </div>
               </div>
