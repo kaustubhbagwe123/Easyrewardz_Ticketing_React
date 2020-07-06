@@ -4592,3 +4592,12 @@ a.btn-theme.active {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
+
+.custom-camp-table .cust-name {
+  color: #2561a8;
+  white-space: nowrap;
+  font-weight: bolder;
+  font-size: 14px;
+  text-transform: capitalize;
+  cursor: pointer;
+}

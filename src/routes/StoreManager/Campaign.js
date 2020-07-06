@@ -42,6 +42,8 @@ class Campaign extends Component {
       translateLanguage: {},
       CampaignStatusFilter: false,
       strCampStatus: "",
+      custNameModal: false,
+      sortCustName: ""
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -135,7 +137,7 @@ class Campaign extends Component {
       url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -186,7 +188,7 @@ class Campaign extends Component {
         CallReScheduledTo: calculatedCallReScheduledTo,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -219,7 +221,7 @@ class Campaign extends Component {
         IsClosed: 1,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -343,7 +345,7 @@ class Campaign extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function(res) {
+          .then(function (res) {
             debugger;
             let Msg = res.data.status;
             let TID = res.data.responseData;
@@ -420,7 +422,7 @@ class Campaign extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         debugger;
         var message = response.data.message;
         var brandData = response.data.responseData;
@@ -445,7 +447,7 @@ class Campaign extends Component {
       headers: authHeader(),
       params: { BrandID: Number(brandID) },
     })
-      .then(function(response) {
+      .then(function (response) {
         debugger;
         var categoryData = response.data;
         if (categoryData.length > 0) {
@@ -470,7 +472,7 @@ class Campaign extends Component {
       headers: authHeader(),
       params: { CategoryID: categoryID },
     })
-      .then(function(response) {
+      .then(function (response) {
         debugger;
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
@@ -496,7 +498,7 @@ class Campaign extends Component {
       headers: authHeader(),
       params: { SubCategoryID: subCategoryId },
     })
-      .then(function(response) {
+      .then(function (response) {
         debugger;
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
@@ -735,7 +737,7 @@ class Campaign extends Component {
         statusID: filterIds,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -753,11 +755,32 @@ class Campaign extends Component {
         console.log(data);
       });
   }
+
+  handleGetCustomerDataForModal(rowData) {
+    debugger;
+    var sortName = "";
+    var strTag = rowData.customerName.split(" ");
+    for(var i = 0; i<strTag.length;i++)
+    {
+      sortName += strTag[i].charAt(0).toUpperCase();
+    }
+    this.setState({
+      custNameModal: true,
+      sortCustName: sortName
+    });
+  }
+
+  handleCustomerNameModalClose() {
+    this.setState({
+      custNameModal: false,
+    });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
     return (
-      <div>
+      <div className="custom-camp-table">
         <div className="table-cntr store">
           <Table
             className="components-table-demo-nested antd-table-campaign-padd antd-table-campaign custom-antd-table"
@@ -837,7 +860,15 @@ class Campaign extends Component {
                       render: (row, item) => {
                         return (
                           <>
-                            {item.customerName}
+                            <p
+                              className="cust-name"
+                              onClick={this.handleGetCustomerDataForModal.bind(
+                                this,
+                                item
+                              )}
+                            >
+                              {item.customerName}
+                            </p>
                             <span className="sml-fnt">
                               {item.customerPhoneNumber}
                             </span>
@@ -1118,11 +1149,11 @@ class Campaign extends Component {
                               )}
                               className={
                                 item.campaignStatus === 102 &&
-                                item.response === 3
+                                  item.response === 3
                                   ? "txtStore dateTimeStore"
                                   : "txtStore dateTimeStore disabled-link"
                               }
-                              placeholderText={TranslationContext!==undefined?TranslationContext.placeholder.selecttimeanddate:"Select Date &amp; Time"}
+                              placeholderText={TranslationContext !== undefined ? TranslationContext.placeholder.selecttimeanddate : "Select Date &amp; Time"}
                             />
                           </div>
                         );
@@ -1140,11 +1171,11 @@ class Campaign extends Component {
                               className={
                                 (item.campaignStatus === 100 &&
                                   item.response !== 0) ||
-                                (item.campaignStatus === 101 &&
-                                  item.response !== 0) ||
-                                (item.campaignStatus === 102 &&
-                                  item.response !== 0 &&
-                                  item.callReScheduledTo !== "")
+                                  (item.campaignStatus === 101 &&
+                                    item.response !== 0) ||
+                                  (item.campaignStatus === 102 &&
+                                    item.response !== 0 &&
+                                    item.callReScheduledTo !== "")
                                   ? ""
                                   : "disabled-input"
                               }
@@ -1153,11 +1184,11 @@ class Campaign extends Component {
                                 className={
                                   (item.campaignStatus === 100 &&
                                     item.response !== 0) ||
-                                  (item.campaignStatus === 101 &&
-                                    item.response !== 0) ||
-                                  (item.campaignStatus === 102 &&
-                                    item.response !== 0 &&
-                                    item.callReScheduledTo !== "")
+                                    (item.campaignStatus === 101 &&
+                                      item.response !== 0) ||
+                                    (item.campaignStatus === 102 &&
+                                      item.response !== 0 &&
+                                      item.callReScheduledTo !== "")
                                     ? "saveBtn"
                                     : "saveBtn disabled-link"
                                 }
@@ -1181,7 +1212,7 @@ class Campaign extends Component {
                             <div
                               className={
                                 item.campaignStatus === 100 &&
-                                item.response !== 0
+                                  item.response !== 0
                                   ? ""
                                   : "disabled-input"
                               }
@@ -1190,7 +1221,7 @@ class Campaign extends Component {
                               <button
                                 className={
                                   item.campaignStatus === 100 &&
-                                  item.response !== 0
+                                    item.response !== 0
                                     ? "raisedticket-Btn"
                                     : "raisedticket-Btn disabled-link"
                                 }
@@ -1467,6 +1498,104 @@ class Campaign extends Component {
             </div>
           </div>
         </Modal>
+        <Modal
+          open={this.state.custNameModal}
+          onClose={this.handleCustomerNameModalClose.bind(this)}
+          center
+          modalId="customername-popup"
+          overlayId="logout-ovrly"
+        >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleCustomerNameModalClose.bind(this)}
+          />
+          <div className="row">
+            <div className="col-12 col-md-12">
+              <div className="nr-initials">
+                <p>{this.state.sortCustName}</p>
+              </div>
+              <div className="nr-name">
+                <h3>
+
+                  <span>
+
+                  </span>
+                </h3>
+                <p></p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12 col-md-6">
+
+              <div className="lifetimevalue lt-single">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <h4>
+
+                          {TranslationContext !== undefined ? TranslationContext.h4.lifetimevalue : "Lifetime Value"}
+                        </h4>
+                        <label>
+
+                        </label>
+                      </td>
+                      <td>
+                        <h4>
+
+                          {TranslationContext !== undefined ? TranslationContext.h4.visitcount : "Visit Count"}
+                        </h4>
+                        <label>
+
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+
+              <div
+
+              >
+
+                <h4>
+
+                </h4>
+
+                <p
+                  id="insight-data"
+
+                >
+
+                </p>
+
+              </div>
+
+            </div>
+            <div className="col-12 col-md-6">
+              <div className="productbox">
+                <div>
+                  <ul
+
+                    role="tablist"
+                  >
+
+
+
+                  </ul>
+                </div>
+                <div className="tab-content p-0">
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+
       </div>
     );
   }

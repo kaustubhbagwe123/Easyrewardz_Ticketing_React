@@ -307,7 +307,9 @@ class Header extends Component {
           : "single-menu",
     };
     var claim = {
-      data: "Claim",
+      data: this.state.translateLanguage.default !== undefined
+      ? this.state.translateLanguage.default.nav.claim
+      : "Claim",
       urls: "claim",
       logoBlack: ClaimLogo,
       logoBlue: ClaimLogoBlue,
