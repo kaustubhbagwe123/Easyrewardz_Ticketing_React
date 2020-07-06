@@ -949,6 +949,17 @@ class ShipmentTab extends Component {
                                     : "Article Quantity",
                                 dataIndex: "quantity",
                               },
+                              {
+                                title: () => (
+                                  <select className="shipment-table-dropdown">
+                                    <option value="temp*">Template *</option>
+                                    <option value="temp1">Template 1</option>
+                                    <option value="temp2">Template 2</option>
+                                    <option value="temp3">Template 3</option>
+                                    <option value="temp4">Template 4</option>
+                                  </select>
+                                ),
+                              },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}

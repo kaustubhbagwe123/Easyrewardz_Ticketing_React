@@ -328,6 +328,16 @@
   margin-top: 15px;
   text-align: right;
 }
+.shipment-table-dropdown {
+  background: #fff url("./../Images/table-arr.png") no-repeat right 8px center !important;
+  background-size: 9px !important;
+  margin: 0 !important;
+  border: 1px solid #d6d3d3 !important;
+  border-radius: 4px !important;
+  height: auto !important;
+  padding: 8px 25px 8px 10px !important;
+  font-weight: 700;
+}
 .arti-check {
   margin-right: 7px;
 }
@@ -772,7 +782,8 @@
     height: 30px;
     width: 100px;
   }
-  #delivered-tab .custom-antd-table.antd-table-campaign.antd-table-order
+  #delivered-tab
+    .custom-antd-table.antd-table-campaign.antd-table-order
     .ant-table-thead
     > tr
     > th {
@@ -780,7 +791,8 @@
     height: 30px;
     width: auto;
   }
-  #shipment-assigned-tab .custom-antd-table.antd-table-campaign.antd-table-order
+  #shipment-assigned-tab
+    .custom-antd-table.antd-table-campaign.antd-table-order
     .ant-table-thead
     > tr
     > th {
