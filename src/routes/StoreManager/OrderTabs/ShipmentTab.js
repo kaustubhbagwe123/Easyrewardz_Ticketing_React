@@ -907,7 +907,7 @@ class ShipmentTab extends Component {
                         </span>
                         <div className="table-responsive">
                           <Table
-                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
+                            className="components-table-demo-nested shipment-table-popup antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
                             columns={[
                               {
                                 title:

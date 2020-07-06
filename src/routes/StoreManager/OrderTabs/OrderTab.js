@@ -61,7 +61,7 @@ class OrderTab extends Component {
     }
   }
 
-  /// search data 
+  /// search data
   handleOrderSearch = (searchData) => {
     this.setState({
       orderSearchText: searchData,
@@ -902,6 +902,58 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
+                              <p className="non-deliverable">
+                                Entered Pin code is non deliverable
+                              </p>
+                              <div className="popover-radio-cntr">
+                                <div>
+                                  <input
+                                    type="radio"
+                                    id="order-returns"
+                                    name="address-options"
+                                  />
+                                  <label htmlFor="order-returns">
+                                    Move Order into Returns
+                                  </label>
+                                </div>
+                                <div>
+                                  <input
+                                    type="radio"
+                                    id="self-pickup"
+                                    name="address-options"
+                                  />
+                                  <label htmlFor="self-pickup">
+                                    Convert this order in Self Pickup
+                                  </label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <p>Date</p>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Date"
+                                    name="date"
+                                    autoComplete="off"
+                                    // onChange={this.handleTextOnchage}
+                                  />
+                                </div>
+                                <div className="col-md-6">
+                                  <p>Time</p>
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.placeholder
+                                            .entercountry
+                                        : "Enter Time"
+                                    }
+                                    name="time"
+                                    autoComplete="off"
+                                    // onChange={this.handleTextOnchage}
+                                  />
+                                </div>
+                              </div>
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
@@ -910,7 +962,7 @@ class OrderTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                           icon={false}
-                          okText="Save Address"
+                          okText="Proceed"
                           onConfirm={this.handleAddressPending.bind(
                             this,
                             item.id
@@ -1238,6 +1290,58 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
+                              <p className="non-deliverable">
+                                Entered Pin code is non deliverable
+                              </p>
+                              <div className="popover-radio-cntr">
+                                <div>
+                                  <input
+                                    type="radio"
+                                    id="order-returns"
+                                    name="address-options"
+                                  />
+                                  <label htmlFor="order-returns">
+                                    Move Order into Returns
+                                  </label>
+                                </div>
+                                <div>
+                                  <input
+                                    type="radio"
+                                    id="self-pickup"
+                                    name="address-options"
+                                  />
+                                  <label htmlFor="self-pickup">
+                                    Convert this order in Self Pickup
+                                  </label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <p>Date</p>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Date"
+                                    name="date"
+                                    autoComplete="off"
+                                    // onChange={this.handleTextOnchage}
+                                  />
+                                </div>
+                                <div className="col-md-6">
+                                  <p>Time</p>
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.placeholder
+                                            .entercountry
+                                        : "Enter Time"
+                                    }
+                                    name="time"
+                                    autoComplete="off"
+                                    // onChange={this.handleTextOnchage}
+                                  />
+                                </div>
+                              </div>
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
@@ -1246,7 +1350,7 @@ class OrderTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                           icon={false}
-                          okText="Save Address"
+                          okText="Proceed"
                           onConfirm={this.handleAddressPending.bind(
                             this,
                             row.id
