@@ -764,7 +764,7 @@ class Dashboard extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger
+    debugger;
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -2145,9 +2145,7 @@ class Dashboard extends Component {
       isYellow: false,
       isGreen: false,
       SearchTicketData:
-        tempColor.length > 0
-          ? tempFinalSearchTicketData
-          : tempSearchTicketData,
+        tempColor.length > 0 ? tempFinalSearchTicketData : tempSearchTicketData,
       // SearchTicketData: tempFinalSearchTicketData,
     });
   }
@@ -4918,7 +4916,11 @@ class Dashboard extends Component {
                             onMouseLeave={this.handleMouseLeave.bind(this)}
                             onMouseEnter={this.handleMouseHover.bind(this)}
                           >
-                            <p className="card-head">SLA</p>
+                            <p className="card-head">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.strong.sla
+                                : "SLA"}
+                            </p>
                             {this.state.DashboardNumberData !== null ? (
                               Object.keys(this.state.DashboardNumberData)
                                 .length > 0 ? (
@@ -5171,7 +5173,7 @@ class Dashboard extends Component {
               className="table-cntr mt-3 mtictab table-responsive"
               style={{ overflow: "initial" }}
             >
-               <div className="float-search" onClick={this.toggleSearch}>
+              <div className="float-search" onClick={this.toggleSearch}>
                 <small>{TitleChange}</small>
                 {ImgChange}
               </div>
