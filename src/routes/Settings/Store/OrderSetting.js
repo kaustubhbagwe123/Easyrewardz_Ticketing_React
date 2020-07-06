@@ -1432,9 +1432,9 @@ class OrderSetting extends Component {
                                     )} */}
                                     </div>
                                   </div>
-                                  <div className="col-md-12 my-3">
+                                  <div className="col-md-12 my-3 text-center">
                                     <button
-                                      className="Schedulenext1 w-100 mb-0"
+                                      className="Schedulenext1 mb-0"
                                       type="button"
                                     >
                                       {TranslationContext !== undefined

@@ -3632,6 +3632,7 @@
 .full-wid-inp select {
   margin-top: 7px;
   font-size: 14px;
+  width: 70px !important;
 }
 .ap-select {
   background: none !important;
