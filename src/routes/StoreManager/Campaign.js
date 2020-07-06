@@ -1537,7 +1537,7 @@ class Campaign extends Component {
                       <td>
                         <h4>
 
-                          {TranslationContext !== undefined ? TranslationContext.h4.lifetimevalue : "Lifetime Value"}
+
                         </h4>
                         <label>
 
@@ -1546,7 +1546,7 @@ class Campaign extends Component {
                       <td>
                         <h4>
 
-                          {TranslationContext !== undefined ? TranslationContext.h4.visitcount : "Visit Count"}
+
                         </h4>
                         <label>
 
