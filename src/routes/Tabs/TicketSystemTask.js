@@ -7,6 +7,8 @@ import { Popover, Table } from "antd";
 import config from "../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class TicketSystemTask extends Component {
       selectedFunction: "",
       selectedAssignTo: "",
       selectedPriority: "",
+      translateLanguage: {},
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -40,6 +43,14 @@ class TicketSystemTask extends Component {
   componentDidMount() {
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   componentDidUpdate() {
@@ -223,6 +234,7 @@ class TicketSystemTask extends Component {
 
   handleCreateTask() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.validator.allValid()) {
       if (this.state.taskfield) {
         var taskData = [];
@@ -253,7 +265,11 @@ class TicketSystemTask extends Component {
           selectedAssignTo: "",
           selectedPriority: "",
         });
-        NotificationManager.success("Task created successfully.");
+        NotificationManager.success(
+          TranslationContext !== undefined
+            ? TranslationContext.span.taskcreatedsuccfully
+            : "Task created successfully."
+        );
         this.validator.hideMessages();
       }
     } else {
@@ -273,6 +289,7 @@ class TicketSystemTask extends Component {
       "none";
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { taskData } = this.state;
     return (
       <Fragment>
@@ -289,7 +306,9 @@ class TicketSystemTask extends Component {
                       aria-expanded="true"
                       aria-controls="collapseOne"
                     >
-                      Created Task
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createdtask
+                        : "Created Task"}
                     </label>
                   </h5>
                 </div>
@@ -306,7 +325,11 @@ class TicketSystemTask extends Component {
                         <input
                           type="text"
                           className="txt-1"
-                          placeholder="Task Title"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.tasktitle
+                              : "Task Title"
+                          }
                           name="taskTitle"
                           value={this.state.taskfield.taskTitle}
                           onChange={this.checkTaskTitDesc.bind(
@@ -325,7 +348,11 @@ class TicketSystemTask extends Component {
                       <div className="col-md-12">
                         <textarea
                           className="addNote-textarea-system"
-                          placeholder="Task Description"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.taskdescription
+                              : "Task Description"
+                          }
                           name="taskDescription"
                           maxLength={250}
                           value={this.state.taskfield.taskDescription}
@@ -353,7 +380,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-category-placeholder"
                           >
-                            Department
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.department
+                              : "Department"}
                           </option>
                           {this.state.DepartmentData !== null &&
                             this.state.DepartmentData.map((item, i) => (
@@ -383,7 +412,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-sub-category-placeholder"
                           >
-                            Function
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.function
+                              : "Function"}
                           </option>
                           {this.state.FunctionData !== null &&
                             this.state.FunctionData.map((item, i) => (
@@ -415,7 +446,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-category-placeholder"
                           >
-                            Assign To
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.assignto
+                              : "Assign To"}
                           </option>
                           {this.state.AssignToData !== null &&
                             this.state.AssignToData.map((item, i) => (
@@ -445,7 +478,9 @@ class TicketSystemTask extends Component {
                             value=""
                             className="select-sub-category-placeholder"
                           >
-                            Priority
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.priority
+                              : "Priority"}
                           </option>
                           {this.state.TicketPriorityData !== null &&
                             this.state.TicketPriorityData.map((item, i) => (
@@ -472,7 +507,9 @@ class TicketSystemTask extends Component {
                           className="createtasksystem createtasksystem-text"
                           onClick={this.handleCreateTask.bind(this)}
                         >
-                          CREATE TASK
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.createtask
+                            : "CREATE TASK"}
                         </button>
                       </div>
                     </div>
@@ -489,7 +526,10 @@ class TicketSystemTask extends Component {
                       aria-expanded="false"
                       aria-controls="collapseTwo"
                     >
-                      {this.state.taskData.length} Task Created
+                      {this.state.taskData.length}{" "}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.taskcreated
+                        : "Task Created"}
                     </label>
                   </h5>
                 </div>
@@ -503,19 +543,31 @@ class TicketSystemTask extends Component {
                     <Table
                       columns={[
                         {
-                          title: "ID",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.id
+                              : "ID",
                           dataIndex: "ID",
                         },
                         {
-                          title: "Task Title",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.tasktitle
+                              : "Task Title",
                           dataIndex: "taskTitle",
                         },
                         {
-                          title: "Assign To",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.assignto
+                              : "Assign To",
                           dataIndex: "assignName",
                         },
                         {
-                          titleL: "Actions",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions",
                           dataIndex: "",
                           render: (row, data) => {
                             var ids = row.ID;
@@ -529,14 +581,24 @@ class TicketSystemTask extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file ?"}
+                                          
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
-                                          <a href="#!">CANCEL</a>
+                                          <a href="#!">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             type="button"
@@ -545,7 +607,9 @@ class TicketSystemTask extends Component {
                                               ids
                                             )}
                                           >
-                                            Delete
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>

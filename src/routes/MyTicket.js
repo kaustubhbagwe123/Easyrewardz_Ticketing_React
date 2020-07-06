@@ -211,6 +211,7 @@ class MyTicket extends Component {
       selectedInvoiceNo: "",
       isSystemGenerated: false,
       translateLanguage: {},
+      checkPriorityDetails: false,
     };
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
@@ -271,7 +272,7 @@ class MyTicket extends Component {
       }
 
       this.setState({ HistOrderShow: true, ticket_Id: ticketId, isKB });
-      this.handleGetTicketPriorityList();
+      // this.handleGetTicketPriorityList();
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
@@ -421,7 +422,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -485,6 +485,7 @@ class MyTicket extends Component {
             self.handleGetSubCategoryList();
             self.handleGetIssueTypeList();
             self.handleOnLoadFiles();
+            self.handleGetTicketPriorityList(self.state.ticket_Id);
           }, 100);
         } else {
           self.setState({
@@ -543,7 +544,7 @@ class MyTicket extends Component {
   };
 
   handleUpdateTicketStatus(ticStaId) {
-    // let self = this;
+    const TranslationContext = this.state.translateLanguage.default;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/Updateticketstatus",
@@ -557,9 +558,17 @@ class MyTicket extends Component {
         let status = res.data.status;
         if (status === true) {
           if (ticStaId === 103) {
-            NotificationManager.success("The ticket has been resolved.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.thetickethasbeenresolved
+                : "The ticket has been resolved."
+            );
           } else if (ticStaId === 104) {
-            NotificationManager.success("The ticket has been closed.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.thetickethasbeenclosed
+                : "The ticket has been closed."
+            );
           }
         }
       })
@@ -607,7 +616,6 @@ class MyTicket extends Component {
   }
 
   handleHasAttachmentFileData() {
-    //
     for (let i = 0; i < this.state.hasAttachmentFile.length; i++) {
       var data = [];
       if (data !== null) {
@@ -734,6 +742,7 @@ class MyTicket extends Component {
   }
   // onchange on User Drop down list
   setAssignedToValue(check, e) {
+    debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -1023,50 +1032,67 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketDetails() {
+    debugger
     const TranslationContext = this.state.translateLanguage.default;
 
     if (this.state.statusValidate) {
-      let self = this;
-      this.setState({ KnowledgeBaseModal: false });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/Updateticketstatus",
-        headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
-          StatusID: this.state.selectetedParameters.ticketStatusID,
-          BrandID: this.state.selectetedParameters.brandID,
-          CategoryID: this.state.selectetedParameters.categoryID,
-          SubCategoryID: this.state.selectetedParameters.subCategoryID,
-          IssueTypeID: this.state.selectetedParameters.issueTypeID,
-          PriortyID: this.state.selectetedParameters.priorityID,
-          ChannelOfPurchaseID: this.state.selectetedParameters
-            .channelOfPurchaseID,
-          TicketActionID: this.state.selectetedParameters.ticketActionTypeID,
-        },
-      })
-        .then(function(res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            if (self.state.isaddKnowledge) {
-              self.handleAddKnwoldgeBase();
-            } else {
-              NotificationManager.success(
-                TranslationContext !== undefined
-                  ? TranslationContext.alertmessage.ticketupdatedsuccessfully
-                  : "Ticket updated successfully."
-              );
-              self.props.history.push("myTicketlist");
-            }
-          } else {
-            NotificationManager.error("Ticket not update");
-          }
+      if (this.state.checkPriorityDetails===false) {
+        let self = this;
+        this.setState({ KnowledgeBaseModal: false });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/Updateticketstatus",
+          headers: authHeader(),
+          data: {
+            TicketID: this.state.ticket_Id,
+            StatusID: this.state.selectetedParameters.ticketStatusID,
+            BrandID: this.state.selectetedParameters.brandID,
+            CategoryID: this.state.selectetedParameters.categoryID,
+            SubCategoryID: this.state.selectetedParameters.subCategoryID,
+            IssueTypeID: this.state.selectetedParameters.issueTypeID,
+            PriortyID: this.state.selectetedParameters.priorityID,
+            ChannelOfPurchaseID: this.state.selectetedParameters
+              .channelOfPurchaseID,
+            TicketActionID: this.state.selectetedParameters.ticketActionTypeID,
+          },
         })
-        .catch((data) => {
-          console.log(data);
-        });
+          .then(function(res) {
+            let status = res.data.message;
+            if (status === "Success") {
+              if (self.state.isaddKnowledge) {
+                self.handleAddKnwoldgeBase();
+              } else {
+                NotificationManager.success(
+                  TranslationContext !== undefined
+                    ? TranslationContext.alertmessage.ticketupdatedsuccessfully
+                    : "Ticket updated successfully."
+                );
+                self.props.history.push("myTicketlist");
+              }
+            } else {
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard.ticketnotupdate
+                  : "Ticket not update."
+              );
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.slahasnotbeencreated
+            : "SLA has not been created"
+        );
+      }
     } else {
-      NotificationManager.error("Unauthorized Access!");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.unauthorizedaccess
+          : "Unauthorized Access!"
+      );
     }
   }
   handleRequireSize(e, rowData) {
@@ -1109,7 +1135,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
         var OrderSubItem = [];
@@ -1193,6 +1218,8 @@ class MyTicket extends Component {
         CategoryData: [],
         SubCategoryData: [],
         IssueTypeData: [],
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
       setTimeout(() => {
         if (this.state.selectetedParameters.brandID) {
@@ -1205,6 +1232,8 @@ class MyTicket extends Component {
         selectetedParameters: data,
         SubCategoryData: [],
         IssueTypeData: [],
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
       setTimeout(() => {
         if (this.state.selectetedParameters.categoryID) {
@@ -1216,6 +1245,8 @@ class MyTicket extends Component {
       this.setState({
         selectetedParameters: data,
         IssueTypeData: [],
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
 
       setTimeout(() => {
@@ -1232,7 +1263,12 @@ class MyTicket extends Component {
       data[name] = Value;
       this.setState({
         selectetedParameters: data,
+        TicketPriorityData: [],
+        checkPriorityDetails: false,
       });
+      setTimeout(() => {
+        this.handleGetTicketPriorityList(0);
+      }, 2);
     } else if (name === "ticketActionTypeID") {
       data[name] = Value;
       this.setState({
@@ -1288,20 +1324,26 @@ class MyTicket extends Component {
         console.log(data);
       });
   }
-  handleGetTicketPriorityList() {
+  handleGetTicketPriorityList(ticketid) {
     let self = this;
     axios({
-      method: "get",
-      url: config.apiUrl + "/Priority/GetPriorityList",
+      method: "post",
+      // url: config.apiUrl + "/Priority/GetPriorityList",
+      url: config.apiUrl + "/SLA/ValidateSLAByIssueTypeID",
       headers: authHeader(),
+      params: {
+        issueTypeID: this.state.selectetedParameters.issueTypeID,
+        ticketID: ticketid,
+      },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({ TicketPriorityData: data });
         } else {
-          self.setState({ TicketPriorityData: [] });
+          self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
       })
       .catch((data) => {
@@ -1375,8 +1417,8 @@ class MyTicket extends Component {
       });
   }
   handleAssignTickets() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/AssignTickets",
@@ -1390,7 +1432,11 @@ class MyTicket extends Component {
       .then(function(res) {
         let messageData = res.data.message;
         if (messageData === "Success") {
-          NotificationManager.success("Tickets assigned successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.ticketsassignedsuccessfully
+              : "Tickets assigned successfully."
+          );
           self.HandlelabelModalClose();
           // self.handleReAssignCommentOpen();
           setTimeout(function() {
@@ -1613,7 +1659,11 @@ class MyTicket extends Component {
               notesCommentCompulsion: "",
             });
           } else {
-            NotificationManager.error("Comment not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.commentnotadded
+                : "Comment not added."
+            );
           }
         })
         .catch((data) => {
@@ -1621,7 +1671,10 @@ class MyTicket extends Component {
         });
     } else {
       this.setState({
-        notesCommentCompulsion: "The Notes field is compulsory.",
+        notesCommentCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.thenotesfieldiscompulsory
+            : "The Notes field is compulsory.",
       });
     }
   }
@@ -1693,6 +1746,7 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1797,14 +1851,22 @@ class MyTicket extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Store attached successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.storeattachedsuccessfully
+              : "Store attached successfully."
+          );
           self.HandleStoreModalClose();
           self.handleGetTicketDetails(self.state.ticket_Id);
           self.setState({
             storeDetails: [],
           });
         } else {
-          NotificationManager.error("Store not attached");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.storenotattached
+              : "Store not attached."
+          );
         }
       })
       .catch((data) => {
@@ -1813,7 +1875,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       for (let k = 0; k < this.state.SelectedAllOrder.length; k++) {
@@ -1942,7 +2004,12 @@ class MyTicket extends Component {
           let status = res.data.message;
           // let details = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Product attached successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard
+                    .productattachedsuccessfully
+                : "Product attached successfully."
+            );
             self.handleOrderTableClose();
             self.handleGetTicketDetails(self.state.ticket_Id);
             self.setState({
@@ -1950,14 +2017,22 @@ class MyTicket extends Component {
               orderDetailsData: [],
             });
           } else {
-            NotificationManager.error("Product not attached");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.productnotattached
+                : "Product not attached."
+            );
           }
         })
         .catch((data) => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please select atleast one order.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.pleaseselectatleastoneorder
+          : "Please select atleast one order."
+      );
     }
   }
   handleGetNotesTabDetails(ticket_Id) {
@@ -2046,6 +2121,7 @@ class MyTicket extends Component {
   }
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -2060,7 +2136,11 @@ class MyTicket extends Component {
       .then(function(res) {
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
-          NotificationManager.error("No Record Found.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.label.norecordfound
+              : "No Record Found."
+          );
         }
         self.setState({ KbPopupData: KbPopupData });
       })
@@ -2236,7 +2316,11 @@ class MyTicket extends Component {
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.hanldeCommentClose2();
-              NotificationManager.success("Mail send successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard.mailsendsuccessfully
+                  : "Mail send successfully."
+              );
               self.setState({
                 mailFiled: {},
                 ReplyFileData: [],
@@ -2251,7 +2335,11 @@ class MyTicket extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Please Enter Body Section.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseenterbodysection
+            : "Please Enter Body Section."
+        );
       }
     } else if (isSend === 2) {
       // -------------Plush Icen Editor Call api--------------------
@@ -2306,7 +2394,11 @@ class MyTicket extends Component {
                 self.handleProgressBarDetails(self.state.ticket_Id);
                 self.handleTicketAssignFollowUp();
                 self.HandleEmailCollapseOpen();
-                NotificationManager.success("Mail send successfully.");
+                NotificationManager.success(
+                  TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.mailsendsuccessfully
+                    : "Mail send successfully."
+                );
                 self.setState({
                   mailFiled: {},
                   // mailSubject: "",
@@ -2320,10 +2412,19 @@ class MyTicket extends Component {
               console.log(data);
             });
         } else {
-          NotificationManager.error("Please Enter Body Section.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.pleaseenterbodysection
+              : "Please Enter Body Section."
+          );
         }
       } else {
-        NotificationManager.error("Only 2000 Charater Allow In Body Section.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard
+                .onlycharaterallowinbodysection
+            : "Only 2000 Charater Allow In Body Section."
+        );
       }
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
@@ -2373,7 +2474,10 @@ class MyTicket extends Component {
           });
       } else {
         this.setState({
-          tckcmtMSGCompulsory: "Comment field is compulsory.",
+          tckcmtMSGCompulsory:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.commentfieldiscompulsory
+              : "Comment field is compulsory.",
         });
       }
     } else if (isSend === 4) {
@@ -2424,7 +2528,10 @@ class MyTicket extends Component {
           });
       } else {
         this.setState({
-          AssignCommentCompulsory: "Comment field is compulsory.",
+          AssignCommentCompulsory:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.commentfieldiscompulsory
+              : "Comment field is compulsory.",
         });
       }
     } else {
@@ -2470,7 +2577,10 @@ class MyTicket extends Component {
           });
       } else {
         this.setState({
-          freetextCommentCompulsory: "Comment field is compulsory.",
+          freetextCommentCompulsory:
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.commentfieldiscompulsory
+              : "Comment field is compulsory.",
         });
       }
     }
@@ -3309,10 +3419,18 @@ class MyTicket extends Component {
               ? TranslationContext.alertmessage.ticketupdatedsuccessfully
               : "Ticket updated successfully."
           );
-          NotificationManager.success("Ticket Added in knowledgebase.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.ticketaddedinknowledgebase
+              : "Ticket Added in knowledgebase."
+          );
           self.props.history.push("myTicketlist");
         } else {
-          NotificationManager.success("Ticket Added in knowledgebase.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.ticketaddedinknowledgebase
+              : "Ticket Added in knowledgebase."
+          );
         }
       })
       .catch((error) => {
@@ -3321,6 +3439,7 @@ class MyTicket extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const {
       open,
       ticketDetailsData,
@@ -3382,9 +3501,15 @@ class MyTicket extends Component {
                       className="headphone"
                     />
                     <label className="id-abc-1234">
-                      ID - {ticketDetailsData.ticketID}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.id
+                        : "ID"}
+                      - {ticketDetailsData.ticketID}
                       <span className="updated-2-d-ago">
-                        Updated {ticketDetailsData.updateDate}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.updated
+                          : "Updated"}
+                        {ticketDetailsData.updateDate}
                       </span>
                     </label>
                     <a
@@ -3411,7 +3536,11 @@ class MyTicket extends Component {
                       overlayId="logout-ovrly"
                       classNames={{ modal: "historical-popup" }}
                     >
-                      <label className="lblHistorical">Ticket Historical</label>
+                      <label className="lblHistorical">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.tickethistorical
+                          : "Ticket Historical"}
+                      </label>
                       <img
                         src={CancelImg}
                         alt="cancelImg"
@@ -3423,16 +3552,35 @@ class MyTicket extends Component {
                           data={historicalDetails}
                           columns={[
                             {
-                              Header: <span>Name</span>,
+                              Header: (
+                                <span>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.name
+                                    : "Name"}
+                                </span>
+                              ),
                               accessor: "name",
                               width: 150,
                             },
                             {
-                              Header: <span>Action</span>,
+                              Header: (
+                                <span>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.action
+                                    : "Action"}
+                                </span>
+                              ),
                               accessor: "action",
                             },
                             {
-                              Header: <span>Time & Date</span>,
+                              Header: (
+                                <span>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .timedate
+                                    : "Time & Date"}
+                                </span>
+                              ),
                               accessor: "dateandTime",
                               width: 200,
                               Cell: (row) => {
@@ -3493,7 +3641,9 @@ class MyTicket extends Component {
                         }
                         onClick={this.handleSubmitTicket.bind(this)}
                       >
-                        SUBMIT
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.submit
+                          : "SUBMIT"}
                       </button>
                     </div>
                   </div>
@@ -3517,16 +3667,34 @@ class MyTicket extends Component {
                         data={SearchAssignData}
                         columns={[
                           {
-                            Header: <span>Emp Id</span>,
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.empid
+                                  : "Emp Id"}
+                              </span>
+                            ),
                             accessor: "user_ID",
                             width: 80,
                           },
                           {
-                            Header: <span>Name</span>,
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.name
+                                  : "Name"}
+                              </span>
+                            ),
                             accessor: "agentName",
                           },
                           {
-                            Header: <span>Designation</span>,
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.designation
+                                  : "Designation"}
+                              </span>
+                            ),
                             accessor: "designation",
                           },
                         ]}
@@ -3555,7 +3723,9 @@ class MyTicket extends Component {
                           className="btn btn-outline-primary"
                           onClick={this.handleReAssignCommentOpen.bind(this)}
                         >
-                          SELECT
+                          {TranslationContext !== undefined
+                            ? TranslationContext.placeholder.select
+                            : "SELECT"}
                         </button>
                       </div>
                       <div
@@ -3582,7 +3752,11 @@ class MyTicket extends Component {
               <div className="commenttextborder">
                 <div className="comment-disp">
                   <div className="Commentlabel">
-                    <label className="Commentlabel1">Add Comment</label>
+                    <label className="Commentlabel1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.addcomment
+                        : "Add Comment"}
+                    </label>
                   </div>
                   <div>
                     <img
@@ -3614,7 +3788,9 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleSkipComment.bind(this)}
                   >
-                    SKIP
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.skip
+                      : "SKIP"}
                   </button>
                 </div>
                 <div className="SendCommentBtn">
@@ -3622,7 +3798,9 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleSendMailData.bind(this, 4)}
                   >
-                    ADD
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.add
+                      : "ADD"}
                   </button>
                 </div>
               </div>
@@ -3632,7 +3810,11 @@ class MyTicket extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div style={{ padding: "15px" }}>
-                      <label className="mobile-number">Mobile Number</label>
+                      <label className="mobile-number">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.mobilenumber
+                          : "Mobile Number"}
+                      </label>
                       <br />
                       <label className="mobile-no">
                         {ticketDetailsData.customerPhoneNumber}
@@ -3666,14 +3848,20 @@ class MyTicket extends Component {
                           </div>
                           <div className="row profilemodalrow">
                             <div className="col-md-6">
-                              <label className="profilemodal-text">Name</label>
+                              <label className="profilemodal-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.name
+                                  : "Name"}
+                              </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerName}
                               </label>
                             </div>
                             <div className="col-md-6">
                               <label className="profilemodal-text">
-                                Mobile
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.mobile
+                                  : "Mobile"}
                               </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerPhoneNumber}
@@ -3682,7 +3870,11 @@ class MyTicket extends Component {
                           </div>
                           <div className="row profilemodalrow-1">
                             <div className="col-md-6">
-                              <label className="profilemodal-text">Email</label>
+                              <label className="profilemodal-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.email
+                                  : "Email"}
+                              </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.customerEmailId}
                               </label>
@@ -3690,7 +3882,9 @@ class MyTicket extends Component {
 
                             <div className="col-md-6">
                               <label className="profilemodal-text">
-                                Alternate Number
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.alternatenumber
+                                  : "Alternate Number"}
                               </label>
                               <label className="profilemodal-textval">
                                 {ticketDetailsData.altNumber}
@@ -3702,7 +3896,10 @@ class MyTicket extends Component {
                               <label className="open-tickets-box-text">
                                 {ticketDetailsData.openTicket}
                                 <small className="open-tickets-box-textval">
-                                  Open Tickets
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .opentickets
+                                    : "Open Tickets"}
                                 </small>
                               </label>
                             </div>
@@ -3710,7 +3907,10 @@ class MyTicket extends Component {
                               <label className="open-tickets-box-text">
                                 {ticketDetailsData.totalticket}
                                 <small className="open-tickets-box-textval">
-                                  Total Tickets
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .totaltickets
+                                    : "Total Tickets"}
                                 </small>
                               </label>
                             </div>
@@ -3718,7 +3918,9 @@ class MyTicket extends Component {
                           <div className="row profilemodal-row-3">
                             <img src={CustomerIcon} alt="customer-icon" />
                             <label className="full-profile-view-text">
-                              FULL PROFILE VIEW
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.fullprofileview
+                                : "FULL PROFILE VIEW"}
                             </label>
                           </div>
                         </div>
@@ -3754,17 +3956,29 @@ class MyTicket extends Component {
                                 alt="customer-icon"
                                 className="usericon"
                               />
-                              <label className="customer-text">CUSTOMER</label>
+                              <label className="customer-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.customer
+                                  : "CUSTOMER"}
+                              </label>
                             </div>
                             <div className="row">
                               <div className="col-md-6 namepad">
-                                <label className="fullna">Full Name</label>
+                                <label className="fullna">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.fullname
+                                    : "Full Name"}
+                                </label>
                                 <label className="namedi">
                                   {ticketDetailsData.customerName}
                                 </label>
                               </div>
                               <div className="col-md-6 namepad">
-                                <label className="fullna">Mobile Number</label>
+                                <label className="fullna">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.mobilenumber
+                                    : "Mobile Number"}
+                                </label>
                                 <label className="namedi">
                                   {ticketDetailsData.customerPhoneNumber}
                                 </label>
@@ -3772,7 +3986,11 @@ class MyTicket extends Component {
                             </div>
                             <div className="row">
                               <div className="col-md-12 namepad">
-                                <label className="fullna">Email ID</label>
+                                <label className="fullna">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.emailid
+                                    : "Email ID"}
+                                </label>
                                 <label className="namedi">
                                   {ticketDetailsData.customerEmailId}
                                 </label>
@@ -3795,7 +4013,9 @@ class MyTicket extends Component {
                                   style={{ marginTop: "-10px" }}
                                 />
                                 <label className="customer-text">
-                                  HISTORICAL ORDER
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.historicalorder
+                                    : "HISTORICAL ORDER"}
                                 </label>
                               </div>
 
@@ -3806,7 +4026,10 @@ class MyTicket extends Component {
                                     {
                                       Header: (
                                         <span className="historyTable-header">
-                                          Order Number
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .ordernumber
+                                            : "Order Number"}
                                         </span>
                                       ),
                                       accessor: "orderNumber",
@@ -3814,7 +4037,10 @@ class MyTicket extends Component {
                                     {
                                       Header: (
                                         <span className="historyTable-header">
-                                          Mobile Number
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .mobilenumber
+                                            : "Mobile Number"}
                                         </span>
                                       ),
                                       accessor: "mobileNumber",
@@ -3822,7 +4048,9 @@ class MyTicket extends Component {
                                     {
                                       Header: (
                                         <span className="historyTable-header">
-                                          Amount
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.amount
+                                            : "Amount"}
                                         </span>
                                       ),
                                       // accessor: "itemPrice",
@@ -3831,7 +4059,10 @@ class MyTicket extends Component {
                                     {
                                       Header: (
                                         <span className="historyTable-header">
-                                          Purchase Date
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .purchasedate
+                                            : "Purchase Date"}
                                         </span>
                                       ),
                                       accessor: "dateFormat",
@@ -3849,7 +4080,11 @@ class MyTicket extends Component {
 
                       <div className="card-space-1">
                         <label className="target-closure-date">
-                          Target Closure Date &nbsp;
+                          {TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard
+                                .targetclosuredate
+                            : "Target Closure Date"}
+                          &nbsp;
                         </label>
                         <label className="Date-target">
                           {ticketDetailsData.targetClosuredate}
@@ -3857,10 +4092,16 @@ class MyTicket extends Component {
                       </div>
                       <div className="mobilenumber-resp">
                         <span className="line-respo"></span>
-                        <label className="respo">Response</label>
+                        <label className="respo">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.response
+                            : "Response"}
+                        </label>
                         <label className="resol">
                           <span className="line-resol"></span>
-                          Resolution
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.resolution
+                            : "Resolution"}
                         </label>
                       </div>
 
@@ -3930,7 +4171,11 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Status</label>
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
+                            </label>
                             <select
                               className={
                                 this.state.isKB
@@ -3943,7 +4188,11 @@ class MyTicket extends Component {
                               onChange={this.handleDropDownChange}
                               name="ticketStatusID"
                             >
-                              <option>Ticket Status</option>
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.div.ticketstatus
+                                  : "Ticket Status"}
+                              </option>
                               {this.state.TicketStatusData !== null &&
                                 this.state.TicketStatusData.map((item, i) => (
                                   <option key={i} value={item.ticketStatusID}>
@@ -3966,7 +4215,11 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Priority</label>
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.priority
+                                : "Priority"}
+                            </label>
                             <select
                               className={
                                 this.state.isKB
@@ -3977,7 +4230,11 @@ class MyTicket extends Component {
                               onChange={this.handleDropDownChange}
                               name="priorityID"
                             >
-                              <option>Priority</option>
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.priority
+                                  : "Priority"}
+                              </option>
                               {this.state.TicketPriorityData !== null &&
                                 this.state.TicketPriorityData.map((item, i) => {
                                   if (
@@ -4003,6 +4260,14 @@ class MyTicket extends Component {
                                   }
                                 })}
                             </select>
+                            {this.state.checkPriorityDetails && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .slahasnotbeencreated
+                                  : "SLA has not been created"}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
@@ -4017,7 +4282,11 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Brand</label>
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.brand
+                                : "Brand"}
+                            </label>
                             <select
                               className={
                                 this.state.isKB
@@ -4029,7 +4298,10 @@ class MyTicket extends Component {
                               name="brandID"
                             >
                               <option className="select-category-placeholder">
-                                Select Brand
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .selectbrand
+                                  : "Select Brand"}
                               </option>
                               {this.state.BrandData !== null &&
                                 this.state.BrandData.map((item, i) => (
@@ -4056,7 +4328,11 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Category</label>
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.category
+                                : "Category"}
+                            </label>
                             <select
                               className={
                                 this.state.isKB
@@ -4068,7 +4344,9 @@ class MyTicket extends Component {
                               name="categoryID"
                             >
                               <option className="select-category-placeholder">
-                                Select Category
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectcategory
+                                  : "Select Category"}
                               </option>
                               {this.state.CategoryData !== null &&
                                 this.state.CategoryData.map((item, i) => (
@@ -4095,7 +4373,11 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Sub Category</label>
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.subcategory
+                                : "Sub Category"}
+                            </label>
                             <select
                               className={
                                 this.state.isKB
@@ -4109,7 +4391,9 @@ class MyTicket extends Component {
                               name="subCategoryID"
                             >
                               <option className="select-category-placeholder">
-                                Select Sub Category
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectsubcategory
+                                  : "Select Sub Category"}
                               </option>
                               {this.state.SubCategoryData !== null &&
                                 this.state.SubCategoryData.map((item, i) => (
@@ -4136,7 +4420,11 @@ class MyTicket extends Component {
                                 : "form-group disabled-link"
                             }
                           >
-                            <label className="label-4">Issue Type</label>
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.issuetype
+                                : "Issue Type"}
+                            </label>
 
                             <select
                               className={
@@ -4151,7 +4439,9 @@ class MyTicket extends Component {
                               name="issueTypeID"
                             >
                               <option className="select-sub-category-placeholder">
-                                Select Issue Type
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectissuetype
+                                  : "Select Issue Type"}
                               </option>
                               {this.state.IssueTypeData !== null &&
                                 this.state.IssueTypeData.map((item, i) => (
@@ -4179,7 +4469,9 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                              Channel Of Purchase
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.channelofpurchase
+                                : "Channel Of Purchase"}
                             </label>
                             <select
                               className={
@@ -4196,7 +4488,10 @@ class MyTicket extends Component {
                               // onChange={this.setChannelOfPurchaseValue}
                             >
                               <option className="select-category-placeholder">
-                                Select Channel Of Purchase
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option
+                                      .selectchannelofpurchase
+                                  : "Select Channel Of Purchase"}
                               </option>
                               {this.state.ChannelOfPurchaseData !== null &&
                                 this.state.ChannelOfPurchaseData.map(
@@ -4226,7 +4521,9 @@ class MyTicket extends Component {
                             }
                           >
                             <label className="label-4">
-                              Ticket Action Type
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.ticketactiontype
+                                : "Ticket Action Type"}
                             </label>
                             <select
                               className={
@@ -4242,7 +4539,10 @@ class MyTicket extends Component {
                               name="ticketActionTypeID"
                             >
                               <option className="select-category-placeholder">
-                                Select Ticket Action Type
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .selectticketactiontype
+                                  : "Select Ticket Action Type"}
                               </option>
                               {this.state.TicketActionTypeData !== null &&
                                 this.state.TicketActionTypeData.map(
@@ -4266,7 +4566,11 @@ class MyTicket extends Component {
                     <div style={{ padding: "15px 0" }}>
                       <div className="storebox">
                         <div className="form-group">
-                          <label className="label-4 storeSpacing">Store</label>
+                          <label className="label-4 storeSpacing">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.store
+                              : "Store"}
+                          </label>
                           <a
                             href="#!"
                             className="bata-rajouri-garden d-inline-block"
@@ -4274,7 +4578,10 @@ class MyTicket extends Component {
                           >
                             {this.state.StoreName === "" ? (
                               <label className="label-4 storeSpacing">
-                                No Store Attached
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .nostorattached
+                                  : "No Store Attached"}
                               </label>
                             ) : (
                               this.state.StoreName
@@ -4305,10 +4612,16 @@ class MyTicket extends Component {
                                   onChange={this.hanldeStatusChange.bind(this)}
                                 >
                                   <option value="1">
-                                    Customer Want to visit store
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .customerwanttovisitstore
+                                      : "Customer Want to visit store"}
                                   </option>
                                   <option value="2">
-                                    Customer Already visited store
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .customeralreadyvisitedstore
+                                      : "Customer Already visited store"}
                                   </option>
                                 </select>
                                 <div
@@ -4319,7 +4632,9 @@ class MyTicket extends Component {
                                   }}
                                 >
                                   <label className="orderdetailpopup">
-                                    Yes
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.yes
+                                      : "Yes"}
                                   </label>
                                   <div
                                     className={
@@ -4339,7 +4654,11 @@ class MyTicket extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <label className="orderdetailpopup">No</label>
+                                  <label className="orderdetailpopup">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.no
+                                      : "No"}
+                                  </label>
                                   <div
                                     className="storeplusline13"
                                     onClick={this.HandleStoreModalClose.bind(
@@ -4372,7 +4691,12 @@ class MyTicket extends Component {
                                 <input
                                   type="text"
                                   className="systemordersearch"
-                                  placeholder="Search By Store Name, Pin Code, Store Code"
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .searchbynamepincodecode
+                                      : "Search By Store Name, Pin Code, Store Code"
+                                  }
                                   value={this.state.SearchStore}
                                   name="SearchStore"
                                   autoComplete="off"
@@ -4399,7 +4723,9 @@ class MyTicket extends Component {
                                     this
                                   )}
                                 >
-                                  Attach Store
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.attachstore
+                                    : "Attach Store"}
                                 </button>
                               </div>
                             </div>
@@ -4420,7 +4746,9 @@ class MyTicket extends Component {
                                         aria-controls="storedetail-tab"
                                         aria-selected="true"
                                       >
-                                        Store Details
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.storedetails
+                                          : "Store Details"}
                                       </a>
                                     </li>
                                     {this.state.selectedStoreData.length > 0 ||
@@ -4434,7 +4762,9 @@ class MyTicket extends Component {
                                           aria-controls="selectedstore-tab"
                                           aria-selected="false"
                                         >
-                                          Selected Store
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.a.selectedstore
+                                            : "Selected Store"}
                                         </a>
                                       </li>
                                     ) : null}
@@ -4494,23 +4824,58 @@ class MyTicket extends Component {
                                         width: 20,
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Name</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storename
+                                              : "Store Name"}
+                                          </span>
+                                        ),
                                         accessor: "storeName",
                                       },
                                       {
-                                        Header: <span>Store Pin Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storepincode
+                                              : "Store Pin Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Email ID</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeemailid
+                                              : "Store Email ID"}
+                                          </span>
+                                        ),
                                         accessor: "storeEmailID",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "address",
                                       },
                                     ]}
@@ -4576,7 +4941,13 @@ class MyTicket extends Component {
                                         },
                                       },
                                       {
-                                        Header: <span>Purpose</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.purpose
+                                              : "Purpose"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 160,
                                         Cell: (row) => (
@@ -4599,29 +4970,71 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Name</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storename
+                                              : "Store Name"}
+                                          </span>
+                                        ),
                                         accessor: "storeName",
                                       },
                                       {
-                                        Header: <span>Store Pin Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storepincode
+                                              : "Store Pin Code"}
+                                          </span>
+                                        ),
                                         accessor: "pincode",
                                       },
                                       {
-                                        Header: <span>Store Email ID</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeemailid
+                                              : "Store Email ID"}
+                                          </span>
+                                        ),
                                         accessor: "storeEmailID",
                                         minWidth: 190,
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "address",
                                         minWidth: 140,
                                       },
                                       {
-                                        Header: <span>Visit Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .visitdate
+                                              : "Visit Date"}
+                                          </span>
+                                        ),
                                         accessor: "storeVisitDate",
                                         minWidth: 150,
                                         Cell: (row) => {
@@ -4678,7 +5091,11 @@ class MyTicket extends Component {
                           </Modal>
                         </div>
                         <div className="">
-                          <label className="label-4">Product</label>
+                          <label className="label-4">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.product
+                              : "Product"}
+                          </label>
                           <a
                             href="#!"
                             className="bata-rajouri-garden d-inline-block"
@@ -4686,7 +5103,9 @@ class MyTicket extends Component {
                           >
                             {this.state.ProductName === "" ? (
                               <label className="label-4">
-                                No Product Attached
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.noproductattached
+                                  : "No Product Attached"}
                               </label>
                             ) : (
                               this.state.ProductName
@@ -4717,7 +5136,12 @@ class MyTicket extends Component {
                                 style={{ height: "54px" }}
                               >
                                 <label style={{ marginTop: "7px" }}>
-                                  <b>Customer Want to attach order</b>
+                                  <b>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .customerwanttoattachorder
+                                      : "Customer Want to attach order"}
+                                  </b>
                                 </label>
                                 <div
                                   className="claimplus"
@@ -4745,7 +5169,9 @@ class MyTicket extends Component {
                             >
                               <div className="col-md-6">
                                 <label className="orderdetailpopup">
-                                  Order Details
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.orderdetails
+                                    : "Order Details"}
                                 </label>
                               </div>
                               <div className="col-md-3">
@@ -4756,7 +5182,9 @@ class MyTicket extends Component {
                                   }}
                                 >
                                   <label className="orderdetailpopup">
-                                    Order
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.order
+                                      : "Order"}
                                   </label>
                                   <div
                                     className={
@@ -4779,7 +5207,9 @@ class MyTicket extends Component {
                                     </div>
                                   </div>
                                   <label className="orderdetailpopup">
-                                    Item
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.item
+                                      : "Item"}
                                   </label>
                                 </div>
                               </div>
@@ -4793,7 +5223,12 @@ class MyTicket extends Component {
                                 <input
                                   type="text"
                                   className="searchtextpopup"
-                                  placeholder="Search Order"
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .searchorderbyordernumber
+                                      : "Search Order By Order Number"
+                                  }
                                   name="orderNumber"
                                   value={this.state.orderNumber}
                                   onChange={this.handleNoteOnChange}
@@ -4828,7 +5263,9 @@ class MyTicket extends Component {
                                         aria-selected="true"
                                         onClick={this.handleSetDataTab}
                                       >
-                                        Product Details
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.productdetails
+                                          : "Product Details"}
                                       </a>
                                     </li>
                                     {this.state.SelectedAllOrder.length > 0 ? (
@@ -4842,7 +5279,10 @@ class MyTicket extends Component {
                                           aria-selected="false"
                                           onClick={this.handleSetDataTab}
                                         >
-                                          Selected Product
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.a
+                                                .selectedproduct
+                                            : "Selected Product"}
                                         </a>
                                       </li>
                                     ) : null}
@@ -4860,7 +5300,10 @@ class MyTicket extends Component {
                                         this
                                       )}
                                     >
-                                      Attach Product
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .attachproduct
+                                        : "Attach Product"}
                                     </button>
                                   </div>
                                   {/* ) : null} */}
@@ -4918,37 +5361,92 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 150,
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                         minWidth: 120,
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5022,37 +5520,92 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 150,
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                         minWidth: 120,
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5119,34 +5672,76 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Number</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlenumber
+                                                      : "Article Number"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleNumber",
                                                 minWidth: 140,
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Name</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlename
+                                                      : "Article Name"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleName",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article MRP</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .articlemrp
+                                                      : "Article MRP"}
+                                                  </span>
                                                 ),
                                                 accessor: "itemPrice",
                                               },
                                               {
-                                                Header: <span>Price Paid</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .pricepaid
+                                                      : "Price Paid"}
+                                                  </span>
+                                                ),
                                                 accessor: "pricePaid",
                                               },
                                               {
-                                                Header: <span>Discount</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .discount
+                                                      : "Discount"}
+                                                  </span>
+                                                ),
                                                 accessor: "discount",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Required Size</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .requiredsize
+                                                      : "Required Size"}
+                                                  </span>
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: (row) => {
@@ -5264,37 +5859,92 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                         minWidth: 150,
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                         minWidth: 120,
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5368,35 +6018,90 @@ class MyTicket extends Component {
                                         ),
                                       },
                                       {
-                                        Header: <span>Invoice Number</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
                                         accessor: "invoiceNumber",
                                       },
                                       {
-                                        Header: <span>Invoice Date</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
                                         accessor: "dateFormat",
                                       },
                                       {
-                                        Header: <span>Item Count</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
                                         accessor: "itemCount",
                                       },
                                       {
-                                        Header: <span>Item Price</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
                                         accessor: "ordeItemPrice",
                                       },
                                       {
-                                        Header: <span>Price Paid</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
                                         accessor: "orderPricePaid",
                                       },
                                       {
-                                        Header: <span>Store Code</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
                                         accessor: "storeCode",
                                       },
                                       {
-                                        Header: <span>Store Addres</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
                                         accessor: "storeAddress",
                                       },
                                       {
-                                        Header: <span>Discount</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
                                         accessor: "discount",
                                       },
                                     ]}
@@ -5460,34 +6165,76 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Number</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlenumber
+                                                      : "Article Number"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleNumber",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Name</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlename
+                                                      : "Article Name"}
+                                                  </span>
                                                 ),
                                                 accessor: "articleName",
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article MRP</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .articlemrp
+                                                      : "Article MRP"}
+                                                  </span>
                                                 ),
                                                 accessor: "itemPrice",
                                               },
                                               {
-                                                Header: <span>Price Paid</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .pricepaid
+                                                      : "Price Paid"}
+                                                  </span>
+                                                ),
                                                 accessor: "pricePaid",
                                               },
                                               {
-                                                Header: <span>Discount</span>,
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .discount
+                                                      : "Discount"}
+                                                  </span>
+                                                ),
                                                 accessor: "discount",
                                                 sortable: true,
                                               },
                                               {
                                                 Header: (
-                                                  <span>Required Size</span>
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .requiredsize
+                                                      : "Required Size"}
+                                                  </span>
                                                 ),
                                                 accessor: "requireSize",
                                                 Cell: (row) => {
@@ -5547,7 +6294,10 @@ class MyTicket extends Component {
               <div className="rectangle-3 text-editor">
                 <div className="row mt-2">
                   <label className="ticket-title-where mb-0">
-                    Ticket Title:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.tickettitle
+                      : "Ticket Title"}
+                    :
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -5557,7 +6307,10 @@ class MyTicket extends Component {
                 </div>
                 <div className="row mt-3">
                   <label className="ticket-title-where mb-0">
-                    Ticket Details:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.ticketdetails
+                      : "Ticket Details"}
+                    :
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -5780,7 +6533,10 @@ class MyTicket extends Component {
                         data-toggle="dropdown"
                         onClick={this.handleTemplateBindByIssueType.bind(this)}
                       >
-                        <FontAwesomeIcon icon={faCalculator} /> Template
+                        <FontAwesomeIcon icon={faCalculator} />{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.template
+                          : "Template"}
                       </button>
                       <ul className="dropdown-menu">
                         {this.state.CkEditorTemplateData !== null &&
@@ -5806,7 +6562,11 @@ class MyTicket extends Component {
                         value="0"
                         onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
                       >
-                        <option value="0">Users</option>
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.link.users
+                            : "Users"}
+                        </option>
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
@@ -5821,7 +6581,11 @@ class MyTicket extends Component {
                         value="0"
                         onChange={this.setPlaceholderValue.bind(this)}
                       >
-                        <option value="0">Placeholders</option>
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.link.placeholders
+                            : "Placeholders"}
+                        </option>
                         {this.state.placeholderData !== null &&
                           this.state.placeholderData.map((item, i) => (
                             <option key={i} value={item.mailParameterID}>
@@ -5947,7 +6711,11 @@ class MyTicket extends Component {
                                   htmlFor="fil-open"
                                   style={{ paddingLeft: "25px" }}
                                 >
-                                  <span>Inform Store</span>
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.informstore
+                                      : "Inform Store"}
+                                  </span>
                                 </label>
                               </div>
                             </li>
@@ -5975,7 +6743,10 @@ class MyTicket extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
+                                {this.state.fileText}{" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.files
+                                  : "files"}
                               </label>
                             </li>
                             <li style={{ float: "right" }}>
@@ -5984,7 +6755,9 @@ class MyTicket extends Component {
                                 type="button"
                                 onClick={this.handleSendMailData.bind(this, 2)}
                               >
-                                Send
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.send
+                                  : "Send"}
                               </button>
                             </li>
                           </ul>
@@ -6009,9 +6782,16 @@ class MyTicket extends Component {
                               alt="KnowledgeLogo"
                               className="knoim1"
                             />
-                            KNOWLEGE BASE
+                            {TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard
+                                  .knowlegebase
+                              : "KNOWLEGE BASE"}
                           </h5>
-                          <p>Message</p>
+                          <p>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.title.message
+                              : "Message"}
+                          </p>
 
                           <div id="kb-accordion">
                             {this.state.KbPopupData !== null &&
@@ -6049,7 +6829,9 @@ class MyTicket extends Component {
                                           alt=""
                                           className="copyblue-kb"
                                         />
-                                        Copy
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.copy
+                                          : "Copy"}
                                       </a>
                                     </CopyToClipboard>
                                     {this.state.copied ? (
@@ -6057,7 +6839,9 @@ class MyTicket extends Component {
                                         className="ml-2"
                                         style={{ color: "red" }}
                                       >
-                                        Copied.
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.copied
+                                          : "Copied."}
                                       </span>
                                     ) : null}
                                   </div>
@@ -6074,14 +6858,22 @@ class MyTicket extends Component {
                             className="cancalImg-kb"
                             onClick={this.HandleKbLinkModalClose.bind(this)}
                           />
-                          <h5>KB TEMPLATE</h5>
+                          <h5>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.h5.kbtemplate
+                              : "KB TEMPLATE"}
+                          </h5>
                           <div className="form-group">
                             <select
                               value={this.state.selectedCategoryKB}
                               onChange={this.setCategoryValueKB}
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
-                              <option>Category</option>
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.category
+                                  : "Category"}
+                              </option>
                               {this.state.CategoryData !== null &&
                                 this.state.CategoryData.map((item, i) => (
                                   <option key={i} value={item.categoryID}>
@@ -6096,7 +6888,11 @@ class MyTicket extends Component {
                               onChange={this.setSubCategoryValueKB}
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
-                              <option>Sub-Category</option>
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.subcategory
+                                  : "Sub Category"}
+                              </option>
                               {this.state.SubCategoryData !== null &&
                                 this.state.SubCategoryData.map((item, i) => (
                                   <option key={i} value={item.subCategoryID}>
@@ -6111,7 +6907,11 @@ class MyTicket extends Component {
                               onChange={this.setIssueTypeValueKB}
                               className="kblinkrectangle-9 select-category-placeholderkblink"
                             >
-                              <option>Type</option>
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.type
+                                  : "Type"}
+                              </option>
                               {this.state.IssueTypeData !== null &&
                                 this.state.IssueTypeData.map((item, i) => (
                                   <option key={i} value={item.issueTypeID}>
@@ -6125,7 +6925,9 @@ class MyTicket extends Component {
                               onClick={this.handleKbLinkPopupSearch}
                               className="kblink-search"
                             >
-                              SEARCH
+                              {TranslationContext !== undefined
+                                ? TranslationContext.small.search
+                                : "SEARCH"}
                             </button>
                           </div>
                           <div style={{ marginTop: "275px" }}>
@@ -6133,7 +6935,9 @@ class MyTicket extends Component {
                               href="#!"
                               className="copyblue-kbtext d-inline-block"
                             >
-                              VIEW POLICY
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewpolicy
+                                : "VIEW POLICY"}
                               <img
                                 src={ViewBlue}
                                 alt="viewpolicy"
@@ -6214,7 +7018,10 @@ class MyTicket extends Component {
                             aria-controls="Message-tab"
                             aria-selected="true"
                           >
-                            Message:{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.title.message
+                              : "Message"}
+                            :
                             {this.state.tabCounts.messages < 9
                               ? "0" + this.state.tabCounts.messages
                               : this.state.tabCounts.messages}
@@ -6231,7 +7038,10 @@ class MyTicket extends Component {
                             name="Notes"
                             onClick={this.handleGetTabsName}
                           >
-                            Notes:{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.notes
+                              : "Notes"}
+                            :
                             {this.state.Notesdetails.length < 9
                               ? "0" + this.state.Notesdetails.length
                               : this.state.Notesdetails.length}
@@ -6248,7 +7058,10 @@ class MyTicket extends Component {
                             name="Task"
                             onClick={this.handleGetTabsName}
                           >
-                            Task:{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.task
+                              : "Task"}
+                            :
                             {this.state.tabCounts.task < 9
                               ? "0" + this.state.tabCounts.task
                               : this.state.tabCounts.task}
@@ -6265,7 +7078,10 @@ class MyTicket extends Component {
                             name="Claim"
                             onClick={this.handleGetTabsName}
                           >
-                            Claim:{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claim
+                              : "Claim"}
+                            :
                             {this.state.tabCounts.claim < 9
                               ? "0" + this.state.tabCounts.claim
                               : this.state.tabCounts.claim}
@@ -6304,13 +7120,25 @@ class MyTicket extends Component {
                   >
                     <div className="row message-header">
                       <div className="col-12 col-xs-12 col-sm-3">
-                        <label className="user-label">User</label>
+                        <label className="user-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.user
+                            : "User"}
+                        </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-7">
-                        <label className="message-label">Message</label>
+                        <label className="message-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.title.message
+                            : "Message"}
+                        </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-2">
-                        <label className="action-label">Action</label>
+                        <label className="action-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.action
+                            : "Action"}
+                        </label>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
@@ -6326,7 +7154,9 @@ class MyTicket extends Component {
                           className="comment-text"
                           onClick={this.handleFreeTextCommentOpen.bind(this)}
                         >
-                          Comment
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.comment
+                            : "Comment"}
                         </a>
                       </div>
                     </div>
@@ -6410,7 +7240,12 @@ class MyTicket extends Component {
                                                     marginLeft: "7px",
                                                   }}
                                                 >
-                                                  Reassign to &nbsp;
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .reassignto
+                                                    : "Reassign to"}{" "}
+                                                  &nbsp;
                                                   <span className="solved-by-naman-r">
                                                     {
                                                       details
@@ -6570,7 +7405,10 @@ class MyTicket extends Component {
                                                     .mailID
                                                 )}
                                               >
-                                                Reply
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a.reply
+                                                  : "Reply"}
                                               </a>
                                             ) : null}
 
@@ -6583,7 +7421,9 @@ class MyTicket extends Component {
                                                   .mailID
                                               )}
                                             >
-                                              Comment
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.comment
+                                                : "Comment"}
                                             </a>
                                           </div>
                                           <div
@@ -6709,7 +7549,11 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.comment
+                                : "Comment"}
+                            </label>
                           </div>
                           <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
                             <select
@@ -6720,7 +7564,11 @@ class MyTicket extends Component {
                                 "comment"
                               )}
                             >
-                              <option value="0">Users</option>
+                              <option value="0">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.users
+                                  : "Users"}
+                              </option>
                               {this.state.AssignToData !== null &&
                                 this.state.AssignToData.map((item, i) => (
                                   <option key={i} value={item.userID}>
@@ -6767,7 +7615,9 @@ class MyTicket extends Component {
                             className="SendCommentBtn1"
                             onClick={this.handleSendMailData.bind(this, 3)}
                           >
-                            SEND
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.send
+                              : "SEND"}
                           </button>
                         </div>
                       </div>
@@ -6866,7 +7716,11 @@ class MyTicket extends Component {
                                   "rply"
                                 )}
                               >
-                                <option value="0">Users</option>
+                                <option value="0">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.link.users
+                                    : "Users"}
+                                </option>
                                 {this.state.AssignToData !== null &&
                                   this.state.AssignToData.map((item, i) => (
                                     <option key={i} value={item.userID}>
@@ -6902,7 +7756,9 @@ class MyTicket extends Component {
                                   )}
                                 >
                                   <FontAwesomeIcon icon={faCalculator} />
-                                  Template
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.template
+                                    : "Template"}
                                 </button>
                                 <ul className="dropdown-menu">
                                   {this.state.ReplyCKEditoertemplat !== null &&
@@ -7001,7 +7857,11 @@ class MyTicket extends Component {
                                     htmlFor="custRply"
                                     style={{ paddingLeft: "25px" }}
                                   >
-                                    <span>Inform Store</span>
+                                    <span>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.informstore
+                                        : "Inform Store"}
+                                    </span>
                                   </label>
                                 </div>
                               </li>
@@ -7031,7 +7891,11 @@ class MyTicket extends Component {
                                   </label>
                                 </span>
                                 <label style={{ color: "#2561a8" }}>
-                                  {this.state.ReplyfileText} files
+                                  {this.state.ReplyfileText}{" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .files
+                                    : "files"}
                                 </label>
                               </li>
                               <li className="w-100"></li>
@@ -7103,7 +7967,9 @@ class MyTicket extends Component {
                         type="button"
                         onClick={this.handleSendMailData.bind(this, 1)}
                       >
-                        Send
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.send
+                          : "Send"}
                       </button>
                     </Modal>
                     <Modal
@@ -7119,7 +7985,11 @@ class MyTicket extends Component {
                       <div className="commenttextborder">
                         <div className="comment-disp">
                           <div className="Commentlabel">
-                            <label className="Commentlabel1">Comment</label>
+                            <label className="Commentlabel1">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.comment
+                                : "Comment"}
+                            </label>
                           </div>
                           <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
                             <select
@@ -7130,7 +8000,11 @@ class MyTicket extends Component {
                                 "freeCmd"
                               )}
                             >
-                              <option value="0">Users</option>
+                              <option value="0">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.users
+                                  : "Users"}
+                              </option>
                               {this.state.AssignToData !== null &&
                                 this.state.AssignToData.map((item, i) => (
                                   <option key={i} value={item.userID}>
@@ -7178,7 +8052,9 @@ class MyTicket extends Component {
                             className="SendCommentBtn1"
                             onClick={this.handleSendMailData.bind(this)}
                           >
-                            SEND
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.send
+                              : "SEND"}
                           </button>
                         </div>
                       </div>
@@ -7233,7 +8109,11 @@ class MyTicket extends Component {
                               ? "Add-Notes-textarea iskbticket"
                               : "Add-Notes-textarea"
                           }
-                          placeholder="Add Notes"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.addnotes
+                              : "Add Notes"
+                          }
                           name="NoteAddComment"
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
@@ -7258,7 +8138,9 @@ class MyTicket extends Component {
                           onClick={this.handleNoteAddComments.bind(this)}
                           style={{ marginTop: "5px" }}
                         >
-                          ADD COMMENT
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.addcomments
+                            : "ADD COMMENT"}
                         </button>
                       </div>
 
@@ -7312,13 +8194,21 @@ class MyTicket extends Component {
                 </div>
                 <div className="row profilemodalrow">
                   <div className="col-md-6">
-                    <label className="profilemodal-text">Name</label>
+                    <label className="profilemodal-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.name
+                        : "Name"}
+                    </label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.customerName}
                     </label>
                   </div>
                   <div className="col-md-6">
-                    <label className="profilemodal-text">Mobile</label>
+                    <label className="profilemodal-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.mobile
+                        : "Mobile"}
+                    </label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.customerPhoneNumber}
                     </label>
@@ -7326,7 +8216,11 @@ class MyTicket extends Component {
                 </div>
                 <div className="row profilemodalrow-1">
                   <div className="col-md-6">
-                    <label className="profilemodal-text">Email</label>
+                    <label className="profilemodal-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.email
+                        : "Email"}
+                    </label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.customerEmailId}
                     </label>
@@ -7334,7 +8228,9 @@ class MyTicket extends Component {
 
                   <div className="col-md-6">
                     <label className="profilemodal-text">
-                      Alternate Number
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.alternatenumber
+                        : "Alternate Number"}
                     </label>
                     <label className="profilemodal-textval">
                       {ticketDetailsData.altNumber}
@@ -7346,7 +8242,9 @@ class MyTicket extends Component {
                     <label className="open-tickets-box-text">
                       {ticketDetailsData.openTicket}
                       <small className="open-tickets-box-textval">
-                        Open Tickets
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard.opentickets
+                          : "Open Tickets"}
                       </small>
                     </label>
                   </div>
@@ -7354,7 +8252,9 @@ class MyTicket extends Component {
                     <label className="open-tickets-box-text">
                       {ticketDetailsData.totalticket}
                       <small className="open-tickets-box-textval">
-                        Total Tickets
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard.totaltickets
+                          : "Total Tickets"}
                       </small>
                     </label>
                   </div>
@@ -7362,7 +8262,9 @@ class MyTicket extends Component {
                 <div className="row profilemodal-row-3">
                   <img src={CustomerIcon} alt="customer-icon" />
                   <label className="full-profile-view-text">
-                    FULL PROFILE VIEW
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.fullprofileview
+                      : "FULL PROFILE VIEW"}
                   </label>
                 </div>
               </div>
@@ -7379,7 +8281,13 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
                     </label>
                     <span>
                       <img
@@ -7394,7 +8302,13 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
                     </label>
                     <span>
                       <img
@@ -7409,7 +8323,13 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
                     </label>
                     <span>
                       <img
@@ -7424,7 +8344,13 @@ class MyTicket extends Component {
                       <img src={Ticket} alt="Ticket" className="Ticket" />
                     </span>
                     <label className="Subject">
-                      Subject: Need to change m...
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
                     </label>
                     <span>
                       <img
@@ -7435,7 +8361,11 @@ class MyTicket extends Component {
                     </span>
                   </li>
                   <li className="SubL">
-                    <label className="More">More</label>
+                    <label className="More">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.more
+                        : "More"}
+                    </label>
                     <span>
                       <img src={MoreUp} alt="Cancel" className="MoreUp" />
                     </span>
@@ -7460,7 +8390,10 @@ class MyTicket extends Component {
                 </div>
                 <div className="Commentlabel">
                   <p className="Commentlabel1 mb-4 text-center">
-                    Add this ticket in Knowledge Base ?
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .addthisticketinknowledgebase
+                      : "Add this ticket in Knowledge Base ?"}
                   </p>
                 </div>
                 <div className="SendCommentBtn mb-0" style={{ float: "left" }}>
@@ -7468,7 +8401,9 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleYesNoClick.bind(this, false)}
                   >
-                    No
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.no
+                      : "No"}
                   </button>
                 </div>
                 <div className="SendCommentBtn mb-0">
@@ -7476,7 +8411,9 @@ class MyTicket extends Component {
                     className="SendCommentBtn1"
                     onClick={this.handleYesNoClick.bind(this, true)}
                   >
-                    Yes
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.yes
+                      : "Yes"}
                   </button>
                 </div>
               </div>

@@ -45,6 +45,8 @@ import { authHeader } from "../helpers/authHeader";
 import { CSVLink } from "react-csv";
 import { withRouter } from "react-router";
 import matchSorter from "match-sorter";
+import * as translationHI from "../translations/hindi";
+import * as translationMA from "../translations/marathi";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -286,6 +288,7 @@ class MyTicketList extends Component {
       spriorityFilterCheckbox: "",
       screatedOnFilterCheckbox: "",
       sassignedToFilterCheckbox: "",
+      translateLanguage: {},
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -364,6 +367,14 @@ class MyTicketList extends Component {
 
     this.handleGetDepartmentList();
     this.handleGetModulesNames();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   componentDidUpdate() {
@@ -815,7 +826,10 @@ class MyTicketList extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
-            TranslationContext!==undefined?TranslationContext.alertmessage.clearfollowupnotificationsuccessfully:"Clear Follow up notification successfully."
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage
+                  .clearfollowupnotificationsuccessfully
+              : "Clear Follow up notification successfully."
           );
           self.handleSearchTicketAllTabCount();
           self.handleSearchTicket(1003);
@@ -954,7 +968,11 @@ class MyTicketList extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.scheduledsuccessfully:"Scheduled successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.scheduledsuccessfully
+              : "Scheduled successfully."
+          );
           self.setState({
             scheduleRequired: "",
           });
@@ -1137,7 +1155,11 @@ class MyTicketList extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketsassignedsuccessfully:"Tickets assigned successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.ticketsassignedsuccessfully
+                : "Tickets assigned successfully."
+            );
             self.handleSearchTicket();
           }
         })
@@ -1742,8 +1764,10 @@ class MyTicketList extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              TranslationContext!==undefined?TranslationContext.alertmessage.yoursearchhasbeensavedsuccessfully:"Your search has been saved successfully."
-              
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage
+                    .yoursearchhasbeensavedsuccessfully
+                : "Your search has been saved successfully."
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -1795,7 +1819,10 @@ class MyTicketList extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            TranslationContext!==undefined?TranslationContext.alertmessage.savedsearchdatadeletedsuccessfully:"Saved search data deleted successfully."
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage
+                  .savedsearchdatadeletedsuccessfully
+              : "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -2798,7 +2825,6 @@ class MyTicketList extends Component {
         if (sticketStatusFilterCheckbox.includes("all")) {
           sticketStatusFilterCheckbox = "";
         } else {
-          debugger;
           if (this.state.sortColumnName === "status") {
             for (let i = 0; i < this.state.sortTicketData.length; i++) {
               sticketStatusFilterCheckbox +=
@@ -3033,8 +3059,6 @@ class MyTicketList extends Component {
         creationColor: "sort-column",
       });
     }
-
-    debugger;
 
     this.setState({
       tempSearchTicketData: itemsArray,
@@ -3868,9 +3892,14 @@ class MyTicketList extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { DraftDetails, SearchAssignData } = this.state;
     const TitleChange = this.state.collapseSearch
-      ? "Close Search"
+      ? TranslationContext !== undefined
+        ? TranslationContext.small.closesearch
+        : "Close Search"
+      : TranslationContext !== undefined
+      ? TranslationContext.small.searchtickets
       : "Search Tickets";
 
     const ImgChange = this.state.collapseSearch ? (
@@ -3900,7 +3929,11 @@ class MyTicketList extends Component {
                   <a className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div
                   className="d-flex"
@@ -3909,11 +3942,19 @@ class MyTicketList extends Component {
                   <a className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -4080,7 +4121,11 @@ class MyTicketList extends Component {
               </div>
 
               <div className="filter-type filter-color">
-                <p>FILTER BY COLOR</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbycolor
+                    : "FILTER BY COLOR"}
+                </p>
 
                 <div className="filter-checkbox">
                   <input
@@ -4161,7 +4206,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Escalation");
                   }}
                 >
-                  Escalation:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.escalation
+                    : "Escalation"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byEscalationCount < 9
                       ? "0" + this.state.byEscalationCount
@@ -4182,7 +4230,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("New");
                   }}
                 >
-                  New:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.new
+                    : "New"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byNewCount < 9
                       ? "0" + this.state.byNewCount
@@ -4203,7 +4254,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Open");
                   }}
                 >
-                  Open:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.open
+                    : "Open"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byOpenCount < 9
                       ? "0" + this.state.byOpenCount
@@ -4224,7 +4278,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Resolved");
                   }}
                 >
-                  Resolved:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.resolved
+                    : "Resolved"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
@@ -4246,7 +4303,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Closed");
                   }}
                 >
-                  Closed:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.closed
+                    : "Closed"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byClosedCount < 9
                       ? "0" + this.state.byClosedCount
@@ -4267,7 +4327,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("ReOpen");
                   }}
                 >
-                  Reopen:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.reopen
+                    : "Reopen"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byReOpenCount < 9
                       ? "0" + this.state.byReOpenCount
@@ -4292,7 +4355,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Reassigned");
                   }}
                 >
-                  Reassigned by me:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.reassigned
+                    : "Reassigned by me"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byReassignedCount < 9
                       ? "0" + this.state.byReassignedCount
@@ -4313,7 +4379,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("All");
                   }}
                 >
-                  All:{" "}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.all
+                    : "All"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byAllCount < 9
                       ? "0" + this.state.byAllCount
@@ -4334,7 +4403,10 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("FollowUp");
                   }}
                 >
-                  Follow Up:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.followup
+                    : "Follow Up"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byFollowUpCount < 9
                       ? "0" + this.state.byFollowUpCount
@@ -4352,7 +4424,10 @@ class MyTicketList extends Component {
                   aria-selected="false"
                   onClick={this.handleGetDraftDetails}
                 >
-                  Draft:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.draft
+                    : "Draft"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.draftCountStatus < 9
                       ? "0" + this.state.draftCountStatus
@@ -4388,7 +4463,11 @@ class MyTicketList extends Component {
                 type="button"
                 onClick={this.hanleChange}
               >
-                <label className="add-tickets">ADD TICKETS</label>
+                <label className="add-tickets">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.addtickets
+                    : "ADD TICKETS"}
+                </label>
               </button>
             </div>
 
@@ -4432,7 +4511,9 @@ class MyTicketList extends Component {
                                       aria-selected="true"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Date
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bydate
+                                        : "By Date"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4445,7 +4526,9 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Customer Type
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bycustomertype
+                                        : "By Customer Type"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4458,7 +4541,9 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Ticket Type
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bytickettype
+                                        : "By Ticket Type"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4471,7 +4556,9 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      By Category
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bycategory
+                                        : "By Category"}
                                     </a>
                                   </li>
                                   <li className="nav-item">
@@ -4484,20 +4571,26 @@ class MyTicketList extends Component {
                                       aria-selected="false"
                                       onClick={this.handleAdvSearchFlag}
                                     >
-                                      All
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.all
+                                        : "All"}
                                     </a>
                                   </li>
                                 </ul>
                                 <div className="save-view-search">
                                   <button onClick={this.onOpenModal}>
-                                    Save Search
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.savesearch
+                                      : "Save Search"}
                                   </button>
                                   <button
                                     type="button"
                                     className="btn-inv"
                                     onClick={this.ViewSearchData.bind(this, 0)}
                                   >
-                                    View Search
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.viewsearch
+                                      : "View Search"}
                                   </button>
                                 </div>
                               </div>
@@ -4509,12 +4602,22 @@ class MyTicketList extends Component {
                                 overlayId="save-search-ovrly"
                               >
                                 <div className="save-search">
-                                  <p>SAVE SEARCH</p>
+                                  <p>
+                                    {" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.savesearch
+                                      : "SAVE SEARCH"}
+                                  </p>
                                 </div>
                                 <div className="search-name">
                                   <input
                                     type="search"
-                                    placeholder="Give name to your search"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .givenametoyoursearch
+                                        : "Give name to your search"
+                                    }
                                     name="SearchName"
                                     value={this.state.SearchName}
                                     onChange={this.handelOnchangeData}
@@ -4534,13 +4637,24 @@ class MyTicketList extends Component {
                                     type="button"
                                     onClick={this.SaveSearchData.bind(this)}
                                   >
-                                    Save
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.save
+                                      : "Save"}
                                   </button>
                                 </div>
                                 <div className="search-names">
                                   <div className="names-title">
-                                    <p>Search Name</p>
-                                    <p className="mar-comp">Action</p>
+                                    <p>
+                                      {" "}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.searchname
+                                        : "Search Name"}
+                                    </p>
+                                    <p className="mar-comp">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.action
+                                        : "Action"}
+                                    </p>
                                   </div>
                                   <ul>
                                     {/* <li> */}
@@ -4560,7 +4674,11 @@ class MyTicketList extends Component {
                                                   item.searchParamID
                                                 )}
                                               >
-                                                APPLY
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a.apply
+                                                  : "APPLY"}
+                                                F
                                               </a>
                                               <a
                                                 href="#!"
@@ -4604,7 +4722,12 @@ class MyTicketList extends Component {
                                           onChange={this.handleByDateCreate.bind(
                                             this
                                           )}
-                                          placeholderText="Creation Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
+                                                  .creationdate
+                                              : "Creation Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -4619,7 +4742,12 @@ class MyTicketList extends Component {
                                           onChange={this.handleChangeSelectDate.bind(
                                             this
                                           )}
-                                          placeholderText="Last Updated Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .lastupdateddate
+                                              : "Last Updated Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -4636,7 +4764,12 @@ class MyTicketList extends Component {
                                           }
                                           onChange={this.handleSlaDueByDate}
                                         >
-                                          <option value="0">SLA Due</option>
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard.slaDue
+                                              : "SLA Due"}
+                                          </option>
                                           {this.state.SlaDueData !== null &&
                                             this.state.SlaDueData.map(
                                               (item, i) => (
@@ -4661,7 +4794,10 @@ class MyTicketList extends Component {
                                           }
                                         >
                                           <option value="0">
-                                            Ticket Status
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.div
+                                                  .ticketstatus
+                                              : "Ticket Status"}
                                           </option>
                                           {this.state.TicketStatusData !==
                                             null &&
@@ -4692,7 +4828,12 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Customer Mobile No"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .customermobilenumber
+                                              : "Customer Mobile No"
+                                          }
                                           name="MobileNoByCustType"
                                           value={this.state.MobileNoByCustType}
                                           onChange={this.handelOnchangeData}
@@ -4704,7 +4845,12 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="no-bg"
-                                          placeholder="Customer Email ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .customeremailid
+                                              : "Customer Email ID"
+                                          }
                                           name="EmailIdByCustType"
                                           autoComplete="off"
                                           value={this.state.EmailIdByCustType}
@@ -4715,7 +4861,12 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="no-bg"
-                                          placeholder="Ticket ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .ticketid
+                                              : "Ticket ID"
+                                          }
                                           name="TicketIdByCustType"
                                           maxLength={9}
                                           autoComplete="off"
@@ -4734,7 +4885,10 @@ class MyTicketList extends Component {
                                           }
                                         >
                                           <option value="0">
-                                            Ticket Status
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.div
+                                                  .ticketstatus
+                                              : "Ticket Status"}
                                           </option>
                                           {this.state.TicketStatusData !==
                                             null &&
@@ -4766,7 +4920,12 @@ class MyTicketList extends Component {
                                           value={this.state.selectedPriority}
                                           onChange={this.setPriorityValue}
                                         >
-                                          <option value="0">Priority</option>
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .priority
+                                              : "Priority"}
+                                          </option>
                                           {this.state.TicketPriorityData !==
                                             null &&
                                             this.state.TicketPriorityData.map(
@@ -4792,7 +4951,10 @@ class MyTicketList extends Component {
                                           }
                                         >
                                           <option value="0">
-                                            Ticket Status
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.div
+                                                  .ticketstatus
+                                              : "Ticket Status"}
                                           </option>
                                           {this.state.TicketStatusData !==
                                             null &&
@@ -4820,7 +4982,12 @@ class MyTicketList extends Component {
                                             options={
                                               this.state.ChannelOfPurchaseData
                                             }
-                                            placeholder="Channel Of Purchase"
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .channelofpurchase
+                                                : "Channel Of Purchase"
+                                            }
                                             // menuIsOpen={true}
                                             closeMenuOnSelect={false}
                                             onChange={this.setChannelOfPurchaseValue.bind(
@@ -4847,7 +5014,12 @@ class MyTicketList extends Component {
                                             options={
                                               this.state.TicketActionTypeData
                                             }
-                                            placeholder="Ticket Action Type"
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .ticketactiontype
+                                                : "Ticket Action Type"
+                                            }
                                             // menuIsOpen={true}
                                             closeMenuOnSelect={false}
                                             onChange={this.setTicketActionTypeValue.bind(
@@ -4878,7 +5050,12 @@ class MyTicketList extends Component {
                                           value={this.state.selectedCategory}
                                           onChange={this.setCategoryValue}
                                         >
-                                          <option value={0}>Category</option>
+                                          <option value={0}>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .category
+                                              : "Category"}
+                                          </option>
                                           {this.state.CategoryData !== null &&
                                             this.state.CategoryData.map(
                                               (item, i) => (
@@ -4898,7 +5075,10 @@ class MyTicketList extends Component {
                                           onChange={this.setSubCategoryValue}
                                         >
                                           <option value={0}>
-                                            Sub Category
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .subcategory
+                                              : "Sub Category"}
                                           </option>
                                           {this.state.SubCategoryData !==
                                             null &&
@@ -4919,7 +5099,12 @@ class MyTicketList extends Component {
                                           value={this.state.selectedIssueType}
                                           onChange={this.setIssueTypeValue}
                                         >
-                                          <option value="0">Issue Type</option>
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .issuetype
+                                              : "Issue Type"}
+                                          </option>
                                           {this.state.IssueTypeData !== null &&
                                             this.state.IssueTypeData.map(
                                               (item, i) => (
@@ -4944,7 +5129,10 @@ class MyTicketList extends Component {
                                           }
                                         >
                                           <option value="0">
-                                            Ticket Status
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.div
+                                                  .ticketstatus
+                                              : "Ticket Status"}
                                           </option>
                                           {this.state.TicketStatusData !==
                                             null &&
@@ -4974,7 +5162,11 @@ class MyTicketList extends Component {
                                       <div className="col-md-3 col-sm-6 allspc">
                                         <DatePicker
                                           selected={this.state.ByAllCreateDate}
-                                          placeholderText="Creation Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.p.createddate
+                                              : "Creation Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -4992,7 +5184,12 @@ class MyTicketList extends Component {
                                           }
                                           onChange={this.setTicketSourceValue}
                                         >
-                                          <option>Ticket Source</option>
+                                          <option>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .ticketsource
+                                              : "Ticket Source"}
+                                          </option>
                                           {this.state.TicketSourceData !==
                                             null &&
                                             this.state.TicketSourceData.map(
@@ -5011,7 +5208,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Claim ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.claimid
+                                              : "Claim ID"
+                                          }
                                           value={this.state.ClaimIdByAll}
                                           name="ClaimIdByAll"
                                           autoComplete="off"
@@ -5022,7 +5223,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Email"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.a.email
+                                              : "Email"
+                                          }
                                           value={this.state.EmailByAll}
                                           name="EmailByAll"
                                           autoComplete="off"
@@ -5035,7 +5240,12 @@ class MyTicketList extends Component {
                                           onChange={this.handleAllLastDate.bind(
                                             this
                                           )}
-                                          placeholderText="Last Updated Date"
+                                          placeholderText={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .lastupdateddate
+                                              : "Last Updated Date"
+                                          }
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
@@ -5047,7 +5257,12 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Ticket Id/Title"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .ticketidtitle
+                                              : "Ticket Id/Title"
+                                          }
                                           value={this.state.TicketIdTitleByAll}
                                           name="TicketIdTitleByAll"
                                           autoComplete="off"
@@ -5058,7 +5273,12 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Invoice Number/Sub Order No"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .invosuborderno
+                                              : "Invoice Number/Sub Order No"
+                                          }
                                           autoComplete="off"
                                           value={
                                             this.state.InvoiceSubOrderByAll
@@ -5071,7 +5291,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Mobile"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.mobile
+                                              : "Mobile"
+                                          }
                                           value={this.state.MobileByAll}
                                           name="MobileByAll"
                                           autoComplete="off"
@@ -5084,7 +5308,12 @@ class MyTicketList extends Component {
                                           value={this.state.selectedCategoryAll}
                                           onChange={this.setCategoryAllValue}
                                         >
-                                          <option value="0">Category</option>
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .category
+                                              : "Category"}
+                                          </option>
                                           {this.state.CategoryData !== null &&
                                             this.state.CategoryData.map(
                                               (item, i) => (
@@ -5103,7 +5332,12 @@ class MyTicketList extends Component {
                                           value={this.state.selectedPriorityAll}
                                           onChange={this.setPriorityAllValue}
                                         >
-                                          <option>Ticket Priority</option>
+                                          <option>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .ticketpriority
+                                              : "Ticket Priority"}
+                                          </option>
                                           {this.state.TicketPriorityData !==
                                             null &&
                                             this.state.TicketPriorityData.map(
@@ -5122,7 +5356,11 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Item ID"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.itemid
+                                              : "Item ID"
+                                          }
                                           value={this.state.ItemIdByAll}
                                           name="ItemIdByAll"
                                           autoComplete="off"
@@ -5136,7 +5374,10 @@ class MyTicketList extends Component {
                                           onChange={this.setAssignedToValue}
                                         >
                                           <option value={0}>
-                                            Select Assigned To
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .selectassignedto
+                                              : "Select Assigned To"}
                                           </option>
                                           {this.state.AssignToData !== null &&
                                             this.state.AssignToData.map(
@@ -5159,7 +5400,10 @@ class MyTicketList extends Component {
                                           onChange={this.setSubCategoryAllValue}
                                         >
                                           <option value="0">
-                                            Sub Category
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .subcategory
+                                              : "Sub Category"}
                                           </option>
                                           {this.state.SubCategoryAllData !==
                                             null &&
@@ -5182,7 +5426,12 @@ class MyTicketList extends Component {
                                           }
                                           onChange={this.handleTicketStatusAll}
                                         >
-                                          <option>Ticket Status</option>
+                                          <option>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.div
+                                                  .ticketstatus
+                                              : "Ticket Status"}
+                                          </option>
                                           {this.state.TicketStatusData !==
                                             null &&
                                             this.state.TicketStatusData.map(
@@ -5205,13 +5454,25 @@ class MyTicketList extends Component {
                                           onChange={this.handleVisitStoreAll}
                                         >
                                           <option value="all">
-                                            Did Visit Store : All
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .didvisitstoreall
+                                              : "Did Visit Store : All"}
                                           </option>
                                           <option value="yes">
-                                            Did Visit Store : Yes
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .didvisitstoreyes
+                                              : "Did Visit Store : Yes"}
                                           </option>
                                           <option value="no">
-                                            Did Visit Store : No
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .didvisitstoreno
+                                              : "Did Visit Store : No"}
                                           </option>
                                         </select>
                                       </div>
@@ -5219,7 +5480,13 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Purchase Store Code/Address"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .purchasestorecodeaddress
+                                              : "Purchase Store Code/Address"
+                                          }
                                           value={
                                             this.state
                                               .selectedPurchaseStoreCodeAddressAll
@@ -5237,7 +5504,12 @@ class MyTicketList extends Component {
                                           }
                                           onChange={this.setIssueTypeAllValue}
                                         >
-                                          <option value="0">Issue Type</option>
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .issuetype
+                                              : "Issue Type"}
+                                          </option>
                                           {this.state.IssueTypeAllData !==
                                             null &&
                                             this.state.IssueTypeAllData.map(
@@ -5257,7 +5529,12 @@ class MyTicketList extends Component {
                                           value={this.state.selectedSlaStatus}
                                           onChange={this.setSlaStatusValue}
                                         >
-                                          <option value="0">SLA Due</option>
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard.slaDue
+                                              : "SLA Due"}
+                                          </option>
                                           {this.state.SlaDueData !== null &&
                                             this.state.SlaDueData.map(
                                               (item, i) => (
@@ -5282,13 +5559,25 @@ class MyTicketList extends Component {
                                           }
                                         >
                                           <option value="all">
-                                            Want to Visit Store : All
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .wantvisitstoreall
+                                              : "Want to Visit Store : All"}
                                           </option>
                                           <option value="yes">
-                                            Want to Visit Store : Yes
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .wantvisitstoreyes
+                                              : "Want to Visit Store : Yes"}
                                           </option>
                                           <option value="no">
-                                            Want to Visit Store : No
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .wantvisitstoreno
+                                              : "Want to Visit Store : No"}
                                           </option>
                                         </select>
                                       </div>
@@ -5296,7 +5585,13 @@ class MyTicketList extends Component {
                                         <input
                                           className="no-bg"
                                           type="text"
-                                          placeholder="Want to visit Store Code/Address"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .wanttovisitStoreCodeAddress
+                                              : "Want to visit Store Code/Address"
+                                          }
                                           value={
                                             this.state
                                               .selectedVisitStoreCodeAddressAll
@@ -5322,10 +5617,20 @@ class MyTicketList extends Component {
                                                 }
                                               >
                                                 <option value="no">
-                                                  With Claim : No
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .ticketingDashboard
+                                                        .WithClaimNo
+                                                    : "With Claim : No"}
                                                 </option>
                                                 <option value="yes">
-                                                  With Claim : Yes
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .ticketingDashboard
+                                                        .WithClaimyes
+                                                    : "With Claim : Yes"}
                                                 </option>
                                               </select>
                                             </div>
@@ -5343,7 +5648,12 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option>
-                                                      Claim Status
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .ticketingDashboard
+                                                            .claimstatus
+                                                        : "Claim Status"}
                                                     </option>
                                                     {this.state
                                                       .ClaimStatusData !==
@@ -5376,7 +5686,12 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option value="0">
-                                                      Claim Category
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .ticketingDashboard
+                                                            .claimcategory
+                                                        : "Claim Category"}
                                                     </option>
                                                     {this.state.CategoryData !==
                                                       null &&
@@ -5407,7 +5722,12 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option value={0}>
-                                                      Claim Sub Category
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .ticketingDashboard
+                                                            .claimsubcategory
+                                                        : "Claim Sub Category"}
                                                     </option>
                                                     {this.state
                                                       .ClaimSubCategoryData !==
@@ -5441,7 +5761,12 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option value="0">
-                                                      Claim Issue Type
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .ticketingDashboard
+                                                            .claimissueType
+                                                        : "Claim Issue Type"}
                                                     </option>
                                                     {this.state
                                                       .ClaimIssueTypeData !==
@@ -5474,10 +5799,20 @@ class MyTicketList extends Component {
                                                 }
                                               >
                                                 <option value="no">
-                                                  With Task : No
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .ticketingDashboard
+                                                        .withtaskno
+                                                    : "With Task : No"}
                                                 </option>
                                                 <option value="yes">
-                                                  With Task : Yes
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .ticketingDashboard
+                                                        .withtaskyes
+                                                    : "With Task : Yes"}
                                                 </option>
                                               </select>
                                             </div>
@@ -5495,7 +5830,13 @@ class MyTicketList extends Component {
                                                       this.handleTaskStatus
                                                     }
                                                   >
-                                                    <option>Task Status</option>
+                                                    <option>
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .option.taskstatus
+                                                        : "Task Status"}
+                                                    </option>
                                                     {this.state
                                                       .TaskStatusData !==
                                                       null &&
@@ -5527,7 +5868,12 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option>
-                                                      Task Department
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .label
+                                                            .taskdepartment
+                                                        : "Task Department"}
                                                     </option>
                                                     {this.state
                                                       .DepartmentData !==
@@ -5560,7 +5906,11 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option>
-                                                      Task Function
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .label.taskfunction
+                                                        : "Task Function"}
                                                     </option>
                                                     {this.state.FunctionData !==
                                                       null &&
@@ -5597,14 +5947,18 @@ class MyTicketList extends Component {
                                           : this.state.resultCount}
                                         &nbsp;
                                       </span>
-                                      Results
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.results
+                                        : "Results"}
                                     </p>
                                     <a
                                       href="#!"
                                       className="blue-clr fs-14"
                                       onClick={this.clearSearch}
                                     >
-                                      CLEAR SEARCH
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.clearsearch
+                                        : "CLEAR SEARCH"}
                                     </a>
                                     &nbsp; &nbsp; &nbsp;
                                     <a
@@ -5615,7 +5969,9 @@ class MyTicketList extends Component {
                                         "all"
                                       )}
                                     >
-                                      CLEAR FILTER
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.clearfilter
+                                        : "CLEAR FILTER"}
                                     </a>
                                   </div>
                                   <div className="col-auto mob-mar-btm">
@@ -5634,7 +5990,10 @@ class MyTicketList extends Component {
                                         src={csv}
                                         alt="csv-icon"
                                       />
-                                      CSV
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .csv
+                                        : "CSV"}
                                     </CSVLink>
                                     {/* <button
                                       type="button"
@@ -5658,7 +6017,12 @@ class MyTicketList extends Component {
                                     >
                                       <div>
                                         <label>
-                                          <b>Schedule date to</b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .scheduledateto
+                                              : "Schedule date to"}
+                                          </b>
                                         </label>
                                         <div>
                                           <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -5672,7 +6036,12 @@ class MyTicketList extends Component {
                                               options={
                                                 this.state.TeamMemberData
                                               }
-                                              placeholder="Team Member"
+                                              placeholder={
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.p
+                                                      .teammember
+                                                  : "Team Member"
+                                              }
                                               // menuIsOpen={true}
                                               closeMenuOnSelect={false}
                                               onChange={this.setTeamMember.bind(
@@ -5713,7 +6082,11 @@ class MyTicketList extends Component {
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
-                                                  Every
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .every
+                                                    : "Every"}
                                                 </label>
                                                 <input
                                                   type="text"
@@ -5722,7 +6095,11 @@ class MyTicketList extends Component {
                                                   onChange={this.handleDailyDay}
                                                 />
                                                 <label className="every1">
-                                                  Day
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .day
+                                                    : "Day"}
                                                 </label>
                                               </span>
                                             </div>
@@ -5732,7 +6109,11 @@ class MyTicketList extends Component {
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
-                                                  Every
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .every
+                                                    : "Every"}
                                                 </label>
                                                 <input
                                                   type="text"
@@ -5741,7 +6122,11 @@ class MyTicketList extends Component {
                                                   onChange={this.handleWeekly}
                                                 />
                                                 <label className="every1">
-                                                  Week on
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .weekon
+                                                    : "Week on"}
                                                 </label>
                                               </span>
                                               <div
@@ -5755,7 +6140,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Mon"
                                                 >
-                                                  Mon
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.mon
+                                                    : "Mon"}
                                                 </Checkbox>
                                                 <Checkbox
                                                   onChange={
@@ -5763,7 +6152,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Tue"
                                                 >
-                                                  Tue
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.tue
+                                                    : "Tue"}
                                                 </Checkbox>
                                                 <Checkbox
                                                   onChange={
@@ -5771,7 +6164,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Wed"
                                                 >
-                                                  Wed
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.wed
+                                                    : "Wed"}
                                                 </Checkbox>
                                                 <Checkbox
                                                   onChange={
@@ -5779,7 +6176,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Thu"
                                                 >
-                                                  Thu
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.thu
+                                                    : "Thu"}
                                                 </Checkbox>
                                                 <Checkbox
                                                   onChange={
@@ -5787,7 +6188,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Fri"
                                                 >
-                                                  Fri
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.fri
+                                                    : "Fri"}
                                                 </Checkbox>
                                                 <Checkbox
                                                   onChange={
@@ -5795,7 +6200,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Sat"
                                                 >
-                                                  Sat
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.sat
+                                                    : "Sat"}
                                                 </Checkbox>
                                                 <Checkbox
                                                   onChange={
@@ -5803,7 +6212,11 @@ class MyTicketList extends Component {
                                                   }
                                                   value="Sun"
                                                 >
-                                                  Sun
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .checkbox.sun
+                                                    : "Sun"}
                                                 </Checkbox>
                                               </div>
                                             </div>
@@ -5813,7 +6226,11 @@ class MyTicketList extends Component {
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
-                                                  Day
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .day
+                                                    : "Day"}
                                                 </label>
                                                 <input
                                                   type="text"
@@ -5824,7 +6241,11 @@ class MyTicketList extends Component {
                                                   }
                                                 />
                                                 <label className="every1">
-                                                  of every
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .ofevery
+                                                    : "of every"}
                                                 </label>
                                                 <input
                                                   type="text"
@@ -5835,7 +6256,11 @@ class MyTicketList extends Component {
                                                   }
                                                 />
                                                 <label className="every1">
-                                                  months
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .months
+                                                    : "months"}
                                                 </label>
                                               </span>
                                             </div>
@@ -5845,7 +6270,11 @@ class MyTicketList extends Component {
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
-                                                  Every
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .every
+                                                    : "Every"}
                                                 </label>
                                                 <input
                                                   type="text"
@@ -5856,7 +6285,11 @@ class MyTicketList extends Component {
                                                   }
                                                 />
                                                 <label className="every1">
-                                                  month on the
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .monthonthe
+                                                    : "month on the"}
                                                 </label>
                                               </span>
                                               <div className="row mt-3">
@@ -5873,13 +6306,25 @@ class MyTicketList extends Component {
                                                     }
                                                   >
                                                     <option value="0">
-                                                      Select
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .button.select
+                                                        : "Select"}
                                                     </option>
                                                     <option value="2">
-                                                      Second
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .option.second
+                                                        : "Second"}
                                                     </option>
                                                     <option value="4">
-                                                      Four
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.a
+                                                            .four
+                                                        : "Four"}
                                                     </option>
                                                   </select>
                                                 </div>
@@ -5896,7 +6341,13 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .NameOfDayForWeek
                                                       }
-                                                      placeholder="Select"
+                                                      placeholder={
+                                                        TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.select
+                                                          : "Select"
+                                                      }
                                                       // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfDayForWeek.bind(
@@ -5924,7 +6375,11 @@ class MyTicketList extends Component {
                                                     lineHeight: "40px",
                                                   }}
                                                 >
-                                                  on
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .on
+                                                    : "on"}
                                                 </label>
                                                 <div className="col-md-7">
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -5939,7 +6394,13 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .NameOfMonthForYear
                                                       }
-                                                      placeholder="Select"
+                                                      placeholder={
+                                                        TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.select
+                                                          : "Select"
+                                                      }
                                                       // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfMonthForYear.bind(
@@ -5976,7 +6437,11 @@ class MyTicketList extends Component {
                                                       lineHeight: "40px",
                                                     }}
                                                   >
-                                                    on the
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .onthe
+                                                      : "on the"}
                                                   </label>
                                                   <div className="col-md-7">
                                                     <select
@@ -5991,13 +6456,25 @@ class MyTicketList extends Component {
                                                       }
                                                     >
                                                       <option value="0">
-                                                        Select
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.select
+                                                          : "Select"}
                                                       </option>
                                                       <option value="2">
-                                                        Second
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .option.second
+                                                          : "Second"}
                                                       </option>
                                                       <option value="4">
-                                                        Four
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.a
+                                                              .four
+                                                          : "Four"}
                                                       </option>
                                                     </select>
                                                   </div>
@@ -6020,7 +6497,13 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .NameOfDayForYear
                                                       }
-                                                      placeholder="Select"
+                                                      placeholder={
+                                                        TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.select
+                                                          : "Select"
+                                                      }
                                                       // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfDayForYear.bind(
@@ -6041,7 +6524,11 @@ class MyTicketList extends Component {
                                                     lineHeight: "40px",
                                                   }}
                                                 >
-                                                  to
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .to
+                                                    : "to"}
                                                 </label>
                                                 <div className="col-md-6">
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -6056,7 +6543,13 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .NameOfMonthForDailyYear
                                                       }
-                                                      placeholder="Select"
+                                                      placeholder={
+                                                        TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.select
+                                                          : "Select"
+                                                      }
                                                       // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfMonthForDailyYear.bind(
@@ -6110,7 +6603,11 @@ class MyTicketList extends Component {
                                               onClick={this.handleSchedulePopup}
                                             >
                                               <label className="addLable">
-                                                SCHEDULE
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .schedule
+                                                  : "SCHEDULE"}
                                               </label>
                                             </button>
                                           </div>
@@ -6121,33 +6618,16 @@ class MyTicketList extends Component {
                                               type="button"
                                               className="scheduleBtncancel"
                                             >
-                                              CANCEL
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.option
+                                                    .cancel
+                                                : "CANCEL"}
                                             </button>
                                           </div>
                                         </div>
                                       </div>
                                     </Modal>
-                                    {/* <button
-                                      className={
-                                        this.state.ticketIds.length > 0
-                                          ? "btn-inv"
-                                          : "dis-btn"
-                                      }
-                                      onClick={
-                                        this.state.ticketIds.length > 0
-                                          ? this.handleAssignModalOpen.bind(
-                                            this
-                                          )
-                                          : null
-                                      }
-                                    >
-                                      <img
-                                        src={Assign}
-                                        className="assign-icon"
-                                        alt="assign-icon"
-                                      />
-                                      Assign
-                                    </button> */}
+
                                     <Modal
                                       onClose={this.handleAssignModalClose.bind(
                                         this
@@ -6165,7 +6645,10 @@ class MyTicketList extends Component {
                                           )}
                                         />
                                         <label className="claim-details">
-                                          Assign Tickets To
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .assignticketsto
+                                            : "Assign Tickets To"}
                                         </label>
                                         <img
                                           src={SearchBlackImg}
@@ -6177,7 +6660,12 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="txt-1 txt-btmSpace"
-                                          placeholder="First Name"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .firstname
+                                              : "First Name"
+                                          }
                                           name="assignFirstName"
                                           value={this.state.assignFirstName}
                                           onChange={this.handelOnchangeData}
@@ -6185,7 +6673,12 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="txt-1 txt-btmSpace"
-                                          placeholder="Last Name"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .lastname
+                                              : "Last Name"
+                                          }
                                           name="assignLastName"
                                           value={this.state.assignLastName}
                                           onChange={this.handelOnchangeData}
@@ -6193,7 +6686,11 @@ class MyTicketList extends Component {
                                         <input
                                           type="text"
                                           className="txt-1 txt-btmSpace"
-                                          placeholder="Email"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.email
+                                              : "Email"
+                                          }
                                           name="assignEmail"
                                           value={this.state.assignEmail}
                                           onChange={this.handelOnchangeData}
@@ -6207,8 +6704,12 @@ class MyTicketList extends Component {
                                             }
                                             onChange={this.setDesignationValue}
                                           >
-                                            {/* <option>Select</option> */}
-                                            <option>Designation</option>
+                                            <option>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .designation
+                                                : "Designation"}
+                                            </option>
                                             {this.state.DesignationData !==
                                               null &&
                                               this.state.DesignationData.map(
@@ -6230,7 +6731,9 @@ class MyTicketList extends Component {
                                             this
                                           )}
                                         >
-                                          SEARCH
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.search
+                                            : "SEARCH"}
                                         </button>
                                         <a
                                           href="#!"
@@ -6239,7 +6742,9 @@ class MyTicketList extends Component {
                                             this
                                           )}
                                         >
-                                          CLEAR
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.clear
+                                            : "CLEAR"}
                                         </a>
                                       </div>
                                       <div className="assign-modal-body assign-modal-body-mytick">
@@ -6247,7 +6752,15 @@ class MyTicketList extends Component {
                                           data={SearchAssignData}
                                           columns={[
                                             {
-                                              Header: <span>Agent</span>,
+                                              Header: (
+                                                <span>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .agent
+                                                    : "Agent"}
+                                                </span>
+                                              ),
                                               accessor: "agent",
                                               minWidth: 190,
                                               Cell: (row) => {
@@ -6273,12 +6786,28 @@ class MyTicketList extends Component {
                                               },
                                             },
                                             {
-                                              Header: <span>Designation</span>,
+                                              Header: (
+                                                <span>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .designation
+                                                    : "Designation"}
+                                                </span>
+                                              ),
                                               accessor: "designation",
                                               // width: 130,
                                             },
                                             {
-                                              Header: <span>Email</span>,
+                                              Header: (
+                                                <span>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .email
+                                                    : "Email"}
+                                                </span>
+                                              ),
                                               accessor: "email",
                                               minWidth: 250,
                                               maxWidth: "auto",
@@ -6295,7 +6824,6 @@ class MyTicketList extends Component {
                                               : -1;
                                             return {
                                               onClick: (e) => {
-                                                //debugger;
                                                 this.selectedRow = index;
                                                 var agentId =
                                                   column.original["user_ID"];
@@ -6328,7 +6856,12 @@ class MyTicketList extends Component {
                                         </p>
                                         <textarea
                                           className="assign-modal-textArea"
-                                          placeholder="Add Remarks"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard.addremarks
+                                              : "Add Remarks"
+                                          }
                                           onChange={this.handleAssignRemark}
                                         ></textarea>
                                         <button
@@ -6336,7 +6869,10 @@ class MyTicketList extends Component {
                                           type="button"
                                           onClick={this.handleAssignTickets}
                                         >
-                                          ASSIGN TICKETS
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button
+                                                .assigntickets
+                                            : "ASSIGN TICKETS"}
                                         </button>
                                       </div>
                                     </Modal>
@@ -6376,7 +6912,9 @@ class MyTicketList extends Component {
                                           htmlFor="fil-aball"
                                           className="ticketid"
                                         >
-                                          ID
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.id
+                                            : "ID"}
                                         </label>
                                       </div>
                                     </div>
@@ -6472,10 +7010,14 @@ class MyTicketList extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "status",
-                                      "Status"
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.status
+                                        : "Status"
                                     )}
                                   >
-                                    Status{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.status
+                                      : "Status"}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6543,11 +7085,15 @@ class MyTicketList extends Component {
                                             <div className="dash-task-popup-new">
                                               <div className="d-flex justify-content-between align-items-center">
                                                 <p className="m-b-0">
-                                                  CLAIM:
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .claim
+                                                    : "CLAIM"}
                                                   {row.original.claimStatus}
                                                 </p>
                                                 <div className="d-flex align-items-center">
-                                                  2 NEW
+                                                  {/* 2 NEW */}
                                                   <div className="nw-chat">
                                                     <img
                                                       src={Chat}
@@ -6608,7 +7154,12 @@ class MyTicketList extends Component {
                                             <div className="dash-task-popup-new">
                                               <div className="d-flex justify-content-between align-items-center">
                                                 <p className="m-b-0">
-                                                  TASK:{row.original.taskStatus}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.nav
+                                                        .task
+                                                    : "TASK"}
+                                                  :{row.original.taskStatus}
                                                 </p>
                                                 {row.original
                                                   .ticketCommentCount > 0 ? (
@@ -6617,7 +7168,10 @@ class MyTicketList extends Component {
                                                       row.original
                                                         .ticketCommentCount
                                                     }
-                                                    NEW
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.a.new
+                                                      : "NEW"}
                                                     <div className="nw-chat">
                                                       <img
                                                         src={Chat}
@@ -6649,14 +7203,21 @@ class MyTicketList extends Component {
                               {
                                 Header: (
                                   <label className="ticketid">
-                                    <span>Subject/</span>
+                                    <span>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.subject
+                                        : "Subject"}
+                                      /
+                                    </span>
                                     <span
                                       style={{
                                         fontWeight: "bold",
                                         fontSize: "11px !important",
                                       }}
                                     >
-                                      Latest Message
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.latestmessage
+                                        : "Latest Message"}
                                     </span>
                                   </label>
                                 ),
@@ -6680,10 +7241,14 @@ class MyTicketList extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "category",
-                                      "Category"
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.category
+                                        : "Category"
                                     )}
                                   >
-                                    Category
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.category
+                                      : "Category"}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6700,15 +7265,32 @@ class MyTicketList extends Component {
                                         <div className="dash-creation-popup-cntr">
                                           <ul className="dash-category-popup dashnewpopup">
                                             <li>
-                                              <p>Category</p>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .category
+                                                  : "Category"}
+                                              </p>
                                               <p>{row.original.category}</p>
                                             </li>
                                             <li>
-                                              <p>Sub Category</p>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .subcategory
+                                                  : "Sub Category"}
+                                              </p>
                                               <p>{row.original.subCategory}</p>
                                             </li>
                                             <li>
-                                              <p>Type</p>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.span.type
+                                                  : "Type"}
+                                              </p>
                                               <p>{row.original.issueType}</p>
                                             </li>
                                           </ul>
@@ -6732,10 +7314,14 @@ class MyTicketList extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "priority",
-                                      "Priority"
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.priority
+                                        : "Priority"
                                     )}
                                   >
-                                    Priority{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.priority
+                                      : "Priority"}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6750,10 +7336,14 @@ class MyTicketList extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "assignedTo",
-                                      "Assign To"
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.assignee
+                                        : "Assignee"
                                     )}
                                   >
-                                    Assignee{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.assignee
+                                      : "Assignee"}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6766,10 +7356,14 @@ class MyTicketList extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "createdOn",
-                                      "Creation On"
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.creationon
+                                        : "Creation On"
                                     )}
                                   >
-                                    Creation On{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.creationon
+                                      : "Creation On"}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -6785,18 +7379,30 @@ class MyTicketList extends Component {
                                           <div className="insertpop1">
                                             <ul className="dash-creation-popup">
                                               <li className="title">
-                                                Creation details
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.li
+                                                      .creationdetails
+                                                  : "Creation details"}
                                               </li>
                                               <li>
                                                 <p>
-                                                  {row.original.createdBy}{" "}
-                                                  Created
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .createdby
+                                                    : "Created by "}
+                                                  {row.original.createdBy}
                                                 </p>
                                                 <p>{row.original.createdago}</p>
                                               </li>
                                               <li>
                                                 <p>
-                                                  Assigned to{" "}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .assignedto
+                                                    : "Assigned to "}
                                                   {row.original.assignedTo}
                                                 </p>
                                                 <p>
@@ -6805,14 +7411,22 @@ class MyTicketList extends Component {
                                               </li>
                                               <li>
                                                 <p>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .updatedby
+                                                    : "Updated by "}
                                                   {row.original.updatedBy}
-                                                  updated
                                                 </p>
                                                 <p>{row.original.updatedago}</p>
                                               </li>
                                               <li>
                                                 <p>
-                                                  Response time remaining by
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .responsetimeremainingby
+                                                    : "Response time remaining by"}
                                                 </p>
                                                 <p>
                                                   {
@@ -6823,7 +7437,14 @@ class MyTicketList extends Component {
                                               </li>
 
                                               <li>
-                                                <p>Response overdue by</p>
+                                                <p>
+                                                  {" "}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .responseoverdueby
+                                                    : "Response overdue by"}
+                                                </p>
                                                 <p>
                                                   {
                                                     row.original
@@ -6832,7 +7453,13 @@ class MyTicketList extends Component {
                                                 </p>
                                               </li>
                                               <li>
-                                                <p>Resolution overdue by</p>
+                                                <p>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .resolutionoverdueby
+                                                    : "Resolution overdue by"}
+                                                </p>
                                                 <p>
                                                   {
                                                     row.original
@@ -6889,7 +7516,6 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-        {/* <NotificationContainer /> */}
       </Fragment>
     );
   }
