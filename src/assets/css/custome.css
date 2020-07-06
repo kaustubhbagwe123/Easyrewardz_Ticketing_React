@@ -6346,7 +6346,7 @@ progress::-webkit-progress-bar {
   margin-left: 115px;
 }
 .cr-tick {
-  top: 10px !important; 
+  top: 10px !important;
 }
 .switch input[type="checkbox"] + .cr:after,
 .switch input[type="checkbox"] + .cr:before {
