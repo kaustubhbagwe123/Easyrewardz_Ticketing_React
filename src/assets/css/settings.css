@@ -2685,6 +2685,9 @@
 .slotEditModal {
   width: 300px;
 }
+.shipping-template-edit .slot-hour {
+  width: 80px !important;
+}
 .edit-slot .slot-timings {
   margin: 0;
 }

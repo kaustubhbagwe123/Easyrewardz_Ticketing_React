@@ -7,6 +7,7 @@ import axios from "axios";
 import Pagination from "react-pagination-js";
 import { Table } from "antd";
 import config from "./../../../helpers/config";
+import Modal from "react-bootstrap/Modal";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
@@ -39,7 +40,9 @@ class OrderSetting extends Component {
       OrdTempLengthValidation: "",
       OrdTempBreadthValidation: "",
       OrdTempWeightValidation: "",
+      editSlotModal: false,
     };
+    this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +56,18 @@ class OrderSetting extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+  }
+
+  closeSlotEditModal() {
+    this.setState({
+      editSlotModal: false,
+    });
+  }
+
+  openSlotEditModal() {
+    this.setState({
+      editSlotModal: true,
+    });
   }
 
   handleGetModuleConfigData() {
@@ -1600,10 +1615,9 @@ class OrderSetting extends Component {
                                           <span>
                                             <button
                                               className="react-tabel-button editre"
-                                              // onClick={this.openSlotEditModal.bind(
-                                              //   this,
-                                              //   rowData.storeId
-                                              // )}
+                                              onClick={this.openSlotEditModal.bind(
+                                                this
+                                              )}
                                             >
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.button.edit
@@ -1652,6 +1666,153 @@ class OrderSetting extends Component {
                 </Tab>
               </Tabs>
             </section>
+            {/* edit slot starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    EDIT SHIPPING TEMPLATE
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot shipping-template-edit">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label>Template Name</label>
+                    <input
+                      className="mx-slt-txt"
+                      type="text"
+                      placeholder="Enter Template Name"
+                      autoComplete="off"
+                      maxLength={250}
+                      name="OrdTemplatename"
+                      value={this.state.OrdTemplatename}
+                      onChange={this.handleInputOnchange.bind(this)}
+                    />
+                    <label className="edit-slot-lbl">Height</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempHeight"
+                          value={this.state.OrdTempHeight}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdHeight}
+                          name="selectedOrdHeight"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Length</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempLength"
+                          value={this.state.OrdTempLength}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdLength}
+                          name="selectedOrdLength"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Breadth</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempBreadth"
+                          value={this.state.OrdTempBreadth}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdBreadth}
+                          name="selectedOrdBreadth"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Weight</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempWeight"
+                          value={this.state.OrdTempWeight}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdWeight}
+                          name="selectedOrdWeight"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="Kg">Kg</option>
+                          <option value="g">g</option>
+                          <option value="lbs">lbs</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    // onClick={this.closeSlotEditModal}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.cancel
+                      : "CANCEL"}
+                  </a>
+                  <button
+                    className="pop-over-button FlNone"
+                    // onClick={this.handleUpdateTimeSlotData.bind(this)}
+                  >
+                    <label className="pop-over-btnsave-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.save
+                        : "SAVE"}
+                    </label>
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit slot ends */}
           </div>
         </div>
       </Fragment>
