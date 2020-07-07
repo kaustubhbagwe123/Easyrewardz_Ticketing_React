@@ -309,6 +309,7 @@ class ShipmentTab extends Component {
       params: {
         orderID: this.state.orderId,
         itemIDs: itemIds,
+        templateID:this.state.selectedTemplate
       },
     })
       .then(function(res) {

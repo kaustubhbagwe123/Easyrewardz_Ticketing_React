@@ -1866,7 +1866,16 @@
     "profileupdatedsuccessfully": "प्रोफाइल को सफलतापूर्वक अपडेट किया गया।",
     "enteremail": "ईमेल दर्ज करें",
     "upload": "डालना",
-    "change": "परिवर्तन"
+    "change": "परिवर्तन",
+    "requiredfield":"आवश्यक क्षेत्र।",
+    "templatenotupdated":"टेम्पलेट अपडेट नहीं किया गया।",
+    "shippingtemplate":"शिपिंग टेम्पलेट",
+    "entertemplatename":"टेम्पलेट का नाम दर्ज करें",
+    "height":"ऊंचाई",
+    "length":"लंबाई",
+    "breadth":"चौड़ाई",
+    "weight":"वजन",
+    "editshippingtemplate":"शिपिंग खाका संपादित करें"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."

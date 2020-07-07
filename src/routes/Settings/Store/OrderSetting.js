@@ -41,6 +41,14 @@ class OrderSetting extends Component {
       OrdTempBreadthValidation: "",
       OrdTempWeightValidation: "",
       editSlotModal: false,
+      templateID: 0,
+      editTemplate: {},
+      EditOrdTempNameValidation: "",
+      EditOrdTempHeightValidation: "",
+      EditOrdTempLengthValidation: "",
+      EditOrdTempBreadthValidation: "",
+      EditOrdTempWeightValidation: "",
+      editButtonShow: false,
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -64,9 +72,22 @@ class OrderSetting extends Component {
     });
   }
 
-  openSlotEditModal() {
+  openSlotEditModal(rowData) {
+    var editTemplate = {};
+    editTemplate.templateName = rowData.templateName;
+    editTemplate.height = rowData.height;
+    editTemplate.height_Unit = rowData.height_Unit;
+    editTemplate.weight = rowData.weight;
+    editTemplate.weight_Unit = rowData.weight_Unit;
+    editTemplate.length = rowData.length;
+    editTemplate.length_Unit = rowData.length_Unit;
+    editTemplate.breath = rowData.breath;
+    editTemplate.breath_Unit = rowData.breath_Unit;
+
     this.setState({
       editSlotModal: true,
+      templateID: rowData.id,
+      editTemplate,
     });
   }
 
@@ -365,11 +386,60 @@ class OrderSetting extends Component {
       this.setState({ orderConfigData });
     }
   }
-  /// handle inputchange
+  /// handle input change
   handleInputOnchange(e) {
     this.setState({
       [e.target.name]: e.target.value,
     });
+  }
+
+  /// Edit input onchange
+  handleEditInputOnchange(e) {
+    var names = e.target.name;
+    var values = e.target.value;
+
+    var editTemplate = this.state.editTemplate;
+    editTemplate[names] = values;
+    this.setState({
+      editTemplate,
+    });
+  }
+
+  // /// handle Edit Input Validation change
+  handleEditInputValidationChange(e) {
+    var names = e.target.name;
+    var values = e.target.value;
+
+    var editTemplate = this.state.editTemplate;
+    editTemplate[names] = values;
+
+    if (isNaN(values)) {
+      return false;
+    }
+    var splitText = values.split(".");
+    var index = values.indexOf(".");
+
+    if (index !== -1) {
+      if (splitText) {
+        if (splitText[1].length <= 2) {
+          if (index !== -1 && splitText.length === 2) {
+            this.setState({
+              editTemplate,
+            });
+          }
+        } else {
+          return false;
+        }
+      } else {
+        this.setState({
+          editTemplate,
+        });
+      }
+    } else {
+      this.setState({
+        editTemplate,
+      });
+    }
   }
   /// handle input valiadtion change
   handleInputValidationChange(e) {
@@ -489,21 +559,178 @@ class OrderSetting extends Component {
   };
   /// handle submit shipping template
   handleSubmitShppingTemp() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
-      (this.state.OrdTemplatename !== "",
-      this.state.OrdTempHeight !== "",
-      this.state.OrdTempLength !== "",
-      this.state.OrdTempBreadth !== "",
-      this.state.OrdTempWeight !== "")
+      this.state.OrdTemplatename !== "" &&
+      this.state.OrdTempHeight !== "" &&
+      this.state.OrdTempLength !== "" &&
+      this.state.OrdTempBreadth !== "" &&
+      this.state.OrdTempWeight !== ""
     ) {
-      alert("Hello");
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
+        headers: authHeader(),
+        data: {
+          TemplateName: this.state.OrdTemplatename,
+          Height: this.state.OrdTempHeight,
+          Height_Unit: this.state.selectedOrdHeight,
+          Length: this.state.OrdTempLength,
+          Length_Unit: this.state.selectedOrdLength,
+          Breath: this.state.OrdTempBreadth,
+          Breath_Unit: this.state.selectedOrdBreadth,
+          Weight: this.state.OrdTempWeight,
+          Weight_Unit: this.state.selectedOrdWeight,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              OrdTemplatename: "",
+              OrdTempHeight: "",
+              OrdTempLength: "",
+              OrdTempBreadth: "",
+              OrdTempWeight: "",
+              selectedOrdHeight: "cm",
+              selectedOrdLength: "cm",
+              selectedOrdBreadth: "cm",
+              selectedOrdWeight: "Kg",
+              OrdTemplateNameValidation: "",
+              OrdTempHeightValidation: "",
+              OrdTempLengthValidation: "",
+              OrdTempBreadthValidation: "",
+              OrdTempWeightValidation: "",
+            });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.templateaddedsuccessfully
+                : "Template Added Successfully."
+            );
+            self.handleGetShippingTempData();
+          } else {
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.templatenotadded
+                : "Template not added."
+            );
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
     } else {
       this.setState({
-        OrdTemplateNameValidation: "Required field.",
-        OrdTempHeightValidation: "Required field.",
-        OrdTempLengthValidation: "Required field.",
-        OrdTempBreadthValidation: "Required field.",
-        OrdTempWeightValidation: "Required field.",
+        OrdTemplateNameValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempHeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempLengthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempBreadthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempWeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+      });
+    }
+  }
+
+  /// update Shipping template data
+  handleUpdateShippingTemplate() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (
+      this.state.editTemplate.templateName !== "" &&
+      this.state.editTemplate.height !== "" &&
+      this.state.editTemplate.length !== "" &&
+      this.state.editTemplate.breath !== "" &&
+      this.state.editTemplate.weight !== ""
+    ) {
+      let self = this;
+      this.setState({
+        editButtonShow: true,
+      });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
+        headers: authHeader(),
+        data: {
+          ID: this.state.templateID,
+          TemplateName: this.state.editTemplate.templateName,
+          Height: this.state.editTemplate.height,
+          Height_Unit: this.state.editTemplate.height_Unit,
+          Length: this.state.editTemplate.length,
+          Length_Unit: this.state.editTemplate.length_Unit,
+          Breath: this.state.editTemplate.breath,
+          Breath_Unit: this.state.editTemplate.breath_Unit,
+          Weight: this.state.editTemplate.weight,
+          Weight_Unit: this.state.editTemplate.weight_Unit,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              OrdTemplateNameValidation: "",
+              OrdTempHeightValidation: "",
+              OrdTempLengthValidation: "",
+              OrdTempBreadthValidation: "",
+              OrdTempWeightValidation: "",
+              editSlotModal: false,
+              editButtonShow: false,
+            });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.templateupdatedsuccessfully
+                : "Template Updated Successfully."
+            );
+            self.handleGetShippingTempData();
+          } else {
+            self.setState({
+              editButtonShow: false,
+            });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.templatenotupdated
+                : "Template not Updated."
+            );
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        EditOrdTempNameValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempHeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempLengthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempBreadthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempWeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
       });
     }
   }
@@ -1325,7 +1552,13 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label="Shipping Template">
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.shippingtemplate
+                      : "Shipping Template"
+                  }
+                >
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -1341,15 +1574,31 @@ class OrderSetting extends Component {
                                   style={{ margin: "0px" }}
                                 >
                                   <div className="col-md-12">
-                                    <h3>Shipping Template</h3>
+                                    <h3>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .shippingtemplate
+                                        : "Shipping Template"}
+                                    </h3>
                                   </div>
                                   <div className="col-md-4">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Template Name</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .templatename
+                                          : "Template Name"}
+                                      </label>
                                       <input
                                         className="mx-slt-txt"
                                         type="text"
-                                        placeholder="Enter Template Name"
+                                        placeholder={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext
+                                                .ticketingDashboard
+                                                .entertemplatename
+                                            : "Enter Template Name"
+                                        }
                                         autoComplete="off"
                                         maxLength={250}
                                         name="OrdTemplatename"
@@ -1372,7 +1621,12 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Height</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.height
+                                          : "Height"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
@@ -1412,7 +1666,12 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Length</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.length
+                                          : "Length"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
@@ -1452,7 +1711,12 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Breadth</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.breadth
+                                          : "Breadth"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
@@ -1492,7 +1756,12 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Weight</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.weight
+                                          : "Weight"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
@@ -1551,15 +1820,25 @@ class OrderSetting extends Component {
                             <div className="col-md-12 table-cntr store dv-table-paging">
                               <Table
                                 loading={this.state.ShipTemploading}
-                                noDataContent="No Record Found"
+                                noDataContent={ TranslationContext !== undefined
+                                  ? TranslationContext.label
+                                      .norecordfound
+                                  : "No Record Found"}
                                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                 columns={[
                                   {
-                                    title: "Template Name",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.templatename
+                                        : "Template Name",
                                     dataIndex: "templateName",
                                   },
                                   {
-                                    title: "Height",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .height
+                                        : "Height",
                                     dataIndex: "height",
                                     render: (row, item) => {
                                       return (
@@ -1570,7 +1849,11 @@ class OrderSetting extends Component {
                                     },
                                   },
                                   {
-                                    title: "Length",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .length
+                                        : "Length",
                                     dataIndex: "length",
                                     render: (row, item) => {
                                       return (
@@ -1581,7 +1864,11 @@ class OrderSetting extends Component {
                                     },
                                   },
                                   {
-                                    title: "Breadth",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .breadth
+                                        : "Breadth",
                                     dataIndex: "breath",
                                     render: (row, item) => {
                                       return (
@@ -1592,7 +1879,11 @@ class OrderSetting extends Component {
                                     },
                                   },
                                   {
-                                    title: "Weight",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .weight
+                                        : "Weight",
                                     dataIndex: "weight",
                                     render: (row, item) => {
                                       return (
@@ -1607,16 +1898,15 @@ class OrderSetting extends Component {
                                       TranslationContext !== undefined
                                         ? TranslationContext.header.actions
                                         : "Actions",
-
-                                    render: (row, rowData) => {
-                                      var ids = row;
+                                    render: (row, item) => {
                                       return (
                                         <>
                                           <span>
                                             <button
                                               className="react-tabel-button editre"
                                               onClick={this.openSlotEditModal.bind(
-                                                this
+                                                this,
+                                                item
                                               )}
                                             >
                                               {TranslationContext !== undefined
@@ -1675,116 +1965,202 @@ class OrderSetting extends Component {
               <div className="edtpadding">
                 <div className="">
                   <label className="popover-header-text">
-                    EDIT SHIPPING TEMPLATE
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .editshippingtemplate
+                      : "EDIT SHIPPING TEMPLATE"}
                   </label>
                 </div>
                 <div className="pop-over-div edit-slot shipping-template-edit">
                   <div className="cmpaign-channel-table slot-setting-options right-sect-div">
-                    <label>Template Name</label>
+                    <label>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.templatename
+                        : "Template Name"}
+                    </label>
                     <input
                       className="mx-slt-txt"
                       type="text"
-                      placeholder="Enter Template Name"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .entertemplatename
+                          : "Enter Template Name"
+                      }
                       autoComplete="off"
                       maxLength={250}
-                      name="OrdTemplatename"
-                      value={this.state.OrdTemplatename}
-                      onChange={this.handleInputOnchange.bind(this)}
+                      name="templateName"
+                      value={this.state.editTemplate.templateName}
+                      onChange={this.handleEditInputOnchange.bind(this)}
                     />
-                    <label className="edit-slot-lbl">Height</label>
+                    {this.state.editTemplate.templateName === "" && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginBottom: "0px",
+                        }}
+                      >
+                        {this.state.EditOrdTempNameValidation}
+                      </p>
+                    )}
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.height
+                        : "Height"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <input
                           className="mx-slt-txt slot-hour"
                           type="text"
                           autoComplete="off"
-                          name="OrdTempHeight"
-                          value={this.state.OrdTempHeight}
+                          name="height"
+                          value={this.state.editTemplate.height}
                           maxLength={8}
-                          onChange={this.handleInputValidationChange.bind(this)}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
                         />
                         <select
                           className="slot-shift"
-                          value={this.state.selectedOrdHeight}
-                          name="selectedOrdHeight"
-                          onChange={this.handleDropDownChange.bind(this)}
+                          value={this.state.editTemplate.height_Unit}
+                          name="height_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="cm">cm</option>
                           <option value="feet">feet</option>
                           <option value="inch">inch</option>
                         </select>
+                        {this.state.editTemplate.height === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempHeightValidation}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Length</label>
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.length
+                        : "Length"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <input
                           className="mx-slt-txt slot-hour"
                           type="text"
                           autoComplete="off"
-                          name="OrdTempLength"
-                          value={this.state.OrdTempLength}
+                          name="length"
+                          value={this.state.editTemplate.length}
                           maxLength={8}
-                          onChange={this.handleInputValidationChange.bind(this)}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
                         />
                         <select
                           className="slot-shift"
-                          value={this.state.selectedOrdLength}
-                          name="selectedOrdLength"
-                          onChange={this.handleDropDownChange.bind(this)}
+                          value={this.state.editTemplate.length_Unit}
+                          name="length_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="cm">cm</option>
                           <option value="feet">feet</option>
                           <option value="inch">inch</option>
                         </select>
+                        {this.state.editTemplate.length === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempLengthValidation}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Breadth</label>
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.breadth
+                        : "Breadth"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <input
                           className="mx-slt-txt slot-hour"
                           type="text"
                           autoComplete="off"
-                          name="OrdTempBreadth"
-                          value={this.state.OrdTempBreadth}
+                          name="breath"
+                          value={this.state.editTemplate.breath}
                           maxLength={8}
-                          onChange={this.handleInputValidationChange.bind(this)}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
                         />
                         <select
                           className="slot-shift"
-                          value={this.state.selectedOrdBreadth}
-                          name="selectedOrdBreadth"
-                          onChange={this.handleDropDownChange.bind(this)}
+                          value={this.state.editTemplate.breath_Unit}
+                          name="breath_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="cm">cm</option>
                           <option value="feet">feet</option>
                           <option value="inch">inch</option>
                         </select>
+                        {this.state.editTemplate.breath === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempBreadthValidation}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Weight</label>
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.weight
+                        : "Weight"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <input
                           className="mx-slt-txt slot-hour"
                           type="text"
                           autoComplete="off"
-                          name="OrdTempWeight"
-                          value={this.state.OrdTempWeight}
+                          name="weight"
+                          value={this.state.editTemplate.weight}
                           maxLength={8}
-                          onChange={this.handleInputValidationChange.bind(this)}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
                         />
                         <select
                           className="slot-shift"
-                          value={this.state.selectedOrdWeight}
-                          name="selectedOrdWeight"
-                          onChange={this.handleDropDownChange.bind(this)}
+                          value={this.state.editTemplate.weight_Unit}
+                          name="weight_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="Kg">Kg</option>
                           <option value="g">g</option>
                           <option value="lbs">lbs</option>
                         </select>
+                        {this.state.editTemplate.weight === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempWeightValidation}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1793,21 +2169,24 @@ class OrderSetting extends Component {
                 <div className="text-center">
                   <a
                     className="pop-over-cancle"
-                    // onClick={this.closeSlotEditModal}
+                    onClick={this.closeSlotEditModal}
                   >
                     {TranslationContext !== undefined
                       ? TranslationContext.a.cancel
                       : "CANCEL"}
                   </a>
                   <button
-                    className="pop-over-button FlNone"
-                    // onClick={this.handleUpdateTimeSlotData.bind(this)}
+                    className={
+                      this.state.editButtonShow
+                        ? "pop-over-button FlNone pop-over-btnsave-text order-grid-btn-disable"
+                        : "pop-over-button FlNone pop-over-btnsave-text"
+                    }
+                    onClick={this.handleUpdateShippingTemplate.bind(this)}
+                    disabled={this.state.editButtonShow}
                   >
-                    <label className="pop-over-btnsave-text">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.save
-                        : "SAVE"}
-                    </label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.save
+                      : "SAVE"}
                   </button>
                 </div>
               </div>
