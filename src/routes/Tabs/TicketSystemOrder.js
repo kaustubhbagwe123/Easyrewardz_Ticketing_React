@@ -2021,7 +2021,7 @@ class TicketSystemOrder extends Component {
                     "required"
                   )}
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 drpdwn-order">
                   {/* <input
                         type="text"
                         className="addmanuallytext1"
@@ -2031,7 +2031,7 @@ class TicketSystemOrder extends Component {
                         onChange={this.handleManuallyOnchange}
                       /> */}
                   <ReactAutocomplete
-                    wrapperStyle={{ display: "block" }}
+                    wrapperStyle={{ display: "block", position: "relative" }}
                     getItemValue={(item) => item.storeName}
                     items={this.state.SearchItem}
                     renderItem={(item, isHighlighted, i) => (
