@@ -964,6 +964,7 @@ class ShipmentTab extends Component {
                               : "btn-shipment-saveNext"
                           }
                           onClick={this.handleCreateShipmentAWB.bind(this)}
+                          disabled={this.state.createShipmentBtnDisbaled}
                         >
                           {TranslationContext !== undefined
                             ? TranslationContext.button.saveandnext

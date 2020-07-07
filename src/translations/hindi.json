@@ -1840,7 +1840,8 @@
     "profileupdatedsuccessfully": "प्रोफाइल को सफलतापूर्वक अपडेट किया गया।",
     "enteremail": "ईमेल दर्ज करें",
     "upload": "डालना",
-    "change": "परिवर्तन"
+    "change": "परिवर्तन",
+    "pleaseselectuser":"कृपया उपयोगकर्ता का चयन करें।"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."
