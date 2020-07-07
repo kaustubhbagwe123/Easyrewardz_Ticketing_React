@@ -864,7 +864,7 @@ class ShipmentTab extends Component {
                       />
                       {TranslationContext !== undefined
                         ? TranslationContext.checkbox.AirwayBillNo
-                        : "Article Mapping"}
+                        : "Airway Bill No"}
                     </a>
                   </li>
                 </ul>
