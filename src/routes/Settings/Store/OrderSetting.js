@@ -34,6 +34,11 @@ class OrderSetting extends Component {
       totalCount: 0,
       currentPage: 1,
       postsPerPage: 10,
+      OrdTemplateNameValidation: "",
+      OrdTempHeightValidation: "",
+      OrdTempLengthValidation: "",
+      OrdTempBreadthValidation: "",
+      OrdTempWeightValidation: "",
     };
   }
 
@@ -469,9 +474,23 @@ class OrderSetting extends Component {
   };
   /// handle submit shipping template
   handleSubmitShppingTemp() {
-    // if(){
-    // }else{
-    // }
+    if (
+      (this.state.OrdTemplatename !== "",
+      this.state.OrdTempHeight !== "",
+      this.state.OrdTempLength !== "",
+      this.state.OrdTempBreadth !== "",
+      this.state.OrdTempWeight !== "")
+    ) {
+      alert("Hello");
+    } else {
+      this.setState({
+        OrdTemplateNameValidation: "Required field.",
+        OrdTempHeightValidation: "Required field.",
+        OrdTempLengthValidation: "Required field.",
+        OrdTempBreadthValidation: "Required field.",
+        OrdTempWeightValidation: "Required field.",
+      });
+    }
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -1324,16 +1343,16 @@ class OrderSetting extends Component {
                                           this
                                         )}
                                       />
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTemplatename === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTemplateNameValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1364,16 +1383,16 @@ class OrderSetting extends Component {
                                           <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempHeight === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempHeightValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1404,16 +1423,16 @@ class OrderSetting extends Component {
                                           <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempLength === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempLengthValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1444,16 +1463,16 @@ class OrderSetting extends Component {
                                           <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempBreadth === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempBreadthValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1484,16 +1503,16 @@ class OrderSetting extends Component {
                                           <option value="lbs">lbs</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempWeight === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempWeightValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-12 my-3 text-center">
