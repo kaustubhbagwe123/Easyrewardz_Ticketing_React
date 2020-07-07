@@ -21,6 +21,7 @@ import "./../node_modules/jquery/dist/jquery.js";
 import "./assets/css/chat.css";
 import "react-table/react-table.css";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-pagination-js/dist/styles.css";
 
 /////js
 import "./../node_modules/bootstrap/dist/js/bootstrap.min.js";
