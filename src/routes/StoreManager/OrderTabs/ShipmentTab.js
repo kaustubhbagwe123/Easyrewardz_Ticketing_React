@@ -40,6 +40,8 @@ class ShipmentTab extends Component {
       IsStoreDelivery: false,
       createShipmentBtnDisbaled: false,
       orderSearchText: "",
+      TemplateData: [],
+      selectedTemplate: 0,
     };
   }
 
@@ -203,6 +205,7 @@ class ShipmentTab extends Component {
             airWayBill2ndTab: false,
             orderId: ordId,
           });
+          self.handleGetTemplateData();
         } else {
           self.setState({
             ShipmentOrderItem: [],
@@ -211,17 +214,42 @@ class ShipmentTab extends Component {
             airWayBill2ndTab: false,
             orderId: ordId,
           });
+          self.handleGetTemplateData();
         }
       })
       .catch((data) => {
         console.log(data);
       });
   }
-
+  /// handle Get Temaplate data
+  handleGetTemplateData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderShippingTemplateName",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            TemplateData: data.shippingTemplateList,
+          });
+        } else {
+          self.setState({
+            TemplateData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   /// handle get AWB Invoice data by order id
   handleGetAWBInvoiceDetailsOrderId(orderId) {
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetAWBInvoiceDetails",
@@ -366,7 +394,12 @@ class ShipmentTab extends Component {
       filterShipmentStatus: false,
     });
   }
-
+  /// handle select template data
+  handleSelectTemplateDD = (e) => {
+    this.setState({
+      selectedTemplate: e.target.value,
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -978,7 +1011,7 @@ class ShipmentTab extends Component {
                                       <input
                                         type="checkbox"
                                         checked={item.checked}
-                                      />{" "}
+                                      />
                                       &nbsp;{item.itemID}
                                     </p>
                                   );
@@ -1008,12 +1041,19 @@ class ShipmentTab extends Component {
                               },
                               {
                                 title: () => (
-                                  <select className="shipment-table-dropdown">
-                                    <option value="temp*">Template *</option>
-                                    <option value="temp1">Template 1</option>
-                                    <option value="temp2">Template 2</option>
-                                    <option value="temp3">Template 3</option>
-                                    <option value="temp4">Template 4</option>
+                                  <select
+                                    className="shipment-table-dropdown"
+                                    name="selectedTemplate"
+                                    value={this.state.selectedTemplate}
+                                    onChange={this.handleSelectTemplateDD}
+                                  >
+                                    <option>Select Template</option>
+                                    {this.state.TemplateData !== null &&
+                                      this.state.TemplateData.map((item, j) => (
+                                        <option key={j} value={item.id}>
+                                          {item.templateName}
+                                        </option>
+                                      ))}
                                   </select>
                                 ),
                               },
