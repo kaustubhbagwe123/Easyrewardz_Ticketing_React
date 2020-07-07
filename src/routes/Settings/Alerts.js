@@ -33,6 +33,8 @@ import {
 } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 // import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
@@ -143,6 +145,7 @@ class Alerts extends Component {
       notiCount: 0,
       notiCurPosi: 0,
       isortA: false,
+      translateLanguage: {}
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -162,6 +165,14 @@ class Alerts extends Component {
     this.handleGetAlert();
     this.handleAlertData();
     this.handleGetAgentList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   handlePlaceholderList(alertId) {
@@ -174,7 +185,7 @@ class Alerts extends Component {
         AlertID: alertId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -816,7 +827,7 @@ class Alerts extends Component {
           params: { alertTypeId: e.target.value },
           headers: authHeader(),
         })
-          .then(function(res) {
+          .then(function (res) {
             var data = res.data.responseData;
             var msg = res.data.message;
             var status = res.data.status;
@@ -879,7 +890,7 @@ class Alerts extends Component {
       url: config.apiUrl + "/Alert/BindAlerts",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         var data = res.data.responseData;
         var msg = res.data.message;
         if (msg === "Success") {
@@ -984,7 +995,7 @@ class Alerts extends Component {
       params: { alertId: alertId },
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let alert = res.data.responseData;
         var data = res.data.responseData;
         if (id) {
@@ -1121,6 +1132,7 @@ class Alerts extends Component {
       });
   }
   deleteAlert(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -1130,13 +1142,17 @@ class Alerts extends Component {
         AlertID: deleteId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.alertdeletedsuccessfully
+            : "Alert deleted successfully.");
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.");
+          NotificationManager.error(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.alertnotdeleted
+            : "Alert not deleted.");
         }
       })
       .catch((data) => {
@@ -1144,6 +1160,7 @@ class Alerts extends Component {
       });
   }
   handleUpdateAlert() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.alertEdit.selectedAlertType) {
       let AlertisActive;
       if (this.state.alertEdit.alertIsActive === "Active") {
@@ -1300,7 +1317,9 @@ class Alerts extends Component {
         .then((res) => {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Alert updated successfully.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.alertupdatedsuccessfully
+              : "Alert updated successfully.");
             self.handleGetAlert();
             self.setState({
               AddAlertTabsPopup: false,
@@ -1311,7 +1330,9 @@ class Alerts extends Component {
               editSaveLoading: false,
               AddAlertTabsPopup: false,
             });
-            NotificationManager.error("Alert not updated.");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.alertmessage.alertnotupdated
+              : "Alert not updated.");
           }
         })
         .catch((data) => {
@@ -1322,7 +1343,9 @@ class Alerts extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Alert not updated.");
+      NotificationManager.error(TranslationContext !== undefined
+        ? TranslationContext.alertmessage.alertnotupdated
+        : "Alert not updated.");
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name.",
       });
@@ -1356,6 +1379,7 @@ class Alerts extends Component {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       (this.state.selectedAlertType > 0 &&
         this.state.selectedStatus !== "" &&
@@ -1366,7 +1390,9 @@ class Alerts extends Component {
       this.state.selectedNotifInternal === true
     ) {
       if (this.state.checkIsExistType) {
-        NotificationManager.error("Alert already exist!");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.alertalreadyexist
+          : "Alert already exist!");
       } else {
         this.setState({ AddAlertTabsPopup: true });
       }
@@ -1374,9 +1400,15 @@ class Alerts extends Component {
       // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
     } else {
       this.setState({
-        alertTypeCompulsion: "Please Enter Alert Type",
-        statusCompulsion: "Please Select Status",
-        communicationModeCompulsion: "Please Select Any Communication Mode",
+        alertTypeCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseenteralerttype
+          : "Please Enter Alert Type",
+        statusCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectstatus
+          : "Please Select Status",
+        communicationModeCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectcommunicationmode
+          : "Please Select Any Communication Mode",
       });
     }
   }
@@ -1489,6 +1521,7 @@ class Alerts extends Component {
     }
   }
   handleInsertAlert() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var setstatus = false;
     var status = this.state.selectedStatus;
@@ -1566,13 +1599,17 @@ class Alerts extends Component {
       headers: authHeader(),
       data: json,
     })
-      .then(function(res) {
+      .then(function (res) {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.");
+          NotificationManager.success(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.recordsavedsuccessfully
+            : "Record Saved successfully.");
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.");
+          NotificationManager.error(TranslationContext !== undefined
+            ? TranslationContext.alertmessage.recordalreadyexists
+            : "Record Already Exists.");
         }
         self.handleAddAlertTabsClose();
       })
@@ -1585,6 +1622,7 @@ class Alerts extends Component {
   }
 
   editAlertModalData(e) {
+    const TranslationContext = this.state.translateLanguage.default;
     const { name, value } = e.target;
 
     var data = this.state.alertEdit;
@@ -1593,7 +1631,11 @@ class Alerts extends Component {
         var alertName = e.target.selectedOptions[0].innerText;
         data[name] = value;
         data["AlertTypeName"] = alertName;
-        this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
+        this.setState({
+          editalertTypeCompulsion: TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenteralerttype
+            : "Please Enter Alert Type"
+        });
         this.setState({ alertEdit: data });
       } else {
         var alertName = e.target.selectedOptions[0].innerText;
@@ -1609,8 +1651,13 @@ class Alerts extends Component {
     }
   }
   handleOpenAdd() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.alertEdit.AlertTypeName == "Select Alert") {
-      this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
+      this.setState({
+        editalertTypeCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseenteralerttype
+          : "Please Enter Alert Type"
+      });
     } else if (
       this.state.emailCust === false &&
       this.state.emailInt === false &&
@@ -1619,7 +1666,9 @@ class Alerts extends Component {
       this.state.notiInt === false
     ) {
       this.setState({
-        editcommunicationModeCompulsion: "Please Select Any Communication Mode",
+        editcommunicationModeCompulsion: TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectcommunicationmode
+          : "Please Select Any Communication Mode",
       });
     } else {
       var innerTabIndex = 0;
@@ -1647,7 +1696,7 @@ class Alerts extends Component {
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1760,7 +1809,7 @@ class Alerts extends Component {
           this.updateUploadProgress(Math.round(progress));
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -1799,6 +1848,7 @@ class Alerts extends Component {
     NotificationManager.success("File deleted successfully.");
   };
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -1821,7 +1871,9 @@ class Alerts extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>{TranslationContext !== undefined
+                    ? TranslationContext.p.sortatoz
+                    : "SORT BY A TO Z"}</p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1831,7 +1883,9 @@ class Alerts extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>{TranslationContext !== undefined
+                    ? TranslationContext.p.sortztoa
+                    : "SORT BY Z TO A"}</p>
                 </div>
               </div>
               <a
@@ -1839,10 +1893,14 @@ class Alerts extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>{TranslationContext !== undefined
+                  ? TranslationContext.p.filterbytype
+                  : "FILTER BY TYPE"}</p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1867,87 +1925,91 @@ class Alerts extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.all
+                          : "ALL"}
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "alertTypeName"
                     ? this.state.sortFilterAlertType !== null &&
-                      this.state.sortFilterAlertType.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name={item.alertTypeName}
-                            id={"fil-open" + item.alertTypeName}
-                            value={item.alertTypeName}
-                            checked={this.state.salertTypeNameFilterCheckbox.includes(
-                              item.alertTypeName
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "alertTypeName",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.alertTypeName}>
-                            <span className="table-btn table-blue-btn">
-                              {item.alertTypeName}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilterAlertType.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.alertTypeName}
+                          id={"fil-open" + item.alertTypeName}
+                          value={item.alertTypeName}
+                          checked={this.state.salertTypeNameFilterCheckbox.includes(
+                            item.alertTypeName
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "alertTypeName",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.alertTypeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.alertTypeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFilterCreatedBy !== null &&
-                      this.state.sortFilterCreatedBy.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name={item.createdBy}
-                            id={"fil-open" + item.createdBy}
-                            value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "createdBy",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.createdBy}>
-                            <span className="table-btn table-blue-btn">
-                              {item.createdBy}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilterCreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.createdBy}
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          checked={this.state.screatedByFilterCheckbox.includes(
+                            item.createdBy
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
 
                   {this.state.sortColumn === "isAlertActive"
                     ? this.state.sortFilterStatus !== null &&
-                      this.state.sortFilterStatus.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name={item.isAlertActive}
-                            id={"fil-open" + item.isAlertActive}
-                            value={item.isAlertActive}
-                            checked={this.state.sisAlertActiveFilterCheckbox.includes(
-                              item.isAlertActive
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "isAlertActive"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.isAlertActive}>
-                            <span className="table-btn table-blue-btn">
-                              {item.isAlertActive}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilterStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name={item.isAlertActive}
+                          id={"fil-open" + item.isAlertActive}
+                          value={item.isAlertActive}
+                          checked={this.state.sisAlertActiveFilterCheckbox.includes(
+                            item.isAlertActive
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "isAlertActive"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.isAlertActive}>
+                          <span className="table-btn table-blue-btn">
+                            {item.isAlertActive}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
                 </div>
               </div>
@@ -1956,15 +2018,21 @@ class Alerts extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.link.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Alerts
+            {TranslationContext !== undefined
+              ? TranslationContext.link.alerts
+              : "Alerts"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1982,10 +2050,14 @@ class Alerts extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "alertTypeName",
-                              "AlertType"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.alerttype
+                                : "Alert Type"
                             )}
                           >
-                            Alert Type
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.alerttype
+                              : "Alert Type"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1993,7 +2065,9 @@ class Alerts extends Component {
                         accessor: "alertTypeName",
                       },
                       {
-                        Header: "Communication Mode",
+                        Header: TranslationContext !== undefined
+                          ? TranslationContext.header.communicationmode
+                          : "Communication Mode",
                         accessor: "modeOfCommunication",
                         className: "communication-labelHeader",
                         sortable: false,
@@ -2033,10 +2107,14 @@ class Alerts extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created by"
                             )}
                           >
-                            Created by
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.createdby
+                              : "Created by"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2053,23 +2131,31 @@ class Alerts extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createdby
+                                              : "Created By"}: {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}:{" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}:{" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}:{" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -2098,10 +2184,14 @@ class Alerts extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isAlertActive",
-                              "Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"
                             )}
                           >
-                            Status
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.status
+                              : "Status"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2109,7 +2199,9 @@ class Alerts extends Component {
                         accessor: "isAlertActive",
                       },
                       {
-                        Header: "Actions",
+                        Header: TranslationContext !== undefined
+                          ? TranslationContext.span.action
+                          : "Actions",
                         // accessor: "action",
 
                         sortable: false,
@@ -2126,14 +2218,21 @@ class Alerts extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file?"}
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.areyousuredeletefile
+                                            : "Are you sure you want to delete this file?"}
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteAlert.bind(
@@ -2141,7 +2240,9 @@ class Alerts extends Component {
                                               row.original.alertID
                                             )}
                                           >
-                                            Delete
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -2169,7 +2270,9 @@ class Alerts extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.edit
+                                      : "EDIT"}
                                   </label>
                                 </button>
                               </span>
@@ -2226,9 +2329,13 @@ class Alerts extends Component {
               </div>
               <div className="col-md-4">
                 <div className="right-sect-div">
-                  <h3>Create ALERTS</h3>
+                  <h3>{TranslationContext !== undefined
+                    ? TranslationContext.h3.createalerts
+                    : "CREATE ALERTS"}</h3>
                   <div className="div-cntr">
-                    <label>Alert Type</label>
+                    <label>{TranslationContext !== undefined
+                      ? TranslationContext.label.alerttype
+                      : "Alert Type"}</label>
 
                     <select
                       className="add-select-category"
@@ -2236,7 +2343,11 @@ class Alerts extends Component {
                       value={this.state.selectedAlertType}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      <option value={0}>Select Alert</option>
+                      <option value={0}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.selectalert
+                          : "Select Alert"}
+                      </option>
                       {this.state.alertData !== null &&
                         this.state.alertData.map((item, i) => (
                           <option key={i} value={item.alertID}>
@@ -2255,7 +2366,9 @@ class Alerts extends Component {
                       </p>
                     )}
                   </div>
-                  <h4>Communication Mode</h4>
+                  <h4>{TranslationContext !== undefined
+                    ? TranslationContext.h4.communicationmode
+                    : "Communication Mode"}</h4>
                   {this.state.selectedEmailCustomer === false &&
                     this.state.selectedEmailInternal === false &&
                     this.state.selectedEmailStore === false &&
@@ -2266,45 +2379,75 @@ class Alerts extends Component {
                       </p>
                     )}
                   <div className="div-cntr">
-                    <label>Email</label>
+                    <label>{TranslationContext !== undefined
+                      ? TranslationContext.label.email
+                      : "Email"}</label>
                     <br />
                     <Checkbox onChange={this.handleAlertTabs} value="emailCust">
-                      Customer
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.customer
+                        : "Customer"}
                     </Checkbox>
                     <Checkbox onChange={this.handleAlertTabs} value="emailInt">
-                      Internal
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.internal
+                        : "Internal"}
                     </Checkbox>
                     <Checkbox
                       onChange={this.handleAlertTabs}
                       value="emailStore"
                     >
-                      Store
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.store
+                        : "Store"}
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>SMS</label>
+                    <label>{TranslationContext !== undefined
+                      ? TranslationContext.label.sms
+                      : "SMS"}</label>
                     <br />
                     <Checkbox onChange={this.handleAlertTabs} value="smsCust">
-                      Customer
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.customer
+                        : "Customer"}
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>Notification</label>
+                    <label>{TranslationContext !== undefined
+                      ? TranslationContext.label.notification
+                      : "Notification"}</label>
                     <br />
                     <Checkbox onChange={this.handleAlertTabs} value="notiInt">
-                      Internal
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.internal
+                        : "Internal"}
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>Status</label>
+                    <label>{TranslationContext !== undefined
+                      ? TranslationContext.label.status
+                      : "Status"}</label>
                     <select
                       name="selectedStatus"
                       value={this.state.selectedStatus}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      <option value="">Select</option>
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
+                      <option value="">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "Select"}
+                      </option>
+                      <option value="true">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.active
+                          : "Active"}
+                      </option>
+                      <option value="false">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.inactive
+                          : "Inactive"}
+                      </option>
                     </select>
                     {this.state.selectedStatus === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
@@ -2316,7 +2459,9 @@ class Alerts extends Component {
                     className="butn"
                     onClick={this.handleAddAlertTabsOpen}
                   >
-                    Next
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.next
+                      : "Next"}
                   </button>
                   <Modal
                     size="lg"
@@ -2333,21 +2478,23 @@ class Alerts extends Component {
                           {(this.state.emailCust ||
                             this.state.emailInt ||
                             this.state.emailStore) && (
-                            <li className="nav-item">
-                              <a
-                                onClick={this.handleTabChange.bind(this, 0)}
-                                className={`nav-link ${this.state.tabIndex ===
-                                  0 && "active"}`}
-                                data-toggle="tab"
-                                href="#email-tab"
-                                role="tab"
-                                aria-controls="email-tab"
-                                aria-selected="true"
-                              >
-                                Email
-                              </a>
-                            </li>
-                          )}
+                              <li className="nav-item">
+                                <a
+                                  onClick={this.handleTabChange.bind(this, 0)}
+                                  className={`nav-link ${this.state.tabIndex ===
+                                    0 && "active"}`}
+                                  data-toggle="tab"
+                                  href="#email-tab"
+                                  role="tab"
+                                  aria-controls="email-tab"
+                                  aria-selected="true"
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.email
+                                    : "Email"}
+                                </a>
+                              </li>
+                            )}
                           {this.state.smsCust && (
                             <li className="nav-item">
                               <a
@@ -2360,7 +2507,9 @@ class Alerts extends Component {
                                 aria-controls="sms-tab"
                                 aria-selected="false"
                               >
-                                SMS
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.sms
+                                  : "SMS"}
                               </a>
                             </li>
                           )}
@@ -2376,7 +2525,9 @@ class Alerts extends Component {
                                 aria-controls="notification-tab"
                                 aria-selected="false"
                               >
-                                Notification
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.notification
+                                  : "Notification"}
                               </a>
                             </li>
                           )}
@@ -2394,77 +2545,85 @@ class Alerts extends Component {
                         {(this.state.emailCust ||
                           this.state.emailInt ||
                           this.state.emailStore) && (
-                          <div
-                            className={`tab-pane fade ${this.state.tabIndex ===
-                              0 && "show active"}`}
-                            id="email-tab"
-                            role="tabpanel"
-                            aria-labelledby="email-tab"
-                          >
-                            <div className="position-relative-alert">
-                              <ul
-                                className="nav alert-nav-tabs3"
-                                role="tablist"
-                              >
-                                {this.state.emailCust && (
-                                  <li className="nav-item">
-                                    <a
-                                      className={`nav-link ${this.state
-                                        .innerTabIndex === 0 && "active"}`}
-                                      data-toggle="tab"
-                                      href="#customer-tab"
-                                      role="tab"
-                                      aria-controls="customer-tab"
-                                      aria-selected="true"
-                                    >
-                                      Customer
-                                    </a>
-                                  </li>
-                                )}
-                                {this.state.emailInt && (
-                                  <li className="nav-item">
-                                    <a
-                                      className={`nav-link ${this.state
-                                        .innerTabIndex === 1 && "active"}`}
-                                      data-toggle="tab"
-                                      href="#Internal-tab"
-                                      role="tab"
-                                      aria-controls="Internal-tab"
-                                      aria-selected="false"
-                                    >
-                                      Internal
-                                    </a>
-                                  </li>
-                                )}
-                                {this.state.emailStore && (
-                                  <li className="nav-item">
-                                    <a
-                                      className={`nav-link ${this.state
-                                        .innerTabIndex === 2 && "active"}`}
-                                      data-toggle="tab"
-                                      href="#ticket-tab"
-                                      role="tab"
-                                      aria-controls="ticket-tab"
-                                      aria-selected="false"
-                                    >
-                                      Store
-                                    </a>
-                                  </li>
-                                )}
-                              </ul>
-                            </div>
-                            <div className="tab-content p-0 alert-p1">
-                              <div
-                                className={`tab-pane fade ${this.state
-                                  .innerTabIndex === 0 && "show active"}`}
-                                id="customer-tab"
-                                role="tabpanel"
-                                aria-labelledby="customer-tab"
-                              >
-                                <label className="alert-main-popuplbl">
-                                  Compose your Email
-                                </label>
-                                {/* <div className="div-padding-alert">
+                            <div
+                              className={`tab-pane fade ${this.state.tabIndex ===
+                                0 && "show active"}`}
+                              id="email-tab"
+                              role="tabpanel"
+                              aria-labelledby="email-tab"
+                            >
+                              <div className="position-relative-alert">
+                                <ul
+                                  className="nav alert-nav-tabs3"
+                                  role="tablist"
+                                >
+                                  {this.state.emailCust && (
+                                    <li className="nav-item">
+                                      <a
+                                        className={`nav-link ${this.state
+                                          .innerTabIndex === 0 && "active"}`}
+                                        data-toggle="tab"
+                                        href="#customer-tab"
+                                        role="tab"
+                                        aria-controls="customer-tab"
+                                        aria-selected="true"
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.customer
+                                          : "Customer"}
+                                      </a>
+                                    </li>
+                                  )}
+                                  {this.state.emailInt && (
+                                    <li className="nav-item">
+                                      <a
+                                        className={`nav-link ${this.state
+                                          .innerTabIndex === 1 && "active"}`}
+                                        data-toggle="tab"
+                                        href="#Internal-tab"
+                                        role="tab"
+                                        aria-controls="Internal-tab"
+                                        aria-selected="false"
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.internal
+                                          : "Internal"}
+                                      </a>
+                                    </li>
+                                  )}
+                                  {this.state.emailStore && (
+                                    <li className="nav-item">
+                                      <a
+                                        className={`nav-link ${this.state
+                                          .innerTabIndex === 2 && "active"}`}
+                                        data-toggle="tab"
+                                        href="#ticket-tab"
+                                        role="tab"
+                                        aria-controls="ticket-tab"
+                                        aria-selected="false"
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.store
+                                          : "Store"}
+                                      </a>
+                                    </li>
+                                  )}
+                                </ul>
+                              </div>
+                              <div className="tab-content p-0 alert-p1">
+                                <div
+                                  className={`tab-pane fade ${this.state
+                                    .innerTabIndex === 0 && "show active"}`}
+                                  id="customer-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="customer-tab"
+                                >
+                                  <label className="alert-main-popuplbl">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.composeyouremail
+                                      : "Compose your Email"}
+                                  </label>
+                                  {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2493,7 +2652,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div> */}
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
+                                  {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2511,63 +2670,69 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div> */}
-                                {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Customer"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
+                                  {this.state.placeholderShown && (
+                                    <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
+                                      <select
+                                        className="add-select-category"
+                                        value="0"
+                                        onChange={this.setPlaceholderValue.bind(
+                                          this,
+                                          "Customer"
                                         )}
-                                    </select>
-                                  </div>
-                                )}
-                                <CKEditor
-                                  content={this.state.content}
-                                  name="selectedCKCustomer"
-                                  data={this.state.selectedCKCustomer}
-                                  onChange={this.setCKEditorCustomer}
-                                  onBlur={this.onCkBlurCustomer}
-                                  events={{
-                                    items: this.fileUpload,
-                                  }}
-                                />
-                                {this.state.selectedCKCustomer.length === 0 && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
+                                      >
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.placeholders
+                                            : "Placeholders"}
+                                        </option>
+                                        {this.state.placeholderData !== null &&
+                                          this.state.placeholderData.map(
+                                            (item, i) => (
+                                              <option
+                                                key={i}
+                                                value={item.mailParameterID}
+                                              >
+                                                {item.description}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </div>
+                                  )}
+                                  <CKEditor
+                                    content={this.state.content}
+                                    name="selectedCKCustomer"
+                                    data={this.state.selectedCKCustomer}
+                                    onChange={this.setCKEditorCustomer}
+                                    onBlur={this.onCkBlurCustomer}
+                                    events={{
+                                      items: this.fileUpload,
                                     }}
-                                  >
-                                    {this.state.ckCustomerCompulsion}
-                                  </p>
-                                )}
-                              </div>
-                              <div
-                                className={`tab-pane fade ${this.state
-                                  .innerTabIndex === 1 && "show active"}`}
-                                id="Internal-tab"
-                                role="tabpanel"
-                                aria-labelledby="Internal-tab"
-                              >
-                                <label className="alert-main-popuplbl">
-                                  Compose your Email
-                                </label>
-                                {/* <div className="div-padding-alert">
+                                  />
+                                  {this.state.selectedCKCustomer.length === 0 && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.ckCustomerCompulsion}
+                                    </p>
+                                  )}
+                                </div>
+                                <div
+                                  className={`tab-pane fade ${this.state
+                                    .innerTabIndex === 1 && "show active"}`}
+                                  id="Internal-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="Internal-tab"
+                                >
+                                  <label className="alert-main-popuplbl">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.composeyouremail
+                                      : "Compose your Email"}
+                                  </label>
+                                  {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2596,7 +2761,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div> */}
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                  {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2614,64 +2779,70 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div> */}
-                                {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Internal"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
+                                  {this.state.placeholderShown && (
+                                    <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                      <select
+                                        className="add-select-category"
+                                        value="0"
+                                        onChange={this.setPlaceholderValue.bind(
+                                          this,
+                                          "Internal"
                                         )}
-                                    </select>
-                                  </div>
-                                )}
+                                      >
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.placeholders
+                                            : "Placeholders"}
+                                        </option>
+                                        {this.state.placeholderData !== null &&
+                                          this.state.placeholderData.map(
+                                            (item, i) => (
+                                              <option
+                                                key={i}
+                                                value={item.mailParameterID}
+                                              >
+                                                {item.description}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </div>
+                                  )}
 
-                                <CKEditor
-                                  content={this.state.content}
-                                  events={{
-                                    items: this.fileUpload,
-                                  }}
-                                  name="selectedCKInternal"
-                                  data={this.state.selectedCKInternal}
-                                  onChange={this.setCKEditorInternal}
-                                  onBlur={this.onCkBlurInternal}
-                                />
-                                {this.state.selectedCKInternal.length === 0 && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
+                                  <CKEditor
+                                    content={this.state.content}
+                                    events={{
+                                      items: this.fileUpload,
                                     }}
-                                  >
-                                    {this.state.ckInternalCompulsion}
-                                  </p>
-                                )}
-                              </div>
-                              <div
-                                className={`tab-pane fade ${this.state
-                                  .innerTabIndex === 2 && "show active"}`}
-                                id="ticket-tab"
-                                role="tabpanel"
-                                aria-labelledby="ticket-tab"
-                              >
-                                <label className="alert-main-popuplbl">
-                                  Compose your Email
-                                </label>
-                                {/* <div className="div-padding-alert">
+                                    name="selectedCKInternal"
+                                    data={this.state.selectedCKInternal}
+                                    onChange={this.setCKEditorInternal}
+                                    onBlur={this.onCkBlurInternal}
+                                  />
+                                  {this.state.selectedCKInternal.length === 0 && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.ckInternalCompulsion}
+                                    </p>
+                                  )}
+                                </div>
+                                <div
+                                  className={`tab-pane fade ${this.state
+                                    .innerTabIndex === 2 && "show active"}`}
+                                  id="ticket-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="ticket-tab"
+                                >
+                                  <label className="alert-main-popuplbl">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.composeyouremail
+                                      : "Compose your Email"}
+                                  </label>
+                                  {/* <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2698,7 +2869,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div> */}
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
+                                  {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
                                   <select
                                     className="add-select-category"
                                     value="0"
@@ -2716,54 +2887,58 @@ class Alerts extends Component {
                                       ))}
                                   </select>
                                 </div> */}
-                                {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Store"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
+                                  {this.state.placeholderShown && (
+                                    <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                      <select
+                                        className="add-select-category"
+                                        value="0"
+                                        onChange={this.setPlaceholderValue.bind(
+                                          this,
+                                          "Store"
                                         )}
-                                    </select>
-                                  </div>
-                                )}
+                                      >
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.placeholders
+                                            : "Placeholders"}
+                                        </option>
+                                        {this.state.placeholderData !== null &&
+                                          this.state.placeholderData.map(
+                                            (item, i) => (
+                                              <option
+                                                key={i}
+                                                value={item.mailParameterID}
+                                              >
+                                                {item.description}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </div>
+                                  )}
 
-                                <CKEditor
-                                  content={this.state.content}
-                                  events={{
-                                    change: this.onChange,
-                                    items: this.fileUpload,
-                                  }}
-                                  name="selectedCKStore"
-                                  data={this.state.selectedCKStore}
-                                  onChange={this.setCKEditorStore}
-                                  onBlur={this.onCkBlurStore}
-                                />
-                                {this.state.selectedCKStore.length === 0 && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
+                                  <CKEditor
+                                    content={this.state.content}
+                                    events={{
+                                      change: this.onChange,
+                                      items: this.fileUpload,
                                     }}
-                                  >
-                                    {this.state.ckStoreCompulsion}
-                                  </p>
-                                )}
-                                {/*<div className="div-button1">
+                                    name="selectedCKStore"
+                                    data={this.state.selectedCKStore}
+                                    onChange={this.setCKEditorStore}
+                                    onBlur={this.onCkBlurStore}
+                                  />
+                                  {this.state.selectedCKStore.length === 0 && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.ckStoreCompulsion}
+                                    </p>
+                                  )}
+                                  {/*<div className="div-button1">
                                 <button
                                   className="butn-2"
                                   type="submit"
@@ -2774,10 +2949,10 @@ class Alerts extends Component {
                                   SAVE & NEXT
                                 </button>
                               </div>*/}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                         <div
                           id="sms-tab"
                           className={`tab-pane fade ${this.state.tabIndex ===
@@ -2785,7 +2960,9 @@ class Alerts extends Component {
                         >
                           <div className="sms-mainLabel alert-p1">
                             <label className="alert-main-popuplbl">
-                              Compose your SMS
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.composeyoursms
+                                : "Compose your SMS"}
                             </label>
                             <textarea
                               rows="10"
@@ -2817,7 +2994,9 @@ class Alerts extends Component {
                           <div className="sms-mainLabel alert-p1">
                             <div className="noti-plchldr-cntr">
                               <label className="alert-main-popuplbl">
-                                Compose your Notification
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.composeyournotification
+                                  : "Compose your Notification"}
                               </label>
                               <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
                                 <select
@@ -2828,7 +3007,11 @@ class Alerts extends Component {
                                     "Notification"
                                   )}
                                 >
-                                  <option value="0">Placeholders</option>
+                                  <option value="0">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.placeholders
+                                      : "Placeholders"}
+                                  </option>
                                   {this.state.placeholderData !== null &&
                                     this.state.placeholderData.map(
                                       (item, i) => (
@@ -2884,9 +3067,11 @@ class Alerts extends Component {
                                 spin
                               />
                             ) : (
-                              ""
-                            )}
-                            SAVE
+                                ""
+                              )}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "SAVE"}
                           </button>
                         </div>
                       </div>
@@ -2907,13 +3092,13 @@ class Alerts extends Component {
                     id="file-upload"
                     className="file-upload d-none"
                     type="file"
-                    // onChange={this.fileUpload}
+                  // onChange={this.fileUpload}
                   />
                   <label
                     htmlFor="file-upload"
-                    // onDrop={this.fileDrop}
-                    // onDragOver={this.fileDragOver}
-                    // onDragEnter={this.fileDragEnter}
+                  // onDrop={this.fileDrop}
+                  // onDragOver={this.fileDragOver}
+                  // onDragEnter={this.fileDragEnter}
                   >
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
@@ -2970,22 +3155,22 @@ class Alerts extends Component {
                         </div>
                       </div>
                       {this.state.fileN.length > 0 &&
-                      this.state.isFileUploadFail ? (
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <a
-                              className="file-retry"
+                        this.state.isFileUploadFail ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <a
+                                className="file-retry"
                               // onClick={this.hanldeAddBulkUpload.bind(this)}
-                            >
-                              Retry
+                              >
+                                Retry
                             </a>
+                            </div>
+                            <div>
+                              <span className="file-failed">Failed</span>
+                            </div>
                           </div>
-                          <div>
-                            <span className="file-failed">Failed</span>
-                          </div>
-                        </div>
-                      ) : null}
+                        ) : null}
                       {this.state.showProgress ? (
                         <div className="file-cntr">
                           <div className="file-dtls">
@@ -3027,11 +3212,19 @@ class Alerts extends Component {
         >
           <div className="edtpadding right-sect-div">
             <div className="">
-              <label className="popover-header-text">EDIT ALERTS</label>
+              <label className="popover-header-text">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.editalerts
+                  : "EDIT ALERTS"}
+              </label>
             </div>
 
             <div className="div-cntr">
-              <label>Alert Type</label>
+              <label>
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.alerttype
+                  : "Alert Type"}
+              </label>
 
               <select
                 className="add-select-category"
@@ -3039,7 +3232,11 @@ class Alerts extends Component {
                 value={this.state.alertEdit.selectedAlertType}
                 onChange={this.editAlertModalData.bind(this)}
               >
-                <option>Select Alert</option>
+                <option>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.option.selectalert
+                    : "Select Alert"}
+                </option>
                 {this.state.alertData !== null &&
                   this.state.alertData.map((item, i) => (
                     <option key={i} value={item.alertID}>
@@ -3053,7 +3250,9 @@ class Alerts extends Component {
                 </p>
               )}
             </div>
-            <h4>Communication Mode</h4>
+            <h4>{TranslationContext !== undefined
+              ? TranslationContext.h4.communicationmode
+              : "Communication Mode"}</h4>
             {this.state.emailCust === false &&
               this.state.emailStore === false &&
               this.state.emailInt === false &&
@@ -3064,63 +3263,93 @@ class Alerts extends Component {
                 </p>
               )}
             <div className="div-cntr">
-              <label>Email</label>
+              <label>{TranslationContext !== undefined
+                ? TranslationContext.label.email
+                : "Email"}</label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs}
                 checked={this.state.emailCust}
                 value="emailCust"
               >
-                Customer
+                {TranslationContext !== undefined
+                  ? TranslationContext.checkbox.customer
+                  : "Customer"}
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs}
                 checked={this.state.emailInt}
                 value="emailInt"
               >
-                Internal
+                {TranslationContext !== undefined
+                  ? TranslationContext.checkbox.internal
+                  : "Internal"}
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs}
                 checked={this.state.emailStore}
                 value="emailStore"
               >
-                Store
+                {TranslationContext !== undefined
+                  ? TranslationContext.checkbox.store
+                  : "Store"}
               </Checkbox>
             </div>
             <div className="div-cntr">
-              <label>SMS</label>
+              <label>{TranslationContext !== undefined
+                ? TranslationContext.label.sms
+                : "SMS"}</label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs}
                 checked={this.state.smsCust}
                 value="smsCust"
               >
-                Customer
+                {TranslationContext !== undefined
+                  ? TranslationContext.checkbox.customer
+                  : "Customer"}
               </Checkbox>
             </div>
             <div className="div-cntr">
-              <label>Notification</label>
+              <label>{TranslationContext !== undefined
+                ? TranslationContext.label.notification
+                : "Notification"}</label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs}
                 checked={this.state.notiInt}
                 value="notiInt"
               >
-                Internal
+                {TranslationContext !== undefined
+                  ? TranslationContext.checkbox.internal
+                  : "Internal"}
               </Checkbox>
             </div>
 
             <div className="div-cntr">
-              <label>Status</label>
+              <label>{TranslationContext !== undefined
+                ? TranslationContext.label.status
+                : "Status"}</label>
               <select
                 name="alertIsActive"
                 value={this.state.alertEdit.alertIsActive}
                 onChange={this.editAlertModalData.bind(this)}
               >
-                <option value="">Select</option>
-                <option value={"Active"}>Active</option>
-                <option value={"Inactive"}>Inactive</option>
+                <option value="">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.option.select
+                    : "Select"}
+                </option>
+                <option value={"Active"}>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.option.active
+                    : "Active"}
+                </option>
+                <option value={"Inactive"}>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.option.inactive
+                    : "Inactive"}
+                </option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3132,13 +3361,17 @@ class Alerts extends Component {
             <br />
             <div className="text-center">
               <span className="pop-over-cancle" onClick={this.handleEditModal}>
-                CANCEL
+                {TranslationContext !== undefined
+                  ? TranslationContext.span.cancel
+                  : "CANCEL"}
               </span>
               <button
                 className="pop-over-button FlNone"
                 onClick={this.handleOpenAdd.bind(this)}
               >
-                SAVE
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.save
+                  : "SAVE"}
               </button>
             </div>
           </div>

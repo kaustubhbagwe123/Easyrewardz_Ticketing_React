@@ -44,21 +44,27 @@ import StoreUserForgotPassword from "./Component/Store/StoreUserForgotPassword";
 import ModuleSelect from "./Component/ModuleSelect";
 import StoreChangePassword from "./Component/Store/ChangePassword";
 import LanguageSelection from "./Component/Store/LanguageSelection";
+import TicketingLanguageSelection from "./Component/TicketingLanguageSelection";
 
 ReactDOM.render(
   <Router>
     {/* if required the only on uncomment this code and your system do not push this line*/}
-    {/* <Route exact path="/" component={ModuleSelect} /> */}
+    <Route exact path="/" component={ModuleSelect} />
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />
     <Route exact path="/ProgramCodeSignIn" component={ProgramCodeSignIn} />
     <Route exact path="/SignIn" component={SignIn} />
+    <Route
+      exact
+      path="/TicketingLanguageSelection"
+      component={TicketingLanguageSelection}
+    />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/ChangePassword" component={ChangePassword} />
     <Route exact path="/storeChangePassword" component={StoreChangePassword} />
     <Route exact path="/languageSelection" component={LanguageSelection} />
-    <Route exact path="/" component={StoreProgramCode} />
+    <Route exact path="/StoreProgramCode" component={StoreProgramCode} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
     <Route exact path="/storeForgotpassword" component={StoreForgotPassword} />
     <Route

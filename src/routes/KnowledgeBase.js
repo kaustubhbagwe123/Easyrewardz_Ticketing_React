@@ -20,6 +20,9 @@ import matchSorter from "match-sorter";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 
+import * as translationHI from '../translations/hindi'
+import * as translationMA from '../translations/marathi'
+
 class KnowledgeBase extends Component {
   constructor(props) {
     super(props);
@@ -127,6 +130,7 @@ class KnowledgeBase extends Component {
       NisortA: false,
       AisortA: false,
       similarTickets: [],
+      translateLanguage: {}
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -818,6 +822,17 @@ class KnowledgeBase extends Component {
 
     this.handleGetCategoryList();
     this.handleKBList();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   HandelFirstTabClick() {
@@ -1063,6 +1078,7 @@ class KnowledgeBase extends Component {
       });
   }
   handleDeleteKB(id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
 
@@ -1078,9 +1094,9 @@ class KnowledgeBase extends Component {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordinuse:"Record in use.");
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recorddeletedsuccessfully:"Record deleted Successfully.");
           self.handleKBList();
         }
       })
@@ -1090,6 +1106,7 @@ class KnowledgeBase extends Component {
   }
 
   handleRejectKB(id, bit) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
 
@@ -1114,7 +1131,7 @@ class KnowledgeBase extends Component {
           let Msg = res.data.message;
 
           if (Msg === "Success") {
-            NotificationManager.success("Record Rejected successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordrejectedsuccessfully:"Record Rejected successfully.");
           }
 
           self.handleKBList();
@@ -1154,7 +1171,7 @@ class KnowledgeBase extends Component {
             let Msg = res.data.message;
 
             if (Msg === "Success") {
-              NotificationManager.success("Record Approved successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordapprovedsuccessfully:"Record Approved successfully.");
             }
             self.closeEditAproveModal1();
             self.handleKBList();
@@ -1309,7 +1326,6 @@ class KnowledgeBase extends Component {
   }
 
   handleSeaechKB() {
-    debugger;
     if (
       this.state.selectedCategory > 0 &&
       this.state.selectedSubCategory > 0 &&
@@ -1377,6 +1393,7 @@ class KnowledgeBase extends Component {
   }
 
   handleUpdateKB(kbid) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.updateCategoryValue > 0 &&
@@ -1408,9 +1425,9 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Updated successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated successfully.");
           } else {
-            NotificationManager.error("Record Not Updated.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated.");
           }
           self.closeEditAproveModal();
           self.handleKBList();
@@ -1429,6 +1446,7 @@ class KnowledgeBase extends Component {
   }
 
   handleAddKB() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.selectedCategory.length > 0 &&
@@ -1462,7 +1480,7 @@ class KnowledgeBase extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Record Saved successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved successfully.");
           }
           self.setState({
             selectedCategory: "",
@@ -1647,6 +1665,7 @@ class KnowledgeBase extends Component {
     }, 10);
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="position-relative d-inline-block">
@@ -1669,7 +1688,10 @@ class KnowledgeBase extends Component {
                       onClick={this.sortStatusAtoZ.bind(this)}
                     />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1679,7 +1701,9 @@ class KnowledgeBase extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               {/* <a
@@ -1689,7 +1713,9 @@ class KnowledgeBase extends Component {
                 clear search
               </a> */}
               <div className="filter-type FTypeScroll">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1727,7 +1753,9 @@ class KnowledgeBase extends Component {
                     onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
                   <label htmlFor={"fil-open"}>
-                    <span className="table-btn table-blue-btn">ALL</span>
+                    <span className="table-btn table-blue-btn">
+                    {TranslationContext!==undefined?TranslationContext.span.all:"ALL"}
+                    </span>
                   </label>
                 </div>
 
@@ -1909,7 +1937,8 @@ class KnowledgeBase extends Component {
                 className="header-new-submissions"
                 style={{ color: this.state.tabcolor }}
               >
-                New Submissions
+                {TranslationContext!==undefined?TranslationContext.label.newsubmission:"New Submissions"}
+                
               </label>
             </a>
           </span>
@@ -1919,7 +1948,8 @@ class KnowledgeBase extends Component {
                 className="header-new-submissions-1"
                 style={{ color: this.state.tabcolor1 }}
               >
-                Knowledge Base List
+                 {TranslationContext!==undefined?TranslationContext.label.knowledgebaselist:"Knowledge Base List"}
+                
               </label>
             </a>
           </span>
@@ -1928,7 +1958,8 @@ class KnowledgeBase extends Component {
             className="kb-Header-button"
             onClick={this.openAddNewKBModal.bind(this)}
           >
-            Add New KB
+            {TranslationContext!==undefined?TranslationContext.button.addnewkb:"Add New KB"}
+            
           </button>
         </div>
         <div
@@ -1939,20 +1970,22 @@ class KnowledgeBase extends Component {
             <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
               <div className="col-md-6">
                 <label className="main-conenet-point">
-                  {this.state.countNotApprove} ITEMS
+                  {this.state.countNotApprove} {TranslationContext!==undefined?TranslationContext.label.items:"ITEMS"}
                 </label>
                 {this.state.kbClearNew && (
                   <small
                     className="clear-search"
                     onClick={this.handleKBList.bind(this)}
                   >
-                    Clear Search
+                    {TranslationContext!==undefined?TranslationContext.small.clearsearch:"Clear Search"}
                   </small>
                 )}
               </div>
               <div className="col-md-6" style={{ textAlign: "end" }}>
                 <div className="kb-search-cntr" onClick={this.opneSearchModal}>
-                  <label className="search-KB">SEARCH</label>
+                  <label className="search-KB">
+                  {TranslationContext!==undefined?TranslationContext.label.search:"SEARCH"}
+                  </label>
                   <img
                     src={SerachIcon}
                     alt="serach-icon"
@@ -1969,7 +2002,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>ID</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.id:"ID"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -1989,7 +2024,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                          Details <FontAwesomeIcon icon={faCaretDown} />
+                          {TranslationContext!==undefined?TranslationContext.label.details:"Details"} <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2032,11 +2067,11 @@ class KnowledgeBase extends Component {
                           this,
                           "issueTypeName",
                           "notapprove",
-                          "IssueType"
+                          TranslationContext!==undefined?TranslationContext.label.issuetype:"IssueType"
                         )}
                       >
                         <label className={this.state.issueColor}>
-                          Type <FontAwesomeIcon icon={faCaretDown} />
+                            {TranslationContext!==undefined?TranslationContext.label.type:"Type"}<FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2062,11 +2097,11 @@ class KnowledgeBase extends Component {
                           this,
                           "categoryName",
                           "notapprove",
-                          "Category"
+                          TranslationContext!==undefined?TranslationContext.label.category:"Category"
                         )}
                       >
                         <label className={this.state.categoryColor}>
-                          Category <FontAwesomeIcon icon={faCaretDown} />
+                          {TranslationContext!==undefined?TranslationContext.label.category:"Category"} <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2088,11 +2123,11 @@ class KnowledgeBase extends Component {
                           this,
                           "subCategoryName",
                           "notapprove",
-                          "SubCategory"
+                          TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub Category"
                         )}
                       >
                         <label className={this.state.subCategoryColor}>
-                          Sub catogory <FontAwesomeIcon icon={faCaretDown} />
+                          {TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub Category"} <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2110,7 +2145,9 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span>
-                        <label className="pad">Action</label>
+                        <label className="pad">
+                        {TranslationContext!==undefined?TranslationContext.label.action:"Action"} 
+                        </label>
                       </span>
                     ),
                     accessor: "kbid",
@@ -2127,7 +2164,9 @@ class KnowledgeBase extends Component {
                               0
                             )}
                           >
-                            <label className="reject-button-text">reject</label>
+                            <label className="reject-button-text">
+                            {TranslationContext!==undefined?TranslationContext.label.reject:"Reject"} 
+                            </label>
                           </button>
                           <button
                             className="aprove-button"
@@ -2139,7 +2178,8 @@ class KnowledgeBase extends Component {
                             )}
                           >
                             <label className="approve-button-text">
-                              APPROVE
+                            {TranslationContext!==undefined?TranslationContext.label.approve:"APPROVE"} 
+                              
                             </label>
                           </button>
                         </span>
@@ -2157,7 +2197,8 @@ class KnowledgeBase extends Component {
 
             <div className="kb-table" style={{ padding: "0px 30px 30px 20px" }}>
               <label className="main-conenet-point text-uppercase mb-2">
-                Similar Type of Tickets
+              {TranslationContext!==undefined?TranslationContext.label.similartypeoftickets:"Similar Type of Tickets"} 
+                
               </label>
               <ReactTable
                 data={this.state.similarTickets}
@@ -2166,7 +2207,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Ticket ID</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.ticketid:"Ticket ID"} 
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2199,7 +2242,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Ticket Title</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.tickettitle:"Ticket Title"} 
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2221,7 +2266,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Type</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.type:"Type"} 
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2243,7 +2290,10 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Category</label>
+                          <label>
+
+                          {TranslationContext!==undefined?TranslationContext.label.category:"Category"} 
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2265,7 +2315,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Sub Category</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub Category"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2300,20 +2352,23 @@ class KnowledgeBase extends Component {
             <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
               <div className="col-md-6">
                 <label className="main-conenet-point">
-                  {this.state.countApprove} ITEMS
+                  {this.state.countApprove}   {TranslationContext!==undefined?TranslationContext.label.items:"ITEMS"}
                 </label>
                 {this.state.kbClearList && (
                   <small
                     className="clear-search"
                     onClick={this.handleKBList.bind(this)}
                   >
-                    Clear Search
+                    {TranslationContext!==undefined?TranslationContext.span.clearsearch:"Clear Search"}
+                    
                   </small>
                 )}
               </div>
               <div className="col-md-6" style={{ textAlign: "end" }}>
                 <div className="kb-search-cntr" onClick={this.opneSearchModal}>
-                  <label className="search-KB">SEARCH</label>
+                  <label className="search-KB">
+                  {TranslationContext!==undefined?TranslationContext.label.search:"SEARCH"}
+                  </label>
                   <img
                     src={SerachIcon}
                     alt="serach-icon"
@@ -2331,7 +2386,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>ID</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.id:"ID"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2351,7 +2408,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                          Details <FontAwesomeIcon icon={faCaretDown} />
+                         {TranslationContext!==undefined?TranslationContext.label.details:"Details"}<FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2392,11 +2449,11 @@ class KnowledgeBase extends Component {
                           this,
                           "issueTypeName",
                           "approve",
-                          "IssueType"
+                          TranslationContext!==undefined?TranslationContext.label.issuetype:"Issue Type"
                         )}
                       >
                         <label className={this.state.issueColor}>
-                          Type <FontAwesomeIcon icon={faCaretDown} />
+                          {TranslationContext!==undefined?TranslationContext.label.type:"Type"}<FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2422,11 +2479,11 @@ class KnowledgeBase extends Component {
                           this,
                           "categoryName",
                           "approve",
-                          "Category"
+                          TranslationContext!==undefined?TranslationContext.label.category:"Category"
                         )}
                       >
                         <label className={this.state.categoryColor}>
-                          Category <FontAwesomeIcon icon={faCaretDown} />
+                          {TranslationContext!==undefined?TranslationContext.label.category:"Category"} <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2448,11 +2505,11 @@ class KnowledgeBase extends Component {
                           this,
                           "subCategoryName",
                           "approve",
-                          "SubCategory"
+                          TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub catogory"
                         )}
                       >
                         <label className={this.state.subCategoryColor}>
-                          Sub catogory <FontAwesomeIcon icon={faCaretDown} />
+                          {TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub catogory"} <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2470,7 +2527,9 @@ class KnowledgeBase extends Component {
                   {
                     Header: (
                       <span>
-                        <label className="pad">Action</label>
+                        <label className="pad">
+                        {TranslationContext!==undefined?TranslationContext.label.action:"Action"}
+                        </label>
                       </span>
                     ),
                     accessor: "kbid",
@@ -2488,7 +2547,8 @@ class KnowledgeBase extends Component {
                               )}
                             >
                               <label className="reject-button-text">
-                                DELETE
+                              {TranslationContext!==undefined?TranslationContext.button.delete:"DELETE"}
+                                
                               </label>
                             </button>
                             <button
@@ -2500,7 +2560,8 @@ class KnowledgeBase extends Component {
                               )}
                             >
                               <label className="approve-button-text">
-                                EDIT
+                              {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                
                               </label>
                             </button>
                           </span>
@@ -2518,7 +2579,8 @@ class KnowledgeBase extends Component {
             </div>
             <div className="kb-table" style={{ padding: "0px 30px 30px 20px" }}>
               <label className="main-conenet-point text-uppercase mb-2">
-                Similar Type of Tickets
+              {TranslationContext!==undefined?TranslationContext.label.similartypeoftickets:"Similar Type of Tickets"}
+               
               </label>
               <ReactTable
                 data={this.state.similarTickets}
@@ -2527,7 +2589,11 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Ticket ID</label>
+                          <label>
+
+                          {TranslationContext!==undefined?TranslationContext.label.ticketid:"Ticket ID"}
+               
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2560,7 +2626,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Ticket Title</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.tickettitle:"Ticket Title"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2582,7 +2650,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Type</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.type:"Type"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2604,7 +2674,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Category</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.category:"Category"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2626,7 +2698,9 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Sub Category</label>
+                          <label>
+                          {TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub Category"}
+                          </label>
                         </div>
                       </span>
                     ),
@@ -2698,12 +2772,16 @@ class KnowledgeBase extends Component {
                 className="back-button-left"
                 onClick={this.closeSearchModal}
               />
-              <label className="search-modal-text">SEARCH</label>
+              <label className="search-modal-text">
+              {TranslationContext!==undefined?TranslationContext.label.search:"SEARCH"}
+              </label>
               <button
                 className="search-button-modal"
                 onClick={this.handleSeaechKB.bind(this)}
               >
-                <label className="search-button-modal-text">APPLY</label>
+                <label className="search-button-modal-text">
+                {TranslationContext!==undefined?TranslationContext.label.apply:"APPLY"}
+                </label>
               </button>
             </div>
             <br />
@@ -2715,7 +2793,9 @@ class KnowledgeBase extends Component {
                 value={this.state.selectedCategory}
                 onChange={this.setCategoryValue}
               >
-                <option>Select Category</option>
+                <option>
+                {TranslationContext!==undefined?TranslationContext.option.selectcategory:"Select Category"}
+                </option>
                 {this.state.CategoryData !== null &&
                   this.state.CategoryData.map((item, i) => (
                     <option key={i} value={item.categoryID}>
@@ -2736,7 +2816,9 @@ class KnowledgeBase extends Component {
                 value={this.state.selectedSubCategory}
                 onChange={this.setSubCategoryValue}
               >
-                <option>Select Subcategory</option>
+                <option>
+                {TranslationContext!==undefined?TranslationContext.option.selectsubcategory:"Select Subcategory"}
+                </option>
                 {this.state.SubCategoryData !== null &&
                   this.state.SubCategoryData.map((item, i) => (
                     <option key={i} value={item.subCategoryID}>
@@ -2757,7 +2839,9 @@ class KnowledgeBase extends Component {
                 value={this.state.selectedIssueType}
                 onChange={this.setIssueType}
               >
-                <option>Select IssueType</option>
+                <option>
+                {TranslationContext!==undefined?TranslationContext.option.selectissuetype:"Select IssueType"}
+                </option>
                 {this.state.IssueTypeData !== null &&
                   this.state.IssueTypeData.map((item, i) => (
                     <option key={i} value={item.issueTypeID}>
@@ -2793,7 +2877,9 @@ class KnowledgeBase extends Component {
           <div>
             <div className="kb-Model-mp">
               <div className="">
-                <label className="search-modal-text">ADD</label>
+                <label className="search-modal-text">
+                {TranslationContext!==undefined?TranslationContext.label.add:"ADD"}
+                </label>
               </div>
               <br />
 
@@ -2804,7 +2890,7 @@ class KnowledgeBase extends Component {
                     value={this.state.selectedCategory}
                     onChange={this.setCategoryValue}
                   >
-                    <option value="">Select Category</option>
+                    <option value=""> {TranslationContext!==undefined?TranslationContext.option.selectcategory:"Select Category"}</option>
                     {this.state.CategoryData !== null &&
                       this.state.CategoryData.map((item, i) => (
                         <option key={i} value={item.categoryID}>
@@ -2824,7 +2910,7 @@ class KnowledgeBase extends Component {
                     value={this.state.selectedSubCategory}
                     onChange={this.setSubCategoryValue}
                   >
-                    <option value="">Select Subcategory</option>
+                    <option value=""> {TranslationContext!==undefined?TranslationContext.option.selectsubcategory:"Select Subcategory"}</option>
                     {this.state.SubCategoryData !== null &&
                       this.state.SubCategoryData.map((item, i) => (
                         <option key={i} value={item.subCategoryID}>
@@ -2847,7 +2933,7 @@ class KnowledgeBase extends Component {
                     value={this.state.selectedIssueType}
                     onChange={this.setIssueType}
                   >
-                    <option value="">Select IssueType</option>
+                    <option value="">{TranslationContext!==undefined?TranslationContext.option.selectissuetype:"Select IssueType"}</option>
                     {this.state.IssueTypeData !== null &&
                       this.state.IssueTypeData.map((item, i) => (
                         <option key={i} value={item.issueTypeID}>
@@ -2868,7 +2954,7 @@ class KnowledgeBase extends Component {
                   <input
                     type="text"
                     className="addkb-subject"
-                    placeholder=" Write subject here"
+                    placeholder={TranslationContext!==undefined?TranslationContext.placeholder.writesubjecthere:"Write subject here"}
                     value={this.state.selectedSubject}
                     onChange={this.setSubjectValue}
                   />
@@ -2927,13 +3013,16 @@ class KnowledgeBase extends Component {
                   className="cancel-button-modalk"
                   onClick={this.closeAddNewKBModal.bind(this)}
                 >
-                  CANCEL
+                  {TranslationContext!==undefined?TranslationContext.button.cancel:"CANCEL"}
+                  
                 </button>
                 <button
                   className="add-kb-button-modal"
                   onClick={this.handleAddKB.bind(this)}
                 >
-                  <label className="add-kb-button-text-modal">SAVE</label>
+                  <label className="add-kb-button-text-modal">
+                  {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+                  </label>
                 </button>
               </div>
             </div>
@@ -2957,7 +3046,9 @@ class KnowledgeBase extends Component {
           <div>
             <div className="kb-Model-mp">
               <div className="">
-                <label className="search-modal-text">CONFIRM</label>
+                <label className="search-modal-text">
+                {TranslationContext!==undefined?TranslationContext.label.confirm:"CONFIRM"}
+                </label>
               </div>
               <br />
               <div className="row">
@@ -3038,7 +3129,7 @@ class KnowledgeBase extends Component {
                   <input
                     type="text"
                     className="addkb-subject"
-                    placeholder="Can I purchase a domain through Google?"
+                    placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.canipurchaseadomainthroughgoogle:"Can I purchase a domain through Google?"}
                     value={this.state.updateSubject}
                     onChange={this.setUpdateSubjectValue}
                   />
@@ -3098,7 +3189,8 @@ class KnowledgeBase extends Component {
                     className="cancel-button-modalk"
                     onClick={this.closeEditAproveModal.bind(this)}
                   >
-                    CANCEL
+                    {TranslationContext!==undefined?TranslationContext.button.cancel:"CANCEL"}
+                    
                   </button>
                   <button
                     className="add-kb-button-modal"
@@ -3107,7 +3199,9 @@ class KnowledgeBase extends Component {
                       this.state.updateKBID
                     )}
                   >
-                    <label className="add-kb-button-text-modal">EDIT</label>
+                    <label className="add-kb-button-text-modal">
+                    {TranslationContext!==undefined?TranslationContext.label.edit:"EDIT"}
+                    </label>
                   </button>
                 </div>
               </div>
@@ -3132,7 +3226,9 @@ class KnowledgeBase extends Component {
           <div>
             <div className="kb-Model-mp">
               <div className="">
-                <label className="search-modal-text">CONFIRM</label>
+                <label className="search-modal-text">
+                {TranslationContext!==undefined?TranslationContext.label.confirm:"CONFIRM"}
+                </label>
               </div>
               <br />
               <div className="row">
@@ -3213,7 +3309,7 @@ class KnowledgeBase extends Component {
                   <input
                     type="text"
                     className="addkb-subject"
-                    placeholder="Can I purchase a domain through Google?"
+                    placeholder={TranslationContext!==undefined?TranslationContext.placeholder.canipurchaseadomainthroughgoogle:"Can I purchase a domain through Google?"}
                     value={this.state.approveSubject}
                     onChange={this.setApproveSubjectValue}
                   />
@@ -3273,7 +3369,8 @@ class KnowledgeBase extends Component {
                     className="cancel-button-modalk"
                     onClick={this.closeEditAproveModal1.bind(this)}
                   >
-                    CANCEL
+                    {TranslationContext!==undefined?TranslationContext.button.cancel:"CANCEL"}
+                    
                   </button>
                   <button
                     className="add-kb-button-modal"
@@ -3283,7 +3380,9 @@ class KnowledgeBase extends Component {
                       this.state.approvebit
                     )}
                   >
-                    <label className="add-kb-button-text-modal">APPROVE</label>
+                    <label className="add-kb-button-text-modal">
+                    {TranslationContext!==undefined?TranslationContext.label.approve:"APPROVE"}
+                    </label>
                   </button>
                 </div>
               </div>

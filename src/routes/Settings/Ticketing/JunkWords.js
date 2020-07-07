@@ -16,6 +16,8 @@ import config from "../../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class JunkWords extends Component {
   constructor(props) {
@@ -45,12 +47,21 @@ class JunkWords extends Component {
       filterTxtValue: "",
       tempJunkWordsData: [],
       sortColumn: "",
-      sortHeader: ""
+      sortHeader: "",
+      translateLanguage: {},
     };
   }
 
   componentDidMount() {
     this.handleJunkWordsList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   AddNewJunkWords = () => {
@@ -59,7 +70,7 @@ class JunkWords extends Component {
       errors: {},
       JunkKeywordID: 0,
       JunkWords: "",
-      Reason: ""
+      Reason: "",
     });
   };
 
@@ -68,15 +79,22 @@ class JunkWords extends Component {
   };
 
   handleValidation() {
+    const TranslationContext = this.state.translateLanguage.default;
     let errors = this.state.errors;
     let formIsValid = true;
     if (!this.state.JunkWords) {
       formIsValid = false;
-      errors["JunkWords"] = "Please enter junk words";
+      errors["JunkWords"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenterjunkwords
+          : "Please enter junk words";
     }
     if (!this.state.Reason) {
       formIsValid = false;
-      errors["Reason"] = "Please enter reason";
+      errors["Reason"] =
+        TranslationContext !== undefined
+          ? TranslationContext.label.pleaseenterreason
+          : "Please enter reason";
     }
     this.setState({ errors: errors });
     return formIsValid;
@@ -88,31 +106,89 @@ class JunkWords extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/JunkWords/ListJunkWords",
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var status = res.data.message;
         var data = res.data.responseData;
+
+        if (data !== null) {
+          self.state.sortAllData = data;
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].junkKeyword]) {
+              distinct.push(data[i].junkKeyword);
+              unique[data[i].junkKeyword] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortjunkKeyword.push({ junkKeyword: distinct[i] });
+            self.state.sortFilterjunkKeyword.push({
+              junkKeyword: distinct[i],
+            });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].reason]) {
+              distinct.push(data[i].reason);
+              unique[data[i].reason] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortreason.push({ reason: distinct[i] });
+            self.state.sortFilterreason.push({ reason: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].enteredDate]) {
+              distinct.push(data[i].enteredDate);
+              unique[data[i].enteredDate] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortenteredDate.push({ enteredDate: distinct[i] });
+            self.state.sortFilterenteredDate.push({ enteredDate: distinct[i] });
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].enteredBy]) {
+              distinct.push(data[i].enteredBy);
+              unique[data[i].enteredBy] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            self.state.sortenteredBy.push({ enteredBy: distinct[i] });
+            self.state.sortFilterenteredBy.push({ enteredBy: distinct[i] });
+          }
+        }
         if (status === "Success") {
           self.setState({
-            JunkWordsData: data
+            JunkWordsData: data,
           });
         }
         self.setState({
-          loading: false
+          loading: false,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
 
   handleSaveJunkWords = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -121,20 +197,24 @@ class JunkWords extends Component {
         headers: authHeader(),
         data: {
           JunkKeyword: this.state.JunkWords,
-          Reason: this.state.Reason
-        }
+          Reason: this.state.Reason,
+        },
       })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.message === "Success") {
             self.setState({ loading: true });
-            NotificationManager.success("Record saved successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordsavedsuccessfully
+                : "Record saved successfully"
+            );
             self.handleJunkWordsList();
             self.handleAddJunkClose();
           } else {
             NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
@@ -148,6 +228,7 @@ class JunkWords extends Component {
   }
 
   handleUpdateJunkWords = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
       let self = this;
       axios({
@@ -157,25 +238,30 @@ class JunkWords extends Component {
         data: {
           JunkKeywordID: this.state.JunkKeywordID,
           JunkKeyword: this.state.JunkWords,
-          Reason: this.state.Reason
-        }
+          Reason: this.state.Reason,
+        },
       })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.message === "Success") {
-            NotificationManager.success("Record updated successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record updated successfully"
+            );
             self.handleAddJunkClose();
             self.handleJunkWordsList();
           } else {
             NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
   };
 
   handleDeleteJunkWords(junkKeywordID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -183,17 +269,21 @@ class JunkWords extends Component {
         config.apiUrl +
         "/JunkWords/DeleteJunkWords?junkKeywordID=" +
         junkKeywordID,
-      headers: authHeader()
+      headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         if (res.data.message === "Success") {
-          NotificationManager.success("Record deleted successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record deleted successfully"
+          );
           self.handleJunkWordsList();
         } else {
           NotificationManager.error(res.data.message);
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -234,7 +324,7 @@ class JunkWords extends Component {
 
     this.setState({
       isortA: true,
-      JunkWordsData: itemsArray
+      JunkWordsData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -279,7 +369,7 @@ class JunkWords extends Component {
 
     this.setState({
       isortA: true,
-      JunkWordsData: itemsArray
+      JunkWordsData: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -421,7 +511,7 @@ class JunkWords extends Component {
       issueColor: "",
       nameColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -431,7 +521,7 @@ class JunkWords extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.junkKeyword === sItems[i]
+              (a) => a.junkKeyword === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -442,14 +532,14 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column"
+        issueColor: "sort-column",
       });
     } else if (column === "reason") {
       var sItems = sreasonFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.reason === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.reason === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -459,14 +549,14 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        nameColor: "sort-column"
+        nameColor: "sort-column",
       });
     } else if (column === "enteredDate") {
       var sItems = senteredDateFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.Date === sItems[i]);
+            var tempFilterData = allData.filter((a) => a.Date === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -476,14 +566,16 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     } else if (column === "enteredBy") {
       var sItems = senteredByFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.enteredBy === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.enteredBy === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -493,12 +585,12 @@ class JunkWords extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempJunkWordsData: itemsArray
+      tempJunkWordsData: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -513,7 +605,7 @@ class JunkWords extends Component {
         sortFilterjunkKeyword: this.state.sortjunkKeyword,
         sortFilterreason: this.state.sortreason,
         sortFilterenteredDate: this.state.sortenteredBy,
-        sortFilterenteredBy: this.state.sortenteredBy
+        sortFilterenteredBy: this.state.sortenteredBy,
       });
       if (this.state.sortColumn === "junkKeyword") {
         if (this.state.sjunkKeywordFilterCheckbox === "") {
@@ -521,7 +613,7 @@ class JunkWords extends Component {
           this.setState({
             sreasonFilterCheckbox: "",
             senteredDateFilterCheckbox: "",
-            senteredByFilterCheckbox: ""
+            senteredByFilterCheckbox: "",
           });
         }
       }
@@ -531,7 +623,7 @@ class JunkWords extends Component {
           this.setState({
             sjunkKeywordFilterCheckbox: "",
             senteredDateFilterCheckbox: "",
-            senteredByFilterCheckbox: ""
+            senteredByFilterCheckbox: "",
           });
         }
       }
@@ -541,7 +633,7 @@ class JunkWords extends Component {
           this.setState({
             sjunkKeywordFilterCheckbox: "",
             sreasonFilterCheckbox: "",
-            senteredByFilterCheckbox: ""
+            senteredByFilterCheckbox: "",
           });
         }
       }
@@ -551,7 +643,7 @@ class JunkWords extends Component {
           this.setState({
             sjunkKeywordFilterCheckbox: "",
             sreasonFilterCheckbox: "",
-            senteredDateFilterCheckbox: ""
+            senteredDateFilterCheckbox: "",
           });
         }
       }
@@ -565,7 +657,7 @@ class JunkWords extends Component {
         sortFilterjunkKeyword: this.state.sortjunkKeyword,
         sortFilterreason: this.state.sortreason,
         sortFilterenteredDate: this.state.sortenteredBy,
-        sortFilterenteredBy: this.state.sortenteredBy
+        sortFilterenteredBy: this.state.sortenteredBy,
       });
     }
   }
@@ -589,7 +681,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -599,7 +691,7 @@ class JunkWords extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -612,7 +704,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -621,7 +713,7 @@ class JunkWords extends Component {
           senteredByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -634,7 +726,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -643,7 +735,7 @@ class JunkWords extends Component {
           senteredByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -656,7 +748,7 @@ class JunkWords extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -665,7 +757,7 @@ class JunkWords extends Component {
           senteredDateFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -679,14 +771,14 @@ class JunkWords extends Component {
         this.state.sortjunkKeyword,
         e.target.value,
         {
-          keys: ["junkKeyword"]
+          keys: ["junkKeyword"],
         }
       );
       if (sortFilterjunkKeyword.length > 0) {
         this.setState({ sortFilterjunkKeyword });
       } else {
         this.setState({
-          sortFilterjunkKeyword: this.state.sortjunkKeyword
+          sortFilterjunkKeyword: this.state.sortjunkKeyword,
         });
       }
     }
@@ -695,14 +787,14 @@ class JunkWords extends Component {
         this.state.sortreason,
         e.target.value,
         {
-          keys: ["reason"]
+          keys: ["reason"],
         }
       );
       if (sortFilterreason.length > 0) {
         this.setState({ sortFilterreason });
       } else {
         this.setState({
-          sortFilterreason: this.state.sortreason
+          sortFilterreason: this.state.sortreason,
         });
       }
     }
@@ -716,7 +808,7 @@ class JunkWords extends Component {
         this.setState({ sortFilterenteredDate });
       } else {
         this.setState({
-          sortFilterenteredDate: this.state.sortenteredDate
+          sortFilterenteredDate: this.state.sortenteredDate,
         });
       }
     }
@@ -730,13 +822,14 @@ class JunkWords extends Component {
         this.setState({ sortFilterenteredBy });
       } else {
         this.setState({
-          sortFilterenteredBy: this.state.sortenteredBy
+          sortFilterenteredBy: this.state.sortenteredBy,
         });
       }
     }
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const datajunkwords = this.state.JunkWordsData;
     return (
       <Fragment>
@@ -761,7 +854,11 @@ class JunkWords extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortatoz
+                        : "SORT BY A TO Z"}
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -771,7 +868,11 @@ class JunkWords extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortztoa
+                        : "SORT BY Z TO A"}
+                    </p>
                   </div>
                 </div>
                 <a
@@ -779,10 +880,16 @@ class JunkWords extends Component {
                   style={{ margin: "0 25px", textDecoration: "underline" }}
                   onClick={this.setSortCheckStatus.bind(this, "all")}
                 >
-                  clear search
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.clearsearch
+                    : "clear search"}
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.filterbytype
+                      : "FILTER BY TYPE"}
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -809,115 +916,119 @@ class JunkWords extends Component {
                         onChange={this.setSortCheckStatus.bind(this, "all")}
                       />
                       <label htmlFor={"fil-open"}>
-                        <span className="table-btn table-blue-btn">ALL</span>
+                        <span className="table-btn table-blue-btn">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.all
+                            : "ALL"}
+                        </span>
                       </label>
                     </div>
                     {this.state.sortColumn === "junkKeyword"
                       ? this.state.sortFilterjunkKeyword !== null &&
-                        this.state.sortFilterjunkKeyword.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.junkKeyword}
-                              value={item.junkKeyword}
-                              checked={this.state.sjunkKeywordFilterCheckbox.includes(
-                                item.junkKeyword
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "junkKeyword",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.junkKeyword}>
-                              <span className="table-btn table-blue-btn">
-                                {item.junkKeyword}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterjunkKeyword.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.junkKeyword}
+                            value={item.junkKeyword}
+                            checked={this.state.sjunkKeywordFilterCheckbox.includes(
+                              item.junkKeyword
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "junkKeyword",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.junkKeyword}>
+                            <span className="table-btn table-blue-btn">
+                              {item.junkKeyword}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
 
                     {this.state.sortColumn === "reason"
                       ? this.state.sortFilterreason !== null &&
-                        this.state.sortFilterreason.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.reason}
-                              value={item.reason}
-                              checked={this.state.sreasonFilterCheckbox.includes(
-                                item.reason
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "reason",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.reason}>
-                              <span className="table-btn table-blue-btn">
-                                {item.reason}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterreason.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.reason}
+                            value={item.reason}
+                            checked={this.state.sreasonFilterCheckbox.includes(
+                              item.reason
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reason",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reason}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reason}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
 
                     {this.state.sortColumn === "enteredDate"
                       ? this.state.sortFilterenteredDate !== null &&
-                        this.state.sortFilterenteredDate.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.enteredDate}
-                              value={item.enteredDate}
-                              checked={this.state.senteredDateFilterCheckbox.includes(
-                                item.enteredDate
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "enteredDate",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.enteredDate}>
-                              <span className="table-btn table-blue-btn">
-                                {item.enteredDate}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterenteredDate.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.enteredDate}
+                            value={item.enteredDate}
+                            checked={this.state.senteredDateFilterCheckbox.includes(
+                              item.enteredDate
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "enteredDate",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.enteredDate}>
+                            <span className="table-btn table-blue-btn">
+                              {item.enteredDate}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
 
                     {this.state.sortColumn === "enteredBy"
                       ? this.state.sortFilterenteredBy !== null &&
-                        this.state.sortFilterenteredBy.map((item, i) => (
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              name="filter-type"
-                              id={"fil-open" + item.enteredBy}
-                              value={item.enteredBy}
-                              checked={this.state.senteredByFilterCheckbox.includes(
-                                item.enteredBy
-                              )}
-                              onChange={this.setSortCheckStatus.bind(
-                                this,
-                                "enteredBy",
-                                "value"
-                              )}
-                            />
-                            <label htmlFor={"fil-open" + item.enteredBy}>
-                              <span className="table-btn table-blue-btn">
-                                {item.enteredBy}
-                              </span>
-                            </label>
-                          </div>
-                        ))
+                      this.state.sortFilterenteredBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.enteredBy}
+                            value={item.enteredBy}
+                            checked={this.state.senteredByFilterCheckbox.includes(
+                              item.enteredBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "enteredBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.enteredBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.enteredBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                       : null}
                   </div>
                 </div>
@@ -925,15 +1036,21 @@ class JunkWords extends Component {
             </Modal>
           </div>
           <Link to="settings" className="header-path">
-            Settings
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-            Ticketing
+            {TranslationContext !== undefined
+              ? TranslationContext.a.ticketing
+              : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Junk Words
+            {TranslationContext !== undefined
+              ? TranslationContext.strong.junkwords
+              : "Junk Words"}
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -942,7 +1059,10 @@ class JunkWords extends Component {
                 className="addplusbtnReport"
                 onClick={this.AddNewJunkWords}
               >
-                + Add New
+                +&nbsp;
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.addnew
+                  : "Add New"}
               </button>
             </div>
           </div>
@@ -954,7 +1074,9 @@ class JunkWords extends Component {
           >
             <div className="setting-tabs alert-tabs">
               <label style={{ marginLeft: "227px", fontSize: "large" }}>
-                Add New Junk Words
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.addnewjunkwords
+                  : "Add New Junk Words"}
               </label>
               <img
                 src={CancelImg}
@@ -969,7 +1091,11 @@ class JunkWords extends Component {
                   <div className="col-md-12">
                     <textarea
                       className="txt-1"
-                      placeholder="Junk Words"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.strong.junkwords
+                          : "Junk Words"
+                      }
                       name="JunkWords"
                       value={this.state.JunkWords}
                       onChange={this.handleChange}
@@ -983,7 +1109,11 @@ class JunkWords extends Component {
                   <div className="col-md-12">
                     <textarea
                       className="txt-1"
-                      placeholder="Reason"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.reason
+                          : "Reason"
+                      }
                       name="Reason"
                       value={this.state.Reason}
                       onChange={this.handleChange}
@@ -1005,7 +1135,9 @@ class JunkWords extends Component {
                     }
                     disabled={this.state.loading}
                   >
-                    SAVE
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.save
+                      : "SAVE"}
                     {/* {this.state.loading ? (
                             <FontAwesomeIcon
                               className="circular-loader"
@@ -1029,176 +1161,216 @@ class JunkWords extends Component {
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
               ) : (
-                <ReactTable
-                  data={datajunkwords}
-                  columns={[
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "junkKeyword",
-                            "Junk Words"
-                          )}
-                        >
-                          Junk Words
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "junkKeyword"
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "reason",
-                            "Reason"
-                          )}
-                        >
-                          Reason
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "reason"
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "enteredDate",
-                            "Entered Date"
-                          )}
-                        >
-                          Entered Date
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "enteredDate"
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "enteredBy",
-                            "Entered By"
-                          )}
-                        >
-                          Entered By
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "enteredBy",
-                      sortable: false,
-                      Cell: row => {
-                        var ids = row.original["Id"];
-                        return (
-                          <div>
-                            <span>
-                            {row.original.enteredBy}
+                  <ReactTable
+                    data={datajunkwords}
+                    columns={[
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "junkKeyword",
+                              TranslationContext !== undefined
+                                ? TranslationContext.strong.junkwords
+                                : "Junk Words"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.junkwords
+                              : "Junk Words"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "junkKeyword",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "reason",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.reason
+                                : "Reason"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.reason
+                              : "Reason"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "reason",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "enteredDate",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.entereddate
+                                : "Entered Date"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.entereddate
+                              : "Entered Date"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "enteredDate",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "enteredBy",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.enteredby
+                                : "Entered By"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.enteredby
+                              : "Entered By"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "enteredBy",
+                        sortable: false,
+                        Cell: (row) => {
+                          var ids = row.original["Id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.enteredBy}
+                                <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                          : {row.original.modifyBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                        : {row.original.modifyDate}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.actions
+                              : "Actions"}
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "actionReport",
+                        Cell: (row) => (
+                          <div className="report-action">
+                            <div>
                               <Popover
                                 content={
-                                  <>
-                                    <div>
-                                      <b>
-                                        <p className="title">
-                                          Updated By: {row.original.modifyBy}
-                                        </p>
-                                      </b>
-                                      <p className="sub-title">
-                                        Updated Date:{" "}
-                                        {row.original.modifyDate}
-                                      </p>
+                                  <div className="samdel d-flex general-popover popover-body">
+                                    <div className="del-big-icon">
+                                      <img src={DelBigIcon} alt="del-icon" />
                                     </div>
-                                  </>
+                                    <div>
+                                      <p className="font-weight-bold blak-clr">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p.deleterecord
+                                          : "Delete record"}
+                                      ?
+                                    </p>
+                                      <p className="mt-1 fs-12">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p
+                                            .areyousurewanttodeletethisrecord
+                                          : "Are you sure you want to delete this record?"}
+                                      </p>
+                                      <div className="del-can">
+                                        <a>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.cancel
+                                            : "CANCEL"}
+                                        </a>
+                                        <button
+                                          className="butn"
+                                          onClick={this.handleDeleteJunkWords.bind(
+                                            this,
+                                            row.original.junkKeywordID
+                                          )}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.delete
+                                            : "Delete"}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
                                 }
                                 placement="bottom"
+                                trigger="click"
                               >
                                 <img
-                                  className="info-icon-cp"
-                                  src={BlackInfoIcon}
-                                  alt="info-icon"
-                                  id={ids}
+                                  src={RedDeleteIcon}
+                                  alt="del-icon"
+                                  className="del-btn"
                                 />
                               </Popover>
-                            </span>
+                            </div>
+                            <div>
+                              <button
+                                className="react-tabel-button editre"
+                                id="p-edit-pop-2"
+                                onClick={this.handleEditJunkWords.bind(
+                                  this,
+                                  row.original
+                                )}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.edit
+                                  : "EDIT"}
+                              </button>
+                            </div>
                           </div>
-                        );
-                      }
-                    },
-                    {
-                      Header: <span>Actions</span>,
-                      sortable: false,
-                      accessor: "actionReport",
-                      Cell: row => (
-                        <div className="report-action">
-                          <div>
-                            <Popover
-                              content={
-                                <div className="samdel d-flex general-popover popover-body">
-                                  <div className="del-big-icon">
-                                    <img src={DelBigIcon} alt="del-icon" />
-                                  </div>
-                                  <div>
-                                    <p className="font-weight-bold blak-clr">
-                                      Delete record?
-                                    </p>
-                                    <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this
-                                      record?
-                                    </p>
-                                    <div className="del-can">
-                                      <a>CANCEL</a>
-                                      <button
-                                        className="butn"
-                                        onClick={this.handleDeleteJunkWords.bind(
-                                          this,
-                                          row.original.junkKeywordID
-                                        )}
-                                      >
-                                        Delete
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              }
-                              placement="bottom"
-                              trigger="click"
-                            >
-                              <img
-                                src={RedDeleteIcon}
-                                alt="del-icon"
-                                className="del-btn"
-                              />
-                            </Popover>
-                          </div>
-                          <div>
-                            <button
-                              className="react-tabel-button editre"
-                              id="p-edit-pop-2"
-                              onClick={this.handleEditJunkWords.bind(
-                                this,
-                                row.original
-                              )}
-                            >
-                              EDIT
-                            </button>
-                          </div>
-                        </div>
-                      )
-                    }
-                  ]}
-                  resizable={false}
-                  defaultPageSize={10}
-                  showPagination={true}
-                  minRows={1}
-                />
-              )}
+                        ),
+                      },
+                    ]}
+                    resizable={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    minRows={1}
+                  />
+                )}
             </div>
           </div>
         </div>

@@ -16,7 +16,9 @@ import ReactTable from "react-table";
 import {
   NotificationManager
 } from "react-notifications";
-import { authHeader } from "../../helpers/authHeader";
+import { authHeader } from "../../helpers/authHeader"; 
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class MyTicketTask extends Component {
   constructor(props) {
@@ -47,7 +49,8 @@ class MyTicketTask extends Component {
       taskFunctionCompulsion: "",
       taskAssignToCompulsion: "",
       taskPriorityCompulsion: "",
-      addcommentCompulsion:""
+      addcommentCompulsion:"",
+      translateLanguage: {},
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -79,6 +82,13 @@ class MyTicketTask extends Component {
     } else if (this.props.taskData.TicketData.TicketId === 0) {
     } else {
       this.props.history.push("myTicketlist");
+    }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
     }
   }
   handleAddTaskModalOpn() {
@@ -283,7 +293,7 @@ class MyTicketTask extends Component {
     this.setState({ selectedPriority: PriorityValue });
   };
   handleAddTaskTitle() {
-    //debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.taskTitle.length > 0 &&
       this.state.taskDescription.length > 0 &&
@@ -312,7 +322,9 @@ class MyTicketTask extends Component {
           //debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Task created successfully.");
+            NotificationManager.success(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.taskcreatedsuccessfully
+              : "Task created successfully.");
             self.handleAddTaskModalCls();
             self.handleGetTaskTableGrid(ticketId);
             self.setState({
@@ -328,7 +340,9 @@ class MyTicketTask extends Component {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }
           } else {
-            NotificationManager.error("Task not created.");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.tasknotcreated
+              : "Task not created.");
             // {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }
@@ -339,18 +353,30 @@ class MyTicketTask extends Component {
         });
     } else {
       this.setState({
-        taskTitleCompulsion: "The Title field is compulsory.",
-        taskDescCompulsion: "The Description field is compulsory.",
-        taskDepartmentCompulsion: "The Department field is compulsory.",
-        taskFunctionCompulsion: "The Function field is compulsory.",
-        taskAssignToCompulsion: "The Assign To field is compulsory.",
-        taskPriorityCompulsion: "The Priority field is compulsory."
+        taskTitleCompulsion: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.thetitlefieldiscompulsory
+        : "The Title field is compulsory.",
+        taskDescCompulsion: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.thedescriptionfieldiscompulsory
+        : "The Description field is compulsory.",
+        taskDepartmentCompulsion: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.thedepartmentfieldiscompulsory
+        : "The Department field is compulsory.",
+        taskFunctionCompulsion: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.thefunctionfieldiscompulsory
+        : "The Function field is compulsory.",
+        taskAssignToCompulsion: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.theassigntofieldiscompulsory
+        : "The Assign To field is compulsory.",
+        taskPriorityCompulsion: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.thepriorityfieldiscompulsory
+        : "The Priority field is compulsory."
       });
     }
    
   }
   handleTaskAddComments() {
-    //debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if(
       this.state.taskAddComment.length > 0
     ){
@@ -366,29 +392,35 @@ class MyTicketTask extends Component {
         Id: this.state.ticketTask_Id
       }
     }).then(function(res) {
-      //debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("Comment added successfully.");
+        NotificationManager.success( TranslationContext !== undefined
+          ? TranslationContext.alertmessage.commentaddedsuccessfully
+          : "Comment added successfully.");
         self.setState({
           taskAddComment: ""
         });
         self.handleGetTaskCommentsdetails(self.state.ticketTask_Id);
       } else {
-        NotificationManager.error("Comment not added.");
+        NotificationManager.error(TranslationContext !== undefined
+          ? TranslationContext.alertmessage.commentnotadded
+          : "Comment not added.");
       }
     }).catch(data => {
       console.log(data);
       });
   }else{
     this.setState({
-      addcommentCompulsion:"Please Add Comment."
+      addcommentCompulsion:TranslationContext !== undefined
+      ? TranslationContext.ticketingDashboard.pleaseaddcomment
+      : "Please Add Comment."
     });
   }
   }
 
   render() {
     const { taskTableGrid } = this.state;
+    const TranslationContext = this.state.translateLanguage.default;
 
     return (
       <div>
@@ -398,7 +430,9 @@ class MyTicketTask extends Component {
             className="butn"
             onClick={this.handleAddTaskModalOpn.bind(this)}
           >
-            ADD TASK
+            {TranslationContext !== undefined
+              ? TranslationContext.button.addtask
+              : "ADD TASK"}
           </button>
         </div>
         <Modal
@@ -409,7 +443,9 @@ class MyTicketTask extends Component {
           overlayId="logout-ovrly"
         >
           <div className="claim-AddTask-Mdl">
-            <label className="claim-hdrMdl">Task</label>
+            <label className="claim-hdrMdl">{TranslationContext !== undefined
+                                ? TranslationContext.nav.task
+                                : "Task"}</label>
             <img
               src={CancelImg}
               alt="cancelImg"
@@ -421,7 +457,9 @@ class MyTicketTask extends Component {
             <input
               type="text"
               className="txt-1"
-              placeholder="Task Title"
+              placeholder={TranslationContext !== undefined
+                ? TranslationContext.span.tasktitle
+                : "Task Title"}
               name="taskTitle"
               value={this.state.taskTitle}
               onChange={this.handleTaskOnchangeData}
@@ -434,7 +472,9 @@ class MyTicketTask extends Component {
             )}
             <textarea
               className="ClaimAddTadk-modal-textArea mb-0"
-              placeholder="Task Description"
+              placeholder={TranslationContext !== undefined
+                ? TranslationContext.label.taskdescription
+                : "Task Description"}
               rows="6"
               name="taskDescription"
               value={this.state.taskDescription}
@@ -455,7 +495,9 @@ class MyTicketTask extends Component {
                   onChange={this.setDepartmentValue}
                 >
                   <option value="" className="select-category-placeholder">
-                    Department
+                  {TranslationContext !== undefined
+                ? TranslationContext.option.department
+                : "Department"}
                   </option>
                   {this.state.DepartmentData !== null &&
                     this.state.DepartmentData.map((item, i) => (
@@ -482,7 +524,9 @@ class MyTicketTask extends Component {
                   onChange={this.setFunctionValue}
                 >
                   <option value="" className="select-sub-category-placeholder">
-                    Function
+                  {TranslationContext !== undefined
+                              ? TranslationContext.label.function
+                              : "Function"}
                   </option>
                   {this.state.FunctionData !== null &&
                     this.state.FunctionData.map((item, i) => (
@@ -511,7 +555,9 @@ class MyTicketTask extends Component {
                   className="category-select-system dropdown-label"
                 >
                   <option value="" className="select-category-placeholder">
-                    Assign To
+                  {TranslationContext !== undefined
+                              ? TranslationContext.label.assignto
+                              : "Assign To"}
                   </option>
                   {this.state.AssignToData !== null &&
                     this.state.AssignToData.map((item, i) => (
@@ -538,7 +584,9 @@ class MyTicketTask extends Component {
                   className="category-select-system dropdown-label"
                 >
                   <option className="select-sub-category-placeholder">
-                    Task Priority
+                  {TranslationContext !== undefined
+                              ? TranslationContext.label.taskpriority
+                              : "Task Priority"}
                   </option>
                   {this.state.TicketPriorityData !== null &&
                     this.state.TicketPriorityData.map((item, i) => (
@@ -565,14 +613,18 @@ class MyTicketTask extends Component {
                   type="button"
                   onClick={this.handleAddTaskModalCls.bind(this)}
                 >
-                  CANCEL
+                  {TranslationContext !== undefined
+                                          ? TranslationContext.option.cancel
+                                          : "CANCEL"}
                 </button>
                 <button
                   className="butn"
                   type="button"
                   onClick={this.handleAddTaskTitle.bind(this)}
                 >
-                  CREATE TASK
+                  {TranslationContext !== undefined
+                                          ? TranslationContext.button.createtask
+                                          : "CREATE TASK"}
                 </button>
               </div>
             </div>
@@ -583,7 +635,9 @@ class MyTicketTask extends Component {
             data={taskTableGrid}
             columns={[
               {
-                Header: <span>ID</span>,
+                Header: <span>{TranslationContext !== undefined
+                  ? TranslationContext.label.id
+                  : "ID"}</span>,
                 accessor: "ticketingTaskID",
                 Cell: row => (
                   <span>
@@ -597,17 +651,23 @@ class MyTicketTask extends Component {
                 )
               },
               {
-                Header: <span>Status</span>,
+                Header: <span>{TranslationContext !== undefined
+                  ? TranslationContext.label.status
+                  : "Status"}</span>,
                 accessor: "taskStatus"
               },
               {
-                Header: <span>Task Title</span>,
+                Header: <span>{TranslationContext !== undefined
+                  ? TranslationContext.span.tasktitle
+                  : "Task Title"}</span>,
                 accessor: "taskTitle"
               },
               {
                 Header: (
                   <span>
-                    Department
+                    {TranslationContext !== undefined
+                              ? TranslationContext.label.department
+                              : "Department"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -616,7 +676,10 @@ class MyTicketTask extends Component {
               {
                 Header: (
                   <span>
-                    Store Code
+                   {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storecode
+                                              : "Store Code"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -625,7 +688,9 @@ class MyTicketTask extends Component {
               {
                 Header: (
                   <span>
-                    Created By
+                    {TranslationContext !== undefined
+                                          ? TranslationContext.label.createdby
+                                          : "Created By"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -634,7 +699,9 @@ class MyTicketTask extends Component {
               {
                 Header: (
                   <span>
-                    Creation on
+                    {TranslationContext !== undefined
+                              ? TranslationContext.span.creationon
+                              : "Creation On"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -643,7 +710,9 @@ class MyTicketTask extends Component {
               {
                 Header: (
                   <span>
-                    Assign to
+                     {TranslationContext !== undefined
+                              ? TranslationContext.label.assignto
+                              : "Assign To"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
@@ -673,7 +742,9 @@ class MyTicketTask extends Component {
                   // onClick={this.handleTaskDetailsDrawerCls.bind(this)}
                 />
               </a>
-              <label className="task-details">Task Details</label>
+              <label className="task-details"> {TranslationContext !== undefined
+                              ? TranslationContext.label.taskdetails
+                              : "Task Details"}</label>
             </div>
             <hr className="claimline" />
             <div className="">
@@ -690,7 +761,9 @@ class MyTicketTask extends Component {
                 </div>
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago m-r-25">
-                    ASSIGNED TO
+                  {TranslationContext !== undefined
+                                          ? TranslationContext.label.assignedto
+                                          : "ASSIGNED TO"}
                     <span className="addTasklbl-name">
                       {this.state.taskDetailsData.assignName}
                     </span>
@@ -705,7 +778,9 @@ class MyTicketTask extends Component {
                 </div>
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago m-r-25">
-                    STATUS
+                  {TranslationContext !== undefined
+                              ? TranslationContext.label.status
+                              : "STATUS"}
                     <span className="addTasklbl-name">
                       {this.state.taskDetailsData.taskStatus}
                     </span>
@@ -720,7 +795,9 @@ class MyTicketTask extends Component {
                 </div>
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago">
-                    DUE DATE
+                  {TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.duedate
+                              : "DUE DATE"}
                     <span className="addTasklbl-name">
                       {this.state.taskDetailsData.dateFormat}
                     </span>
@@ -733,7 +810,9 @@ class MyTicketTask extends Component {
               <hr className="claimline" />
               <textarea
                 className="task-drawerv-textArea"
-                placeholder="Add Comments"
+                placeholder={TranslationContext !== undefined
+                  ? TranslationContext.a.addcomments
+                  : "Add Comments"}
                 name="taskAddComment"
                 value={this.state.taskAddComment}
                 onChange={this.handleTaskOnchangeData}
@@ -748,7 +827,9 @@ class MyTicketTask extends Component {
                 type="button"
                 onClick={this.handleTaskAddComments.bind(this)}
               >
-                ADD COMMENT
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.addcomments
+                  : "ADD COMMENT"}
               </button>
               <div className="varunoverflow">
                 {this.state.Taskdetails !== null &&
@@ -778,7 +859,6 @@ class MyTicketTask extends Component {
               </div>
             </div>
           </Drawer>
-          {/* <NotificationContainer /> */}
         </div>
       </div>
     );

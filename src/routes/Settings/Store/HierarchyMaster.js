@@ -1449,7 +1449,9 @@ class HierarchyMaster extends Component {
                     this.state.sortFilterCreatedBy.length > 0 &&
                     this.state.sortFilterStatus.length > 0 ? ( */}
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                      {TranslationContext!==undefined?TranslationContext.span.all:"ALL"}
+                      </span>
                     </label>
                     {/* ) : null} */}
                   </div>
@@ -1757,7 +1759,9 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
-                              "Status"
+                              TranslationContext !== undefined
+                              ? TranslationContext.span.status
+                              : "Status"
                             )}
                           >
                             {TranslationContext !== undefined
@@ -1959,7 +1963,11 @@ class HierarchyMaster extends Component {
                               ? TranslationContext.option.select
                               : "Select"}
                           </option>
-                          <option value={-1}>Root</option>
+                          <option value={-1}>
+                          {TranslationContext !== undefined
+                              ? TranslationContext.option.root
+                              : "Root"}
+                          </option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
                               <option key={i + 1} value={item.designationID}>
@@ -2049,7 +2057,7 @@ class HierarchyMaster extends Component {
                     </div>
                   </div>
                   <Spin
-                    tip="Please wait..."
+                    tip={TranslationContext!==undefined?TranslationContext.tip.pleasewait:"Please wait..."}
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">

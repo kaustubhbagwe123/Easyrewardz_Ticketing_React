@@ -12,7 +12,9 @@ import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 import { Table } from "antd";
-import moment from "moment";
+// import moment from "moment";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 // import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
 
 class TicketSystemOrder extends Component {
@@ -71,7 +73,8 @@ class TicketSystemOrder extends Component {
       SelectedAllOrder: [],
       SelectedAllItem: [],
       saveLoader: false,
-      selectedInvoiceNo: ""
+      selectedInvoiceNo: "",
+      translateLanguage: {},
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -94,6 +97,14 @@ class TicketSystemOrder extends Component {
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
     this.handleGetChannelOfPurchaseList();
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   componentDidUpdate() {
     // debugger
@@ -109,7 +120,7 @@ class TicketSystemOrder extends Component {
     var value = parseInt(modeId);
     if (value !== this.state.selectedTicketSource) {
       this.setState({
-        selectedTicketSource: value
+        selectedTicketSource: value,
       });
     }
   }
@@ -123,8 +134,8 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Order/getOrderDetailByTicketID",
       headers: authHeader(),
       params: {
-        TicketID: ticketIDS
-      }
+        TicketID: ticketIDS,
+      },
     })
       .then(function(res) {
         debugger;
@@ -143,7 +154,7 @@ class TicketSystemOrder extends Component {
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckOrderID: data[i].orderMasterID ? newSelected : false
+                CheckOrderID: data[i].orderMasterID ? newSelected : false,
               });
             }
             if (data[i].orderItems.length > 0) {
@@ -155,26 +166,26 @@ class TicketSystemOrder extends Component {
           self.setState({
             orderDetailsData: selectedRow,
             OrderSubItem,
-            message: "Success"
+            message: "Success",
           });
         } else {
           self.setState({
-            orderDetailsData: []
+            orderDetailsData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   handleRequireSize(e, rowData) {
-    //
+    const TranslationContext = this.state.translateLanguage.default;
     var id = rowData.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var reg = /^[0-9\b]+$/;
     if (value === "" || reg.test(value)) {
       var index = this.state.OrderSubItem.findIndex(
-        x => x.articleNumber === rowData.articleNumber
+        (x) => x.articleNumber === rowData.articleNumber
       );
 
       var OrderSubItem = this.state.OrderSubItem;
@@ -182,7 +193,11 @@ class TicketSystemOrder extends Component {
 
       this.setState({ OrderSubItem });
     } else {
-      NotificationManager.error("Only numeric value allow.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.onlynumericvalueallow
+          : "Only numeric value allow."
+      );
     }
   }
 
@@ -191,74 +206,70 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
-        //
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
   handleOrderTableOpen() {
-    //
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
     this.setState({ OrderTable: false });
   }
-  handleByDateCreate = date => {
+  handleByDateCreate = (date) => {
     this.setState({ OrderCreatDate: date });
   };
 
   handleShowSearchOrderDetails() {
     this.setState({
-      SearchOrderDetails: !this.state.SearchOrederDetails
+      SearchOrderDetails: !this.state.SearchOrederDetails,
     });
   }
   handleOrderChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
-  setModePaymentValue = e => {
+  setModePaymentValue = (e) => {
     let dataValue = e.currentTarget.value;
     this.setState({ modeOfPayment: dataValue });
   };
   handleChangeToggle() {
     this.setState({
-      AddManuallyData: !this.state.AddManuallyData
+      AddManuallyData: !this.state.AddManuallyData,
     });
   }
   handelCheckBoxCheckedChange = () => {
     this.setState({
-      CheckBoxChecked: !this.state.CheckBoxChecked
+      CheckBoxChecked: !this.state.CheckBoxChecked,
     });
   };
   handleChangeSaveManualTbl() {
     this.setState({
-      AddManualSaveTbl: !this.state.AddManualSaveTbl
+      AddManualSaveTbl: !this.state.AddManualSaveTbl,
     });
   }
-  handleManuallyOnchange = e => {
+  handleManuallyOnchange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
-  setTicketSourceValue = e => {
-    //
+  setTicketSourceValue = (e) => {
     let value = e.currentTarget.value;
     this.setState({ selectedTicketSource: value });
   };
 
-  handleCheckOrder = e => {
-    //
+  handleCheckOrder = (e) => {
     this.setState({
       custAttachOrder: this.state.custAttachOrder === 1 ? 0 : 1,
       orderDetailsData: [],
       SwitchBtnStatus: e.target.checked,
-      orderNumber: ""
+      orderNumber: "",
     });
     {
       this.props.AttachOrder(
@@ -272,40 +283,37 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
-        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            TicketSourceData: data
+            TicketSourceData: data,
           });
         } else {
           self.setState({
-            TicketSourceData: []
+            TicketSourceData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   handleGetManuallyTableData() {
-    //
     let self = this;
     axios({
       method: "post",
       headers: authHeader(),
-      url: config.apiUrl + "/Master/getPaymentMode"
+      url: config.apiUrl + "/Master/getPaymentMode",
     })
       .then(function(res) {
-        //
         let finalData = res.data.data;
         self.setState({ finalData: finalData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -325,8 +333,8 @@ class TicketSystemOrder extends Component {
           headers: authHeader(),
           params: {
             OrderNumber: this.state.orderNumber,
-            CustomerID: CustID
-          }
+            CustomerID: CustID,
+          },
         })
           .then(function(res) {
             debugger;
@@ -344,11 +352,11 @@ class TicketSystemOrder extends Component {
             // }
             self.setState({
               message: Msg,
-              orderDetailsData: mainData
+              orderDetailsData: mainData,
               // OrderSubItem,
             });
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
         // } else {
@@ -366,8 +374,8 @@ class TicketSystemOrder extends Component {
           headers: authHeader(),
           params: {
             OrderNumber: this.state.ModalorderNumber,
-            CustomerID: CustID
-          }
+            CustomerID: CustID,
+          },
         })
           .then(function(res) {
             //
@@ -385,11 +393,11 @@ class TicketSystemOrder extends Component {
             // }
             self.setState({
               message: Msg,
-              orderDetailsData: mainData
+              orderDetailsData: mainData,
               // OrderSubItem,
             });
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
         // } else {
@@ -405,8 +413,8 @@ class TicketSystemOrder extends Component {
         headers: authHeader(),
         params: {
           OrderNumber: OrdData,
-          CustomerID: CustID
-        }
+          CustomerID: CustID,
+        },
       })
         .then(function(res) {
           debugger;
@@ -427,16 +435,17 @@ class TicketSystemOrder extends Component {
             message: "Success",
             orderDetailsData: mainData,
             // OrderSubItem,
-            orderNumber: ""
+            orderNumber: "",
           });
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
   }
   hadleAddManuallyOrderData() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -462,8 +471,8 @@ class TicketSystemOrder extends Component {
           PurchaseFromStoreId: this.state.purchaseFrmStorID,
           Discount: this.state.discount,
           Size: this.state.size,
-          RequireSize: this.state.requiredSize
-        }
+          RequireSize: this.state.requiredSize,
+        },
       })
         .then(function(res) {
           debugger;
@@ -488,16 +497,20 @@ class TicketSystemOrder extends Component {
               size: "",
               requiredSize: "",
               message: "Success",
-              saveLoader: false
+              saveLoader: false,
             });
           } else {
-            NotificationManager.error("Order not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.span.ordernotadded
+                : "Order not added."
+            );
             self.setState({
-              saveLoader: false
+              saveLoader: false,
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
       // } else {
@@ -524,8 +537,8 @@ class TicketSystemOrder extends Component {
         url: config.apiUrl + "/Store/getStores",
         headers: authHeader(),
         params: {
-          SearchText: SearchData[field]
-        }
+          SearchText: SearchData[field],
+        },
       })
         .then(function(res) {
           //
@@ -533,20 +546,20 @@ class TicketSystemOrder extends Component {
           var data = res.data.responseData;
           if (status === "Success") {
             self.setState({
-              SearchItem: data
+              SearchItem: data,
             });
           } else {
             self.setState({
-              SearchItem: []
+              SearchItem: [],
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       self.setState({
-        SearchData
+        SearchData,
       });
     }
   }
@@ -562,7 +575,7 @@ class TicketSystemOrder extends Component {
     this.setState({
       SearchData,
       StorAddress,
-      purchaseFrmStorID: Store_Id
+      purchaseFrmStorID: Store_Id,
     });
   }
   handleModeOfPaymentDropDown() {
@@ -570,13 +583,13 @@ class TicketSystemOrder extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getPaymentMode",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let modeData = res.data.responseData;
         self.setState({ modeData: modeData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -586,8 +599,8 @@ class TicketSystemOrder extends Component {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
       this.setState({
-        filtered: filtered.filter(item => item.id !== "all"),
-        filterAll
+        filtered: filtered.filter((item) => item.id !== "all"),
+        filterAll,
       });
     } else this.setState({ filtered });
   }
@@ -609,10 +622,10 @@ class TicketSystemOrder extends Component {
     }
 
     this.setState({
-      expanded: expanded
+      expanded: expanded,
     });
   }
-  handleNumberOnchange = e => {
+  handleNumberOnchange = (e) => {
     //
     var values = e.target.value;
     var names = e.target.name;
@@ -669,7 +682,7 @@ class TicketSystemOrder extends Component {
     }
   };
 
-  handleChangeOrderItem = e => {
+  handleChangeOrderItem = (e) => {
     //
     var values = e.target.checked;
     if (values) {
@@ -685,10 +698,10 @@ class TicketSystemOrder extends Component {
       j.style.display = "block ";
     }
     this.setState({
-      OrdItmBtnStatus: e.target.checked
+      OrdItmBtnStatus: e.target.checked,
     });
   };
-  handleChangeModalOrderItem = e => {
+  handleChangeModalOrderItem = (e) => {
     //
     var values = e.target.checked;
     if (values) {
@@ -704,7 +717,7 @@ class TicketSystemOrder extends Component {
       j.style.display = "block ";
     }
     this.setState({
-      OrdItmBtnStatus: e.target.checked
+      OrdItmBtnStatus: e.target.checked,
     });
   };
 
@@ -715,7 +728,7 @@ class TicketSystemOrder extends Component {
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
-        selectedInvoiceNo: ""
+        selectedInvoiceNo: "",
       });
       let self = this;
       var CustID = this.props.custDetails;
@@ -728,8 +741,8 @@ class TicketSystemOrder extends Component {
           OrderNumber: rowData.invoiceNumber,
           CustomerID: CustID,
           StoreCode: rowData.storeCode,
-          InvoiceDate: rowData.invoiceDate
-        }
+          InvoiceDate: rowData.invoiceDate,
+        },
       })
         .then(function(res) {
           debugger;
@@ -737,7 +750,7 @@ class TicketSystemOrder extends Component {
           let data = res.data.responseData;
           if (Msg === "Success") {
             self.setState({
-              OrderSubItem: data
+              OrderSubItem: data,
             });
             var selectedInvoiceNo = invoiceNumber;
             const newSelected = Object.assign({}, self.state.CheckBoxAllOrder);
@@ -746,14 +759,14 @@ class TicketSystemOrder extends Component {
             ];
             self.setState({
               CheckBoxAllOrder: newSelected,
-              selectedInvoiceNo
+              selectedInvoiceNo,
             });
             var selectedRow = [];
             var CselectedRow = [];
             if (self.state.SelectedAllOrder.length === 0) {
               selectedRow.push(rowData);
               var Order_Master = self.state.OrderSubItem.filter(
-                x => x.invoiceNumber === invoiceNumber
+                (x) => x.invoiceNumber === invoiceNumber
               );
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
@@ -763,12 +776,12 @@ class TicketSystemOrder extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem
+                  CheckBoxAllItem: objCheckBoxAllItem,
                 });
               }
               self.setState({
                 SelectedAllOrder: selectedRow,
-                SelectedAllItem: CselectedRow
+                SelectedAllItem: CselectedRow,
               });
             } else {
               if (newSelected[invoiceNumber] === true) {
@@ -777,7 +790,7 @@ class TicketSystemOrder extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.push(rowData);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -789,13 +802,13 @@ class TicketSystemOrder extends Component {
                         CselectedRow.push(Order_Master[j]);
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: CselectedRow
+                      SelectedAllItem: CselectedRow,
                     });
 
                     break;
@@ -807,7 +820,7 @@ class TicketSystemOrder extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.splice(i, 1);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -817,13 +830,13 @@ class TicketSystemOrder extends Component {
                         ] = false;
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: []
+                      SelectedAllItem: [],
                     });
 
                     break;
@@ -837,7 +850,7 @@ class TicketSystemOrder extends Component {
             }
             self.setState({
               SelectedAllOrder: selectedRow,
-              SelectedAllItem: CselectedRow
+              SelectedAllItem: CselectedRow,
             });
           } else {
             var selectedInvoiceNo = invoiceNumber;
@@ -847,14 +860,14 @@ class TicketSystemOrder extends Component {
             ];
             self.setState({
               CheckBoxAllOrder: newSelected,
-              selectedInvoiceNo
+              selectedInvoiceNo,
             });
             var selectedRow = [];
             var CselectedRow = [];
             if (self.state.SelectedAllOrder.length === 0) {
               selectedRow.push(rowData);
               var Order_Master = self.state.OrderSubItem.filter(
-                x => x.invoiceNumber === invoiceNumber
+                (x) => x.invoiceNumber === invoiceNumber
               );
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
@@ -864,12 +877,12 @@ class TicketSystemOrder extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem
+                  CheckBoxAllItem: objCheckBoxAllItem,
                 });
               }
               self.setState({
                 SelectedAllOrder: selectedRow,
-                SelectedAllItem: CselectedRow
+                SelectedAllItem: CselectedRow,
               });
             } else {
               if (newSelected[invoiceNumber] === true) {
@@ -878,7 +891,7 @@ class TicketSystemOrder extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.push(rowData);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -890,13 +903,13 @@ class TicketSystemOrder extends Component {
                         CselectedRow.push(Order_Master[j]);
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: CselectedRow
+                      SelectedAllItem: CselectedRow,
                     });
 
                     break;
@@ -908,7 +921,7 @@ class TicketSystemOrder extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.splice(i, 1);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -918,13 +931,13 @@ class TicketSystemOrder extends Component {
                         ] = false;
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: []
+                      SelectedAllItem: [],
                     });
 
                     break;
@@ -940,11 +953,11 @@ class TicketSystemOrder extends Component {
             self.setState({
               CheckBoxAllOrder: newSelected,
               selectedInvoiceNo,
-              OrderSubItem: []
+              OrderSubItem: [],
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -952,7 +965,7 @@ class TicketSystemOrder extends Component {
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
-        selectedInvoiceNo: ""
+        selectedInvoiceNo: "",
       });
     }
   }
@@ -1059,13 +1072,13 @@ class TicketSystemOrder extends Component {
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
-      CheckBoxAllItem: articleNumber ? newSelected : false
+      CheckBoxAllItem: articleNumber ? newSelected : false,
     });
     var selectedRow = [];
     if (this.state.SelectedAllItem.length === 0) {
       selectedRow.push(rowData);
       this.setState({
-        SelectedAllItem: selectedRow
+        SelectedAllItem: selectedRow,
       });
     } else {
       if (newSelected[articleNumber] === true) {
@@ -1073,7 +1086,8 @@ class TicketSystemOrder extends Component {
           selectedRow = this.state.SelectedAllItem;
           selectedRow.push(rowData);
           var Order_Master = this.state.OrderSubItem.filter(
-            x => x.articleNumber === this.state.SelectedAllItem[i].articleNumber
+            (x) =>
+              x.articleNumber === this.state.SelectedAllItem[i].articleNumber
           );
           if (Order_Master.length === selectedRow.length) {
             const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
@@ -1082,16 +1096,16 @@ class TicketSystemOrder extends Component {
             this.setState({
               CheckBoxAllOrder: Order_Master[0].articleNumber
                 ? newSelected
-                : false
+                : false,
             });
             var data_master = this.state.orderDetailsData.filter(
-              y => y.articleNumber === Order_Master[0].articleNumber
+              (y) => y.articleNumber === Order_Master[0].articleNumber
             );
             if (data_master.length > 0) {
               var MastOrd = this.state.SelectedAllOrder;
               MastOrd.push(data_master[0]);
               this.setState({
-                SelectedAllOrder: MastOrd
+                SelectedAllOrder: MastOrd,
               });
             }
           }
@@ -1104,7 +1118,7 @@ class TicketSystemOrder extends Component {
             selectedRow.splice(j, 1);
 
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.articleNumber === rowData.articleNumber
+              (x) => x.articleNumber === rowData.articleNumber
             );
 
             if (Order_Master.length !== selectedRow.length) {
@@ -1116,19 +1130,19 @@ class TicketSystemOrder extends Component {
               this.setState({
                 CheckBoxAllOrder: Order_Master[0].articleNumber
                   ? newSelected
-                  : false
+                  : false,
               });
               var data_master = this.state.orderDetailsData.filter(
-                y => y.articleNumber === Order_Master[0].articleNumber
+                (y) => y.articleNumber === Order_Master[0].articleNumber
               );
               var GetIndex = this.state.orderDetailsData.findIndex(
-                y => y.articleNumber === Order_Master[0].articleNumber
+                (y) => y.articleNumber === Order_Master[0].articleNumber
               );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
                 MastOrd.splice(GetIndex, 1);
                 this.setState({
-                  SelectedAllOrder: MastOrd
+                  SelectedAllOrder: MastOrd,
                 });
               }
             }
@@ -1138,7 +1152,7 @@ class TicketSystemOrder extends Component {
       }
     }
     this.setState({
-      SelectedAllItem: selectedRow
+      SelectedAllItem: selectedRow,
     });
     {
       this.props.getItemOrderData(selectedRow);
@@ -1147,6 +1161,7 @@ class TicketSystemOrder extends Component {
   // -------------------------------Check box selected all code end-------------------------------
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { orderDetailsData } = this.state;
 
     return (
@@ -1155,12 +1170,18 @@ class TicketSystemOrder extends Component {
           <div className="row storemainrow">
             <div className="col-12 col-lg-7 col-xl-8">
               <label className="systemstordercustomer">
-                Customer Want to attach order
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.customerwanttoattachorder
+                  : "Customer Want to attach order"}
               </label>
             </div>
             <div className="col-12 col-lg-3 col-xl-3">
               <div style={{ display: "flex", marginTop: "4px" }}>
-                <label className="orderdetailpopup">Yes</label>
+                <label className="orderdetailpopup">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.yes
+                    : "Yes"}
+                </label>
                 <div className="switchmargin">
                   <div className="switch switch-primary d-inline m-r-10">
                     <input
@@ -1170,10 +1191,17 @@ class TicketSystemOrder extends Component {
                       checked={this.state.SwitchBtnStatus}
                       onChange={this.handleCheckOrder}
                     />
-                    <label htmlFor="editDashboard-p-1" className="cr"></label>
+                    <label
+                      htmlFor="editDashboard-p-1"
+                      className="cr cr-tick"
+                    ></label>
                   </div>
                 </div>
-                <label className="orderdetailpopup">No</label>
+                <label className="orderdetailpopup">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.no
+                    : "No"}
+                </label>
               </div>
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
@@ -1209,14 +1237,22 @@ class TicketSystemOrder extends Component {
                 <div className="row">
                   <div className="col-md-6">
                     <label style={{ marginTop: "7px" }}>
-                      <b>Customer Want to attach order</b>
+                      <b>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.customerwanttoattachorder
+                          : "Customer Want to attach order"}
+                      </b>
                     </label>
                   </div>
                   <div className="col-md-6 d-flex justify-content-end">
                     <div
                       style={{ display: "inline-flex", marginRight: "10px" }}
                     >
-                      <label className="orderdetailpopup">Yes</label>
+                      <label className="orderdetailpopup">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.yes
+                          : "Yes"}
+                      </label>
                       <div className="switchmargin">
                         <div className="switch switch-primary d-inline m-r-10">
                           <input
@@ -1228,11 +1264,15 @@ class TicketSystemOrder extends Component {
                           />
                           <label
                             htmlFor="editDashboard-p-11"
-                            className="cr"
+                            className="cr cr-tick"
                           ></label>
                         </div>
                       </div>
-                      <label className="orderdetailpopup">No</label>
+                      <label className="orderdetailpopup">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.no
+                          : "No"}
+                      </label>
                     </div>
 
                     <div
@@ -1257,11 +1297,19 @@ class TicketSystemOrder extends Component {
               style={{ marginLeft: "0", marginRight: "0" }}
             >
               <div className="col-md-6">
-                <label className="orderdetailpopup">Order Details</label>
+                <label className="orderdetailpopup">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.orderdetails
+                    : "Order Details"}
+                </label>
               </div>
               <div className="col-md-3">
                 <div style={{ float: "right", display: "flex" }}>
-                  <label className="orderdetailpopup">Order</label>
+                  <label className="orderdetailpopup">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.order
+                      : "Order"}
+                  </label>
                   <div className="orderswitch orderswitchitem">
                     <div className="switch switch-primary d-inline">
                       <input
@@ -1270,17 +1318,28 @@ class TicketSystemOrder extends Component {
                         checked={this.state.OrdItmBtnStatus}
                         onChange={this.handleChangeModalOrderItem}
                       />
-                      <label htmlFor="item-11" className="cr ord"></label>
+                      <label
+                        htmlFor="item-11"
+                        className="cr cr-tick ord"
+                      ></label>
                     </div>
                   </div>
-                  <label className="orderdetailpopup">Item</label>
+                  <label className="orderdetailpopup">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.item
+                      : "Item"}
+                  </label>
                 </div>
               </div>
               <div className="col-md-3">
                 <input
                   type="text"
                   className="searchtextpopup"
-                  placeholder="Search Order"
+                  placeholder={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.searchorder
+                      : "Search Order"
+                  }
                   name="ModalorderNumber"
                   value={this.state.ModalorderNumber}
                   autoComplete="off"
@@ -1299,7 +1358,7 @@ class TicketSystemOrder extends Component {
                   <p
                     style={{
                       color: "red",
-                      marginBottom: "0px"
+                      marginBottom: "0px",
                     }}
                   >
                     {this.state.validMdlOrdernumber}
@@ -1335,40 +1394,64 @@ class TicketSystemOrder extends Component {
                           <label htmlFor={"all" + data.invoiceNumber}></label>
                         </div>
                       );
-                    }
+                    },
                   },
                   {
-                    title: "Invoice Number",
-                    dataIndex: "invoiceNumber"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicenumber
+                        : "Invoice Number",
+                    dataIndex: "invoiceNumber",
                   },
                   {
-                    title: "Invoice Date",
-                    dataIndex: "dateFormat"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicedate
+                        : "Invoice Date",
+                    dataIndex: "dateFormat",
                   },
                   {
-                    title: "Item Count",
-                    dataIndex: "itemCount"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemcount
+                        : "Item Count",
+                    dataIndex: "itemCount",
                   },
                   {
-                    title: "Item Price",
-                    dataIndex: "ordeItemPrice"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemprice
+                        : "Item Price",
+                    dataIndex: "ordeItemPrice",
                   },
                   {
-                    title: "Price Paid",
-                    dataIndex: "orderPricePaid"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.pricepaid
+                        : "Price Paid",
+                    dataIndex: "orderPricePaid",
                   },
                   {
-                    title: "Store Code",
-                    dataIndex: "storeCode"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storecode
+                        : "Store Code",
+                    dataIndex: "storeCode",
                   },
                   {
-                    title: "Store Address",
-                    dataIndex: "storeAddress"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storeaddress
+                        : "Store Address",
+                    dataIndex: "storeAddress",
                   },
                   {
-                    title: "Discount",
-                    dataIndex: "discount"
-                  }
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.discount
+                        : "Discount",
+                    dataIndex: "discount",
+                  },
                 ]}
                 dataSource={orderDetailsData}
                 pagination={false}
@@ -1376,7 +1459,7 @@ class TicketSystemOrder extends Component {
             </div>
             <div
               id="Modalordertable"
-              className="varunoverflow" 
+              className="varunoverflow"
               style={{ display: "none" }}
             >
               <Table
@@ -1406,47 +1489,71 @@ class TicketSystemOrder extends Component {
                           <label htmlFor={"all" + data.invoiceNumber}></label>
                         </div>
                       );
-                    }
+                    },
                   },
                   {
-                    title: "Invoice Number",
-                    dataIndex: "invoiceNumber"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicenumber
+                        : "Invoice Number",
+                    dataIndex: "invoiceNumber",
                   },
                   {
-                    title: "Invoice Date",
-                    dataIndex: "dateFormat"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.invoicedate
+                        : "Invoice Date",
+                    dataIndex: "dateFormat",
                   },
                   {
-                    title: "Item Count",
-                    dataIndex: "itemCount"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemcount
+                        : "Item Count",
+                    dataIndex: "itemCount",
                   },
                   {
-                    title: "Item Price",
-                    dataIndex: "ordeItemPrice"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.itemprice
+                        : "Item Price",
+                    dataIndex: "ordeItemPrice",
                   },
                   {
-                    title: "Price Paid",
-                    dataIndex: "orderPricePaid"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.pricepaid
+                        : "Price Paid",
+                    dataIndex: "orderPricePaid",
                   },
                   {
-                    title: "Store Code",
-                    dataIndex: "storeCode"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storecode
+                        : "Store Code",
+                    dataIndex: "storeCode",
                   },
                   {
-                    title: "Store Address",
-                    dataIndex: "storeAddress"
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.storeaddress
+                        : "Store Address",
+                    dataIndex: "storeAddress",
                   },
                   {
-                    title: "Discount",
-                    dataIndex: "discount"
-                  }
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.discount
+                        : "Discount",
+                    dataIndex: "discount",
+                  },
                 ]}
-                expandedRowRender={row => {
+                expandedRowRender={(row) => {
                   return (
                     <Table
                       // dataSource={this.state.OrderSubItem}
                       dataSource={this.state.OrderSubItem.filter(
-                        x => x.invoiceNumber === row.invoiceNumber
+                        (x) => x.invoiceNumber === row.invoiceNumber
                       )}
                       columns={[
                         {
@@ -1476,30 +1583,49 @@ class TicketSystemOrder extends Component {
                                 ></label>
                               </div>
                             );
-                          }
+                          },
                         },
                         {
-                          title: "Article Number",
-                          dataIndex: "articleNumber"
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.articlenumber
+                              : "Article Number",
+                          dataIndex: "articleNumber",
                         },
                         {
-                          title: "Article Name",
-                          dataIndex: "articleName"
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.articlename
+                              : "Article Name",
+                          dataIndex: "articleName",
                         },
                         {
-                          title: "Article MRP",
-                          dataIndex: "itemPrice"
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.articlemrp
+                              : "Article MRP",
+                          dataIndex: "itemPrice",
                         },
                         {
-                          title: "Price Paid",
-                          dataIndex: "pricePaid"
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.pricepaid
+                              : "Price Paid",
+                          dataIndex: "pricePaid",
                         },
                         {
-                          title: "Discount",
-                          dataIndex: "discount"
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.discount
+                              : "Discount",
+                          dataIndex: "discount",
                         },
                         {
-                          title: "Required Size",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard
+                                  .requiredsize
+                              : "Required Size",
                           dataIndex: "requireSize",
                           render: (data, record) => {
                             return (
@@ -1517,8 +1643,8 @@ class TicketSystemOrder extends Component {
                                 />
                               </div>
                             );
-                          }
-                        }
+                          },
+                        },
                       ]}
                       // rowSelection={rowSelection}
                       pagination={false}
@@ -1544,7 +1670,11 @@ class TicketSystemOrder extends Component {
                       <input
                         type="text"
                         className="systemordersearch"
-                        placeholder="Search Order By Order Number"
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.searchorderbyordernumber
+                            : "Search Order By Order Number"
+                        }
                         name="orderNumber"
                         value={this.state.orderNumber}
                         autoComplete="off"
@@ -1585,8 +1715,16 @@ class TicketSystemOrder extends Component {
                     />
                     <br />
                     <label className="lbl-count-foundData">
-                      We couldn't find the order details with
-                      <br /> <span> this order Id</span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .wecouldntfindtheorderdetailswith
+                        : "We couldn't find the order details with"}
+                      <br />
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard.thisorderid
+                          : "this order Id"}
+                      </span>
                     </label>
                   </div>
                   <div className="addmanualbtn">
@@ -1595,7 +1733,9 @@ class TicketSystemOrder extends Component {
                       className="addmanual"
                       onClick={this.handleChangeToggle.bind(this)}
                     >
-                      Add Manually
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.addmanually
+                        : "Add Manually"}
                     </button>
                   </div>
                 </div>
@@ -1607,7 +1747,11 @@ class TicketSystemOrder extends Component {
             <div>
               <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
                 <div className="col-md-6">
-                  <label className="addmanuallytext">Add Manually</label>
+                  <label className="addmanuallytext">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.addmanually
+                      : "Add Manually"}
+                  </label>
                 </div>
               </div>
               <div className="row m-b-10 m-l-10 m-r-10">
@@ -1615,7 +1759,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Order ID"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.p.orderid
+                        : "Order ID"
+                    }
                     name="orderId"
                     maxLength={10}
                     value={this.state.orderId}
@@ -1631,7 +1779,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Bill ID"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.billid
+                        : "Bill ID"
+                    }
                     name="billId"
                     maxLength={10}
                     value={this.state.billId}
@@ -1650,7 +1802,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Product Bar Code"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.productbarcode
+                        : "Product Bar Code"
+                    }
                     name="productBarCode"
                     maxLength={10}
                     value={this.state.productBarCode}
@@ -1682,7 +1838,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.setTicketSourceValue}
                     className="category-select-system dropdown-label"
                   >
-                    <option>Channel Of Purchase</option>
+                    <option>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.channelofpurchase
+                        : "Channel Of Purchase"}
+                    </option>
                     {this.state.ChannelOfPurchaseData !== null &&
                       this.state.ChannelOfPurchaseData.map((item, i) => (
                         <option key={i} value={item.channelOfPurchaseID}>
@@ -1709,7 +1869,9 @@ class TicketSystemOrder extends Component {
                       value=""
                       className="select-sub-category-placeholder"
                     >
-                      Mode Of Payment
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.modepayment
+                        : "Mode Of Payment"}
                     </option>
                     {this.state.modeData !== null &&
                       this.state.modeData.map((item, i) => (
@@ -1732,7 +1894,11 @@ class TicketSystemOrder extends Component {
                   <DatePicker
                     selected={this.state.OrderCreatDate}
                     onChange={this.handleByDateCreate}
-                    placeholderText="Date"
+                    placeholderText={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.date
+                        : "Date"
+                    }
                     showMonthDropdown
                     showYearDropdown
                     className="addmanuallytext1"
@@ -1751,7 +1917,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="MRP"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.mrp
+                        : "MRP"
+                    }
                     name="orderMRP"
                     value={this.state.orderMRP}
                     onChange={this.handleNumberOnchange}
@@ -1768,7 +1938,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Price Paid"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.pricepaid
+                        : "Price Paid"
+                    }
                     name="pricePaid"
                     value={this.state.pricePaid}
                     onChange={this.handleNumberOnchange}
@@ -1788,7 +1962,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Discount"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.discount
+                        : "Discount"
+                    }
                     name="discount"
                     value={this.state.discount}
                     onChange={this.handleNumberOnchange}
@@ -1805,7 +1983,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Size"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.size
+                        : "Size"
+                    }
                     name="size"
                     value={this.state.size}
                     // onChange={this.handleNumberOnchange}
@@ -1822,7 +2004,11 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Required Size"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.requiredsize
+                        : "Required Size"
+                    }
                     name="requiredSize"
                     value={this.state.requiredSize}
                     // onChange={this.handleNumberOnchange}
@@ -1835,7 +2021,7 @@ class TicketSystemOrder extends Component {
                     "required"
                   )}
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 drpdwn-order">
                   {/* <input
                         type="text"
                         className="addmanuallytext1"
@@ -1845,13 +2031,13 @@ class TicketSystemOrder extends Component {
                         onChange={this.handleManuallyOnchange}
                       /> */}
                   <ReactAutocomplete
-                    wrapperStyle={{ display: "block" }}
-                    getItemValue={item => item.storeName}
+                    wrapperStyle={{ display: "block", position: "relative" }}
+                    getItemValue={(item) => item.storeName}
                     items={this.state.SearchItem}
                     renderItem={(item, isHighlighted, i) => (
                       <div
                         style={{
-                          background: isHighlighted ? "lightgray" : "white"
+                          background: isHighlighted ? "lightgray" : "white",
                         }}
                         value={item.storeID}
                         key={i}
@@ -1862,7 +2048,12 @@ class TicketSystemOrder extends Component {
                     renderInput={function(props) {
                       return (
                         <input
-                          placeholder="Purchase from Store name"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard
+                                  .purchasefromstorename
+                              : "Purchase from Store name"
+                          }
                           className="addmanuallytext1"
                           type="text"
                           {...props}
@@ -1872,7 +2063,7 @@ class TicketSystemOrder extends Component {
                     onChange={this.handlePurchaseStoreName.bind(this, "store")}
                     onSelect={this.HandleSelectdata.bind(
                       this,
-                      item => item.storeID,
+                      (item) => item.storeID,
                       "store"
                     )}
                     value={this.state.purchaseFrmStorName["store"]}
@@ -1896,7 +2087,12 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="addmanuallytext1"
-                    placeholder="Purchase from Store Addres"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .purchasefromstoreaddres
+                        : "Purchase from Store Address"
+                    }
                     name="purchaseFrmStorAddress"
                     value={this.state.StorAddress.address}
                     // onChange={this.handleManuallyOnchange}
@@ -1906,7 +2102,7 @@ class TicketSystemOrder extends Component {
               </div>
 
               <div className="row m-b-10 m-l-10 m-r-10">
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <button
                     type="button"
                     className="addmanual m-t-15"
@@ -1922,16 +2118,20 @@ class TicketSystemOrder extends Component {
                     ) : (
                       ""
                     )} */}
-                    SAVE
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.save
+                      : "SAVE"}
                   </button>
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <button
                     type="button"
                     className="addmanual m-t-15"
                     onClick={this.handleChangeToggle.bind(this)}
                   >
-                    CANCEL
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.cancel
+                      : "CANCEL"}
                   </button>
                 </div>
               </div>
@@ -1948,7 +2148,9 @@ class TicketSystemOrder extends Component {
                     className="orderdetailpopup"
                     style={{ marginTop: "3px" }}
                   >
-                    Order Details
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.orderdetails
+                      : "Order Details"}
                   </label>
                 </div>
                 <div className="col-md-3">
@@ -1957,7 +2159,9 @@ class TicketSystemOrder extends Component {
                       className="orderdetailpopup"
                       style={{ marginTop: "3px" }}
                     >
-                      Order
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.order
+                        : "Order"}
                     </label>
                     <div className="orderswitch orderswitchitem">
                       <div className="switch switch-primary d-inline">
@@ -1969,7 +2173,7 @@ class TicketSystemOrder extends Component {
                         />
                         <label
                           htmlFor="editTasks-p-2"
-                          className="cr ord"
+                          className="cr cr-tick ord"
                           style={{ top: "5px" }}
                         ></label>
                       </div>
@@ -1978,7 +2182,9 @@ class TicketSystemOrder extends Component {
                       className="orderdetailpopup"
                       style={{ marginTop: "3px" }}
                     >
-                      Item
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.item
+                        : "Item"}
                     </label>
                   </div>
                 </div>
@@ -2012,40 +2218,64 @@ class TicketSystemOrder extends Component {
                             <label htmlFor={"all" + data.invoiceNumber}></label>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
-                      title: "Invoice Number",
-                      dataIndex: "invoiceNumber"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicenumber
+                          : "Invoice Number",
+                      dataIndex: "invoiceNumber",
                     },
                     {
-                      title: "Invoice Date",
-                      dataIndex: "dateFormat"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicedate
+                          : "Invoice Date",
+                      dataIndex: "dateFormat",
                     },
                     {
-                      title: "Item Count",
-                      dataIndex: "itemCount"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemcount
+                          : "Item Count",
+                      dataIndex: "itemCount",
                     },
                     {
-                      title: "Item Price",
-                      dataIndex: "ordeItemPrice"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemprice
+                          : "Item Price",
+                      dataIndex: "ordeItemPrice",
                     },
                     {
-                      title: "Price Paid",
-                      dataIndex: "orderPricePaid"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.pricepaid
+                          : "Price Paid",
+                      dataIndex: "orderPricePaid",
                     },
                     {
-                      title: "Store Code",
-                      dataIndex: "storeCode"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storecode
+                          : "Store Code",
+                      dataIndex: "storeCode",
                     },
                     {
-                      title: "Store Address",
-                      dataIndex: "storeAddress"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storeaddress
+                          : "Store Address",
+                      dataIndex: "storeAddress",
                     },
                     {
-                      title: "Discount",
-                      dataIndex: "discount"
-                    }
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.discount
+                          : "Discount",
+                      dataIndex: "discount",
+                    },
                   ]}
                   dataSource={orderDetailsData}
                   pagination={false}
@@ -2083,47 +2313,71 @@ class TicketSystemOrder extends Component {
                             <label htmlFor={"all" + data.invoiceNumber}></label>
                           </div>
                         );
-                      }
+                      },
                     },
                     {
-                      title: "Invoice Number",
-                      dataIndex: "invoiceNumber"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicenumber
+                          : "Invoice Number",
+                      dataIndex: "invoiceNumber",
                     },
                     {
-                      title: "Invoice Date",
-                      dataIndex: "dateFormat"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.invoicedate
+                          : "Invoice Date",
+                      dataIndex: "dateFormat",
                     },
                     {
-                      title: "Item Count",
-                      dataIndex: "itemCount"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemcount
+                          : "Item Count",
+                      dataIndex: "itemCount",
                     },
                     {
-                      title: "Item Price",
-                      dataIndex: "ordeItemPrice"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.itemprice
+                          : "Item Price",
+                      dataIndex: "ordeItemPrice",
                     },
                     {
-                      title: "Price Paid",
-                      dataIndex: "orderPricePaid"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.pricepaid
+                          : "Price Paid",
+                      dataIndex: "orderPricePaid",
                     },
                     {
-                      title: "Store Code",
-                      dataIndex: "storeCode"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storecode
+                          : "Store Code",
+                      dataIndex: "storeCode",
                     },
                     {
-                      title: "Store Address",
-                      dataIndex: "storeAddress"
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.span.storeaddress
+                          : "Store Address",
+                      dataIndex: "storeAddress",
                     },
                     {
-                      title: "Discount",
-                      dataIndex: "discount"
-                    }
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.discount
+                          : "Discount",
+                      dataIndex: "discount",
+                    },
                   ]}
-                  expandedRowRender={row => {
+                  expandedRowRender={(row) => {
                     return (
                       <Table
                         // dataSource={this.state.OrderSubItem}
                         dataSource={this.state.OrderSubItem.filter(
-                          x => x.invoiceNumber === row.invoiceNumber
+                          (x) => x.invoiceNumber === row.invoiceNumber
                         )}
                         columns={[
                           {
@@ -2153,30 +2407,50 @@ class TicketSystemOrder extends Component {
                                   ></label>
                                 </div>
                               );
-                            }
+                            },
                           },
                           {
-                            title: "Article Number",
-                            dataIndex: "articleNumber"
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.articlenumber
+                                : "Article Number",
+                            dataIndex: "articleNumber",
                           },
                           {
-                            title: "Article Name",
-                            dataIndex: "articleName"
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.articlename
+                                : "Article Name",
+                            dataIndex: "articleName",
                           },
                           {
-                            title: "Article MRP",
-                            dataIndex: "itemPrice"
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard
+                                    .articlemrp
+                                : "Article MRP",
+                            dataIndex: "itemPrice",
                           },
                           {
-                            title: "Price Paid",
-                            dataIndex: "pricePaid"
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.pricepaid
+                                : "Price Paid",
+                            dataIndex: "pricePaid",
                           },
                           {
-                            title: "Discount",
-                            dataIndex: "discount"
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.discount
+                                : "Discount",
+                            dataIndex: "discount",
                           },
                           {
-                            title: "Required Size",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard
+                                    .requiredsize
+                                : "Required Size",
                             dataIndex: "requireSize",
                             render: (data, record) => {
                               return (
@@ -2194,8 +2468,8 @@ class TicketSystemOrder extends Component {
                                   />
                                 </div>
                               );
-                            }
-                          }
+                            },
+                          },
                         ]}
                         // rowSelection={rowSelection}
                         pagination={false}
@@ -2209,7 +2483,6 @@ class TicketSystemOrder extends Component {
             </div>
           ) : null}
         </div>
-        {/* <NotificationContainer /> */}
       </div>
     );
   }

@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/ie11";
-import "./../../assets/css/custome.css";
-import Logo from "./../../assets/Images/logo.jpg";
+import "./../assets/css/custome.css";
+import Logo from "./../assets/Images/logo.jpg";
 import axios from "axios";
-import { authHeader } from "../../helpers/authHeader";
-import config from "../../helpers/config";
-import {
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
+import config from "../helpers/config";
+import { authHeader } from "../helpers/authHeader";
 
-class LanguageSelection extends Component {
+class TicketingLanguageSelection extends Component {
   constructor(props) {
     super(props);
 
@@ -22,17 +20,43 @@ class LanguageSelection extends Component {
   componentDidMount() {
     this.handleGetSelectedLanguageDetails();
   }
-////handle crm role 
-  handleCRMRole() {
-    debugger;
+
+  ////handle get seleted language details
+  handleGetSelectedLanguageDetails() {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
+      url: config.apiUrl + "/StoreCampaign/GetSelectedLanguageDetails",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        var languageData = [];
+        if (message === "Success") {
+          for (let i = 0; i < responseData.length; i++) {
+            if (responseData[i].isActive) {
+              languageData.push(responseData[i]);
+            }
+          }
+          self.setState({ languageData });
+        } else {
+          self.setState({ languageData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// handle CRM Role
+  handleCRMRole() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetRolesByUserID",
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -52,39 +76,23 @@ class LanguageSelection extends Component {
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/store/storedashboard");
+                  self.props.history.push("/admin/dashboard");
                 }, 400);
                 return;
               } else if (
-                data[i].moduleName === "Tasks" &&
+                data[i].moduleName === "Tickets" &&
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/store/StoreTask");
+                  self.props.history.push("/admin/myTicketlist");
                 }, 400);
                 return;
               } else if (
-                data[i].moduleName === "Claim" &&
+                data[i].moduleName === "Knowledge Base" &&
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/store/claim");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Campaign" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Appointment" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/appointment");
+                  self.props.history.push("/admin/knowledgebase");
                 }, 400);
                 return;
               } else if (
@@ -92,7 +100,7 @@ class LanguageSelection extends Component {
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/store/campaign");
+                  self.props.history.push("/admin/settings");
                 }, 400);
                 return;
               }
@@ -104,7 +112,8 @@ class LanguageSelection extends Component {
         console.log(data);
       });
   }
-////handle continue button click 
+
+  ////handle continue button click
   handleContinue() {
     let language = this.state.language;
     if (language === "hindi") {
@@ -122,45 +131,14 @@ class LanguageSelection extends Component {
     }
     this.handleCRMRole();
   }
-  ////handle skip button click 
+  ////handle skip button click
   handleSkip() {
     this.handleCRMRole();
   }
-////handle on change 
+  ////handle on change
   handleOnChange(e) {
-    debugger;
     this.setState({ language: e.target.value });
   }
-////handle get seleted language details
-  handleGetSelectedLanguageDetails() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/GetSelectedLanguageDetails",
-      headers: authHeader(),
-    })
-      .then((response) => {
-        debugger;
-        var message = response.data.message;
-        var responseData = response.data.responseData;
-        var languageData = [];
-        if (message === "Success" && responseData) {
-          for (let i = 0; i < responseData.length; i++) {
-            if (responseData[i].isActive) {
-              languageData.push(responseData[i]);
-            }
-          }
-          self.setState({ languageData });
-        } else {
-          self.setState({ languageData: [] });
-        }
-      })
-      .catch((response) => {
-        console.log(response, "---handleGetSelectedLanguageDetails");
-      });
-  }
-
   render() {
     return (
       <div className="auth-wrapper box-center">
@@ -202,7 +180,6 @@ class LanguageSelection extends Component {
                       );
                     })
                   : null}
-
               </div>
               <button
                 type="submit"
@@ -223,4 +200,4 @@ class LanguageSelection extends Component {
   }
 }
 
-export default LanguageSelection;
+export default TicketingLanguageSelection;

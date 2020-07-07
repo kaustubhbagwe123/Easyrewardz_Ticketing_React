@@ -11,6 +11,8 @@ import { authHeader } from "./../../helpers/authHeader";
 import Modal from "react-responsive-modal";
 import matchSorter from "match-sorter";
 import Sorting from "./../../assets/Images/sorting.png";
+import * as translationHI from "./../../translations/hindi";
+import * as translationMA from "./../../translations/marathi";
 
 class MyTicketDraft extends Component {
   constructor(props) {
@@ -32,7 +34,8 @@ class MyTicketDraft extends Component {
       screatedDateFilterCheckbox: "",
       tempDraftDetails: [],
       StatusModel: false,
-      isloading: false
+      isloading: false,
+      translateLanguage: {},
     };
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -40,10 +43,16 @@ class MyTicketDraft extends Component {
 
   componentDidMount() {
     this.handleGetDraftDetails();
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.DraftDetails;
 
@@ -64,7 +73,7 @@ class MyTicketDraft extends Component {
 
     this.setState({
       isortA: true,
-      DraftDetails: itemsArray
+      DraftDetails: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -93,7 +102,7 @@ class MyTicketDraft extends Component {
 
     this.setState({
       isortA: true,
-      DraftDetails: itemsArray
+      DraftDetails: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -101,10 +110,6 @@ class MyTicketDraft extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
-
     if (
       this.state.sortFiltercategoryName.length === 0 ||
       this.state.sortFiltercreatedDate.length === 0
@@ -116,7 +121,7 @@ class MyTicketDraft extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -124,7 +129,7 @@ class MyTicketDraft extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -133,7 +138,7 @@ class MyTicketDraft extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -141,7 +146,7 @@ class MyTicketDraft extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -154,13 +159,13 @@ class MyTicketDraft extends Component {
         DraftDetails: this.state.temoDraftDetails,
         sortFiltercategoryName: this.state.sortcategoryName,
         sortFiltercreatedDate: this.state.sortcreatedDate,
-        sortFilterStatus: this.state.sortStatus
+        sortFilterStatus: this.state.sortStatus,
       });
       if (this.state.sortColumn === "categoryName") {
         if (this.state.scategoryNameFilterCheckbox === "") {
         } else {
           this.setState({
-            screatedDateFilterCheckbox: ""
+            screatedDateFilterCheckbox: "",
           });
         }
       }
@@ -168,7 +173,7 @@ class MyTicketDraft extends Component {
         if (this.state.screatedDateFilterCheckbox === "") {
         } else {
           this.setState({
-            scategoryNameFilterCheckbox: ""
+            scategoryNameFilterCheckbox: "",
           });
         }
       }
@@ -181,14 +186,12 @@ class MyTicketDraft extends Component {
           : this.state.sortAllData,
 
         sortFiltercategoryName: this.state.sortcategoryName,
-        sortFiltercreatedDate: this.state.sortcreatedDate
+        sortFiltercreatedDate: this.state.sortcreatedDate,
       });
     }
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
@@ -266,7 +269,7 @@ class MyTicketDraft extends Component {
       screatedDateFilterCheckbox,
       issueColor: "",
       createdColor: "",
-      stattusColor: ""
+      stattusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -276,7 +279,7 @@ class MyTicketDraft extends Component {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.categoryName === sItems[i]
+              (a) => a.categoryName === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -287,7 +290,7 @@ class MyTicketDraft extends Component {
         }
       }
       this.setState({
-        issueColor: "sort-column"
+        issueColor: "sort-column",
       });
     } else if (column === "createdDate") {
       var sItems1 = screatedDateFilterCheckbox.split(",");
@@ -295,7 +298,7 @@ class MyTicketDraft extends Component {
         for (let i = 0; i < sItems1.length; i++) {
           if (sItems1[i] !== "") {
             var tempFilterData1 = allData.filter(
-              a => a.createdDate === sItems1[i]
+              (a) => a.createdDate === sItems1[i]
             );
             if (tempFilterData1.length > 0) {
               for (let j = 0; j < tempFilterData1.length; j++) {
@@ -306,12 +309,12 @@ class MyTicketDraft extends Component {
         }
       }
       this.setState({
-        createdColor: "sort-column"
+        createdColor: "sort-column",
       });
     }
 
     this.setState({
-      temoDraftDetails: itemsArray
+      temoDraftDetails: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -322,7 +325,7 @@ class MyTicketDraft extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/GetDraftDetails",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let data = res.data.responseData;
@@ -342,7 +345,7 @@ class MyTicketDraft extends Component {
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortcategoryName.push({ categoryName: distinct[i] });
             self.state.sortFiltercategoryName.push({
-              categoryName: distinct[i]
+              categoryName: distinct[i],
             });
           }
 
@@ -362,7 +365,7 @@ class MyTicketDraft extends Component {
           self.setState({ DraftDetails: [], isloading: false });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -372,21 +375,21 @@ class MyTicketDraft extends Component {
     // debugger;
     if ((rowInfo, column)) {
       return {
-        onClick: e => {
+        onClick: (e) => {
           var Id = column.original["ticketId"];
           var CustId = column.original["customerID"];
           var self = this;
           self.setState({
             ticketDetailID: Id,
-            customerId: CustId
+            customerId: CustId,
           });
           setTimeout(function() {
             self.props.history.push({
               pathname: "ticketsystem",
-              state: self.state
+              state: self.state,
             });
           }, 1000);
-        }
+        },
       };
     }
     return {};
@@ -406,7 +409,7 @@ class MyTicketDraft extends Component {
         this.setState({ sortFiltercategoryName });
       } else {
         this.setState({
-          sortFiltercategoryName: this.state.sortcategoryName
+          sortFiltercategoryName: this.state.sortcategoryName,
         });
       }
     }
@@ -420,13 +423,14 @@ class MyTicketDraft extends Component {
         this.setState({ sortFiltercreatedDate });
       } else {
         this.setState({
-          sortFiltercreatedDate: this.state.sortcreatedDate
+          sortFiltercreatedDate: this.state.sortcreatedDate,
         });
       }
     }
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     var dataDraft = this.props.draftData;
     return (
       <Fragment>
@@ -450,7 +454,11 @@ class MyTicketDraft extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -460,7 +468,11 @@ class MyTicketDraft extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -468,10 +480,16 @@ class MyTicketDraft extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -596,12 +614,24 @@ class MyTicketDraft extends Component {
                 data={this.state.DraftDetails}
                 columns={[
                   {
-                    Header: <span>TicketTitle</span>,
-                    accessor: "ticketTitle"
+                    Header: (
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.tickettitle
+                          : "Ticket Title"}
+                      </span>
+                    ),
+                    accessor: "ticketTitle",
                   },
                   {
-                    Header: <span>TicketDetail</span>,
-                    accessor: "ticketDescription"
+                    Header: (
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.ticketdetails
+                          : "Ticket Detail"}
+                      </span>
+                    ),
+                    accessor: "ticketDescription",
                   },
                   {
                     Header: (
@@ -609,15 +639,20 @@ class MyTicketDraft extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "categoryName",
-                          "Category"
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.category
+                            : "Category"
                         )}
                       >
-                        Category <FontAwesomeIcon icon={faCaretDown} />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.category
+                          : "Category"}{" "}
+                        <FontAwesomeIcon icon={faCaretDown} />
                       </span>
                     ),
                     sortable: false,
                     accessor: "categoryName",
-                    Cell: row => {
+                    Cell: (row) => {
                       var ids = row.original["ticketId"];
                       return (
                         <span>
@@ -627,15 +662,27 @@ class MyTicketDraft extends Component {
                               <div className="dash-creation-popup-cntr">
                                 <ul className="dash-category-popup dashnewpopup">
                                   <li>
-                                    <p>Category</p>
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.category
+                                        : "Category"}
+                                    </p>
                                     <p>{row.original.categoryName}</p>
                                   </li>
                                   <li>
-                                    <p>Sub Category</p>
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.subcategory
+                                        : "Sub Category"}
+                                    </p>
                                     <p>{row.original.subCategoryName}</p>
                                   </li>
                                   <li>
-                                    <p>Type</p>
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.type
+                                        : "Type"}
+                                    </p>
                                     <p>{row.original.issueTypeName}</p>
                                   </li>
                                 </ul>
@@ -652,7 +699,7 @@ class MyTicketDraft extends Component {
                           </Popover>
                         </span>
                       );
-                    }
+                    },
                   },
                   {
                     Header: (
@@ -660,16 +707,22 @@ class MyTicketDraft extends Component {
                         onClick={this.StatusOpenModel.bind(
                           this,
                           "createdDate",
-                          "Created Date"
+                          TranslationContext !== undefined
+                          ? TranslationContext.th
+                              .createddate
+                          : "Created Date"
                         )}
                       >
-                        Draft Creation Date
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .draftcreationdate
+                          : "Draft Creation Date"}
                         <FontAwesomeIcon icon={faCaretDown} />
                       </span>
                     ),
                     sortable: false,
                     accessor: "createdDate",
-                    Cell: props => (
+                    Cell: (props) => (
                       <span>
                         <label>
                           {moment(props.original.createdDate).format(
@@ -677,8 +730,8 @@ class MyTicketDraft extends Component {
                           )}
                         </label>
                       </span>
-                    )
-                  }
+                    ),
+                  },
                 ]}
                 defaultPageSize={5}
                 getTrProps={this.hanldeRowClick}

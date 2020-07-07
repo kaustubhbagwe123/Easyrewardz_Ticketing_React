@@ -16,6 +16,8 @@ import SimpleReactValidator from "simple-react-validator";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import * as translationHI from "../translations/hindi";
+import * as translationMA from "../translations/marathi";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ class AddSearchMyTicket extends Component {
       value: "",
       copied: false,
       searchCompulsion: "",
+      translateLanguage: {},
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -51,11 +54,27 @@ class AddSearchMyTicket extends Component {
       },
     });
   }
+
+  componentWillMount() {
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
+  }
+
   handleCopyToaster() {
-    //debugger;
+    const TranslationContext = this.state.translateLanguage.default;
+
     setTimeout(() => {
       if (this.state.copied && this.state.copied) {
-        NotificationManager.success("Copied.");
+        NotificationManager.success(
+          TranslationContext !== undefined
+            ? TranslationContext.span.copied
+            : "Copied."
+        );
       }
     }, 100);
   }
@@ -76,6 +95,7 @@ class AddSearchMyTicket extends Component {
     this.validator.hideMessages();
   }
   handleSearchCustomer(e) {
+    const TranslationContext = this.state.translateLanguage.default;
     e.preventDefault();
     debugger;
     if (this.state.SrchEmailPhone.length > 0) {
@@ -125,17 +145,23 @@ class AddSearchMyTicket extends Component {
         });
     } else {
       this.setState({
-        searchCompulsion: "Search field is compulsory.",
+        searchCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.searchfieldiscompulsory
+            : "Search field is compulsory.",
       });
     }
   }
   CheckValidCustomerEmailPhoneNo() {
-    //debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.validator.allValid()) {
       if (this.state.altEmailID === this.state.customerEmailId) {
         NotificationManager.error(
-          "Email ID and Alternate Email ID fields cannot be same."
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard
+                .emailidandalternateemailidfieldscannotbesame
+            : "Email ID and Alternate Email ID fields cannot be same."
         );
       } else {
         axios({
@@ -148,14 +174,12 @@ class AddSearchMyTicket extends Component {
           },
         })
           .then(function(res) {
-            //debugger;
             let validCheck = res.data.message;
             if (validCheck === "Success") {
               self.handleAddCustomerSave();
             } else {
               NotificationManager.error(res.data.responseData);
             }
-            // let GetCustId = SearchData.customerID;
           })
           .catch((data) => {
             console.log(data);
@@ -168,7 +192,7 @@ class AddSearchMyTicket extends Component {
   }
 
   handleAddCustomerSave() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this,
       dob;
 
@@ -196,15 +220,17 @@ class AddSearchMyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let responseMessage = res.data.message;
         let custId = res.data.responseData;
         self.setState({
           loading: true,
         });
         if (responseMessage === "Success") {
-          //debugger
-          NotificationManager.success("New Customer added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.newcustomeraddedsuccessfully
+              : "New Customer added successfully."
+          );
           setTimeout(function() {
             self.props.history.push({
               pathname: "ticketsystem",
@@ -230,11 +256,15 @@ class AddSearchMyTicket extends Component {
       dob: date,
     });
   }
+  handlebackprev() {
+    this.props.history.push("myTicketList");
+  }
 
   addCustomerData = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
@@ -243,8 +273,13 @@ class AddSearchMyTicket extends Component {
             src={ArrowCircleImg}
             alt="ArrowCircle"
             className="arrowImg-addSearch"
+            onClick={this.handlebackprev.bind(this)}
           />
-          <label className="label-addsearch">Source</label>
+          <label className="label-addsearch">
+            {TranslationContext !== undefined
+              ? TranslationContext.label.source
+              : "Source"}
+          </label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
           <CopyToClipboard
@@ -265,17 +300,26 @@ class AddSearchMyTicket extends Component {
               <form name="form" onSubmit={this.handleSearchCustomer}>
                 <div>
                   <label className="label1-AddSearch">
-                    SEARCH CUSTOMER BY
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.searchcustomerby
+                      : "SEARCH CUSTOMER BY"}
                     <label className="label2-AddSearch">
-                      &nbsp;(PHONE NUMBER, EMAIL ID)
-                      <span className="span-color">*</span>
+                      &nbsp;(
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.phonenumberemail
+                        : "PHONE NUMBER, EMAIL ID"}
+                      )<span className="span-color">*</span>
                     </label>
                   </label>
                   <div className="input-group" style={{ background: "none" }}>
                     <input
                       type="text"
                       className="search-customerAddSrch"
-                      placeholder="Enter Customer Phone Number, Email ID"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.entercustphonenoemailid
+                          : "Enter Customer Phone Number, Email ID"
+                      }
                       name="SrchEmailPhone"
                       value={this.state.SrchEmailPhone}
                       onChange={this.addCustomerData}
@@ -310,8 +354,17 @@ class AddSearchMyTicket extends Component {
                     />
                     <br />
                     <label className="lbl-count-foundData">
-                      We couldn't find the customer with this
-                      <br /> <span>Phone number, Email Id</span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .wecouldntfindthecustomerwiththis
+                        : "We couldn't find the customer with this"}
+                      <br />{" "}
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .phonenumberemailId
+                          : "Phone number, Email Id"}
+                      </span>
                     </label>
                   </div>
                   <div style={{ width: "90%", textAlign: "center" }}>
@@ -320,7 +373,9 @@ class AddSearchMyTicket extends Component {
                       className="btn-addCustomer"
                       onClick={this.handleAddCustomerOpen}
                     >
-                      Add Customer
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.addcustomer
+                        : "Add Customer"}
                     </button>
                   </div>
                 </div>
@@ -333,14 +388,22 @@ class AddSearchMyTicket extends Component {
               overlayId="logout-ovrly"
             >
               <div className="pop-upAddSearchPD">
-                <label className="lbl-popup-title">Add New Customer</label>
+                <label className="lbl-popup-title">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.addnewcustomer
+                    : "Add New Customer"}
+                </label>
                 <hr />
                 <div className="row row-margin1">
                   <div className="col-md-6">
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder="Full Name"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.fullname
+                          : "Full Name"
+                      }
                       name="customerName"
                       value={this.state.customerName}
                       onChange={this.addCustomerData}
@@ -355,7 +418,11 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder="Mobile Number"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.mobilenumber
+                          : "Mobile Number"
+                      }
                       name="customerPhoneNumber"
                       maxLength={10}
                       value={this.state.customerPhoneNumber}
@@ -373,7 +440,11 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder="Email ID"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.emailid
+                          : "Email ID"
+                      }
                       name="customerEmailId"
                       value={this.state.customerEmailId}
                       onChange={this.addCustomerData}
@@ -389,8 +460,16 @@ class AddSearchMyTicket extends Component {
                       onChange={this.genderSelect}
                       value={this.state.genderID}
                     >
-                      <Radio value={1}>Male</Radio>
-                      <Radio value={2}>Female</Radio>
+                      <Radio value={1}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.male
+                          : "Male"}
+                      </Radio>
+                      <Radio value={2}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.female
+                          : "Female"}
+                      </Radio>
                     </Radio.Group>
                   </div>
                 </div>
@@ -428,7 +507,11 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder="Alternate Number"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.b.alternatenumber
+                          : "Alternate Number"
+                      }
                       name="altNumber"
                       maxLength={10}
                       value={this.state.altNumber}
@@ -444,7 +527,11 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder="Alternate Email"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.alternateemail
+                          : "Alternate Email"
+                      }
                       name="altEmailID"
                       value={this.state.altEmailID}
                       onChange={this.addCustomerData}
@@ -461,9 +548,10 @@ class AddSearchMyTicket extends Component {
                     className="cancel-btn-A"
                     onClick={this.handleAddCustomerClose}
                   >
-                    CANCEL
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.cancel
+                      : "CANCEL"}
                   </button>
-                  {/* <Link onClick={this.handleAddCustomerSave}> */}
                   <button
                     type="button"
                     className="butn add-cust-butn"
@@ -479,7 +567,11 @@ class AddSearchMyTicket extends Component {
                     ) : (
                       ""
                     )}
-                    {this.state.loading ? "Please Wait ..." : "SAVE"}
+                    {this.state.loading
+                      ? "Please Wait ..."
+                      : TranslationContext !== undefined
+                      ? TranslationContext.button.save
+                      : "SAVE"}
                   </button>
                   {/* </Link> */}
                 </div>
