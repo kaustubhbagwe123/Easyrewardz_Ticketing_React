@@ -2487,7 +2487,9 @@ class TicketSystem extends Component {
                           >
                             <FontAwesomeIcon icon={faCalculator} />
                             {this.state.tempName === ""
-                              ? "Template"
+                              ? TranslationContext !== undefined
+                                ? TranslationContext.p.template
+                                : "Template"
                               : this.state.tempName}
                           </button>
                           <ul className="dropdown-menu">
@@ -2593,7 +2595,9 @@ class TicketSystem extends Component {
                       >
                         <FontAwesomeIcon icon={faCalculator} />
                         {this.state.tempName === ""
-                          ? "Template"
+                          ? TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"
                           : this.state.tempName}
                       </button>
                       <ul className="dropdown-menu">

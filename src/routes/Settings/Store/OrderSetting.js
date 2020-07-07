@@ -4,10 +4,10 @@ import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import DelBigIcon from "./../../../assets/Images/del-big.png";
-import { Popover, Table } from "antd";
+import Pagination from "react-pagination-js";
+import { Table } from "antd";
 import config from "./../../../helpers/config";
+import Modal from "react-bootstrap/Modal";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
@@ -30,12 +30,25 @@ class OrderSetting extends Component {
       selectedOrdLength: "cm",
       selectedOrdBreadth: "cm",
       selectedOrdWeight: "Kg",
+      ShippingTempData: [],
+      ShipTemploading: false,
+      totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      OrdTemplateNameValidation: "",
+      OrdTempHeightValidation: "",
+      OrdTempLengthValidation: "",
+      OrdTempBreadthValidation: "",
+      OrdTempWeightValidation: "",
+      editSlotModal: false,
     };
+    this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
 
   componentDidMount() {
     this.handleGetModuleConfigData();
     this.handleGetOrderConfigData();
+    this.handleGetShippingTempData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -43,6 +56,18 @@ class OrderSetting extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+  }
+
+  closeSlotEditModal() {
+    this.setState({
+      editSlotModal: false,
+    });
+  }
+
+  openSlotEditModal() {
+    this.setState({
+      editSlotModal: true,
+    });
   }
 
   handleGetModuleConfigData() {
@@ -53,7 +78,6 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -63,6 +87,43 @@ class OrderSetting extends Component {
         } else {
           self.setState({
             moduleConfigData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle get shipping tempt grid data
+  handleGetShippingTempData() {
+    let self = this;
+    this.setState({
+      ShipTemploading: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderShippingTemplate",
+      headers: authHeader(),
+      data: {
+        PageNo: this.state.currentPage,
+        PageSize: this.state.postsPerPage,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            ShippingTempData: data.shippingTemplateList,
+            totalCount: data.totalCount,
+            ShipTemploading: false,
+          });
+        } else {
+          self.setState({
+            ShippingTempData: {},
+            totalCount: 0,
+            ShipTemploading: false,
           });
         }
       })
@@ -406,6 +467,43 @@ class OrderSetting extends Component {
     } else if (names === "selectedOrdWeight") {
       this.setState({
         selectedOrdWeight: values,
+      });
+    }
+  }
+  ///handle pagination onchage
+  PaginationOnChange = async (numPage) => {
+    await this.setState({
+      currentPage: numPage,
+    });
+
+    this.handleGetShippingTempData();
+  };
+  /// handle per page item change
+  handlePageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+      currentPage: 1,
+    });
+
+    this.handleGetShippingTempData();
+  };
+  /// handle submit shipping template
+  handleSubmitShppingTemp() {
+    if (
+      (this.state.OrdTemplatename !== "",
+      this.state.OrdTempHeight !== "",
+      this.state.OrdTempLength !== "",
+      this.state.OrdTempBreadth !== "",
+      this.state.OrdTempWeight !== "")
+    ) {
+      alert("Hello");
+    } else {
+      this.setState({
+        OrdTemplateNameValidation: "Required field.",
+        OrdTempHeightValidation: "Required field.",
+        OrdTempLengthValidation: "Required field.",
+        OrdTempBreadthValidation: "Required field.",
+        OrdTempWeightValidation: "Required field.",
       });
     }
   }
@@ -1260,16 +1358,16 @@ class OrderSetting extends Component {
                                           this
                                         )}
                                       />
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTemplatename === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTemplateNameValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1300,16 +1398,16 @@ class OrderSetting extends Component {
                                           <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempHeight === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempHeightValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1340,16 +1438,16 @@ class OrderSetting extends Component {
                                           <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempLength === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempLengthValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1380,16 +1478,16 @@ class OrderSetting extends Component {
                                           <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempBreadth === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempBreadthValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
@@ -1420,22 +1518,25 @@ class OrderSetting extends Component {
                                           <option value="lbs">lbs</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempWeight === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempWeightValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-12 my-3 text-center">
                                     <button
                                       className="Schedulenext1 mb-0"
                                       type="button"
+                                      onClick={this.handleSubmitShppingTemp.bind(
+                                        this
+                                      )}
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.button.submit
@@ -1447,32 +1548,59 @@ class OrderSetting extends Component {
                             </div>
                           </div>
                           <div className="row">
-                            <div className="col-md-12">
+                            <div className="col-md-12 table-cntr store dv-table-paging">
                               <Table
-                                loading={this.state.loading}
+                                loading={this.state.ShipTemploading}
                                 noDataContent="No Record Found"
                                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                 columns={[
                                   {
                                     title: "Template Name",
-
-                                    dataIndex: "slotSettingID",
+                                    dataIndex: "templateName",
                                   },
                                   {
                                     title: "Height",
-                                    dataIndex: "storeCode",
+                                    dataIndex: "height",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.height}&nbsp;{item.height_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title: "Length",
-                                    dataIndex: "storeTimimg",
+                                    dataIndex: "length",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.length}&nbsp;{item.length_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title: "Breadth",
-                                    dataIndex: "nonOperationalTimimg",
+                                    dataIndex: "breath",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.breath}&nbsp;{item.breath_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title: "Weight",
-                                    dataIndex: "storeSlotDuration",
+                                    dataIndex: "weight",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.weight}&nbsp;{item.weight_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -1485,74 +1613,10 @@ class OrderSetting extends Component {
                                       return (
                                         <>
                                           <span>
-                                            <Popover
-                                              content={
-                                                <div className="d-flex general-popover popover-body">
-                                                  <div className="del-big-icon">
-                                                    <img
-                                                      src={DelBigIcon}
-                                                      alt="del-icon"
-                                                    />
-                                                  </div>
-                                                  <div>
-                                                    <p className="font-weight-bold blak-clr">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .deletefile
-                                                        : "Delete file"}
-                                                      ?
-                                                    </p>
-                                                    <p className="mt-1 fs-12">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .areyousureyouwanttodeletethisfile
-                                                        : "Are you sure you want to delete this file"}
-                                                      ?
-                                                    </p>
-                                                    <div className="del-can">
-                                                      <a href={Demo.BLANK_LINK}>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext.a
-                                                              .cancel
-                                                          : "CANCEL"}
-                                                      </a>
-                                                      <button
-                                                        className="butn"
-                                                        onClick={this.handleDeleteTimeSlot.bind(
-                                                          this,
-                                                          rowData.slotSettingID
-                                                        )}
-                                                      >
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext
-                                                              .button.delete
-                                                          : "Delete"}
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              }
-                                              placement="bottom"
-                                              trigger="click"
-                                            >
-                                              <img
-                                                src={RedDeleteIcon}
-                                                alt="del-icon"
-                                                className="del-btn"
-                                                id={ids}
-                                              />
-                                            </Popover>
-
                                             <button
                                               className="react-tabel-button editre"
                                               onClick={this.openSlotEditModal.bind(
-                                                this,
-                                                rowData.slotSettingID,
-                                                rowData.storeId
+                                                this
                                               )}
                                             >
                                               {TranslationContext !== undefined
@@ -1565,18 +1629,34 @@ class OrderSetting extends Component {
                                     },
                                   },
                                 ]}
-                                // rowKey={(record) => {
-                                //   if (record.slotSettingID) {
-                                //     uid = uid + 1;
-                                //     return record.slotSettingID + "i" + uid;
-                                //   } else {
-                                //     uid = uid + 1;
-                                //     return "i" + uid;
-                                //   }
-                                // }}
-                                pagination={{ defaultPageSize: 10 }}
-                                dataSource={this.state.TimeSlotGridData}
+                                rowKey="id"
+                                pagination={false}
+                                dataSource={this.state.ShippingTempData}
                               ></Table>
+                              <Pagination
+                                currentPage={this.state.currentPage}
+                                totalSize={this.state.totalCount}
+                                sizePerPage={this.state.postsPerPage}
+                                changeCurrentPage={this.PaginationOnChange}
+                                theme="bootstrap"
+                              />
+                              <div className="position-relative">
+                                <div className="item-selection Camp-pagination">
+                                  <select
+                                    value={this.state.postsPerPage}
+                                    onChange={this.handlePageItemchange}
+                                  >
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={30}>30</option>
+                                  </select>
+                                  <p>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.itemsperpage
+                                      : "Items per page"}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1586,6 +1666,153 @@ class OrderSetting extends Component {
                 </Tab>
               </Tabs>
             </section>
+            {/* edit slot starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    EDIT SHIPPING TEMPLATE
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot shipping-template-edit">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label>Template Name</label>
+                    <input
+                      className="mx-slt-txt"
+                      type="text"
+                      placeholder="Enter Template Name"
+                      autoComplete="off"
+                      maxLength={250}
+                      name="OrdTemplatename"
+                      value={this.state.OrdTemplatename}
+                      onChange={this.handleInputOnchange.bind(this)}
+                    />
+                    <label className="edit-slot-lbl">Height</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempHeight"
+                          value={this.state.OrdTempHeight}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdHeight}
+                          name="selectedOrdHeight"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Length</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempLength"
+                          value={this.state.OrdTempLength}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdLength}
+                          name="selectedOrdLength"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Breadth</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempBreadth"
+                          value={this.state.OrdTempBreadth}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdBreadth}
+                          name="selectedOrdBreadth"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Weight</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="OrdTempWeight"
+                          value={this.state.OrdTempWeight}
+                          maxLength={8}
+                          onChange={this.handleInputValidationChange.bind(this)}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.selectedOrdWeight}
+                          name="selectedOrdWeight"
+                          onChange={this.handleDropDownChange.bind(this)}
+                        >
+                          <option value="Kg">Kg</option>
+                          <option value="g">g</option>
+                          <option value="lbs">lbs</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    // onClick={this.closeSlotEditModal}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.cancel
+                      : "CANCEL"}
+                  </a>
+                  <button
+                    className="pop-over-button FlNone"
+                    // onClick={this.handleUpdateTimeSlotData.bind(this)}
+                  >
+                    <label className="pop-over-btnsave-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.save
+                        : "SAVE"}
+                    </label>
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit slot ends */}
           </div>
         </div>
       </Fragment>

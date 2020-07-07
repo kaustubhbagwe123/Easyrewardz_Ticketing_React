@@ -3869,6 +3869,31 @@ table tr th:last-child {
     margin-top: 5px;
   }
   /* check service ends */
+
+  /* store campaign tab starts */
+  .store-task-tab-cont {
+    padding: 0 !important;
+  }
+  .store-campaign-table .ant-table-thead > tr:first-child > th:first-child {
+    border-top-left-radius: 0px;
+    padding-left: 15px !important;
+  }
+  .store-campaign-table .ant-table-thead > tr:first-child > th:last-child {
+    border-top-right-radius: 0px;
+    padding-right: 15px !important;
+  }
+  .store-campaign-table .ant-table table {
+    border-radius: 0;
+  }
+  .custom-antd-table.antd-table-campaign.store-campaign-table
+    .ant-table-thead
+    > tr
+    > th {
+    padding: 5px 5px !important;
+    height: 30px;
+    /* width: 100px; */
+  }
+  /* store campaign tab ends */
 }
 
 @media screen and (max-width: 400px) {
