@@ -311,7 +311,7 @@ class CardAssets extends Component {
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
                                                 .uploadeddata
-                                            : "Uploaded Data"}
+                                            : "Uploaded Date"}
                                         </label>
                                         <p style={{ display: "inline" }}>
                                           {rowdata.createdDate}
