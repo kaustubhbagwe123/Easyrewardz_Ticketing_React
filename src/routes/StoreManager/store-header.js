@@ -173,6 +173,7 @@ class Header extends Component {
       mobileHeading: "",
       messageHistoryChatData: [],
       isMainLoader: false,
+      storePayURL: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -296,9 +297,10 @@ class Header extends Component {
           : "single-menu",
     };
     var claim = {
-      data: this.state.translateLanguage.default !== undefined
-      ? this.state.translateLanguage.default.nav.claim
-      : "Claim",
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.claim
+          : "Claim",
       urls: "claim",
       logoBlack: ClaimLogo,
       logoBlue: ClaimLogoBlue,
@@ -369,6 +371,16 @@ class Header extends Component {
           ? "active single-menu"
           : "single-menu",
     };
+    var storePay = {
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.storepay
+          : "Store Pay",
+      // logoBlack: OrderLogoBlack,
+      // logoBlue: OrderLogoBlue,
+      imgAlt: "Order Icon",
+      imgClass: "myTicket",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -434,6 +446,12 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
+        } else if (
+          data[i].moduleName === "StorePay" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(storePay);
+          this.handleGenerateStorePayLink();
         }
       }
     }
@@ -445,9 +463,11 @@ class Header extends Component {
         });
       }
     }
+
     this.setState({
       cont: accessdata,
     });
+    //  this.handleGenerateStorePayLink();
   }
 
   componentWillUnmount() {
@@ -2086,6 +2106,25 @@ class Header extends Component {
         console.log(response, "---handleEndCustomerChat");
       });
   }
+  ////handle genrate store pay link
+  handleGenerateStorePayLink = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StorePay/GenerateStorePayLink",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var storePayURL = response.data.responseData;
+        if (message === "Success" && storePayURL) {
+          self.setState({ storePayURL });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGenerateStorePayLink");
+      });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2113,28 +2152,61 @@ class Header extends Component {
               />
             </div>
             <div className="headers-menu">
-              {this.state.cont.map((item) => (
-                <Link
-                  onClick={this.actives}
-                  key={item.data}
-                  to={item.urls}
-                  className={item.activeClass}
-                >
-                  <div className="header-icons-cntr">
-                    <img
-                      src={item.logoBlack}
-                      alt={item.imgAlt}
-                      className={item.imgClass}
-                    />
-                    <img
-                      src={item.logoBlue}
-                      alt={item.imgAlt}
-                      className={item.imgClass}
-                    />
-                  </div>
-                  <label className="cusheade">{item.data}</label>
-                </Link>
-              ))}
+              {this.state.cont.map((item) => {
+                if (item.data === "Store Pay" || item.data === "स्टोर पे") {
+                  return (
+                    <a
+                      key={item.data}
+                      className="single-menu"
+                      style={{ outline: "none" }}
+                      target="_blank"
+                      href={this.state.storePayURL}
+                      disabled={this.state.storePayURL === "" ? true : false}
+                    >
+                      {item.logoBlack ? (
+                        <div className="header-icons-cntr">
+                          <img
+                            src={item.logoBlack}
+                            alt={item.imgAlt}
+                            className={item.imgClass}
+                          />
+                          <img
+                            src={item.logoBlue}
+                            alt={item.imgAlt}
+                            className={item.imgClass}
+                          />
+                        </div>
+                      ) : null}
+                      <label style={{ cursor: "pointer" }} className="cusheade">
+                        {item.data}
+                      </label>
+                    </a>
+                  );
+                } else {
+                  return (
+                    <Link
+                      onClick={this.actives}
+                      key={item.data}
+                      to={item.urls}
+                      className={item.activeClass}
+                    >
+                      <div className="header-icons-cntr">
+                        <img
+                          src={item.logoBlack}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                        <img
+                          src={item.logoBlue}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                      </div>
+                      <label className="cusheade">{item.data}</label>
+                    </Link>
+                  );
+                }
+              })}
             </div>
           </div>
 
@@ -2517,29 +2589,62 @@ class Header extends Component {
             </div>
             <div className="lowersec">
               <ul>
-                {this.state.cont.map((item) => (
-                  <li key={item.data}>
-                    <Link
-                      onClick={this.actives}
-                      to={item.urls}
-                      className={item.activeClass}
-                    >
-                      <span className="header-icons-cntr mr-0">
-                        <img
-                          src={item.logoBlack}
-                          alt={item.imgAlt}
-                          className={item.imgClass}
-                        />
-                        <img
-                          src={item.logoBlue}
-                          alt={item.imgAlt}
-                          className={item.imgClass}
-                        />
-                      </span>
-                      {item.data}
-                    </Link>
-                  </li>
-                ))}
+                {this.state.cont.map((item) => {
+                  if (item.data === "Store Pay" || item.data === "स्टोर पे") {
+                    return (
+                      <li key={item.data} style={{ outline: "none" }}>
+                        <a
+                          className="single-menu"
+                          href={this.state.storePayURL}
+                          target="_blank"
+                          disabled={
+                            this.state.storePayURL === "" ? true : false
+                          }
+                        >
+                          {item.logoBlack ? (
+                            <span className="header-icons-cntr mr-0">
+                              <img
+                                src={item.logoBlack}
+                                alt={item.imgAlt}
+                                className={item.imgClass}
+                              />
+                              <img
+                                src={item.logoBlue}
+                                alt={item.imgAlt}
+                                className={item.imgClass}
+                              />
+                            </span>
+                          ) : null}
+                          {item.data}
+                        </a>
+                      </li>
+                    );
+                  } else {
+                    return (
+                      <li key={item.data}>
+                        <Link
+                          onClick={this.actives}
+                          to={item.urls}
+                          className={item.activeClass}
+                        >
+                          <span className="header-icons-cntr mr-0">
+                            <img
+                              src={item.logoBlack}
+                              alt={item.imgAlt}
+                              className={item.imgClass}
+                            />
+                            <img
+                              src={item.logoBlue}
+                              alt={item.imgAlt}
+                              className={item.imgClass}
+                            />
+                          </span>
+                          {item.data}
+                        </Link>
+                      </li>
+                    );
+                  }
+                })}
               </ul>
             </div>
             <div className="logoutbox">
@@ -2700,8 +2805,8 @@ class Header extends Component {
                                   >
                                     {chat.messageCount === 0
                                       ? TranslationContext !== undefined
-                                      ? TranslationContext.p.No
-                                      : "No"
+                                        ? TranslationContext.p.No
+                                        : "No"
                                       : chat.messageCount}{" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
@@ -5744,9 +5849,10 @@ class Header extends Component {
                                 },
                               },
                               {
-                                title: TranslationContext !== undefined
-                                ? TranslationContext.title.mobilenumber
-                                : "Mobile No",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.mobilenumber
+                                    : "Mobile No",
                                 dataIndex: "customerMobile",
                                 width: "20%",
                                 className: "textnowrap-table",
@@ -5964,7 +6070,9 @@ class Header extends Component {
                 disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
               >
-                {TranslationContext!==undefined?TranslationContext.label.closechat:"Close Chat"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.closechat
+                  : "Close Chat"}
               </label>
             </div>
           </div>

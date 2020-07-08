@@ -3167,7 +3167,10 @@ class StoreModule extends Component {
                                         </p>
                                       )}
                                     </td>
-                                    <td>Click</td>
+                                    <td>{TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .clicktd
+                                        : "Click"} </td>
                                   </tr>
                                   <tr>
                                     <td>
