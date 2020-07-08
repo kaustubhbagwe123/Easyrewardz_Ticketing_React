@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm } from "antd";
+import { Table, Popover, Popconfirm, Spin } from "antd";
 import Modal from "react-responsive-modal";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
@@ -41,7 +41,8 @@ class ShipmentTab extends Component {
       createShipmentBtnDisbaled: false,
       orderSearchText: "",
       TemplateData: [],
-      selectedTemplate: 0,
+      selectedTemplate: "0",
+      createShipmetLoader: false,
     };
   }
 
@@ -292,57 +293,70 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
+    const TranslationContext = this.state.translateLanguage.default;
+    debugger;
     let self = this;
-    var itemIds = "";
-    if (this.state.ShipmentOrderItem.length > 0) {
-      for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
-        itemIds += this.state.ShipmentOrderItem[i].id + ",";
-      }
-    }
-    this.setState({
-      createShipmentBtnDisbaled: true,
-    });
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
-      headers: authHeader(),
-      params: {
-        orderID: this.state.orderId,
-        itemIDs: itemIds,
-        templateID:this.state.selectedTemplate
-      },
-    })
-      .then(function(res) {
-        let CheckStatus = res.data.status;
-        let data = res.data.responseData;
-        if (CheckStatus) {
-          if (data.status) {
-            self.setState({
-              AirwayBillAWBNo: data.awbNumber,
-              AirwayItemIds: data.itemIDs,
-              createdShoppingTabs: true,
-              createShipmentBtnDisbaled: false,
-            });
-            if (data.isStoreDelivery) {
-              self.setState({
-                IsStoreDelivery: true,
-              });
-            }
-          } else {
-            NotificationManager.error(data.statusMessge);
-          }
-          self.handleGetShipmentTabGridData();
-        } else {
-          NotificationManager.error(CheckStatus);
-          self.setState({
-            createdShoppingTabs: false,
-            createShipmentBtnDisbaled: false,
-          });
+    if (this.state.selectedTemplate !== "0") {
+      var itemIds = "";
+      if (this.state.ShipmentOrderItem.length > 0) {
+        for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
+          itemIds += this.state.ShipmentOrderItem[i].id + ",";
         }
-      })
-      .catch((data) => {
-        console.log(data);
+      }
+      this.setState({
+        createShipmentBtnDisbaled: true,
+        createShipmetLoader: true,
       });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
+        headers: authHeader(),
+        params: {
+          orderID: this.state.orderId,
+          itemIDs: itemIds,
+          templateID: this.state.selectedTemplate,
+        },
+      })
+        .then(function(res) {
+          let CheckStatus = res.data.status;
+          let data = res.data.responseData;
+          if (CheckStatus) {
+            if (data.status) {
+              self.setState({
+                AirwayBillAWBNo: data.awbNumber,
+                AirwayItemIds: data.itemIDs,
+                createdShoppingTabs: true,
+                createShipmentBtnDisbaled: false,
+                createShipmetLoader: false,
+              });
+              if (data.isStoreDelivery) {
+                self.setState({
+                  IsStoreDelivery: true,
+                });
+              }
+            } else {
+              NotificationManager.error(data.statusMessge);
+            }
+            self.handleGetShipmentTabGridData();
+          } else {
+            NotificationManager.error(CheckStatus);
+            self.setState({
+              createdShoppingTabs: false,
+              createShipmentBtnDisbaled: false,
+              createShipmetLoader: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.pleaseselecttemplate
+          : "Please Select Template."
+      );
+    }
   }
   ///-----------------------API function End----------------------------
 
@@ -965,7 +979,7 @@ class ShipmentTab extends Component {
                       />
                       {TranslationContext !== undefined
                         ? TranslationContext.checkbox.AirwayBillNo
-                        : "Article Mapping"}
+                        : "Airway Bill No"}
                     </a>
                   </li>
                 </ul>
@@ -983,113 +997,125 @@ class ShipmentTab extends Component {
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
                   >
-                    <div className="tabs-content">
-                      <div className="article-body">
-                        <span style={{ marginBottom: "30px" }}>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span
-                                .itemidshownbelowmappedtothisorder
-                            : "Item id shown below mapped to this Order"}
-                          &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.only
-                            : "only."}
-                          <br />
-                        </span>
-                        <div className="table-responsive">
-                          <Table
-                            className="components-table-demo-nested shipment-table-popup antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemid
-                                    : "Article No",
-                                dataIndex: "itemID",
-                                render: (row, item) => {
-                                  return (
-                                    <p>
-                                      <input
-                                        type="checkbox"
-                                        checked={item.checked}
-                                      />
-                                      &nbsp;{item.itemID}
-                                    </p>
-                                  );
+                    <Spin
+                      tip={
+                        TranslationContext !== undefined
+                          ? TranslationContext.tip.pleasewait
+                          : "Please wait..."
+                      }
+                      spinning={this.state.createShipmetLoader}
+                    >
+                      <div className="tabs-content">
+                        <div className="article-body">
+                          <span style={{ marginBottom: "30px" }}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span
+                                  .itemidshownbelowmappedtothisorder
+                              : "Item id shown below mapped to this Order"}
+                            &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.only
+                              : "only."}
+                            <br />
+                          </span>
+                          <div className="table-responsive">
+                            <Table
+                              className="components-table-demo-nested shipment-table-popup antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
+                              columns={[
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemid
+                                      : "Article No",
+                                  dataIndex: "itemID",
+                                  render: (row, item) => {
+                                    return (
+                                      <p>
+                                        <input
+                                          type="checkbox"
+                                          checked={item.checked}
+                                        />
+                                        &nbsp;{item.itemID}
+                                      </p>
+                                    );
+                                  },
                                 },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemname
-                                    : "Article Name",
-                                dataIndex: "itemName",
-                                width: 150,
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemprice
-                                    : "Article MRP",
-                                dataIndex: "itemPrice",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemquantity
-                                    : "Article Quantity",
-                                dataIndex: "quantity",
-                              },
-                              {
-                                title: () => (
-                                  <select
-                                    className="shipment-table-dropdown"
-                                    name="selectedTemplate"
-                                    value={this.state.selectedTemplate}
-                                    onChange={this.handleSelectTemplateDD}
-                                  >
-                                    <option>Select Template</option>
-                                    {this.state.TemplateData !== null &&
-                                      this.state.TemplateData.map((item, j) => (
-                                        <option key={j} value={item.id}>
-                                          {item.templateName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                ),
-                              },
-                            ]}
-                            scroll={{ y: 240 }}
-                            pagination={false}
-                            dataSource={this.state.ShipmentOrderItem}
-                          />
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemname
+                                      : "Article Name",
+                                  dataIndex: "itemName",
+                                  width: 150,
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemprice
+                                      : "Article MRP",
+                                  dataIndex: "itemPrice",
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemquantity
+                                      : "Article Quantity",
+                                  dataIndex: "quantity",
+                                },
+                                {
+                                  title: () => (
+                                    <select
+                                      className="shipment-table-dropdown"
+                                      name="selectedTemplate"
+                                      value={this.state.selectedTemplate}
+                                      onChange={this.handleSelectTemplateDD}
+                                    >
+                                      <option value="0">Select Template</option>
+                                      {this.state.TemplateData !== null &&
+                                        this.state.TemplateData.map(
+                                          (item, j) => (
+                                            <option key={j} value={item.id}>
+                                              {item.templateName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  ),
+                                },
+                              ]}
+                              scroll={{ y: 240 }}
+                              pagination={false}
+                              dataSource={this.state.ShipmentOrderItem}
+                            />
+                          </div>
+                        </div>
+                        <div className="dv-status m-t-20">
+                          <button
+                            className="btn-shipment-popup"
+                            style={{ marginRight: "10px" }}
+                            onClick={this.handleShipmentModalClose.bind(this)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.cancel
+                              : "Cancel"}
+                          </button>
+                          <button
+                            style={{ marginRight: "0px" }}
+                            className={
+                              this.state.createShipmentBtnDisbaled
+                                ? "btnClickDisabled btn-shipment-saveNext"
+                                : "btn-shipment-saveNext"
+                            }
+                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                            disabled={this.state.createShipmentBtnDisbaled}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.saveandnext
+                              : "Save & Next"}
+                          </button>
                         </div>
                       </div>
-                      <div className="dv-status m-t-20">
-                        <button
-                          className="btn-shipment-popup"
-                          style={{ marginRight: "10px" }}
-                          onClick={this.handleShipmentModalClose.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "Cancel"}
-                        </button>
-                        <button
-                          style={{ marginRight: "0px" }}
-                          className={
-                            this.state.createShipmentBtnDisbaled
-                              ? "btnClickDisabled btn-shipment-saveNext"
-                              : "btn-shipment-saveNext"
-                          }
-                          onClick={this.handleCreateShipmentAWB.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.saveandnext
-                            : "Save & Next"}
-                        </button>
-                      </div>
-                    </div>
+                    </Spin>
                   </div>
                   <div
                     className={

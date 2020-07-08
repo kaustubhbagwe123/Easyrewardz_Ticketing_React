@@ -740,7 +740,7 @@ class TicketSystem extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ TicketPriorityData: data });
+          self.setState({ TicketPriorityData: data,checkPriorityDetails: false });
         } else {
           self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
