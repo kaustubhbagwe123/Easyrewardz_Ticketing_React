@@ -450,18 +450,17 @@ class OrderTab extends Component {
     var names = e.target.name;
 
     if (names === "ordSelfPickup") {
-      setTimeout(() => {
-        this.setState({
-          ordSelfPickup: true,
-          ordMoveReturn: false,
-        });
-      }, 5);
+      this.setState({
+        ordSelfPickup: true,
+        ordMoveReturn: false,
+      });
     } else {
+      this.setState({
+        ordMoveReturn: true,
+        ordSelfPickup: false,
+      });
       setTimeout(() => {
-        this.setState({
-          ordMoveReturn: true,
-          ordSelfPickup: false,
-        });
+        this.handleSetOrderHasBeenReturn();
       }, 5);
     }
   };
@@ -903,7 +902,10 @@ class OrderTab extends Component {
                                 </div>
                               </div>
                               {this.state.pincodeChecAvaibility && (
-                                <p className="non-deliverable">
+                                <p
+                                  className="non-deliverable"
+                                  style={{ marginBottom: "5px" }}
+                                >
                                   {TranslationContext !== undefined
                                     ? TranslationContext.ticketingDashboard
                                         .checkingyouravailability
@@ -912,7 +914,6 @@ class OrderTab extends Component {
                               )}
                               {this.state.showPinCodereturnMsg && (
                                 <>
-                                  {" "}
                                   <p className="non-deliverable">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.ticketingDashboard
