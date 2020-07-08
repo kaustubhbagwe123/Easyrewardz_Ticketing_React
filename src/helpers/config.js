@@ -250,7 +250,7 @@ let config = {
   // apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
   // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
-  //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
+  apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   // socketUrl: "http://ndjs.shopster.live/api/sendreply", /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
