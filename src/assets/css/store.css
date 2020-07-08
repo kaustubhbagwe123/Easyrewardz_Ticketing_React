@@ -2233,7 +2233,8 @@ table tr th:last-child {
 }
 
 /* store campaign tab starts */
-.store-campaign-inner-table .ant-table-row-expand-icon {
+.store-campaign-inner-table .ant-table-row-expand-icon,
+.store-campaign-script-info {
   display: none;
 }
 /* store campaign tab ends */
@@ -3991,6 +3992,10 @@ table tr th:last-child {
   .store-campaign-inner-cntr .followUpBtnYellow {
     margin-right: 0;
   }
+  .store-campaign-script-info {
+    display: block;
+    padding: 12px 15px;
+  }
   /* store campaign tab ends */
 }
 
@@ -4142,6 +4147,9 @@ table tr th:last-child {
     .react-datepicker__time
     .react-datepicker__time-box {
     width: 75px;
+  }
+  .store-campaign-script-info {
+    padding: 12px 10px;
   }
   /* store campaign tab ends */
 }
