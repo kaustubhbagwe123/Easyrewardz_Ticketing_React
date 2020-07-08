@@ -187,6 +187,7 @@ class Header extends Component {
       isNotiNewMessage: false,
       newChatSoundFile: "",
       newMessageSoundFile: "",
+      storePayURL: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -385,6 +386,22 @@ class Header extends Component {
           ? "active single-menu"
           : "single-menu",
     };
+    var storePay = {
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.storePay
+          : "Store Pay",
+      // urls: "orders",
+      // logoBlack: OrderLogoBlack,
+      // logoBlue: OrderLogoBlue,
+      imgAlt: "store pay",
+      imgClass: "myTicket",
+      // activeClass:
+      //   page.toLowerCase() === "".toLowerCase()
+      //     ? "active single-menu"
+      //     : "single-menu",
+    };
+    debugger;
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -450,6 +467,12 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
+        } else if (
+          data[i].moduleName === "StorePay" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(storePay);
+          this.handleGenerateStorePayLink();
         }
       }
     }
@@ -2175,6 +2198,25 @@ class Header extends Component {
         });
     }
   };
+  ////handle genrate store pay link
+  handleGenerateStorePayLink = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StorePay/GenerateStorePayLink",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var storePayURL = response.data.responseData;
+        if ((message = "Success" && storePayURL)) {
+          self.setState({ storePayURL });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGenerateStorePayLink");
+      });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2202,28 +2244,58 @@ class Header extends Component {
               />
             </div>
             <div className="headers-menu">
-              {this.state.cont.map((item) => (
-                <Link
-                  onClick={this.actives}
-                  key={item.data}
-                  to={item.urls}
-                  className={item.activeClass}
-                >
-                  <div className="header-icons-cntr">
-                    <img
-                      src={item.logoBlack}
-                      alt={item.imgAlt}
-                      className={item.imgClass}
-                    />
-                    <img
-                      src={item.logoBlue}
-                      alt={item.imgAlt}
-                      className={item.imgClass}
-                    />
-                  </div>
-                  <label className="cusheade">{item.data}</label>
-                </Link>
-              ))}
+              {this.state.cont.map((item) => {
+                if (item.data === "Store Pay" || item.data === "स्टोर पे") {
+                  return (
+                    <a
+                      key={item.data}
+                      href={this.state.storePayURL}
+                      disabled={this.state.storePayURL ? false : true}
+                      className="storepay-a single-menu"
+                      target="_blank"
+                    >
+                      {item.logoBlack ? (
+                        <div className="header-icons-cntr">
+                          <img
+                            src={item.logoBlack}
+                            alt={item.imgAlt}
+                            className={item.imgClass}
+                          />
+                          <img
+                            src={item.logoBlue}
+                            alt={item.imgAlt}
+                            className={item.imgClass}
+                          />
+                        </div>
+                      ) : null}
+                      <label className="cusheade">{item.data}</label>
+                    </a>
+                  );
+                } else {
+                  return (
+                    <Link
+                      onClick={this.actives}
+                      key={item.data}
+                      to={item.urls}
+                      className={item.activeClass}
+                    >
+                      <div className="header-icons-cntr">
+                        <img
+                          src={item.logoBlack}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                        <img
+                          src={item.logoBlue}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                      </div>
+                      <label className="cusheade">{item.data}</label>
+                    </Link>
+                  );
+                }
+              })}
             </div>
           </div>
 
@@ -2606,29 +2678,62 @@ class Header extends Component {
             </div>
             <div className="lowersec">
               <ul>
-                {this.state.cont.map((item) => (
-                  <li key={item.data}>
-                    <Link
-                      onClick={this.actives}
-                      to={item.urls}
-                      className={item.activeClass}
-                    >
-                      <span className="header-icons-cntr mr-0">
-                        <img
-                          src={item.logoBlack}
-                          alt={item.imgAlt}
-                          className={item.imgClass}
-                        />
-                        <img
-                          src={item.logoBlue}
-                          alt={item.imgAlt}
-                          className={item.imgClass}
-                        />
-                      </span>
-                      {item.data}
-                    </Link>
-                  </li>
-                ))}
+                {this.state.cont.map((item) => {
+                  if (item.data === "Store Pay" || item.data === "स्टोर पे") {
+                    return (
+                      <>
+                        <li key={item.data}>
+                          <a
+                            target="_blank"
+                            href={this.state.storePayURL}
+                            className="storepay-a single-menu"
+                            disabled={this.state.storePayURL ? false : true}
+                          >
+                            {item.logoBlack ? (
+                              <span className="header-icons-cntr mr-0">
+                                <img
+                                  src={item.logoBlack}
+                                  alt={item.imgAlt}
+                                  className={item.imgClass}
+                                />
+                                <img
+                                  src={item.logoBlue}
+                                  alt={item.imgAlt}
+                                  className={item.imgClass}
+                                />
+                              </span>
+                            ) : null}
+                            {item.data}
+                          </a>
+                        </li>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <li key={item.data}>
+                        <Link
+                          onClick={this.actives}
+                          to={item.urls}
+                          className={item.activeClass}
+                        >
+                          <span className="header-icons-cntr mr-0">
+                            <img
+                              src={item.logoBlack}
+                              alt={item.imgAlt}
+                              className={item.imgClass}
+                            />
+                            <img
+                              src={item.logoBlue}
+                              alt={item.imgAlt}
+                              className={item.imgClass}
+                            />
+                          </span>
+                          {item.data}
+                        </Link>
+                      </li>
+                    );
+                  }
+                })}
               </ul>
             </div>
             <div className="logoutbox">
