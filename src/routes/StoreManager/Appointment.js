@@ -299,6 +299,12 @@ class Appointment extends Component {
                   dataSource={row.appointmentCustomerList}
                   columns={[
                     {
+                      title: TranslationContext!==undefined?TranslationContext.title.appointmentID:"Appointment ID",
+                      dataIndex: "appointmentID",
+                      className: "appointment-desktop",
+                      width: "20%",
+                    },
+                    {
                       title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
                       dataIndex: "customerName",
                       className: "appointment-desktop",
