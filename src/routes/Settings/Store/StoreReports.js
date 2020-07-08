@@ -37,7 +37,7 @@ const { RangePicker } = DatePicker1;
 
 function disabledDate(current) {
   // Can not select days before today and today
-  return current && current > moment().endOf('day');
+  return current && current >= moment().endOf('day');
 }
 
 class StoreReports extends Component {
@@ -217,7 +217,10 @@ class StoreReports extends Component {
       end: end,
       loginDateFrom: "",
       loginDateTo: "",
-      loginUsers: "0"
+      loginUsers: "0",
+      loginStart: start,
+      loginEnd: end
+
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -1402,12 +1405,12 @@ class StoreReports extends Component {
     if (activeTabId === 4) {
       paramData = {
         ActiveTabId: activeTabId,
-        LoginUsersIds: this.state.loginUsers,
-        LoginStartDate:
+        UserIDs: this.state.loginUsers,
+        Startdate:
           this.state.loginDateFrom === ""
             ? null
             : moment(this.state.loginDateFrom).format("YYYY-MM-DD"),
-        LoginEndDate:
+        Enddate:
           this.state.loginDateTo === ""
             ? null
             : moment(this.state.loginDateTo).format("YYYY-MM-DD")
@@ -2214,7 +2217,7 @@ class StoreReports extends Component {
     this.setState({ edit: true });
     this.handleAddReportOpen();
     debugger;
-    await setTimeout(()  => {
+    await setTimeout(async ()  => {
       let allTab = JSON.parse(rowData.reportSearchParams);
       this.setState({ Schedule_ID: rowData.scheduleID });
       this.setState({
@@ -2255,15 +2258,17 @@ class StoreReports extends Component {
         campaignEndDateTo: allTab["CampaignEndDate"]
           ? new Date(allTab["CampaignEndDate"])
           : "",
-          loginUsers: allTab["LoginUsersIds"],
-          loginDateFrom: allTab["LoginStartDate"]
-          ? new Date(allTab["LoginStartDate"])
+          loginUsers: allTab["UserIDs"],
+          loginDateFrom: allTab["Startdate"]
+          ? new Date(allTab["Startdate"])
           : "",
-          loginDateTo: allTab["LoginEndDate"]
-          ? new Date(allTab["LoginEndDate"])
+          loginDateTo: allTab["Enddate"]
+          ? new Date(allTab["Enddate"])
           : "",
-          start: allTab["CampaignStartDate"]!== null?moment(allTab["CampaignStartDate"]).format("DD-MM-YYYY"):start,
-          end: allTab["CampaignEndDate"]!== null?moment(allTab["CampaignEndDate"]).format("DD-MM-YYYY"):end
+          start: allTab["CampaignStartDate"]!== null && allTab["CampaignStartDate"]!== undefined?moment(allTab["CampaignStartDate"]).format("DD-MM-YYYY"):start,
+          end: allTab["CampaignEndDate"]!== null && allTab["CampaignEndDate"]!== undefined?moment(allTab["CampaignEndDate"]).format("DD-MM-YYYY"):end,
+          loginStart: allTab["Startdate"]!== null && allTab["Startdate"]!== undefined?moment(allTab["Startdate"]).format("DD-MM-YYYY"):start,
+          loginEnd: allTab["Enddate"]!== null && allTab["Enddate"]!== undefined?moment(allTab["Enddate"]).format("DD-MM-YYYY"):end,
 
       });
       // this.state.Schedule_ID = rowData.scheduleID;
@@ -3912,9 +3917,7 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    {TranslationContext !== undefined
-                      ? TranslationContext.a.campaign
-                      : "Login Details"}
+                    Login Details
                   </a>
                 </li>
               </ul>
@@ -5231,9 +5234,7 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.campaignassignedto
-                          : "Region"}
+                        Region
                       </label>
                       <select
                         name="campaignRegion"
@@ -5251,9 +5252,7 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.campaignassignedto
-                          : "Zone"}
+                        Zone
                       </label>
                       <select
                         name="campaignZone"
@@ -5454,9 +5453,7 @@ class StoreReports extends Component {
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
                       <label>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.campaignassignedto
-                          : "Login Users"}
+                        Login Users
                       </label>
                       <select
                         name="loginUsers"
@@ -5475,9 +5472,7 @@ class StoreReports extends Component {
                     <div className="col-md-4">
                       <div className=" ticketstrReport">
                         <label>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.campaignenddate
-                            : "Date"}
+                          Date
                         </label>
                       </div>
                       <div className="ticketreportdat campaign-end-date">
@@ -5489,8 +5484,8 @@ class StoreReports extends Component {
                           bordered={false}
                           format="DD-MM-YYYY"
                           defaultValue={[
-                            moment(this.state.start, "DD-MM-YYYY"),
-                            moment(this.state.end, "DD-MM-YYYY")
+                            moment(this.state.loginStart, "DD-MM-YYYY"),
+                            moment(this.state.loginEnd, "DD-MM-YYYY")
                           ]}
                           disabledDate={disabledDate}
                         />
