@@ -3168,8 +3168,8 @@ class StoreModule extends Component {
                                       )}
                                     </td>
                                     <td>{TranslationContext !== undefined
-                                        ? TranslationContext.clicktd
-                                            .clickwillbeenabledafter
+                                        ? TranslationContext.td
+                                            .clicktd
                                         : "Click"} </td>
                                   </tr>
                                   <tr>
