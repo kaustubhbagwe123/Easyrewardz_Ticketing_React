@@ -977,7 +977,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        const TranslationContext = this.state.translateLanguage.default;
+        const TranslationContext = self.state.translateLanguage.default;
         var message = response.data.message;
         if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
@@ -1054,7 +1054,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        const TranslationContext = this.state.translateLanguage.default;
+        const TranslationContext = self.state.translateLanguage.default;
         var message = response.data.message;
         if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
@@ -2292,7 +2292,7 @@ class StoreCampaign extends Component {
                                     TranslationContext !== undefined
                                       ? TranslationContext.placeholder
                                           .selecttimeanddate
-                                      : "Select Date &amp; Time"
+                                      : "Select Date & Time"
                                   }
                                 />
                               </div>
@@ -2780,51 +2780,52 @@ class StoreCampaign extends Component {
                     </div>
                   )}
                 </>
-              ) : <> <div className="lifetimevalue lt-single">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <h4>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.h4.lifetimevalue
-                          : "Lifetime Value"}
-                      </h4>
-                      <label>
-                        {this.state.useratvdetails.lifeTimeValue !==
-                        null ? (
-                          <>
-                            ₹{this.state.useratvdetails.lifeTimeValue}
-                          </>
-                        ) : (
-                          "₹0"
-                        )}
-                      </label>
-                    </td>
-                    <td>
-                      <h4>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.h4.visitcount
-                          : "Visit Count"}
-                      </h4>
-                      <label>
-                        {this.state.useratvdetails.visitCount !==
-                        null ? (
-                          <>
-                            {this.state.useratvdetails.visitCount < 9
-                              ? "0" +
-                                this.state.useratvdetails.visitCount
-                              : this.state.useratvdetails.visitCount}
-                          </>
-                        ) : (
-                          "0"
-                        )}
-                      </label>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div></>}
+              ) : (
+                <>
+                  {" "}
+                  <div className="lifetimevalue lt-single">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <h4>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.h4.lifetimevalue
+                                : "Lifetime Value"}
+                            </h4>
+                            <label>
+                              {this.state.useratvdetails.lifeTimeValue !==
+                              null ? (
+                                <>₹{this.state.useratvdetails.lifeTimeValue}</>
+                              ) : (
+                                "₹0"
+                              )}
+                            </label>
+                          </td>
+                          <td>
+                            <h4>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.h4.visitcount
+                                : "Visit Count"}
+                            </h4>
+                            <label>
+                              {this.state.useratvdetails.visitCount !== null ? (
+                                <>
+                                  {this.state.useratvdetails.visitCount < 9
+                                    ? "0" + this.state.useratvdetails.visitCount
+                                    : this.state.useratvdetails.visitCount}
+                                </>
+                              ) : (
+                                "0"
+                              )}
+                            </label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
               {this.state.campaignkeyinsight !== null ? (
                 <>
                   {this.state.campaignkeyinsight.insightText !== "" ? (

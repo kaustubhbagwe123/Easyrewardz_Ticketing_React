@@ -42,6 +42,9 @@ class OrderTab extends Component {
       orderId: 0,
       AddressConf: false,
       pincodeChecAvaibility: false,
+      showPinCodereturnMsg: false,
+      ordSelfPickup: false,
+      ordMoveReturn: false,
       orderSearchText: "",
     };
   }
@@ -231,9 +234,13 @@ class OrderTab extends Component {
         if (status === "false") {
           self.setState({
             pincodeChecAvaibility: false,
+            showPinCodereturnMsg: false,
             orderId: ordId,
           });
         } else {
+          self.setState({
+            showPinCodereturnMsg: true,
+          });
         }
       })
       .catch((data) => {
@@ -437,6 +444,27 @@ class OrderTab extends Component {
       filterOrderStatus: false,
     });
   }
+
+  handleOrdChangeOptions = (e) => {
+    debugger;
+    var names = e.target.name;
+
+    if (names === "ordSelfPickup") {
+      setTimeout(() => {
+        this.setState({
+          ordSelfPickup: true,
+          ordMoveReturn: false,
+        });
+      }, 5);
+    } else {
+      setTimeout(() => {
+        this.setState({
+          ordMoveReturn: true,
+          ordSelfPickup: false,
+        });
+      }, 5);
+    }
+  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -817,16 +845,6 @@ class OrderTab extends Component {
                                         item.id
                                       )}
                                     />
-                                    {this.state.pincodeChecAvaibility && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        Checking your availability.
-                                      </p>
-                                    )}
                                   </div>
                                   <div className="col-md-6">
                                     <p>
@@ -884,80 +902,103 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
-                              <p className="non-deliverable">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.ticketingDashboard
-                                      .enteredpincodeisnondeliverable
-                                  : "Entered Pin code is non deliverable"}
-                              </p>
-                              <div className="popover-radio-cntr">
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="order-returns"
-                                    name="address-options"
-                                  />
-                                  <label htmlFor="order-returns">
+                              {this.state.pincodeChecAvaibility && (
+                                <p className="non-deliverable">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .checkingyouravailability
+                                    : "Checking your availability."}
+                                </p>
+                              )}
+                              {this.state.showPinCodereturnMsg && (
+                                <>
+                                  {" "}
+                                  <p className="non-deliverable">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.ticketingDashboard
-                                          .moveorderintoreturns
-                                      : "Move Order into Returns"}
-                                  </label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="self-pickup"
-                                    name="address-options"
-                                  />
-                                  <label htmlFor="self-pickup">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                          .convertthisorderinselfpickup
-                                      : "Convert this order in Self Pickup"}
-                                  </label>
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <p>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.title.date
-                                      : "Date"}
+                                          .enteredpincodeisnondeliverable
+                                      : "Entered Pin code is non deliverable"}
                                   </p>
-                                  <input
-                                    type="text"
-                                    placeholder={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                            .enterdate
-                                        : "Enter Date"
-                                    }
-                                    name="date"
-                                    autoComplete="off"
-                                    // onChange={this.handleTextOnchage}
-                                  />
-                                </div>
-                                <div className="col-md-6">
-                                  <p>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.title.time
-                                      : "Time"}
-                                  </p>
-                                  <input
-                                    type="text"
-                                    placeholder={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                            .entertime
-                                        : "Enter Time"
-                                    }
-                                    name="time"
-                                    autoComplete="off"
-                                    // onChange={this.handleTextOnchage}
-                                  />
-                                </div>
-                              </div>
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="order-returns"
+                                        name="ordMoveReturn"
+                                        checked={this.state.ordMoveReturn}
+                                        onChange={this.handleOrdChangeOptions}
+                                      />
+                                      <label htmlFor="order-returns">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .moveorderintoreturns
+                                          : "Move Order into Returns"}
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-pickup"
+                                        name="ordSelfPickup"
+                                        checked={this.state.ordSelfPickup}
+                                        onChange={this.handleOrdChangeOptions}
+                                      />
+                                      <label htmlFor="self-pickup">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .convertthisorderinselfpickup
+                                          : "Convert this order in Self Pickup"}
+                                      </label>
+                                    </div>
+                                  </div>
+                                  {this.state.ordSelfPickup && (
+                                    <>
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.title.date
+                                              : "Date"}
+                                          </p>
+                                          <input
+                                            type="text"
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext
+                                                    .ticketingDashboard
+                                                    .enterdate
+                                                : "Enter Date"
+                                            }
+                                            name="date"
+                                            autoComplete="off"
+                                          />
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.title.time
+                                              : "Time"}
+                                          </p>
+                                          <input
+                                            type="text"
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext
+                                                    .ticketingDashboard
+                                                    .entertime
+                                                : "Enter Time"
+                                            }
+                                            name="time"
+                                            autoComplete="off"
+                                          />
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </>
+                              )}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
@@ -1012,7 +1053,6 @@ class OrderTab extends Component {
                             <div className="order-tab-popover">
                               <div className="pay-done">
                                 <p>
-                                  {" "}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.viewsearch
                                     : "Payment Date"}
@@ -1312,10 +1352,12 @@ class OrderTab extends Component {
                                 <div>
                                   <input
                                     type="radio"
-                                    id="order-returns"
-                                    name="address-options"
+                                    id="order-returns1"
+                                    name="ordMoveReturn"
+                                    checked={this.state.ordMoveReturn}
+                                    onChange={this.handleOrdChangeOptions}
                                   />
-                                  <label htmlFor="order-returns">
+                                  <label htmlFor="order-returns1">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.ticketingDashboard
                                           .moveorderintoreturns
@@ -1325,10 +1367,12 @@ class OrderTab extends Component {
                                 <div>
                                   <input
                                     type="radio"
-                                    id="self-pickup"
-                                    name="address-options"
+                                    id="self-pickup1"
+                                    name="ordSelfPickup"
+                                    checked={this.state.ordSelfPickup}
+                                    onChange={this.handleOrdChangeOptions}
                                   />
-                                  <label htmlFor="self-pickup">
+                                  <label htmlFor="self-pickup1">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.ticketingDashboard
                                           .convertthisorderinselfpickup
@@ -1336,46 +1380,48 @@ class OrderTab extends Component {
                                   </label>
                                 </div>
                               </div>
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <p>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.title.date
-                                      : "Date"}
-                                  </p>
-                                  <input
-                                    type="text"
-                                    placeholder={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                            .enterdate
-                                        : "Enter Date"
-                                    }
-                                    name="date"
-                                    autoComplete="off"
-                                    // onChange={this.handleTextOnchage}
-                                  />
+                              {this.state.ordSelfPickup && (
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.title.date
+                                        : "Date"}
+                                    </p>
+                                    <input
+                                      type="text"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.enterdate
+                                          : "Enter Date"
+                                      }
+                                      name="date"
+                                      autoComplete="off"
+                                      // onChange={this.handleTextOnchage}
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.title.time
+                                        : "Time"}
+                                    </p>
+                                    <input
+                                      type="text"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.entertime
+                                          : "Enter Time"
+                                      }
+                                      name="time"
+                                      autoComplete="off"
+                                      // onChange={this.handleTextOnchage}
+                                    />
+                                  </div>
                                 </div>
-                                <div className="col-md-6">
-                                  <p>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.title.time
-                                      : "Time"}
-                                  </p>
-                                  <input
-                                    type="text"
-                                    placeholder={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                            .entertime
-                                        : "Enter Time"
-                                    }
-                                    name="time"
-                                    autoComplete="off"
-                                    // onChange={this.handleTextOnchage}
-                                  />
-                                </div>
-                              </div>
+                              )}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
