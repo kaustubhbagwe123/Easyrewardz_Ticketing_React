@@ -2731,7 +2731,9 @@ class DepartmentMaster extends Component {
                     />
                   </div>
                   <div className="div-cntr">
-                    <label>Status</label>
+                    <label>{TranslationContext !== undefined
+                        ? TranslationContext.label.status
+                        : "Status"}</label>
                     <select
                       name="selectStatus"
                       value={this.state.selectStatus}
