@@ -1877,7 +1877,12 @@
     "breadth":"चौड़ाई",
     "weight":"वजन",
     "editshippingtemplate":"शिपिंग खाका संपादित करें",
-    "pleaseselecttemplate":"कृपया टेम्पलेट का चयन करें।"
+    "pleaseselecttemplate":"कृपया टेम्पलेट का चयन करें।",
+    "enteredpincodeisnondeliverable":"दर्ज किया गया पिन कोड नॉन डिलिवरेबल है",
+    "moveorderintoreturns":"आर्डर को रिटर्न में स्थानांतरित करें",
+    "convertthisorderinselfpickup":"इस क्रम को सेल्फ पिकअप में बदलें",
+    "entertime":"समय दर्ज करें",
+    "enterdate":"दिनांक दर्ज करें"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."
