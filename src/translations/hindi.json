@@ -424,8 +424,8 @@
     "enterpincode": "पिन कोड दर्ज करें",
     "storepincode": "पिनकोड स्टोर करें",
     "storeasdeliverypartner": "डिलीवरी पार्टनर के रूप में स्टोर",
-    "alertcommunicationviawhatsapp": "व्हाट्सएप के माध्यम से संचार",
-    "alertcommunicationviasms": "एसएमएस के माध्यम से संचार को सचेत करें",
+    "alertcommunicationviawhatsapp": "व्हाट्सप्प के माध्यम से संचार",
+    "alertcommunicationviasms": "एसएमएस के माध्यम से संचार",
     "smsandwhatsapp": "एसएमएस एवं व्हाट्सप्प",
     "shoppingbagconvertedtoorder": "शॉपिंग बैग ऑर्डर में परिवर्तित हो गया",
     "awbassigned": "ए डब्लू बी सौंप दिया गया",
@@ -455,7 +455,7 @@
     "personaldetails": "व्यक्तिगत विवरण",
     "profiledetails": "प्रोफ़ाइल विवरण",
     "mappedclaimcategory": "मैप्ड क्लियाम श्रेणी",
-    "closechat": "चैट बंद करे",
+    "closechat": "चैट को बंद करे",
     "totalnoofchat": "चैट का कुल सं",
     "newsubmission": "नया सबमिशन",
     "items": "आइटम",
@@ -1502,6 +1502,7 @@
     "claimraisedon": "दावा उठाया गया"
   },
   "title": {
+    "appointmentID":"नियुक्ति आईडी",
     "campaignname": "अभियान का नाम",
     "customers": "ग्राहक संख्या",
     "campaignscript": "अभियान स्क्रिप्ट",
