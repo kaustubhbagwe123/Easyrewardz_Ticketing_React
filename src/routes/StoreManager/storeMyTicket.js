@@ -8,6 +8,7 @@ import Headphone2Img from "./../../assets/Images/headphone2.png";
 import DownImg from "./../../assets/Images/down.png";
 import EyeImg from "./../../assets/Images/eye.png";
 import BillInvoiceImg from "./../../assets/Images/bill-Invoice.png";
+import Whatsapp from "./../../assets/Images/whatsapp.png";
 import CancelImg from "./../../assets/Images/cancel.png";
 import StoreIcon from "./../../assets/Images/store.png";
 import { NotificationManager } from "react-notifications";
@@ -37,6 +38,15 @@ class storeMyTicket extends Component {
       historicalDetails: [],
       loading: false,
       translateLanguage: {},
+      customerID: 0,
+      chatID: 0,
+      storeID: "",
+      customerName: "",
+      customerMobileNumber: "",
+      isIconDisplay: false,
+      isChatAllreadyActive: false,
+      chatEndDateTime: "",
+      isWhatsAppIconClick: false,
     };
   }
   componentDidMount() {
@@ -161,6 +171,13 @@ class storeMyTicket extends Component {
           self.setState({
             ticketDetailsData: data,
             loading: false,
+            isIconDisplay: data.isIconDisplay,
+            isChatAllreadyActive: data.isChatAllreadyActive,
+            chatEndDateTime: data.chatEndDateTime,
+            chatID: data.chatID,
+            customerMobileNumber: data.customerMobileNumber,
+            storeID: data.assignTo,
+            customerID: data.customerID,
           });
 
           setTimeout(() => {
@@ -202,9 +219,17 @@ class storeMyTicket extends Component {
               NoteAddComment: "",
               AddNoteValidation: "",
             });
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.commentaddedsuccessfully:"Comment added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.commentaddedsuccessfully
+                : "Comment added successfully."
+            );
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.commentnotadded:"Comment not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.commentnotadded
+                : "Comment not added."
+            );
           }
         })
         .catch((data) => {
@@ -264,10 +289,18 @@ class storeMyTicket extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketupdatedsuccessfully:"Ticket Updated successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.ticketupdatedsuccessfully
+              : "Ticket Updated successfully."
+          );
           self.handleGetTicketDetails(self.state.ticketDetailsData.ticketID);
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.ticketnotupdated:"Ticket Not Updated.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.ticketnotupdated
+              : "Ticket Not Updated."
+          );
         }
       })
       .catch((data) => {
@@ -345,6 +378,48 @@ class storeMyTicket extends Component {
       this.setState({
         ticketDetailsData: data,
       });
+    }
+  };
+  ////handle whats app icon click
+  handleWhatsAppIconClick = () => {
+    let self = this;
+    if (this.state.isWhatsAppIconClick === false) {
+      this.setState({ isWhatsAppIconClick: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/saveReInitiateChat",
+        headers: authHeader(),
+        data: {
+          StoreID: this.state.storeID,
+          CustomerID: this.state.customerID,
+          FirstName: this.state.ticketDetailsData.customerName,
+          LastName: "",
+          MobileNo: this.state.customerMobileNumber,
+        },
+      })
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+          if (message === "Success" && responseData) {
+            self.setState({
+              isChatAllreadyActive: true,
+              isWhatsAppIconClick: false,
+            });
+            if (document.getElementById("chatwindow")) {
+              document.getElementById("newTicketChatId").value = responseData;
+              document.getElementById("chatwindow").click();
+            }
+          } else {
+            self.setState({ isWhatsAppIconClick: false });
+          }
+        })
+        .catch((response) => {
+          self.setState({ isWhatsAppIconClick: false });
+          console.log(response, "----handleWhatsAppIconClick");
+        });
+    } else {
+      return false;
     }
   };
   render() {
@@ -502,29 +577,77 @@ class storeMyTicket extends Component {
             <div className="card-rectangle">
               <div className="rectangle-box">
                 <div className="row">
-                  <div className="col-md-4">
-                    <div style={{ padding: "15px", paddingLeft: "30px" }}>
-                      <div>
-                        <label className="mobile-number">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.customername
-                            : "Customer Name"}
-                        </label>
-                        <br />
-                        <label className="mobile-no">
-                          {this.state.ticketDetailsData.customerName}
-                        </label>
+                  <div className="col-md-4" style={{ padding: "0" }}>
+                    <div style={{ padding: "15px 0px 15px 30px" }}>
+                      <div className="row">
+                        <div className="col-md-5">
+                          <label className="mobile-number">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.customername
+                              : "Customer Name"}
+                          </label>
+
+                          <br />
+                          <label className="mobile-no">
+                            {this.state.ticketDetailsData.customerName}
+                          </label>
+                        </div>
+                        <div className="col-md-7">
+                          {this.state.isIconDisplay &&
+                          !this.state.isChatAllreadyActive ? (
+                            <img
+                              style={{
+                                marginRight: "140px",
+                                float: "right",
+                                cursor: "pointer",
+                              }}
+                              src={Whatsapp}
+                              alt="Whatsapp"
+                              onClick={this.handleWhatsAppIconClick.bind(this)}
+                            />
+                          ) : null}
+                          <label className="mobile-number">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.customername
+                              : "Chat ID"}
+                          </label>
+
+                          <br />
+                          <label className="mobile-no">
+                            {this.state.chatID}
+                          </label>
+                        </div>
                       </div>
-                      <div className="m-t-15">
-                        <label className="mobile-number">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.mobilenumber
-                            : "Mobile Number"}
-                        </label>
-                        <br />
-                        <label className="mobile-no">
-                          {this.state.ticketDetailsData.customerMobileNumber}
-                        </label>
+                      <div className="row">
+                        <div className="col-md-5">
+                          <div className="m-t-15">
+                            <label className="mobile-number">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.mobilenumber
+                                : "Mobile Number"}
+                            </label>
+                            <br />
+                            <label className="mobile-no">
+                              {
+                                this.state.ticketDetailsData
+                                  .customerMobileNumber
+                              }
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-7">
+                          <div className="m-t-15">
+                            <label className="mobile-number">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.mobilenumber
+                                : "Customer Last Message Date & Time"}
+                            </label>
+                            <br />
+                            <label className="mobile-no">
+                              {this.state.chatEndDateTime}
+                            </label>
+                          </div>
+                        </div>
                       </div>
                       <img
                         src={EyeImg}
