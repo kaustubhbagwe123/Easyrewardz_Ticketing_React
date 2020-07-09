@@ -48,7 +48,7 @@ class OrderSetting extends Component {
       EditOrdTempLengthValidation: "",
       EditOrdTempBreadthValidation: "",
       EditOrdTempWeightValidation: "",
-      editButtonShow: false,
+      editButtonShow: false
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -265,6 +265,8 @@ class OrderSetting extends Component {
         UnDeliverableText: this.state.orderConfigData.unDeliverableText,
         StoreDeliveryText: this.state.orderConfigData.storeDeliveryText,
         PaymentTenantCodeText: this.state.orderConfigData.paymentTenantCodeText,
+        RetryCount: this.state.orderConfigData.retryCount!==""?parseInt(this.state.orderConfigData.retryCount):0,
+        StateFlag: this.state.orderConfigData.stateFlag,
       },
     })
       .then(function (res) {
@@ -323,6 +325,9 @@ class OrderSetting extends Component {
     } else if (OrderConfig === "OrdUndelivered") {
       this.state.orderConfigData.unDeliverable = !this.state.orderConfigData
         .unDeliverable;
+    }else if (OrderConfig === "chkOrderconfigStateFlag") {
+      this.state.orderConfigData.stateFlag = !this.state.orderConfigData
+        .stateFlag;
     }
     this.setState({ orderConfigData: this.state.orderConfigData });
   };
@@ -1181,7 +1186,7 @@ class OrderSetting extends Component {
                                         <input
                                           type="text"
                                           style={{ marginRight: "63px" }}
-                                          name="enableClickAfterValue"
+                                          name="retryCount"
                                           autoComplete="off"
                                           maxLength={2}
                                           value={
@@ -1198,22 +1203,22 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        State
+                                        State Flag
                                       </label>
                                       <input
                                         type="checkbox"
-                                        id="stateFlag"
+                                        id="chkOrderconfigStateFlag"
                                         name="allModules"
                                         checked={
                                           this.state.orderConfigData
-                                            .state
+                                            .stateFlag
                                         }
-                                        onChange={this.handleCommunicationChange.bind(
+                                        onChange={this.OrderConfigFlagChange.bind(
                                           this
                                         )}
                                       />
                                       <label
-                                        htmlFor="stateFlag"
+                                        htmlFor="chkOrderconfigStateFlag"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
