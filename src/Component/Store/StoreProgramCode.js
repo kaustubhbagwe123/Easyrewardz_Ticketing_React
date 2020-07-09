@@ -31,6 +31,10 @@ class StoreProgramCode extends Component {
     if (this.validator.allValid()) {
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "https://multitenancyshopsterv2.dcdev.brainvire.net",
+      //   "enc"
+      // );
       let X_Authorized_Domainname = encryption(
         "https://multitenancyshopster.dcdev.brainvire.net",
         "enc"

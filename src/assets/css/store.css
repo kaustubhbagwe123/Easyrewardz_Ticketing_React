@@ -2232,6 +2232,13 @@ table tr th:last-child {
   color: #5c5c5c;
 }
 
+/* store campaign tab starts */
+.store-campaign-inner-table .ant-table-row-expand-icon,
+.store-campaign-script-info {
+  display: none;
+}
+/* store campaign tab ends */
+
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {
@@ -3869,6 +3876,127 @@ table tr th:last-child {
     margin-top: 5px;
   }
   /* check service ends */
+
+  /* store campaign tab starts */
+  .store-task-tab-cont {
+    padding: 0 !important;
+  }
+  .store-campaign-table .ant-table table {
+    border-radius: 0;
+  }
+  .custom-antd-table.antd-table-campaign.store-campaign-table
+    .ant-table-thead
+    > tr
+    > th {
+    padding: 5px 5px !important;
+    height: 30px;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td {
+    padding: 14px 5px !important;
+  }
+  .store-campaign-table .ant-table-thead > tr:first-child > th:first-child {
+    border-top-left-radius: 0px;
+    padding-left: 15px !important;
+  }
+  .store-campaign-table .ant-table-thead > tr:first-child > th:last-child {
+    border-top-right-radius: 0px;
+    padding-right: 15px !important;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td:first-child {
+    padding-left: 15px !important;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td:last-child {
+    padding-right: 15px !important;
+    position: relative;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table
+    .ant-table-row-indent
+    + .ant-table-row-expand-icon {
+    position: static;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr.ant-table-expanded-row
+    > td {
+    padding: 0 !important;
+    /* background: #f0f0f0 !important; */
+    background: #dbdbdb !important;
+  }
+  .store-campaign-inner-table .ant-table-row-expand-icon {
+    display: block;
+  }
+  .store-campaign-inner-table .saveBtn {
+    display: none;
+  }
+  .store-campaign-inner-cntr .saveBtn {
+    display: block;
+    margin: auto !important;
+    margin-top: 20px !important;
+    width: 80px;
+  }
+  .store-campaign-table .cust-name {
+    white-space: initial;
+  }
+  .custom-antd-table.antd-table-campaign.antd-table-campaign-padd.store-campaign-table
+    .ant-table-expanded-row
+    .ant-table-tbody
+    > tr
+    > td {
+    padding: 12px 5px !important;
+  }
+  .custom-antd-table.antd-table-campaign.antd-table-campaign-padd.store-campaign-table
+    .ant-table-expanded-row
+    .ant-table-tbody
+    > tr
+    > td:first-child {
+    padding-left: 15px !important;
+  }
+  .custom-antd-table.antd-table-campaign.antd-table-campaign-padd.store-campaign-table
+    .ant-table-expanded-row
+    .ant-table-tbody
+    > tr
+    > td:last-child {
+    padding-right: 15px !important;
+  }
+  .store-campaign-inner-title {
+    color: #4a4a4a;
+    margin-bottom: 6px;
+  }
+  .store-campaign-inner-cntr > div {
+    margin-bottom: 15px;
+  }
+  .store-campaign-inner-cntr > div:last-child {
+    margin-bottom: 5px;
+  }
+  .store-campaign-inner-cntr .table-btnlabel {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 31px;
+    width: 103px;
+    height: 31px;
+    margin-right: 10px;
+  }
+  .not-contacted-count {
+    right: 12px;
+  }
+  .store-campaign-inner-cntr .followUpBtnYellow {
+    margin-right: 0;
+  }
+  .store-campaign-script-info {
+    display: block;
+    padding: 12px 15px;
+  }
+  /* store campaign tab ends */
 }
 
 @media screen and (max-width: 400px) {
@@ -3950,4 +4078,78 @@ table tr th:last-child {
     width: calc(100% - 20px);
   }
   /* check service ends */
+
+  /* store campaign tab starts */
+  .store-campaign-table .ant-table-thead > tr:first-child > th:first-child {
+    padding-left: 10px !important;
+  }
+  .store-campaign-table .ant-table-thead > tr:first-child > th:last-child {
+    padding-right: 10px !important;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td:first-child {
+    padding-left: 10px !important;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td:last-child {
+    padding-right: 10px !important;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr
+    > td {
+    font-size: 12px;
+  }
+  .store-campaign-table .closebtn {
+    width: 70px;
+  }
+  .store-campaign-table.custom-antd-table.antd-table-campaign
+    .ant-table-tbody
+    > tr.ant-table-expanded-row
+    > td {
+    padding: 0 !important;
+  }
+  .store-campaign-table .cust-name {
+    font-size: 13px;
+  }
+  .store-campaign-inner-cntr .responceDrop-down {
+    font-size: 12px;
+    line-height: 19px;
+  }
+  .custom-antd-table.antd-table-campaign.antd-table-campaign-padd.store-campaign-table
+    .ant-table-expanded-row
+    .ant-table-tbody
+    > tr
+    > td:first-child {
+    padding-left: 10px !important;
+  }
+  .custom-antd-table.antd-table-campaign.antd-table-campaign-padd.store-campaign-table
+    .ant-table-expanded-row
+    .ant-table-tbody
+    > tr
+    > td:last-child {
+    padding-right: 10px !important;
+  }
+  .store-campaign-inner-cntr .table-btnlabel {
+    width: 93px;
+  }
+  .store-campaign-inner-cntr .react-datepicker__month {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .store-campaign-inner-cntr .react-datepicker__time-container,
+  .store-campaign-inner-cntr
+    .react-datepicker__time-container
+    .react-datepicker__time
+    .react-datepicker__time-box {
+    width: 75px;
+  }
+  .store-campaign-script-info {
+    padding: 12px 10px;
+  }
+  /* store campaign tab ends */
 }

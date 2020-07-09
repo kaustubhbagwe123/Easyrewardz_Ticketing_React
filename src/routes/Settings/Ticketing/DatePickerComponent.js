@@ -3,6 +3,10 @@ import moment from "moment";
 import { DatePicker } from "antd";
 const { RangePicker } = DatePicker;
 
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current > moment().endOf('day');
+}
 class DatePickerComponenet extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +40,7 @@ class DatePickerComponenet extends Component {
             moment(this.state.start, "DD-MM-YYYY"),
             moment(this.state.end, "DD-MM-YYYY")
           ]}
+          disabledDate={disabledDate}
         />
       </div>
     );

@@ -631,6 +631,14 @@
 /* .order-popover-address .ant-popover-inner {
   width: 400px;
 } */
+.non-deliverable {
+  color: red !important;
+  font-weight: 400 !important;
+  margin-bottom: 0px;
+  line-height: 1;
+  margin-top: 15px;
+  text-align: center;
+}
 .popover-radio-cntr label {
   color: #4a4a4a;
 }
@@ -648,15 +656,19 @@
   background-image: url("./../Images/radio-checked.png");
 }
 .popover-radio-cntr {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
+  /* display: flex;
+  align-items: center; */
+  /* margin-top: 10px; */
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 .popover-radio-cntr > div {
-  margin-right: 25px;
+  /* margin-right: 25px; */
+  margin-bottom: 5px;
 }
 .popover-radio-cntr > div:last-child {
-  margin-right: 0px;
+  /* margin-right: 0px; */
+  margin-bottom: 0;
 }
 .antd-table-order .ant-table-row-expand-icon {
   display: none !important;
@@ -667,6 +679,22 @@
 }
 /* order ends */
 
+.shipment-table-popup .ant-table-row-cell-last {
+  width: 165px !important;
+}
+.shipment-table-popup .ant-table-row-cell-last .ant-table-header-column {
+  width: 100%;
+}
+.shipment-status-popover .username-mar {
+  flex: 0 0 40%;
+}
+.shipment-status-popover div {
+  margin-bottom: 5px;
+}
+.shipment-status-popover div:last-child {
+  margin-bottom: 0px;
+}
+
 /* chetan css ends */
 
 /* responsive starts */
@@ -676,6 +704,10 @@
 
 @media all and (max-width: 576px) {
   /* chetan css starts */
+
+  .shipment-table-popup .ant-table-row-cell-last {
+    width: 155px !important;
+  }
 
   /* order starts */
   .order-search,
@@ -1149,6 +1181,9 @@
   }
   .shopping-popover-cancel {
     width: 250px;
+  }
+  .shipment-popover-cancel {
+    width: 280px;
   }
   .shopping-bag-popover-item.ant-popover-placement-bottom
     > .ant-popover-content

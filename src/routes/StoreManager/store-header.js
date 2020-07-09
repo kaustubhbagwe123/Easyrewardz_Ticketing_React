@@ -187,6 +187,7 @@ class Header extends Component {
       isNotiNewMessage: false,
       newChatSoundFile: "",
       newMessageSoundFile: "",
+      storePayURL: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -311,9 +312,10 @@ class Header extends Component {
           : "single-menu",
     };
     var claim = {
-      data: this.state.translateLanguage.default !== undefined
-      ? this.state.translateLanguage.default.nav.claim
-      : "Claim",
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.claim
+          : "Claim",
       urls: "claim",
       logoBlack: ClaimLogo,
       logoBlue: ClaimLogoBlue,
@@ -384,6 +386,22 @@ class Header extends Component {
           ? "active single-menu"
           : "single-menu",
     };
+    var storePay = {
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.storePay
+          : "Store Pay",
+      // urls: "orders",
+      // logoBlack: OrderLogoBlack,
+      // logoBlue: OrderLogoBlue,
+      imgAlt: "store pay",
+      imgClass: "myTicket",
+      // activeClass:
+      //   page.toLowerCase() === "".toLowerCase()
+      //     ? "active single-menu"
+      //     : "single-menu",
+    };
+    debugger;
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -449,6 +467,12 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
+        } else if (
+          data[i].moduleName === "StorePay" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(storePay);
+          this.handleGenerateStorePayLink();
         }
       }
     }
@@ -1921,7 +1945,8 @@ class Header extends Component {
                   ////for current chat message
                   var chatId = 0;
                   const Sound1Play = new Audio(self.state.newMessageSoundFile);
-                  // Sound1Play.volume=Math.round(self.state.newMessageSoundVolume/10)/10
+                  Sound1Play.volume =
+                    Math.round(self.state.newMessageSoundVolume / 10) / 10;
                   Sound1Play.play();
                   self.setState({ isCustEndChat: data[6] });
                   if (self.state.ongoingChatsData.length > 0) {
@@ -1941,7 +1966,8 @@ class Header extends Component {
                   debugger;
                   /////for new ongoing message
                   const Sound1Play = new Audio(self.state.newMessageSoundFile);
-                  // Sound1Play.volume=Math.round(self.state.newMessageSoundVolume/10)/10
+                  Sound1Play.volume =
+                    Math.round(self.state.newMessageSoundVolume / 10) / 10;
                   Sound1Play.play();
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
@@ -1950,7 +1976,8 @@ class Header extends Component {
               } else {
                 ////new chat message
                 const Sound1Play = new Audio(self.state.newChatSoundFile);
-                // Sound1Play.volume=Math.round(self.state.newChatSoundVolume/10)/10
+                Sound1Play.volume =
+                  Math.round(self.state.newChatSoundVolume / 10) / 10;
                 Sound1Play.play();
                 self.handleGetNewChat();
                 self.handleGetChatNotificationCount();
@@ -2138,11 +2165,11 @@ class Header extends Component {
           self.setState({
             // newChatSoundFile: responseData.newChatSoundFile || "",
             newChatSoundFile:
-              "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/" +
-                responseData.newChatSoundFile.substr(index1) || "",
+              config.soundURL + responseData.newChatSoundFile.substr(index1) ||
+              "",
             // newMessageSoundFile: responseData.newMessageSoundFile || "",
             newMessageSoundFile:
-              "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/" +
+              config.soundURL +
                 responseData.newMessageSoundFile.substr(index) || "",
             newChatSoundVolume: responseData.newChatSoundVolume || 0,
             newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
@@ -2171,6 +2198,25 @@ class Header extends Component {
         });
     }
   };
+  ////handle genrate store pay link
+  handleGenerateStorePayLink = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StorePay/GenerateStorePayLink",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var storePayURL = response.data.responseData;
+        if ((message = "Success" && storePayURL)) {
+          self.setState({ storePayURL });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGenerateStorePayLink");
+      });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2198,28 +2244,58 @@ class Header extends Component {
               />
             </div>
             <div className="headers-menu">
-              {this.state.cont.map((item) => (
-                <Link
-                  onClick={this.actives}
-                  key={item.data}
-                  to={item.urls}
-                  className={item.activeClass}
-                >
-                  <div className="header-icons-cntr">
-                    <img
-                      src={item.logoBlack}
-                      alt={item.imgAlt}
-                      className={item.imgClass}
-                    />
-                    <img
-                      src={item.logoBlue}
-                      alt={item.imgAlt}
-                      className={item.imgClass}
-                    />
-                  </div>
-                  <label className="cusheade">{item.data}</label>
-                </Link>
-              ))}
+              {this.state.cont.map((item) => {
+                if (item.data === "Store Pay" || item.data === "स्टोर पे") {
+                  return (
+                    <a
+                      key={item.data}
+                      href={this.state.storePayURL}
+                      disabled={this.state.storePayURL ? false : true}
+                      className="storepay-a single-menu"
+                      target="_blank"
+                    >
+                      {item.logoBlack ? (
+                        <div className="header-icons-cntr">
+                          <img
+                            src={item.logoBlack}
+                            alt={item.imgAlt}
+                            className={item.imgClass}
+                          />
+                          <img
+                            src={item.logoBlue}
+                            alt={item.imgAlt}
+                            className={item.imgClass}
+                          />
+                        </div>
+                      ) : null}
+                      <label className="cusheade">{item.data}</label>
+                    </a>
+                  );
+                } else {
+                  return (
+                    <Link
+                      onClick={this.actives}
+                      key={item.data}
+                      to={item.urls}
+                      className={item.activeClass}
+                    >
+                      <div className="header-icons-cntr">
+                        <img
+                          src={item.logoBlack}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                        <img
+                          src={item.logoBlue}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                      </div>
+                      <label className="cusheade">{item.data}</label>
+                    </Link>
+                  );
+                }
+              })}
             </div>
           </div>
 
@@ -2602,29 +2678,62 @@ class Header extends Component {
             </div>
             <div className="lowersec">
               <ul>
-                {this.state.cont.map((item) => (
-                  <li key={item.data}>
-                    <Link
-                      onClick={this.actives}
-                      to={item.urls}
-                      className={item.activeClass}
-                    >
-                      <span className="header-icons-cntr mr-0">
-                        <img
-                          src={item.logoBlack}
-                          alt={item.imgAlt}
-                          className={item.imgClass}
-                        />
-                        <img
-                          src={item.logoBlue}
-                          alt={item.imgAlt}
-                          className={item.imgClass}
-                        />
-                      </span>
-                      {item.data}
-                    </Link>
-                  </li>
-                ))}
+                {this.state.cont.map((item) => {
+                  if (item.data === "Store Pay" || item.data === "स्टोर पे") {
+                    return (
+                      <>
+                        <li key={item.data}>
+                          <a
+                            target="_blank"
+                            href={this.state.storePayURL}
+                            className="storepay-a single-menu"
+                            disabled={this.state.storePayURL ? false : true}
+                          >
+                            {item.logoBlack ? (
+                              <span className="header-icons-cntr mr-0">
+                                <img
+                                  src={item.logoBlack}
+                                  alt={item.imgAlt}
+                                  className={item.imgClass}
+                                />
+                                <img
+                                  src={item.logoBlue}
+                                  alt={item.imgAlt}
+                                  className={item.imgClass}
+                                />
+                              </span>
+                            ) : null}
+                            {item.data}
+                          </a>
+                        </li>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <li key={item.data}>
+                        <Link
+                          onClick={this.actives}
+                          to={item.urls}
+                          className={item.activeClass}
+                        >
+                          <span className="header-icons-cntr mr-0">
+                            <img
+                              src={item.logoBlack}
+                              alt={item.imgAlt}
+                              className={item.imgClass}
+                            />
+                            <img
+                              src={item.logoBlue}
+                              alt={item.imgAlt}
+                              className={item.imgClass}
+                            />
+                          </span>
+                          {item.data}
+                        </Link>
+                      </li>
+                    );
+                  }
+                })}
               </ul>
             </div>
             <div className="logoutbox">
@@ -6124,73 +6233,73 @@ class Header extends Component {
                         </div>
                         <div className="prodtabl1">
                           <div className="pointstable">
-                          <table>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <label>Total Points</label>
-                                </td>
-                                <td>
-                                  <span>11,278</span>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <label>Lifetime Value</label>
-                                </td>
-                                <td>
-                                  <span>2,11,278</span>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <label>Visit Count</label>
-                                </td>
-                                <td>
-                                  <span>123</span>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div className="lasttransaction">
-                          <h3>Last Transaction</h3>
-                          <ul>
-                            <li>
-                              <label>Bill No</label>
-                              <span>CM201219009064</span>
-                            </li>
-                            <li>
-                              <label>Amount</label>
-                              <span>3,567</span>
-                            </li>
-                          </ul>
-                          <ul>
-                            <li>
-                              <label>Store</label>
-                              <span>MG Road Shopster</span>
-                            </li>
-                            <li>
-                              <label>Date</label>
-                              <span>11 May 2020</span>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="insightsbox">
-                          <h3>Insights</h3>
-                          <p>
-                            1.Lorem Ipsum is simply dummy text of the printing
-                            industry.
-                          </p>
-                          <p>
-                            2.Lorem Ipsum is simply dummy text of the printing
-                            industry.
-                          </p>
-                          <p>
-                            3.Lorem Ipsum is simply dummy text of the printing
-                            industry.
-                          </p>
-                        </div>
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <label>Total Points</label>
+                                  </td>
+                                  <td>
+                                    <span>11,278</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label>Lifetime Value</label>
+                                  </td>
+                                  <td>
+                                    <span>2,11,278</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label>Visit Count</label>
+                                  </td>
+                                  <td>
+                                    <span>123</span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className="lasttransaction">
+                            <h3>Last Transaction</h3>
+                            <ul>
+                              <li>
+                                <label>Bill No</label>
+                                <span>CM201219009064</span>
+                              </li>
+                              <li>
+                                <label>Amount</label>
+                                <span>3,567</span>
+                              </li>
+                            </ul>
+                            <ul>
+                              <li>
+                                <label>Store</label>
+                                <span>MG Road Shopster</span>
+                              </li>
+                              <li>
+                                <label>Date</label>
+                                <span>11 May 2020</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="insightsbox">
+                            <h3>Insights</h3>
+                            <p>
+                              1.Lorem Ipsum is simply dummy text of the printing
+                              industry.
+                            </p>
+                            <p>
+                              2.Lorem Ipsum is simply dummy text of the printing
+                              industry.
+                            </p>
+                            <p>
+                              3.Lorem Ipsum is simply dummy text of the printing
+                              industry.
+                            </p>
+                          </div>
                         </div>
                         <button type="button" className="updateprofilelinkbtn">
                           Send Update Profile Link

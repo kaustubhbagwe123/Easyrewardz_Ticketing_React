@@ -4678,7 +4678,6 @@ class MyTicketList extends Component {
                                                 undefined
                                                   ? TranslationContext.a.apply
                                                   : "APPLY"}
-                                                F
                                               </a>
                                               <a
                                                 href="#!"

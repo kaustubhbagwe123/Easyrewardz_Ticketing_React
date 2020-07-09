@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm } from "antd";
+import { Table, Popover, Popconfirm, Spin } from "antd";
 import Modal from "react-responsive-modal";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
+import OrderInfo from "./../../../assets/Images/order-info.png";
 import CardTick from "./../../../assets/Images/card-tick.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
@@ -39,6 +40,9 @@ class ShipmentTab extends Component {
       IsStoreDelivery: false,
       createShipmentBtnDisbaled: false,
       orderSearchText: "",
+      TemplateData: [],
+      selectedTemplate: "0",
+      createShipmetLoader: false,
     };
   }
 
@@ -202,6 +206,7 @@ class ShipmentTab extends Component {
             airWayBill2ndTab: false,
             orderId: ordId,
           });
+          self.handleGetTemplateData();
         } else {
           self.setState({
             ShipmentOrderItem: [],
@@ -210,17 +215,42 @@ class ShipmentTab extends Component {
             airWayBill2ndTab: false,
             orderId: ordId,
           });
+          self.handleGetTemplateData();
         }
       })
       .catch((data) => {
         console.log(data);
       });
   }
-
+  /// handle Get Temaplate data
+  handleGetTemplateData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderShippingTemplateName",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            TemplateData: data.shippingTemplateList,
+          });
+        } else {
+          self.setState({
+            TemplateData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   /// handle get AWB Invoice data by order id
   handleGetAWBInvoiceDetailsOrderId(orderId) {
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetAWBInvoiceDetails",
@@ -263,56 +293,70 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
+    const TranslationContext = this.state.translateLanguage.default;
+    debugger;
     let self = this;
-    var itemIds = "";
-    if (this.state.ShipmentOrderItem.length > 0) {
-      for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
-        itemIds += this.state.ShipmentOrderItem[i].id + ",";
-      }
-    }
-    this.setState({
-      createShipmentBtnDisbaled: true,
-    });
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
-      headers: authHeader(),
-      params: {
-        orderID: this.state.orderId,
-        itemIDs: itemIds,
-      },
-    })
-      .then(function(res) {
-        let CheckStatus = res.data.status;
-        let data = res.data.responseData;
-        if (CheckStatus) {
-          if (data.status) {
-            self.setState({
-              AirwayBillAWBNo: data.awbNumber,
-              AirwayItemIds: data.itemIDs,
-              createdShoppingTabs: true,
-              createShipmentBtnDisbaled: false,
-            });
-            if (data.isStoreDelivery) {
-              self.setState({
-                IsStoreDelivery: true,
-              });
-            }
-          } else {
-            NotificationManager.error(data.statusMessge);
-          }
-          self.handleGetShipmentTabGridData();
-        } else {
-          NotificationManager.error(CheckStatus);
-          self.setState({
-            createdShoppingTabs: false,
-            createShipmentBtnDisbaled: false,
-          });
+    if (this.state.selectedTemplate !== "0") {
+      var itemIds = "";
+      if (this.state.ShipmentOrderItem.length > 0) {
+        for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
+          itemIds += this.state.ShipmentOrderItem[i].id + ",";
         }
-      })
-      .catch((data) => {
-        console.log(data);
+      }
+      this.setState({
+        createShipmentBtnDisbaled: true,
+        createShipmetLoader: true,
       });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
+        headers: authHeader(),
+        params: {
+          orderID: this.state.orderId,
+          itemIDs: itemIds,
+          templateID: this.state.selectedTemplate,
+        },
+      })
+        .then(function(res) {
+          let CheckStatus = res.data.status;
+          let data = res.data.responseData;
+          if (CheckStatus) {
+            if (data.status) {
+              self.setState({
+                AirwayBillAWBNo: data.awbNumber,
+                AirwayItemIds: data.itemIDs,
+                createdShoppingTabs: true,
+                createShipmentBtnDisbaled: false,
+                createShipmetLoader: false,
+              });
+              if (data.isStoreDelivery) {
+                self.setState({
+                  IsStoreDelivery: true,
+                });
+              }
+            } else {
+              NotificationManager.error(data.statusMessge);
+            }
+            self.handleGetShipmentTabGridData();
+          } else {
+            NotificationManager.error(CheckStatus);
+            self.setState({
+              createdShoppingTabs: false,
+              createShipmentBtnDisbaled: false,
+              createShipmetLoader: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.pleaseselecttemplate
+          : "Please Select Template."
+      );
+    }
   }
   ///-----------------------API function End----------------------------
 
@@ -365,7 +409,12 @@ class ShipmentTab extends Component {
       filterShipmentStatus: false,
     });
   }
-
+  /// handle select template data
+  handleSelectTemplateDD = (e) => {
+    this.setState({
+      selectedTemplate: e.target.value,
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -500,9 +549,34 @@ class ShipmentTab extends Component {
                   "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 render: (row, item) => {
                   return (
-                    <>
+                    <div className="d-flex align-items-center">
                       <p>{item.statusName}</p>
-                    </>
+                      <Popover
+                        content={
+                          <div className="order-tab-popover shipment-status-popover">
+                            <div className="d-flex align-items-center justify-content-between">
+                              <p>Expected Pickup Date :</p>
+                              <p className="username-mar">22/04/20 at 20:15</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <p>Expected Schedule Date :</p>
+                              <p className="username-mar">10/05/20 at 08:50</p>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <p>Charges :</p>
+                              <p className="username-mar">200 &#8377;</p>
+                            </div>
+                          </div>
+                        }
+                        trigger="click"
+                        overlayClassName="order-popover shopping-popover-cancel"
+                        onVisibleChange={(visible) =>
+                          this.setState({ orderPopoverOverlay: visible })
+                        }
+                      >
+                        <img src={OrderInfo} className="order-info" />
+                      </Popover>
+                    </div>
                   );
                 },
                 filterDropdown: (data, row) => {
@@ -764,7 +838,38 @@ class ShipmentTab extends Component {
                               : "Status"}
                           </b>
                         </label>
-                        <label>{row.statusName}</label>
+                        <div className="d-flex align-items-center">
+                          <label>{row.statusName}</label>
+                          <Popover
+                            content={
+                              <div className="order-tab-popover shipment-status-popover">
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>Expected Pickup Date :</p>
+                                  <p className="username-mar">
+                                    22/04/20 at 20:15
+                                  </p>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>Expected Schedule Date :</p>
+                                  <p className="username-mar">
+                                    10/05/20 at 08:50
+                                  </p>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>Charges :</p>
+                                  <p className="username-mar">200 &#8377;</p>
+                                </div>
+                              </div>
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover shopping-popover-cancel shipment-popover-cancel"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderInfo} className="order-info" />
+                          </Popover>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -874,7 +979,7 @@ class ShipmentTab extends Component {
                       />
                       {TranslationContext !== undefined
                         ? TranslationContext.checkbox.AirwayBillNo
-                        : "Article Mapping"}
+                        : "Airway Bill No"}
                     </a>
                   </li>
                 </ul>
@@ -892,106 +997,125 @@ class ShipmentTab extends Component {
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
                   >
-                    <div className="tabs-content">
-                      <div className="article-body">
-                        <span style={{ marginBottom: "30px" }}>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span
-                                .itemidshownbelowmappedtothisorder
-                            : "Item id shown below mapped to this Order"}
-                          &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.only
-                            : "only."}
-                          <br />
-                        </span>
-                        <div className="table-responsive">
-                          <Table
-                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemid
-                                    : "Article No",
-                                dataIndex: "itemID",
-                                render: (row, item) => {
-                                  return (
-                                    <p>
-                                      <input
-                                        type="checkbox"
-                                        checked={item.checked}
-                                      />{" "}
-                                      &nbsp;{item.itemID}
-                                    </p>
-                                  );
+                    <Spin
+                      tip={
+                        TranslationContext !== undefined
+                          ? TranslationContext.tip.pleasewait
+                          : "Please wait..."
+                      }
+                      spinning={this.state.createShipmetLoader}
+                    >
+                      <div className="tabs-content">
+                        <div className="article-body">
+                          <span style={{ marginBottom: "30px" }}>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span
+                                  .itemidshownbelowmappedtothisorder
+                              : "Item id shown below mapped to this Order"}
+                            &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.only
+                              : "only."}
+                            <br />
+                          </span>
+                          <div className="table-responsive">
+                            <Table
+                              className="components-table-demo-nested shipment-table-popup antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
+                              columns={[
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemid
+                                      : "Article No",
+                                  dataIndex: "itemID",
+                                  render: (row, item) => {
+                                    return (
+                                      <p>
+                                        <input
+                                          type="checkbox"
+                                          checked={item.checked}
+                                        />
+                                        &nbsp;{item.itemID}
+                                      </p>
+                                    );
+                                  },
                                 },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemname
-                                    : "Article Name",
-                                dataIndex: "itemName",
-                                width: 150,
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemprice
-                                    : "Article MRP",
-                                dataIndex: "itemPrice",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemquantity
-                                    : "Article Quantity",
-                                dataIndex: "quantity",
-                              },
-                              {
-                                title: () => (
-                                  <select className="shipment-table-dropdown">
-                                    <option value="temp*">Template *</option>
-                                    <option value="temp1">Template 1</option>
-                                    <option value="temp2">Template 2</option>
-                                    <option value="temp3">Template 3</option>
-                                    <option value="temp4">Template 4</option>
-                                  </select>
-                                ),
-                              },
-                            ]}
-                            scroll={{ y: 240 }}
-                            pagination={false}
-                            dataSource={this.state.ShipmentOrderItem}
-                          />
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemname
+                                      : "Article Name",
+                                  dataIndex: "itemName",
+                                  width: 150,
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemprice
+                                      : "Article MRP",
+                                  dataIndex: "itemPrice",
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemquantity
+                                      : "Article Quantity",
+                                  dataIndex: "quantity",
+                                },
+                                {
+                                  title: () => (
+                                    <select
+                                      className="shipment-table-dropdown"
+                                      name="selectedTemplate"
+                                      value={this.state.selectedTemplate}
+                                      onChange={this.handleSelectTemplateDD}
+                                    >
+                                      <option value="0">Select Template</option>
+                                      {this.state.TemplateData !== null &&
+                                        this.state.TemplateData.map(
+                                          (item, j) => (
+                                            <option key={j} value={item.id}>
+                                              {item.templateName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  ),
+                                },
+                              ]}
+                              scroll={{ y: 240 }}
+                              pagination={false}
+                              dataSource={this.state.ShipmentOrderItem}
+                            />
+                          </div>
+                        </div>
+                        <div className="dv-status m-t-20">
+                          <button
+                            className="btn-shipment-popup"
+                            style={{ marginRight: "10px" }}
+                            onClick={this.handleShipmentModalClose.bind(this)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.cancel
+                              : "Cancel"}
+                          </button>
+                          <button
+                            style={{ marginRight: "0px" }}
+                            className={
+                              this.state.createShipmentBtnDisbaled
+                                ? "btnClickDisabled btn-shipment-saveNext"
+                                : "btn-shipment-saveNext"
+                            }
+                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                            disabled={this.state.createShipmentBtnDisbaled}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.saveandnext
+                              : "Save & Next"}
+                          </button>
                         </div>
                       </div>
-                      <div className="dv-status m-t-20">
-                        <button
-                          className="btn-shipment-popup"
-                          style={{ marginRight: "10px" }}
-                          onClick={this.handleShipmentModalClose.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "Cancel"}
-                        </button>
-                        <button
-                          style={{ marginRight: "0px" }}
-                          className={
-                            this.state.createShipmentBtnDisbaled
-                              ? "btnClickDisabled btn-shipment-saveNext"
-                              : "btn-shipment-saveNext"
-                          }
-                          onClick={this.handleCreateShipmentAWB.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.saveandnext
-                            : "Save & Next"}
-                        </button>
-                      </div>
-                    </div>
+                    </Spin>
                   </div>
                   <div
                     className={

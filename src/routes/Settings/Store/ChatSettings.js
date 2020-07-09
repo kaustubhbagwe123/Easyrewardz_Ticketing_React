@@ -51,7 +51,8 @@ class ChatSettings extends Component {
       newChatSoundID: 0,
       newMessageSoundID: 0,
       buttonClickCSS: 0,
-      nsId:0,
+      nsId: 0,
+      isLoading: false,
     };
   }
 
@@ -454,7 +455,7 @@ class ChatSettings extends Component {
             newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
             isNotiNewChat: responseData.isNotiNewChat || false,
             isNotiNewMessage: responseData.isNotiNewMessage || false,
-            nsId:responseData.id || false,
+            nsId: responseData.id || false,
           });
         }
       })
@@ -463,22 +464,22 @@ class ChatSettings extends Component {
       });
   };
   ////handle update chat notification settings
-  handleUpdateChatSoundNotiSetting = () => {
+  handleUpdateChatSoundNotiSetting = (isDefualt) => {
     let self = this;
-    debugger;
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/UpdateChatSoundNotiSetting",
       headers: authHeader(),
       data: {
-        
         NewChatSoundID: this.state.newChatSoundID,
         NewChatSoundVolume: this.state.newChatSoundVolume,
         NewMessageSoundID: this.state.newMessageSoundID,
         NewMessageSoundVolume: this.state.newMessageSoundVolume,
         IsNotiNewChat: this.state.isNotiNewChat,
         IsNotiNewMessage: this.state.isNotiNewMessage,
-        ID:this.state.nsId
+        ID: this.state.nsId,
+        IsDefault: isDefualt || false,
       },
     })
       .then((response) => {
@@ -487,28 +488,55 @@ class ChatSettings extends Component {
         debugger;
         if (message === "Success" && responseData) {
           NotificationManager.success("Record Updated Successfully");
-          self.handleGetChatSoundNotiSetting()
+          self.handleGetChatSoundNotiSetting();
+          self.setState({ isloading: false });
         } else {
           NotificationManager.error("Record Not Updated");
+          self.setState({ isloading: false });
         }
       })
       .catch((response) => {
         console.log(response, "---handleUpdateChatSoundNotiSetting");
+        self.setState({ isloading: false });
       });
   };
   ////handle chat assinged volumn change
   handleChatAssingedVolumnChange = (e) => {
-    this.setState({ newChatSoundVolume: e });
+    this.setState({
+      newChatSoundVolume: e,
+    });
+    if (this.state.newChatSoundID) {
+      var soundName = this.state.chatSoundData.filter(
+        (x) => x.soundID === this.state.newChatSoundID
+      )[0].soundFileName;
+      const Sound1Play = new Audio(config.soundURL + soundName);
+      Sound1Play.volume = Math.round(e / 10) / 10;
+      Sound1Play.play();
+    }
   };
   ////handle new message volumn change
   handleNewMessageVolumnChange = (e) => {
     this.setState({ newMessageSoundVolume: e });
+    if (this.state.newMessageSoundID) {
+      var soundName = this.state.chatSoundData.filter(
+        (x) => x.soundID === this.state.newMessageSoundID
+      )[0].soundFileName;
+      const Sound1Play = new Audio(config.soundURL + soundName);
+      Sound1Play.volume = Math.round(e / 10) / 10;
+      Sound1Play.play();
+    }
   };
   ////handle button click to set css
   handleButtonClick = (no) => {
     this.setState({ buttonClickCSS: no });
     if (no === 3) {
       this.handleUpdateChatSoundNotiSetting();
+    }
+    if (no === 2) {
+      this.handleRestDefualtButtonClick();
+    }
+    if (no === 1) {
+      this.props.history.push("/store/settings");
     }
   };
   ////handle sound dropdown change
@@ -531,6 +559,25 @@ class ChatSettings extends Component {
     } else {
       this.setState({ isNotiNewMessage: e.target.checked });
     }
+  };
+
+  ////handle reset defualt click
+  handleRestDefualtButtonClick = () => {
+    var newChatSoundID = 0;
+    var newMessageSoundID = 0;
+    if (this.state.chatSoundData.length > 0) {
+      newChatSoundID = this.state.chatSoundData[0].soundID;
+      newMessageSoundID = this.state.chatSoundData[0].soundID;
+    }
+    this.setState({
+      newChatSoundID,
+      newMessageSoundID,
+      newChatSoundVolume: 50,
+      newMessageSoundVolume: 50,
+    });
+    setTimeout(() => {
+      this.handleUpdateChatSoundNotiSetting(true);
+    }, 10);
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -1054,12 +1101,12 @@ class ChatSettings extends Component {
                       >
                         <label className="snlbl-nlbl">Notification</label>
                         <hr className="sn-hr" />
-                        <p className="sn-p">
+                        {/* <p className="sn-p">
                           Set your notification preference for when you are in
                           or away from the system.You will need to configure
                           your browser setting to allow notification
-                        </p>
-                        <label className="sns-lbl">Chat Assigned</label>
+                        </p> */}
+                        <label className="sns-lbl">New Chat Assigned</label>
                         <Checkbox
                           name="isNotiNewChat"
                           checked={this.state.isNotiNewChat}
@@ -1092,7 +1139,7 @@ class ChatSettings extends Component {
                         <hr className="sn-hr" />
                         <div className="row">
                           <div className="col-md-3">
-                            <label className="sns-lbl">Chat Assigned</label>
+                            <label className="sns-lbl">New Chat Assigned</label>
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
@@ -1253,6 +1300,7 @@ class ChatSettings extends Component {
                                 : "butn sn-btn-inactive"
                             }
                             type="button"
+                            disabled={this.state.isloading}
                           >
                             REST DEFUALT
                           </button>
@@ -1264,6 +1312,7 @@ class ChatSettings extends Component {
                                 : "butn sn-btn-inactive"
                             }
                             type="button"
+                            disabled={this.state.isloading}
                           >
                             SAVE CHAGNES
                           </button>

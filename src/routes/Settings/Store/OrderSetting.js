@@ -4,10 +4,10 @@ import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import DelBigIcon from "./../../../assets/Images/del-big.png";
-import { Popover, Table } from "antd";
+import Pagination from "react-pagination-js";
+import { Table } from "antd";
 import config from "./../../../helpers/config";
+import Modal from "react-bootstrap/Modal";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
@@ -21,12 +21,42 @@ class OrderSetting extends Component {
       orderConfigData: {},
       selTab: "Module Configuration",
       translateLanguage: {},
+      OrdTemplatename: "",
+      OrdTempHeight: "",
+      OrdTempLength: "",
+      OrdTempBreadth: "",
+      OrdTempWeight: "",
+      selectedOrdHeight: "cm",
+      selectedOrdLength: "cm",
+      selectedOrdBreadth: "cm",
+      selectedOrdWeight: "Kg",
+      ShippingTempData: [],
+      ShipTemploading: false,
+      totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      OrdTemplateNameValidation: "",
+      OrdTempHeightValidation: "",
+      OrdTempLengthValidation: "",
+      OrdTempBreadthValidation: "",
+      OrdTempWeightValidation: "",
+      editSlotModal: false,
+      templateID: 0,
+      editTemplate: {},
+      EditOrdTempNameValidation: "",
+      EditOrdTempHeightValidation: "",
+      EditOrdTempLengthValidation: "",
+      EditOrdTempBreadthValidation: "",
+      EditOrdTempWeightValidation: "",
+      editButtonShow: false,
     };
+    this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
 
   componentDidMount() {
     this.handleGetModuleConfigData();
     this.handleGetOrderConfigData();
+    this.handleGetShippingTempData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -34,6 +64,31 @@ class OrderSetting extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+  }
+
+  closeSlotEditModal() {
+    this.setState({
+      editSlotModal: false,
+    });
+  }
+
+  openSlotEditModal(rowData) {
+    var editTemplate = {};
+    editTemplate.templateName = rowData.templateName;
+    editTemplate.height = rowData.height;
+    editTemplate.height_Unit = rowData.height_Unit;
+    editTemplate.weight = rowData.weight;
+    editTemplate.weight_Unit = rowData.weight_Unit;
+    editTemplate.length = rowData.length;
+    editTemplate.length_Unit = rowData.length_Unit;
+    editTemplate.breath = rowData.breath;
+    editTemplate.breath_Unit = rowData.breath_Unit;
+
+    this.setState({
+      editSlotModal: true,
+      templateID: rowData.id,
+      editTemplate,
+    });
   }
 
   handleGetModuleConfigData() {
@@ -44,7 +99,6 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -54,6 +108,43 @@ class OrderSetting extends Component {
         } else {
           self.setState({
             moduleConfigData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle get shipping tempt grid data
+  handleGetShippingTempData() {
+    let self = this;
+    this.setState({
+      ShipTemploading: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderShippingTemplate",
+      headers: authHeader(),
+      data: {
+        PageNo: this.state.currentPage,
+        PageSize: this.state.postsPerPage,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            ShippingTempData: data.shippingTemplateList,
+            totalCount: data.totalCount,
+            ShipTemploading: false,
+          });
+        } else {
+          self.setState({
+            ShippingTempData: {},
+            totalCount: 0,
+            ShipTemploading: false,
           });
         }
       })
@@ -295,7 +386,354 @@ class OrderSetting extends Component {
       this.setState({ orderConfigData });
     }
   }
+  /// handle input change
+  handleInputOnchange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
 
+  /// Edit input onchange
+  handleEditInputOnchange(e) {
+    var names = e.target.name;
+    var values = e.target.value;
+
+    var editTemplate = this.state.editTemplate;
+    editTemplate[names] = values;
+    this.setState({
+      editTemplate,
+    });
+  }
+
+  // /// handle Edit Input Validation change
+  handleEditInputValidationChange(e) {
+    var names = e.target.name;
+    var values = e.target.value;
+
+    var editTemplate = this.state.editTemplate;
+    editTemplate[names] = values;
+
+    if (isNaN(values)) {
+      return false;
+    }
+    var splitText = values.split(".");
+    var index = values.indexOf(".");
+
+    if (index !== -1) {
+      if (splitText) {
+        if (splitText[1].length <= 2) {
+          if (index !== -1 && splitText.length === 2) {
+            this.setState({
+              editTemplate,
+            });
+          }
+        } else {
+          return false;
+        }
+      } else {
+        this.setState({
+          editTemplate,
+        });
+      }
+    } else {
+      this.setState({
+        editTemplate,
+      });
+    }
+  }
+  /// handle input valiadtion change
+  handleInputValidationChange(e) {
+    var values = e.target.value;
+    var names = e.target.name;
+
+    if (isNaN(values)) {
+      return false;
+    }
+    var splitText = values.split(".");
+    var index = values.indexOf(".");
+
+    if (index !== -1) {
+      if (splitText) {
+        if (splitText[1].length <= 2) {
+          if (index !== -1 && splitText.length === 2) {
+            if (names === "OrdTempHeight") {
+              this.setState({
+                OrdTempHeight: values,
+              });
+            } else if (names === "OrdTempLength") {
+              this.setState({
+                OrdTempLength: values,
+              });
+            } else if (names === "OrdTempBreadth") {
+              this.setState({
+                OrdTempBreadth: values,
+              });
+            } else if (names === "OrdTempWeight") {
+              this.setState({
+                OrdTempWeight: values,
+              });
+            }
+          }
+        } else {
+          return false;
+        }
+      } else {
+        if (names === "OrdTempHeight") {
+          this.setState({
+            OrdTempHeight: values,
+          });
+        } else if (names === "OrdTempLength") {
+          this.setState({
+            OrdTempLength: values,
+          });
+        } else if (names === "OrdTempBreadth") {
+          this.setState({
+            OrdTempBreadth: values,
+          });
+        } else if (names === "OrdTempWeight") {
+          this.setState({
+            OrdTempWeight: values,
+          });
+        }
+      }
+    } else {
+      if (names === "OrdTempHeight") {
+        this.setState({
+          OrdTempHeight: values,
+        });
+      } else if (names === "OrdTempLength") {
+        this.setState({
+          OrdTempLength: values,
+        });
+      } else if (names === "OrdTempBreadth") {
+        this.setState({
+          OrdTempBreadth: values,
+        });
+      } else if (names === "OrdTempWeight") {
+        this.setState({
+          OrdTempWeight: values,
+        });
+      }
+    }
+  }
+
+  /// handle drop down change
+  handleDropDownChange(e) {
+    var names = e.target.name;
+    var values = e.target.value;
+
+    if (names === "selectedOrdHeight") {
+      this.setState({
+        selectedOrdHeight: values,
+      });
+    } else if (names === "selectedOrdLength") {
+      this.setState({
+        selectedOrdLength: values,
+      });
+    } else if (names === "selectedOrdBreadth") {
+      this.setState({
+        selectedOrdBreadth: values,
+      });
+    } else if (names === "selectedOrdWeight") {
+      this.setState({
+        selectedOrdWeight: values,
+      });
+    }
+  }
+  ///handle pagination onchage
+  PaginationOnChange = async (numPage) => {
+    await this.setState({
+      currentPage: numPage,
+    });
+
+    this.handleGetShippingTempData();
+  };
+  /// handle per page item change
+  handlePageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+      currentPage: 1,
+    });
+
+    this.handleGetShippingTempData();
+  };
+  /// handle submit shipping template
+  handleSubmitShppingTemp() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (
+      this.state.OrdTemplatename !== "" &&
+      this.state.OrdTempHeight !== "" &&
+      this.state.OrdTempLength !== "" &&
+      this.state.OrdTempBreadth !== "" &&
+      this.state.OrdTempWeight !== ""
+    ) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
+        headers: authHeader(),
+        data: {
+          TemplateName: this.state.OrdTemplatename,
+          Height: this.state.OrdTempHeight,
+          Height_Unit: this.state.selectedOrdHeight,
+          Length: this.state.OrdTempLength,
+          Length_Unit: this.state.selectedOrdLength,
+          Breath: this.state.OrdTempBreadth,
+          Breath_Unit: this.state.selectedOrdBreadth,
+          Weight: this.state.OrdTempWeight,
+          Weight_Unit: this.state.selectedOrdWeight,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              OrdTemplatename: "",
+              OrdTempHeight: "",
+              OrdTempLength: "",
+              OrdTempBreadth: "",
+              OrdTempWeight: "",
+              selectedOrdHeight: "cm",
+              selectedOrdLength: "cm",
+              selectedOrdBreadth: "cm",
+              selectedOrdWeight: "Kg",
+              OrdTemplateNameValidation: "",
+              OrdTempHeightValidation: "",
+              OrdTempLengthValidation: "",
+              OrdTempBreadthValidation: "",
+              OrdTempWeightValidation: "",
+            });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.templateaddedsuccessfully
+                : "Template Added Successfully."
+            );
+            self.handleGetShippingTempData();
+          } else {
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.templatenotadded
+                : "Template not added."
+            );
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        OrdTemplateNameValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempHeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempLengthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempBreadthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        OrdTempWeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+      });
+    }
+  }
+
+  /// update Shipping template data
+  handleUpdateShippingTemplate() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (
+      this.state.editTemplate.templateName !== "" &&
+      this.state.editTemplate.height !== "" &&
+      this.state.editTemplate.length !== "" &&
+      this.state.editTemplate.breath !== "" &&
+      this.state.editTemplate.weight !== ""
+    ) {
+      let self = this;
+      this.setState({
+        editButtonShow: true,
+      });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
+        headers: authHeader(),
+        data: {
+          ID: this.state.templateID,
+          TemplateName: this.state.editTemplate.templateName,
+          Height: this.state.editTemplate.height,
+          Height_Unit: this.state.editTemplate.height_Unit,
+          Length: this.state.editTemplate.length,
+          Length_Unit: this.state.editTemplate.length_Unit,
+          Breath: this.state.editTemplate.breath,
+          Breath_Unit: this.state.editTemplate.breath_Unit,
+          Weight: this.state.editTemplate.weight,
+          Weight_Unit: this.state.editTemplate.weight_Unit,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              OrdTemplateNameValidation: "",
+              OrdTempHeightValidation: "",
+              OrdTempLengthValidation: "",
+              OrdTempBreadthValidation: "",
+              OrdTempWeightValidation: "",
+              editSlotModal: false,
+              editButtonShow: false,
+            });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.templateupdatedsuccessfully
+                : "Template Updated Successfully."
+            );
+            self.handleGetShippingTempData();
+          } else {
+            self.setState({
+              editButtonShow: false,
+            });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.templatenotupdated
+                : "Template not Updated."
+            );
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        EditOrdTempNameValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempHeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempLengthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempBreadthValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+        EditOrdTempWeightValidation:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.requiredfield
+            : "Required field.",
+      });
+    }
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -1114,7 +1552,13 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label="Shipping Template">
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.shippingtemplate
+                      : "Shipping Template"
+                  }
+                >
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -1130,137 +1574,238 @@ class OrderSetting extends Component {
                                   style={{ margin: "0px" }}
                                 >
                                   <div className="col-md-12">
-                                    <h3>Shipping Template</h3>
+                                    <h3>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .shippingtemplate
+                                        : "Shipping Template"}
+                                    </h3>
                                   </div>
                                   <div className="col-md-4">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Template Name</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .templatename
+                                          : "Template Name"}
+                                      </label>
                                       <input
                                         className="mx-slt-txt"
                                         type="text"
-                                        placeholder="Enter Template Name"
+                                        placeholder={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext
+                                                .ticketingDashboard
+                                                .entertemplatename
+                                            : "Enter Template Name"
+                                        }
                                         autoComplete="off"
+                                        maxLength={250}
+                                        name="OrdTemplatename"
+                                        value={this.state.OrdTemplatename}
+                                        onChange={this.handleInputOnchange.bind(
+                                          this
+                                        )}
                                       />
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTemplatename === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTemplateNameValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Height</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.height
+                                          : "Height"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempHeight"
+                                          value={this.state.OrdTempHeight}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdHeight}
+                                          name="selectedOrdHeight"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
                                           <option value="cm">cm</option>
-                                          <option value="m">m</option>
+                                          <option value="feet">feet</option>
+                                          <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempHeight === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempHeightValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Length</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.length
+                                          : "Length"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempLength"
+                                          value={this.state.OrdTempLength}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdLength}
+                                          name="selectedOrdLength"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
                                           <option value="cm">cm</option>
-                                          <option value="m">m</option>
+                                          <option value="feet">feet</option>
+                                          <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempLength === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempLengthValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Breadth</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.breadth
+                                          : "Breadth"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempBreadth"
+                                          value={this.state.OrdTempBreadth}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdBreadth}
+                                          name="selectedOrdBreadth"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
                                           <option value="cm">cm</option>
-                                          <option value="m">m</option>
+                                          <option value="feet">feet</option>
+                                          <option value="inch">inch</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempBreadth === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempBreadthValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-md-2">
                                     <div className="mx-slt-div m-0 px-0">
-                                      <label>Weight</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.weight
+                                          : "Weight"}
+                                      </label>
                                       <div className="d-flex">
                                         <input
                                           className="mx-slt-txt slot-hour"
                                           type="text"
                                           autoComplete="off"
+                                          name="OrdTempWeight"
+                                          value={this.state.OrdTempWeight}
+                                          maxLength={8}
+                                          onChange={this.handleInputValidationChange.bind(
+                                            this
+                                          )}
                                         />
-                                        <select className="slot-shift">
-                                          <option value="kg">kg</option>
+                                        <select
+                                          className="slot-shift"
+                                          value={this.state.selectedOrdWeight}
+                                          name="selectedOrdWeight"
+                                          onChange={this.handleDropDownChange.bind(
+                                            this
+                                          )}
+                                        >
+                                          <option value="Kg">Kg</option>
                                           <option value="g">g</option>
+                                          <option value="lbs">lbs</option>
                                         </select>
                                       </div>
-                                      {/* {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )} */}
+                                      {this.state.OrdTempWeight === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.OrdTempWeightValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
-                                  <div className="col-md-12 my-3">
+                                  <div className="col-md-12 my-3 text-center">
                                     <button
-                                      className="Schedulenext1 w-100 mb-0"
+                                      className="Schedulenext1 mb-0"
                                       type="button"
+                                      onClick={this.handleSubmitShppingTemp.bind(
+                                        this
+                                      )}
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.button.submit
@@ -1272,112 +1817,96 @@ class OrderSetting extends Component {
                             </div>
                           </div>
                           <div className="row">
-                            <div className="col-md-12">
+                            <div className="col-md-12 table-cntr store dv-table-paging">
                               <Table
-                                loading={this.state.loading}
-                                noDataContent="No Record Found"
+                                loading={this.state.ShipTemploading}
+                                noDataContent={ TranslationContext !== undefined
+                                  ? TranslationContext.label
+                                      .norecordfound
+                                  : "No Record Found"}
                                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                 columns={[
                                   {
-                                    title: "Template Name",
-
-                                    dataIndex: "slotSettingID",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.templatename
+                                        : "Template Name",
+                                    dataIndex: "templateName",
                                   },
                                   {
-                                    title: "Height",
-                                    dataIndex: "storeCode",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .height
+                                        : "Height",
+                                    dataIndex: "height",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.height}&nbsp;{item.height_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
-                                    title: "Length",
-                                    dataIndex: "storeTimimg",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .length
+                                        : "Length",
+                                    dataIndex: "length",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.length}&nbsp;{item.length_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
-                                    title: "Breadth",
-                                    dataIndex: "nonOperationalTimimg",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .breadth
+                                        : "Breadth",
+                                    dataIndex: "breath",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.breath}&nbsp;{item.breath_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
-                                    title: "Weight",
-                                    dataIndex: "storeSlotDuration",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .weight
+                                        : "Weight",
+                                    dataIndex: "weight",
+                                    render: (row, item) => {
+                                      return (
+                                        <>
+                                          {item.weight}&nbsp;{item.weight_Unit}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.header.actions
                                         : "Actions",
-
-                                    render: (row, rowData) => {
-                                      var ids = row;
+                                    render: (row, item) => {
                                       return (
                                         <>
                                           <span>
-                                            <Popover
-                                              content={
-                                                <div className="d-flex general-popover popover-body">
-                                                  <div className="del-big-icon">
-                                                    <img
-                                                      src={DelBigIcon}
-                                                      alt="del-icon"
-                                                    />
-                                                  </div>
-                                                  <div>
-                                                    <p className="font-weight-bold blak-clr">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .deletefile
-                                                        : "Delete file"}
-                                                      ?
-                                                    </p>
-                                                    <p className="mt-1 fs-12">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .areyousureyouwanttodeletethisfile
-                                                        : "Are you sure you want to delete this file"}
-                                                      ?
-                                                    </p>
-                                                    <div className="del-can">
-                                                      <a href={Demo.BLANK_LINK}>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext.a
-                                                              .cancel
-                                                          : "CANCEL"}
-                                                      </a>
-                                                      <button
-                                                        className="butn"
-                                                        onClick={this.handleDeleteTimeSlot.bind(
-                                                          this,
-                                                          rowData.slotSettingID
-                                                        )}
-                                                      >
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext
-                                                              .button.delete
-                                                          : "Delete"}
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              }
-                                              placement="bottom"
-                                              trigger="click"
-                                            >
-                                              <img
-                                                src={RedDeleteIcon}
-                                                alt="del-icon"
-                                                className="del-btn"
-                                                id={ids}
-                                              />
-                                            </Popover>
-
                                             <button
                                               className="react-tabel-button editre"
                                               onClick={this.openSlotEditModal.bind(
                                                 this,
-                                                rowData.slotSettingID,
-                                                rowData.storeId
+                                                item
                                               )}
                                             >
                                               {TranslationContext !== undefined
@@ -1390,18 +1919,34 @@ class OrderSetting extends Component {
                                     },
                                   },
                                 ]}
-                                // rowKey={(record) => {
-                                //   if (record.slotSettingID) {
-                                //     uid = uid + 1;
-                                //     return record.slotSettingID + "i" + uid;
-                                //   } else {
-                                //     uid = uid + 1;
-                                //     return "i" + uid;
-                                //   }
-                                // }}
-                                pagination={{ defaultPageSize: 10 }}
-                                dataSource={this.state.TimeSlotGridData}
+                                rowKey="id"
+                                pagination={false}
+                                dataSource={this.state.ShippingTempData}
                               ></Table>
+                              <Pagination
+                                currentPage={this.state.currentPage}
+                                totalSize={this.state.totalCount}
+                                sizePerPage={this.state.postsPerPage}
+                                changeCurrentPage={this.PaginationOnChange}
+                                theme="bootstrap"
+                              />
+                              <div className="position-relative">
+                                <div className="item-selection Camp-pagination">
+                                  <select
+                                    value={this.state.postsPerPage}
+                                    onChange={this.handlePageItemchange}
+                                  >
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={30}>30</option>
+                                  </select>
+                                  <p>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.itemsperpage
+                                      : "Items per page"}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1411,6 +1956,242 @@ class OrderSetting extends Component {
                 </Tab>
               </Tabs>
             </section>
+            {/* edit slot starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .editshippingtemplate
+                      : "EDIT SHIPPING TEMPLATE"}
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot shipping-template-edit">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.templatename
+                        : "Template Name"}
+                    </label>
+                    <input
+                      className="mx-slt-txt"
+                      type="text"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .entertemplatename
+                          : "Enter Template Name"
+                      }
+                      autoComplete="off"
+                      maxLength={250}
+                      name="templateName"
+                      value={this.state.editTemplate.templateName}
+                      onChange={this.handleEditInputOnchange.bind(this)}
+                    />
+                    {this.state.editTemplate.templateName === "" && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginBottom: "0px",
+                        }}
+                      >
+                        {this.state.EditOrdTempNameValidation}
+                      </p>
+                    )}
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.height
+                        : "Height"}
+                    </label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="height"
+                          value={this.state.editTemplate.height}
+                          maxLength={8}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.editTemplate.height_Unit}
+                          name="height_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                        {this.state.editTemplate.height === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempHeightValidation}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.length
+                        : "Length"}
+                    </label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="length"
+                          value={this.state.editTemplate.length}
+                          maxLength={8}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.editTemplate.length_Unit}
+                          name="length_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                        {this.state.editTemplate.length === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempLengthValidation}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.breadth
+                        : "Breadth"}
+                    </label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="breath"
+                          value={this.state.editTemplate.breath}
+                          maxLength={8}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.editTemplate.breath_Unit}
+                          name="breath_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
+                        >
+                          <option value="cm">cm</option>
+                          <option value="feet">feet</option>
+                          <option value="inch">inch</option>
+                        </select>
+                        {this.state.editTemplate.breath === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempBreadthValidation}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.weight
+                        : "Weight"}
+                    </label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <input
+                          className="mx-slt-txt slot-hour"
+                          type="text"
+                          autoComplete="off"
+                          name="weight"
+                          value={this.state.editTemplate.weight}
+                          maxLength={8}
+                          onChange={this.handleEditInputValidationChange.bind(
+                            this
+                          )}
+                        />
+                        <select
+                          className="slot-shift"
+                          value={this.state.editTemplate.weight_Unit}
+                          name="weight_Unit"
+                          onChange={this.handleEditInputOnchange.bind(this)}
+                        >
+                          <option value="Kg">Kg</option>
+                          <option value="g">g</option>
+                          <option value="lbs">lbs</option>
+                        </select>
+                        {this.state.editTemplate.weight === "" && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {this.state.EditOrdTempWeightValidation}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    onClick={this.closeSlotEditModal}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.cancel
+                      : "CANCEL"}
+                  </a>
+                  <button
+                    className={
+                      this.state.editButtonShow
+                        ? "pop-over-button FlNone pop-over-btnsave-text order-grid-btn-disable"
+                        : "pop-over-button FlNone pop-over-btnsave-text"
+                    }
+                    onClick={this.handleUpdateShippingTemplate.bind(this)}
+                    disabled={this.state.editButtonShow}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.save
+                      : "SAVE"}
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit slot ends */}
           </div>
         </div>
       </Fragment>

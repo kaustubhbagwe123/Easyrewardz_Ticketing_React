@@ -310,8 +310,8 @@ class CardAssets extends Component {
                                         >
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                                .uploadeddata
-                                            : "Uploaded Data"}
+                                                .uploadeddate
+                                            : "Uploaded Date"}
                                         </label>
                                         <p style={{ display: "inline" }}>
                                           {rowdata.createdDate}
@@ -535,8 +535,8 @@ class CardAssets extends Component {
                                       >
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                              .uploadeddata
-                                          : "Uploaded Data"}
+                                              .uploadeddate
+                                          : "Uploaded Date"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.createdDate}

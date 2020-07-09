@@ -14,6 +14,7 @@ import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
+import ReactTable from "react-table";
 
 class Campaign extends Component {
   constructor(props) {
@@ -43,7 +44,12 @@ class Campaign extends Component {
       CampaignStatusFilter: false,
       strCampStatus: "",
       custNameModal: false,
-      sortCustName: ""
+      sortCustName: "",
+      lastTransactionItem: [],
+      lasttransactiondetails: {},
+      customerName: "",
+      customerNumber: "",
+      useratvdetails: {},
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -137,7 +143,7 @@ class Campaign extends Component {
       url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomer",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -188,7 +194,7 @@ class Campaign extends Component {
         CallReScheduledTo: calculatedCallReScheduledTo,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -221,7 +227,7 @@ class Campaign extends Component {
         IsClosed: 1,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -345,7 +351,7 @@ class Campaign extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let Msg = res.data.status;
             let TID = res.data.responseData;
@@ -422,7 +428,7 @@ class Campaign extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var brandData = response.data.responseData;
@@ -447,7 +453,7 @@ class Campaign extends Component {
       headers: authHeader(),
       params: { BrandID: Number(brandID) },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var categoryData = response.data;
         if (categoryData.length > 0) {
@@ -472,7 +478,7 @@ class Campaign extends Component {
       headers: authHeader(),
       params: { CategoryID: categoryID },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
@@ -498,7 +504,7 @@ class Campaign extends Component {
       headers: authHeader(),
       params: { SubCategoryID: subCategoryId },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
@@ -737,7 +743,7 @@ class Campaign extends Component {
         statusID: filterIds,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -760,14 +766,58 @@ class Campaign extends Component {
     debugger;
     var sortName = "";
     var strTag = rowData.customerName.split(" ");
-    for(var i = 0; i<strTag.length;i++)
-    {
+    for (var i = 0; i < strTag.length; i++) {
       sortName += strTag[i].charAt(0).toUpperCase();
     }
-    this.setState({
-      custNameModal: true,
-      sortCustName: sortName
-    });
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreCustomerpopupDetails",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          if (data.lasttransactiondetails !== null) {
+            if (data.lasttransactiondetails.itemDetails !== null) {
+              self.setState({
+                lastTransactionItem: data.lasttransactiondetails.itemDetails,
+              });
+            } else {
+              self.setState({
+                lastTransactionItem: [],
+              });
+            }
+          } else {
+            self.setState({
+              lastTransactionItem: [],
+            });
+          }
+
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: rowData,
+            useratvdetails: data.useratvdetails,
+            lasttransactiondetails: data.lasttransactiondetails,
+            sortCustName: sortName,
+            customerName: rowData.customerName,
+            customerNumber: rowData.customerPhoneNumber,
+          });
+        } else {
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: {},
+            useratvdetails: {},
+            lasttransactiondetails: {},
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   }
 
   handleCustomerNameModalClose() {
@@ -783,7 +833,7 @@ class Campaign extends Component {
       <div className="custom-camp-table">
         <div className="table-cntr store">
           <Table
-            className="components-table-demo-nested antd-table-campaign-padd antd-table-campaign custom-antd-table"
+            className="components-table-demo-nested antd-table-campaign-padd antd-table-campaign custom-antd-table store-campaign-table"
             columns={[
               {
                 title:
@@ -805,6 +855,7 @@ class Campaign extends Component {
                     ? TranslationContext.title.campaignscript
                     : "Campaign Script",
                 dataIndex: "campaignScript",
+                className: "order-desktop",
               },
               {
                 title:
@@ -812,6 +863,7 @@ class Campaign extends Component {
                     ? TranslationContext.title.campaignenddate
                     : "Campaign End Date",
                 dataIndex: "campaignEndDate",
+                className: "order-desktop",
               },
               {
                 title:
@@ -848,406 +900,679 @@ class Campaign extends Component {
             ]}
             expandedRowRender={(row) => {
               return (
-                <Table
-                  dataSource={row.storeCampaignCustomerList}
-                  columns={[
-                    {
-                      title:
-                        TranslationContext !== undefined
-                          ? TranslationContext.title.customername
-                          : "Customer Name",
-                      // dataIndex: "orderMasterID",
-                      render: (row, item) => {
-                        return (
-                          <>
-                            <p
-                              className="cust-name"
-                              onClick={this.handleGetCustomerDataForModal.bind(
-                                this,
-                                item
-                              )}
-                            >
-                              {item.customerName}
-                            </p>
-                            <span className="sml-fnt">
-                              {item.customerPhoneNumber}
-                            </span>
-                          </>
-                        );
-                      },
-                    },
-                    {
-                      title:
-                        TranslationContext !== undefined
-                          ? TranslationContext.title.date
-                          : "Date",
-                      dataIndex: "campaignTypeDate",
-                    },
-                    {
-                      title:
-                        TranslationContext !== undefined
-                          ? TranslationContext.title.status
-                          : "Status",
-                      // dataIndex: "articleName"
-                      render: (row, item) => {
-                        return (
-                          <div className="d-flex">
-                            <div>
-                              <input
-                                type="radio"
-                                name={
-                                  "campaign-status-" + item.campaignCustomerID
-                                }
-                                className="campaign-status-btn"
-                                id={"contactBtnGreen" + item.campaignCustomerID}
-                                onChange={this.onStatusChange.bind(
+                <>
+                  <div className="store-campaign-inner-cntr store-campaign-script-info">
+                    <div>
+                      <p className="store-campaign-inner-title">
+                        Campaign Script
+                      </p>
+                      <p>{row.campaignScript}</p>
+                    </div>
+                    <div>
+                      <p className="store-campaign-inner-title">
+                        Campaign End Date
+                      </p>
+                      <p>{row.campaignEndDate}</p>
+                    </div>
+                  </div>
+                  <Table
+                    className="store-campaign-inner-table"
+                    dataSource={row.storeCampaignCustomerList}
+                    columns={[
+                      {
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.customername
+                            : "Customer Name",
+                        // dataIndex: "orderMasterID",
+                        render: (row, item) => {
+                          return (
+                            <>
+                              <p
+                                className="cust-name"
+                                onClick={this.handleGetCustomerDataForModal.bind(
                                   this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
+                                  item
                                 )}
-                                value="100"
-                                checked={item.campaignStatus === 100}
-                              />
-                              <label
-                                className="table-btnlabel contactBtnGreen"
-                                htmlFor={
-                                  "contactBtnGreen" + item.campaignCustomerID
-                                }
                               >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.contacted
-                                  : "Contacted"}
-                              </label>
+                                {item.customerName}
+                              </p>
+                              <span className="sml-fnt">
+                                {item.customerPhoneNumber}
+                              </span>
+                            </>
+                          );
+                        },
+                      },
+                      {
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.date
+                            : "Date",
+                        dataIndex: "campaignTypeDate",
+                      },
+                      {
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.status
+                            : "Status",
+                        // dataIndex: "articleName"
+                        render: (row, item) => {
+                          return (
+                            <div className="d-flex">
+                              <div>
+                                <input
+                                  type="radio"
+                                  name={
+                                    "campaign-status-" + item.campaignCustomerID
+                                  }
+                                  className="campaign-status-btn"
+                                  id={
+                                    "contactBtnGreen" + item.campaignCustomerID
+                                  }
+                                  onChange={this.onStatusChange.bind(
+                                    this,
+                                    item.campaignTypeID,
+                                    item.campaignCustomerID
+                                  )}
+                                  value="100"
+                                  checked={item.campaignStatus === 100}
+                                />
+                                <label
+                                  className="table-btnlabel contactBtnGreen"
+                                  htmlFor={
+                                    "contactBtnGreen" + item.campaignCustomerID
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.contacted
+                                    : "Contacted"}
+                                </label>
+                              </div>
+                              <div className="position-relative">
+                                {item.noOfTimesNotContacted !== 0 &&
+                                  item.campaignStatus === 101 && (
+                                    <div className="not-contacted-count">
+                                      {item.noOfTimesNotContacted}
+                                    </div>
+                                  )}
+                                <input
+                                  type="radio"
+                                  name={
+                                    "campaign-status-" + item.campaignCustomerID
+                                  }
+                                  className="campaign-status-btn"
+                                  id={
+                                    "notConnectedBtnRed" +
+                                    item.campaignCustomerID
+                                  }
+                                  onChange={this.onStatusChange.bind(
+                                    this,
+                                    item.campaignTypeID,
+                                    item.campaignCustomerID
+                                  )}
+                                  value="101"
+                                  checked={item.campaignStatus === 101}
+                                />
+                                <label
+                                  className="table-btnlabel notConnectedBtnRed"
+                                  htmlFor={
+                                    "notConnectedBtnRed" +
+                                    item.campaignCustomerID
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.notcontacted
+                                    : "Not Contacted"}
+                                </label>
+                              </div>
+                              <div>
+                                <input
+                                  type="radio"
+                                  name={
+                                    "campaign-status-" + item.campaignCustomerID
+                                  }
+                                  className="campaign-status-btn"
+                                  id={
+                                    "followUpBtnYellow" +
+                                    item.campaignCustomerID
+                                  }
+                                  onChange={this.onStatusChange.bind(
+                                    this,
+                                    item.campaignTypeID,
+                                    item.campaignCustomerID
+                                  )}
+                                  value="102"
+                                  checked={item.campaignStatus === 102}
+                                />
+                                <label
+                                  className="table-btnlabel followUpBtnYellow"
+                                  htmlFor={
+                                    "followUpBtnYellow" +
+                                    item.campaignCustomerID
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.followup
+                                    : "Follow Up"}
+                                </label>
+                              </div>
                             </div>
-                            <div className="position-relative">
-                              {item.noOfTimesNotContacted !== 0 &&
-                                item.campaignStatus === 101 && (
-                                  <div className="not-contacted-count">
-                                    {item.noOfTimesNotContacted}
-                                  </div>
-                                )}
-                              <input
-                                type="radio"
-                                name={
-                                  "campaign-status-" + item.campaignCustomerID
-                                }
-                                className="campaign-status-btn"
-                                id={
-                                  "notConnectedBtnRed" + item.campaignCustomerID
-                                }
-                                onChange={this.onStatusChange.bind(
-                                  this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
-                                )}
-                                value="101"
-                                checked={item.campaignStatus === 101}
-                              />
-                              <label
-                                className="table-btnlabel notConnectedBtnRed"
-                                htmlFor={
-                                  "notConnectedBtnRed" + item.campaignCustomerID
-                                }
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.notcontacted
-                                  : "Not Contacted"}
-                              </label>
+                          );
+                        },
+                        className:
+                          "camp-status-header camp-status-header-statusFilter",
+                        filterDropdown: (data, row) => {
+                          return (
+                            <div className="campaign-status-drpdwn">
+                              <ul>
+                                <li>
+                                  <input
+                                    type="checkbox"
+                                    id="Campall-status"
+                                    className="ch1"
+                                    onChange={this.handleCheckCampAllStatus.bind(
+                                      this
+                                    )}
+                                    checked={this.state.CheckBoxAllStatus}
+                                    name="CampallStatus"
+                                  />
+                                  <label htmlFor="Campall-status">
+                                    <span className="ch1-text">All</span>
+                                  </label>
+                                </li>
+                                <li>
+                                  <input
+                                    type="checkbox"
+                                    id="New100"
+                                    className="ch1"
+                                    onChange={this.handleCheckCampIndividualStatus.bind(
+                                      this
+                                    )}
+                                    name="CampallStatus"
+                                    attrIds={100}
+                                  />
+                                  <label htmlFor="New100">
+                                    <span className="ch1-text">Contacted</span>
+                                  </label>
+                                </li>
+                                <li>
+                                  <input
+                                    type="checkbox"
+                                    id="Inproress101"
+                                    className="ch1"
+                                    onChange={this.handleCheckCampIndividualStatus.bind(
+                                      this
+                                    )}
+                                    name="CampallStatus"
+                                    attrIds={101}
+                                  />
+                                  <label htmlFor="Inproress101">
+                                    <span className="ch1-text">
+                                      Not Contacted
+                                    </span>
+                                  </label>
+                                </li>
+                                <li>
+                                  <input
+                                    type="checkbox"
+                                    id="Close102"
+                                    className="ch1"
+                                    onChange={this.handleCheckCampIndividualStatus.bind(
+                                      this
+                                    )}
+                                    name="CampallStatus"
+                                    attrIds={102}
+                                  />
+                                  <label htmlFor="Close102">
+                                    <span className="ch1-text">Follow Up</span>
+                                  </label>
+                                </li>
+                              </ul>
                             </div>
-                            <div>
-                              <input
-                                type="radio"
-                                name={
-                                  "campaign-status-" + item.campaignCustomerID
-                                }
-                                className="campaign-status-btn"
-                                id={
-                                  "followUpBtnYellow" + item.campaignCustomerID
-                                }
-                                onChange={this.onStatusChange.bind(
-                                  this,
-                                  item.campaignTypeID,
-                                  item.campaignCustomerID
-                                )}
-                                value="102"
-                                checked={item.campaignStatus === 102}
-                              />
-                              <label
-                                className="table-btnlabel followUpBtnYellow"
-                                htmlFor={
-                                  "followUpBtnYellow" + item.campaignCustomerID
-                                }
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.followup
-                                  : "Follow Up"}
-                              </label>
-                            </div>
-                          </div>
-                        );
+                          );
+                        },
+                        filterDropdownVisible: this.state.CampaignStatusFilter,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ CampaignStatusFilter: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
+                        className: "order-desktop",
                       },
-                      className:
-                        "camp-status-header camp-status-header-statusFilter",
-                      filterDropdown: (data, row) => {
-                        return (
-                          <div className="campaign-status-drpdwn">
-                            <ul>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="Campall-status"
-                                  className="ch1"
-                                  onChange={this.handleCheckCampAllStatus.bind(
-                                    this
-                                  )}
-                                  checked={this.state.CheckBoxAllStatus}
-                                  name="CampallStatus"
-                                />
-                                <label htmlFor="Campall-status">
-                                  <span className="ch1-text">All</span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="New100"
-                                  className="ch1"
-                                  onChange={this.handleCheckCampIndividualStatus.bind(
-                                    this
-                                  )}
-                                  name="CampallStatus"
-                                  attrIds={100}
-                                />
-                                <label htmlFor="New100">
-                                  <span className="ch1-text">Contacted</span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="Inproress101"
-                                  className="ch1"
-                                  onChange={this.handleCheckCampIndividualStatus.bind(
-                                    this
-                                  )}
-                                  name="CampallStatus"
-                                  attrIds={101}
-                                />
-                                <label htmlFor="Inproress101">
-                                  <span className="ch1-text">
-                                    Not Contacted
-                                  </span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="Close102"
-                                  className="ch1"
-                                  onChange={this.handleCheckCampIndividualStatus.bind(
-                                    this
-                                  )}
-                                  name="CampallStatus"
-                                  attrIds={102}
-                                />
-                                <label htmlFor="Close102">
-                                  <span className="ch1-text">Follow Up</span>
-                                </label>
-                              </li>
-                            </ul>
-                          </div>
-                        );
-                      },
-                      filterDropdownVisible: this.state.CampaignStatusFilter,
-                      onFilterDropdownVisibleChange: (visible) =>
-                        this.setState({ CampaignStatusFilter: visible }),
-                      filterIcon: (filtered) => (
-                        <span
-                          style={{ color: filtered ? "#1890ff" : undefined }}
-                        ></span>
-                      ),
-                    },
-                    {
-                      title:
-                        TranslationContext !== undefined
-                          ? TranslationContext.title.response
-                          : "Response",
-                      render: (row, item) => {
-                        return (
-                          <div
-                            className={
-                              item.campaignStatus === 0 ? "disabled-input" : ""
-                            }
-                          >
-                            <select
-                              className={
-                                item.campaignStatus === 0
-                                  ? "responceDrop-down dropdown-label disabled-link"
-                                  : "responceDrop-down dropdown-label"
-                              }
-                              value={item.response}
-                              onChange={this.onResponseChange.bind(
-                                this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
-                              )}
-                            >
-                              <option hidden>Select</option>
-                              {item.campaignResponseList !== null &&
-                                item.campaignResponseList
-                                  .filter(
-                                    (x) =>
-                                      x.statusNameID === item.campaignStatus
-                                  )
-                                  .map((items, i) => (
-                                    <option key={i} value={items.responseID}>
-                                      {items.response}
-                                    </option>
-                                  ))}
-                            </select>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title:
-                        TranslationContext !== undefined
-                          ? TranslationContext.title.callrecheduledto
-                          : "Call Recheduled To",
-                      // dataIndex: "pricePaid"
-                      render: (row, item) => {
-                        return (
-                          <div
-                            className={
-                              item.campaignStatus === 102 && item.response === 3
-                                ? ""
-                                : "disabled-input"
-                            }
-                          >
-                            <DatePicker
-                              id="startDate"
-                              autoComplete="off"
-                              showTimeSelect
-                              name="startDate"
-                              showMonthDropdown
-                              showYearDropdown
-                              selected={
-                                item.callReScheduledTo !== ""
-                                  ? new Date(item.callReScheduledTo)
-                                  : new Date()
-                              }
-                              dateFormat="MM/dd/yyyy h:mm aa"
-                              value={
-                                item.callReScheduledTo !== ""
-                                  ? moment(item.callReScheduledTo)
-                                  : ""
-                              }
-                              onChange={this.onDateChange.bind(
-                                this,
-                                item.campaignTypeID,
-                                item.campaignCustomerID
-                              )}
-                              className={
-                                item.campaignStatus === 102 &&
-                                  item.response === 3
-                                  ? "txtStore dateTimeStore"
-                                  : "txtStore dateTimeStore disabled-link"
-                              }
-                              placeholderText={TranslationContext !== undefined ? TranslationContext.placeholder.selecttimeanddate : "Select Date &amp; Time"}
-                            />
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title:
-                        TranslationContext !== undefined
-                          ? TranslationContext.title.actions
-                          : "Actions",
-                      render: (row, item) => {
-                        return (
-                          <div className="d-flex">
+                      {
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.response
+                            : "Response",
+                        render: (row, item) => {
+                          return (
                             <div
                               className={
-                                (item.campaignStatus === 100 &&
-                                  item.response !== 0) ||
+                                item.campaignStatus === 0
+                                  ? "disabled-input"
+                                  : ""
+                              }
+                            >
+                              <select
+                                className={
+                                  item.campaignStatus === 0
+                                    ? "responceDrop-down dropdown-label disabled-link"
+                                    : "responceDrop-down dropdown-label"
+                                }
+                                value={item.response}
+                                onChange={this.onResponseChange.bind(
+                                  this,
+                                  item.campaignTypeID,
+                                  item.campaignCustomerID
+                                )}
+                              >
+                                <option hidden>Select</option>
+                                {item.campaignResponseList !== null &&
+                                  item.campaignResponseList
+                                    .filter(
+                                      (x) =>
+                                        x.statusNameID === item.campaignStatus
+                                    )
+                                    .map((items, i) => (
+                                      <option key={i} value={items.responseID}>
+                                        {items.response}
+                                      </option>
+                                    ))}
+                              </select>
+                            </div>
+                          );
+                        },
+                        className: "order-desktop",
+                      },
+                      {
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.callrecheduledto
+                            : "Call Recheduled To",
+                        // dataIndex: "pricePaid"
+                        render: (row, item) => {
+                          return (
+                            <div
+                              className={
+                                item.campaignStatus === 102 &&
+                                item.response === 3
+                                  ? ""
+                                  : "disabled-input"
+                              }
+                            >
+                              <DatePicker
+                                id="startDate"
+                                autoComplete="off"
+                                showTimeSelect
+                                name="startDate"
+                                showMonthDropdown
+                                showYearDropdown
+                                selected={
+                                  item.callReScheduledTo !== ""
+                                    ? new Date(item.callReScheduledTo)
+                                    : new Date()
+                                }
+                                dateFormat="MM/dd/yyyy h:mm aa"
+                                value={
+                                  item.callReScheduledTo !== ""
+                                    ? moment(item.callReScheduledTo)
+                                    : ""
+                                }
+                                onChange={this.onDateChange.bind(
+                                  this,
+                                  item.campaignTypeID,
+                                  item.campaignCustomerID
+                                )}
+                                className={
+                                  item.campaignStatus === 102 &&
+                                  item.response === 3
+                                    ? "txtStore dateTimeStore"
+                                    : "txtStore dateTimeStore disabled-link"
+                                }
+                                placeholderText={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .selecttimeanddate
+                                    : "Select Date & Time"
+                                }
+                              />
+                            </div>
+                          );
+                        },
+                        className: "order-desktop",
+                      },
+                      {
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.actions
+                            : "Actions",
+                        render: (row, item) => {
+                          return (
+                            <div className="d-flex">
+                              <div
+                                className={
+                                  (item.campaignStatus === 100 &&
+                                    item.response !== 0) ||
                                   (item.campaignStatus === 101 &&
                                     item.response !== 0) ||
                                   (item.campaignStatus === 102 &&
                                     item.response !== 0 &&
                                     item.callReScheduledTo !== "")
-                                  ? ""
-                                  : "disabled-input"
-                              }
-                            >
-                              <button
-                                className={
-                                  (item.campaignStatus === 100 &&
-                                    item.response !== 0) ||
+                                    ? ""
+                                    : "disabled-input"
+                                }
+                              >
+                                <button
+                                  className={
+                                    (item.campaignStatus === 100 &&
+                                      item.response !== 0) ||
                                     (item.campaignStatus === 101 &&
                                       item.response !== 0) ||
                                     (item.campaignStatus === 102 &&
                                       item.response !== 0 &&
                                       item.callReScheduledTo !== "")
-                                    ? "saveBtn"
-                                    : "saveBtn disabled-link"
+                                      ? "saveBtn"
+                                      : "saveBtn disabled-link"
+                                  }
+                                  type="button"
+                                  style={{
+                                    minWidth: "5px",
+                                    marginRight: "3px",
+                                  }}
+                                  onClick={this.handleUpdateCampaignStatusResponse.bind(
+                                    this,
+                                    item.campaignCustomerID,
+                                    item.campaignStatus,
+                                    item.response,
+                                    item.callReScheduledTo
+                                  )}
+                                >
+                                  <label className="saveLabel">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.save
+                                      : "Save"}
+                                  </label>
+                                </button>
+                              </div>
+                              <div
+                                className={
+                                  item.campaignStatus === 100 &&
+                                  item.response !== 0
+                                    ? ""
+                                    : "disabled-input"
                                 }
-                                type="button"
-                                style={{ minWidth: "5px", marginRight: "3px" }}
-                                onClick={this.handleUpdateCampaignStatusResponse.bind(
-                                  this,
-                                  item.campaignCustomerID,
-                                  item.campaignStatus,
-                                  item.response,
-                                  item.callReScheduledTo
-                                )}
+                                style={{ display: "none" }}
                               >
-                                <label className="saveLabel">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.save
-                                    : "Save"}
-                                </label>
-                              </button>
+                                <button
+                                  className={
+                                    item.campaignStatus === 100 &&
+                                    item.response !== 0
+                                      ? "raisedticket-Btn"
+                                      : "raisedticket-Btn disabled-link"
+                                  }
+                                  type="button"
+                                  onClick={this.handleRaisedTicketModalOpen.bind(
+                                    this,
+                                    row,
+                                    item
+                                  )}
+                                >
+                                  <label className="raise-ticketLbl">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.raiseticket
+                                      : "Raise Ticket"}
+                                  </label>
+                                </button>
+                              </div>
                             </div>
+                          );
+                        },
+                      },
+                    ]}
+                    expandedRowRender={(row) => {
+                      return (
+                        <div className="store-campaign-inner-cntr">
+                          <div>
+                            <p className="store-campaign-inner-title">Status</p>
+                            <div className="d-flex">
+                              <div>
+                                <input
+                                  type="radio"
+                                  name={
+                                    "campaign-status-" + row.campaignCustomerID
+                                  }
+                                  className="campaign-status-btn"
+                                  id={
+                                    "contactBtnGreen" + row.campaignCustomerID
+                                  }
+                                  onChange={this.onStatusChange.bind(
+                                    this,
+                                    row.campaignTypeID,
+                                    row.campaignCustomerID
+                                  )}
+                                  value="100"
+                                  checked={row.campaignStatus === 100}
+                                />
+                                <label
+                                  className="table-btnlabel contactBtnGreen"
+                                  htmlFor={
+                                    "contactBtnGreen" + row.campaignCustomerID
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.contacted
+                                    : "Contacted"}
+                                </label>
+                              </div>
+                              <div className="position-relative">
+                                {row.noOfTimesNotContacted !== 0 &&
+                                  row.campaignStatus === 101 && (
+                                    <div className="not-contacted-count">
+                                      {row.noOfTimesNotContacted}
+                                    </div>
+                                  )}
+                                <input
+                                  type="radio"
+                                  name={
+                                    "campaign-status-" + row.campaignCustomerID
+                                  }
+                                  className="campaign-status-btn"
+                                  id={
+                                    "notConnectedBtnRed" +
+                                    row.campaignCustomerID
+                                  }
+                                  onChange={this.onStatusChange.bind(
+                                    this,
+                                    row.campaignTypeID,
+                                    row.campaignCustomerID
+                                  )}
+                                  value="101"
+                                  checked={row.campaignStatus === 101}
+                                />
+                                <label
+                                  className="table-btnlabel notConnectedBtnRed"
+                                  htmlFor={
+                                    "notConnectedBtnRed" +
+                                    row.campaignCustomerID
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.notcontacted
+                                    : "Not Contacted"}
+                                </label>
+                              </div>
+                              <div>
+                                <input
+                                  type="radio"
+                                  name={
+                                    "campaign-status-" + row.campaignCustomerID
+                                  }
+                                  className="campaign-status-btn"
+                                  id={
+                                    "followUpBtnYellow" + row.campaignCustomerID
+                                  }
+                                  onChange={this.onStatusChange.bind(
+                                    this,
+                                    row.campaignTypeID,
+                                    row.campaignCustomerID
+                                  )}
+                                  value="102"
+                                  checked={row.campaignStatus === 102}
+                                />
+                                <label
+                                  className="table-btnlabel followUpBtnYellow"
+                                  htmlFor={
+                                    "followUpBtnYellow" + row.campaignCustomerID
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.followup
+                                    : "Follow Up"}
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="store-campaign-inner-title">
+                              Response
+                            </p>
                             <div
                               className={
-                                item.campaignStatus === 100 &&
-                                  item.response !== 0
+                                row.campaignStatus === 0 ? "disabled-input" : ""
+                              }
+                            >
+                              <select
+                                className={
+                                  row.campaignStatus === 0
+                                    ? "responceDrop-down dropdown-label disabled-link"
+                                    : "responceDrop-down dropdown-label"
+                                }
+                                value={row.response}
+                                onChange={this.onResponseChange.bind(
+                                  this,
+                                  row.campaignTypeID,
+                                  row.campaignCustomerID
+                                )}
+                              >
+                                <option hidden>Select</option>
+                                {row.campaignResponseList !== null &&
+                                  row.campaignResponseList
+                                    .filter(
+                                      (x) =>
+                                        x.statusNameID === row.campaignStatus
+                                    )
+                                    .map((items, i) => (
+                                      <option key={i} value={items.responseID}>
+                                        {items.response}
+                                      </option>
+                                    ))}
+                              </select>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="store-campaign-inner-title">
+                              Call Recheduled To
+                            </p>
+                            <div
+                              className={
+                                row.campaignStatus === 102 && row.response === 3
                                   ? ""
                                   : "disabled-input"
                               }
-                              style={{ display: "none" }}
                             >
-                              <button
-                                className={
-                                  item.campaignStatus === 100 &&
-                                    item.response !== 0
-                                    ? "raisedticket-Btn"
-                                    : "raisedticket-Btn disabled-link"
+                              <DatePicker
+                                id="startDate"
+                                autoComplete="off"
+                                showTimeSelect
+                                name="startDate"
+                                showMonthDropdown
+                                showYearDropdown
+                                selected={
+                                  row.callReScheduledTo !== ""
+                                    ? new Date(row.callReScheduledTo)
+                                    : new Date()
                                 }
-                                type="button"
-                                onClick={this.handleRaisedTicketModalOpen.bind(
+                                dateFormat="MM/dd/yyyy h:mm aa"
+                                value={
+                                  row.callReScheduledTo !== ""
+                                    ? moment(row.callReScheduledTo)
+                                    : ""
+                                }
+                                onChange={this.onDateChange.bind(
                                   this,
-                                  row,
-                                  item
+                                  row.campaignTypeID,
+                                  row.campaignCustomerID
                                 )}
-                              >
-                                <label className="raise-ticketLbl">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.raiseticket
-                                    : "Raise Ticket"}
-                                </label>
-                              </button>
+                                className={
+                                  row.campaignStatus === 102 &&
+                                  row.response === 3
+                                    ? "txtStore dateTimeStore"
+                                    : "txtStore dateTimeStore disabled-link"
+                                }
+                                placeholderText={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .selecttimeanddate
+                                    : "Select Date & Time"
+                                }
+                              />
                             </div>
                           </div>
-                        );
-                      },
-                    },
-                  ]}
-                  pagination={{ defaultPageSize: 10, showSizeChanger: true }}
-                  showSizeChanger={true}
-                  onShowSizeChange={true}
-                />
+                          <div
+                            className={
+                              (row.campaignStatus === 100 &&
+                                row.response !== 0) ||
+                              (row.campaignStatus === 101 &&
+                                row.response !== 0) ||
+                              (row.campaignStatus === 102 &&
+                                row.response !== 0 &&
+                                row.callReScheduledTo !== "")
+                                ? ""
+                                : "disabled-input"
+                            }
+                          >
+                            <button
+                              className={
+                                (row.campaignStatus === 100 &&
+                                  row.response !== 0) ||
+                                (row.campaignStatus === 101 &&
+                                  row.response !== 0) ||
+                                (row.campaignStatus === 102 &&
+                                  row.response !== 0 &&
+                                  row.callReScheduledTo !== "")
+                                  ? "saveBtn"
+                                  : "saveBtn disabled-link"
+                              }
+                              type="button"
+                              style={{ minWidth: "5px", marginRight: "3px" }}
+                              onClick={this.handleUpdateCampaignStatusResponse.bind(
+                                this,
+                                row.campaignCustomerID,
+                                row.campaignStatus,
+                                row.response,
+                                row.callReScheduledTo
+                              )}
+                            >
+                              <label className="saveLabel">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.save
+                                  : "Save"}
+                              </label>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    }}
+                    pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                    expandIconColumnIndex={5}
+                    expandIconAsCell={false}
+                    showSizeChanger={true}
+                    onShowSizeChange={true}
+                  />
+                </>
               );
             }}
             onExpand={this.onRowExpand}
@@ -1518,84 +1843,222 @@ class Campaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>
-
-                  <span>
-
-                  </span>
+                  {this.state.customerName}{" "}
+                  <span>{this.state.customerNumber}</span>
                 </h3>
-                <p></p>
+                <p>{this.state.useratvdetails.tiername}</p>
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-
               <div className="lifetimevalue lt-single">
                 <table>
                   <tbody>
                     <tr>
                       <td>
                         <h4>
-
-
+                          {TranslationContext !== undefined
+                            ? TranslationContext.h4.lifetimevalue
+                            : "Lifetime Value"}
                         </h4>
                         <label>
-
+                          {this.state.useratvdetails.lifeTimeValue !== null ? (
+                            <>₹{this.state.useratvdetails.lifeTimeValue}</>
+                          ) : (
+                            "₹0"
+                          )}
                         </label>
                       </td>
-                      <td>
+                      {/* <td>
                         <h4>
-
-
+                          {TranslationContext !== undefined
+                            ? TranslationContext.h4.visitcount
+                            : "Visit Count"}
                         </h4>
                         <label>
-
+                          {this.state.useratvdetails.visitCount !== null ? (
+                            <>
+                              {this.state.useratvdetails.visitCount < 9
+                                ? "0" + this.state.useratvdetails.visitCount
+                                : this.state.useratvdetails.visitCount}
+                            </>
+                          ) : (
+                            "0"
+                          )}
                         </label>
-                      </td>
+                      </td> */}
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-
-
-              <div
-
-              >
-
-                <h4>
-
-                </h4>
-
-                <p
-                  id="insight-data"
-
-                >
-
-                </p>
-
-              </div>
-
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
                 <div>
-                  <ul
-
-                    role="tablist"
-                  >
-
-
-
+                  <ul role="tablist">
+                    {this.state.lastTransactionItem.length > 0 ? (
+                      <li className="nav-item fo">
+                        <a
+                          className="nav-link active"
+                          data-toggle="tab"
+                          href="#lastTransaction-tab"
+                          role="tab"
+                          aria-controls="lastTransaction-tab"
+                          aria-selected="false"
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.lasttransaction
+                            : "Last Transaction"}
+                        </a>
+                      </li>
+                    ) : null}
                   </ul>
                 </div>
                 <div className="tab-content p-0">
+                  <div
+                    className="tab-pane fade show active"
+                    id="lastTransaction-tab"
+                    role="tabpanel"
+                    aria-labelledby="lastTransaction-tab"
+                  >
+                    <div>
+                      {this.state.lasttransactiondetails !== null ? (
+                        <>
+                          {this.state.lasttransactiondetails.amount !== "" &&
+                          this.state.lasttransactiondetails.amount !== null ? (
+                            <div className="transactionbox">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.billno
+                                          : "Bill No."}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billNo
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.amount
+                                          : "Amount"}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .amount
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.store
+                                          : "Store"}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .storeName
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.h5.date
+                                          : "Date"}
+                                      </h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billDate
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div className="trasactablist">
+                                <div className="myTicket-table remov agentlist last-trans-table">
+                                  <ReactTable
+                                    className="limit-react-table-body tabscrol"
+                                    data={this.state.lastTransactionItem}
+                                    columns={[
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.article
+                                              : "Article"}
+                                          </span>
+                                        ),
+                                        accessor: "article",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.qty
+                                              : "Qty."}
+                                          </span>
+                                        ),
+                                        accessor: "quantity",
+                                        width: 60,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.amount
+                                              : "Amount"}
+                                          </span>
+                                        ),
+                                        accessor: "amount",
+                                        width: 80,
+                                      },
+                                    ]}
+                                    minRows={2}
+                                    // defaultPageSize={5}
+                                    showPagination={false}
+                                    resizable={false}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <label className="ChecknoDataCamp">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.norecordfound
+                                : "No Record Found"}
+                            </label>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <label className="ChecknoDataCamp">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.norecordfound
+                              : "No Record Found"}
+                          </label>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </Modal>
-
       </div>
     );
   }

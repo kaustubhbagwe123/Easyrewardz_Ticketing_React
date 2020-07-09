@@ -39,10 +39,12 @@ class OrderTab extends Component {
       state: "",
       country: "",
       storePinCode: "",
-      PincodeMdl: false,
       orderId: 0,
       AddressConf: false,
       pincodeChecAvaibility: false,
+      showPinCodereturnMsg: false,
+      ordSelfPickup: false,
+      ordMoveReturn: false,
       orderSearchText: "",
     };
   }
@@ -61,7 +63,7 @@ class OrderTab extends Component {
     }
   }
 
-  /// search data 
+  /// search data
   handleOrderSearch = (searchData) => {
     this.setState({
       orderSearchText: searchData,
@@ -231,13 +233,13 @@ class OrderTab extends Component {
         let status = res.data.responseData.available;
         if (status === "false") {
           self.setState({
-            PincodeMdl: true,
             pincodeChecAvaibility: false,
+            showPinCodereturnMsg: false,
             orderId: ordId,
           });
         } else {
           self.setState({
-            PincodeMdl: false,
+            showPinCodereturnMsg: true,
           });
         }
       })
@@ -258,14 +260,9 @@ class OrderTab extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          self.setState({
-            PincodeMdl: false,
-          });
           self.handleGetOrderTabGridData();
         } else {
-          self.setState({
-            PincodeMdl: false,
-          });
+          return false;
         }
       })
       .catch((data) => {
@@ -436,14 +433,6 @@ class OrderTab extends Component {
     }
   }
 
-  ///handle Pin code modla close
-  handlePincodeMdlModalClose() {
-    this.setState({
-      PincodeMdl: false,
-      pincode: "",
-    });
-  }
-
   handleAddressMdlModalClose() {
     this.setState({
       AddressConf: false,
@@ -455,6 +444,26 @@ class OrderTab extends Component {
       filterOrderStatus: false,
     });
   }
+
+  handleOrdChangeOptions = (e) => {
+    debugger;
+    var names = e.target.name;
+
+    if (names === "ordSelfPickup") {
+      this.setState({
+        ordSelfPickup: true,
+        ordMoveReturn: false,
+      });
+    } else {
+      this.setState({
+        ordMoveReturn: true,
+        ordSelfPickup: false,
+      });
+      setTimeout(() => {
+        this.handleSetOrderHasBeenReturn();
+      }, 5);
+    }
+  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -835,16 +844,6 @@ class OrderTab extends Component {
                                         item.id
                                       )}
                                     />
-                                    {this.state.pincodeChecAvaibility && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        Checking your availability.
-                                      </p>
-                                    )}
                                   </div>
                                   <div className="col-md-6">
                                     <p>
@@ -902,6 +901,105 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
+                              {this.state.pincodeChecAvaibility && (
+                                <p
+                                  className="non-deliverable"
+                                  style={{ marginBottom: "5px" }}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .checkingyouravailability
+                                    : "Checking your availability."}
+                                </p>
+                              )}
+                              {this.state.showPinCodereturnMsg && (
+                                <>
+                                  <p className="non-deliverable">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .enteredpincodeisnondeliverable
+                                      : "Entered Pin code is non deliverable"}
+                                  </p>
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="order-returns"
+                                        name="ordMoveReturn"
+                                        checked={this.state.ordMoveReturn}
+                                        onChange={this.handleOrdChangeOptions}
+                                      />
+                                      <label htmlFor="order-returns">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .moveorderintoreturns
+                                          : "Move Order into Returns"}
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-pickup"
+                                        name="ordSelfPickup"
+                                        checked={this.state.ordSelfPickup}
+                                        onChange={this.handleOrdChangeOptions}
+                                      />
+                                      <label htmlFor="self-pickup">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .convertthisorderinselfpickup
+                                          : "Convert this order in Self Pickup"}
+                                      </label>
+                                    </div>
+                                  </div>
+                                  {this.state.ordSelfPickup && (
+                                    <>
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.title.date
+                                              : "Date"}
+                                          </p>
+                                          <input
+                                            type="text"
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext
+                                                    .ticketingDashboard
+                                                    .enterdate
+                                                : "Enter Date"
+                                            }
+                                            name="date"
+                                            autoComplete="off"
+                                          />
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.title.time
+                                              : "Time"}
+                                          </p>
+                                          <input
+                                            type="text"
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext
+                                                    .ticketingDashboard
+                                                    .entertime
+                                                : "Enter Time"
+                                            }
+                                            name="time"
+                                            autoComplete="off"
+                                          />
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </>
+                              )}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
@@ -910,12 +1008,20 @@ class OrderTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                           icon={false}
-                          okText="Save Address"
+                          okText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.button.proceed
+                              : "Proceed"
+                          }
                           onConfirm={this.handleAddressPending.bind(
                             this,
                             item.id
                           )}
-                          cancelText="Cancel"
+                          cancelText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.button.cancel
+                              : "Cancel"
+                          }
                         >
                           <p
                             style={{ cursor: "pointer" }}
@@ -948,7 +1054,6 @@ class OrderTab extends Component {
                             <div className="order-tab-popover">
                               <div className="pay-done">
                                 <p>
-                                  {" "}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.viewsearch
                                     : "Payment Date"}
@@ -1238,6 +1343,86 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
+                              <p className="non-deliverable">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .enteredpincodeisnondeliverable
+                                  : "Entered Pin code is non deliverable"}
+                              </p>
+                              <div className="popover-radio-cntr">
+                                <div>
+                                  <input
+                                    type="radio"
+                                    id="order-returns1"
+                                    name="ordMoveReturn"
+                                    checked={this.state.ordMoveReturn}
+                                    onChange={this.handleOrdChangeOptions}
+                                  />
+                                  <label htmlFor="order-returns1">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .moveorderintoreturns
+                                      : "Move Order into Returns"}
+                                  </label>
+                                </div>
+                                <div>
+                                  <input
+                                    type="radio"
+                                    id="self-pickup1"
+                                    name="ordSelfPickup"
+                                    checked={this.state.ordSelfPickup}
+                                    onChange={this.handleOrdChangeOptions}
+                                  />
+                                  <label htmlFor="self-pickup1">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .convertthisorderinselfpickup
+                                      : "Convert this order in Self Pickup"}
+                                  </label>
+                                </div>
+                              </div>
+                              {this.state.ordSelfPickup && (
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.title.date
+                                        : "Date"}
+                                    </p>
+                                    <input
+                                      type="text"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.enterdate
+                                          : "Enter Date"
+                                      }
+                                      name="date"
+                                      autoComplete="off"
+                                      // onChange={this.handleTextOnchage}
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.title.time
+                                        : "Time"}
+                                    </p>
+                                    <input
+                                      type="text"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.entertime
+                                          : "Enter Time"
+                                      }
+                                      name="time"
+                                      autoComplete="off"
+                                      // onChange={this.handleTextOnchage}
+                                    />
+                                  </div>
+                                </div>
+                              )}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
@@ -1246,7 +1431,11 @@ class OrderTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                           icon={false}
-                          okText="Save Address"
+                          okText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.button.proceed
+                              : "Proceed"
+                          }
                           onConfirm={this.handleAddressPending.bind(
                             this,
                             row.id
@@ -1299,7 +1488,7 @@ class OrderTab extends Component {
               </p>
             </div>
           </div>
-          <Modal
+          {/* <Modal
             open={this.state.PincodeMdl}
             onClose={this.handlePincodeMdlModalClose.bind(this)}
             center
@@ -1325,7 +1514,7 @@ class OrderTab extends Component {
                 </button>
               </div>
             </div>
-          </Modal>
+          </Modal> */}
           <Modal
             open={this.state.AddressConf}
             onClose={this.handleAddressMdlModalClose.bind(this)}
@@ -1341,7 +1530,9 @@ class OrderTab extends Component {
                   className="btn-cancel-status"
                   onClick={this.handleAddressMdlModalClose.bind(this)}
                 >
-                  Cancel
+                  {TranslationContext !== undefined
+                    ? TranslationContext.button.cancel
+                    : "Cancel"}
                 </button>
                 <button
                   type="button"

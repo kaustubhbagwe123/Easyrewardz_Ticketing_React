@@ -312,6 +312,28 @@ class ShipmentAssignedTab extends Component {
       });
   }
 
+  handlePrintInvoice(orderIds){
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintInvoice",
+      headers: authHeader(),
+      params: {
+        OrderIds: orderIds,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          window.location.href = res.data.responseData.manifestUrl;
+        } else {
+          NotificationManager.error(status);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -378,7 +400,10 @@ class ShipmentAssignedTab extends Component {
                           ? TranslationContext.button.printlabel
                           : "Print Label"}
                       </button>
-                      <button className="butn order-grid-butn order-grid-butn-green assign-grid-btn">
+                      <button className="butn order-grid-butn order-grid-butn-green assign-grid-btn" onClick={this.handlePrintInvoice.bind(
+                          this,
+                          item.courierPartnerOrderID
+                        )}>
                         {TranslationContext !== undefined
                           ? TranslationContext.button.printinvoice
                           : "Print Invoice"}

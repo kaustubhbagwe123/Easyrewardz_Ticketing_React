@@ -1341,7 +1341,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ TicketPriorityData: data });
+          self.setState({ TicketPriorityData: data,checkPriorityDetails: false });
         } else {
           self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
@@ -1524,10 +1524,25 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState((state) => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleReAssignCommentOpen() {
-    this.setState({
-      ReAssignComment: !this.state.ReAssignComment,
-    });
+  handleReAssignCommentOpen(check) {
+    const TranslationContext = this.state.translateLanguage.default;
+    if(check === "assignCmd"){
+      if(this.state.agentId > 0){
+        this.setState({
+          ReAssignComment: !this.state.ReAssignComment,
+        });
+      }else{
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseselectuser
+            : "Please Select User."
+        );
+      }
+    }else{
+      this.setState({
+        ReAssignComment: !this.state.ReAssignComment,
+      });
+    }
   }
   handleFreeTextCommentOpen(row) {
     if (row === "close") {
@@ -3721,7 +3736,7 @@ class MyTicket extends Component {
                         <button
                           type="button"
                           className="btn btn-outline-primary"
-                          onClick={this.handleReAssignCommentOpen.bind(this)}
+                          onClick={this.handleReAssignCommentOpen.bind(this,"assignCmd")}
                         >
                           {TranslationContext !== undefined
                             ? TranslationContext.placeholder.select
