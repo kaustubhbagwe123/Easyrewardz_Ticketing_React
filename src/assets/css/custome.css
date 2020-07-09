@@ -2954,7 +2954,7 @@ table tr th:last-child {
   overflow: auto;
 }
 .chat-cntr {
-  padding: 15px 10px;
+  padding: 15px 0px;
   border-bottom: 1px solid #e8e8e8;
 }
 .chat-cntr .chat-info:last-child {
@@ -2996,7 +2996,7 @@ table tr th:last-child {
   color: #ff631d;
 }
 .initial {
-  border-radius: 5px;
+  border-radius: 50%;
   width: 28px;
   height: 28px;
   font-size: 12px;
@@ -3005,6 +3005,8 @@ table tr th:last-child {
   text-align: center;
   line-height: 28px;
   margin-top: -10px;
+  background-color: #ddf6fc;
+  border: 1px solid #64c5b4;
 }
 .name-num p {
   font-size: 13px;

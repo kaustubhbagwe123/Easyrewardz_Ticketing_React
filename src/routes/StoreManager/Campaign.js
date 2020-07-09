@@ -1846,11 +1846,16 @@ class Campaign extends Component {
                   {this.state.customerName}{" "}
                   <span>{this.state.customerNumber}</span>
                 </h3>
-                <p>{this.state.useratvdetails.tiername}</p>
+                <p>
+                  {this.state.useratvdetails.tiername && (
+                    <b style={{ fontWeight: 400, color: "#000" }}>TIER : </b>
+                  )}
+                  {this.state.useratvdetails.tiername}
+                </p>
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row campaign-cust-popup">
             <div className="col-12 col-md-6">
               <div className="lifetimevalue lt-single">
                 <table>
@@ -1896,7 +1901,7 @@ class Campaign extends Component {
             <div className="col-12 col-md-6">
               <div className="productbox">
                 <div>
-                  <ul role="tablist">
+                  <ul className="nav alert-nav-tabs3 store-nav-tabs tab-single" role="tablist">
                     {this.state.lastTransactionItem.length > 0 ? (
                       <li className="nav-item fo">
                         <a

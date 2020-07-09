@@ -37,21 +37,18 @@ class StoreTask extends Component {
       screationOnFilterCheckbox: "",
       sassigntoFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-
       sortFilterdepartmentName: [],
       sortFilterstoreName: [],
       sortFilterpriorityName: [],
       sortFiltercreationOn: [],
       sortFilterassignto: [],
       sortFiltercreatedBy: [],
-
       sortdepartmentName: [],
       sortstoreName: [],
       sortpriorityName: [],
       sortcreationOn: [],
       sortassignto: [],
       sortcreatedBy: [],
-
       sortColumn: "",
       sortHeader: "",
       filterTxtValue: "",
@@ -60,7 +57,6 @@ class StoreTask extends Component {
       tabIndex: 1,
       showAddTask: true,
       FilterCollapse: false,
-
       priorityData: [],
       assignToData: [],
       funcationData: [],
@@ -74,6 +70,7 @@ class StoreTask extends Component {
       isATOZ: true,
       itemData: [],
       translateLanguage: {},
+      showMobileTab: false,
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -192,7 +189,7 @@ class StoreTask extends Component {
         headers: authHeader(),
         params: { tabFor: tabFor },
       })
-        .then(function (response) {
+        .then(function(response) {
           debugger;
           var message = response.data.message;
           var data = response.data.responseData;
@@ -529,7 +526,7 @@ class StoreTask extends Component {
       url: config.apiUrl + "/StoreTask/GetStoreTaskByTicket",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
@@ -700,7 +697,7 @@ class StoreTask extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         let status = response.data.message;
         let data = response.data.responseData;
@@ -738,7 +735,7 @@ class StoreTask extends Component {
       headers: authHeader(),
       params: { DepartmentId: departmentId },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
@@ -773,7 +770,7 @@ class StoreTask extends Component {
         Function_ID: funcationID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
@@ -794,7 +791,7 @@ class StoreTask extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
@@ -815,7 +812,7 @@ class StoreTask extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var userData = response.data.responseData;
         if (message === "Success" && userData) {
@@ -869,7 +866,7 @@ class StoreTask extends Component {
       headers: authHeader(),
       data: inputParam,
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var assignToMeData = response.data.responseData;
         if (message === "Success" && assignToMeData) {
@@ -922,7 +919,7 @@ class StoreTask extends Component {
       headers: authHeader(),
       data: inputParam,
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var raisedByMeData = response.data.responseData;
@@ -981,7 +978,7 @@ class StoreTask extends Component {
       headers: authHeader(),
       data: inputParam,
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var taskByTicketData = response.data.responseData;
@@ -1525,7 +1522,7 @@ class StoreTask extends Component {
           sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -1565,7 +1562,7 @@ class StoreTask extends Component {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -1605,7 +1602,7 @@ class StoreTask extends Component {
           spriorityNameFilterCheckbox = spriorityNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -1645,7 +1642,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -1679,7 +1676,7 @@ class StoreTask extends Component {
           sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -1713,7 +1710,7 @@ class StoreTask extends Component {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -1754,7 +1751,7 @@ class StoreTask extends Component {
           staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -2160,7 +2157,9 @@ class StoreTask extends Component {
             >
               <a
                 className={
-                  config.isShowTaskTab ? "nav-link active" : "nav-link"
+                  config.isShowTaskTab
+                    ? "nav-link active order-desktop"
+                    : "nav-link"
                 }
                 data-toggle="tab"
                 href="#raised-by-me-tab"
@@ -2176,7 +2175,9 @@ class StoreTask extends Component {
             </li>
             <li
               className={
-                config.isShowTaskTab ? "nav-item" : "nav-item displayNn"
+                config.isShowTaskTab
+                  ? "nav-item order-desktop"
+                  : "nav-item displayNn"
               }
             >
               <a
@@ -2195,7 +2196,9 @@ class StoreTask extends Component {
             </li>
             <li
               className={
-                config.isShowTaskTab ? "nav-item" : "nav-item displayNn"
+                config.isShowTaskTab
+                  ? "nav-item order-desktop"
+                  : "nav-item displayNn"
               }
             >
               <a
@@ -2215,7 +2218,9 @@ class StoreTask extends Component {
             <li className="nav-item">
               <a
                 className={
-                  config.isShowTaskTab ? "nav-link" : "nav-link active"
+                  config.isShowTaskTab
+                    ? "nav-link"
+                    : "nav-link active mobileblock"
                 }
                 data-toggle="tab"
                 href="#campaign-tab"
@@ -2248,7 +2253,7 @@ class StoreTask extends Component {
           <div
             className={
               config.isShowTaskTab
-                ? "tab-pane fade show active"
+                ? "tab-pane fade show active order-desktop"
                 : "tab-pane fade"
             }
             id="raised-by-me-tab"
@@ -2260,612 +2265,618 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-                <div>
-                  <Collapse isOpen={this.state.FilterCollapse}>
-                    <Card>
-                      <CardBody>
-                        <div className="table-expandable-sctn1">
-                          <ul className="nav nav-tabs" role="tablist">
-                            <div className="tasksearchdiv">
-                              <button
-                                className="btn-inv"
-                                type="button"
-                                style={{ margin: "10px", width: "180px" }}
-                                onClick={this.handleGetRaisedbymefilterData.bind(
-                                  this
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.viewsearch
-                                  : "VIEW SEARCH"}
-                              </button>
-                            </div>
-                          </ul>
-                          <div className="tab-content p-0">
-                            <div
-                              className="tab-pane fade show active"
-                              id="date-tab"
-                              role="tabpanel"
-                              aria-labelledby="date-tab"
+              <div>
+                <Collapse isOpen={this.state.FilterCollapse}>
+                  <Card>
+                    <CardBody>
+                      <div className="table-expandable-sctn1">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <div className="tasksearchdiv">
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              style={{ margin: "10px", width: "180px" }}
+                              onClick={this.handleGetRaisedbymefilterData.bind(
+                                this
+                              )}
                             >
-                              <div className="container-fluid">
-                                <div className="row all-row">
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder={TranslationContext !== undefined
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewsearch
+                                : "VIEW SEARCH"}
+                            </button>
+                          </div>
+                        </ul>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.span.taskid
-                                        : "Task ID"}
-                                      name="taskid"
-                                      value={this.state.raiseSearchData["taskid"]}
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="Department"
-                                      value={
-                                        this.state.raiseSearchData["Department"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.department
-                                          : "Department"}
-                                      </option>
+                                        : "Task ID"
+                                    }
+                                    name="taskid"
+                                    value={this.state.raiseSearchData["taskid"]}
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Department"
+                                    value={
+                                      this.state.raiseSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.department
+                                        : "Department"}
+                                    </option>
 
-                                      {this.state.departmentData !== null &&
-                                        this.state.departmentData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.departmentID}
-                                              className="select-category-placeholder"
-                                            >
-                                              {item.departmentName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="functionID"
-                                      value={
-                                        this.state.raiseSearchData["functionID"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value={""} selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.function
-                                          : "Function"}
-                                      </option>
-
-                                      {this.state.funcationData !== null &&
-                                        this.state.funcationData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.functionID}
-                                              className="select-category-placeholder"
-                                            >
-                                              {item.funcationName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="AssigntoId"
-                                      value={
-                                        this.state.raiseSearchData["AssigntoId"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.assignto
-                                          : "Assign To"}
-                                      </option>
-                                      {this.state.assignToData !== null &&
-                                        this.state.assignToData.map((item, i) => (
+                                    {this.state.departmentData !== null &&
+                                      this.state.departmentData.map(
+                                        (item, i) => (
                                           <option
                                             key={i}
-                                            value={item.userID}
+                                            value={item.departmentID}
                                             className="select-category-placeholder"
                                           >
-                                            {item.userName}
+                                            {item.departmentName}
                                           </option>
-                                        ))}
-                                    </select>
-                                  </div>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="functionID"
+                                    value={
+                                      this.state.raiseSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value={""} selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.function
+                                        : "Function"}
+                                    </option>
 
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder={TranslationContext !== undefined
+                                    {this.state.funcationData !== null &&
+                                      this.state.funcationData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.functionID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.funcationName}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="AssigntoId"
+                                    value={
+                                      this.state.raiseSearchData["AssigntoId"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.assignto
+                                        : "Assign To"}
+                                    </option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.span.tasktitle
-                                        : "Task Title"}
-                                      name="tasktitle"
-                                      value={
-                                        this.state.raiseSearchData["tasktitle"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
+                                        : "Task Title"
+                                    }
+                                    name="tasktitle"
+                                    value={
+                                      this.state.raiseSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
 
-                                  <div className="col-md-3">
-                                    <select
-                                      name="taskstatus"
-                                      value={
-                                        this.state.raiseSearchData["taskstatus"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value={0} selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskstatus
-                                          : "Task Status"}
-                                      </option>
-                                      {this.state.storeStatus !== null &&
-                                        this.state.storeStatus.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3 campaign-end-date creation-date-range">
-                                    <CreationOnDatePickerCompo
-                                      applyCallback={this.SearchCreationOn}
-                                    />
-                                  </div>
+                                <div className="col-md-3">
+                                  <select
+                                    name="taskstatus"
+                                    value={
+                                      this.state.raiseSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value={0} selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.taskstatus
+                                        : "Task Status"}
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
 
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="Priority"
-                                      value={
-                                        this.state.raiseSearchData["Priority"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value={""} selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskpriority
-                                          : "Task Priority"}
-                                      </option>
-                                      {this.state.priorityData !== null &&
-                                        this.state.priorityData.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.priorityID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.priortyName}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </div>
-                                  {/* <div className="col-md-3">
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Priority"
+                                    value={
+                                      this.state.raiseSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value={""} selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.taskpriority
+                                        : "Task Priority"}
+                                    </option>
+                                    {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                {/* <div className="col-md-3">
                                   <input
                                     className="no-bg"
                                     type="text"
                                     placeholder="Ticket ID"
                                   />
                                 </div> */}
-                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </CardBody>
-                    </Card>
-                  </Collapse>
-                  <div
-                    className="float-search"
-                    style={{ top: "18%" }}
-                    onClick={this.handleFilterCollapse.bind(this)}
-                  >
-                    <small>
-                      {this.state.FilterCollapse ? TranslationContext !== undefined
-                        ? TranslationContext.small.search
-                        : "Search" : TranslationContext !== undefined
-                          ? TranslationContext.small.search
-                          : "Search"}
-                    </small>
-                    <img
-                      className="search-icon"
-                      src={SearchIcon}
-                      alt="search-icon"
-                    />
-                  </div>
-                  <div className="table-cntr raisereactTable">
-                    {this.state.isViewSerach ? (
-                      <div className="loader-icon-cntr">
-                        <div className="loader-icon"></div>
                       </div>
-                    ) : (
-                        <ReactTable
-                          data={this.state.raisedByMeData}
-                          columns={[
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.id
-                                    : "ID"}
-                                </span>
-                              ),
-                              accessor: "storeTaskID",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Status"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "taskStatus",
-                                    "Status"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Status"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "taskStatus",
-                              Cell: (row) => {
-                                if (row.original.taskStatus === "New") {
-                                  return (
-                                    <span className="table-btn table-yellow-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                } else if (row.original.taskStatus === "Open") {
-                                  return (
-                                    <span className="table-btn table-blue-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                } else {
-                                  return (
-                                    <span className="table-btn table-green-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                }
-                              },
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.tasktitle
-                                    : "Task Title"}
-                                </span>
-                              ),
-                              accessor: "taskTitle",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Department"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "departmentName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.department
-                                      : "Department"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.department
-                                    : "Department"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Department"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "departmentName",
-                              Cell: (row) => {
-                                return (
-                                  <>
-                                    {row.original.departmentName}
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Function</p>
-                                              <p>{row.original.functionName}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Store Name"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "storeName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.storename
-                                      : "Store Name"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.storename
-                                    : "Store Name"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Store Name"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "storeName",
-                              Cell: (row) => {
-                                return (
-                                  <span>
-                                    <label>{row.original.storeName}</label>
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Store Address</p>
-                                              <p>{row.original.storeAddress}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Priority"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "priorityName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.priority
-                                      : "Priority"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.priority
-                                    : "Priority"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Priority"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "priorityName	",
-                              Cell: (row) => {
-                                return <span>{row.original.priorityName}</span>;
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Creation On"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "creationOn",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.creationon
-                                      : "Creation On"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.creationon
-                                    : "Creation On"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Creation On"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              accessor: "creationOn",
-                              sortable: false,
-                              Cell: (row) => (
-                                <span>
-                                  <label>{row.original.creationOn}</label>
-
-                                  <Popover
-                                    content={
-                                      <div className="insertpop1">
-                                        <ul className="dash-creation-popup">
-                                          <li className="title">
-                                            Creation details
-                                      </li>
-                                          <li>
-                                            <p>
-                                              {"Created by " +
-                                                row.original.createdBy}
-                                            </p>
-                                            <p>{row.original.createdago}</p>
-                                          </li>
-                                          <li>
-                                            <p>
-                                              Assigned to{" "}
-                                              {" " + row.original.assignto}
-                                            </p>
-                                            <p>{row.original.assignedago}</p>
-                                          </li>
-                                          <li>
-                                            <p>
-                                              {"Updated by " +
-                                                row.original.updatedBy}
-                                            </p>
-                                            <p>{row.original.updatedago}</p>
-                                          </li>
-                                          <li>
-                                            <p>Response time remaining by</p>
-                                            <p>
-                                              {row.original.resolutionTimeRemaining}
-                                            </p>
-                                          </li>
-                                          <li>
-                                            <p>Response overdue by</p>
-                                            <p>1 Hr</p>
-                                          </li>
-                                          <li>
-                                            <p>Resolution overdue by</p>
-                                            <p>
-                                              {row.original.resolutionOverdueBy}
-                                            </p>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    }
-                                    placement="left"
-                                  >
-                                    <img
-                                      className="info-icon"
-                                      src={InfoIcon}
-                                      alt="info-icon"
-                                    />
-                                  </Popover>
-                                </span>
-                              ),
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Assign to"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "assignto",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.assignedto
-                                      : "Assign to"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.assignedto
-                                    : "Assign to"}
-
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Assign to"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "assignto",
-                              // Cell: (props) => (
-                              //   <span>
-                              //     <label>A, Bansal</label>
-                              //   </span>
-                              // ),
-                            },
-                          ]}
-                          // resizable={false}
-                          defaultPageSize={10}
-                          minRows={2}
-                          showPagination={true}
-                          getTrProps={this.handleRowClickRaisedTable}
-                        />
-                      )}
-                  </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+                <div
+                  className="float-search"
+                  style={{ top: "18%" }}
+                  onClick={this.handleFilterCollapse.bind(this)}
+                >
+                  <small>
+                    {this.state.FilterCollapse
+                      ? TranslationContext !== undefined
+                        ? TranslationContext.small.search
+                        : "Search"
+                      : TranslationContext !== undefined
+                      ? TranslationContext.small.search
+                      : "Search"}
+                  </small>
+                  <img
+                    className="search-icon"
+                    src={SearchIcon}
+                    alt="search-icon"
+                  />
                 </div>
-              )}
+                <div className="table-cntr raisereactTable">
+                  {this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.raisedByMeData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.id
+                                : "ID"}
+                            </span>
+                          ),
+                          accessor: "storeTaskID",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskStatus",
+                                "Status"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
+                        },
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.tasktitle
+                                : "Task Title"}
+                            </span>
+                          ),
+                          accessor: "taskTitle",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "departmentName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.department
+                                  : "Department"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.department
+                                : "Department"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.departmentName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.storename
+                                  : "Store Name"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.storename
+                                : "Store Name"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Priority"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priorityName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.priority
+                                  : "Priority"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.priority
+                                : "Priority"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Priority"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "priorityName	",
+                          Cell: (row) => {
+                            return <span>{row.original.priorityName}</span>;
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.creationon
+                                  : "Creation On"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          accessor: "creationOn",
+                          sortable: false,
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.creationOn}</label>
+
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Created by " +
+                                            row.original.createdBy}
+                                        </p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Updated by " +
+                                            row.original.updatedBy}
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          ),
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignto",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.assignedto
+                                  : "Assign to"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.assignedto
+                                : "Assign to"}
+
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "assignto",
+                          // Cell: (props) => (
+                          //   <span>
+                          //     <label>A, Bansal</label>
+                          //   </span>
+                          // ),
+                        },
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={10}
+                      minRows={2}
+                      showPagination={true}
+                      getTrProps={this.handleRowClickRaisedTable}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
           </div>
           <div
-            className="tab-pane fade"
+            className="tab-pane fade order-desktop"
             id="assigned-to-me-tab"
             role="tabpanel"
             aria-labelledby="assigned-to-me-tab"
@@ -2875,604 +2886,612 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-                <div>
-                  <Collapse isOpen={this.state.FilterCollapse}>
-                    <Card>
-                      <CardBody>
-                        <div className="table-expandable-sctn1">
-                          <ul className="nav nav-tabs" role="tablist">
-                            <div className="tasksearchdiv">
-                              <button
-                                className="btn-inv"
-                                type="button"
-                                style={{ margin: "10px", width: "180px" }}
-                                onClick={this.handleGetAssigenBymefilterData.bind(
-                                  this
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.viewsearch
-                                  : "VIEW SEARCH"}
-                              </button>
-                            </div>
-                          </ul>
-                          <div className="tab-content p-0">
-                            <div
-                              className="tab-pane fade show active"
-                              id="date-tab"
-                              role="tabpanel"
-                              aria-labelledby="date-tab"
+              <div>
+                <Collapse isOpen={this.state.FilterCollapse}>
+                  <Card>
+                    <CardBody>
+                      <div className="table-expandable-sctn1">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <div className="tasksearchdiv">
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              style={{ margin: "10px", width: "180px" }}
+                              onClick={this.handleGetAssigenBymefilterData.bind(
+                                this
+                              )}
                             >
-                              <div className="container-fluid">
-                                <div className="row all-row">
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder={TranslationContext !== undefined
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewsearch
+                                : "VIEW SEARCH"}
+                            </button>
+                          </div>
+                        </ul>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.span.taskid
-                                        : "Task ID"}
-                                      name="taskid"
-                                      autoComplete="off"
-                                      value={
-                                        this.state.assignSearchData["taskid"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="Department"
-                                      value={
-                                        this.state.assignSearchData["Department"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.department
-                                          : "Department"}
-                                      </option>
-                                      {this.state.departmentData !== null &&
-                                        this.state.departmentData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.departmentID}
-                                              className="select-category-placeholder"
-                                            >
-                                              {item.departmentName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
+                                        : "Task ID"
+                                    }
+                                    name="taskid"
+                                    autoComplete="off"
+                                    value={
+                                      this.state.assignSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Department"
+                                    value={
+                                      this.state.assignSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.department
+                                        : "Department"}
+                                    </option>
+                                    {this.state.departmentData !== null &&
+                                      this.state.departmentData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.departmentID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.departmentName}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
 
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder={TranslationContext !== undefined
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.option.tasktitle
-                                        : "Task Title"}
-                                      name="tasktitle"
-                                      value={
-                                        this.state.assignSearchData["tasktitle"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="functionID"
-                                      value={
-                                        this.state.assignSearchData["functionID"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.function
-                                          : "Function"}
-                                      </option>
-                                      {this.state.funcationData !== null &&
-                                        this.state.funcationData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.functionID}
-                                              className="select-category-placeholder"
-                                            >
-                                              {item.funcationName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      name="createdID"
-                                      value={
-                                        this.state.assignSearchData["createdID"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskcreatedby
-                                          : "Task Created By"}
-                                      </option>
-                                      {this.state.userData !== null &&
-                                        this.state.userData.map((item, i) => (
+                                        : "Task Title"
+                                    }
+                                    name="tasktitle"
+                                    value={
+                                      this.state.assignSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="functionID"
+                                    value={
+                                      this.state.assignSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.function
+                                        : "Function"}
+                                    </option>
+                                    {this.state.funcationData !== null &&
+                                      this.state.funcationData.map(
+                                        (item, i) => (
                                           <option
                                             key={i}
-                                            value={item.userID}
+                                            value={item.functionID}
                                             className="select-category-placeholder"
                                           >
-                                            {item.userName}
+                                            {item.funcationName}
                                           </option>
-                                        ))}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="taskstatus"
-                                      value={
-                                        this.state.assignSearchData["taskstatus"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskcreatedby
-                                          : "Task Status"}
-                                      </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    name="createdID"
+                                    value={
+                                      this.state.assignSearchData["createdID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .taskcreatedby
+                                        : "Task Created By"}
+                                    </option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskstatus"
+                                    value={
+                                      this.state.assignSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .taskcreatedby
+                                        : "Task Status"}
+                                    </option>
 
-                                      {this.state.storeStatus !== null &&
-                                        this.state.storeStatus.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3 campaign-end-date creation-date-range">
-                                    <CreationOnDatePickerCompo
-                                      applyCallback={this.SearchCreationOn}
-                                    />
-                                  </div>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
 
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="Priority"
-                                      value={
-                                        this.state.assignSearchData["Priority"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskpriority
-                                          : "Task Priority"}
-                                      </option>
-                                      {this.state.priorityData !== null &&
-                                        this.state.priorityData.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.priorityID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.priortyName}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Priority"
+                                    value={
+                                      this.state.assignSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.taskpriority
+                                        : "Task Priority"}
+                                    </option>
+                                    {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))}
+                                  </select>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </CardBody>
-                    </Card>
-                  </Collapse>
-                  <div
-                    className="float-search"
-                    style={{ top: "18%" }}
-                    onClick={this.handleFilterCollapse.bind(this)}
-                  >
-                    <small>
-                      {this.state.FilterCollapse ? TranslationContext !== undefined
-                        ? TranslationContext.small.search
-                        : "Search" : TranslationContext !== undefined
-                          ? TranslationContext.small.search
-                          : "Search"}
-                    </small>
-                    <img
-                      className="search-icon"
-                      src={SearchIcon}
-                      alt="search-icon"
-                    />
-                  </div>
-                  <div className="table-cntr">
-                    {this.state.isViewSerach ? (
-                      <div className="loader-icon-cntr">
-                        <div className="loader-icon"></div>
                       </div>
-                    ) : (
-                        <ReactTable
-                          data={this.state.assignToMeData}
-                          columns={[
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.id
-                                    : "ID"}
-                                </span>
-                              ),
-                              accessor: "storeTaskID",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Status"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "taskStatus",
-                                    "Status"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"}
-
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Status"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "taskStatus",
-                              Cell: (row) => {
-                                if (row.original.taskStatus === "New") {
-                                  return (
-                                    <span className="table-btn table-yellow-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                } else if (row.original.taskStatus === "Open") {
-                                  return (
-                                    <span className="table-btn table-blue-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                } else {
-                                  return (
-                                    <span className="table-btn table-green-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                }
-                              },
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.tasktitle
-                                    : "Task Title"}
-                                </span>
-                              ),
-                              accessor: "taskTitle",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Department"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "departmentName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.department
-                                      : "Department"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.department
-                                    : "Department"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Department"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "departmentName",
-                              Cell: (row) => {
-                                return (
-                                  <span>
-                                    <label>{row.original.departmentName}</label>
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Function</p>
-                                              <p>{row.original.functionName}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Created by"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "createdBy",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.createdby
-                                      : "Created by"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.createdby
-                                    : "Created by"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Created by"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "createdBy",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Priority"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "priorityName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.priority
-                                      : "Priority"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.priority
-                                    : "Priority"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Priority"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "priorityName",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Store Name"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "storeName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.storename
-                                      : "Store Name"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.storename
-                                    : "Store Name"}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Store Name"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              accessor: "storeName",
-                              Cell: (row) => {
-                                return (
-                                  <span>
-                                    <label>{row.original.storeName}</label>
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Store Address</p>
-                                              <p>{row.original.storeAddress}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Creation On"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "creationOn",
-                                    // "Creation On",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.creationon
-                                      : "Creation On"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.creationon
-                                    : "Creation On"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Creation On"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "creationOn",
-                              Cell: (row) => {
-                                return (
-                                  <span>
-                                    <label>{row.original.creationOn}</label>
-
-                                    <Popover
-                                      content={
-                                        <div className="insertpop1">
-                                          <ul className="dash-creation-popup">
-                                            <li className="title">
-                                              Creation details
-                                        </li>
-                                            <li>
-                                              <p>
-                                                {"Created by " +
-                                                  row.original.createdBy}
-                                              </p>
-                                              <p>{row.original.createdago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                Assigned to{" "}
-                                                {" " + row.original.assignto}
-                                              </p>
-                                              <p>{row.original.assignedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {"Updated by " +
-                                                  row.original.updatedBy}
-                                              </p>
-                                              <p>{row.original.updatedago}</p>
-                                            </li>
-
-                                            <li>
-                                              <p>Response time remaining by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .resolutionTimeRemaining
-                                                }
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Response overdue by</p>
-                                              <p>1 Hr</p>
-                                            </li>
-                                            <li>
-                                              <p>Resolution overdue by</p>
-                                              <p>
-                                                {row.original.resolutionOverdueBy}
-                                              </p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="left"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                );
-                              },
-                            },
-                          ]}
-                          // resizable={false}
-                          minRows={2}
-                          defaultPageSize={10}
-                          showPagination={true}
-                          getTrProps={this.handleRowClickRaisedTable}
-                        />
-                      )}
-                  </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+                <div
+                  className="float-search"
+                  style={{ top: "18%" }}
+                  onClick={this.handleFilterCollapse.bind(this)}
+                >
+                  <small>
+                    {this.state.FilterCollapse
+                      ? TranslationContext !== undefined
+                        ? TranslationContext.small.search
+                        : "Search"
+                      : TranslationContext !== undefined
+                      ? TranslationContext.small.search
+                      : "Search"}
+                  </small>
+                  <img
+                    className="search-icon"
+                    src={SearchIcon}
+                    alt="search-icon"
+                  />
                 </div>
-              )}
+                <div className="table-cntr">
+                  {this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.assignToMeData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.id
+                                : "ID"}
+                            </span>
+                          ),
+                          accessor: "storeTaskID",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskStatus",
+                                "Status"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
+
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
+                        },
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.tasktitle
+                                : "Task Title"}
+                            </span>
+                          ),
+                          accessor: "taskTitle",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "departmentName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.department
+                                  : "Department"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.department
+                                : "Department"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.departmentName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Created by"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdBy",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.createdby
+                                  : "Created by"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created by"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Created by"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "createdBy",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Priority"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priorityName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.priority
+                                  : "Priority"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.priority
+                                : "Priority"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Priority"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "priorityName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.storename
+                                  : "Store Name"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.storename
+                                : "Store Name"}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                // "Creation On",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.creationon
+                                  : "Creation On"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "creationOn",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.creationOn}</label>
+
+                                <Popover
+                                  content={
+                                    <div className="insertpop1">
+                                      <ul className="dash-creation-popup">
+                                        <li className="title">
+                                          Creation details
+                                        </li>
+                                        <li>
+                                          <p>
+                                            {"Created by " +
+                                              row.original.createdBy}
+                                          </p>
+                                          <p>{row.original.createdago}</p>
+                                        </li>
+                                        <li>
+                                          <p>
+                                            Assigned to{" "}
+                                            {" " + row.original.assignto}
+                                          </p>
+                                          <p>{row.original.assignedago}</p>
+                                        </li>
+                                        <li>
+                                          <p>
+                                            {"Updated by " +
+                                              row.original.updatedBy}
+                                          </p>
+                                          <p>{row.original.updatedago}</p>
+                                        </li>
+
+                                        <li>
+                                          <p>Response time remaining by</p>
+                                          <p>
+                                            {
+                                              row.original
+                                                .resolutionTimeRemaining
+                                            }
+                                          </p>
+                                        </li>
+                                        <li>
+                                          <p>Response overdue by</p>
+                                          <p>1 Hr</p>
+                                        </li>
+                                        <li>
+                                          <p>Resolution overdue by</p>
+                                          <p>
+                                            {row.original.resolutionOverdueBy}
+                                          </p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="left"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      getTrProps={this.handleRowClickRaisedTable}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
           </div>
           <div
-            className="tab-pane fade"
+            className="tab-pane fade order-desktop"
             id="task-by-tickets-tab"
             role="tabpanel"
             aria-labelledby="task-by-tickets-tab"
@@ -3482,709 +3501,716 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-                <div>
-                  <Collapse isOpen={this.state.FilterCollapse}>
-                    <Card>
-                      <CardBody>
-                        <div className="table-expandable-sctn1">
-                          <ul className="nav nav-tabs" role="tablist">
-                            <div className="tasksearchdiv">
-                              <button
-                                className="btn-inv"
-                                type="button"
-                                style={{ margin: "10px", width: "180px" }}
-                                onClick={this.handleGetTaskbyTicketData.bind(
-                                  this
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.viewsearch
-                                  : "VIEW SEARCH"}
-                              </button>
-                            </div>
-                          </ul>
-                          <div className="tab-content p-0">
-                            <div
-                              className="tab-pane fade show active"
-                              id="date-tab"
-                              role="tabpanel"
-                              aria-labelledby="date-tab"
+              <div>
+                <Collapse isOpen={this.state.FilterCollapse}>
+                  <Card>
+                    <CardBody>
+                      <div className="table-expandable-sctn1">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <div className="tasksearchdiv">
+                            <button
+                              className="btn-inv"
+                              type="button"
+                              style={{ margin: "10px", width: "180px" }}
+                              onClick={this.handleGetTaskbyTicketData.bind(
+                                this
+                              )}
                             >
-                              <div className="container-fluid">
-                                <div className="row all-row">
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder={TranslationContext !== undefined
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewsearch
+                                : "VIEW SEARCH"}
+                            </button>
+                          </div>
+                        </ul>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.span.taskid
-                                        : "Task ID"}
-                                      autoComplete="off"
-                                      name="taskid"
-                                      value={
-                                        this.state.ticketSearchData["taskid"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="Department"
-                                      value={
-                                        this.state.ticketSearchData["Department"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.department
-                                          : "Department"}
-                                      </option>
-                                      {this.state.departmentData !== null &&
-                                        this.state.departmentData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.departmentID}
-                                              className="select-category-placeholder"
-                                            >
-                                              {item.departmentName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="functionID"
-                                      value={
-                                        this.state.ticketSearchData["functionID"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.function
-                                          : "Function"}
-                                      </option>
-                                      {this.state.funcationData !== null &&
-                                        this.state.funcationData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.functionID}
-                                              className="select-category-placeholder"
-                                            >
-                                              {item.funcationName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="AssigntoId"
-                                      value={
-                                        this.state.ticketSearchData["AssigntoId"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.span.assignto
-                                          : "Assign to"}
-                                      </option>
-                                      {this.state.assignToData !== null &&
-                                        this.state.assignToData.map((item, i) => (
+                                        : "Task ID"
+                                    }
+                                    autoComplete="off"
+                                    name="taskid"
+                                    value={
+                                      this.state.ticketSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Department"
+                                    value={
+                                      this.state.ticketSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.department
+                                        : "Department"}
+                                    </option>
+                                    {this.state.departmentData !== null &&
+                                      this.state.departmentData.map(
+                                        (item, i) => (
                                           <option
                                             key={i}
-                                            value={item.userID}
+                                            value={item.departmentID}
                                             className="select-category-placeholder"
                                           >
-                                            {item.userName}
+                                            {item.departmentName}
                                           </option>
-                                        ))}
-                                    </select>
-                                  </div>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="functionID"
+                                    value={
+                                      this.state.ticketSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.function
+                                        : "Function"}
+                                    </option>
+                                    {this.state.funcationData !== null &&
+                                      this.state.funcationData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.functionID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.funcationName}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="AssigntoId"
+                                    value={
+                                      this.state.ticketSearchData["AssigntoId"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.assignto
+                                        : "Assign to"}
+                                    </option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.option.tasktitle
+                                        : "Task Title"
+                                    }
+                                    name="tasktitle"
+                                    value={
+                                      this.state.ticketSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Priority"
+                                    value={
+                                      this.state.ticketSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.taskpriority
+                                        : "Task Priority"}
+                                    </option>
+                                    {this.state.priorityData !== null &&
+                                      this.state.priorityData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.priorityID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.priortyName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskstatus"
+                                    value={
+                                      this.state.ticketSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.taskstatus
+                                        : "Task Status"}
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskwithClaim"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithClaim"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .taskwithclaim
+                                        : "Task With Claim"}
+                                    </option>
+                                    <option value={"Yes"}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.yes
+                                        : "Yes"}
+                                    </option>
+                                    <option value={"No"}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.no
+                                        : "No"}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskwithTicket"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithTicket"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .taskwithticket
+                                        : "Task With Ticket"}
+                                    </option>
+                                    <option value={"Yes"}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.yes
+                                        : "Yes"}
+                                    </option>
+                                    <option value={"No"}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.no
+                                        : "No"}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                {this.state.ticketSearchData[
+                                  "taskwithClaim"
+                                ] === "Yes" ? (
                                   <div className="col-md-3">
                                     <input
+                                      className="no-bg"
                                       type="text"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.option.tasktitle
-                                        : "Task Title"}
-                                      name="tasktitle"
+                                      placeholder="Claim ID"
+                                      autoComplete="off"
+                                      name="claimID"
                                       value={
-                                        this.state.ticketSearchData["tasktitle"]
+                                        this.state.ticketSearchData["claimID"]
                                       }
                                       onChange={this.handleOnChange.bind(this)}
                                     />
                                   </div>
-
+                                ) : null}
+                                {this.state.ticketSearchData[
+                                  "taskwithTicket"
+                                ] === "Yes" ? (
                                   <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="Priority"
+                                    <input
+                                      className="no-bg"
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                      name="ticketID"
+                                      autoComplete="off"
                                       value={
-                                        this.state.ticketSearchData["Priority"]
+                                        this.state.ticketSearchData["ticketID"]
                                       }
                                       onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskpriority
-                                          : "Task Priority"}
-                                      </option>
-                                      {this.state.priorityData !== null &&
-                                        this.state.priorityData.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.priorityID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.priortyName}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3 campaign-end-date creation-date-range">
-                                    <CreationOnDatePickerCompo
-                                      applyCallback={this.SearchCreationOn}
                                     />
                                   </div>
-
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="taskstatus"
-                                      value={
-                                        this.state.ticketSearchData["taskstatus"]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="" selected>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskstatus
-                                          : "Task Status"}
-                                      </option>
-                                      {this.state.storeStatus !== null &&
-                                        this.state.storeStatus.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="taskwithClaim"
-                                      value={
-                                        this.state.ticketSearchData[
-                                        "taskwithClaim"
-                                        ]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskwithclaim
-                                          : "Task With Claim"}
-                                      </option>
-                                      <option value={"Yes"}>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.yes
-                                          : "Yes"}
-                                      </option>
-                                      <option value={"No"}>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.no
-                                          : "No"}
-                                      </option>
-                                    </select>
-                                  </div>
-
-                                  <div className="col-md-3">
-                                    <select
-                                      className="store-create-select"
-                                      name="taskwithTicket"
-                                      value={
-                                        this.state.ticketSearchData[
-                                        "taskwithTicket"
-                                        ]
-                                      }
-                                      onChange={this.handleOnChange.bind(this)}
-                                    >
-                                      <option value="">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.taskwithticket
-                                          : "Task With Ticket"}
-                                      </option>
-                                      <option value={"Yes"}>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.yes
-                                          : "Yes"}
-                                      </option>
-                                      <option value={"No"}>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option.no
-                                          : "No"}
-                                      </option>
-                                    </select>
-                                  </div>
-
-                                  {this.state.ticketSearchData[
-                                    "taskwithClaim"
-                                  ] === "Yes" ? (
-                                      <div className="col-md-3">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Claim ID"
-                                          autoComplete="off"
-                                          name="claimID"
-                                          value={
-                                            this.state.ticketSearchData["claimID"]
-                                          }
-                                          onChange={this.handleOnChange.bind(this)}
-                                        />
-                                      </div>
-                                    ) : null}
-                                  {this.state.ticketSearchData[
-                                    "taskwithTicket"
-                                  ] === "Yes" ? (
-                                      <div className="col-md-3">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Ticket ID"
-                                          name="ticketID"
-                                          autoComplete="off"
-                                          value={
-                                            this.state.ticketSearchData["ticketID"]
-                                          }
-                                          onChange={this.handleOnChange.bind(this)}
-                                        />
-                                      </div>
-                                    ) : null}
-                                </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>
                         </div>
-                      </CardBody>
-                    </Card>
-                  </Collapse>
-                  <div
-                    className="float-search"
-                    style={{ top: "18%" }}
-                    onClick={this.handleFilterCollapse.bind(this)}
-                  >
-                    <small>
-                      {this.state.FilterCollapse ? TranslationContext !== undefined
-                        ? TranslationContext.small.search
-                        : "Search" : TranslationContext !== undefined
-                          ? TranslationContext.small.search
-                          : "Search"}
-                    </small>
-                    <img
-                      className="search-icon"
-                      src={SearchIcon}
-                      alt="search-icon"
-                    />
-                  </div>
-                  <div className="table-cntr taskByTable">
-                    {this.state.isViewSerach ? (
-                      <div className="loader-icon-cntr">
-                        <div className="loader-icon"></div>
                       </div>
-                    ) : (
-                        <ReactTable
-                          data={this.state.taskByTicketData}
-                          columns={[
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.taskid
-                                    : "Task ID"}
-                                </span>
-                              ),
-                              accessor: "storeTaskID",
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.ticketid
-                                    : "Ticket ID"}
-                                </span>
-                              ),
-                              accessor: "ticketID",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Status"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "taskStatus",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.status
-                                      : "Status"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"}
-
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Status"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "taskStatus",
-                              Cell: (row) => {
-                                if (row.original.taskStatus === "New") {
-                                  return (
-                                    <span className="table-btn table-yellow-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                } else if (row.original.taskStatus === "Open") {
-                                  return (
-                                    <span className="table-btn table-blue-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                } else {
-                                  return (
-                                    <span className="table-btn table-green-btn">
-                                      <label>{row.original.taskStatus}</label>
-                                    </span>
-                                  );
-                                }
-                              },
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.tasktitle
-                                    : "tasktitle"}
-                                </span>
-                              ),
-                              accessor: "taskTitle",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Department"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "departmentName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.department
-                                      : "Department"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.department
-                                    : "Department"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Department"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "departmentName",
-                              Cell: (row) => {
-                                return (
-                                  <>
-                                    {row.original.departmentName}
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Function</p>
-                                              <p>{row.original.functionName}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Created by"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "createdBy",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.createdby
-                                      : "Created by"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.createdby
-                                    : "Created by"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Created by"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "createdBy",
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Store Name"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "storeName",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.storename
-                                      : "Store Name"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.storename
-                                    : "Store Name"}
-
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Store Name"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "storeName",
-                              Cell: (row) => {
-                                return (
-                                  <span>
-                                    <label>{row.original.storeName}</label>
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Store Address</p>
-                                              <p>{row.original.storeAddress}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Creation On"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "creationOn",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.creationon
-                                      : "Creation On"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.creationon
-                                    : "Creation On"}{" "}
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Creation On"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "creationOn",
-                              Cell: (row) => (
-                                <span>
-                                  <label>{row.original.creationOn}</label>
-
-                                  <Popover
-                                    content={
-                                      <div className="insertpop1">
-                                        <ul className="dash-creation-popup">
-                                          <li className="title">
-                                            Creation details
-                                      </li>
-                                          <li>
-                                            <p>
-                                              {"Created by " +
-                                                row.original.createdBy}
-                                            </p>
-                                            <p>{row.original.createdago}</p>
-                                          </li>
-                                          <li>
-                                            <p>
-                                              Assigned to{" "}
-                                              {" " + row.original.assignto}
-                                            </p>
-                                            <p>{row.original.assignedago}</p>
-                                          </li>
-                                          <li>
-                                            <p>
-                                              {"Updated by " +
-                                                row.original.updatedBy}
-                                            </p>
-                                            <p>{row.original.updatedago}</p>
-                                          </li>
-                                          <li>
-                                            <p>Resolution time remaining by</p>
-                                            <p>
-                                              {row.original.resolutionTimeRemaining}
-                                            </p>
-                                          </li>
-                                          <li>
-                                            <p>Response overdue by</p>
-                                            <p></p>
-                                          </li>
-                                          <li>
-                                            <p>Resolution overdue by</p>
-                                            <p>
-                                              {row.original.resolutionOverdueBy}
-                                            </p>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    }
-                                    placement="left"
-                                  >
-                                    <img
-                                      className="info-icon"
-                                      src={InfoIcon}
-                                      alt="info-icon"
-                                    />
-                                  </Popover>
-                                </span>
-                              ),
-                            },
-                            {
-                              Header: (
-                                <span
-                                  className={
-                                    this.state.sortHeader === "Assign to"
-                                      ? "sort-column"
-                                      : ""
-                                  }
-                                  onClick={this.StatusOpenModel.bind(
-                                    this,
-                                    "assignto",
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.span.assignto
-                                      : "Assign to"
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.assignto
-                                    : "Assign to"}
-
-                                  <FontAwesomeIcon
-                                    icon={
-                                      this.state.isATOZ === false &&
-                                        this.state.sortHeader === "Assign to"
-                                        ? faCaretUp
-                                        : faCaretDown
-                                    }
-                                  />
-                                </span>
-                              ),
-                              sortable: false,
-                              accessor: "assignto",
-                            },
-                          ]}
-                          // resizable={false}
-                          defaultPageSize={10}
-                          showPagination={true}
-                          minRows={2}
-                          getTrProps={this.HandleRowTaskByClickPage}
-                        />
-                      )}
-                  </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
+                <div
+                  className="float-search"
+                  style={{ top: "18%" }}
+                  onClick={this.handleFilterCollapse.bind(this)}
+                >
+                  <small>
+                    {this.state.FilterCollapse
+                      ? TranslationContext !== undefined
+                        ? TranslationContext.small.search
+                        : "Search"
+                      : TranslationContext !== undefined
+                      ? TranslationContext.small.search
+                      : "Search"}
+                  </small>
+                  <img
+                    className="search-icon"
+                    src={SearchIcon}
+                    alt="search-icon"
+                  />
                 </div>
-              )}
+                <div className="table-cntr taskByTable">
+                  {this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.taskByTicketData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.taskid
+                                : "Task ID"}
+                            </span>
+                          ),
+                          accessor: "storeTaskID",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.ticketid
+                                : "Ticket ID"}
+                            </span>
+                          ),
+                          accessor: "ticketID",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskStatus",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.status
+                                  : "Status"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
+
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
+                        },
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.tasktitle
+                                : "tasktitle"}
+                            </span>
+                          ),
+                          accessor: "taskTitle",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "departmentName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.department
+                                  : "Department"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.department
+                                : "Department"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.departmentName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Created by"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdBy",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.createdby
+                                  : "Created by"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created by"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Created by"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "createdBy",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.storename
+                                  : "Store Name"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.storename
+                                : "Store Name"}
+
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.creationon
+                                  : "Creation On"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"}{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "creationOn",
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.creationOn}</label>
+
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Created by " +
+                                            row.original.createdBy}
+                                        </p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Updated by " +
+                                            row.original.updatedBy}
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p></p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          ),
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignto",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.assignto
+                                  : "Assign to"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.assignto
+                                : "Assign to"}
+
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "assignto",
+                        },
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      minRows={2}
+                      getTrProps={this.HandleRowTaskByClickPage}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
           </div>
           <div
             className={
               config.isShowTaskTab
                 ? "tab-pane fade"
-                : "tab-pane fade  show active"
+                : "tab-pane fade show active"
             }
-            // className="tab-pane fade"
             id="campaign-tab"
             role="tabpanel"
             aria-labelledby="campaign-tab"
@@ -4282,188 +4308,188 @@ class StoreTask extends Component {
                 </div>
                 {this.state.sortColumn === "storeName"
                   ? this.state.sortFilterstoreName !== null &&
-                  this.state.sortFilterstoreName.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.storeName}
-                        value={item.storeName}
-                        checked={this.state.sstoreNameFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.storeName)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "storeName",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.storeName}>
-                        <span className="table-btn table-blue-btn">
-                          {item.storeName}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFilterstoreName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.storeName}
+                          value={item.storeName}
+                          checked={this.state.sstoreNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.storeName)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "storeName",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.storeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.storeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
                 {this.state.sortColumn === "departmentName"
                   ? this.state.sortFilterdepartmentName !== null &&
-                  this.state.sortFilterdepartmentName.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.departmentName}
-                        value={item.departmentName}
-                        checked={this.state.sdepartmentNameFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.departmentName)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "departmentName",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.departmentName}>
-                        <span className="table-btn table-blue-btn">
-                          {item.departmentName}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFilterdepartmentName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.departmentName}
+                          value={item.departmentName}
+                          checked={this.state.sdepartmentNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.departmentName)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "departmentName",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.departmentName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.departmentName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
                 {this.state.sortColumn === "priorityName"
                   ? this.state.sortFilterpriorityName !== null &&
-                  this.state.sortFilterpriorityName.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.priorityName}
-                        value={item.priorityName}
-                        checked={this.state.spriorityNameFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.priorityName)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "priorityName",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.priorityName}>
-                        <span className="table-btn table-blue-btn">
-                          {item.priorityName}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFilterpriorityName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.priorityName}
+                          value={item.priorityName}
+                          checked={this.state.spriorityNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.priorityName)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "priorityName",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.priorityName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.priorityName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
 
                 {this.state.sortColumn === "creationOn"
                   ? this.state.sortFiltercreationOn !== null &&
-                  this.state.sortFiltercreationOn.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.creationOn}
-                        value={item.creationOn}
-                        checked={this.state.screationOnFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.creationOn)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "creationOn",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.creationOn}>
-                        <span className="table-btn table-blue-btn">
-                          {item.creationOn}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFiltercreationOn.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.creationOn}
+                          value={item.creationOn}
+                          checked={this.state.screationOnFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.creationOn)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "creationOn",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.creationOn}>
+                          <span className="table-btn table-blue-btn">
+                            {item.creationOn}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
                 {this.state.sortColumn === "assignto"
                   ? this.state.sortFilterassignto !== null &&
-                  this.state.sortFilterassignto.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.assignto}
-                        value={item.assignto}
-                        checked={this.state.sassigntoFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.assignto)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "assignto",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.assignto}>
-                        <span className="table-btn table-blue-btn">
-                          {item.assignto}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFilterassignto.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.assignto}
+                          value={item.assignto}
+                          checked={this.state.sassigntoFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.assignto)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "assignto",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.assignto}>
+                          <span className="table-btn table-blue-btn">
+                            {item.assignto}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
                 {this.state.sortColumn === "createdBy"
                   ? this.state.sortFiltercreatedBy !== null &&
-                  this.state.sortFiltercreatedBy.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.createdBy}
-                        value={item.createdBy}
-                        checked={this.state.screatedByFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.createdBy)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "createdBy",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.createdBy}>
-                        <span className="table-btn table-blue-btn">
-                          {item.createdBy}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFiltercreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          checked={this.state.screatedByFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.createdBy)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
                 {this.state.sortColumn === "taskStatus"
                   ? this.state.sortFiltertaskStatus !== null &&
-                  this.state.sortFiltertaskStatus.map((item, i) => (
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        name="filter-type"
-                        id={"fil-open" + item.taskStatus}
-                        value={item.taskStatus}
-                        checked={this.state.staskStatusFilterCheckbox
-                          .split(",")
-                          .find((word) => word === item.taskStatus)}
-                        onChange={this.setSortCheckStatus.bind(
-                          this,
-                          "taskStatus",
-                          "value"
-                        )}
-                      />
-                      <label htmlFor={"fil-open" + item.taskStatus}>
-                        <span className="table-btn table-blue-btn">
-                          {item.taskStatus}
-                        </span>
-                      </label>
-                    </div>
-                  ))
+                    this.state.sortFiltertaskStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.taskStatus}
+                          value={item.taskStatus}
+                          checked={this.state.staskStatusFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.taskStatus)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "taskStatus",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.taskStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.taskStatus}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                   : null}
               </div>
             </div>
