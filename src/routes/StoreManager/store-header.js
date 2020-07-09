@@ -188,6 +188,7 @@ class Header extends Component {
       newChatSoundFile: "",
       newMessageSoundFile: "",
       storePayURL: "",
+      newTicketChatId: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -204,45 +205,88 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.subscription = transferData.getProfilePic().subscribe((pic) => {
-      if (pic.profilePic) {
-        if (pic.profilePic === "") {
-          this.setState({ selectedUserProfilePicture: "" });
-        } else if (pic.profilePic.length > 0) {
-          this.setState({ selectedUserProfilePicture: pic.profilePic });
+    debugger;
+    if (this.props) {
+      if (this.props.location) {
+        this.props.history.push("store/myTicketList");
+      } else {
+        this.subscription = transferData.getProfilePic().subscribe((pic) => {
+          if (pic.profilePic) {
+            if (pic.profilePic === "") {
+              this.setState({ selectedUserProfilePicture: "" });
+            } else if (pic.profilePic.length > 0) {
+              this.setState({ selectedUserProfilePicture: pic.profilePic });
+            }
+          } else if (pic.profilePic === "") {
+            this.setState({ selectedUserProfilePicture: "" });
+          }
+        });
+        var _token = window.localStorage.getItem("token");
+        if (_token === null) {
+          window.location.href = "/";
+        } else {
+          this.handleGetUserProfileData();
+          this.handleLoggedInUserDetails();
+
+          let pageName, lastOne, lastValue, arr;
+          arr = [...this.state.cont];
+
+          setTimeout(
+            function() {
+              pageName = window.location.pathname;
+              lastOne = pageName.split("/");
+              lastValue = lastOne[lastOne.length - 1];
+              arr.forEach((i) => {
+                i.activeClass = "single-menu";
+                if (i.urls === lastValue) i.activeClass = "active single-menu";
+              });
+              this.setState({ cont: arr });
+            }.bind(this),
+            1
+          );
         }
-      } else if (pic.profilePic === "") {
-        this.setState({ selectedUserProfilePicture: "" });
       }
-    });
-    var _token = window.localStorage.getItem("token");
-    if (_token === null) {
-      window.location.href = "/";
     } else {
-      this.handleGetUserProfileData();
-      this.handleLoggedInUserDetails();
+      this.subscription = transferData.getProfilePic().subscribe((pic) => {
+        if (pic.profilePic) {
+          if (pic.profilePic === "") {
+            this.setState({ selectedUserProfilePicture: "" });
+          } else if (pic.profilePic.length > 0) {
+            this.setState({ selectedUserProfilePicture: pic.profilePic });
+          }
+        } else if (pic.profilePic === "") {
+          this.setState({ selectedUserProfilePicture: "" });
+        }
+      });
+      var _token = window.localStorage.getItem("token");
+      if (_token === null) {
+        window.location.href = "/";
+      } else {
+        this.handleGetUserProfileData();
+        this.handleLoggedInUserDetails();
 
-      let pageName, lastOne, lastValue, arr;
-      arr = [...this.state.cont];
+        let pageName, lastOne, lastValue, arr;
+        arr = [...this.state.cont];
 
-      setTimeout(
-        function() {
-          pageName = window.location.pathname;
-          lastOne = pageName.split("/");
-          lastValue = lastOne[lastOne.length - 1];
-          arr.forEach((i) => {
-            i.activeClass = "single-menu";
-            if (i.urls === lastValue) i.activeClass = "active single-menu";
-          });
-          this.setState({ cont: arr });
-        }.bind(this),
-        1
-      );
-      this.handleGetNotigfication();
-      this.handleGetChatNotificationCount();
-      this.handleGetChatSession();
-      this.handleGetChatSoundNotiSetting();
+        setTimeout(
+          function() {
+            pageName = window.location.pathname;
+            lastOne = pageName.split("/");
+            lastValue = lastOne[lastOne.length - 1];
+            arr.forEach((i) => {
+              i.activeClass = "single-menu";
+              if (i.urls === lastValue) i.activeClass = "active single-menu";
+            });
+            this.setState({ cont: arr });
+          }.bind(this),
+          1
+        );
+      }
     }
+    this.handleGetNotigfication();
+    this.handleGetChatNotificationCount();
+    this.handleGetChatSession();
+    this.handleGetChatSoundNotiSetting();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -491,7 +535,7 @@ class Header extends Component {
 
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
   componentDidUpdate() {
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
@@ -756,7 +800,10 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
+    debugger;
     this.setState({
+      newTicketChatId:
+        Number(document.getElementById("newTicketChatId").value) || 0,
       chatModal: true,
       noOfPeople: "",
       selectSlot: {},
@@ -817,9 +864,31 @@ class Header extends Component {
                 isMainLoader: false,
               });
             }
-            self.setState({
-              ongoingChatsData,
-            });
+            debugger;
+            if (self.state.newTicketChatId > 0) {
+              var chatData = ongoingChatsData.filter(
+                (x) => x.chatID === self.state.newTicketChatId
+              );
+              self.setState({
+                ongoingChatsData,
+                newTicketChatId: 0,
+              });
+              self.handleOngoingChatClick(
+                chatData[0].chatID,
+                chatData[0].cumtomerName,
+                chatData[0].messageCount,
+                chatData[0].mobileNo,
+                chatData[0].customerID,
+                chatData[0].programCode,
+                chatData[0].storeID,
+                chatData[0].isCustEndChat,
+                chatData[0].storeManagerId
+              );
+            } else {
+              self.setState({
+                ongoingChatsData,
+              });
+            }
           } else {
             self.setState({
               customerName: "",
@@ -2357,6 +2426,11 @@ class Header extends Component {
               value={this.state.reportAccess}
               id="isReport"
             />
+            <input
+              type="hidden"
+              value={this.state.newTicketChatId}
+              id="newTicketChatId"
+            />
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               {this.state.UserName.split(" ")
                 .map((n) => n[0])
@@ -2376,6 +2450,7 @@ class Header extends Component {
           <label className="cusheadermob">{this.state.mobileHeading}</label>
           <div className="header-right-icons">
             <a
+              id="chatwindow"
               onClick={this.handleChatModalOpen.bind(this)}
               style={{ display: this.state.chatAccess }}
             >
