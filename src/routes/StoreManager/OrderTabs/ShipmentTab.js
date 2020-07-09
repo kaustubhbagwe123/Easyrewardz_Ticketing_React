@@ -32,6 +32,7 @@ class ShipmentTab extends Component {
       translateLanguage: {},
       ShipmentOrderItem: [],
       ShipmentOrderId: 0,
+      shipmentCharges: 0,
       orderId: 0,
       AirwayBillAWBNo: 0,
       AirwayItemIds: 0,
@@ -43,6 +44,7 @@ class ShipmentTab extends Component {
       TemplateData: [],
       selectedTemplate: "0",
       createShipmetLoader: false,
+      showShipmentCharge: true,
     };
   }
 
@@ -85,6 +87,7 @@ class ShipmentTab extends Component {
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -202,6 +205,8 @@ class ShipmentTab extends Component {
           self.setState({
             ShipmentOrderItem: data.ordersItems,
             ShipmentOrderId: data.invoiceNumber,
+            shipmentCharges: data.shipmentCharges,
+            showShipmentCharge: data.isStoreDelivery,
             ShipmentMdlbtn: true,
             airWayBill2ndTab: false,
             orderId: ordId,
@@ -211,7 +216,9 @@ class ShipmentTab extends Component {
           self.setState({
             ShipmentOrderItem: [],
             ShipmentOrderId: 0,
+            shipmentCharges: 0,
             ShipmentMdlbtn: true,
+            showShipmentCharge: true,
             airWayBill2ndTab: false,
             orderId: ordId,
           });
@@ -260,6 +267,7 @@ class ShipmentTab extends Component {
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -267,6 +275,8 @@ class ShipmentTab extends Component {
             AirwayBillAWBNo: data[0].awbNumber,
             AirwayItemIds: data[0].itemIDs,
             ShipmentOrderId: data[0].invoiceNo,
+            shipmentCharges: data[0].shipmentCharges,
+            showShipmentCharge: data[0].isStoreDelivery,
             ShipmentMdlbtn: true,
             airWayBill2ndTab: true,
             createdShoppingTabs: true,
@@ -282,6 +292,8 @@ class ShipmentTab extends Component {
             AirwayBillAWBNo: 0,
             AirwayItemIds: 0,
             ShipmentOrderId: 0,
+            shipmentCharges: 0,
+            showShipmentCharge: true,
             ShipmentMdlbtn: true,
             orderId: orderId,
           });
@@ -556,15 +568,22 @@ class ShipmentTab extends Component {
                           <div className="order-tab-popover shipment-status-popover">
                             <div className="d-flex align-items-center justify-content-between">
                               <p>Expected Pickup Date :</p>
-                              <p className="username-mar">22/04/20 at 20:15</p>
+                              <p className="username-mar">
+                                {item.estimatedDeliveryDate}
+                              </p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
                               <p>Expected Schedule Date :</p>
-                              <p className="username-mar">10/05/20 at 08:50</p>
+                              <p className="username-mar">
+                                {item.pickupScheduledDate}
+                              </p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
                               <p>Charges :</p>
-                              <p className="username-mar">200 &#8377;</p>
+                              <p className="username-mar">
+                                {item.shippingCharges} 
+                                {/* &#8377; */}
+                              </p>
                             </div>
                           </div>
                         }
@@ -574,7 +593,9 @@ class ShipmentTab extends Component {
                           this.setState({ orderPopoverOverlay: visible })
                         }
                       >
-                        <img src={OrderInfo} className="order-info" />
+                        {item.statusName !== "" ? (
+                          <img src={OrderInfo} className="order-info" />
+                        ) : null}
                       </Popover>
                     </div>
                   );
@@ -846,18 +867,21 @@ class ShipmentTab extends Component {
                                 <div className="d-flex align-items-center justify-content-between">
                                   <p>Expected Pickup Date :</p>
                                   <p className="username-mar">
-                                    22/04/20 at 20:15
+                                    {row.estimatedDeliveryDate}
                                   </p>
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between">
                                   <p>Expected Schedule Date :</p>
                                   <p className="username-mar">
-                                    10/05/20 at 08:50
+                                    {row.pickupScheduledDate}
                                   </p>
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between">
                                   <p>Charges :</p>
-                                  <p className="username-mar">200 &#8377;</p>
+                                  <p className="username-mar">
+                                    {row.shippingCharges} 
+                                    {/* &#8377; */}
+                                  </p>
                                 </div>
                               </div>
                             }
@@ -1141,7 +1165,13 @@ class ShipmentTab extends Component {
                             {this.state.IsStoreDelivery ? (
                               "Courier Partner - Store"
                             ) : (
-                              <> AWB No - {this.state.AirwayBillAWBNo}</>
+                              <>
+                                {" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.title.awbno
+                                  : "AWB No"}{" "}
+                                - {this.state.AirwayBillAWBNo}
+                              </>
                             )}
                           </h2>
                           <p>
@@ -1163,6 +1193,15 @@ class ShipmentTab extends Component {
                               - {this.state.AirwayItemIds}
                             </li>
                           </ul>
+                          {this.state.showShipmentCharge === false ? (
+                            <p style={{ color: "black" }}>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.ticketingDashboard
+                                    .shipmentcharges
+                                : "Shipment Charges "}
+                              : {this.state.shipmentCharges}
+                            </p>
+                          ) : null}
                         </div>
                       </div>
                       <div className="dv-status m-t-20">

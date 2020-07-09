@@ -1885,7 +1885,8 @@
     "convertthisorderinselfpickup": "इस क्रम को सेल्फ पिकअप में बदलें",
     "entertime": "समय दर्ज करें",
     "enterdate": "दिनांक दर्ज करें",
-    "checkingyouravailability": "अपनी उपलब्धता की जाँच कर रहा है।"
+    "checkingyouravailability": "अपनी उपलब्धता की जाँच कर रहा है।",
+    "shipmentcharges":"शिपमेंट शुल्क"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."

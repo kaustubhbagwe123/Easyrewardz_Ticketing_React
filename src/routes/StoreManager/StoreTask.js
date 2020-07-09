@@ -2220,7 +2220,7 @@ class StoreTask extends Component {
                 className={
                   config.isShowTaskTab
                     ? "nav-link"
-                    : "nav-link active mobileblock"
+                    : "nav-link active"
                 }
                 data-toggle="tab"
                 href="#campaign-tab"
