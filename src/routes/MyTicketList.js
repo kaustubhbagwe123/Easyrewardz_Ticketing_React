@@ -3061,8 +3061,9 @@ class MyTicketList extends Component {
     }
 
     this.setState({
-      tempSearchTicketData: itemsArray,
+      tempSearchTicketData: itemsArray, 
     });
+    this.StatusCloseModel();
   };
   //// handle change filtre by check box
   setColorSortCheckStatus = (e) => {
