@@ -3642,6 +3642,9 @@ table tr th:last-child {
   text-align: center;
   margin-top: 20px;
 }
+.mobileblock{
+  display: none;
+}
 @media screen and (max-width: 600px) {
   .customer-count-block {
     background: #f5f6fc;
@@ -3998,6 +4001,9 @@ table tr th:last-child {
   }
   .store-campaign-inner-cntr .dateTimeStore {
     width: 190px;
+  }
+  .mobileblock{
+    display: block;
   }
   /* store campaign tab ends */
 }

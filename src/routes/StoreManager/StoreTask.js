@@ -74,6 +74,7 @@ class StoreTask extends Component {
       isATOZ: true,
       itemData: [],
       translateLanguage: {},
+      showMobileTab: false,
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -2160,7 +2161,9 @@ class StoreTask extends Component {
             >
               <a
                 className={
-                  config.isShowTaskTab ? "nav-link active" : "nav-link"
+                  config.isShowTaskTab
+                    ? "nav-link active order-desktop"
+                    : "nav-link"
                 }
                 data-toggle="tab"
                 href="#raised-by-me-tab"
@@ -2176,7 +2179,9 @@ class StoreTask extends Component {
             </li>
             <li
               className={
-                config.isShowTaskTab ? "nav-item" : "nav-item displayNn"
+                config.isShowTaskTab
+                  ? "nav-item order-desktop"
+                  : "nav-item displayNn"
               }
             >
               <a
@@ -2195,7 +2200,9 @@ class StoreTask extends Component {
             </li>
             <li
               className={
-                config.isShowTaskTab ? "nav-item" : "nav-item displayNn"
+                config.isShowTaskTab
+                  ? "nav-item order-desktop"
+                  : "nav-item displayNn"
               }
             >
               <a
@@ -2215,7 +2222,9 @@ class StoreTask extends Component {
             <li className="nav-item">
               <a
                 className={
-                  config.isShowTaskTab ? "nav-link" : "nav-link active"
+                  config.isShowTaskTab
+                    ? "nav-link"
+                    : "nav-link active mobileblock"
                 }
                 data-toggle="tab"
                 href="#campaign-tab"
@@ -2248,7 +2257,7 @@ class StoreTask extends Component {
           <div
             className={
               config.isShowTaskTab
-                ? "tab-pane fade show active"
+                ? "tab-pane fade show active order-desktop"
                 : "tab-pane fade"
             }
             id="raised-by-me-tab"
@@ -2871,7 +2880,7 @@ class StoreTask extends Component {
             )}
           </div>
           <div
-            className="tab-pane fade"
+            className="tab-pane fade order-desktop"
             id="assigned-to-me-tab"
             role="tabpanel"
             aria-labelledby="assigned-to-me-tab"
@@ -3486,7 +3495,7 @@ class StoreTask extends Component {
             )}
           </div>
           <div
-            className="tab-pane fade"
+            className="tab-pane fade order-desktop"
             id="task-by-tickets-tab"
             role="tabpanel"
             aria-labelledby="task-by-tickets-tab"
@@ -4204,9 +4213,8 @@ class StoreTask extends Component {
             className={
               config.isShowTaskTab
                 ? "tab-pane fade"
-                : "tab-pane fade  show active"
+                : "tab-pane fade show active"
             }
-            // className="tab-pane fade"
             id="campaign-tab"
             role="tabpanel"
             aria-labelledby="campaign-tab"
