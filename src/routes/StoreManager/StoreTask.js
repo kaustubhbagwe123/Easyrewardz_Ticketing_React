@@ -37,21 +37,18 @@ class StoreTask extends Component {
       screationOnFilterCheckbox: "",
       sassigntoFilterCheckbox: "",
       screatedByFilterCheckbox: "",
-
       sortFilterdepartmentName: [],
       sortFilterstoreName: [],
       sortFilterpriorityName: [],
       sortFiltercreationOn: [],
       sortFilterassignto: [],
       sortFiltercreatedBy: [],
-
       sortdepartmentName: [],
       sortstoreName: [],
       sortpriorityName: [],
       sortcreationOn: [],
       sortassignto: [],
       sortcreatedBy: [],
-
       sortColumn: "",
       sortHeader: "",
       filterTxtValue: "",
@@ -60,7 +57,6 @@ class StoreTask extends Component {
       tabIndex: 1,
       showAddTask: true,
       FilterCollapse: false,
-
       priorityData: [],
       assignToData: [],
       funcationData: [],
