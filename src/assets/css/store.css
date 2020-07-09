@@ -2237,6 +2237,9 @@ table tr th:last-child {
 .store-campaign-script-info {
   display: none;
 }
+.campaign-cust-popup .lifetimevalue {
+  height: calc(100% - 18px);
+}
 /* store campaign tab ends */
 
 /* ------------------Campain Media Queries ------------------------- */
@@ -4004,6 +4007,9 @@ table tr th:last-child {
   }
   .mobileblock{
     display: block;
+  }
+  .campaign-cust-popup .lifetimevalue {
+    height: auto;
   }
   /* store campaign tab ends */
 }

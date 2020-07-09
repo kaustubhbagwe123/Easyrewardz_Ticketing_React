@@ -2374,7 +2374,11 @@ class Header extends Component {
               alt="hamburger icon"
             />
           </div>
-          <label className="cusheadermob">{this.state.mobileHeading}</label>
+          <label className="cusheadermob">
+            {this.state.mobileHeading === "Task"
+              ? "Campaign"
+              : this.state.mobileHeading}
+          </label>
           <div className="header-right-icons">
             <a
               onClick={this.handleChatModalOpen.bind(this)}
@@ -2729,7 +2733,7 @@ class Header extends Component {
                               className={item.imgClass}
                             />
                           </span>
-                          {item.data}
+                          {item.data === "Task" ? "Campaign" : item.data}
                         </Link>
                       </li>
                     );
@@ -6256,7 +6260,12 @@ class Header extends Component {
                         </div>
                         <div className="prodtabl1">
                           <div className="insightsbox">
-                            <h3>Insights</h3><img src={DownArw} className="DownArw" alt="DownArw" />
+                            <h3>Insights</h3>
+                            <img
+                              src={DownArw}
+                              className="DownArw"
+                              alt="DownArw"
+                            />
                             <p>
                               1. Lorem Ipsum is simply dummy text of the
                               printing industry.
@@ -6271,7 +6280,12 @@ class Header extends Component {
                             </p>
                           </div>
                           <div className="ordersbox">
-                            <h3>Orders</h3><img src={DownArw} className="DownArw" alt="DownArw" />
+                            <h3>Orders</h3>
+                            <img
+                              src={DownArw}
+                              className="DownArw"
+                              alt="DownArw"
+                            />
                             <ul>
                               <li>
                                 <label>Delivered</label>
@@ -6294,7 +6308,12 @@ class Header extends Component {
                             </ul>
                           </div>
                           <div className="lasttransaction">
-                            <h3>Last Transaction</h3><img src={DownArw} className="DownArw" alt="DownArw" />
+                            <h3>Last Transaction</h3>
+                            <img
+                              src={DownArw}
+                              className="DownArw"
+                              alt="DownArw"
+                            />
                             <ul>
                               <li>
                                 <label>Bill No</label>

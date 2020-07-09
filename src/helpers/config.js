@@ -247,7 +247,7 @@ let config = {
   ],
   //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
   // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
-  apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
+   apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
   // apiUrl: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API V2---------
   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
@@ -258,7 +258,7 @@ let config = {
   socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
   //socketUrl: "https://api-bellchatsocketserverqa.ercx.co", /// -------Socket URL Client---------
   // socketUrl:"http://localhost:4000/"
-  // soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
+  soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
   // soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
 };
 
