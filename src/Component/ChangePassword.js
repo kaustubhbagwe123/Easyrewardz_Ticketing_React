@@ -36,10 +36,17 @@ class ChangePassword extends Component {
   handleGetUserProfileData() {
     debugger;
     let self = this;
+    let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+    var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
-      headers: authHeader(),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "X-Authorized-Token": _token,
+        "X-Authorized-Domainname": X_Authorized_Domainname,
+      },
     })
       .then(function(res) {
         debugger;
@@ -51,7 +58,7 @@ class ChangePassword extends Component {
           });
         } else {
           self.setState({
-            ProfileData: "",
+            ProfileData: [],
           });
         }
       })
@@ -105,7 +112,12 @@ class ChangePassword extends Component {
     var field = "Id";
     var changePasswordType = "system";
     var emailIDsystem = "";
-    let email = this.state.ProfileData[0].emailId;
+    var email = "";
+    if (this.state.ProfileData.length > 0) {
+      email = this.state.ProfileData[0].emailId;
+    } else {
+      email = "";
+    }
     var url = window.location.href;
     if (url.indexOf("?" + field + ":") !== -1) {
       changePasswordType = "mail";
@@ -115,35 +127,44 @@ class ChangePassword extends Component {
       emailIDsystem = email;
     }
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+    
     var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
       url: config.apiUrl + "/User/ChangePassword",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "X-Authorized-Token": _token === null ? "":_token ,
+        "X-Authorized-Domainname": X_Authorized_Domainname,
+      },
       data: {
         EmailID: emailIDsystem,
         Password: this.state.oldPassword,
         NewPassword: encPassword,
         ChangePasswordType: changePasswordType,
       },
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "X-Authorized-Token": _token,
-        "X-Authorized-Domainname": X_Authorized_Domainname,
-      },
-    }).then(function(response) {
-      // let data = response;
-      debugger;
-      let Msg = response.data.responseData;
-      if (Msg === true) {
-        NotificationManager.success("Password Changed successfully.", "", 1500);
-        setTimeout(function() {
-          self.props.history.push("/SignIn");
-        }, 1500);
-      } else {
-        NotificationManager.error("Old password is wrong.", "", 1500);
-      }
-    });
+    })
+      .then(function(response) {
+        // let data = response;
+        debugger;
+        let Msg = response.data.responseData;
+        if (Msg === true) {
+          NotificationManager.success(
+            "Password Changed successfully.",
+            "",
+            1500
+          );
+          setTimeout(function() {
+            self.props.history.push("/SignIn");
+          }, 1500);
+        } else {
+          NotificationManager.error("Old password is wrong.", "", 1500);
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   }
   render() {
     return (
