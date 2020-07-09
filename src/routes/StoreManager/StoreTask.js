@@ -2154,7 +2154,7 @@ class StoreTask extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
-        <div className="store-task-tabs">
+        <div className="store-task-tabs store-task-tabs-mobile">
           <ul className="nav nav-tabs" role="tablist">
             <li
               className={
