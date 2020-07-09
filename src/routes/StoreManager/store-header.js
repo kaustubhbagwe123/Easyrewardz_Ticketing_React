@@ -50,6 +50,7 @@ import SchRight from "./../../assets/Images/sch-right.png";
 import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
+import DownArw from "./../../assets/Images/down.png";
 import AppointmentLogo from "./../../assets/Images/appointments.svg";
 import ChatBubbleBlue from "./../../assets/Images/chat-bubble-blue.svg";
 import ChatBubbleWhite from "./../../assets/Images/chat-bubble-white.svg";
@@ -3263,16 +3264,16 @@ class Header extends Component {
                   {this.state.isHistoricalChat !== true ? (
                     <div className="row" style={{ margin: "0" }}>
                       <div className="chatdivtitle" style={{ padding: "5px" }}>
-                        <button type="button" className="chatupperbtn">
+                        {/* <button type="button" className="chatupperbtn">
                           22 Past Chat
-                        </button>
-                        <button
+                        </button> */}
+                        {/* <button
                           type="button"
                           className="chatupperbtn"
                           style={{ float: "right" }}
                         >
                           Actions
-                        </button>
+                        </button> */}
                         <ul
                           className="nav nav-tabs"
                           role="tablist"
@@ -3288,8 +3289,8 @@ class Header extends Component {
                                 <a
                                   className={
                                     this.state.mainTabSelect === 1
-                                      ? "nav-link active chattitletab"
-                                      : "nav-link chattitletab"
+                                      ? "nav-link active chatupperbtn"
+                                      : "nav-link chatupperbtn"
                                   }
                                   data-toggle="tab"
                                   href="#current-chat"
@@ -3310,8 +3311,8 @@ class Header extends Component {
                                 <a
                                   className={
                                     this.state.mainTabSelect === 2
-                                      ? "nav-link active chattitletab"
-                                      : "nav-link chattitletab"
+                                      ? "nav-link active chatupperbtn"
+                                      : "nav-link chatupperbtn"
                                   }
                                   data-toggle="tab"
                                   href="#recent-chat"
@@ -3346,7 +3347,7 @@ class Header extends Component {
                         {this.state.customerName !== "" ? (
                           <button
                             type="button"
-                            className="btn-store-resolved chatactionbtn"
+                            className="chatactionbtn"
                             onClick={this.handleActionOpen.bind(this)}
                           >
                             <label className="myticket-submit-solve-button-text">
@@ -3355,7 +3356,7 @@ class Header extends Component {
                                 : "Action"}
                             </label>
                             <img
-                              src={DownWhiteImg}
+                              src={DownArw}
                               alt="down-icon"
                               className="down-white"
                             />
@@ -6207,63 +6208,93 @@ class Header extends Component {
                             </li>
                             <li>
                               <h3>Rachel</h3>
-                              <img
+                              {/* <img
                                 src={EditPen}
                                 style={{ marginLeft: "10px" }}
                                 alt="Edit Pen"
                               />
-                              <img src={UserInfo} alt="User Info" />
+                              <img src={UserInfo} alt="User Info" /> */}
                               <span>
                                 Tier: <b>Gold</b>
                               </span>
                             </li>
+                            <li className="contactbox">
+                              <div>
+                                <ul>
+                                  <li>
+                                    {/* <label>Email ID</label> */}
+                                    <p>Mohitverma876@gmail.com</p>
+                                  </li>
+                                  <li>
+                                    {/* <label>Mobile No</label> */}
+                                    <p>+91 9873470074</p>
+                                  </li>
+                                </ul>
+                              </div>
+                            </li>
                           </ul>
                         </div>
-                        <div className="contactbox">
-                          <ul>
-                            <li>
-                              <label>Mobile No</label>
-                              <span>+91 9873470074</span>
-                            </li>
-                            <li>
-                              <label>Email ID</label>
-                              <span>Mohitverma876@gmail.com</span>
-                            </li>
-                          </ul>
+                        <div className="pointstable">
+                          <table>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <label>Total Points</label>
+                                  <span>11,278</span>
+                                </td>
+                                <td>
+                                  <label>Lifetime Value</label>
+                                  <span>2,11,278</span>
+                                </td>
+                                <td>
+                                  <label>Visit Count</label>
+                                  <span>123</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                         <div className="prodtabl1">
-                          <div className="pointstable">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <label>Total Points</label>
-                                  </td>
-                                  <td>
-                                    <span>11,278</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Lifetime Value</label>
-                                  </td>
-                                  <td>
-                                    <span>2,11,278</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Visit Count</label>
-                                  </td>
-                                  <td>
-                                    <span>123</span>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                          <div className="insightsbox">
+                            <h3>Insights</h3><img src={DownArw} className="DownArw" alt="DownArw" />
+                            <p>
+                              1. Lorem Ipsum is simply dummy text of the
+                              printing industry.
+                            </p>
+                            <p>
+                              2. Lorem Ipsum is simply dummy text of the
+                              printing industry.
+                            </p>
+                            <p>
+                              3. Lorem Ipsum is simply dummy text of the
+                              printing industry.
+                            </p>
+                          </div>
+                          <div className="ordersbox">
+                            <h3>Orders</h3><img src={DownArw} className="DownArw" alt="DownArw" />
+                            <ul>
+                              <li>
+                                <label>Delivered</label>
+                                <span>05</span>
+                              </li>
+                              <li>
+                                <label>Shopping Bag</label>
+                                <span>02</span>
+                              </li>
+                            </ul>
+                            <ul>
+                              <li>
+                                <label>Ready to Ship</label>
+                                <span>02</span>
+                              </li>
+                              <li>
+                                <label>Returns</label>
+                                <span>02</span>
+                              </li>
+                            </ul>
                           </div>
                           <div className="lasttransaction">
-                            <h3>Last Transaction</h3>
+                            <h3>Last Transaction</h3><img src={DownArw} className="DownArw" alt="DownArw" />
                             <ul>
                               <li>
                                 <label>Bill No</label>
@@ -6284,21 +6315,36 @@ class Header extends Component {
                                 <span>11 May 2020</span>
                               </li>
                             </ul>
-                          </div>
-                          <div className="insightsbox">
-                            <h3>Insights</h3>
-                            <p>
-                              1.Lorem Ipsum is simply dummy text of the printing
-                              industry.
-                            </p>
-                            <p>
-                              2.Lorem Ipsum is simply dummy text of the printing
-                              industry.
-                            </p>
-                            <p>
-                              3.Lorem Ipsum is simply dummy text of the printing
-                              industry.
-                            </p>
+                            <div className="itemtable">
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Items</th>
+                                    <th>Qty</th>
+                                    <th>Amount</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <label>Product Name 1</label>
+                                      <label>Product Name 2</label>
+                                      <label>Product Name 3</label>
+                                    </td>
+                                    <td>
+                                      <label>02</label>
+                                      <label>03</label>
+                                      <label>01</label>
+                                    </td>
+                                    <td>
+                                      <label>₹999</label>
+                                      <label>₹1299</label>
+                                      <label>₹12999</label>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                         <button type="button" className="updateprofilelinkbtn">

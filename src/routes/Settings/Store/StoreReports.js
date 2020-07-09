@@ -36,7 +36,7 @@ import { async } from "rxjs/internal/scheduler/async";
 const { RangePicker } = DatePicker1;
 
 function disabledDate(current) {
-  // Can not select days before today and today
+  // Can not select days after today and today
   return current && current >= moment().startOf('day');
 }
 
@@ -2567,6 +2567,8 @@ class StoreReports extends Component {
       headers: authHeader(),
       params: {
         ReportID: id,
+        RegionID: this.state.campaignRegion,
+        ZoneID: this.state.campaignZone
       },
     })
       .then(function (res) {

@@ -3996,6 +3996,9 @@ table tr th:last-child {
     display: block;
     padding: 12px 15px;
   }
+  .store-campaign-inner-cntr .dateTimeStore {
+    width: 190px;
+  }
   /* store campaign tab ends */
 }
 
