@@ -505,10 +505,11 @@ class ChatSettings extends Component {
     this.setState({
       newChatSoundVolume: e,
     });
-    if (this.state.newChatSoundID) {
+    if (Number(this.state.newChatSoundID)) {
       var soundName = this.state.chatSoundData.filter(
-        (x) => x.soundID === this.state.newChatSoundID
+        (x) => x.soundID === Number(this.state.newChatSoundID)
       )[0].soundFileName;
+      
       const Sound1Play = new Audio(config.soundURL + soundName);
       Sound1Play.volume = Math.round(e / 10) / 10;
       Sound1Play.play();
@@ -516,10 +517,11 @@ class ChatSettings extends Component {
   };
   ////handle new message volumn change
   handleNewMessageVolumnChange = (e) => {
+    debugger
     this.setState({ newMessageSoundVolume: e });
-    if (this.state.newMessageSoundID) {
+    if (Number(this.state.newMessageSoundID)) {
       var soundName = this.state.chatSoundData.filter(
-        (x) => x.soundID === this.state.newMessageSoundID
+        (x) => x.soundID === Number(this.state.newMessageSoundID)
       )[0].soundFileName;
       const Sound1Play = new Audio(config.soundURL + soundName);
       Sound1Play.volume = Math.round(e / 10) / 10;
