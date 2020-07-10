@@ -71,6 +71,7 @@ class StoreTask extends Component {
       itemData: [],
       translateLanguage: {},
       showMobileTab: false,
+      isDesktop: true,
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -78,6 +79,11 @@ class StoreTask extends Component {
   }
 
   componentDidMount() {
+    if (window.innerWidth > 576) {
+      this.setState({ isDesktop: true });
+    } else {
+      this.setState({ isDesktop: false });
+    }
     this.handleGetTaskData(1);
     this.handleGetDepartment();
     this.handleGetPriorityList();
@@ -2148,7 +2154,7 @@ class StoreTask extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
-        <div className="store-task-tabs">
+        <div className="store-task-tabs store-task-tabs-mobile">
           <ul className="nav nav-tabs" role="tablist">
             <li
               className={
@@ -2218,9 +2224,8 @@ class StoreTask extends Component {
             <li className="nav-item">
               <a
                 className={
-                  config.isShowTaskTab
-                    ? "nav-link"
-                    : "nav-link active mobileblock"
+                  config.isShowTaskTab ? "nav-link" : "nav-link active"
+                  // : "nav-link active mobileblock"
                 }
                 data-toggle="tab"
                 href="#campaign-tab"
@@ -2251,9 +2256,16 @@ class StoreTask extends Component {
           style={{ padding: "15px" }}
         >
           <div
+            // className={
+            //   config.isShowTaskTab
+            //     ? "tab-pane fade show active order-desktop"
+            //     : "tab-pane fade"
+            // }
             className={
-              config.isShowTaskTab
-                ? "tab-pane fade show active order-desktop"
+              !config.isShowTaskTab
+                ? "tab-pane fade"
+                : this.state.isDesktop
+                ? "tab-pane fade show active"
                 : "tab-pane fade"
             }
             id="raised-by-me-tab"
@@ -4206,8 +4218,15 @@ class StoreTask extends Component {
             )}
           </div>
           <div
+            // className={
+            //   config.isShowTaskTab
+            //     ? "tab-pane fade"
+            //     : "tab-pane fade show active"
+            // }
             className={
-              config.isShowTaskTab
+              !config.isShowTaskTab
+                ? "tab-pane fade show active"
+                : this.state.isDesktop
                 ? "tab-pane fade"
                 : "tab-pane fade show active"
             }

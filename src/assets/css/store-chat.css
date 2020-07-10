@@ -988,6 +988,15 @@ p {
   pointer-events: none;
   cursor: no-drop;
 }
+.messagecount {
+  background-color: darkseagreen;
+  color: #fff;
+  border: 2px solid #f1f1f1;
+  font-size: 11px;
+  border-radius: 50%;
+  padding: 1px 6px 2px 5px;
+  text-align: center;
+}
 .firstbox {
   width: 25%;
 }
@@ -996,6 +1005,46 @@ p {
 }
 .thirdbox {
   width: 27%;
+}
+.secondbox-open {
+  width: 68% !important;
+}
+.thirdbox-close {
+  width: 7% !important;
+}
+.thirdbox-close .uptabs .nav-tabs {
+  display: none;
+}
+.thirdbox-close .nameplate span {
+  display: none;
+}
+.thirdbox-close .contactbox {
+  display: none;
+}
+.thirdbox-close .pointstable {
+  display: none;
+}
+.thirdbox-close .prodtabl1 {
+  display: none;
+}
+.thirdbox-close .updateprofilelinkbtn {
+  display: none;
+}
+.thirdbox-close .pin {
+  display: none;
+}
+.thirdbox-close .nameplate li:first-child {
+  margin-right: 0;
+}
+.thirdbox-close .nameplate {
+  margin: 0;
+}
+.thirdbox-close .tab-content {
+  padding: 20px 15px 15px !important;
+  align-items: center;
+  display: block;
+  margin: auto;
+  text-align: center;
 }
 .uptabs {
   position: relative;
@@ -1317,6 +1366,10 @@ p {
   position: relative;
   margin-right: 12px;
   margin-bottom: 12px;
+}
+img.ladyimg {
+  width: 100px;
+  height: 150px;
 }
 .productsbox tr {
   border-bottom: none;

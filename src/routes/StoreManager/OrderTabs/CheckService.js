@@ -75,12 +75,21 @@ class CheckService extends Component {
         .then(function(res) {
           let status = res.data.responseData.available;
           if (status === "true") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.deliveryavailable:"Delivery Available.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.deliveryavailable
+                : "Delivery Available."
+            );
             self.setState({
               btnSubmitData: false,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.servicenotavailableonenteredpincode:"Service not available on entered Pincode.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage
+                    .servicenotavailableonenteredpincode
+                : "Service not available on entered Pincode."
+            );
             self.setState({
               btnSubmitData: false,
             });

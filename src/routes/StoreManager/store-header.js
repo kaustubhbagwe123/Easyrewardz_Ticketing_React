@@ -190,6 +190,8 @@ class Header extends Component {
       newMessageSoundFile: "",
       storePayURL: "",
       newTicketChatId: 0,
+      onHoverName: false,
+      isPinClick: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -206,84 +208,46 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    debugger;
-    if (this.props) {
-      if (this.props.location) {
-        this.props.history.push("store/myTicketList");
-      } else {
-        this.subscription = transferData.getProfilePic().subscribe((pic) => {
-          if (pic.profilePic) {
-            if (pic.profilePic === "") {
-              this.setState({ selectedUserProfilePicture: "" });
-            } else if (pic.profilePic.length > 0) {
-              this.setState({ selectedUserProfilePicture: pic.profilePic });
-            }
-          } else if (pic.profilePic === "") {
-            this.setState({ selectedUserProfilePicture: "" });
-          }
-        });
-        var _token = window.localStorage.getItem("token");
-        if (_token === null) {
-          window.location.href = "/";
-        } else {
-          this.handleGetUserProfileData();
-          this.handleLoggedInUserDetails();
-
-          let pageName, lastOne, lastValue, arr;
-          arr = [...this.state.cont];
-
-          setTimeout(
-            function() {
-              pageName = window.location.pathname;
-              lastOne = pageName.split("/");
-              lastValue = lastOne[lastOne.length - 1];
-              arr.forEach((i) => {
-                i.activeClass = "single-menu";
-                if (i.urls === lastValue) i.activeClass = "active single-menu";
-              });
-              this.setState({ cont: arr });
-            }.bind(this),
-            1
-          );
+    this.subscription = transferData.getProfilePic().subscribe((pic) => {
+      if (pic.profilePic) {
+        if (pic.profilePic === "") {
+          this.setState({
+            selectedUserProfilePicture: "",
+          });
+        } else if (pic.profilePic.length > 0) {
+          this.setState({
+            selectedUserProfilePicture: pic.profilePic,
+          });
         }
+      } else if (pic.profilePic === "") {
+        this.setState({ selectedUserProfilePicture: "" });
       }
+    });
+    var _token = window.localStorage.getItem("token");
+    if (_token === null) {
+      window.location.href = "/";
     } else {
-      this.subscription = transferData.getProfilePic().subscribe((pic) => {
-        if (pic.profilePic) {
-          if (pic.profilePic === "") {
-            this.setState({ selectedUserProfilePicture: "" });
-          } else if (pic.profilePic.length > 0) {
-            this.setState({ selectedUserProfilePicture: pic.profilePic });
-          }
-        } else if (pic.profilePic === "") {
-          this.setState({ selectedUserProfilePicture: "" });
-        }
-      });
-      var _token = window.localStorage.getItem("token");
-      if (_token === null) {
-        window.location.href = "/";
-      } else {
-        this.handleGetUserProfileData();
-        this.handleLoggedInUserDetails();
+      this.handleGetUserProfileData();
+      this.handleLoggedInUserDetails();
 
-        let pageName, lastOne, lastValue, arr;
-        arr = [...this.state.cont];
+      let pageName, lastOne, lastValue, arr;
+      arr = [...this.state.cont];
 
-        setTimeout(
-          function() {
-            pageName = window.location.pathname;
-            lastOne = pageName.split("/");
-            lastValue = lastOne[lastOne.length - 1];
-            arr.forEach((i) => {
-              i.activeClass = "single-menu";
-              if (i.urls === lastValue) i.activeClass = "active single-menu";
-            });
-            this.setState({ cont: arr });
-          }.bind(this),
-          1
-        );
-      }
+      setTimeout(
+        function() {
+          pageName = window.location.pathname;
+          lastOne = pageName.split("/");
+          lastValue = lastOne[lastOne.length - 1];
+          arr.forEach((i) => {
+            i.activeClass = "single-menu";
+            if (i.urls === lastValue) i.activeClass = "active single-menu";
+          });
+          this.setState({ cont: arr });
+        }.bind(this),
+        1
+      );
     }
+
     this.handleGetNotigfication();
     this.handleGetChatNotificationCount();
     this.handleGetChatSession();
@@ -2025,7 +1989,7 @@ class Header extends Component {
                     )[0].chatID;
                   }
                   if (data[6]) {
-                    self.handleEndCustomerChat(chatId);
+                    self.handleEndCustomerChat(chatId, data[0]);
                   } else {
                     self.handleGetOngoingChat();
                     self.handleGetNewChat();
@@ -2186,13 +2150,13 @@ class Header extends Component {
       });
   }
   ////handle end customer chat
-  handleEndCustomerChat(chatId) {
+  handleEndCustomerChat(chatId, message) {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/EndCustomerChat",
       headers: authHeader(),
-      params: { ChatID: chatId },
+      params: { ChatID: chatId, EndChatMessage: message || "" },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -2286,6 +2250,29 @@ class Header extends Component {
       .catch((response) => {
         console.log(response, "---handleGenerateStorePayLink");
       });
+  };
+
+  ////handle name mouse enter
+  handleNameHover = () => {
+    if (!this.state.onHoverName) {
+      this.setState({
+        onHoverName: !this.state.onHoverName,
+      });
+    }
+  };
+  ////handle name hover leave
+  handleNameHoverLeave = () => {
+    if (this.state.onHoverName && !this.state.isPinClick) {
+      this.setState({
+        onHoverName: false,
+      });
+    }
+  };
+////handle pin click
+  handlePinClick = () => {
+    this.setState({
+      isPinClick: !this.state.isPinClick,
+    });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -2933,6 +2920,7 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
+                              <span className="messagecount">2</span>
                                 <p
                                   style={{
                                     fontWeight:
@@ -3048,7 +3036,7 @@ class Header extends Component {
                                       ? TranslationContext !== undefined
                                         ? TranslationContext.p.No
                                         : "No"
-                                      : chat.messageCount}{" "}
+                                    :<span className="messagecount">{chat.messageCount}</span> }{" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
                                       : "New Messages"}
@@ -3338,7 +3326,13 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
-              <div className="secondbox">
+              <div
+                className={
+                  this.state.onHoverName
+                    ? "secondbox"
+                    : "secondbox secondbox-open"
+                }
+              >
                 <div className="chatbot-right">
                   {this.state.isHistoricalChat !== true ? (
                     <div className="row" style={{ margin: "0" }}>
@@ -6274,16 +6268,33 @@ class Header extends Component {
                   )}
                 </div>
               </div>
-              <div className="thirdbox">
+              <div
+                onMouseLeave={this.handleNameHoverLeave.bind()}
+                className={
+                  this.state.onHoverName
+                    ? "thirdbox"
+                    : "thirdbox thirdbox-close"
+                }
+              >
                 <div className="uptabs">
-                  <img src={Pin} className="pin" alt="Pin" />
+                  <img
+                    src={Pin}
+                    className="pin"
+                    alt="Pin"
+                    onClick={this.handlePinClick.bind(this)}
+                  />
                   <Tabs>
                     <Tab label="Profile">
                       <div className="profilebox">
                         <div>
                           <ul className="nameplate">
                             <li>
-                              <label className="namelabel">R</label>
+                              <label
+                                onMouseEnter={this.handleNameHover.bind(this)}
+                                className="namelabel"
+                              >
+                                R
+                              </label>
                             </li>
                             <li>
                               <h3>Rachel</h3>

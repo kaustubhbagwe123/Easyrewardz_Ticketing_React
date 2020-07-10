@@ -37,7 +37,7 @@ const { RangePicker } = DatePicker1;
 
 function disabledDate(current) {
   // Can not select days after today and today
-  return current && current >= moment().startOf('day');
+  return current && current >= moment().startOf("day");
 }
 
 class StoreReports extends Component {
@@ -288,7 +288,7 @@ class StoreReports extends Component {
       loginDateFrom: start,
       loginDateTo: end,
       start: endDate[0],
-      end: endDate[1]
+      end: endDate[1],
     });
   };
 
@@ -1179,7 +1179,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1203,7 +1203,7 @@ class StoreReports extends Component {
       params: { DepartmentIds: this.state.indiDepartment },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1225,7 +1225,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1247,7 +1247,7 @@ class StoreReports extends Component {
       params: { BrandIds: "" },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1269,7 +1269,7 @@ class StoreReports extends Component {
       params: { CategoryIDs: this.state.indiClaimCategory },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1291,7 +1291,7 @@ class StoreReports extends Component {
       params: { subCategoryIDs: this.state.indiClaimSubCategory },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1312,11 +1312,11 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreReportUser",
       params: {
         RegionID: RegionID,
-        ZoneID: ZoneID
+        ZoneID: ZoneID,
       },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -1403,7 +1403,7 @@ class StoreReports extends Component {
             : moment(this.state.campaignEndDateTo).format("YYYY-MM-DD"),
         CampaignStatusids: this.state.indiCampaignStatus,
         CampaignRegion: this.state.campaignRegion,
-        CampaignZone: this.state.campaignZone
+        CampaignZone: this.state.campaignZone,
       };
     }
     if (activeTabId === 4) {
@@ -1427,7 +1427,7 @@ class StoreReports extends Component {
       data: paramData,
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         if (message === "Success" || message === "Record Not Found") {
@@ -1447,7 +1447,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StoreReport/GetStoreReports",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
@@ -1559,9 +1559,9 @@ class StoreReports extends Component {
         params: {
           ReportID: this.state.reportID,
           ReportName: self.state.selectedReportName,
-          ScheuleID: 0
+          ScheuleID: 0,
         },
-      }).then(function (res) {
+      }).then(function(res) {
         debugger;
         if (res.data.message === "Record Already Exists ") {
           NotificationManager.error("Report name aleady exists.");
@@ -1988,7 +1988,7 @@ class StoreReports extends Component {
             .selectedNameOfMonthForDailyYearCommaSeperated,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
 
           let status = res.data.message;
@@ -2082,10 +2082,10 @@ class StoreReports extends Component {
       params: {
         ReportID: this.state.reportID,
         ReportName: self.state.selectedReportName,
-        ScheuleID: this.state.Schedule_ID
+        ScheuleID: this.state.Schedule_ID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         if (res.data.message === "Record Already Exists ") {
           NotificationManager.error("Report name aleady exists.");
@@ -2106,7 +2106,7 @@ class StoreReports extends Component {
               StoreReportSearchParams: SearchParams,
             },
           })
-            .then(function (res) {
+            .then(function(res) {
               debugger;
               // this.handleReportList();
               if (res.data.message === "Success") {
@@ -2221,7 +2221,7 @@ class StoreReports extends Component {
     this.setState({ edit: true });
     this.handleAddReportOpen();
     debugger;
-    await setTimeout(async ()  => {
+    await setTimeout(async () => {
       let allTab = JSON.parse(rowData.reportSearchParams);
       this.setState({ Schedule_ID: rowData.scheduleID });
       this.setState({
@@ -2262,18 +2262,27 @@ class StoreReports extends Component {
         campaignEndDateTo: allTab["CampaignEndDate"]
           ? new Date(allTab["CampaignEndDate"])
           : "",
-          loginUsers: allTab["UserIDs"],
-          loginDateFrom: allTab["Startdate"]
-          ? new Date(allTab["Startdate"])
-          : "",
-          loginDateTo: allTab["Enddate"]
-          ? new Date(allTab["Enddate"])
-          : "",
-          start: allTab["CampaignStartDate"]!== null && allTab["CampaignStartDate"]!== undefined?moment(allTab["CampaignStartDate"]).format("DD-MM-YYYY"):start,
-          end: allTab["CampaignEndDate"]!== null && allTab["CampaignEndDate"]!== undefined?moment(allTab["CampaignEndDate"]).format("DD-MM-YYYY"):end,
-          loginStart: allTab["Startdate"]!== null && allTab["Startdate"]!== undefined?moment(allTab["Startdate"]).format("DD-MM-YYYY"):start,
-          loginEnd: allTab["Enddate"]!== null && allTab["Enddate"]!== undefined?moment(allTab["Enddate"]).format("DD-MM-YYYY"):end,
-
+        loginUsers: allTab["UserIDs"],
+        loginDateFrom: allTab["Startdate"] ? new Date(allTab["Startdate"]) : "",
+        loginDateTo: allTab["Enddate"] ? new Date(allTab["Enddate"]) : "",
+        start:
+          allTab["CampaignStartDate"] !== null &&
+          allTab["CampaignStartDate"] !== undefined
+            ? moment(allTab["CampaignStartDate"]).format("DD-MM-YYYY")
+            : start,
+        end:
+          allTab["CampaignEndDate"] !== null &&
+          allTab["CampaignEndDate"] !== undefined
+            ? moment(allTab["CampaignEndDate"]).format("DD-MM-YYYY")
+            : end,
+        loginStart:
+          allTab["Startdate"] !== null && allTab["Startdate"] !== undefined
+            ? moment(allTab["Startdate"]).format("DD-MM-YYYY")
+            : start,
+        loginEnd:
+          allTab["Enddate"] !== null && allTab["Enddate"] !== undefined
+            ? moment(allTab["Enddate"]).format("DD-MM-YYYY")
+            : end,
       });
       // this.state.Schedule_ID = rowData.scheduleID;
       // this.state.tabIndex = allTab["ActiveTabId"];
@@ -2528,7 +2537,7 @@ class StoreReports extends Component {
       params: { ReportID: reportID },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -2550,7 +2559,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StoreReport/GetCampaignNames",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -2572,10 +2581,10 @@ class StoreReports extends Component {
       params: {
         ReportID: id,
         RegionID: this.state.campaignRegion,
-        ZoneID: this.state.campaignZone
+        ZoneID: this.state.campaignZone,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         if (res.data.responseData === "") {
           NotificationManager.error("No data in report");
@@ -2871,7 +2880,7 @@ class StoreReports extends Component {
           sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -2911,7 +2920,7 @@ class StoreReports extends Component {
           sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -2945,7 +2954,7 @@ class StoreReports extends Component {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -2985,7 +2994,7 @@ class StoreReports extends Component {
           sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
             new RegExp(
               e.currentTarget.value +
-              ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
               "g"
             ),
             ""
@@ -3187,7 +3196,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/Master/getRegionZoneList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -3195,9 +3204,12 @@ class StoreReports extends Component {
           self.setState({
             regionZoneData: responseData,
             campaignRegion: responseData[0].regionID,
-            campaignZone: responseData[0].zoneID
+            campaignZone: responseData[0].zoneID,
           });
-          self.handleGetCampaignUser(responseData[0].regionID, responseData[0].zoneID)
+          self.handleGetCampaignUser(
+            responseData[0].regionID,
+            responseData[0].zoneID
+          );
         }
       })
       .catch((response) => {
@@ -3213,7 +3225,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -3280,7 +3292,7 @@ class StoreReports extends Component {
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false &&
-                  this.state.sortHeader === "Schedule Status"
+                this.state.sortHeader === "Schedule Status"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -3311,7 +3323,7 @@ class StoreReports extends Component {
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false &&
-                  this.state.sortHeader === "Created by"
+                this.state.sortHeader === "Created by"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -3447,7 +3459,7 @@ class StoreReports extends Component {
                       <p className="mt-1 fs-12">
                         {TranslationContext !== undefined
                           ? TranslationContext.p
-                            .areyousureyouwanttodeletethisfile
+                              .areyousureyouwanttodeletethisfile
                           : "Are you sure you want to delete this file"}
                         ?
                       </p>
@@ -3640,118 +3652,118 @@ class StoreReports extends Component {
                   </div>
                   {this.state.sortColumn === "reportName"
                     ? this.state.sortFilterName !== null &&
-                    this.state.sortFilterName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.reportName}
-                          id={"fil-open" + item.reportName}
-                          value={item.reportName}
-                          checked={
-                            this.state.sreportNameFilterCheckbox.includes(
-                              item.reportName
-                            ) || false
-                          }
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportName}
+                            id={"fil-open" + item.reportName}
+                            value={item.reportName}
+                            checked={
+                              this.state.sreportNameFilterCheckbox.includes(
+                                item.reportName
+                              ) || false
+                            }
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "scheduleStatus"
                     ? this.state.sortFilterSchedule !== null &&
-                    this.state.sortFilterSchedule.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.scheduleStatus}
-                          id={"fil-open" + item.scheduleStatus}
-                          value={item.scheduleStatus}
-                          checked={
-                            this.state.sscheduleStatusFilterCheckbox.includes(
-                              item.scheduleStatus
-                            ) || false
-                          }
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "scheduleStatus",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.scheduleStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.scheduleStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterSchedule.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.scheduleStatus}
+                            id={"fil-open" + item.scheduleStatus}
+                            value={item.scheduleStatus}
+                            checked={
+                              this.state.sscheduleStatusFilterCheckbox.includes(
+                                item.scheduleStatus
+                              ) || false
+                            }
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "scheduleStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.scheduleStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.scheduleStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFilterCreatedBy !== null &&
-                    this.state.sortFilterCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdBy}
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          checked={
-                            this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            ) || false
-                          }
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={
+                              this.state.screatedByFilterCheckbox.includes(
+                                item.createdBy
+                              ) || false
+                            }
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "reportStatus"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.reportStatus}
-                          id={"fil-open" + item.reportStatus}
-                          value={item.reportStatus}
-                          checked={
-                            this.state.sreportStatusFilterCheckbox.includes(
-                              item.reportStatus
-                            ) || false
-                          }
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportStatus",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportStatus}
+                            id={"fil-open" + item.reportStatus}
+                            value={item.reportStatus}
+                            checked={
+                              this.state.sreportStatusFilterCheckbox.includes(
+                                item.reportStatus
+                              ) || false
+                            }
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -3801,7 +3813,7 @@ class StoreReports extends Component {
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addStorereport-modal"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div
               id="overlayDepartment"
@@ -3956,7 +3968,7 @@ class StoreReports extends Component {
                         placeholder={
                           TranslationContext !== undefined
                             ? TranslationContext.placeholder
-                              .entertaskidslashtitle
+                                .entertaskidslashtitle
                             : "Enter Task ID/ Title"
                         }
                         maxLength={11}
@@ -4049,14 +4061,14 @@ class StoreReports extends Component {
                                         // }
                                         checked={
                                           this.state.indiDepartment !==
-                                            undefined
+                                          undefined
                                             ? this.state.indiDepartment
-                                              .split(",")
-                                              .find(
-                                                (num) =>
-                                                  num ==
-                                                  item.departmentID.toString()
-                                              )
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.departmentID.toString()
+                                                )
                                             : false
                                         }
                                       />
@@ -4203,12 +4215,12 @@ class StoreReports extends Component {
                                         checked={
                                           this.state.indiFunction !== undefined
                                             ? this.state.indiFunction
-                                              .split(",")
-                                              .find(
-                                                (num) =>
-                                                  num ==
-                                                  item.functionID.toString()
-                                              )
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.functionID.toString()
+                                                )
                                             : false
                                         }
                                       />
@@ -4352,12 +4364,12 @@ class StoreReports extends Component {
                                         checked={
                                           this.state.indiPriority !== undefined
                                             ? this.state.indiPriority
-                                              .split(",")
-                                              .find(
-                                                (num) =>
-                                                  num ==
-                                                  item.priorityID.toString()
-                                              )
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.priorityID.toString()
+                                                )
                                             : false
                                         }
                                       />
@@ -4601,14 +4613,14 @@ class StoreReports extends Component {
                                           // }
                                           checked={
                                             this.state.indiClaimCategory !==
-                                              undefined
+                                            undefined
                                               ? this.state.indiClaimCategory
-                                                .split(",")
-                                                .find(
-                                                  (num) =>
-                                                    num ==
-                                                    item.categoryID.toString()
-                                                )
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.categoryID.toString()
+                                                  )
                                               : false
                                           }
                                         />
@@ -4730,14 +4742,14 @@ class StoreReports extends Component {
                                         // }
                                         checked={
                                           this.state.indiClaimStatus !==
-                                            undefined
+                                          undefined
                                             ? this.state.indiClaimStatus
-                                              .split(",")
-                                              .find(
-                                                (num) =>
-                                                  num ==
-                                                  item.claimStatusID.toString()
-                                              )
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.claimStatusID.toString()
+                                                )
                                             : false
                                         }
                                       />
@@ -4837,14 +4849,14 @@ class StoreReports extends Component {
                                           // }
                                           checked={
                                             this.state.indiClaimSubCategory !==
-                                              undefined
+                                            undefined
                                               ? this.state.indiClaimSubCategory
-                                                .split(",")
-                                                .find(
-                                                  (num) =>
-                                                    num ==
-                                                    item.subCategoryID.toString()
-                                                )
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.subCategoryID.toString()
+                                                  )
                                               : false
                                           }
                                         />
@@ -4988,14 +5000,14 @@ class StoreReports extends Component {
                                           // }
                                           checked={
                                             this.state.indiClaimIssueType !==
-                                              undefined
+                                            undefined
                                               ? this.state.indiClaimIssueType
-                                                .split(",")
-                                                .find(
-                                                  (num) =>
-                                                    num ==
-                                                    item.issueTypeID.toString()
-                                                )
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.issueTypeID.toString()
+                                                  )
                                               : false
                                           }
                                         />
@@ -5211,14 +5223,14 @@ class StoreReports extends Component {
                                         // }
                                         checked={
                                           this.state.indiCampaignName !==
-                                            undefined
+                                          undefined
                                             ? this.state.indiCampaignName
-                                              .split(",")
-                                              .find(
-                                                (num) =>
-                                                  num ==
-                                                  item.campaignNameID.toString()
-                                              )
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.campaignNameID.toString()
+                                                )
                                             : false
                                         }
                                       />
@@ -5239,34 +5251,30 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>
-                        Region
-                      </label>
+                      <label>Region</label>
                       <select
                         name="campaignRegion"
                         value={this.state.campaignRegion}
                         onChange={this.handleOnChangeData}
                         disabled={true}
                       >
-
                         <option value="0">Select</option>
                         {this.state.regionZoneData !== null &&
                           this.state.regionZoneData.map((item, i) => (
-                            <option value={item.regionID}>{item.regionName}</option>
+                            <option value={item.regionID}>
+                              {item.regionName}
+                            </option>
                           ))}
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>
-                        Zone
-                      </label>
+                      <label>Zone</label>
                       <select
                         name="campaignZone"
                         value={this.state.campaignZone}
                         onChange={this.handleOnChangeData}
                         disabled={true}
                       >
-
                         <option value="0">Select</option>
                         {this.state.regionZoneData !== null &&
                           this.state.regionZoneData.map((item, i) => (
@@ -5315,7 +5323,7 @@ class StoreReports extends Component {
                           format="DD-MM-YYYY"
                           defaultValue={[
                             moment(this.state.start, "DD-MM-YYYY"),
-                            moment(this.state.end, "DD-MM-YYYY")
+                            moment(this.state.end, "DD-MM-YYYY"),
                           ]}
                         />
                       </div>
@@ -5401,14 +5409,14 @@ class StoreReports extends Component {
                                           // }
                                           checked={
                                             this.state.indiCampaignStatus !==
-                                              undefined
+                                            undefined
                                               ? this.state.indiCampaignStatus
-                                                .split(",")
-                                                .find(
-                                                  (num) =>
-                                                    num ==
-                                                    item.campaignNameID.toString()
-                                                )
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.campaignNameID.toString()
+                                                  )
                                               : false
                                           }
                                         />
@@ -5438,7 +5446,7 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         onClick={this.handleNextPopupOpen.bind(this, 3)}
-                      // onClick={this.handleChangeTab.bind(this,2)}
+                        // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.next
@@ -5458,9 +5466,7 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>
-                        Login Users
-                      </label>
+                      <label>Login Users</label>
                       <select
                         name="loginUsers"
                         value={this.state.loginUsers}
@@ -5477,9 +5483,7 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4">
                       <div className=" ticketstrReport">
-                        <label>
-                          Date
-                        </label>
+                        <label>Date</label>
                       </div>
                       <div className="ticketreportdat campaign-end-date">
                         {/* <DatePickerComponenet
@@ -5491,7 +5495,7 @@ class StoreReports extends Component {
                           format="DD-MM-YYYY"
                           defaultValue={[
                             moment(this.state.loginStart, "DD-MM-YYYY"),
-                            moment(this.state.loginEnd, "DD-MM-YYYY")
+                            moment(this.state.loginEnd, "DD-MM-YYYY"),
                           ]}
                           disabledDate={disabledDate}
                         />
@@ -5505,7 +5509,7 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         onClick={this.handleNextPopupOpen.bind(this, 4)}
-                      // onClick={this.handleChangeTab.bind(this,2)}
+                        // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.next
@@ -5515,7 +5519,6 @@ class StoreReports extends Component {
                   </div>
                 </div>
               </div>
-
             </div>
           </Modal>
           <Modal
@@ -5523,7 +5526,7 @@ class StoreReports extends Component {
             onClose={this.handleNextPopupClose}
             closeIconId="sdsg"
             modalId="nextbuttonpopup"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
@@ -5638,188 +5641,291 @@ class StoreReports extends Component {
                     ))}
                 </select>
                 {this.state.selectScheduleDate === "230" ||
-                  this.state.selectScheduleDate === 230 ? (
-                    <div className="ScheduleDate-to">
-                      <span>
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.every
-                            : "Every"}
-                        </label>
-                        <input
-                          type="text"
-                          className="Every"
-                          placeholder="1"
-                          name="selectedNoOfDay"
-                          value={this.state.selectedNoOfDay}
-                          onChange={this.handleOnChangeData}
-                        />
-                        <label className="every1">Day</label>
-                      </span>
-                    </div>
-                  ) : null}
+                this.state.selectScheduleDate === 230 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.every
+                          : "Every"}
+                      </label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        name="selectedNoOfDay"
+                        value={this.state.selectedNoOfDay}
+                        onChange={this.handleOnChangeData}
+                      />
+                      <label className="every1">Day</label>
+                    </span>
+                  </div>
+                ) : null}
                 {this.state.selectScheduleDate === "231" ||
-                  this.state.selectScheduleDate === 231 ? (
-                    <div className="ScheduleDate-to">
-                      <span>
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.every
-                            : "Every"}
-                        </label>
-                        <input
-                          type="text"
-                          className="Every"
-                          placeholder="1"
-                          value={this.state.selectedNoOfWeek}
-                          onChange={this.handleWeekly}
-                        />
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.every
-                            : "Week on"}
-                        </label>
-                      </span>
-                      <div
-                        style={{
-                          marginTop: "10px",
-                        }}
+                this.state.selectScheduleDate === 231 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.every
+                          : "Every"}
+                      </label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfWeek}
+                        onChange={this.handleWeekly}
+                      />
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.every
+                          : "Week on"}
+                      </label>
+                    </span>
+                    <div
+                      style={{
+                        marginTop: "10px",
+                      }}
+                    >
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Mon"
+                        id="Mon"
                       >
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Mon"
-                          id="Mon"
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.mon
+                          : "Mon"}
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Tue"
+                        id="Tue"
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.tue
+                          : "Tue"}
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Wed"
+                        id="Wed"
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.wed
+                          : "Wed"}
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Thu"
+                        id="Thu"
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.thu
+                          : "Thu"}
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Fri"
+                        id="Fri"
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.fri
+                          : "Fri"}
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Sat"
+                        id="Sat"
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.sat
+                          : "Sat"}
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Sun"
+                        id="Sun"
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.sun
+                          : "Sun"}
+                      </Checkbox>
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "232" ||
+                this.state.selectScheduleDate === 232 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.day
+                          : "Day"}
+                      </label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="9"
+                        value={this.state.selectedNoOfDaysForMonth}
+                        onChange={this.handleDaysForMonth}
+                      />
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.ofevery
+                          : "of every"}
+                      </label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfMonthForMonth}
+                        onChange={this.handleMonthForMonth}
+                      />
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.months
+                          : "months"}
+                      </label>
+                    </span>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "233" ||
+                this.state.selectScheduleDate === 233 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.every
+                          : "Every"}
+                      </label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        onChange={this.handleMonthForWeek}
+                        value={this.state.selectedNoOfMonthForWeek}
+                      />
+                      <label className="every1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.monthonthe
+                          : "month on the"}
+                      </label>
+                    </span>
+                    <div className="row mt-3">
+                      <div className="col-md-6">
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-setting1"
+                          onChange={this.handleWeekForWeek}
+                          value={this.state.selectedNoOfWeekForWeek}
                         >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.mon
-                            : "Mon"}
-                        </Checkbox>
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Tue"
-                          id="Tue"
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.tue
-                            : "Tue"}
-                        </Checkbox>
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Wed"
-                          id="Wed"
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.wed
-                            : "Wed"}
-                        </Checkbox>
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Thu"
-                          id="Thu"
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.thu
-                            : "Thu"}
-                        </Checkbox>
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Fri"
-                          id="Fri"
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.fri
-                            : "Fri"}
-                        </Checkbox>
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Sat"
-                          id="Sat"
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.sat
-                            : "Sat"}
-                        </Checkbox>
-                        <Checkbox
-                          onChange={this.handleWeeklyDays}
-                          value="Sun"
-                          id="Sun"
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.sun
-                            : "Sun"}
-                        </Checkbox>
+                          <option value="0">
+                            Select
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
+                          </option>
+                          <option value="2">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.second
+                              : "Second"}
+                          </option>
+                          <option value="4">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.four
+                              : "Four"}
+                          </option>
+                        </select>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.days}
+                            getOptionValue={
+                              (option) => option.days //id
+                            }
+                            options={this.state.NameOfDayForWeek}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfDayForWeek.bind(this)}
+                            value={this.state.selectedNameOfDayForWeek}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
                       </div>
                     </div>
-                  ) : null}
-                {this.state.selectScheduleDate === "232" ||
-                  this.state.selectScheduleDate === 232 ? (
-                    <div className="ScheduleDate-to">
-                      <span>
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.day
-                            : "Day"}
-                        </label>
-                        <input
-                          type="text"
-                          className="Every"
-                          placeholder="9"
-                          value={this.state.selectedNoOfDaysForMonth}
-                          onChange={this.handleDaysForMonth}
-                        />
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.ofevery
-                            : "of every"}
-                        </label>
-                        <input
-                          type="text"
-                          className="Every"
-                          placeholder="1"
-                          value={this.state.selectedNoOfMonthForMonth}
-                          onChange={this.handleMonthForMonth}
-                        />
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.months
-                            : "months"}
-                        </label>
-                      </span>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "234" ||
+                this.state.selectScheduleDate === 234 ? (
+                  <div className="ScheduleDate-to">
+                    <div className="row m-0">
+                      <label
+                        className="every1"
+                        style={{
+                          lineHeight: "40px",
+                        }}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.on
+                          : "on"}
+                      </label>
+                      <div className="col-md-7">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.month}
+                            getOptionValue={
+                              (option) => option.month //id
+                            }
+                            options={this.state.NameOfMonthForYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfMonthForYear.bind(this)}
+                            value={this.state.selectedNameOfMonthForYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfDayForDailyYear}
+                        onChange={this.handleDayForYear}
+                      />
                     </div>
-                  ) : null}
-                {this.state.selectScheduleDate === "233" ||
-                  this.state.selectScheduleDate === 233 ? (
-                    <div className="ScheduleDate-to">
-                      <span>
-                        <label className="every1">
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "235" ||
+                this.state.selectScheduleDate === 235 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <div className="row m-0">
+                        <label
+                          className="every1"
+                          style={{
+                            lineHeight: "40px",
+                          }}
+                        >
                           {TranslationContext !== undefined
-                            ? TranslationContext.label.every
-                            : "Every"}
+                            ? TranslationContext.label.onthe
+                            : "on the"}
                         </label>
-                        <input
-                          type="text"
-                          className="Every"
-                          placeholder="1"
-                          onChange={this.handleMonthForWeek}
-                          value={this.state.selectedNoOfMonthForWeek}
-                        />
-                        <label className="every1">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.monthonthe
-                            : "month on the"}
-                        </label>
-                      </span>
-                      <div className="row mt-3">
-                        <div className="col-md-6">
+                        <div className="col-md-7">
                           <select
                             id="inputState"
                             className="form-control dropdown-setting1"
-                            onChange={this.handleWeekForWeek}
-                            value={this.state.selectedNoOfWeekForWeek}
+                            onChange={this.handleWeekForYear}
+                            value={this.state.selectedNoOfWeekForYear}
                           >
                             <option value="0">
                               Select
-                            {TranslationContext !== undefined
+                              {TranslationContext !== undefined
                                 ? TranslationContext.option.select
                                 : "Select"}
                             </option>
@@ -5835,162 +5941,59 @@ class StoreReports extends Component {
                             </option>
                           </select>
                         </div>
-                        <div className="col-md-6">
-                          <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                            <Select
-                              getOptionLabel={(option) => option.days}
-                              getOptionValue={
-                                (option) => option.days //id
-                              }
-                              options={this.state.NameOfDayForWeek}
-                              placeholder="Select"
-                              // menuIsOpen={true}
-                              closeMenuOnSelect={false}
-                              onChange={this.setNameOfDayForWeek.bind(this)}
-                              value={this.state.selectedNameOfDayForWeek}
-                              // showNewOptionAtTop={false}
-                              isMulti
-                            />
-                          </div>
+                      </div>
+                    </span>
+                    <div className="row mt-3">
+                      <div className="col-md-5">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.days}
+                            getOptionValue={
+                              (option) => option.days //id
+                            }
+                            options={this.state.NameOfDayForYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfDayForYear.bind(this)}
+                            value={this.state.selectedNameOfDayForYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
                         </div>
                       </div>
-                    </div>
-                  ) : null}
-                {this.state.selectScheduleDate === "234" ||
-                  this.state.selectScheduleDate === 234 ? (
-                    <div className="ScheduleDate-to">
-                      <div className="row m-0">
-                        <label
-                          className="every1"
-                          style={{
-                            lineHeight: "40px",
-                          }}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.on
-                            : "on"}
-                        </label>
-                        <div className="col-md-7">
-                          <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                            <Select
-                              getOptionLabel={(option) => option.month}
-                              getOptionValue={
-                                (option) => option.month //id
-                              }
-                              options={this.state.NameOfMonthForYear}
-                              placeholder="Select"
-                              // menuIsOpen={true}
-                              closeMenuOnSelect={false}
-                              onChange={this.setNameOfMonthForYear.bind(this)}
-                              value={this.state.selectedNameOfMonthForYear}
-                              // showNewOptionAtTop={false}
-                              isMulti
-                            />
-                          </div>
-                        </div>
-                        <input
-                          type="text"
-                          className="Every"
-                          placeholder="1"
-                          value={this.state.selectedNoOfDayForDailyYear}
-                          onChange={this.handleDayForYear}
-                        />
-                      </div>
-                    </div>
-                  ) : null}
-                {this.state.selectScheduleDate === "235" ||
-                  this.state.selectScheduleDate === 235 ? (
-                    <div className="ScheduleDate-to">
-                      <span>
-                        <div className="row m-0">
-                          <label
-                            className="every1"
-                            style={{
-                              lineHeight: "40px",
-                            }}
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.onthe
-                              : "on the"}
-                          </label>
-                          <div className="col-md-7">
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting1"
-                              onChange={this.handleWeekForYear}
-                              value={this.state.selectedNoOfWeekForYear}
-                            >
-                              <option value="0">
-                                Select
-                              {TranslationContext !== undefined
-                                  ? TranslationContext.option.select
-                                  : "Select"}
-                              </option>
-                              <option value="2">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.option.second
-                                  : "Second"}
-                              </option>
-                              <option value="4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.option.four
-                                  : "Four"}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </span>
-                      <div className="row mt-3">
-                        <div className="col-md-5">
-                          <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                            <Select
-                              getOptionLabel={(option) => option.days}
-                              getOptionValue={
-                                (option) => option.days //id
-                              }
-                              options={this.state.NameOfDayForYear}
-                              placeholder="Select"
-                              // menuIsOpen={true}
-                              closeMenuOnSelect={false}
-                              onChange={this.setNameOfDayForYear.bind(this)}
-                              value={this.state.selectedNameOfDayForYear}
-                              // showNewOptionAtTop={false}
-                              isMulti
-                            />
-                          </div>
-                        </div>
-                        <label
-                          className="every1"
-                          style={{
-                            lineHeight: "40px",
-                            marginLeft: "14px",
-                          }}
-                        >
-                          to
+                      <label
+                        className="every1"
+                        style={{
+                          lineHeight: "40px",
+                          marginLeft: "14px",
+                        }}
+                      >
+                        to
                       </label>
-                        <div className="col-md-5">
-                          <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                            <Select
-                              getOptionLabel={(option) => option.month}
-                              getOptionValue={
-                                (option) => option.month //id
-                              }
-                              options={this.state.NameOfMonthForDailyYear}
-                              placeholder="Select"
-                              // menuIsOpen={true}
-                              closeMenuOnSelect={false}
-                              onChange={this.setNameOfMonthForDailyYear.bind(
-                                this
-                              )}
-                              value={this.state.selectedNameOfMonthForDailyYear}
-                              // showNewOptionAtTop={false}
-                              isMulti
-                            />
-                          </div>
+                      <div className="col-md-5">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.month}
+                            getOptionValue={
+                              (option) => option.month //id
+                            }
+                            options={this.state.NameOfMonthForDailyYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfMonthForDailyYear.bind(
+                              this
+                            )}
+                            value={this.state.selectedNameOfMonthForDailyYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
                         </div>
                       </div>
                     </div>
-                  ) : null}
+                  </div>
+                ) : null}
 
                 {/* <input
                                       type="text"

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm } from "antd";
+import { Table, Popover, Popconfirm, Tooltip } from "antd";
 import Modal from "react-responsive-modal";
 import NoPayment from "./../../../assets/Images/no-payment.png";
 import OrderInfo from "./../../../assets/Images/order-info.png";
@@ -12,6 +12,8 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import moment from "moment";
+import DatePicker from "react-datepicker";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
 import { NotificationManager } from "react-notifications";
@@ -43,9 +45,12 @@ class OrderTab extends Component {
       AddressConf: false,
       pincodeChecAvaibility: false,
       showPinCodereturnMsg: false,
+      showPinStatusCodeMsg: true,
       ordSelfPickup: false,
       ordMoveReturn: false,
       orderSearchText: "",
+      OrdPickupDate: "",
+      OrdPickupTime: "",
     };
   }
 
@@ -230,16 +235,24 @@ class OrderTab extends Component {
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.responseData.available;
+        var data = res.data.responseData;
         if (status === "false") {
+          if (data.statusCode === "301") {
+            self.setState({
+              showPinStatusCodeMsg: data.available,
+            });
+          }
           self.setState({
             pincodeChecAvaibility: false,
-            showPinCodereturnMsg: false,
+            showPinCodereturnMsg: true,
             orderId: ordId,
           });
         } else {
           self.setState({
-            showPinCodereturnMsg: true,
+            showPinCodereturnMsg: false,
+            showPinStatusCodeMsg: true,
           });
         }
       })
@@ -261,6 +274,11 @@ class OrderTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
+          self.setState({
+            orderPopoverOverlay: false,
+            showPinCodereturnMsg: false,
+            pincode: "",
+          });
         } else {
           return false;
         }
@@ -268,6 +286,58 @@ class OrderTab extends Component {
       .catch((data) => {
         console.log(data);
       });
+  }
+  /// handle Self pickup data
+  handleSubmitSelfPickupData() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (this.state.OrdPickupDate !== "" && this.state.OrdPickupTime !== "") {
+      var self = this;
+      var formatDate = moment(new Date(this.state.OrdPickupDate)).format(
+        "DD-MM-YYYY"
+      );
+      var formatTime = moment(this.state.OrdPickupTime).format("HH:MM");
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/SetOrderHasBeenSelfPickUp",
+        headers: authHeader(),
+        data: {
+          OrderID: this.state.orderId,
+          PickupDate: formatDate,
+          PickupTime: formatTime,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetOrderTabGridData();
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard
+                    .theorderhasbeenconvertedtoselfpickup
+                : "The order has been converted to self pick up."
+            );
+          } else {
+            return false;
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      if (this.state.OrdPickupDate === "") {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseselectpickupdate
+            : "Please Select Pickup Date."
+        );
+      } else {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseselectpickuptime
+            : "Please Select Pickup Time."
+        );
+      }
+    }
   }
   ///-------------------API function end--------------------------------
 
@@ -351,7 +421,20 @@ class OrderTab extends Component {
       });
   }
 
-  handleAddressPending(orderId) {
+  /// handle Submit Order adddress data
+  handleSubmitOrderAddress(orderId) {
+    if (this.state.ordSelfPickup) {
+      this.handleSubmitSelfPickupData();
+    } else {
+      this.handleAddressPending();
+    }
+    this.setState({
+      orderId: orderId,
+    });
+  }
+
+  /// handle Address pending data
+  handleAddressPending() {
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.shippingAddress === "") {
       NotificationManager.error(
@@ -408,7 +491,6 @@ class OrderTab extends Component {
     }
 
     this.setState({
-      orderId: orderId,
       AddressConf: true,
     });
   }
@@ -422,7 +504,7 @@ class OrderTab extends Component {
     var reg = /^[0-9\b]+$/;
 
     if (e.target.value === "" || reg.test(e.target.value)) {
-      this.setState({ pincode: e.target.value });
+      this.setState({ pincode: e.target.value, showPinCodereturnMsg: false });
     } else {
       e.target.value = "";
     }
@@ -444,9 +526,8 @@ class OrderTab extends Component {
       filterOrderStatus: false,
     });
   }
-
+  /// handle order option change
   handleOrdChangeOptions = (e) => {
-    debugger;
     var names = e.target.name;
 
     if (names === "ordSelfPickup") {
@@ -464,7 +545,20 @@ class OrderTab extends Component {
       }, 5);
     }
   };
+  /// handle order date change
+  handleOrdDateChange(date) {
+    debugger;
+    this.setState({
+      OrdPickupDate: date,
+    });
+  }
 
+  /// handle Order pickup time change
+  handleOrdPickupTimeChange(time) {
+    this.setState({
+      OrdPickupTime: time,
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -482,6 +576,7 @@ class OrderTab extends Component {
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
                 key: "invoiceNo",
+                width: 80,
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -507,14 +602,19 @@ class OrderTab extends Component {
                           }
                         />
                       </div>
-                      <p>{item.invoiceNo}</p>
+                      <Tooltip title={item.invoiceNo} placement="bottom">
+                        <p>{item.invoiceNo}</p>
+                      </Tooltip>
+
                       {item.isShoppingBagConverted === true && (
                         <Popover
                           content={
                             <>
                               <p className="shopping-num-invoice">
-                                Shopping bag No:
-                                <span>{item.shoppingBagNo}</span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.title.shoppingbagno
+                                  : "Shopping bag No"}
+                                :<span>{item.shoppingBagNo}</span>
                               </p>
                               <Table
                                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
@@ -914,12 +1014,22 @@ class OrderTab extends Component {
                               )}
                               {this.state.showPinCodereturnMsg && (
                                 <>
-                                  <p className="non-deliverable">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                          .enteredpincodeisnondeliverable
-                                      : "Entered Pin code is non deliverable"}
-                                  </p>
+                                  {this.state.showPinStatusCodeMsg === false ? (
+                                    <p className="non-deliverable">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .kidlycheckenteredstatepincode
+                                        : "Kidly Check Entered State Pin Code"}
+                                    </p>
+                                  ) : (
+                                    <p className="non-deliverable">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .enteredpincodeisnondeliverable
+                                        : "Entered Pin code is non deliverable"}
+                                    </p>
+                                  )}
+
                                   <div className="popover-radio-cntr">
                                     <div>
                                       <input
@@ -963,17 +1073,25 @@ class OrderTab extends Component {
                                               ? TranslationContext.title.date
                                               : "Date"}
                                           </p>
-                                          <input
-                                            type="text"
-                                            placeholder={
+
+                                          <DatePicker
+                                            selected={this.state.OrdPickupDate}
+                                            onChange={(date) =>
+                                              this.handleOrdDateChange(date)
+                                            }
+                                            placeholderText={
                                               TranslationContext !== undefined
                                                 ? TranslationContext
                                                     .ticketingDashboard
                                                     .enterdate
                                                 : "Enter Date"
                                             }
-                                            name="date"
-                                            autoComplete="off"
+                                            value={this.state.OrdPickupDate}
+                                            minDate={new Date()}
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            className="txt-1"
+                                            dateFormat="dd/MM/yyyy"
                                           />
                                         </div>
                                         <div className="col-md-6">
@@ -982,17 +1100,26 @@ class OrderTab extends Component {
                                               ? TranslationContext.title.time
                                               : "Time"}
                                           </p>
-                                          <input
-                                            type="text"
-                                            placeholder={
+
+                                          <DatePicker
+                                            selected={this.state.OrdPickupTime}
+                                            onChange={(time) =>
+                                              this.handleOrdPickupTimeChange(
+                                                time
+                                              )
+                                            }
+                                            showTimeSelect
+                                            showTimeSelectOnly
+                                            timeIntervals={15}
+                                            timeCaption="Time"
+                                            dateFormat="h:mm aa"
+                                            placeholderText={
                                               TranslationContext !== undefined
                                                 ? TranslationContext
                                                     .ticketingDashboard
                                                     .entertime
                                                 : "Enter Time"
                                             }
-                                            name="time"
-                                            autoComplete="off"
                                           />
                                         </div>
                                       </div>
@@ -1013,7 +1140,7 @@ class OrderTab extends Component {
                               ? TranslationContext.button.proceed
                               : "Proceed"
                           }
-                          onConfirm={this.handleAddressPending.bind(
+                          onConfirm={this.handleSubmitOrderAddress.bind(
                             this,
                             item.id
                           )}
@@ -1389,17 +1516,24 @@ class OrderTab extends Component {
                                         ? TranslationContext.title.date
                                         : "Date"}
                                     </p>
-                                    <input
-                                      type="text"
-                                      placeholder={
+
+                                    <DatePicker
+                                      selected={this.state.OrdPickupDate}
+                                      onChange={(date) =>
+                                        this.handleOrdDateChange(date)
+                                      }
+                                      placeholderText={
                                         TranslationContext !== undefined
                                           ? TranslationContext
                                               .ticketingDashboard.enterdate
                                           : "Enter Date"
                                       }
-                                      name="date"
-                                      autoComplete="off"
-                                      // onChange={this.handleTextOnchage}
+                                      value={this.state.OrdPickupDate}
+                                      minDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      className="txt-1"
+                                      dateFormat="dd/MM/yyyy"
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -1408,17 +1542,23 @@ class OrderTab extends Component {
                                         ? TranslationContext.title.time
                                         : "Time"}
                                     </p>
-                                    <input
-                                      type="text"
-                                      placeholder={
+
+                                    <DatePicker
+                                      selected={this.state.OrdPickupTime}
+                                      onChange={(time) =>
+                                        this.handleOrdPickupTimeChange(time)
+                                      }
+                                      showTimeSelect
+                                      showTimeSelectOnly
+                                      timeIntervals={15}
+                                      timeCaption="Time"
+                                      dateFormat="h:mm aa"
+                                      placeholderText={
                                         TranslationContext !== undefined
                                           ? TranslationContext
                                               .ticketingDashboard.entertime
                                           : "Enter Time"
                                       }
-                                      name="time"
-                                      autoComplete="off"
-                                      // onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                 </div>
@@ -1436,7 +1576,7 @@ class OrderTab extends Component {
                               ? TranslationContext.button.proceed
                               : "Proceed"
                           }
-                          onConfirm={this.handleAddressPending.bind(
+                          onConfirm={this.handleSubmitOrderAddress.bind(
                             this,
                             row.id
                           )}
@@ -1523,7 +1663,12 @@ class OrderTab extends Component {
             overlayId="Pincode-ovrly"
           >
             <div className="padding-div">
-              <h5>Are you sure you want to save?</h5>
+              <h5>
+                {TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard
+                      .areyousureyouwanttosave
+                  : "Are you sure you want to save?"}
+              </h5>
               <div className="main-pincodeDiv">
                 <button
                   type="button"
@@ -1542,7 +1687,9 @@ class OrderTab extends Component {
                     this.state.orderId
                   )}
                 >
-                  Ok
+                  {TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.ok
+                    : "Ok"}
                 </button>
               </div>
             </div>
