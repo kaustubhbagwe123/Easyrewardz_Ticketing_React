@@ -31,6 +31,7 @@ class ShipmentTab extends Component {
       statusFilterData: [],
       DeliveryFilterData: [],
       strStatus: "",
+      strDelivery: "",
       translateLanguage: {},
       ShipmentOrderItem: [],
       ShipmentOrderId: 0,
@@ -88,6 +89,7 @@ class ShipmentTab extends Component {
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
+        FilterDelivery:this.state.strDelivery
       },
     })
       .then(function(res) {
@@ -429,7 +431,22 @@ class ShipmentTab extends Component {
       strStatus,
     });
   }
-
+  /// handle Devilery filter change
+  handleCheckDeliveryOnchange() {
+    var checkboxes = document.getElementsByName("ShipmentDelivery");
+    var strDelivery = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strDelivery += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strDelivery,
+    });
+  }
   ///handle pagination onchage
   PaginationOnChange = async (numPage) => {
     await this.setState({
@@ -587,7 +604,7 @@ class ShipmentTab extends Component {
                     ? TranslationContext.title.deliverytype
                     : "Delivery Type",
                 className:
-                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                  "shopping-delivery-header camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 dataIndex: "deliveryTypeName",
                 width: 150,
                 filterDropdown: (data, row) => {
@@ -599,17 +616,17 @@ class ShipmentTab extends Component {
                             <li key={b}>
                               <input
                                 type="checkbox"
-                                id={"New" + item.statusID}
+                                id={"New" + item.deliveryTypeID}
                                 className="ch1"
-                                onChange={this.handleCheckDeliIndividualStatus.bind(
+                                onChange={this.handleCheckDeliveryOnchange.bind(
                                   this
                                 )}
-                                name="ShipmentStatus"
-                                attrIds={item.statusID}
+                                name="ShipmentDelivery"
+                                attrIds={item.deliveryTypeID}
                               />
-                              <label htmlFor={"New" + item.statusID}>
+                              <label htmlFor={"New" + item.deliveryTypeID}>
                                 <span className="ch1-text">
-                                  {item.statusName}
+                                  {item.deliveryTypeName}
                                 </span>
                               </label>
                             </li>
