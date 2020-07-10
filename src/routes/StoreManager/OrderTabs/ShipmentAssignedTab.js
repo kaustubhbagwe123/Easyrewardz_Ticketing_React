@@ -23,10 +23,14 @@ class ShipmentAssignedTab extends Component {
       translateLanguage: {},
       orderIDs: [41814156],
       orderSearchText: "",
+      PartnerFilterData: [],
+      strPartner: "",
+      filterShipmentPartner: false,
     };
   }
   componentDidMount() {
     this.handleGetShipmentAssignedData();
+    this.handleGetShipmentAssignPartnerFilterData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -41,10 +45,10 @@ class ShipmentAssignedTab extends Component {
       orderSearchText: searchData,
     });
     setTimeout(() => {
-      this.handleGetShipmentAssignedData()
+      this.handleGetShipmentAssignedData();
     }, 5);
   };
-
+  /// ----------------API function start----------------------
   /// Handle Get grid data
   handleGetShipmentAssignedData() {
     let self = this;
@@ -60,6 +64,7 @@ class ShipmentAssignedTab extends Component {
         PageNo: this.state.assignCurrentPage,
         PageSize: this.state.assignPostsPerPage,
         FilterReferenceNo: "",
+        CourierPartner: this.state.strPartner,
       },
     })
       .then(function(res) {
@@ -70,12 +75,14 @@ class ShipmentAssignedTab extends Component {
             shipmentAssignedGridData: data.shipmentAssigned,
             totalCount: data.totalCount,
             ShipAssignLoading: false,
+            filterShipmentPartner: false,
           });
         } else {
           self.setState({
             shipmentAssignedGridData: [],
             totalCount: 0,
             ShipAssignLoading: false,
+            filterShipmentPartner: false,
           });
         }
       })
@@ -83,50 +90,34 @@ class ShipmentAssignedTab extends Component {
         console.log(data);
       });
   }
-  AssignedPaginationOnChange = async (numPage) => {
-    await this.setState({
-      assignCurrentPage: numPage,
-    });
-
-    this.handleGetShipmentAssignedData();
-  };
-
-  handleAssignedPageItemchange = async (e) => {
-    await this.setState({
-      assignPostsPerPage: e.target.value,
-      assignCurrentPage: 1,
-    });
-
-    this.handleGetShipmentAssignedData();
-  };
-
-  handlechange(i, e) {
-    var name = e.target.name;
-    let shipmentAssignedGridData = [...this.state.shipmentAssignedGridData];
-    if (name === "mobileNumber") {
-      var reg = /^[0-9\b]+$/;
-      if (e.target.value === "" || reg.test(e.target.value)) {
-        shipmentAssignedGridData[i] = {
-          ...shipmentAssignedGridData[i],
-          [e.target.name]: e.target.value,
-        };
-        this.setState({
-          shipmentAssignedGridData,
-        });
-      } else {
-        e.target.value = "";
-      }
-    } else {
-      shipmentAssignedGridData[i] = {
-        ...shipmentAssignedGridData[i],
-        [e.target.name]: e.target.value,
-      };
-      this.setState({
-        shipmentAssignedGridData,
+  /// get shipment assign partner filter data
+  handleGetShipmentAssignPartnerFilterData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetCourierPartnerFilter",
+      headers: authHeader(),
+      params: {
+        pageID: 5,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            PartnerFilterData: data,
+          });
+        } else {
+          self.setState({
+            PartnerFilterData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
-    }
   }
-
   handleUpdateShipmentAssignedData(row, IsProceed) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -311,8 +302,8 @@ class ShipmentAssignedTab extends Component {
         console.log(data);
       });
   }
-
-  handlePrintInvoice(orderIds){
+  /// handle Pr5int Invoice data
+  handlePrintInvoice(orderIds) {
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintInvoice",
@@ -333,7 +324,74 @@ class ShipmentAssignedTab extends Component {
         console.log(data);
       });
   }
+  /// ----------------API function end----------------------
+  AssignedPaginationOnChange = async (numPage) => {
+    await this.setState({
+      assignCurrentPage: numPage,
+    });
 
+    this.handleGetShipmentAssignedData();
+  };
+
+  handleAssignedPageItemchange = async (e) => {
+    await this.setState({
+      assignPostsPerPage: e.target.value,
+      assignCurrentPage: 1,
+    });
+
+    this.handleGetShipmentAssignedData();
+  };
+  /// handle Close Partner filter
+  handleClosePartnerFilter() {
+    this.setState({
+      filterShipmentPartner: false,
+    });
+  }
+
+  handlechange(i, e) {
+    var name = e.target.name;
+    let shipmentAssignedGridData = [...this.state.shipmentAssignedGridData];
+    if (name === "mobileNumber") {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        shipmentAssignedGridData[i] = {
+          ...shipmentAssignedGridData[i],
+          [e.target.name]: e.target.value,
+        };
+        this.setState({
+          shipmentAssignedGridData,
+        });
+      } else {
+        e.target.value = "";
+      }
+    } else {
+      shipmentAssignedGridData[i] = {
+        ...shipmentAssignedGridData[i],
+        [e.target.name]: e.target.value,
+      };
+      this.setState({
+        shipmentAssignedGridData,
+      });
+    }
+  }
+
+  /// handle check partner status
+  handleCheckPartnerOnchange() {
+    var checkboxes = document.getElementsByName("ShipmentPartner");
+    var strPartner = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strPartner += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strPartner,
+      currentPage: 1,
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -366,7 +424,64 @@ class ShipmentAssignedTab extends Component {
                     ? TranslationContext.title.courierpartner
                     : "Courier Partner",
                 dataIndex: "courierPartner",
-                className: "table-coloum-hide",
+                className:
+                  "shopping-delivery-header camp-status-header courier-shipment-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                filterDropdown: (data, row) => {
+                  return (
+                    <div className="campaign-status-drpdwn">
+                      <ul>
+                        {this.state.PartnerFilterData !== null &&
+                          this.state.PartnerFilterData.map((item, p) => {
+                            return (
+                              <li key={p}>
+                                <input
+                                  type="checkbox"
+                                  id={"New" + item}
+                                  className="ch1"
+                                  onChange={this.handleCheckPartnerOnchange.bind(
+                                    this
+                                  )}
+                                  name="ShipmentPartner"
+                                  attrIds={item}
+                                />
+                                <label htmlFor={"New" + item}>
+                                  <span className="ch1-text">{item}</span>
+                                </label>
+                              </li>
+                            );
+                          })}
+                      </ul>
+                      <div className="dv-status">
+                        <button
+                          className="btn-apply-status"
+                          onClick={this.handleGetShipmentAssignedData.bind(
+                            this
+                          )}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
+                        </button>
+                        <button
+                          className="btn-cancel-status"
+                          onClick={this.handleClosePartnerFilter.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                },
+                filterDropdownVisible: this.state.filterShipmentPartner,
+                onFilterDropdownVisibleChange: (visible) =>
+                  this.setState({ filterShipmentPartner: visible }),
+                filterIcon: (filtered) => (
+                  <span
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                  ></span>
+                ),
               },
               {
                 title:
@@ -400,10 +515,13 @@ class ShipmentAssignedTab extends Component {
                           ? TranslationContext.button.printlabel
                           : "Print Label"}
                       </button>
-                      <button className="butn order-grid-butn order-grid-butn-green assign-grid-btn" onClick={this.handlePrintInvoice.bind(
+                      <button
+                        className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
+                        onClick={this.handlePrintInvoice.bind(
                           this,
                           item.courierPartnerOrderID
-                        )}>
+                        )}
+                      >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.printinvoice
                           : "Print Invoice"}

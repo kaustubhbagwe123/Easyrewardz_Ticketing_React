@@ -135,6 +135,9 @@
 .shopping-popover-cancel-info::-webkit-scrollbar {
   width: 7px;
 }
+.order-popover-address .react-datepicker button {
+  min-width: auto;
+}
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-track,
@@ -210,6 +213,12 @@
 }
 .shopping-delivery-header .ant-table-filter-icon {
   left: 98px !important;
+}
+.partner-shipment-header .ant-table-filter-icon {
+  left: 68px !important;
+}
+.courier-shipment-header .ant-table-filter-icon {
+  left: 111px !important;
 }
 .shopping-popover-cancel-info {
   font-size: 14px !important;
