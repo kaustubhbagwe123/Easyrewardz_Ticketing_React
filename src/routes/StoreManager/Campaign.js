@@ -1191,7 +1191,7 @@ class Campaign extends Component {
                         title:
                           TranslationContext !== undefined
                             ? TranslationContext.title.callrecheduledto
-                            : "Call Recheduled To",
+                            : "Call Rescheduled To",
                         // dataIndex: "pricePaid"
                         render: (row, item) => {
                           return (
@@ -1474,7 +1474,7 @@ class Campaign extends Component {
                           </div>
                           <div>
                             <p className="store-campaign-inner-title">
-                              Call Recheduled To
+                              Call Rescheduled To
                             </p>
                             <div
                               className={
