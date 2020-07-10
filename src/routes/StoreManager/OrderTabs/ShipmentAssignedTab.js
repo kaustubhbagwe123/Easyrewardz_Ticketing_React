@@ -389,6 +389,7 @@ class ShipmentAssignedTab extends Component {
     }
     this.setState({
       strPartner,
+      currentPage: 1,
     });
   }
   render() {

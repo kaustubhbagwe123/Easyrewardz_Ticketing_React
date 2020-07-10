@@ -467,6 +467,7 @@ class ShipmentTab extends Component {
     }
     this.setState({
       strPartner,
+      currentPage: 1,
     });
   }
 
@@ -484,6 +485,7 @@ class ShipmentTab extends Component {
     }
     this.setState({
       strStatus,
+      currentPage: 1,
     });
   }
   /// handle Devilery filter change
@@ -500,6 +502,7 @@ class ShipmentTab extends Component {
     }
     this.setState({
       strDelivery,
+      currentPage: 1,
     });
   }
   ///handle pagination onchage
