@@ -2375,3 +2375,6 @@ img.ladyimg {
   min-width: auto;
   cursor: pointer;
 }
+.secondbox-open-new{
+  width: 75% !important;
+}

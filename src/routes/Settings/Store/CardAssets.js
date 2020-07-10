@@ -27,6 +27,11 @@ class CardAssets extends Component {
       translateLanguage: {},
       approvalTypeData: [],
       isApproval: true,
+      rejectionComment: "",
+      rejectionModal: false,
+      imageUploadLogID: "",
+      itemID: "",
+      isSubmitRejection:false
     };
   }
   componentDidMount() {
@@ -78,7 +83,7 @@ class CardAssets extends Component {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
-////handle approve and reject card image
+  ////handle approve and reject card image
   handleApproveRejectCardImage(imageUploadLogID, itemID, status) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -99,9 +104,18 @@ class CardAssets extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           if (status) {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imageaddedsuccessfully:"Image Added Successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.imageaddedsuccessfully
+                : "Image Added Successfully"
+            );
           } else {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imagerejectedsuccessfully:"Image Rejected Successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.imagerejectedsuccessfully
+                : "Image Rejected Successfully"
+            );
+            self.setState({isRejectionComment:"",rejectionComment:"",rejectionModal:false})
           }
         }
         self.handleGetCardImageUploadlog(1);
@@ -147,6 +161,46 @@ class CardAssets extends Component {
       .catch((response) => {
         console.log(response, "---handleGetCardImageApproval");
       });
+  }
+  ////handle open rejection modal
+  handleOpenRejectionModal = (imageUploadLogID, itemID) => {
+    this.setState({
+      rejectionModal: true,
+      imageUploadLogID,
+      itemID,
+    });
+  };
+
+  ////handle close rejection modal
+  handleCloseRejectionModal = () => {
+    this.setState({ rejectionModal: false });
+  };
+  ////handle rejection comment change
+  handleRectionCommentChange(e) {
+    if (e.target.value !== "") {
+      this.setState({
+        rejectionComment: e.target.value,
+        isRejectionComment: "",
+      });
+    } else {
+      this.setState({
+        rejectionComment: e.target.value,
+        // isAssignComment: "Please enter comment.",
+      });
+    }
+  }
+  ////handle submit rejection reason
+  handleSubmitRejectionReason() {
+    if (this.state.rejectionComment) {
+      this.setState({isSubmitRejection:true})
+      this.handleApproveRejectCardImage(
+        this.state.imageUploadLogID,
+        this.state.itemID,
+        false
+      );
+    } else {
+      this.setState({ isRejectionComment: "Enter Card Rejection Reason" });
+    }
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -414,7 +468,7 @@ class CardAssets extends Component {
                                 </button>
                                 <button
                                   className="btnred"
-                                  onClick={this.handleApproveRejectCardImage.bind(
+                                  onClick={this.handleOpenRejectionModal.bind(
                                     this,
                                     rowdata.imageUploadLogID,
                                     rowdata.itemID,
@@ -792,6 +846,58 @@ class CardAssets extends Component {
               alt={"product-img"}
               style={{ width: "100%" }}
             />
+          </div>
+        </Modal>
+
+        <Modal
+          show={this.state.rejectionModal}
+          onHide={this.handleCloseRejectionModal.bind(this)}
+          closeIconId="sdsg"
+          modalId="Historical-popup"
+          overlayId="logout-ovrly"
+          classNames={{
+            modal: "rejectmodal-popup",
+          }}
+        >
+          <div className="commenttextborder" style={{ padding: "15px" }}>
+            <div className="comment-disp">
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Card Rejection Reason</label>
+              </div>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handleCloseRejectionModal.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="commenttextmessage">
+              <textarea
+                cols="31"
+                rows="3"
+                className="ticketMSGCmt-textarea"
+                maxLength={300}
+                value={this.state.rejectionComment}
+                onChange={this.handleRectionCommentChange.bind(this)}
+              ></textarea>
+            </div>
+            {this.state.isRejectionComment !== "" && (
+              <p style={{ color: "red", marginTop: "0px" }}>
+                {this.state.isRejectionComment}
+              </p>
+            )}
+
+            <div className="SendCommentBtn" style={{ margin: "0" }}>
+              <button
+                className="SendCommentBtn1"
+                disabled={this.state.isSubmitRejection}
+                onClick={this.handleSubmitRejectionReason.bind(this)}
+              >
+                SUBMIT
+              </button>
+            </div>
           </div>
         </Modal>
       </React.Fragment>
