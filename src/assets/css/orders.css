@@ -135,6 +135,9 @@
 .shopping-popover-cancel-info::-webkit-scrollbar {
   width: 7px;
 }
+.order-popover-address .react-datepicker button {
+  min-width: auto;
+}
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-track,
