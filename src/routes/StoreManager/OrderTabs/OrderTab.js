@@ -51,6 +51,7 @@ class OrderTab extends Component {
       orderSearchText: "",
       OrdPickupDate: "",
       OrdPickupTime: "",
+      OrdProcessLoader:false
     };
   }
 
