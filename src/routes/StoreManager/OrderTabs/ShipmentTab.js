@@ -117,7 +117,7 @@ class ShipmentTab extends Component {
               totalCount: 0,
               filterShipmentStatus: false,
               filterShipmentDelivery: false,
-              filterShipmentPartner:false,
+              filterShipmentPartner: false,
               ShipmentLoading: false,
             });
           }
@@ -857,7 +857,7 @@ class ShipmentTab extends Component {
                     : "Partner",
                 dataIndex: "courierPartner",
                 className:
-                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header partner-shipment-header",
                 width: 150,
                 filterDropdown: (data, row) => {
                   return (
