@@ -2154,7 +2154,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/EndCustomerChat",
       headers: authHeader(),
-      params: { ChatID: chatId ,EndChatMessage:message},
+      params: { ChatID: chatId ,EndChatMessage:message||""},
     })
       .then(function(response) {
         var message = response.data.message;
