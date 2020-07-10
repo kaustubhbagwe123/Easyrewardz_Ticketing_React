@@ -997,6 +997,46 @@ p {
 .thirdbox {
   width: 27%;
 }
+.secondbox-open {
+  width: 68% !important;
+}
+.thirdbox-close {
+  width: 7% !important;
+}
+.thirdbox-close .uptabs .nav-tabs {
+  display: none;
+}
+.thirdbox-close .nameplate span {
+  display: none;
+}
+.thirdbox-close .contactbox {
+  display: none;
+}
+.thirdbox-close .pointstable {
+  display: none;
+}
+.thirdbox-close .prodtabl1 {
+  display: none;
+}
+.thirdbox-close .updateprofilelinkbtn {
+  display: none;
+}
+.thirdbox-close .pin {
+  display: none;
+}
+.thirdbox-close .nameplate li:first-child {
+  margin-right: 0;
+}
+.thirdbox-close .nameplate {
+  margin: 0;
+}
+.thirdbox-close .tab-content {
+  padding: 20px 15px 15px !important;
+  align-items: center;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
 .uptabs {
   position: relative;
 }

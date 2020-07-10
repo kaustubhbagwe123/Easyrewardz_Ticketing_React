@@ -3645,7 +3645,7 @@ table tr th:last-child {
   text-align: center;
   margin-top: 20px;
 }
-.mobileblock{
+.mobileblock {
   display: none;
 }
 @media screen and (max-width: 600px) {
@@ -4005,11 +4005,14 @@ table tr th:last-child {
   .store-campaign-inner-cntr .dateTimeStore {
     width: 190px;
   }
-  .mobileblock{
+  .mobileblock {
     display: block;
   }
   .campaign-cust-popup .lifetimevalue {
     height: auto;
+  }
+  .store-task-tabs-mobile {
+    display: none;
   }
   /* store campaign tab ends */
 }
