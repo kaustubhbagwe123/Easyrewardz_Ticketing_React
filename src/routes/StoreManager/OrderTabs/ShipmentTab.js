@@ -22,6 +22,7 @@ class ShipmentTab extends Component {
       ShipmentGridData: [],
       filterShipmentStatus: false,
       filterShipmentDelivery: false,
+      filterShipmentPartner: false,
       orderPopoverOverlay: false,
       ShipmentMdlbtn: false,
       ShipmentLoading: false,
@@ -30,8 +31,10 @@ class ShipmentTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       DeliveryFilterData: [],
+      PartnerFilterData: [],
       strStatus: "",
       strDelivery: "",
+      strPartner: "",
       translateLanguage: {},
       ShipmentOrderItem: [],
       ShipmentOrderId: 0,
@@ -55,6 +58,7 @@ class ShipmentTab extends Component {
     this.handleGetShipmentTabGridData();
     this.handleGetShipmentStatusFilterData();
     this.handleGetShipmentDeliveryTypeFilterData();
+    this.handleGetShipmentPartnerFilterData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -89,7 +93,8 @@ class ShipmentTab extends Component {
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
-        FilterDelivery:this.state.strDelivery
+        FilterDelivery: this.state.strDelivery,
+        CourierPartner: this.state.strPartner,
       },
     })
       .then(function(res) {
@@ -102,6 +107,8 @@ class ShipmentTab extends Component {
               ShipmentGridData: data.ordersList,
               totalCount: data.totalCount,
               filterShipmentStatus: false,
+              filterShipmentDelivery: false,
+              filterShipmentPartner: false,
               ShipmentLoading: false,
             });
           } else {
@@ -109,6 +116,8 @@ class ShipmentTab extends Component {
               ShipmentGridData: [],
               totalCount: 0,
               filterShipmentStatus: false,
+              filterShipmentDelivery: false,
+              filterShipmentPartner:false,
               ShipmentLoading: false,
             });
           }
@@ -181,6 +190,35 @@ class ShipmentTab extends Component {
         } else {
           self.setState({
             DeliveryFilterData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Get Partner filter data
+  handleGetShipmentPartnerFilterData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetCourierPartnerFilter",
+      headers: authHeader(),
+      params: {
+        pageID: 3,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            PartnerFilterData: data,
+          });
+        } else {
+          self.setState({
+            PartnerFilterData: [],
           });
         }
       })
@@ -415,6 +453,23 @@ class ShipmentTab extends Component {
       airWayBill2ndTab: false,
     });
   }
+  /// handle check partner status
+  handleCheckPartnerOnchange() {
+    var checkboxes = document.getElementsByName("ShipmentPartner");
+    var strPartner = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strPartner += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strPartner,
+    });
+  }
+
   /// handle check individual status
   handleCheckDeliIndividualStatus() {
     var checkboxes = document.getElementsByName("ShipmentStatus");
@@ -464,6 +519,12 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
+  /// handle Close Partner filter
+  handleClosePartnerFilter() {
+    this.setState({
+      filterShipmentPartner: false,
+    });
+  }
   /// handle close Delievry filter
   handleCloseDeliveryFilter() {
     this.setState({
@@ -795,8 +856,66 @@ class ShipmentTab extends Component {
                     ? TranslationContext.title.partner
                     : "Partner",
                 dataIndex: "courierPartner",
-                className: "table-coloum-hide",
+                className:
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 width: 150,
+                filterDropdown: (data, row) => {
+                  return (
+                    <div className="campaign-status-drpdwn">
+                      <ul>
+                        {this.state.PartnerFilterData !== null &&
+                          this.state.PartnerFilterData.map((item, p) => {
+                            return (
+                              <li key={p}>
+                                <input
+                                  type="checkbox"
+                                  id={"New" + item}
+                                  className="ch1"
+                                  onChange={this.handleCheckPartnerOnchange.bind(
+                                    this
+                                  )}
+                                  name="ShipmentPartner"
+                                  attrIds={item}
+                                />
+                                <label htmlFor={"New" + item}>
+                                  <span className="ch1-text">{item}</span>
+                                </label>
+                              </li>
+                            );
+                          })}
+                      </ul>
+                      <div className="dv-status">
+                        <button
+                          className="btn-apply-status"
+                          onClick={this.handleGetShipmentTabGridData.bind(
+                            this,
+                            "filter"
+                          )}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
+                        </button>
+                        <button
+                          className="btn-cancel-status"
+                          onClick={this.handleClosePartnerFilter.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                },
+                filterDropdownVisible: this.state.filterShipmentPartner,
+                onFilterDropdownVisibleChange: (visible) =>
+                  this.setState({ filterShipmentPartner: visible }),
+                filterIcon: (filtered) => (
+                  <span
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                  ></span>
+                ),
               },
               {
                 title:
