@@ -2933,6 +2933,7 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
+                              <span className="messagecount">2</span>
                                 <p
                                   style={{
                                     fontWeight:
