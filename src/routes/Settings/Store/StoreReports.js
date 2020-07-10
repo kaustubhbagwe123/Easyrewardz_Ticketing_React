@@ -48,6 +48,10 @@ class StoreReports extends Component {
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     ).subtract(30, "days");
     let end = moment(start).add(30, "days");
+    let loginstart = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    ).subtract(30+1, "days");
+    let loginend = moment(start).add(30-1, "days");
     this.state = {
       AddReportPopup: false,
       NextPopup: false,
@@ -218,8 +222,9 @@ class StoreReports extends Component {
       loginDateFrom: "",
       loginDateTo: "",
       loginUsers: "0",
-      loginStart: start,
-      loginEnd: end,
+      loginStart: loginstart,
+      loginEnd: loginend
+
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -1390,11 +1395,11 @@ class StoreReports extends Component {
         CampaignAssignedIds: this.state.campaignAssignedTo,
         CampaignStartDate:
           this.state.campaignEndDateFrom === ""
-            ? null
+            ? moment(this.state.start).format("YYYY-MM-DD")
             : moment(this.state.campaignEndDateFrom).format("YYYY-MM-DD"),
         CampaignEndDate:
           this.state.campaignEndDateTo === ""
-            ? null
+            ? moment(this.state.end).format("YYYY-MM-DD")
             : moment(this.state.campaignEndDateTo).format("YYYY-MM-DD"),
         CampaignStatusids: this.state.indiCampaignStatus,
         CampaignRegion: this.state.campaignRegion,
@@ -1407,12 +1412,12 @@ class StoreReports extends Component {
         UserIDs: this.state.loginUsers,
         Startdate:
           this.state.loginDateFrom === ""
-            ? null
+            ? moment(this.state.loginStart).format("YYYY-MM-DD")
             : moment(this.state.loginDateFrom).format("YYYY-MM-DD"),
         Enddate:
           this.state.loginDateTo === ""
-            ? null
-            : moment(this.state.loginDateTo).format("YYYY-MM-DD"),
+            ? moment(this.state.loginEnd).format("YYYY-MM-DD")
+            : moment(this.state.loginDateTo).format("YYYY-MM-DD")
       };
     }
     this.setState({ ReportParams: paramData });
