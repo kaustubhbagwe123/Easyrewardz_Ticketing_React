@@ -208,6 +208,7 @@ class Header extends Component {
       orderShoppingBag: 0,
       orderReadyToShip: 0,
       orderReturns: 0,
+      isMobileView: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -221,6 +222,16 @@ class Header extends Component {
     this.setAccessUser = this.setAccessUser.bind(this);
     this.handleChatModalClose = this.handleChatModalClose.bind(this);
     this.handleChatModalOpen = this.handleChatModalOpen.bind(this);
+  }
+
+  handleCheckView() {
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      this.setState({ isMobileView: true });
+    } else {
+      this.setState({ isMobileView: false });
+    }
   }
 
   componentDidMount() {
@@ -263,6 +274,7 @@ class Header extends Component {
         1
       );
     }
+    this.handleCheckView();
 
     this.handleGetNotigfication();
     this.handleGetChatNotificationCount();
@@ -781,7 +793,6 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
-    debugger;
     this.setState({
       newTicketChatId:
         Number(document.getElementById("newTicketChatId").value) || 0,
@@ -2252,7 +2263,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
 
           if (messgae === "Success" && responseData) {
-            debugger
+            debugger;
             self.setState({
               customerName: responseData.customerName,
               customerTier: responseData.customerTier,
@@ -2886,7 +2897,13 @@ class Header extends Component {
           </div>
           <div className="container-fluid">
             <div className="row">
-              <div className="firstbox">
+              <div
+                className={
+                  this.state.isMobileView && !this.state.customerName
+                    ? "firstbox firstbox-show"
+                    : "firstbox firstbox-hide"
+                }
+              >
                 <div className="chatbot-left">
                   <div className="chat-cntr" style={{ padding: "0px" }}>
                     <span className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span">
@@ -2965,7 +2982,6 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <span className="messagecount">2</span>
                                 <p
                                   style={{
                                     fontWeight:
@@ -3131,6 +3147,7 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
+              {/* {this.state.isMobileView?
               <div className="mobile-chat-tabs">
                 <div className="position-relative">
                   <ul className="nav nav-tabs" role="tablist">
@@ -3381,13 +3398,16 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
+:null} */}
               <div
                 className={
                   this.state.onHoverName
                     ? "secondbox"
                     : this.state.customerName
                     ? "secondbox secondbox-open"
-                    : "secondbox secondbox-open-new"
+                    : this.state.isMobileView && this.state.customerName
+                    ? "secondbox secondbox-open-new-show"
+                    : "secondbox secondbox-open-new secondbox-open-new-hide"
                 }
               >
                 <div className="chatbot-right">

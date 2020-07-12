@@ -34,7 +34,7 @@ p {
 .store-chat-header h3 {
   color: #fff;
   font-size: 14px;
-    font-weight: normal;
+  font-weight: normal;
 }
 .rounded-cross {
   color: #fff;
@@ -1178,7 +1178,6 @@ p {
   text-align: right;
 }
 
-
 .itemtable table thead tr {
   background-color: transparent !important;
   border-bottom: none;
@@ -1413,7 +1412,7 @@ img.ladyimg {
   max-height: 312px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right:5px;
+  padding-right: 5px;
 }
 .prodtabl1::-webkit-scrollbar {
   width: 5px;
@@ -1433,7 +1432,7 @@ img.ladyimg {
   max-height: 380px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right:5px;
+  padding-right: 5px;
 }
 .prodtabl::-webkit-scrollbar {
   width: 5px;
@@ -1464,6 +1463,18 @@ img.ladyimg {
 }
 
 @media all and (max-width: 576px) {
+  .firstbox-hide{
+    display: none;
+  }
+  .firstbox-show{
+    display: block;
+  }
+  .secondbox-open-new-hide {
+    display: none;
+  }
+  .secondbox-open-new-show {
+    display: block;
+  }
   .secondbox {
     width: 100%;
   }
@@ -1497,7 +1508,7 @@ img.ladyimg {
     max-width: 100%;
   }
   .rounded-cross,
-  .chatbot-left,
+  /* .chatbot-left, */
   .chatdivtitle,
   .chat-tabs-desktop {
     display: none;
@@ -2375,6 +2386,6 @@ img.ladyimg {
   min-width: auto;
   cursor: pointer;
 }
-.secondbox-open-new{
+.secondbox-open-new {
   width: 75% !important;
 }
