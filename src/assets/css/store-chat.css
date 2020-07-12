@@ -370,8 +370,8 @@ p {
   width: 100%;
   align-items: center;
   justify-content: center;
-  margin-top: -20px;
-  font-size: 13px;
+  margin: 6px 0;
+  font-size: 12px;
 }
 /* mobile chats tab ends */
 
@@ -1448,449 +1448,6 @@ img.ladyimg {
 .prodtabl::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
-
-/* Responsive starts */
-@media all and (max-width: 768px) {
-  .firstbox {
-    width: 40%;
-  }
-  .secondbox {
-    width: 60%;
-  }
-  .thirdbox {
-    display: none;
-  }
-}
-
-@media all and (max-width: 576px) {
-  .firstbox-hide{
-    display: none;
-  }
-  .firstbox-show{
-    display: block;
-  }
-  .secondbox-open-new-hide {
-    display: none;
-  }
-  .secondbox-open-new-show {
-    display: block;
-  }
-  .secondbox {
-    width: 100%;
-  }
-  .loader {
-    margin-left: 15px;
-    margin-right: 0% !important;
-    margin-top: 0px !important;
-    font-size: 4px;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    position: relative;
-    text-indent: -9999em;
-    animation: load5 1.1s infinite ease;
-    transform: translateZ(0);
-  }
-  .ant-pagination-item a {
-    color: #4a4a4a !important;
-  }
-
-  .ant-pagination-item-active a {
-    color: #4a4a4a !important;
-  }
-  .anticon svg {
-    color: #4a4a4a;
-  }
-  #chat-popup-overlay {
-    padding: 0px;
-  }
-  #chat-popup-overlay .styles_modal__gNwvD {
-    max-width: 100%;
-  }
-  .rounded-cross,
-  /* .chatbot-left, */
-  .chatdivtitle,
-  .chat-tabs-desktop {
-    display: none;
-  }
-  .chatdivtitle {
-    display: inline-block;
-  }
-  .chatdivtitle ul {
-    width: 100% !important;
-  }
-  .chatactionbtn {
-    display: none !important;
-  }
-  a.nav-link.active.chattitletab {
-    color: #2561a8;
-    font-weight: bold;
-  }
-  .store-chat-header h3 {
-    font-size: 16px;
-  }
-  .store-chat-header {
-    justify-content: center;
-  }
-  .mobile-arrow,
-  .mobile-chat-tabs,
-  .chat-tabs-mobile {
-    display: block;
-  }
-  .mobile-ck-send {
-    /* top: 25px; */
-    top: 7px;
-  }
-  .mobile-ck-send-btn {
-    top: 43px;
-  }
-  #chat-popup .butn,
-  #chat-popup .butn-inv {
-    min-width: 85px;
-    height: 36px;
-    font-size: 14px;
-  }
-
-  /* right side part starts */
-  .chatcontentdivtab {
-    padding: 0;
-  }
-  .chatcontentdivtab .nav-tabs .nav-link {
-    font-size: 13px;
-    border: 0;
-    padding: 5px 20px;
-    text-transform: lowercase;
-    color: #404d52;
-    background: #a8b7bc;
-    border-radius: 5px;
-  }
-  .chatcontentdivtab .nav-tabs .nav-link::first-letter {
-    text-transform: uppercase;
-  }
-  .chatcontentdivtab .nav-tabs {
-    margin: 10px 0px 10px 15px;
-  }
-  /* .chatcontentdivtab .nav-item {
-    margin-left: 0;
-    padding-right: 10px;
-  } */
-  .chatcontentdivtab .nav-tabs .nav-item:last-child {
-    padding-right: 15px;
-  }
-  .chatcontentdivtab .tab-content {
-    padding: 0;
-  }
-  .message-div {
-    /* margin: 0; */
-    margin: 14px;
-    margin-bottom: 10px;
-  }
-  .message-initial {
-    width: 23px;
-    height: 23px;
-    line-height: 23px;
-    font-size: 11px;
-    border-radius: 3px;
-    top: 9px;
-    left: 9px;
-  }
-  .message-div textarea {
-    border-color: transparent;
-    border-radius: 4px;
-    font-size: 12px;
-    height: 80px;
-    padding: 11px 55px 11px 40px;
-  }
-  .message-div textarea::placeholder {
-    font-size: 12px;
-  }
-  .chatcontentdivtab .cke_contents {
-    height: 80px !important;
-  }
-  .chat-trail-chat {
-    font-size: 12px;
-    padding: 8px 15px;
-  }
-  .bot-mark {
-    font-size: 8px;
-    padding: 4px;
-    top: 7px;
-    left: -15px;
-  }
-  .chat-trail-chat .card-body {
-    margin: 0 -7px;
-  }
-  .chat-trail-time {
-    font-size: 10px;
-  }
-  .chat-trail-img {
-    flex: 0 0 35px;
-  }
-  .chat-trail-chat-cntr {
-    margin-top: 10px;
-  }
-  .chat-trail-time {
-    margin-top: 4px;
-  }
-  .chat-trail-cntr {
-    margin-bottom: 10px;
-  }
-  .chatcontentDiv {
-    margin-right: 5px;
-    margin-left: 15px;
-    /* height: calc(100vh - 314px); */
-    /* height: calc(100vh - 404px); */
-    height: calc(100vh - 395px);
-  }
-  /* right side part ends */
-
-  /* ck editor starts */
-  /* .cke_top {
-    padding: 0 !important;
-    padding-right: 8px !important;
-  }
-  .cke_toolgroup {
-    margin-bottom: 1px !important;
-  } */
-  /* ck editor ends */
-
-  /* card modal starts */
-  .send-up {
-    width: 22px;
-  }
-  .bkcprdt label {
-    display: block;
-  }
-  .storeUpbtn {
-    display: none;
-  }
-  .product-card {
-    max-height: calc(100vh - 171px);
-    height: 100%;
-    padding-right: 10px;
-  }
-  .searchtxt-new {
-    margin-top: 0;
-    padding-right: 10px;
-  }
-  .mobile-card-img {
-    flex: 0 0 100px;
-    margin-right: 15px;
-  }
-  .chat-product-name {
-    font-size: 10px;
-  }
-  .chat-product-code,
-  .chat-product-prize,
-  .chat-product-url {
-    font-size: 9px;
-  }
-  .chat-product-prize {
-    margin-top: 6px;
-  }
-  .selectdot {
-    width: 22px;
-    top: -13px;
-    right: -13px;
-  }
-  .product-card .card {
-    margin: 0;
-    margin-bottom: 10px;
-  }
-  /* card modal ends */
-
-  /* schedule modal starts */
-  .schedule-visit-popup > div {
-    height: 100%;
-  }
-  .schedule-mobile-cntr {
-    padding: 0 5px 5px 5px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-  }
-  .selectdot-blue {
-    display: none;
-  }
-  .s-lable {
-    font-size: 12px;
-    margin-bottom: -4px;
-  }
-  .schedule-btn-cntr button,
-  .select-slot-cntr,
-  .schedule-right-cntr input {
-    margin-top: 11px;
-    font-weight: 700;
-    font-size: 10px;
-    padding: 4px 24px 4px 8px;
-    flex: 0 1 29%;
-  }
-  .schedule-left-cntr > div {
-    margin-bottom: 20px;
-  }
-  .schedule-left-cntr::after {
-    content: "";
-    border-bottom: 1px solid #d7d7d7;
-  }
-  .schedule-visit-popup {
-    padding: 0 !important;
-    /* height: 100%; */
-  }
-  .schedule-left-outer-cntr {
-    padding: 20px 0 20px 15px;
-    border-bottom: 1px solid #d7d7d7;
-  }
-  .schedule-right-cntr {
-    justify-content: initial;
-    padding: 15px;
-  }
-  .schedule-right-cntr .s-lable {
-    font-size: 12px;
-    color: #000;
-  }
-  .schedule-right-cntr > div {
-    margin-right: 20px;
-  }
-  .schedule-right-cntr > div:last-child {
-    margin-right: 0px;
-  }
-  .schedule-right-cntr input {
-    width: 80px;
-    color: #000;
-    padding: 4px 8px;
-  }
-  .schedule-visit-popup .chat-btn-cntr {
-    padding: 0 15px 15px;
-  }
-  .schedule-left-cntr {
-    max-height: calc(100vh - 230px);
-  }
-  .ant-tooltip-inner {
-    padding-right: 9px;
-    padding-left: 9px;
-  }
-  .schedule-btn-cntr {
-    margin-left: -5px;
-    flex-wrap: wrap;
-    overflow: initial;
-  }
-  /* schedule modal ends */
-
-  /* payment link mobile starts */
-  .payment-details label {
-    font-size: 12px;
-    margin-bottom: 0;
-  }
-  .payment-details span {
-    font-size: 16px;
-  }
-  .payment-details {
-    margin-left: 5px;
-  }
-  /* payment link mobile ends */
-
-  /* message suggestions starts */
-  .suggestions-cntr span {
-    font-size: 11px;
-    padding-right: 10px;
-    padding-left: 10px;
-    margin: 2px 4px;
-    max-width: 190px;
-  }
-  .suggestions-cntr {
-    margin: 8px -4px 4px;
-  }
-  .suggestions-tick span:before {
-    content: "";
-    width: 15px;
-    height: 15px;
-  }
-  .suggestions-tick span:after {
-    content: "";
-    width: 4px;
-    height: 8px;
-    right: 5.5px;
-  }
-  /* message suggestions ends */
-}
-
-@media all and (max-width: 425px) {
-  .ant-pagination-item a {
-    color: #4a4a4a !important;
-  }
-  .ant-pagination-item-active a {
-    color: #4a4a4a !important;
-  }
-  .anticon svg {
-    color: #4a4a4a;
-  }
-  .chat-face-cntr {
-    width: 35px;
-  }
-  .chat-detail-cntr {
-    margin-right: 20px;
-  }
-  .chatcontentDiv {
-    /* height: calc(100vh - 299px); */
-    /* height: calc(100vh - 389px); */
-    height: calc(100vh - 380px);
-  }
-  .chat-detail-outer-cntr {
-    min-height: 66px;
-  }
-  .online {
-    width: 8px;
-    height: 8px;
-  }
-  .chat-initial {
-    height: 35px;
-    line-height: 35px;
-    font-size: 12px;
-  }
-  /* .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
-    padding-left: 2px;
-  } */
-
-  /* card modal starts */
-  .mobile-card-img {
-    flex: 0 0 70px;
-    margin-right: 10px;
-  }
-  .chat-product-name {
-    font-size: 8px;
-  }
-  .chat-product-code,
-  .chat-product-prize,
-  .chat-product-url {
-    font-size: 7px;
-  }
-  .selectdot {
-    width: 20px;
-  }
-  /* card modal ends */
-}
-
-@media all and (max-width: 387px) {
-  .ant-pagination-item a {
-    color: #4a4a4a !important;
-  }
-  .ant-pagination-item-active a {
-    color: #4a4a4a !important;
-  }
-  .anticon svg {
-    color: #4a4a4a;
-  }
-  /* schedule modal starts */
-  .schedule-btn-cntr button,
-  .select-slot-cntr,
-  .schedule-right-cntr input {
-    flex: 0 1 44%;
-  }
-  /* schedule modal ends */
-}
-/* Responsive ends */
-
 .search-customerChatSrch {
   width: 88%;
   height: 43px;
@@ -2049,8 +1606,8 @@ img.ladyimg {
   text-align: center;
 }
 .agentchatdrop-down {
-  margin-left: 27px;
-  width: 50%;
+  margin-left: 0;
+    width: 35%;
 }
 
 .chatactionbtn {
@@ -2389,3 +1946,517 @@ img.ladyimg {
 .secondbox-open-new {
   width: 75% !important;
 }
+
+
+/* Responsive starts */
+@media all and (max-width: 768px) {
+  .firstbox {
+    width: 40%;
+  }
+  .secondbox {
+    width: 60%;
+  }
+  .thirdbox {
+    display: none;
+  }
+}
+
+@media all and (max-width: 576px) {
+  .firstbox-hide{
+    display: none;
+  }
+  .firstbox-show {
+    display: block;
+  }
+  .secondbox-open-new-hide {
+    display: none;
+  }
+  .secondbox-open-new-show {
+    display: block;
+  }
+  .firstbox {
+    width: 100%;
+    height: 94vh;
+  }
+  .secondbox {
+    width: 100%;
+  }
+  .secondbox-open {
+    width: 100% !important;
+  }
+  .thirbox-shutter {
+    height: 400px !important;
+    max-height: 400px !important;
+  }
+  #chat-popup-overlay {
+    top: 0;
+  }
+  .oc-bg {
+    background-color: #ECF2F4;
+    height: 73vh;
+  }
+  .chat-hist {
+    padding: 0;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+  }
+  .agentchatdrop-down {
+    margin-left: 0;
+    width: 35%;
+  }
+  .chat-trail-chat {
+    background: #fff;
+    color: #333;
+  }
+  .chat-trail-cntr {
+    margin-left: 0px;
+    margin-right: 0;
+    max-width: 100%;
+  }
+  .chat-trail-cntr-right .chat-trail-chat {
+    background: #CEE0E6;
+    color: #333;
+  }
+  .thirdbox {
+    display: block;
+    width: 100% !important;
+    position: absolute;
+    background: #fff;
+    max-height: 90px;
+    overflow: inherit;
+    border-radius: 0 0 10px 10px;
+  }
+  .Arwico {
+    height: 18px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 999999999999;
+    bottom: -10px;
+}
+  .chattabtitle {
+    padding: 0 !important;
+    width: 100% !important;
+    margin-top: 28px;
+  }
+  .pin {
+    display: none;
+  }
+  .loader {
+    margin-left: 15px;
+    margin-right: 0% !important;
+    margin-top: 0px !important;
+    font-size: 4px;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    animation: load5 1.1s infinite ease;
+    transform: translateZ(0);
+  }
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+
+  .ant-pagination-item-active a {
+    color: #4a4a4a !important;
+  }
+  .anticon svg {
+    color: #4a4a4a;
+  }
+  #chat-popup-overlay {
+    padding: 0px;
+  }
+  #chat-popup-overlay .styles_modal__gNwvD {
+    max-width: 100%;
+  }
+  .rounded-cross,
+  /* .chatbot-left, */
+  .chatdivtitle,
+  .chat-tabs-desktop {
+    display: none;
+  }
+  .chatdivtitle {
+    display: inline-block;
+  }
+  .chatdivtitle ul {
+    width: 100% !important;
+  }
+  .chatactionbtn {
+    display: none !important;
+  }
+  a.nav-link.active.chattitletab {
+    color: #2561a8;
+    font-weight: bold;
+  }
+  .store-chat-header h3 {
+    font-size: 16px;
+  }
+  .store-chat-header {
+    justify-content: center;
+  }
+  .mobile-arrow,
+  .mobile-chat-tabs,
+  .chat-tabs-mobile {
+    display: block;
+  }
+  .mobile-ck-send {
+    /* top: 25px; */
+    top: 7px;
+  }
+  .mobile-ck-send-btn {
+    top: 43px;
+  }
+  #chat-popup .butn,
+  #chat-popup .butn-inv {
+    min-width: 85px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  /* right side part starts */
+  .chatcontentdivtab {
+    padding: 0;
+  }
+  .chatcontentdivtab .nav-tabs .nav-link {
+    font-size: 13px;
+    border: 0;
+    padding: 5px 20px;
+    text-transform: lowercase;
+    color: #404d52;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #2561a8;
+  }
+  .chatcontentdivtab .nav-tabs .nav-link::first-letter {
+    text-transform: uppercase;
+  }
+  .chatcontentdivtab .nav-tabs {
+    margin: 10px 0px 10px 15px;
+  }
+  /* .chatcontentdivtab .nav-item {
+    margin-left: 0;
+    padding-right: 10px;
+  } */
+  .chatcontentdivtab .nav-tabs .nav-item:last-child {
+    padding-right: 15px;
+  }
+  .chatcontentdivtab .tab-content {
+    padding: 0;
+  }
+  .message-div {
+    /* margin: 0; */
+    margin: 14px;
+    margin-bottom: 10px;
+  }
+  .message-initial {
+    width: 23px;
+    height: 23px;
+    line-height: 23px;
+    font-size: 11px;
+    border-radius: 3px;
+    top: 9px;
+    left: 9px;
+  }
+  .message-div textarea {
+    border-color: transparent;
+    border-radius: 4px;
+    font-size: 12px;
+    height: 80px;
+    padding: 11px 55px 11px 40px;
+  }
+  .message-div textarea::placeholder {
+    font-size: 12px;
+  }
+  .chatcontentdivtab .cke_contents {
+    height: 80px !important;
+  }
+  .chat-trail-chat {
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+  .bot-mark {
+    font-size: 8px;
+    padding: 4px;
+    top: 7px;
+    left: -15px;
+  }
+  .chat-trail-chat .card-body {
+    margin: 0 -7px;
+  }
+  .chat-trail-time {
+    font-size: 10px;
+  }
+  .chat-trail-img {
+    flex: 0 0 35px;
+    display: none;
+  }
+  .chat-trail-chat-cntr {
+    margin-top: 10px;
+  }
+  .chat-trail-time {
+    margin-top: 4px;
+  }
+  .chat-trail-cntr {
+    margin-bottom: 10px;
+  }
+  .chatcontentDiv {
+    margin-right: 5px;
+    margin-left: 5px;
+    /* height: calc(100vh - 314px); */
+    /* height: calc(100vh - 404px); */
+    height: calc(100vh - 395px);
+  }
+  /* right side part ends */
+
+  /* ck editor starts */
+  /* .cke_top {
+    padding: 0 !important;
+    padding-right: 8px !important;
+  }
+  .cke_toolgroup {
+    margin-bottom: 1px !important;
+  } */
+  /* ck editor ends */
+
+  /* card modal starts */
+  .send-up {
+    width: 22px;
+  }
+  .bkcprdt label {
+    display: block;
+  }
+  .storeUpbtn {
+    display: none;
+  }
+  .product-card {
+    max-height: calc(100vh - 171px);
+    height: 100%;
+    padding-right: 10px;
+  }
+  .searchtxt-new {
+    margin-top: 0;
+    padding-right: 10px;
+  }
+  .mobile-card-img {
+    flex: 0 0 100px;
+    margin-right: 15px;
+  }
+  .chat-product-name {
+    font-size: 10px;
+  }
+  .chat-product-code,
+  .chat-product-prize,
+  .chat-product-url {
+    font-size: 9px;
+  }
+  .chat-product-prize {
+    margin-top: 6px;
+  }
+  .selectdot {
+    width: 22px;
+    top: -13px;
+    right: -13px;
+  }
+  .product-card .card {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  /* card modal ends */
+
+  /* schedule modal starts */
+  .schedule-visit-popup > div {
+    height: 100%;
+  }
+  .schedule-mobile-cntr {
+    padding: 0 5px 5px 5px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+  .selectdot-blue {
+    display: none;
+  }
+  .s-lable {
+    font-size: 12px;
+    margin-bottom: -4px;
+  }
+  .schedule-btn-cntr button,
+  .select-slot-cntr,
+  .schedule-right-cntr input {
+    margin-top: 11px;
+    font-weight: 700;
+    font-size: 10px;
+    padding: 4px 24px 4px 8px;
+    flex: 0 1 29%;
+  }
+  .schedule-left-cntr > div {
+    margin-bottom: 20px;
+  }
+  .schedule-left-cntr::after {
+    content: "";
+    border-bottom: 1px solid #d7d7d7;
+  }
+  .schedule-visit-popup {
+    padding: 0 !important;
+    /* height: 100%; */
+  }
+  .schedule-left-outer-cntr {
+    padding: 20px 0 20px 15px;
+    border-bottom: 1px solid #d7d7d7;
+  }
+  .schedule-right-cntr {
+    justify-content: initial;
+    padding: 15px;
+  }
+  .schedule-right-cntr .s-lable {
+    font-size: 12px;
+    color: #000;
+  }
+  .schedule-right-cntr > div {
+    margin-right: 20px;
+  }
+  .schedule-right-cntr > div:last-child {
+    margin-right: 0px;
+  }
+  .schedule-right-cntr input {
+    width: 80px;
+    color: #000;
+    padding: 4px 8px;
+  }
+  .schedule-visit-popup .chat-btn-cntr {
+    padding: 0 15px 15px;
+  }
+  .schedule-left-cntr {
+    max-height: calc(100vh - 230px);
+  }
+  .ant-tooltip-inner {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+  .schedule-btn-cntr {
+    margin-left: -5px;
+    flex-wrap: wrap;
+    overflow: initial;
+  }
+  /* schedule modal ends */
+
+  /* payment link mobile starts */
+  .payment-details label {
+    font-size: 12px;
+    margin-bottom: 0;
+  }
+  .payment-details span {
+    font-size: 16px;
+  }
+  .payment-details {
+    margin-left: 5px;
+  }
+  /* payment link mobile ends */
+
+  /* message suggestions starts */
+  .suggestions-cntr span {
+    font-size: 11px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 2px 4px;
+    max-width: 190px;
+  }
+  .suggestions-cntr {
+    margin: 8px -4px 4px;
+  }
+  .suggestions-tick span:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+  }
+  .suggestions-tick span:after {
+    content: "";
+    width: 4px;
+    height: 8px;
+    right: 5.5px;
+  }
+  /* message suggestions ends */
+}
+
+@media all and (max-width: 425px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+  .ant-pagination-item-active a {
+    color: #4a4a4a !important;
+  }
+  .anticon svg {
+    color: #4a4a4a;
+  }
+  .chat-face-cntr {
+    width: 35px;
+  }
+  .chat-detail-cntr {
+    margin-right: 20px;
+  }
+  .chatcontentDiv {
+    /* height: calc(100vh - 299px); */
+    /* height: calc(100vh - 389px); */
+    height: calc(100vh - 285px);
+  }
+  .chat-detail-outer-cntr {
+    min-height: 66px;
+  }
+  .online {
+    width: 8px;
+    height: 8px;
+  }
+  .chat-initial {
+    height: 35px;
+    line-height: 35px;
+    font-size: 12px;
+  }
+  /* .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
+    padding-left: 2px;
+  } */
+
+  /* card modal starts */
+  .mobile-card-img {
+    flex: 0 0 70px;
+    margin-right: 10px;
+  }
+  .chat-product-name {
+    font-size: 8px;
+  }
+  .chat-product-code,
+  .chat-product-prize,
+  .chat-product-url {
+    font-size: 7px;
+  }
+  .selectdot {
+    width: 20px;
+  }
+  /* card modal ends */
+}
+
+@media all and (max-width: 387px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+  .ant-pagination-item-active a {
+    color: #4a4a4a !important;
+  }
+  .anticon svg {
+    color: #4a4a4a;
+  }
+  /* schedule modal starts */
+  .schedule-btn-cntr button,
+  .select-slot-cntr,
+  .schedule-right-cntr input {
+    flex: 0 1 44%;
+  }
+  /* schedule modal ends */
+}
+/* Responsive ends */

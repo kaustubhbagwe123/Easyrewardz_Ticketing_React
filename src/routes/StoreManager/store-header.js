@@ -16,6 +16,8 @@ import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
 import UserInfo from "./../../assets/Images/user-info.png";
 import EditPen from "./../../assets/Images/pencil.png";
+import Arwdown from "./../../assets/Images/arwdwn.png";
+import Arwup from "./../../assets/Images/arwup.png";
 import Pin from "./../../assets/Images/pin.png";
 import Pin2 from "./../../assets/Images/pin2.png";
 import Ladyimg from "./../../assets/Images/ladyimg.png";
@@ -3014,7 +3016,7 @@ class Header extends Component {
                       !
                     </p>
                   )}
-                  <div className="chat-cntr">
+                  <div className="chat-cntr oc-bg">
                     <div className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.ongoingchats
@@ -6355,6 +6357,17 @@ class Header extends Component {
                   }
                 >
                   <div className="uptabs">
+                   <img
+                        src={Arwdown}
+                        className="Arwico"
+                        alt="Arwico"
+                      />
+                       <img
+                        src={Arwup}
+                        style={{display:"none"}}
+                        className="Arwico"
+                        alt="Arwico"
+                      />
                     {this.state.isPinClick ? (
                       <img
                         src={Pin}
