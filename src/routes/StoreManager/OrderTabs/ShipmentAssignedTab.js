@@ -389,6 +389,7 @@ class ShipmentAssignedTab extends Component {
     }
     this.setState({
       strPartner,
+      currentPage: 1,
     });
   }
   render() {
@@ -424,7 +425,7 @@ class ShipmentAssignedTab extends Component {
                     : "Courier Partner",
                 dataIndex: "courierPartner",
                 className:
-                  "shopping-delivery-header camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                  "shopping-delivery-header camp-status-header courier-shipment-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 filterDropdown: (data, row) => {
                   return (
                     <div className="campaign-status-drpdwn">
