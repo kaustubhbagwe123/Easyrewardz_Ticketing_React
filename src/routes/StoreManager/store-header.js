@@ -214,7 +214,7 @@ class Header extends Component {
       orderReturns: 0,
       isMobileView: false,
       isShutterOpen: false,
-      shoppingBagData=[{itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      shoppingBagData:[{itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
       {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
       {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
       {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
