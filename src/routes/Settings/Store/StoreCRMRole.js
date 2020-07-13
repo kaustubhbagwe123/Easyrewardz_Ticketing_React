@@ -336,7 +336,7 @@ class StoreCRMRole extends Component {
       }
     }
     if (e === "add") {
-      if (this.state.RoleName.length > 0 && this.state.RoleisActive != 0) {
+      if (this.state.RoleName.length > 0 && this.state.RoleisActive !== 0) {
         CRMRoleID = 0;
         RoleName = self.state.RoleName;
         // ModulesEnabled = self.state.ModulesEnabled;
@@ -357,7 +357,7 @@ class StoreCRMRole extends Component {
         return false;
       }
     } else if (e === "update") {
-      if (this.state.editRoleName == "") {
+      if (this.state.editRoleName === "") {
         this.setState({ editCheckRoleName: "Required" });
         return false;
       }
@@ -1151,6 +1151,7 @@ class StoreCRMRole extends Component {
                     cursor: "pointer",
                   }}
                   onClick={this.handleClearSearch.bind(this)}
+                  href="#!"
                 >
                   {TranslationContext !== undefined
                     ? TranslationContext.a.clearsearch
@@ -1317,7 +1318,7 @@ class StoreCRMRole extends Component {
 
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Role Name"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1386,7 +1387,7 @@ class StoreCRMRole extends Component {
 
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Created By"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1475,7 +1476,7 @@ class StoreCRMRole extends Component {
 
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Status"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1706,7 +1707,7 @@ class StoreCRMRole extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.RoleisActive == 0 && (
+                      {this.state.RoleisActive === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.statusCompulsory}
                         </p>
@@ -1858,6 +1859,7 @@ class StoreCRMRole extends Component {
                                 <a
                                   className="file-retry"
                                   onClick={this.hanldeAddBulkUpload.bind(this)}
+                                  href="#!"
                                 >
                                   {TranslationContext !== undefined
                                     ? TranslationContext.span.retry
@@ -1944,7 +1946,7 @@ class StoreCRMRole extends Component {
                       onChange={this.handleModaleDataChange.bind(this)}
                     />
                   </div>
-                  {this.state.editCheckRoleName != "" && (
+                  {this.state.editCheckRoleName !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.editCheckRoleName}
                     </p>
@@ -2007,6 +2009,7 @@ class StoreCRMRole extends Component {
                     <a
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
+                      href="#!"
                     >
                       {TranslationContext !== undefined
                         ? TranslationContext.a.cancel

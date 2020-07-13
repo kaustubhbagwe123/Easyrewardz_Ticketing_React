@@ -12,7 +12,8 @@ p {
 
 #chat-popup-overlay {
   padding: 0px;
-  background-color: rgba(77, 92, 116, 0.6);
+  /* background-color: rgba(77, 92, 116, 0.6); */
+  background-color: #fff;
   top: 54px;
 }
 #chat-popup-overlay .styles_modal__gNwvD {
@@ -20,9 +21,10 @@ p {
   max-width: 100%;
   width: 100%;
   padding: 0;
-  /* height: calc(100vh - 40px);
-  overflow: hidden; */
-  height: 100%;
+  box-shadow: none;
+  height: calc(100vh - 0px);
+  /* overflow: hidden; */
+  /* height: 100%; */
 }
 .store-chat-header {
   background-color: #2561a8;
@@ -617,6 +619,8 @@ p {
 .chatdivtitle .nav-tabs .nav-link {
   color: #2561a8;
   border: 1px solid #2561a8;
+  padding: 7px 18px;
+  border-radius: 10px;
 }
 .chatactionbtn {
   background: #fff;
@@ -1624,6 +1628,8 @@ img.ladyimg {
   margin-right: 10px;
   margin-left: 0px;
   outline: none;
+  padding: 5px 10px;
+    border-radius: 10px;
 }
 #actionmodalId {
   border-radius: 8px;

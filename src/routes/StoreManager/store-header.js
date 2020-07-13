@@ -2411,7 +2411,7 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            {config.isHomeShope ? (
+            {/* {config.isHomeShope ? (
               <div className="er bell-icon">
                 <img src={BellIcon} alt="bell icon" />
               </div>
@@ -2419,8 +2419,10 @@ class Header extends Component {
               <div className="er">
                 <label className="er-label">ER</label>
               </div>
-            )}
-
+            )} */}
+            <div className="er bell-icon">
+              <img src={BellIcon} alt="bell icon" />
+            </div>
             <div className="hamb-menu">
               <img
                 src={Hamb}

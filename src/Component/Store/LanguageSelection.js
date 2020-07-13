@@ -3,13 +3,12 @@ import "react-app-polyfill/ie9";
 import "react-app-polyfill/ie11";
 import "./../../assets/css/custome.css";
 import Logo from "./../../assets/Images/logo.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { authHeader } from "../../helpers/authHeader";
 import config from "../../helpers/config";
 import {
-  NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 
