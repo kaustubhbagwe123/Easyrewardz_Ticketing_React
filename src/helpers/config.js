@@ -1,5 +1,5 @@
 let config = {
-  // apiUrl: "https://localhost:44357/api",
+  apiUrl: "https://localhost:44357/api",
   isHomeShope: true, /// make false when give Homeshop build for client
   isShowTaskTab: true, /// make false when give multiTenant store module build for client
 
