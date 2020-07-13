@@ -1946,7 +1946,9 @@ img.ladyimg {
 .secondbox-open-new {
   width: 75% !important;
 }
-
+.Arwico{
+  display: none;
+}
 
 /* Responsive starts */
 @media all and (max-width: 768px) {
@@ -1962,6 +1964,7 @@ img.ladyimg {
 }
 
 @media all and (max-width: 576px) {
+  
   .firstbox-hide{
     display: none;
   }
@@ -2037,6 +2040,7 @@ img.ladyimg {
     margin: auto;
     z-index: 999999999999;
     bottom: -10px;
+    display: block;
 }
   .chattabtitle {
     padding: 0 !important;
