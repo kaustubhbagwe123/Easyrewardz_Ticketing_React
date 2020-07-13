@@ -43,7 +43,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover, Collapse } from "antd";
+import { Popover, Collapse,Checkbox } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -80,6 +80,7 @@ import ReactReponsiveModal from "react-responsive-modal";
 
 const { Option } = Select;
 const { Panel } = Collapse;
+const CheckboxGroup = Checkbox.Group
 var uid = 0;
 var i = 0;
 class Header extends Component {
@@ -213,6 +214,14 @@ class Header extends Component {
       orderReturns: 0,
       isMobileView: false,
       isShutterOpen: false,
+      shoppingBagData=[{itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"}
+    ]
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -6626,6 +6635,7 @@ class Header extends Component {
                                   <table>
                                     <tbody>
                                       <tr>
+                                      <Checkbox.Group>
                                         <td>
                                           <div className="prodboxx">
                                             <img
@@ -6643,6 +6653,7 @@ class Header extends Component {
                                             />
                                           </div>
                                         </td>
+                                        </Checkbox.Group>
                                         <td>
                                           <div className="prodboxx">
                                             <img
