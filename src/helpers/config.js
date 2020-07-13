@@ -1,7 +1,7 @@
 let config = {
   apiUrl: "https://localhost:44357/api",
-  isHomeShope: true, /// make false when give Homeshop build for client
-  isShowTaskTab: true, /// make false when give multiTenant store module build for client
+  isHomeShope: false, /// make false when give Homeshop build for client
+  isShowTaskTab: false, /// make false when give multiTenant store module build for client
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
