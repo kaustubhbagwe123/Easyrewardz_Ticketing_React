@@ -6357,8 +6357,8 @@ class Header extends Component {
                     this.state.onHoverName
                       ? "thirdbox"
                       : this.state.isShutterOpen
-                      ? "thirdbox thirbox-shutter"
-                      : this.state.isMobileView ? "thirdbox":"thirdbox thirdbox-close"
+                      ? "thirdbox thirdbox-shutter"
+                      : this.state.isMobileView?"thirdbox":"thirdbox thirdbox-close"
                   }
                 >
                   <div className="uptabs">
