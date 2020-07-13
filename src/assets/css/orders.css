@@ -686,6 +686,9 @@
 .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
   width: 150px !important;
 }
+.order-bill-no {
+  max-width: 180px;
+}
 /* order ends */
 
 .shipment-table-popup .ant-table-row-cell-last {
@@ -962,6 +965,9 @@
     > .ant-popover-content
     > .ant-popover-arrow {
     margin-left: -17px;
+  }
+  .order-bill-no {
+    max-width: 100px;
   }
   /* order ends */
 
