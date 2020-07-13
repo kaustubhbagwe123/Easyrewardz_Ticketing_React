@@ -6357,7 +6357,7 @@ class Header extends Component {
                     this.state.onHoverName
                       ? "thirdbox"
                       : this.state.isShutterOpen
-                      ? "thirdbox thirbox-shutter thirdbox-close"
+                      ? "thirdbox thirdbox-shutter thirdbox-close"
                       : "thirdbox thirdbox-close"
                   }
                 >
@@ -6586,6 +6586,12 @@ class Header extends Component {
                               </div>
                             </div>
                           </div>
+                          <button
+                            type="button"
+                            className="updateprofilelinkbtn pastchatmobbtn"
+                          >
+                            22 Past Chat
+                          </button>
                           <button
                             type="button"
                             className="updateprofilelinkbtn"
