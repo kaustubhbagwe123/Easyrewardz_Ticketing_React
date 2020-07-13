@@ -2436,6 +2436,9 @@ img.ladyimg {
     margin-right: 12px !important;
     float: left;
   }
+  .productsbox .selectalllabel {
+    margin-top: 12px;
+}
 }
 
 @media all and (max-width: 425px) {
