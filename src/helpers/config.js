@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+  // apiUrl: "https://localhost:44357/api",
   isHomeShope: true, /// make false when give Homeshop build for client
   isShowTaskTab: true, /// make false when give multiTenant store module build for client
 
@@ -260,7 +260,7 @@ let config = {
   // socketUrl: "https://api-bellchatsocketserverqa.ercx.co", /// -------Socket URL Client---------
   // socketUrl:"http://localhost:4000/"
   // soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
-  soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
+  // soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
 };
 
 export default config;
