@@ -3746,7 +3746,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.mobileno
                                               : "Mobile No"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.mobileNo}
                                         </p>
@@ -3755,7 +3755,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.emailid
                                               : "Email ID"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.emailID}
                                         </p>
@@ -3764,7 +3764,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.crmrole
                                               : "CRM Role"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.roleName}
                                         </p>
@@ -3773,7 +3773,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.barnd
                                               : "Brand"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.mappedBrand}
                                         </p>
@@ -3783,7 +3783,7 @@ class StoreUsers extends Component {
                                               ? TranslationContext.b
                                                   .claimcategory
                                               : "Claim Category"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.categoryCount.length > 0
                                             ? row.original.categoryCount
@@ -3795,7 +3795,7 @@ class StoreUsers extends Component {
                                               ? TranslationContext.b
                                                   .claimsubcategory
                                               : "Claim Sub-Category"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.subCategoryCount
                                             .length > 0
@@ -3808,7 +3808,7 @@ class StoreUsers extends Component {
                                               ? TranslationContext.b
                                                   .claimissuetype
                                               : "Claim Issue Type"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.issueTypeCount.length >
                                           0
@@ -3820,7 +3820,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.createdby
                                               : "Created By"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.createdBy}
                                         </p>
@@ -3829,7 +3829,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.createddate
                                               : "Created Date"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.createdDate}
                                         </p>
@@ -3838,7 +3838,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.updatedby
                                               : "Updated By"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.updatedBy}
                                         </p>
@@ -3847,7 +3847,7 @@ class StoreUsers extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.updateddate
                                               : "Updated Date"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.updatedDate}
                                         </p>
@@ -4079,7 +4079,6 @@ class StoreUsers extends Component {
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>
-                                            {" "}
                                             {TranslationContext !== undefined
                                               ? TranslationContext.a.cancel
                                               : "CANCEL"}
@@ -4293,8 +4292,7 @@ class StoreUsers extends Component {
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
-                              : "Update &; Next"}{" "}
-                           
+                              : "Update & Next"}
                           </button>
                         </div>
                       ) : (
@@ -4303,9 +4301,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSaveStoreDetails.bind(this)}
                           >
-                             {TranslationContext !== undefined
+                            {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
-                              : "SAVE & Next"}{" "}
+                              : "SAVE & Next"}
                           </button>
                         </div>
                       )}
@@ -4458,8 +4456,7 @@ class StoreUsers extends Component {
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
-                              : "Update & Next"}{" "}
-                          
+                              : "Update & Next"}
                           </button>
                         </div>
                       ) : (
@@ -4468,9 +4465,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSavePersonalDetails.bind(this)}
                           >
-                             {TranslationContext !== undefined
+                            {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
-                              : "Update & Next"}{" "}
+                              : "Update & Next"}
                           </button>
                         </div>
                       )}
@@ -4715,8 +4712,8 @@ class StoreUsers extends Component {
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.update
-                              : "Update"}{" "}
-                            &amp;{" "}
+                              : "Update"}
+                            &amp;
                             {TranslationContext !== undefined
                               ? TranslationContext.button.next
                               : "Next"}
@@ -4730,8 +4727,7 @@ class StoreUsers extends Component {
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
-                              : "SAVE &amp Next"}{" "}
-                           
+                              : "SAVE & Next"}
                           </button>
                         </div>
                       )}
@@ -4989,7 +4985,6 @@ class StoreUsers extends Component {
                     </h3>
                     <div className="down-excel">
                       <p>
-                        {" "}
                         {TranslationContext !== undefined
                           ? TranslationContext.p.template
                           : "Template"}
@@ -5021,7 +5016,7 @@ class StoreUsers extends Component {
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addfile
                                 : "Add File"}
-                            </span>{" "}
+                            </span>
                             {TranslationContext !== undefined
                               ? TranslationContext.div.or
                               : "or"}
@@ -5071,7 +5066,6 @@ class StoreUsers extends Component {
                                   </p>
                                   <div className="del-can">
                                     <a href={Demo.BLANK_LINK}>
-                                      {" "}
                                       {TranslationContext !== undefined
                                         ? TranslationContext.a.cancel
                                         : "CANCEL"}
@@ -5110,7 +5104,6 @@ class StoreUsers extends Component {
                             </div>
                             <div>
                               <span className="file-failed">
-                                {" "}
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.failed
                                   : "Failed"}
@@ -5162,7 +5155,13 @@ class StoreUsers extends Component {
                   onSelect={(index, label) => this.setState({ selTab: label })}
                   selected={this.state.selTab}
                 >
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.storedetails:"Store Details"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.storedetails
+                        : "Store Details"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5262,7 +5261,13 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.personaldetails:"Personal Details"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.personaldetails
+                        : "Personal Details"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5386,7 +5391,13 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.profiledetails:"Profile Details"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.profiledetails
+                        : "Profile Details"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5608,7 +5619,13 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.mappedclaimcategory:"Mapped Claim Category"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.mappedclaimcategory
+                        : "Mapped Claim Category"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined

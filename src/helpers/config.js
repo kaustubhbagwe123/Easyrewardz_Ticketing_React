@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+  //apiUrl: "https://localhost:44357/api",
   isHomeShope: false, /// make false when give Homeshop build for client
   isShowTaskTab: false, /// make false when give multiTenant store module build for client
 
@@ -252,7 +252,7 @@ let config = {
   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
-  //apiUrl: 'https://api-bell-tktqa.ercx.co/Api'    /// ----- Client API for store module-------
+  apiUrl: 'https://api-bell-tktqa.ercx.co/Api',   /// ----- Client API for store module-------
   // apiUrl: 'https://ertktapistable.dscdev.brainvire.net/Api'
   // socketUrl: "http://ndjs.shopster.live/api/sendreply", /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",

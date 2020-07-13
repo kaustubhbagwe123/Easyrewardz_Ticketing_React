@@ -707,6 +707,7 @@ class Campaign extends Component {
 
   /// handle Campaign status filter for individual select
   handleCheckCampIndividualStatus() {
+    debugger
     var checkboxes = document.getElementsByName("CampallStatus");
     var strCampStatus = "";
     for (var i in checkboxes) {
