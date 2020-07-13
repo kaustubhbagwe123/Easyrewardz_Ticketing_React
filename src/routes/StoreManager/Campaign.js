@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import down from "./../../assets/Images/collapsedown.png";
-import collapseUp from "./../../assets/Images/collapseUp.png";
+// import down from "./../../assets/Images/collapsedown.png";
+// import collapseUp from "./../../assets/Images/collapseUp.png";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import axios from "axios";
@@ -9,8 +9,8 @@ import { Table } from "antd";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
-import { Collapse, CardBody, Card } from "reactstrap";
-import CampaignTable1 from "./Tables/Campaign-row1";
+// import { Collapse, CardBody, Card } from "reactstrap";
+// import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
@@ -957,6 +957,7 @@ class Campaign extends Component {
                             ? TranslationContext.title.status
                             : "Status",
                         // dataIndex: "articleName"
+                        //className: "camp-status-header camp-status-header-statusFilter",
                         render: (row, item) => {
                           return (
                             <div className="d-flex">
@@ -1140,7 +1141,7 @@ class Campaign extends Component {
                             style={{ color: filtered ? "#1890ff" : undefined }}
                           ></span>
                         ),
-                        className: "order-desktop",
+                        // className: "order-desktop",
                       },
                       {
                         title:
