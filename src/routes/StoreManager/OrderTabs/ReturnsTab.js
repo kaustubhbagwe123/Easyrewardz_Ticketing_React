@@ -8,6 +8,7 @@ import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
+import { NotificationManager } from "react-notifications";
 
 class ReturnTab extends Component {
   constructor(props) {
@@ -142,6 +143,53 @@ class ReturnTab extends Component {
     this.setState({
       strStatus,
     });
+  }
+
+  handleSendSMSWhatupOnCancel(orderId) {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/SendSMSWhatsupOnReturnCancel",
+      headers: authHeader(),
+      params: {
+        OrderId: orderId,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record Cancelled Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleUpdateOnRetry(orderId, awbNo, statusId, returnId) {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateOnReturnRetry",
+      headers: authHeader(),
+      params: {
+        OrderId: orderId,
+        StatusId: statusId,
+        AWBNo: awbNo,
+        ReturnId: returnId
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -329,15 +377,24 @@ class ReturnTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
-                render: () => {
+                render: (item) => {
                   return (
                     <div className="d-flex">
-                      <button className="butn order-grid-butn order-grid-butn-orange">
+                      <button className="butn order-grid-butn order-grid-butn-orange"
+                       onClick={this.handleSendSMSWhatupOnCancel.bind(this,item.orderID)}
+                      >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.cancel
                           : "Cancel"}
                       </button>
-                      <button className="butn order-grid-butn order-grid-butn-yellow retry-butn ml-2">
+                      <button className={
+                            item.isRetry === false
+                            ? "butn order-grid-butn order-grid-butn-yellow retry-butn ml-2 order-grid-btn-disable"
+                            : "butn order-grid-butn order-grid-butn-yellow retry-butn ml-2"
+                        }
+                       onClick={this.handleUpdateOnRetry.bind(this,item.orderID, item.awbNo, item.statusId, item.returnID)}
+                       disabled={!item.isRetry}
+                      >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.retry
                           : "Retry"}
