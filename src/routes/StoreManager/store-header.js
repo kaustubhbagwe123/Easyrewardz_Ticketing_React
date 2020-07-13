@@ -43,7 +43,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover, Collapse,Checkbox } from "antd";
+import { Popover, Collapse, Checkbox } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -80,7 +80,7 @@ import ReactReponsiveModal from "react-responsive-modal";
 
 const { Option } = Select;
 const { Panel } = Collapse;
-const CheckboxGroup = Checkbox.Group
+const CheckboxGroup = Checkbox.Group;
 var uid = 0;
 var i = 0;
 class Header extends Component {
@@ -214,14 +214,59 @@ class Header extends Component {
       orderReturns: 0,
       isMobileView: false,
       isShutterOpen: false,
-      shoppingBagData:[{itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
-      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
-      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
-      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
-      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
-      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
-      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"}
-    ]
+      shoppingBagData: [
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+      ],
+      ProfileProductTab: 0,
+      activeCollpse: [1],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -2330,6 +2375,7 @@ class Header extends Component {
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
         onHoverName: false,
+        ProfileProductTab: 0,
       });
     }
   };
@@ -2343,7 +2389,18 @@ class Header extends Component {
   handleChangeShutterWindow = (isOpne) => {
     this.setState({
       isShutterOpen: isOpne,
+      ProfileProductTab:0
     });
+  };
+  ////handle profile product tab change
+  handleProfileProductTabChange = (index) => {
+    this.setState({ ProfileProductTab: index });
+  };
+  ////handle collpse change
+  handleCollpseChange = (e)=>{
+    debugger
+    this.state.activeCollpse=e[e.length-1]
+    this.setState({activeCollpse:this.state.activeCollpse})
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -6411,7 +6468,12 @@ class Header extends Component {
                       />
                     )}
 
-                    <Tabs>
+                    <Tabs
+                      onSelect={(index, label) => {
+                        this.handleProfileProductTabChange(index);
+                      }}
+                      selected={this.state.ProfileProductTab}
+                    >
                       <Tab label="Profile">
                         <div className="profilebox">
                           <div>
@@ -6488,8 +6550,8 @@ class Header extends Component {
                           </div>
                           <div className="prodtabl1">
                             <Collapse
-                              defaultActiveKey={["1"]}
-                              
+                              activeKey={this.state.activeCollpse}
+                              onChange={this.handleCollpseChange.bind(this)}
                             >
                               <Panel header="Insights" key="1">
                                 <div className="insightsbox">
@@ -6635,24 +6697,24 @@ class Header extends Component {
                                   <table>
                                     <tbody>
                                       <tr>
-                                      <Checkbox.Group>
-                                        <td>
-                                          <div className="prodboxx">
-                                            <img
-                                              src={Ladyimg}
-                                              className="ladyimg"
-                                              alt="Lady Img"
-                                            />
-                                            <h3>Mango</h3>
-                                            <h4>White Solid Top</h4>
-                                            <span>₹5,499</span>
-                                            <img
-                                              src={Cancelico}
-                                              className="cancelico"
-                                              alt="Cancel Ico"
-                                            />
-                                          </div>
-                                        </td>
+                                        <Checkbox.Group>
+                                          <td>
+                                            <div className="prodboxx">
+                                              <img
+                                                src={Ladyimg}
+                                                className="ladyimg"
+                                                alt="Lady Img"
+                                              />
+                                              <h3>Mango</h3>
+                                              <h4>White Solid Top</h4>
+                                              <span>₹5,499</span>
+                                              <img
+                                                src={Cancelico}
+                                                className="cancelico"
+                                                alt="Cancel Ico"
+                                              />
+                                            </div>
+                                          </td>
                                         </Checkbox.Group>
                                         <td>
                                           <div className="prodboxx">
