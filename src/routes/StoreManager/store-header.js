@@ -43,7 +43,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover } from "antd";
+import { Popover, Collapse,Checkbox } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -79,6 +79,8 @@ import "antd/dist/antd.css";
 import ReactReponsiveModal from "react-responsive-modal";
 
 const { Option } = Select;
+const { Panel } = Collapse;
+const CheckboxGroup = Checkbox.Group
 var uid = 0;
 var i = 0;
 class Header extends Component {
@@ -212,6 +214,14 @@ class Header extends Component {
       orderReturns: 0,
       isMobileView: false,
       isShutterOpen: false,
+      shoppingBagData:[{itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"},
+      {itemId:1,image:Ladyimg,brandName:"Mango",productName:"White Solid Top",price:"5,499"}
+    ]
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -6358,7 +6368,9 @@ class Header extends Component {
                       ? "thirdbox"
                       : this.state.isShutterOpen
                       ? "thirdbox thirdbox-shutter"
-                      : this.state.isMobileView?"thirdbox":"thirdbox thirdbox-close"
+                      : this.state.isMobileView
+                      ? "thirdbox"
+                      : "thirdbox thirdbox-close"
                   }
                 >
                   <div className="uptabs">
@@ -6475,116 +6487,127 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
+                            <Collapse
+                              defaultActiveKey={["1"]}
+                              
+                            >
+                              <Panel header="Insights" key="1">
+                                <div className="insightsbox">
+                                  {/* <h3>Insights</h3>
                               <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
-                              />
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              />
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="lasttransaction">
-                              <h3>Last Transaction</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              />
-                              <ul>
-                                <li>
-                                  <label>Bill No</label>
-                                  <span>{this.state.billNumber}</span>
-                                </li>
-                                <li>
-                                  <label>Amount</label>
-                                  <span>
-                                    {this.state.billAmount.toLocaleString(
-                                      "en-IN"
-                                    )}
-                                  </span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Store</label>
-                                  <span>{this.state.storeDetails}</span>
-                                </li>
-                                <li>
-                                  <label>Date</label>
-                                  <span>{this.state.transactionDate}</span>
-                                </li>
-                              </ul>
-                              <div className="itemtable">
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Items</th>
-                                      <th>Qty</th>
-                                      <th>Amount</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>Product Name 1</label>
-                                        <label>Product Name 2</label>
-                                        <label>Product Name 3</label>
-                                      </td>
-                                      <td>
-                                        <label>02</label>
-                                        <label>03</label>
-                                        <label>01</label>
-                                      </td>
-                                      <td>
-                                        <label>₹999</label>
-                                        <label>₹1299</label>
-                                        <label>₹12999</label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                              /> */}
+                                  <p>
+                                    1. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    2. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    3. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                </div>
+                              </Panel>
+                              <Panel header="Orders" key="2">
+                                <div className="ordersbox">
+                                  {/* <h3>Orders</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Delivered</label>
+                                      <span>{this.state.orderDelivered}</span>
+                                    </li>
+                                    <li>
+                                      <label>Shopping Bag</label>
+                                      <span>{this.state.orderShoppingBag}</span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Ready to Ship</label>
+                                      <span>{this.state.orderReadyToShip}</span>
+                                    </li>
+                                    <li>
+                                      <label>Returns</label>
+                                      <span>{this.state.orderReturns}</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </Panel>
+                              <Panel header="Last Transaction" key="3">
+                                <div className="lasttransaction">
+                                  {/* <h3>Last Transaction</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Bill No</label>
+                                      <span>{this.state.billNumber}</span>
+                                    </li>
+                                    <li>
+                                      <label>Amount</label>
+                                      <span>
+                                        {this.state.billAmount.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Store</label>
+                                      <span>{this.state.storeDetails}</span>
+                                    </li>
+                                    <li>
+                                      <label>Date</label>
+                                      <span>{this.state.transactionDate}</span>
+                                    </li>
+                                  </ul>
+                                  <div className="itemtable">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Items</th>
+                                          <th>Qty</th>
+                                          <th>Amount</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Product Name 1</label>
+                                            <label>Product Name 2</label>
+                                            <label>Product Name 3</label>
+                                          </td>
+                                          <td>
+                                            <label>02</label>
+                                            <label>03</label>
+                                            <label>01</label>
+                                          </td>
+                                          <td>
+                                            <label>₹999</label>
+                                            <label>₹1299</label>
+                                            <label>₹12999</label>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </Panel>
+                            </Collapse>
                           </div>
                           <button
                             type="button"
@@ -6612,6 +6635,7 @@ class Header extends Component {
                                   <table>
                                     <tbody>
                                       <tr>
+                                      <Checkbox.Group>
                                         <td>
                                           <div className="prodboxx">
                                             <img
@@ -6629,6 +6653,7 @@ class Header extends Component {
                                             />
                                           </div>
                                         </td>
+                                        </Checkbox.Group>
                                         <td>
                                           <div className="prodboxx">
                                             <img
@@ -7136,6 +7161,11 @@ class Header extends Component {
           closeIconId="close"
           modalId="actionmodalId"
           overlayId="logout-ovrly"
+          classNames={{
+            modal: this.state.onHoverName
+              ? "actionmodalId-mr-add"
+              : "actionmodalId-mr-remove",
+          }}
         >
           <div className="store-hdrtMdal">
             <div className="row">

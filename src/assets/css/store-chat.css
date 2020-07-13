@@ -1629,9 +1629,15 @@ img.ladyimg {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 10;
-  margin-right: 125px;
-  margin-top: 55px;
+  /* margin-right: 105px; */
+  margin-top: 83px;
   display: inline-block;
+}
+.actionmodalId-mr-add{
+  margin-right: 360px;
+}
+.actionmodalId-mr-remove{
+  margin-right: 105px;
 }
 
 .actionmodallbl {
@@ -1957,7 +1963,28 @@ img.ladyimg {
 .Arwico{
   display: none;
 }
-
+.prodtabl1 .ant-collapse.ant-collapse-icon-position-left {
+  border: none;
+  background-color: #fff;
+  border-radius: 0;
+}
+.prodtabl1 .ant-collapse-header {
+  color: #2561a8 !important;
+}
+.prodtabl1 .ant-collapse-content {
+  border: none;
+  color: #333;
+}
+.prodtabl1 .ant-collapse > .ant-collapse-item {
+  border: none;
+}
+.prodtabl1 .ant-collapse-content > .ant-collapse-content-box {
+  padding: 0 15px;
+}
+.prodtabl1 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 8px 16px;
+  padding-left: 36px;
+}
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {
@@ -2436,6 +2463,10 @@ img.ladyimg {
     margin-right: 12px !important;
     float: left;
   }
+  .productsbox .selectalllabel {
+    margin-top: 12px;
+  }
+  
 }
 
 @media all and (max-width: 425px) {
