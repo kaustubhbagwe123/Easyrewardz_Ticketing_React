@@ -74,6 +74,7 @@ class CheckService extends Component {
       })
         .then(function(res) {
           let status = res.data.responseData.available;
+          let check = res.data.responseData;
           if (status === "true") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -84,12 +85,22 @@ class CheckService extends Component {
               btnSubmitData: false,
             });
           } else {
-            NotificationManager.error(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage
-                    .servicenotavailableonenteredpincode
-                : "Service not available on entered Pincode."
-            );
+            if(check.statusCode === "301"){
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard
+                      .pincodeisnotmapped
+                  : "Pincode is not mapped."
+              );
+            }else{
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage
+                      .servicenotavailableonenteredpincode
+                  : "Service not available on entered Pincode."
+              );
+            }
+           
             self.setState({
               btnSubmitData: false,
             });

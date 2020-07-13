@@ -31,7 +31,7 @@ class CardAssets extends Component {
       rejectionModal: false,
       imageUploadLogID: "",
       itemID: "",
-      isSubmitRejection:false
+      isSubmitRejection: false,
     };
   }
   componentDidMount() {
@@ -115,7 +115,11 @@ class CardAssets extends Component {
                 ? TranslationContext.alertmessage.imagerejectedsuccessfully
                 : "Image Rejected Successfully"
             );
-            self.setState({isRejectionComment:"",rejectionComment:"",rejectionModal:false})
+            self.setState({
+              isRejectionComment: "",
+              rejectionComment: "",
+              rejectionModal: false,
+            });
           }
         }
         self.handleGetCardImageUploadlog(1);
@@ -192,7 +196,7 @@ class CardAssets extends Component {
   ////handle submit rejection reason
   handleSubmitRejectionReason() {
     if (this.state.rejectionComment) {
-      this.setState({isSubmitRejection:true})
+      this.setState({ isSubmitRejection: true });
       this.handleApproveRejectCardImage(
         this.state.imageUploadLogID,
         this.state.itemID,
@@ -768,6 +772,21 @@ class CardAssets extends Component {
                                         {rowdata.storeAddress}
                                       </p>
                                     </li>
+                                    {rowdata.rejectionReason ? (
+                                      <li>
+                                        <label
+                                          style={{
+                                            width: "50%",
+                                            fontWeight: "bold",
+                                          }}
+                                        >
+                                          Rejection Reason
+                                        </label>
+                                        <p style={{ display: "inline" }}>
+                                          {rowdata.rejectionReason}
+                                        </p>
+                                      </li>
+                                    ) : null}
                                   </ul>
                                 </div>
                               }

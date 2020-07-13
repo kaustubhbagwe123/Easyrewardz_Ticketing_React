@@ -2946,7 +2946,12 @@ table tr th:last-child {
 /* chatbot left starts */
 .chatbot-left {
   background-color: #fffef7;
-  /* height: calc(100vh - 55px); */
+  height: calc(100vh - 55px);
+  position: relative;
+}
+.chatbot-right {
+  background-color: #fffef7;
+  height: calc(100vh - 55px);
   position: relative;
 }
 .chat-left-height {
@@ -2965,8 +2970,9 @@ table tr th:last-child {
   font-weight: 600;
 }
 .chat-info {
-  padding: 17px;
-  border-bottom: 1px solid #e4e4e4;
+  /* padding: 17px; 
+  border-bottom: 1px solid #e4e4e4;*/
+  padding: 8px 15px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -16,6 +16,8 @@ import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
 import UserInfo from "./../../assets/Images/user-info.png";
 import EditPen from "./../../assets/Images/pencil.png";
+import Arwdown from "./../../assets/Images/arwdwn.png";
+import Arwup from "./../../assets/Images/arwup.png";
 import Pin from "./../../assets/Images/pin.png";
 import Pin2 from "./../../assets/Images/pin2.png";
 import Ladyimg from "./../../assets/Images/ladyimg.png";
@@ -41,7 +43,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover } from "antd";
+import { Popover, Collapse, Checkbox } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -77,6 +79,8 @@ import "antd/dist/antd.css";
 import ReactReponsiveModal from "react-responsive-modal";
 
 const { Option } = Select;
+const { Panel } = Collapse;
+const CheckboxGroup = Checkbox.Group;
 var uid = 0;
 var i = 0;
 class Header extends Component {
@@ -208,6 +212,61 @@ class Header extends Component {
       orderShoppingBag: 0,
       orderReadyToShip: 0,
       orderReturns: 0,
+      isMobileView: false,
+      isShutterOpen: false,
+      shoppingBagData: [
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+        {
+          itemId: 1,
+          image: Ladyimg,
+          brandName: "Mango",
+          productName: "White Solid Top",
+          price: "5,499",
+        },
+      ],
+      ProfileProductTab: 0,
+      activeCollpse: [1],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -221,6 +280,16 @@ class Header extends Component {
     this.setAccessUser = this.setAccessUser.bind(this);
     this.handleChatModalClose = this.handleChatModalClose.bind(this);
     this.handleChatModalOpen = this.handleChatModalOpen.bind(this);
+  }
+
+  handleCheckView() {
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      this.setState({ isMobileView: true });
+    } else {
+      this.setState({ isMobileView: false });
+    }
   }
 
   componentDidMount() {
@@ -263,6 +332,7 @@ class Header extends Component {
         1
       );
     }
+    this.handleCheckView();
 
     this.handleGetNotigfication();
     this.handleGetChatNotificationCount();
@@ -426,7 +496,7 @@ class Header extends Component {
       //     ? "active single-menu"
       //     : "single-menu",
     };
-    debugger;
+
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -781,7 +851,6 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
-    debugger;
     this.setState({
       newTicketChatId:
         Number(document.getElementById("newTicketChatId").value) || 0,
@@ -845,7 +914,7 @@ class Header extends Component {
                 isMainLoader: false,
               });
             }
-            debugger;
+
             if (self.state.newTicketChatId > 0) {
               var chatData = ongoingChatsData.filter(
                 (x) => x.chatID === self.state.newTicketChatId
@@ -1415,7 +1484,6 @@ class Header extends Component {
         let status = res.data.message;
         let responseData = res.data.responseData;
         if (status === "Success") {
-          debugger;
           self.setState({
             messageSuggestionTagsData: responseData[0],
             selectedTags:
@@ -1993,7 +2061,7 @@ class Header extends Component {
                   x.mobileNo === data[3].substring(2) &&
                   x.isCustEndChat === false
               );
-              debugger;
+
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
                   ////for current chat message
@@ -2017,7 +2085,6 @@ class Header extends Component {
 
                   self.handleGetChatMessagesList(chatId);
                 } else {
-                  debugger;
                   /////for new ongoing message
                   const Sound1Play = new Audio(self.state.newMessageSoundFile);
                   Sound1Play.volume =
@@ -2210,7 +2277,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -2252,7 +2318,6 @@ class Header extends Component {
           var responseData = response.data.responseData;
 
           if (messgae === "Success" && responseData) {
-            debugger
             self.setState({
               customerName: responseData.customerName,
               customerTier: responseData.customerTier,
@@ -2310,6 +2375,7 @@ class Header extends Component {
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
         onHoverName: false,
+        ProfileProductTab: 0,
       });
     }
   };
@@ -2318,6 +2384,23 @@ class Header extends Component {
     this.setState({
       isPinClick: !this.state.isPinClick,
     });
+  };
+  ////handle change shutter windows in mobile view
+  handleChangeShutterWindow = (isOpne) => {
+    this.setState({
+      isShutterOpen: isOpne,
+      ProfileProductTab:0
+    });
+  };
+  ////handle profile product tab change
+  handleProfileProductTabChange = (index) => {
+    this.setState({ ProfileProductTab: index });
+  };
+  ////handle collpse change
+  handleCollpseChange = (e)=>{
+    debugger
+    this.state.activeCollpse=e[e.length-1]
+    this.setState({activeCollpse:this.state.activeCollpse})
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -2328,7 +2411,7 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            {config.isHomeShope ? (
+            {/* {config.isHomeShope ? (
               <div className="er bell-icon">
                 <img src={BellIcon} alt="bell icon" />
               </div>
@@ -2336,8 +2419,10 @@ class Header extends Component {
               <div className="er">
                 <label className="er-label">ER</label>
               </div>
-            )}
-
+            )} */}
+            <div className="er bell-icon">
+              <img src={BellIcon} alt="bell icon" />
+            </div>
             <div className="hamb-menu">
               <img
                 src={Hamb}
@@ -2886,7 +2971,13 @@ class Header extends Component {
           </div>
           <div className="container-fluid">
             <div className="row">
-              <div className="firstbox">
+              <div
+                className={
+                  this.state.isMobileView && !this.state.customerName
+                    ? "firstbox firstbox-show"
+                    : "firstbox firstbox-hide"
+                }
+              >
                 <div className="chatbot-left">
                   <div className="chat-cntr" style={{ padding: "0px" }}>
                     <span className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span">
@@ -2965,7 +3056,6 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <span className="messagecount">2</span>
                                 <p
                                   style={{
                                     fontWeight:
@@ -2998,7 +3088,7 @@ class Header extends Component {
                       !
                     </p>
                   )}
-                  <div className="chat-cntr">
+                  <div className="chat-cntr oc-bg">
                     <div className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.ongoingchats
@@ -3131,6 +3221,7 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
+              {/* {this.state.isMobileView?
               <div className="mobile-chat-tabs">
                 <div className="position-relative">
                   <ul className="nav nav-tabs" role="tablist">
@@ -3381,13 +3472,16 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
+:null} */}
               <div
                 className={
                   this.state.onHoverName
                     ? "secondbox"
                     : this.state.customerName
                     ? "secondbox secondbox-open"
-                    : "secondbox secondbox-open-new"
+                    : this.state.isMobileView && this.state.customerName
+                    ? "secondbox secondbox-open-new-show"
+                    : "secondbox secondbox-open-new secondbox-open-new-hide"
                 }
               >
                 <div className="chatbot-right">
@@ -6331,10 +6425,35 @@ class Header extends Component {
                   className={
                     this.state.onHoverName
                       ? "thirdbox"
+                      : this.state.isShutterOpen
+                      ? "thirdbox thirdbox-shutter"
+                      : this.state.isMobileView
+                      ? "thirdbox"
                       : "thirdbox thirdbox-close"
                   }
                 >
                   <div className="uptabs">
+                    {!this.state.isShutterOpen ? (
+                      <img
+                        src={Arwdown}
+                        className="Arwico"
+                        alt="Arwico"
+                        onClick={this.handleChangeShutterWindow.bind(
+                          this,
+                          true
+                        )}
+                      />
+                    ) : (
+                      <img
+                        src={Arwup}
+                        className="Arwico"
+                        alt="Arwico"
+                        onClick={this.handleChangeShutterWindow.bind(
+                          this,
+                          false
+                        )}
+                      />
+                    )}
                     {this.state.isPinClick ? (
                       <img
                         src={Pin}
@@ -6351,7 +6470,12 @@ class Header extends Component {
                       />
                     )}
 
-                    <Tabs>
+                    <Tabs
+                      onSelect={(index, label) => {
+                        this.handleProfileProductTabChange(index);
+                      }}
+                      selected={this.state.ProfileProductTab}
+                    >
                       <Tab label="Profile">
                         <div className="profilebox">
                           <div>
@@ -6427,117 +6551,134 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
+                            <Collapse
+                              activeKey={this.state.activeCollpse}
+                              onChange={this.handleCollpseChange.bind(this)}
+                            >
+                              <Panel header="Insights" key="1">
+                                <div className="insightsbox">
+                                  {/* <h3>Insights</h3>
                               <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
-                              />
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              />
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="lasttransaction">
-                              <h3>Last Transaction</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              />
-                              <ul>
-                                <li>
-                                  <label>Bill No</label>
-                                  <span>{this.state.billNumber}</span>
-                                </li>
-                                <li>
-                                  <label>Amount</label>
-                                  <span>
-                                    {this.state.billAmount.toLocaleString(
-                                      "en-IN"
-                                    )}
-                                  </span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Store</label>
-                                  <span>{this.state.storeDetails}</span>
-                                </li>
-                                <li>
-                                  <label>Date</label>
-                                  <span>{this.state.transactionDate}</span>
-                                </li>
-                              </ul>
-                              <div className="itemtable">
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Items</th>
-                                      <th>Qty</th>
-                                      <th>Amount</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>Product Name 1</label>
-                                        <label>Product Name 2</label>
-                                        <label>Product Name 3</label>
-                                      </td>
-                                      <td>
-                                        <label>02</label>
-                                        <label>03</label>
-                                        <label>01</label>
-                                      </td>
-                                      <td>
-                                        <label>₹999</label>
-                                        <label>₹1299</label>
-                                        <label>₹12999</label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                              /> */}
+                                  <p>
+                                    1. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    2. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    3. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                </div>
+                              </Panel>
+                              <Panel header="Orders" key="2">
+                                <div className="ordersbox">
+                                  {/* <h3>Orders</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Delivered</label>
+                                      <span>{this.state.orderDelivered}</span>
+                                    </li>
+                                    <li>
+                                      <label>Shopping Bag</label>
+                                      <span>{this.state.orderShoppingBag}</span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Ready to Ship</label>
+                                      <span>{this.state.orderReadyToShip}</span>
+                                    </li>
+                                    <li>
+                                      <label>Returns</label>
+                                      <span>{this.state.orderReturns}</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </Panel>
+                              <Panel header="Last Transaction" key="3">
+                                <div className="lasttransaction">
+                                  {/* <h3>Last Transaction</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Bill No</label>
+                                      <span>{this.state.billNumber}</span>
+                                    </li>
+                                    <li>
+                                      <label>Amount</label>
+                                      <span>
+                                        {this.state.billAmount.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Store</label>
+                                      <span>{this.state.storeDetails}</span>
+                                    </li>
+                                    <li>
+                                      <label>Date</label>
+                                      <span>{this.state.transactionDate}</span>
+                                    </li>
+                                  </ul>
+                                  <div className="itemtable">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Items</th>
+                                          <th>Qty</th>
+                                          <th>Amount</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Product Name 1</label>
+                                            <label>Product Name 2</label>
+                                            <label>Product Name 3</label>
+                                          </td>
+                                          <td>
+                                            <label>02</label>
+                                            <label>03</label>
+                                            <label>01</label>
+                                          </td>
+                                          <td>
+                                            <label>₹999</label>
+                                            <label>₹1299</label>
+                                            <label>₹12999</label>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </Panel>
+                            </Collapse>
                           </div>
+                          <button
+                            type="button"
+                            className="updateprofilelinkbtn pastchatmobbtn"
+                          >
+                            22 Past Chat
+                          </button>
                           <button
                             type="button"
                             className="updateprofilelinkbtn"
@@ -6558,23 +6699,25 @@ class Header extends Component {
                                   <table>
                                     <tbody>
                                       <tr>
-                                        <td>
-                                          <div className="prodboxx">
-                                            <img
-                                              src={Ladyimg}
-                                              className="ladyimg"
-                                              alt="Lady Img"
-                                            />
-                                            <h3>Mango</h3>
-                                            <h4>White Solid Top</h4>
-                                            <span>₹5,499</span>
-                                            <img
-                                              src={Cancelico}
-                                              className="cancelico"
-                                              alt="Cancel Ico"
-                                            />
-                                          </div>
-                                        </td>
+                                        <Checkbox.Group>
+                                          <td>
+                                            <div className="prodboxx">
+                                              <img
+                                                src={Ladyimg}
+                                                className="ladyimg"
+                                                alt="Lady Img"
+                                              />
+                                              <h3>Mango</h3>
+                                              <h4>White Solid Top</h4>
+                                              <span>₹5,499</span>
+                                              <img
+                                                src={Cancelico}
+                                                className="cancelico"
+                                                alt="Cancel Ico"
+                                              />
+                                            </div>
+                                          </td>
+                                        </Checkbox.Group>
                                         <td>
                                           <div className="prodboxx">
                                             <img
@@ -7082,6 +7225,11 @@ class Header extends Component {
           closeIconId="close"
           modalId="actionmodalId"
           overlayId="logout-ovrly"
+          classNames={{
+            modal: this.state.onHoverName
+              ? "actionmodalId-mr-add"
+              : "actionmodalId-mr-remove",
+          }}
         >
           <div className="store-hdrtMdal">
             <div className="row">
