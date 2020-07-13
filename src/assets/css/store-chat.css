@@ -1629,9 +1629,15 @@ img.ladyimg {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 10;
-  margin-right: 125px;
-  margin-top: 55px;
+  /* margin-right: 105px; */
+  margin-top: 83px;
   display: inline-block;
+}
+.actionmodalId-mr-add{
+  margin-right: 360px;
+}
+.actionmodalId-mr-remove{
+  margin-right: 105px;
 }
 
 .actionmodallbl {
