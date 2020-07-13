@@ -260,7 +260,7 @@ let config = {
   socketUrl: "https://api-bellchatsocketserverqa.ercx.co", /// -------Socket URL Client---------
   // socketUrl:"http://localhost:4000/"
   // soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
-  // soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
+  soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
 };
 
 export default config;

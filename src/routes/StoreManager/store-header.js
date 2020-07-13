@@ -211,6 +211,7 @@ class Header extends Component {
       orderReadyToShip: 0,
       orderReturns: 0,
       isMobileView: false,
+      isShutterOpen: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -440,7 +441,7 @@ class Header extends Component {
       //     ? "active single-menu"
       //     : "single-menu",
     };
-    debugger;
+
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -858,7 +859,7 @@ class Header extends Component {
                 isMainLoader: false,
               });
             }
-            debugger;
+
             if (self.state.newTicketChatId > 0) {
               var chatData = ongoingChatsData.filter(
                 (x) => x.chatID === self.state.newTicketChatId
@@ -1428,7 +1429,6 @@ class Header extends Component {
         let status = res.data.message;
         let responseData = res.data.responseData;
         if (status === "Success") {
-          debugger;
           self.setState({
             messageSuggestionTagsData: responseData[0],
             selectedTags:
@@ -2006,7 +2006,7 @@ class Header extends Component {
                   x.mobileNo === data[3].substring(2) &&
                   x.isCustEndChat === false
               );
-              debugger;
+
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
                   ////for current chat message
@@ -2030,7 +2030,6 @@ class Header extends Component {
 
                   self.handleGetChatMessagesList(chatId);
                 } else {
-                  debugger;
                   /////for new ongoing message
                   const Sound1Play = new Audio(self.state.newMessageSoundFile);
                   Sound1Play.volume =
@@ -2223,7 +2222,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -2265,7 +2263,6 @@ class Header extends Component {
           var responseData = response.data.responseData;
 
           if (messgae === "Success" && responseData) {
-            debugger;
             self.setState({
               customerName: responseData.customerName,
               customerTier: responseData.customerTier,
@@ -2330,6 +2327,12 @@ class Header extends Component {
   handlePinClick = () => {
     this.setState({
       isPinClick: !this.state.isPinClick,
+    });
+  };
+  ////handle change shutter windows in mobile view
+  handleChangeShutterWindow = (isOpne) => {
+    this.setState({
+      isShutterOpen: isOpne,
     });
   };
   render() {
@@ -6353,21 +6356,33 @@ class Header extends Component {
                   className={
                     this.state.onHoverName
                       ? "thirdbox"
+                      : this.state.isShutterOpen
+                      ? "thirdbox thirbox-shutter thirdbox-close"
                       : "thirdbox thirdbox-close"
                   }
                 >
                   <div className="uptabs">
-                   <img
+                    {!this.state.isShutterOpen ? (
+                      <img
                         src={Arwdown}
                         className="Arwico"
                         alt="Arwico"
+                        onClick={this.handleChangeShutterWindow.bind(
+                          this,
+                          true
+                        )}
                       />
-                       <img
+                    ) : (
+                      <img
                         src={Arwup}
-                        style={{display:"none"}}
                         className="Arwico"
                         alt="Arwico"
+                        onClick={this.handleChangeShutterWindow.bind(
+                          this,
+                          false
+                        )}
                       />
+                    )}
                     {this.state.isPinClick ? (
                       <img
                         src={Pin}
