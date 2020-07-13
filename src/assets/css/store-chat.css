@@ -13,7 +13,7 @@ p {
 #chat-popup-overlay {
   padding: 0px;
   background-color: rgba(77, 92, 116, 0.6);
-  top: 55px;
+  top: 54px;
 }
 #chat-popup-overlay .styles_modal__gNwvD {
   /* max-width: 100%; */
@@ -22,6 +22,7 @@ p {
   padding: 0;
   /* height: calc(100vh - 40px);
   overflow: hidden; */
+  height: 100%;
 }
 .store-chat-header {
   background-color: #2561a8;
@@ -1005,6 +1006,7 @@ p {
 }
 .thirdbox {
   width: 27%;
+  position: relative;
 }
 .secondbox-open {
   width: 68% !important;
@@ -1046,9 +1048,9 @@ p {
   margin: auto;
   text-align: center;
 }
-.uptabs {
+/* .uptabs {
   position: relative;
-}
+} */
 .uptabs .nav-tabs {
   border-bottom: none;
   display: inline-block;
@@ -1116,6 +1118,9 @@ p {
 }
 .contactbox {
   float: right;
+}
+.chatdivtitle li {
+  margin-right: 10px;
 }
 .contactbox ul {
   text-align: right;
@@ -1324,6 +1329,9 @@ p {
   margin: auto;
   display: block;
 }
+.pastchatmobbtn {
+  display: none;
+}
 .pin {
   position: absolute;
   height: 20px;
@@ -1409,7 +1417,7 @@ img.ladyimg {
   font-weight: bold;
 }
 .prodtabl1 {
-  max-height: 312px;
+  max-height: 295px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 5px;
@@ -1987,10 +1995,10 @@ img.ladyimg {
   .secondbox-open {
     width: 100% !important;
   }
-  .thirbox-shutter {
-    height: 400px !important;
-    max-height: 400px !important;
-  }
+  .thirdbox-shutter {
+    height: 560px !important;
+    max-height: 560px !important;
+}
   #chat-popup-overlay {
     top: 0;
   }
@@ -2387,6 +2395,47 @@ img.ladyimg {
     right: 5.5px;
   }
   /* message suggestions ends */
+  .uptabs .nav-tabs {
+    margin: 9px 15px;
+    padding: 0 2px;
+    float: right;
+  }
+  ul.nameplate {
+    margin: 15px 0;
+  }
+  .thirdbox .uptabs {
+    overflow: hidden;
+    max-height: 91px;
+  }
+  .thirdbox-shutter .uptabs {
+    max-height: fit-content;
+  }
+  .prodtabl1 {
+    max-height: 345px;
+  }
+  .nameplate .namelabel {
+    padding: 7px 14px;
+  }
+  .nameplate li:first-child {
+    margin-right: 6px;
+  }
+  .nameplate h3 {
+    font-size: 13px;
+  }
+  .contactbox {
+    float: right;
+    width: 100%;
+  }
+  .updateprofilelinkbtn {
+    margin: 10px 0;
+    display: inline;
+    float: right;
+  }
+  .pastchatmobbtn {
+    display: inline;
+    margin-right: 12px !important;
+    float: left;
+  }
 }
 
 @media all and (max-width: 425px) {
