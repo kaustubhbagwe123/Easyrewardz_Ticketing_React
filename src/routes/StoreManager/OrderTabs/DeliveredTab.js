@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover } from "antd";
+import { Table, Popover,Tooltip } from "antd";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
@@ -170,6 +170,15 @@ class DeliveredTab extends Component {
                     : "Invoice no.",
                 dataIndex: "invoiceNo",
                 key: "invoiceNo",
+                render: (row, item) => {
+                  return (
+                    <div className="d-flex align-items-center">
+                      <Tooltip title={item.invoiceNo} placement="bottom">
+                        <p className="order-bill-no">{item.invoiceNo}</p>
+                      </Tooltip>
+                    </div>
+                  );
+                },
               },
               {
                 className: "table-coloum-hide",
