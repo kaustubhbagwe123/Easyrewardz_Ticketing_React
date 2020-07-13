@@ -265,6 +265,8 @@ class Header extends Component {
           price: "5,499",
         },
       ],
+      ProfileProductTab: 0,
+      activeCollpse: [1],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -2373,6 +2375,7 @@ class Header extends Component {
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
         onHoverName: false,
+        ProfileProductTab: 0,
       });
     }
   };
@@ -2386,7 +2389,18 @@ class Header extends Component {
   handleChangeShutterWindow = (isOpne) => {
     this.setState({
       isShutterOpen: isOpne,
+      ProfileProductTab:0
     });
+  };
+  ////handle profile product tab change
+  handleProfileProductTabChange = (index) => {
+    this.setState({ ProfileProductTab: index });
+  };
+  ////handle collpse change
+  handleCollpseChange = (e)=>{
+    debugger
+    this.state.activeCollpse=e[e.length-1]
+    this.setState({activeCollpse:this.state.activeCollpse})
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -6456,7 +6470,12 @@ class Header extends Component {
                       />
                     )}
 
-                    <Tabs>
+                    <Tabs
+                      onSelect={(index, label) => {
+                        this.handleProfileProductTabChange(index);
+                      }}
+                      selected={this.state.ProfileProductTab}
+                    >
                       <Tab label="Profile">
                         <div className="profilebox">
                           <div>
@@ -6532,7 +6551,10 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <Collapse defaultActiveKey={["1"]}>
+                            <Collapse
+                              activeKey={this.state.activeCollpse}
+                              onChange={this.handleCollpseChange.bind(this)}
+                            >
                               <Panel header="Insights" key="1">
                                 <div className="insightsbox">
                                   {/* <h3>Insights</h3>

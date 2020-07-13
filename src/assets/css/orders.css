@@ -477,7 +477,7 @@
   border-color: #ef6b00;
 }
 .order-grid-btn-disable {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
   opacity: 0.6;
 }
 .order-status-drpdwn {

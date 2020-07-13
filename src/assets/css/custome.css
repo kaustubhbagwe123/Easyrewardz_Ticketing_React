@@ -2946,7 +2946,12 @@ table tr th:last-child {
 /* chatbot left starts */
 .chatbot-left {
   background-color: #fffef7;
-  /* height: calc(100vh - 55px); */
+  height: calc(100vh - 55px);
+  position: relative;
+}
+.chatbot-right {
+  background-color: #fffef7;
+  height: calc(100vh - 55px);
   position: relative;
 }
 .chat-left-height {
