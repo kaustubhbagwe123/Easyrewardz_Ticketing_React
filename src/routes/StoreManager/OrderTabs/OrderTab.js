@@ -51,7 +51,7 @@ class OrderTab extends Component {
       orderSearchText: "",
       OrdPickupDate: "",
       OrdPickupTime: "",
-      OrdProcessLoader:false
+      OrdProcessLoader: false,
     };
   }
 
@@ -577,10 +577,10 @@ class OrderTab extends Component {
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
                 key: "invoiceNo",
-                width: 80,
+                // width: 80,
                 render: (row, item) => {
                   return (
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center overflow-hidden">
                       <div className="invoice-icon-cntr">
                         <img
                           src={
@@ -603,8 +603,8 @@ class OrderTab extends Component {
                           }
                         />
                       </div>
-                      <Tooltip title={item.invoiceNo} placement="bottom">
-                        <p>{item.invoiceNo}</p>
+                      <Tooltip title={item.invoiceNo} placement="bottom"> 
+                        <p className="order-bill-no">{item.invoiceNo}</p>
                       </Tooltip>
 
                       {item.isShoppingBagConverted === true && (

@@ -6588,6 +6588,12 @@ class Header extends Component {
                           </div>
                           <button
                             type="button"
+                            className="updateprofilelinkbtn pastchatmobbtn"
+                          >
+                            22 Past Chat
+                          </button>
+                          <button
+                            type="button"
                             className="updateprofilelinkbtn"
                           >
                             Send Update Profile Link

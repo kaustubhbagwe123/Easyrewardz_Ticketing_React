@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Spin } from "antd";
+import { Table, Popover, Popconfirm, Spin, Tooltip } from "antd";
 import Modal from "react-responsive-modal";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
@@ -567,7 +567,9 @@ class ShipmentTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
-                      <p>{item.invoiceNo}</p>
+                      <Tooltip title={item.invoiceNo} placement="bottom">
+                        <p className="order-bill-no">{item.invoiceNo}</p>
+                      </Tooltip>
                     </div>
                   );
                 },
