@@ -52,6 +52,7 @@ class OrderTab extends Component {
       OrdPickupDate: "",
       OrdPickupTime: "",
       OrdProcessLoader: false,
+      minTime: this.calculateMinTime(new Date()),
     };
   }
 
@@ -254,6 +255,7 @@ class OrderTab extends Component {
           self.setState({
             showPinCodereturnMsg: false,
             showPinStatusCodeMsg: true,
+            pincodeChecAvaibility: false,
           });
         }
       })
@@ -548,15 +550,23 @@ class OrderTab extends Component {
   };
   /// handle order date change
   handleOrdDateChange(date) {
-    debugger;
     this.setState({
       OrdPickupDate: date,
     });
   }
-
+  /// calculate min time
+  calculateMinTime = date => {
+    let isToday = moment(date).isSame(moment(), 'day');
+    if (isToday) {
+        let nowAddOneHour = moment(new Date()).add({minute: 30}).toDate();
+        return nowAddOneHour;
+    }
+    return moment().startOf('day').toDate(); 
+}
   /// handle Order pickup time change
   handleOrdPickupTimeChange(time) {
     this.setState({
+      minTime: this.calculateMinTime(time),
       OrdPickupTime: time,
     });
   }
@@ -603,7 +613,7 @@ class OrderTab extends Component {
                           }
                         />
                       </div>
-                      <Tooltip title={item.invoiceNo} placement="bottom"> 
+                      <Tooltip title={item.invoiceNo} placement="bottom">
                         <p className="order-bill-no">{item.invoiceNo}</p>
                       </Tooltip>
 
@@ -1121,6 +1131,10 @@ class OrderTab extends Component {
                                                     .entertime
                                                 : "Enter Time"
                                             }
+                                            minTime={this.state.minTime}
+                                            maxTime={moment()
+                                              .endOf("day")
+                                              .toDate()}
                                           />
                                         </div>
                                       </div>
@@ -1560,6 +1574,10 @@ class OrderTab extends Component {
                                               .ticketingDashboard.entertime
                                           : "Enter Time"
                                       }
+                                      minTime={this.state.minTime}
+                                      maxTime={moment()
+                                        .endOf("day")
+                                        .toDate()}
                                     />
                                   </div>
                                 </div>
