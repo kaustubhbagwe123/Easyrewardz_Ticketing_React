@@ -6492,22 +6492,6 @@ class Header extends Component {
                                   Tier: <b>{this.state.customerTier}</b>
                                 </span>
                               </li>
-                              <li className="contactbox">
-                                <div>
-                                  <ul>
-                                    {this.state.customerEmailID ? (
-                                      <li>
-                                        {/* <label>Email ID</label> */}
-                                        <p>{this.state.customerEmailID}</p>
-                                      </li>
-                                    ) : null}
-                                    <li>
-                                      {/* <label>Mobile No</label> */}
-                                      <p>{this.state.customerMobileNo}</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </li>
                             </ul>
                           </div>
                           <div className="pointstable">
@@ -6515,23 +6499,49 @@ class Header extends Component {
                               <tbody>
                                 <tr>
                                   <td>
+                                    <label>Email ID</label>
+                                  </td>
+                                  <td>
+                                    <span>{this.state.customerEmailID}</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <label>Mobile No</label>
+                                  </td>
+                                  <td>
+                                    <span>{this.state.customerMobileNo}</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
                                     <label>Total Points</label>
+                                  </td>
+                                  <td>
                                     <span>
                                       {this.state.totalPoints.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
+                                </tr>
+                                <tr>
                                   <td>
                                     <label>Lifetime Value</label>
+                                  </td>
+                                  <td>
                                     <span>
                                       {this.state.lifetimeValue.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
+                                </tr>
+                                <tr>
                                   <td>
                                     <label>Visit Count</label>
+                                  </td>
+                                  <td>
                                     <span>
                                       {this.state.visitCount.toLocaleString(
                                         "en-IN"
@@ -6543,70 +6553,13 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            {/* <Collapse
-                              activeKey={this.state.activeCollpse}
-                              onChange={this.handleCollpseChange.bind(this)}
-                            >
-                              <Panel header="Insights" key="1"> */}
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              />
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
-                            {/* </Panel>
-                              <Panel header="Orders" key="2"> */}
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              />
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            {/* </Panel>
-                              <Panel header="Last Transaction" key="3"> */}
                             <div className="lasttransaction">
                               <h3>Last Transaction</h3>
-                              <img
+                              {/* <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
-                              />
+                              /> */}
                               <ul>
                                 <li>
                                   <label>Bill No</label>
@@ -6662,8 +6615,52 @@ class Header extends Component {
                                 </table>
                               </div>
                             </div>
-                            {/* </Panel>
-                            </Collapse> */}
+                            <div className="ordersbox">
+                              <h3>Orders</h3>
+                              {/* <img
+                                src={DownArw}
+                                className="DownArw"
+                                alt="DownArw"
+                              /> */}
+                              <ul>
+                                <li>
+                                  <label>Delivered</label>
+                                  <span>{this.state.orderDelivered}</span>
+                                </li>
+                                <li>
+                                  <label>Shopping Bag</label>
+                                  <span>{this.state.orderShoppingBag}</span>
+                                </li>
+                                <li>
+                                  <label>Ready to Ship</label>
+                                  <span>{this.state.orderReadyToShip}</span>
+                                </li>
+                                <li>
+                                  <label>Returns</label>
+                                  <span>{this.state.orderReturns}</span>
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="insightsbox">
+                              <h3>Insights</h3>
+                              {/* <img
+                                src={DownArw}
+                                className="DownArw"
+                                alt="DownArw"
+                              /> */}
+                              <p>
+                                1. Lorem Ipsum is simply dummy text of the
+                                printing industry.
+                              </p>
+                              <p>
+                                2. Lorem Ipsum is simply dummy text of the
+                                printing industry.
+                              </p>
+                              <p>
+                                3. Lorem Ipsum is simply dummy text of the
+                                printing industry.
+                              </p>
+                            </div>
                           </div>
                           <button
                             type="button"
@@ -7058,6 +7055,17 @@ class Header extends Component {
                                     />
                                   </div>
                                 </div>
+                                <div className="tabsbotbtn-box">
+                                  <button type="button" className="tabsbotbtn">
+                                    SENT
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    ADD To CART
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    BUY NOW
+                                  </button>
+                                </div>
                               </div>
                             </Tab>
                             <Tab label="Recommended">
@@ -7077,27 +7085,37 @@ class Header extends Component {
                                                   className="ladyimg"
                                                   alt="Lady Img"
                                                 />
-                                                
                                               </Checkbox>
                                               {item.brandName ? (
-                                                  <h3>{item.brandName}</h3>
-                                                ) : null}
-                                                {item.productName ? (
-                                                  <h4>{item.productName}</h4>
-                                                ) : null}
-                                                {item.price ? (
-                                                  <span>{item.price}</span>
-                                                ) : null}
-                                                <img
-                                                  src={Cancelico}
-                                                  className="cancelico"
-                                                  alt="Cancel Ico"
-                                                />
+                                                <h3>{item.brandName}</h3>
+                                              ) : null}
+                                              {item.productName ? (
+                                                <h4>{item.productName}</h4>
+                                              ) : null}
+                                              {item.price ? (
+                                                <span>{item.price}</span>
+                                              ) : null}
+                                              <img
+                                                src={Cancelico}
+                                                className="cancelico"
+                                                alt="Cancel Ico"
+                                              />
                                             </div>
                                           );
                                         }
                                       )
                                     : null}
+                                </div>
+                                <div className="tabsbotbtn-box">
+                                  <button type="button" className="tabsbotbtn">
+                                    SENT
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    ADD To CART
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    BUY NOW
+                                  </button>
                                 </div>
                               </div>
                             </Tab>
