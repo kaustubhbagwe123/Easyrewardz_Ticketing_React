@@ -38,7 +38,7 @@ class OrderTab extends Component {
       landmark: "",
       pincode: "",
       city: "",
-      state: "",
+      Ordstate: "",
       country: "",
       storePinCode: "",
       orderId: 0,
@@ -52,6 +52,7 @@ class OrderTab extends Component {
       OrdPickupDate: "",
       OrdPickupTime: "",
       OrdProcessLoader: false,
+      ordStateDisabled: false,
       minTime: this.calculateMinTime(new Date()),
     };
   }
@@ -238,12 +239,18 @@ class OrderTab extends Component {
     })
       .then(function(res) {
         debugger;
-        let status = res.data.responseData.available;
+        let status = res.data.message;
         var data = res.data.responseData;
-        if (status === "false") {
+        if (status === "Success") {
           if (data.statusCode === "301") {
             self.setState({
               showPinStatusCodeMsg: data.available,
+            });
+          }
+          if (data.available === "true" && data.statusCode === "200") {
+            self.setState({
+              Ordstate: data.state,
+              ordStateDisabled: true,
             });
           }
           self.setState({
@@ -391,7 +398,7 @@ class OrderTab extends Component {
         Landmark: this.state.landmark,
         PinCode: this.state.pincode,
         City: this.state.city,
-        State: this.state.state,
+        State: this.state.Ordstate,
         Country: this.state.country,
       },
     })
@@ -406,7 +413,7 @@ class OrderTab extends Component {
             shippingAddress: "",
             pincode: "",
             city: "",
-            state: "",
+            Ordstate: "",
             country: "",
             landmark: "",
           });
@@ -475,7 +482,7 @@ class OrderTab extends Component {
       return false;
     }
 
-    if (this.state.state === "") {
+    if (this.state.Ordstate === "") {
       NotificationManager.error(
         TranslationContext !== undefined
           ? TranslationContext.alertmessage.pleaseenterstate
@@ -555,14 +562,18 @@ class OrderTab extends Component {
     });
   }
   /// calculate min time
-  calculateMinTime = date => {
-    let isToday = moment(date).isSame(moment(), 'day');
+  calculateMinTime = (date) => {
+    let isToday = moment(date).isSame(moment(), "day");
     if (isToday) {
-        let nowAddOneHour = moment(new Date()).add({minute: 30}).toDate();
-        return nowAddOneHour;
+      let nowAddOneHour = moment(new Date())
+        .add({ minute: 30 })
+        .toDate();
+      return nowAddOneHour;
     }
-    return moment().startOf('day').toDate(); 
-}
+    return moment()
+      .startOf("day")
+      .toDate();
+  };
   /// handle Order pickup time change
   handleOrdPickupTimeChange(time) {
     this.setState({
@@ -985,10 +996,17 @@ class OrderTab extends Component {
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter State"
-                                      name="state"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .enterstate
+                                          : "Enter State"
+                                      }
+                                      name="Ordstate"
                                       autoComplete="off"
+                                      value={this.state.Ordstate}
                                       onChange={this.handleTextOnchage}
+                                      disabled={this.state.ordStateDisabled}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -1461,8 +1479,10 @@ class OrderTab extends Component {
                                               .enterstate
                                           : "Enter State"
                                       }
-                                      name="state"
+                                      name="Ordstate"
+                                      value={this.state.Ordstate}
                                       onChange={this.handleTextOnchage}
+                                      disabled={this.state.ordStateDisabled}
                                     />
                                   </div>
                                   <div className="col-md-6">
