@@ -1003,17 +1003,17 @@ p {
   text-align: center;
 }
 .firstbox {
-  width: 25%;
+  width: 20%;
 }
 .secondbox {
-  width: 48%;
+  width: 45%;
 }
 .thirdbox {
-  width: 27%;
+  width: 35%;
   position: relative;
 }
 .secondbox-open {
-  width: 68% !important;
+  width: 73% !important;
 }
 .thirdbox-close {
   width: 7% !important;
@@ -1375,8 +1375,9 @@ p {
 }
 .productsbox .prodboxx {
   position: relative;
-  margin-right: 12px;
-  margin-bottom: 12px;
+  margin-right: 8px;
+    margin-bottom: 12px;
+    display: inline-table;
 }
 img.ladyimg {
   width: 100px;
