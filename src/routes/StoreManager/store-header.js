@@ -6543,18 +6543,18 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <Collapse
+                            {/* <Collapse
                               activeKey={this.state.activeCollpse}
                               onChange={this.handleCollpseChange.bind(this)}
                             >
-                              <Panel header="Insights" key="1">
+                              <Panel header="Insights" key="1"> */}
                                 <div className="insightsbox">
-                                  {/* <h3>Insights</h3>
+                                  <h3>Insights</h3>
                               <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
-                              /> */}
+                              />
                                   <p>
                                     1. Lorem Ipsum is simply dummy text of the
                                     printing industry.
@@ -6568,15 +6568,15 @@ class Header extends Component {
                                     printing industry.
                                   </p>
                                 </div>
-                              </Panel>
-                              <Panel header="Orders" key="2">
+                              {/* </Panel>
+                              <Panel header="Orders" key="2"> */}
                                 <div className="ordersbox">
-                                  {/* <h3>Orders</h3>
+                                  <h3>Orders</h3>
                                   <img
                                     src={DownArw}
                                     className="DownArw"
                                     alt="DownArw"
-                                  /> */}
+                                  />
                                   <ul>
                                     <li>
                                       <label>Delivered</label>
@@ -6598,15 +6598,15 @@ class Header extends Component {
                                     </li>
                                   </ul>
                                 </div>
-                              </Panel>
-                              <Panel header="Last Transaction" key="3">
+                              {/* </Panel>
+                              <Panel header="Last Transaction" key="3"> */}
                                 <div className="lasttransaction">
-                                  {/* <h3>Last Transaction</h3>
+                                  <h3>Last Transaction</h3>
                                   <img
                                     src={DownArw}
                                     className="DownArw"
                                     alt="DownArw"
-                                  /> */}
+                                  />
                                   <ul>
                                     <li>
                                       <label>Bill No</label>
@@ -6662,8 +6662,8 @@ class Header extends Component {
                                     </table>
                                   </div>
                                 </div>
-                              </Panel>
-                            </Collapse>
+                              {/* </Panel>
+                            </Collapse> */}
                           </div>
                           <button
                             type="button"
