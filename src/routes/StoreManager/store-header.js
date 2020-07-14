@@ -214,57 +214,9 @@ class Header extends Component {
       orderReturns: 0,
       isMobileView: false,
       isShutterOpen: false,
-      shoppingBagData: [
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-        {
-          itemId: 1,
-          image: Ladyimg,
-          brandName: "Mango",
-          productName: "White Solid Top",
-          price: "5,499",
-        },
-      ],
+      shoppingBagData: [],
+      wishListData: [],
+      recommendedData: [],
       ProfileProductTab: 0,
       activeCollpse: [1],
     };
@@ -2389,18 +2341,58 @@ class Header extends Component {
   handleChangeShutterWindow = (isOpne) => {
     this.setState({
       isShutterOpen: isOpne,
-      ProfileProductTab:0
+      ProfileProductTab: 0,
     });
   };
   ////handle profile product tab change
   handleProfileProductTabChange = (index) => {
     this.setState({ ProfileProductTab: index });
+    if (index === 1) {
+      this.handleGetChatCustomerProducts();
+    }
   };
   ////handle collpse change
-  handleCollpseChange = (e)=>{
-    debugger
-    this.state.activeCollpse=e[e.length-1]
-    this.setState({activeCollpse:this.state.activeCollpse})
+  handleCollpseChange = (e) => {
+    debugger;
+    this.state.activeCollpse = e[e.length - 1];
+    this.setState({ activeCollpse: this.state.activeCollpse });
+  };
+  ////handle get chat customer products
+  handleGetChatCustomerProducts = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatCustomerProducts",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        var shoppingBagData = [];
+        var wishListData = [];
+        var recommendedData = [];
+        if (message === "Success" && responseData) {
+          for (let i = 0; i < responseData.length; i++) {
+            if (responseData[i].isShoppingBag) {
+              shoppingBagData.push(responseData[i]);
+            }
+            if (responseData[i].isWishList) {
+              wishListData.push(responseData[i]);
+            }
+            if (responseData[i].isRecommended) {
+              recommendedData.push(responseData[i]);
+            }
+          }
+          self.setState({ shoppingBagData, wishListData, recommendedData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatCustomerProducts");
+      });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -6699,25 +6691,24 @@ class Header extends Component {
                                   <table>
                                     <tbody>
                                       <tr>
-                                        <Checkbox.Group>
-                                          <td>
-                                            <div className="prodboxx">
-                                              <img
-                                                src={Ladyimg}
-                                                className="ladyimg"
-                                                alt="Lady Img"
-                                              />
-                                              <h3>Mango</h3>
-                                              <h4>White Solid Top</h4>
-                                              <span>₹5,499</span>
-                                              <img
-                                                src={Cancelico}
-                                                className="cancelico"
-                                                alt="Cancel Ico"
-                                              />
-                                            </div>
-                                          </td>
-                                        </Checkbox.Group>
+                                        <td>
+                                          <div className="prodboxx">
+                                            <img
+                                              src={Ladyimg}
+                                              className="ladyimg"
+                                              alt="Lady Img"
+                                            />
+                                            <h3>Mango</h3>
+                                            <h4>White Solid Top</h4>
+                                            <span>₹5,499</span>
+                                            <img
+                                              src={Cancelico}
+                                              className="cancelico"
+                                              alt="Cancel Ico"
+                                            />
+                                          </div>
+                                        </td>
+
                                         <td>
                                           <div className="prodboxx">
                                             <img
@@ -7045,6 +7036,74 @@ class Header extends Component {
                                   <table>
                                     <tbody>
                                       <tr>
+                                        
+                                          {this.state.recommendedData
+                                            ? this.state.recommendedData.map(
+                                                (item, i) => {
+                                                  return (
+                                                    <td key={i}>
+                                                      <Checkbox>
+                                                        <div className="prodboxx">
+                                                          <img
+                                                            src={item.imageURL}
+                                                            className="ladyimg"
+                                                            alt="Lady Img"
+                                                          />
+                                                          {item.brandName?<h3>{item.brandName}</h3>:null}
+                                                          {item.productName?<h4>
+                                                            {item.productName}
+                                                          </h4>:null}
+                                                          {item.price?<span>{item.price}</span>:null}
+                                                          <img
+                                                            src={Cancelico}
+                                                            className="cancelico"
+                                                            alt="Cancel Ico"
+                                                          />
+                                                        </div>
+                                                      </Checkbox>
+                                                    </td>
+                                                  );
+                                                }
+                                              )
+                                            : null}
+                                        
+                                        {/* <td>
+                                          <div className="prodboxx">
+                                            <img
+                                              src={Ladyimg}
+                                              className="ladyimg"
+                                              alt="Lady Img"
+                                            />
+                                            <h3>Mango</h3>
+                                            <h4>White Solid Top</h4>
+                                            <span>₹5,499</span>
+                                            <img
+                                              src={Cancelico}
+                                              className="cancelico"
+                                              alt="Cancel Ico"
+                                            />
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div className="prodboxx">
+                                            <img
+                                              src={Ladyimg}
+                                              className="ladyimg"
+                                              alt="Lady Img"
+                                            />
+                                            <h3>Mango</h3>
+                                            <h4>White Solid Top</h4>
+                                            <span>₹5,499</span>
+                                            <img
+                                              src={Cancelico}
+                                              className="cancelico"
+                                              alt="Cancel Ico"
+                                            />
+                                          </div>
+                                        </td>
+                                      */}
+                                      </tr>
+                                      {/* <tr>
                                         <td>
                                           <div className="prodboxx">
                                             <img
@@ -7150,59 +7209,7 @@ class Header extends Component {
                                           </div>
                                         </td>
                                       </tr>
-                                      <tr>
-                                        <td>
-                                          <div className="prodboxx">
-                                            <img
-                                              src={Ladyimg}
-                                              className="ladyimg"
-                                              alt="Lady Img"
-                                            />
-                                            <h3>Mango</h3>
-                                            <h4>White Solid Top</h4>
-                                            <span>₹5,499</span>
-                                            <img
-                                              src={Cancelico}
-                                              className="cancelico"
-                                              alt="Cancel Ico"
-                                            />
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div className="prodboxx">
-                                            <img
-                                              src={Ladyimg}
-                                              className="ladyimg"
-                                              alt="Lady Img"
-                                            />
-                                            <h3>Mango</h3>
-                                            <h4>White Solid Top</h4>
-                                            <span>₹5,499</span>
-                                            <img
-                                              src={Cancelico}
-                                              className="cancelico"
-                                              alt="Cancel Ico"
-                                            />
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div className="prodboxx">
-                                            <img
-                                              src={Ladyimg}
-                                              className="ladyimg"
-                                              alt="Lady Img"
-                                            />
-                                            <h3>Mango</h3>
-                                            <h4>White Solid Top</h4>
-                                            <span>₹5,499</span>
-                                            <img
-                                              src={Cancelico}
-                                              className="cancelico"
-                                              alt="Cancel Ico"
-                                            />
-                                          </div>
-                                        </td>
-                                      </tr>
+                                     */}
                                     </tbody>
                                   </table>
                                 </div>

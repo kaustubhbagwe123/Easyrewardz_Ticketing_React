@@ -96,6 +96,7 @@ class CardAssets extends Component {
         ID: imageUploadLogID,
         ItemID: itemID,
         AddToLibrary: status,
+        RejectioReason: !status ? this.state.rejectionComment : "",
       },
     })
       .then(function(response) {
@@ -772,21 +773,6 @@ class CardAssets extends Component {
                                         {rowdata.storeAddress}
                                       </p>
                                     </li>
-                                    {rowdata.rejectionReason ? (
-                                      <li>
-                                        <label
-                                          style={{
-                                            width: "50%",
-                                            fontWeight: "bold",
-                                          }}
-                                        >
-                                          Rejection Reason
-                                        </label>
-                                        <p style={{ display: "inline" }}>
-                                          {rowdata.rejectionReason}
-                                        </p>
-                                      </li>
-                                    ) : null}
                                   </ul>
                                 </div>
                               }
@@ -822,6 +808,40 @@ class CardAssets extends Component {
                                   ? "Added"
                                   : "Rejected"}
                               </label>
+                              {!rowdata.isAddedToLibrary ? (
+                                <Popover
+                                  overlayClassName="cardassetspop"
+                                  content={
+                                    <div
+                                      className="dash-creation-popup-cntr"
+                                      style={{ display: "block" }}
+                                    >
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <label
+                                            style={{
+                                              width: "50%",
+                                              fontWeight: "bold",
+                                            }}
+                                          >
+                                            Rejection Reason
+                                          </label>
+                                          <p style={{ display: "inline" }}>
+                                            {rowdata.rejectionReason}
+                                          </p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="rightBottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              ) : null}
                             </div>
                           </>
                         );
