@@ -193,7 +193,7 @@ a {
   background: #a5a3a3;
 }
 .headers-menu a {
-  color: #4a4a4a !important;
+  color: #4a4a4a;
   line-height: 1;
   font-size: 16px;
 }
@@ -12688,3 +12688,9 @@ table tr th:last-child {
   margin-right: 10px;
   max-width: 20px;
 }
+.headers-menu a[disabled]{
+  color: #4a4a4a !important;
+  }
+  .lowersec a[disabled]{
+  color: #4a4a4a !important;
+  }
