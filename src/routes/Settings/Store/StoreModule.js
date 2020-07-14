@@ -3150,7 +3150,7 @@ class StoreModule extends Component {
                                             .maxClickAllowed
                                         }
                                         autoComplete="off"
-                                        maxLength={2}
+                                        maxLength={3}
                                         onChange={this.CampCannelOnChange.bind(
                                           this
                                         )}
