@@ -1947,14 +1947,15 @@ img.ladyimg {
   margin-top: 15px;
   min-width: auto;
   cursor: pointer;
-  padding: 7px 18px;
-  font-size: 12px;
+  padding: 8px 12px;
+  font-size: 10px;
   text-transform: uppercase;
+  border-radius: 8px;
 }
 .tagsbtn-active {
   text-transform: uppercase;
-  font-size: 12px;
-  padding: 7px 18px;
+  font-size: 10px;
+  padding: 8px 12px;
   background: #2561a8;
   color: #fff;
   font-weight: 400;
@@ -1963,6 +1964,7 @@ img.ladyimg {
   margin-top: 15px;
   min-width: auto;
   cursor: pointer;
+  border-radius: 8px;
 }
 .secondbox-open-new {
   width: 80% !important;
