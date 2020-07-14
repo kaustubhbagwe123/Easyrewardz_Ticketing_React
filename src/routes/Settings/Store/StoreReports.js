@@ -3222,7 +3222,7 @@ class StoreReports extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      url: config.apiUrl + "/StoreUser/GetStoreReportUsersList",
       headers: authHeader(),
     })
       .then(function(response) {
