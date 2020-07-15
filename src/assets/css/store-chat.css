@@ -1155,7 +1155,7 @@ p {
 .pointstable table td {
   padding: 10px 0;
   font-size: 14px;
-    font-weight: normal;
+  font-weight: normal;
 }
 .pointstable table label {
   color: #333;
@@ -1275,8 +1275,8 @@ p {
 }
 .ordersbox ul {
   margin-bottom: 7px;
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .ordersbox h3 {
   font-size: 14px;
@@ -1316,9 +1316,9 @@ p {
 }
 .insightsbox p {
   font-size: 14px;
-    color: #666;
-    margin-bottom: 3px;
-    font-weight: normal;
+  color: #666;
+  margin-bottom: 3px;
+  font-weight: normal;
 }
 .updateprofilelinkbtn {
   background: none;
@@ -1389,8 +1389,8 @@ p {
 .productsbox .prodboxx {
   position: relative;
   margin-right: 8px;
-    margin-bottom: 12px;
-    display: inline-table;
+  margin-bottom: 12px;
+  display: inline-table;
 }
 img.ladyimg {
   width: 100px;
@@ -1416,7 +1416,9 @@ img.ladyimg {
   font-size: 10px;
   color: #666;
   margin-top: 3px;
-}
+  display: block;
+  padding: 0 !important;
+  }
 .cancelico {
   height: 21px;
   border: 2px solid;
@@ -1424,7 +1426,7 @@ img.ladyimg {
   padding: 3px;
   position: absolute;
   right: 2px;
-  bottom: 34px;
+  bottom: -4px;
   cursor: pointer;
 }
 .chatupperbtn {
@@ -1633,7 +1635,7 @@ img.ladyimg {
 }
 .agentchatdrop-down {
   margin-left: 0;
-    width: 35%;
+  width: 35%;
 }
 
 .chatactionbtn {
@@ -1643,7 +1645,7 @@ img.ladyimg {
   margin-left: 0px;
   outline: none;
   padding: 5px 10px;
-    border-radius: 10px;
+  border-radius: 10px;
 }
 #actionmodalId {
   border-radius: 8px;
@@ -1653,10 +1655,10 @@ img.ladyimg {
   margin-top: 83px;
   display: inline-block;
 }
-.actionmodalId-mr-add{
+.actionmodalId-mr-add {
   margin-right: 360px;
 }
-.actionmodalId-mr-remove{
+.actionmodalId-mr-remove {
   margin-right: 105px;
 }
 
@@ -1982,7 +1984,7 @@ img.ladyimg {
 .secondbox-open-new {
   width: 80% !important;
 }
-.Arwico{
+.Arwico {
   display: none;
 }
 .prodtabl1 .ant-collapse.ant-collapse-icon-position-left {
@@ -2007,6 +2009,9 @@ img.ladyimg {
   padding: 8px 16px;
   padding-left: 36px;
 }
+.show-mobile{
+  display: none;
+}
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {
@@ -2021,8 +2026,13 @@ img.ladyimg {
 }
 
 @media all and (max-width: 576px) {
-  
-  .firstbox-hide{
+  .show-desktop{
+    display: none;
+  }
+  .show-mobile{
+    display: block;
+  }
+  .firstbox-hide {
     display: none;
   }
   .firstbox-show {
@@ -2047,12 +2057,12 @@ img.ladyimg {
   .thirdbox-shutter {
     height: 560px !important;
     max-height: 560px !important;
-}
+  }
   #chat-popup-overlay {
     top: 0;
   }
   .oc-bg {
-    background-color: #ECF2F4;
+    background-color: #ecf2f4;
     height: 73vh;
   }
   .chat-hist {
@@ -2077,7 +2087,7 @@ img.ladyimg {
     max-width: 100%;
   }
   .chat-trail-cntr-right .chat-trail-chat {
-    background: #CEE0E6;
+    background: #cee0e6;
     color: #333;
   }
   .thirdbox {
@@ -2098,7 +2108,7 @@ img.ladyimg {
     z-index: 999999999999;
     bottom: -10px;
     display: block;
-}
+  }
   .chattabtitle {
     padding: 0 !important;
     width: 100% !important;
@@ -2493,7 +2503,6 @@ img.ladyimg {
   .productsbox .selectalllabel {
     margin-top: 12px;
   }
-  
 }
 
 @media all and (max-width: 425px) {
