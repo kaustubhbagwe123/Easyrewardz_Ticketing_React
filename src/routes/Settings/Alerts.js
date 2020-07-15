@@ -1447,11 +1447,11 @@ class Alerts extends Component {
       selectedSMSContent: "",
       selectedNotifContent: "",
       NotifContentCompulsion: "",
-      emailCust: false,
-      emailInt: false,
-      emailStore: false,
-      smsCust: false,
-      notiInt: false,
+      // emailCust: false,
+      // emailInt: false,
+      // emailStore: false,
+      // smsCust: false,
+      // notiInt: false,
     });
   }
   updateContent(newContent) {
