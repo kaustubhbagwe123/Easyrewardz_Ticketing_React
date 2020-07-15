@@ -43,7 +43,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover, Collapse, Checkbox } from "antd";
+import { Popover, Collapse, Checkbox, Empty } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -2391,7 +2391,7 @@ class Header extends Component {
               recommendedData.push(responseData[i]);
             }
           }
-          debugger;
+          
           self.setState({ shoppingBagData, wishListData, recommendedData });
         }
       })
@@ -2402,8 +2402,7 @@ class Header extends Component {
 
   ////handle shopping bag ,wishlist & recommended product select
   handleProductTabsChange = (tabIndex, itemIndex) => {
-    debugger;
-
+    
     ////for Shopping Bag list
     if (tabIndex === 1) {
       this.state.shoppingBagData[itemIndex].isCheck = !this.state
@@ -2427,6 +2426,31 @@ class Header extends Component {
   ////handle product type tab change
   handleProductTypeTabChange = (index) => {
     this.setState({ productTypeTab: index });
+  };
+
+  ///handle select all product base on tab index
+  handleSelectAllProduct = (tabIndex) => {
+    ////for shopping bag list tab select all
+    if (tabIndex === 1) {
+      for (let i = 0; i < this.state.shoppingBagData.length; i++) {
+        this.state.shoppingBagData[i].isCheck = true;
+      }
+      this.setState({ shoppingBagData: this.state.shoppingBagData });
+    }
+    ////for wish list tab select all
+    if (tabIndex === 2) {
+      for (let i = 0; i < this.state.wishListData.length; i++) {
+        this.state.wishListData[i].isCheck = true;
+      }
+      this.setState({ wishListData: this.state.wishListData });
+    }
+    ////for recommended tab select all
+    if (tabIndex === 3) {
+      for (let i = 0; i < this.state.recommendedData.length; i++) {
+        this.state.recommendedData[i].isCheck = true;
+      }
+      this.setState({ recommendedData: this.state.recommendedData });
+    }
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -6723,398 +6747,145 @@ class Header extends Component {
                           >
                             <Tab label="Shopping Bag">
                               <div className="shoppingbag">
-                                <label className="selectalllabel">
-                                  Select All
-                                </label>
+                                {this.state.shoppingBagData.length > 0 ? (
+                                  <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,1)}>
+                                    Select All
+                                  </label>
+                                ) : null}
                                 <div className="prodtabl">
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
+                                  {this.state.shoppingBagData
+                                    ? this.state.shoppingBagData.map(
+                                        (item, i) => {
+                                          return (
+                                            <div className="prodboxx" key={i}>
+                                              <Checkbox
+                                                checked={
+                                                  this.state.shoppingBagData[i]
+                                                    .isCheck
+                                                }
+                                                onChange={this.handleProductTabsChange.bind(
+                                                  this,
+                                                  1,
+                                                  i
+                                                )}
+                                              >
+                                                <img
+                                                  src={item.imageURL}
+                                                  className="ladyimg"
+                                                  alt="Lady Img"
+                                                />
+                                              </Checkbox>
+                                              {item.brandName ? (
+                                                <h3>{item.brandName}</h3>
+                                              ) : null}
+                                              {item.productName ? (
+                                                <h4>{item.productName}</h4>
+                                              ) : null}
+                                              {item.price ? (
+                                                <span>{item.price}</span>
+                                              ) : null}
+                                              <img
+                                                src={Cancelico}
+                                                className="cancelico"
+                                                alt="Cancel Ico"
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                      )
+                                    : null}
+                                  {this.state.shoppingBagData.length === 0 ? (
+                                    <Empty
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
                                     />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
+                                  ) : null}
                                 </div>
                               </div>
                             </Tab>
                             <Tab label="Wishlist">
                               <div className="shoppingbag">
-                                <label className="selectalllabel">
-                                  Select All
-                                </label>
+                                {this.state.wishListData.length > 0 ? (
+                                  <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,2)}>
+                                    Select All
+                                  </label>
+                                ) : null}
                                 <div className="prodtabl">
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
+                                  {this.state.wishListData
+                                    ? this.state.wishListData.map((item, i) => {
+                                        return (
+                                          <div className="prodboxx" key={i}>
+                                            <Checkbox
+                                              checked={
+                                                this.state.wishListData[i]
+                                                  .isCheck
+                                              }
+                                              onChange={this.handleProductTabsChange.bind(
+                                                this,
+                                                2,
+                                                i
+                                              )}
+                                            >
+                                              <img
+                                                src={item.imageURL}
+                                                className="ladyimg"
+                                                alt="Lady Img"
+                                              />
+                                            </Checkbox>
+                                            {item.brandName ? (
+                                              <h3>{item.brandName}</h3>
+                                            ) : null}
+                                            {item.productName ? (
+                                              <h4>{item.productName}</h4>
+                                            ) : null}
+                                            {item.price ? (
+                                              <span>{item.price}</span>
+                                            ) : null}
+                                            <img
+                                              src={Cancelico}
+                                              className="cancelico"
+                                              alt="Cancel Ico"
+                                            />
+                                          </div>
+                                        );
+                                      })
+                                    : null}
+                                  {this.state.wishListData.length === 0 ? (
+                                    <Empty
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
                                     />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
+                                  ) : null}
                                 </div>
-                                <div className="tabsbotbtn-box">
-                                  <button type="button" className="tabsbotbtn">
-                                    SENT
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    ADD To CART
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    BUY NOW
-                                  </button>
-                                </div>
+                                {this.state.wishListData.length > 0 ? (
+                                  <div className="tabsbotbtn-box">
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      SENT
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      ADD To CART
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      BUY NOW
+                                    </button>
+                                  </div>
+                                ) : null}
                               </div>
                             </Tab>
                             <Tab label="Recommended">
                               <div className="shoppingbag">
-                                <label className="selectalllabel">
-                                  Select All
-                                </label>
+                                {this.state.recommendedData ? (
+                                  <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,3)}>
+                                    Select All
+                                  </label>
+                                ) : null}
                                 <div className="prodtabl">
                                   {this.state.recommendedData
                                     ? this.state.recommendedData.map(
@@ -7157,18 +6928,34 @@ class Header extends Component {
                                         }
                                       )
                                     : null}
+                                  {this.state.recommendedData.length === 0 ? (
+                                    <Empty
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    />
+                                  ) : null}
                                 </div>
-                                <div className="tabsbotbtn-box">
-                                  <button type="button" className="tabsbotbtn">
-                                    SENT
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    ADD To CART
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    BUY NOW
-                                  </button>
-                                </div>
+                                {this.state.recommendedData.length > 0 ? (
+                                  <div className="tabsbotbtn-box">
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      SENT
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      ADD To CART
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      BUY NOW
+                                    </button>
+                                  </div>
+                                ) : null}
                               </div>
                             </Tab>
                           </Tabs>
