@@ -272,6 +272,7 @@ class OrderSetting extends Component {
             ? parseInt(this.state.orderConfigData.retryCount)
             : 0,
         StateFlag: this.state.orderConfigData.stateFlag,
+        CurrencyText: this.state.orderConfigData.currencyText
       },
     })
       .then(function(res) {
@@ -1225,6 +1226,26 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Currency
+                                      </label>
+                                      <input
+                                        type="text"
+                                        className="setting-txt"
+                                        name="currencyText"
+                                        value={
+                                          this.state.orderConfigData
+                                            .currencyText
+                                        }
+                                        onChange={this.OrderSettingOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
+
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"

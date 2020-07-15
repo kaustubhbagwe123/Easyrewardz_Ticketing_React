@@ -185,6 +185,7 @@ class ReturnTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Record Updated Successfully.");
+          self.handleGetOrderReturnsData();
         }
       })
       .catch((data) => {

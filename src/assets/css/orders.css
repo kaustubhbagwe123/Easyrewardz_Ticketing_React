@@ -711,6 +711,12 @@
   margin-bottom: 0px;
 }
 
+.setting-txt{
+  float: right;
+  margin-left: auto !important;
+  width: 200px !important;
+}
+
 /* chetan css ends */
 
 /* responsive starts */
