@@ -267,6 +267,7 @@ class OrderSetting extends Component {
         PaymentTenantCodeText: this.state.orderConfigData.paymentTenantCodeText,
         RetryCount: this.state.orderConfigData.retryCount!==""?parseInt(this.state.orderConfigData.retryCount):0,
         StateFlag: this.state.orderConfigData.stateFlag,
+        CurrencyText: this.state.orderConfigData.currencyText
       },
     })
       .then(function (res) {
@@ -1221,6 +1222,25 @@ class OrderSetting extends Component {
                                         htmlFor="chkOrderconfigStateFlag"
                                         className="cr cr-float-auto"
                                       ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Currency
+                                      </label>
+                                      <input
+                                        type="text"
+                                        className="setting-txt"
+                                        name="currencyText"
+                                        value={
+                                          this.state.orderConfigData
+                                            .currencyText
+                                        }
+                                        onChange={this.OrderSettingOnChange.bind(
+                                          this
+                                        )}
+                                      />
                                     </div>
                                   </div>
 

@@ -776,6 +776,9 @@ class Campaign extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreCustomerpopupDetails",
       headers: authHeader(),
+      params:{
+        mobileNumber: rowData.customerPhoneNumber
+      }
     })
       .then(function(response) {
         debugger;
