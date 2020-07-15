@@ -3106,7 +3106,7 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p
+                                {/* <p
                                   style={{
                                     fontWeight:
                                       chat.messageCount > 0 ? "bold" : "400",
@@ -3122,7 +3122,7 @@ class Header extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.newmessages
                                     : "New Messages"}
-                                </p>
+                                </p> */}
                                 <p>{chat.timeAgo}</p>
                               </div>
                             </div>
@@ -3148,7 +3148,7 @@ class Header extends Component {
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
-                      <Select
+                      {/* <Select
                         className="agentchatdrop-down"
                         showArrow={true}
                         value={this.state.sAgentId}
@@ -3170,7 +3170,7 @@ class Header extends Component {
                               </Option>
                             );
                           })}
-                      </Select>
+                      </Select> */}
                     </div>
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData
@@ -3209,7 +3209,7 @@ class Header extends Component {
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  <p
+                                  {/* <p
                                     className={"chat-storemng "}
                                     title="Store Manager"
                                   >
@@ -3235,7 +3235,7 @@ class Header extends Component {
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
                                       : "New Messages"}
-                                  </p>
+                                  </p> */}
                                   <p>{chat.timeAgo}</p>
                                 </div>
                               </div>
@@ -6730,10 +6730,11 @@ class Header extends Component {
                             22 Past Chat
                           </button>
                           <button
+                          style={{float:"right"}}
                             type="button"
-                            className="updateprofilelinkbtn"
+                            className="updateprofilelinkbtn pastchatmobbtn"
                           >
-                            Send Update Profile Link
+                            Action
                           </button>
                         </div>
                       </Tab>
@@ -6799,6 +6800,17 @@ class Header extends Component {
                                       image={Empty.PRESENTED_IMAGE_SIMPLE}
                                     />
                                   ) : null}
+                                </div>
+                                <div className="tabsbotbtn-box">
+                                  <button type="button" className="tabsbotbtn">
+                                    SENT
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    ADD To CART
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    BUY NOW
+                                  </button>
                                 </div>
                               </div>
                             </Tab>

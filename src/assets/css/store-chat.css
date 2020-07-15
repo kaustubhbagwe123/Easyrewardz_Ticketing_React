@@ -1006,10 +1006,10 @@ p {
   width: 20%;
 }
 .secondbox {
-  width: 45%;
+  width: 53%;
 }
 .thirdbox {
-  width: 35%;
+  width: 27%;
   position: relative;
 }
 .secondbox-open {
@@ -1061,7 +1061,7 @@ p {
   background: #2561a8;
   color: #fff;
   border-radius: 10px;
-  margin: 15px;
+  margin: 15px 30px;
   padding: 0 2px;
 }
 .uptabs .nav-tabs .nav-link.active {
@@ -1152,6 +1152,9 @@ p {
 /* .pointstable table tbody tr:first-child {
   border-top: 1px solid #eeeeee;
 } */
+.nameplate {
+  padding: 0 15px;
+}
 .pointstable table td {
   padding: 10px 0;
   font-size: 12px;
@@ -1166,6 +1169,7 @@ p {
 }
 .pointstable {
   margin-bottom: 10px;
+  padding: 0 15px;
 }
 .pointstable td:nth-child(1) {
   float: left;
@@ -1253,7 +1257,7 @@ p {
   float: right;
 }
 .lasttransaction li {
-  width: 100px;
+  width: 50%;
 }
 .lasttransaction {
   padding-bottom: 4px;
@@ -1268,6 +1272,7 @@ p {
 }
 .lasttransaction ul {
   margin-bottom: 10px;
+  display: flex;
 }
 .ordersbox ul {
   margin-bottom: 7px;
@@ -1320,8 +1325,8 @@ p {
 .insightsbox p {
   font-size: 12px;
   color: #666;
-  margin-bottom: 0;
-  font-weight: 600;
+  margin-bottom: 3px;
+  font-weight: normal;
 }
 .updateprofilelinkbtn {
   background: none;
@@ -1382,6 +1387,9 @@ p {
 .productsbox .nav-tabs .nav-link:first-child {
   padding-left: 0;
 }
+.productsbox .nav-tabs .nav-item:last-child .nav-link {
+  padding-right: 0;
+}
 .productsbox .selectalllabel {
   color: #2561a8;
   font-size: 13px;
@@ -1396,7 +1404,7 @@ p {
   margin-bottom: 12px;
   display: inline-table;
 }
-img.ladyimg {
+.ladyimg {
   width: 100px;
   height: 150px;
 }
@@ -1997,7 +2005,8 @@ img.ladyimg {
   border-radius: 0;
 }
 .prodtabl1 .ant-collapse-header {
-  color: #2561a8 !important;
+  color: #333 !important;
+  font-weight: 600;
 }
 .prodtabl1 .ant-collapse-content {
   border: none;
@@ -2459,7 +2468,7 @@ img.ladyimg {
   }
   /* message suggestions ends */
   .uptabs .nav-tabs {
-    margin: 9px 15px;
+    margin: 9px 9px;
     padding: 0 2px;
     float: right;
   }
@@ -2477,7 +2486,7 @@ img.ladyimg {
     max-height: 345px;
   }
   .nameplate .namelabel {
-    padding: 7px 14px;
+    padding: 6px 11px;
   }
   .nameplate li:first-child {
     margin-right: 6px;
@@ -2501,12 +2510,37 @@ img.ladyimg {
   }
   .pastchatmobbtn {
     display: inline;
-    margin-right: 12px !important;
+    margin: 12px !important;
     float: left;
   }
   .productsbox .selectalllabel {
     margin-top: 12px;
   }
+  .productsbox .prodboxx {
+    margin-right: 5px;
+  }
+  .thirdbox .uptabs .tab-content {
+    padding: 0 6px 15px;
+  }
+  .ladyimg {
+    width: 90px;
+    height: 125px;
+  }
+  .tabsbotbtn-box {
+    text-align: inherit;
+    margin: 10px 0;
+  }
+  .tabsbotbtn {
+    min-width: 95px;
+    width: 95px;
+    margin-right: 5px;
+    font-size: 11px;
+    padding: 8px 8px;
+}
+.uptabs .nav-tabs .nav-link {
+  padding: 8px 8px;
+  font-size: 11px;
+}
 }
 
 @media all and (max-width: 425px) {
