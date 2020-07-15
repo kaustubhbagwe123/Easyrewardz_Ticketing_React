@@ -1003,17 +1003,17 @@ p {
   text-align: center;
 }
 .firstbox {
-  width: 25%;
+  width: 20%;
 }
 .secondbox {
-  width: 48%;
+  width: 45%;
 }
 .thirdbox {
-  width: 27%;
+  width: 35%;
   position: relative;
 }
 .secondbox-open {
-  width: 68% !important;
+  width: 73% !important;
 }
 .thirdbox-close {
   width: 7% !important;
@@ -1154,7 +1154,8 @@ p {
 } */
 .pointstable table td {
   padding: 10px 0;
-  font-size: 12px;
+  font-size: 14px;
+    font-weight: normal;
 }
 .pointstable table label {
   color: #333;
@@ -1181,7 +1182,7 @@ p {
   text-align: left;
 }
 .pointstable td:nth-child(2) span {
-  text-align: center;
+  text-align: right;
 }
 .pointstable td:nth-child(3) span {
   text-align: right;
@@ -1193,7 +1194,7 @@ p {
 }
 .itemtable table th {
   padding: 0;
-  color: #999;
+  color: #333;
   font-weight: normal;
 }
 .itemtable table td {
@@ -1201,10 +1202,11 @@ p {
   font-size: 12px;
 }
 .itemtable table label {
-  color: #333;
+  color: #666;
+  font-weight: normal;
 }
 .itemtable {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 .itemtable td:nth-child(1) {
   float: left;
@@ -1245,12 +1247,12 @@ p {
   margin-bottom: 10px;
 }
 .lasttransaction label {
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  color: #333;
   display: block;
 }
 .lasttransaction li:last-child {
-  float: right;
+  float: none;
 }
 .lasttransaction li {
   width: 100px;
@@ -1265,12 +1267,16 @@ p {
 }
 .lasttransaction {
   margin-bottom: 12px;
+  border-bottom: 1px solid #eeeeee;
 }
 .lasttransaction ul {
   margin-bottom: 10px;
+  display: flex;
 }
 .ordersbox ul {
   margin-bottom: 7px;
+    display: flex;
+    justify-content: space-between;
 }
 .ordersbox h3 {
   font-size: 14px;
@@ -1279,18 +1285,9 @@ p {
   display: inline-block;
 }
 .ordersbox label {
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  color: #666;
   display: block;
-}
-.ordersbox li {
-  width: 100px;
-}
-.ordersbox li:last-child {
-  float: right;
-}
-.ordersbox li:last-child {
-  float: right;
 }
 .ordersbox span {
   font-size: 12px;
@@ -1318,10 +1315,10 @@ p {
   margin-bottom: 10px;
 }
 .insightsbox p {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 0;
-  font-weight: 600;
+  font-size: 14px;
+    color: #666;
+    margin-bottom: 3px;
+    font-weight: normal;
 }
 .updateprofilelinkbtn {
   background: none;
@@ -1332,6 +1329,22 @@ p {
   font-weight: 600;
   margin: auto;
   display: block;
+}
+.tabsbotbtn {
+  background: none;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #2561a8;
+  font-weight: 600;
+  margin: auto;
+  margin-right: 10px;
+}
+.tabsbotbtn:last-child {
+  margin-right: 0px;
+}
+.tabsbotbtn-box {
+  text-align: center;
 }
 .pastchatmobbtn {
   display: none;
@@ -1375,8 +1388,9 @@ p {
 }
 .productsbox .prodboxx {
   position: relative;
-  margin-right: 12px;
-  margin-bottom: 12px;
+  margin-right: 8px;
+    margin-bottom: 12px;
+    display: inline-table;
 }
 img.ladyimg {
   width: 100px;
@@ -1946,14 +1960,15 @@ img.ladyimg {
   margin-top: 15px;
   min-width: auto;
   cursor: pointer;
-  padding: 7px 18px;
-  font-size: 12px;
+  padding: 8px 12px;
+  font-size: 10px;
   text-transform: uppercase;
+  border-radius: 8px;
 }
 .tagsbtn-active {
   text-transform: uppercase;
-  font-size: 12px;
-  padding: 7px 18px;
+  font-size: 10px;
+  padding: 8px 12px;
   background: #2561a8;
   color: #fff;
   font-weight: 400;
@@ -1962,9 +1977,10 @@ img.ladyimg {
   margin-top: 15px;
   min-width: auto;
   cursor: pointer;
+  border-radius: 8px;
 }
 .secondbox-open-new {
-  width: 75% !important;
+  width: 80% !important;
 }
 .Arwico{
   display: none;
@@ -2454,6 +2470,11 @@ img.ladyimg {
   }
   .nameplate h3 {
     font-size: 13px;
+    white-space: nowrap;
+    max-width: 90px;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
   }
   .contactbox {
     float: right;
