@@ -1182,6 +1182,7 @@ class OrderTab extends Component {
                               ? TranslationContext.button.cancel
                               : "Cancel"
                           }
+                          okButtonProps={{ disabled: true }}
                         >
                           <p
                             style={{ cursor: "pointer" }}
