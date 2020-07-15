@@ -1154,8 +1154,7 @@ p {
 } */
 .pointstable table td {
   padding: 10px 0;
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 12px;
 }
 .pointstable table label {
   color: #333;
@@ -1182,7 +1181,7 @@ p {
   text-align: left;
 }
 .pointstable td:nth-child(2) span {
-  text-align: right;
+  text-align: center;
 }
 .pointstable td:nth-child(3) span {
   text-align: right;
@@ -1194,7 +1193,7 @@ p {
 }
 .itemtable table th {
   padding: 0;
-  color: #333;
+  color: #999;
   font-weight: normal;
 }
 .itemtable table td {
@@ -1202,11 +1201,10 @@ p {
   font-size: 12px;
 }
 .itemtable table label {
-  color: #666;
-  font-weight: normal;
+  color: #333;
 }
 .itemtable {
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 .itemtable td:nth-child(1) {
   float: left;
@@ -1247,12 +1245,12 @@ p {
   margin-bottom: 10px;
 }
 .lasttransaction label {
-  font-size: 13px;
-  color: #333;
+  font-size: 12px;
+  color: #999;
   display: block;
 }
 .lasttransaction li:last-child {
-  float: none;
+  float: right;
 }
 .lasttransaction li {
   width: 100px;
@@ -1267,16 +1265,12 @@ p {
 }
 .lasttransaction {
   margin-bottom: 12px;
-  border-bottom: 1px solid #eeeeee;
 }
 .lasttransaction ul {
   margin-bottom: 10px;
-  display: flex;
 }
 .ordersbox ul {
   margin-bottom: 7px;
-  display: flex;
-  justify-content: space-between;
 }
 .ordersbox h3 {
   font-size: 14px;
@@ -1285,9 +1279,18 @@ p {
   display: inline-block;
 }
 .ordersbox label {
-  font-size: 13px;
-  color: #666;
+  font-size: 12px;
+  color: #999;
   display: block;
+}
+.ordersbox li {
+  width: 100px;
+}
+.ordersbox li:last-child {
+  float: right;
+}
+.ordersbox li:last-child {
+  float: right;
 }
 .ordersbox span {
   font-size: 12px;
@@ -1315,10 +1318,10 @@ p {
   margin-bottom: 10px;
 }
 .insightsbox p {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
-  margin-bottom: 3px;
-  font-weight: normal;
+  margin-bottom: 0;
+  font-weight: 600;
 }
 .updateprofilelinkbtn {
   background: none;
@@ -1330,6 +1333,7 @@ p {
   margin: auto;
   display: block;
 }
+
 .tabsbotbtn {
   background: none;
   border-radius: 10px;
@@ -1339,13 +1343,13 @@ p {
   font-weight: 600;
   margin: auto;
   margin-right: 10px;
-}
-.tabsbotbtn:last-child {
+  }
+  .tabsbotbtn:last-child {
   margin-right: 0px;
-}
-.tabsbotbtn-box {
+  }
+  .tabsbotbtn-box {
   text-align: center;
-}
+  }
 .pastchatmobbtn {
   display: none;
 }

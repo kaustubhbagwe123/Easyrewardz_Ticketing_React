@@ -219,7 +219,7 @@ class Header extends Component {
       recommendedData: [],
       ProfileProductTab: 0,
       activeCollpse: [1],
-      productTypeTab:0
+      productTypeTab: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -2407,25 +2407,27 @@ class Header extends Component {
     ////for Shopping Bag list
     if (tabIndex === 1) {
       this.state.shoppingBagData[itemIndex].isCheck = !this.state
-      .shoppingBagData[itemIndex].isCheck;
-    this.setState({ shoppingBagData: this.state.shoppingBagData });
+        .shoppingBagData[itemIndex].isCheck;
+      this.setState({ shoppingBagData: this.state.shoppingBagData });
     }
     //// for Wish List
     if (tabIndex === 2) {
-      this.state.wishListData[itemIndex].isCheck = !this.state
-        .wishListData[itemIndex].isCheck;
+      this.state.wishListData[itemIndex].isCheck = !this.state.wishListData[
+        itemIndex
+      ].isCheck;
       this.setState({ wishListData: this.state.wishListData });
     }
     ////for Recommended list
     if (tabIndex === 3) {
-      this.state.recommendedData[itemIndex].isCheck = !this.state.recommendedData[itemIndex].isCheck;
+      this.state.recommendedData[itemIndex].isCheck = !this.state
+        .recommendedData[itemIndex].isCheck;
       this.setState({ recommendedData: this.state.recommendedData });
     }
   };
   ////handle product type tab change
-  handleProductTypeTabChange=(index)=>{
-    this.setState({productTypeTab:index})
-  }
+  handleProductTypeTabChange = (index) => {
+    this.setState({ productTypeTab: index });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -6501,7 +6503,7 @@ class Header extends Component {
                       selected={this.state.ProfileProductTab}
                     >
                       <Tab label="Profile">
-                        <div className="profilebox show-desktop">
+                        <div className="profilebox">
                           <div>
                             <ul className="nameplate">
                               <li>
@@ -6524,6 +6526,22 @@ class Header extends Component {
                                   Tier: <b>{this.state.customerTier}</b>
                                 </span>
                               </li>
+                              <li className="contactbox">
+                                <div>
+                                  <ul>
+                                    {this.state.customerEmailID ? (
+                                      <li>
+                                        {/* <label>Email ID</label> */}
+                                        <p>{this.state.customerEmailID}</p>
+                                      </li>
+                                    ) : null}
+                                    <li>
+                                      {/* <label>Mobile No</label> */}
+                                      <p>{this.state.customerMobileNo}</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
                             </ul>
                           </div>
                           <div className="pointstable">
@@ -6531,49 +6549,23 @@ class Header extends Component {
                               <tbody>
                                 <tr>
                                   <td>
-                                    <label>Email ID</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerEmailID}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Mobile No</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerMobileNo}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
                                     <label>Total Points</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.totalPoints.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
-                                </tr>
-                                <tr>
                                   <td>
                                     <label>Lifetime Value</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.lifetimeValue.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
-                                </tr>
-                                <tr>
                                   <td>
                                     <label>Visit Count</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.visitCount.toLocaleString(
                                         "en-IN"
@@ -6585,320 +6577,127 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <div className="lasttransaction">
-                              <h3>Last Transaction</h3>
-                              {/* <img
+                            <Collapse
+                              activeKey={this.state.activeCollpse}
+                              onChange={this.handleCollpseChange.bind(this)}
+                            >
+                              <Panel header="Insights" key="1">
+                                <div className="insightsbox">
+                                  {/* <h3>Insights</h3>
+                              <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
                               /> */}
-                              <ul>
-                                <li>
-                                  <label>Bill No</label>
-                                  <span>{this.state.billNumber}</span>
-                                </li>
-                                <li>
-                                  <label>Amount</label>
-                                  <span>
-                                    {this.state.billAmount.toLocaleString(
-                                      "en-IN"
-                                    )}
-                                  </span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Store</label>
-                                  <span>{this.state.storeDetails}</span>
-                                </li>
-                                <li>
-                                  <label>Date</label>
-                                  <span>{this.state.transactionDate}</span>
-                                </li>
-                              </ul>
-                              <div className="itemtable">
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Items</th>
-                                      <th>Qty</th>
-                                      <th>Amount</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>Product Name 1</label>
-                                        <label>Product Name 2</label>
-                                        <label>Product Name 3</label>
-                                      </td>
-                                      <td>
-                                        <label>02</label>
-                                        <label>03</label>
-                                        <label>01</label>
-                                      </td>
-                                      <td>
-                                        <label>₹999</label>
-                                        <label>₹1299</label>
-                                        <label>₹12999</label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            className="updateprofilelinkbtn pastchatmobbtn"
-                          >
-                            22 Past Chat
-                          </button>
-                          <button
-                            type="button"
-                            className="updateprofilelinkbtn"
-                          >
-                            Send Update Profile Link
-                          </button>
-                        </div>
-                        <div className="profilebox show-mobile">
-                          <div>
-                            <ul className="nameplate">
-                              <li>
-                                <label
-                                  onMouseEnter={this.handleNameHover.bind(this)}
-                                  className="namelabel"
-                                >
-                                  {this.state.customerName.charAt(0)}
-                                </label>
-                              </li>
-                              <li>
-                                <h3>{this.state.customerName}</h3>
-                                {/* <img
-                                src={EditPen}
-                                style={{ marginLeft: "10px" }}
-                                alt="Edit Pen"
-                              />
-                              <img src={UserInfo} alt="User Info" /> */}
-                                <span>
-                                  Tier: <b>{this.state.customerTier}</b>
-                                </span>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="pointstable">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <label>Email ID</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerEmailID}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Mobile No</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerMobileNo}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Total Points</label>
-                                  </td>
-                                  <td>
-                                    <span>
-                                      {this.state.totalPoints.toLocaleString(
-                                        "en-IN"
-                                      )}
-                                    </span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Lifetime Value</label>
-                                  </td>
-                                  <td>
-                                    <span>
-                                      {this.state.lifetimeValue.toLocaleString(
-                                        "en-IN"
-                                      )}
-                                    </span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Visit Count</label>
-                                  </td>
-                                  <td>
-                                    <span>
-                                      {this.state.visitCount.toLocaleString(
-                                        "en-IN"
-                                      )}
-                                    </span>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="prodtabl1">
-                            <div className="lasttransaction">
-                              <h3>Last Transaction</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <ul>
-                                <li>
-                                  <label>Bill No</label>
-                                  <span>{this.state.billNumber}</span>
-                                </li>
-                                <li>
-                                  <label>Amount</label>
-                                  <span>
-                                    {this.state.billAmount.toLocaleString(
-                                      "en-IN"
-                                    )}
-                                  </span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Store</label>
-                                  <span>{this.state.storeDetails}</span>
-                                </li>
-                                <li>
-                                  <label>Date</label>
-                                  <span>{this.state.transactionDate}</span>
-                                </li>
-                              </ul>
-                              <div className="itemtable">
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Items</th>
-                                      <th>Qty</th>
-                                      <th>Amount</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>Product Name 1</label>
-                                        <label>Product Name 2</label>
-                                        <label>Product Name 3</label>
-                                      </td>
-                                      <td>
-                                        <label>02</label>
-                                        <label>03</label>
-                                        <label>01</label>
-                                      </td>
-                                      <td>
-                                        <label>₹999</label>
-                                        <label>₹1299</label>
-                                        <label>₹12999</label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
+                                  <p>
+                                    1. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    2. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    3. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                </div>
+                              </Panel>
+                              <Panel header="Orders" key="2">
+                                <div className="ordersbox">
+                                  {/* <h3>Orders</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Delivered</label>
+                                      <span>{this.state.orderDelivered}</span>
+                                    </li>
+                                    <li>
+                                      <label>Shopping Bag</label>
+                                      <span>{this.state.orderShoppingBag}</span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Ready to Ship</label>
+                                      <span>{this.state.orderReadyToShip}</span>
+                                    </li>
+                                    <li>
+                                      <label>Returns</label>
+                                      <span>{this.state.orderReturns}</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </Panel>
+                              <Panel header="Last Transaction" key="3">
+                                <div className="lasttransaction">
+                                  {/* <h3>Last Transaction</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Bill No</label>
+                                      <span>{this.state.billNumber}</span>
+                                    </li>
+                                    <li>
+                                      <label>Amount</label>
+                                      <span>
+                                        {this.state.billAmount.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Store</label>
+                                      <span>{this.state.storeDetails}</span>
+                                    </li>
+                                    <li>
+                                      <label>Date</label>
+                                      <span>{this.state.transactionDate}</span>
+                                    </li>
+                                  </ul>
+                                  <div className="itemtable">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Items</th>
+                                          <th>Qty</th>
+                                          <th>Amount</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Product Name 1</label>
+                                            <label>Product Name 2</label>
+                                            <label>Product Name 3</label>
+                                          </td>
+                                          <td>
+                                            <label>02</label>
+                                            <label>03</label>
+                                            <label>01</label>
+                                          </td>
+                                          <td>
+                                            <label>₹999</label>
+                                            <label>₹1299</label>
+                                            <label>₹12999</label>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </Panel>
+                            </Collapse>
                           </div>
                           <button
                             type="button"
