@@ -53,6 +53,7 @@ class OrderSetting extends Component {
       editButtonShow: false,
       file: {},
       fileName: "",
+      ordSettingBtnDisabled: false,
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -570,6 +571,14 @@ class OrderSetting extends Component {
 
     this.handleGetShippingTempData();
   };
+
+  handleCheckMethod() {
+    if (this.state.fileName !== "") {
+      this.handleBulkOrderTempUpload();
+    } else {
+      this.handleSubmitShppingTemp();
+    }
+  }
   /// handle submit shipping template
   handleSubmitShppingTemp() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -581,6 +590,9 @@ class OrderSetting extends Component {
       this.state.OrdTempWeight !== ""
     ) {
       let self = this;
+      this.setState({
+        ordSettingBtnDisabled: true,
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
@@ -615,6 +627,7 @@ class OrderSetting extends Component {
               OrdTempLengthValidation: "",
               OrdTempBreadthValidation: "",
               OrdTempWeightValidation: "",
+              ordSettingBtnDisabled: false,
             });
             NotificationManager.success(
               TranslationContext !== undefined
@@ -628,6 +641,9 @@ class OrderSetting extends Component {
                 ? TranslationContext.alertmessage.templatenotadded
                 : "Template not added."
             );
+            self.setState({
+              ordSettingBtnDisabled: false,
+            });
           }
         })
         .catch((data) => {
@@ -658,7 +674,50 @@ class OrderSetting extends Component {
       });
     }
   }
-
+  /// handle Order template file upload
+  handleBulkOrderTempUpload() {
+    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({
+      ordSettingBtnDisabled: true,
+    });
+    const formData = new FormData();
+    formData.append("file", this.state.file);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/BulkUploadOrderTemplate",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then((response) => {
+        var status = response.data.message;
+        if (status === "Success") {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.fileuploadedsuccessfully
+              : "File uploaded successfully."
+          );
+          self.setState({
+            fileName: "",
+            file: {},
+            ordSettingBtnDisabled: false,
+          });
+          self.handleGetShippingTempData();
+        } else {
+          self.setState({ ordSettingBtnDisabled: false });
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.filenotuploaded
+              : "File not uploaded."
+          );
+        }
+      })
+      .catch((response) => {
+        self.setState({ ordSettingBtnDisabled: false });
+        console.log(response);
+      });
+  }
   /// update Shipping template data
   handleUpdateShippingTemplate() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -754,7 +813,6 @@ class OrderSetting extends Component {
 
   /// check file format
   handleFileUpload = (e) => {
-    debugger;
     var imageFile = e.target.files[0];
     var fileName = imageFile.name;
     if (!imageFile.name.match(/\.(csv)$/)) {
@@ -763,7 +821,7 @@ class OrderSetting extends Component {
     } else {
       this.setState({
         fileName,
-        file: e[0],
+        file: imageFile,
       });
     }
   };
@@ -1935,9 +1993,12 @@ class OrderSetting extends Component {
                                     <button
                                       className="Schedulenext1 mb-0"
                                       type="button"
-                                      onClick={this.handleSubmitShppingTemp.bind(
+                                      onClick={this.handleCheckMethod.bind(
                                         this
                                       )}
+                                      disabled={
+                                        this.state.ordSettingBtnDisabled
+                                      }
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.button.submit
