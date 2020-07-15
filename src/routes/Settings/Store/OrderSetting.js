@@ -51,6 +51,8 @@ class OrderSetting extends Component {
       EditOrdTempBreadthValidation: "",
       EditOrdTempWeightValidation: "",
       editButtonShow: false,
+      file: {},
+      fileName: "",
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -272,7 +274,7 @@ class OrderSetting extends Component {
             ? parseInt(this.state.orderConfigData.retryCount)
             : 0,
         StateFlag: this.state.orderConfigData.stateFlag,
-        CurrencyText: this.state.orderConfigData.currencyText
+        CurrencyText: this.state.orderConfigData.currencyText,
       },
     })
       .then(function(res) {
@@ -745,6 +747,26 @@ class OrderSetting extends Component {
       });
     }
   }
+  /// handle file upload id change
+  handleFileUploadData = () => {
+    this.refs.ordUplTemplate.click();
+  };
+
+  /// check file format
+  handleFileUpload = (e) => {
+    debugger;
+    var imageFile = e.target.files[0];
+    var fileName = imageFile.name;
+    if (!imageFile.name.match(/\.(csv)$/)) {
+      alert("Only csv file allowed.");
+      return false;
+    } else {
+      this.setState({
+        fileName,
+        file: e[0],
+      });
+    }
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -1245,7 +1267,6 @@ class OrderSetting extends Component {
                                       />
                                     </div>
                                   </div>
-
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
@@ -1666,9 +1687,7 @@ class OrderSetting extends Component {
                                           </p>
                                           <CSVLink
                                             filename={"OrderTemplate.csv"}
-                                            data={
-                                              config.storeOrder_Template
-                                            }
+                                            data={config.storeOrder_Template}
                                           >
                                             <img
                                               src={DownExcel}
@@ -1676,7 +1695,21 @@ class OrderSetting extends Component {
                                             />
                                           </CSVLink>
                                         </div>
-                                        <button>Upload Templates</button>
+                                        <button
+                                          type="button"
+                                          onClick={this.handleFileUploadData}
+                                          className="curshar-pointer"
+                                        >
+                                          Upload Templates
+                                        </button>
+                                        <input
+                                          type="file"
+                                          accept=".csv"
+                                          ref="ordUplTemplate"
+                                          style={{ display: "none" }}
+                                          onChange={this.handleFileUpload}
+                                        />
+                                        &nbsp;{this.state.fileName}
                                       </div>
                                     </div>
                                   </div>
