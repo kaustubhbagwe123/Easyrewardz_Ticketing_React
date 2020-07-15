@@ -245,7 +245,7 @@ let config = {
     ["Issue1", "Medium", "30", "2", "Day", "Active"],
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
-  storeOrderTemplate:[
+  storeOrder_Template:[
     [
       "Template Name",
       "Height",
@@ -255,8 +255,8 @@ let config = {
       "Weight",
       "Unit"
     ],
-    ["","","","","lnch","","KG"]
-    ["","","","","CM","","G"]
+    ["template1","5","8","5.5","lnch","5","KG"],
+    ["template2","6","9","7.5","CM","5","G"]
   ],
   //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
   // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------

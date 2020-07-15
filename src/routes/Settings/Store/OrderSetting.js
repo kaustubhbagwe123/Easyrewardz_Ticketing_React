@@ -1644,9 +1644,9 @@ class OrderSetting extends Component {
                                               : "Sample Template"}
                                           </p>
                                           <CSVLink
-                                            filename={"Hierarchy.csv"}
+                                            filename={"OrderTemplate.csv"}
                                             data={
-                                              config.Store_HierarchyTemplate
+                                              config.storeOrder_Template
                                             }
                                           >
                                             <img
