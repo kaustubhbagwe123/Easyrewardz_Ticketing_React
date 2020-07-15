@@ -245,7 +245,7 @@ let config = {
     ["Issue1", "Medium", "30", "2", "Day", "Active"],
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
-  storeOrder_Template:[
+  storeOrder_Template: [
     [
       "Template Name",
       "Height",
@@ -253,10 +253,10 @@ let config = {
       "Breadth",
       "Unit",
       "Weight",
-      "Unit"
+      "WeightUnit",
     ],
-    ["template1","5","8","5.5","lnch","5","KG"],
-    ["template2","6","9","7.5","CM","5","G"]
+    ["template1", "5", "8", "5.5", "Inch", "5", "KG"],
+    ["template2", "6", "9", "7.5", "CM", "5", "G"],
   ],
   //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
   // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
@@ -273,7 +273,8 @@ let config = {
   // socketUrl: "https://api-bellchatsocketserverqa.ercx.co", /// -------Socket URL Client---------
   // socketUrl:"http://localhost:4000/"
   // soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
-   soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
+  soundURL:
+    "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
 };
 
 export default config;
