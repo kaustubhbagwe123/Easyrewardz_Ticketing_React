@@ -578,6 +578,10 @@
   box-shadow: none;
   text-transform: none;
 }
+.order-popover-butns .ant-popover-buttons button[disabled]:last-child {
+  opacity: 0.5;
+  color: #fff;
+}
 .order-popover-butns .ant-popover-buttons {
   margin-top: 25px;
 }

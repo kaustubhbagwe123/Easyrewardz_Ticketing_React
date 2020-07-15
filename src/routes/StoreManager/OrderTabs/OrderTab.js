@@ -1182,7 +1182,9 @@ class OrderTab extends Component {
                               ? TranslationContext.button.cancel
                               : "Cancel"
                           }
-                          okButtonProps={{ disabled: this.state.pincodeChecAvaibility }}
+                          okButtonProps={{
+                            disabled: this.state.pincodeChecAvaibility,
+                          }}
                         >
                           <p
                             style={{ cursor: "pointer" }}
@@ -1620,6 +1622,9 @@ class OrderTab extends Component {
                             this,
                             row.id
                           )}
+                          okButtonProps={{
+                            disabled: this.state.pincodeChecAvaibility,
+                          }}
                         >
                           <p
                             style={{ cursor: "pointer" }}
