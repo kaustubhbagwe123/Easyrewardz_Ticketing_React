@@ -1182,7 +1182,7 @@ class OrderTab extends Component {
                               ? TranslationContext.button.cancel
                               : "Cancel"
                           }
-                          okButtonProps={{ disabled: true }}
+                          okButtonProps={{ disabled: this.state.pincodeChecAvaibility }}
                         >
                           <p
                             style={{ cursor: "pointer" }}
