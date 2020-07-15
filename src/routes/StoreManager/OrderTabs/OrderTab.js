@@ -1182,6 +1182,9 @@ class OrderTab extends Component {
                               ? TranslationContext.button.cancel
                               : "Cancel"
                           }
+                          okButtonProps={{
+                            disabled: this.state.pincodeChecAvaibility,
+                          }}
                         >
                           <p
                             style={{ cursor: "pointer" }}
@@ -1505,102 +1508,135 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
-                              <p className="non-deliverable">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.ticketingDashboard
-                                      .enteredpincodeisnondeliverable
-                                  : "Entered Pin code is non deliverable"}
-                              </p>
-                              <div className="popover-radio-cntr">
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="order-returns1"
-                                    name="ordMoveReturn"
-                                    checked={this.state.ordMoveReturn}
-                                    onChange={this.handleOrdChangeOptions}
-                                  />
-                                  <label htmlFor="order-returns1">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                          .moveorderintoreturns
-                                      : "Move Order into Returns"}
-                                  </label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="self-pickup1"
-                                    name="ordSelfPickup"
-                                    checked={this.state.ordSelfPickup}
-                                    onChange={this.handleOrdChangeOptions}
-                                  />
-                                  <label htmlFor="self-pickup1">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                          .convertthisorderinselfpickup
-                                      : "Convert this order in Self Pickup"}
-                                  </label>
-                                </div>
-                              </div>
-                              {this.state.ordSelfPickup && (
-                                <div className="row">
-                                  <div className="col-md-6">
-                                    <p>
+                              {this.state.pincodeChecAvaibility && (
+                                <p
+                                  className="non-deliverable"
+                                  style={{ marginBottom: "5px" }}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .checkingyouravailability
+                                    : "Checking your availability."}
+                                </p>
+                              )}
+                              {this.state.showPinCodereturnMsg && (
+                                <>
+                                  {this.state.showPinStatusCodeMsg === false ? (
+                                    <p className="non-deliverable">
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.title.date
-                                        : "Date"}
+                                        ? TranslationContext.ticketingDashboard
+                                            .kidlycheckenteredstatepincode
+                                        : "Kidly Check Entered State Pin Code"}
                                     </p>
-
-                                    <DatePicker
-                                      selected={this.state.OrdPickupDate}
-                                      onChange={(date) =>
-                                        this.handleOrdDateChange(date)
-                                      }
-                                      placeholderText={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext
-                                              .ticketingDashboard.enterdate
-                                          : "Enter Date"
-                                      }
-                                      value={this.state.OrdPickupDate}
-                                      minDate={new Date()}
-                                      showMonthDropdown
-                                      showYearDropdown
-                                      className="txt-1"
-                                      dateFormat="dd/MM/yyyy"
-                                    />
-                                  </div>
-                                  <div className="col-md-6">
-                                    <p>
+                                  ) : (
+                                    <p className="non-deliverable">
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.title.time
-                                        : "Time"}
+                                        ? TranslationContext.ticketingDashboard
+                                            .enteredpincodeisnondeliverable
+                                        : "Entered Pin code is non deliverable"}
                                     </p>
+                                  )}
 
-                                    <DatePicker
-                                      selected={this.state.OrdPickupTime}
-                                      onChange={(time) =>
-                                        this.handleOrdPickupTimeChange(time)
-                                      }
-                                      showTimeSelect
-                                      showTimeSelectOnly
-                                      timeIntervals={15}
-                                      timeCaption="Time"
-                                      dateFormat="h:mm aa"
-                                      placeholderText={
-                                        TranslationContext !== undefined
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="order-returns"
+                                        name="ordMoveReturn"
+                                        checked={this.state.ordMoveReturn}
+                                        onChange={this.handleOrdChangeOptions}
+                                      />
+                                      <label htmlFor="order-returns">
+                                        {TranslationContext !== undefined
                                           ? TranslationContext
-                                              .ticketingDashboard.entertime
-                                          : "Enter Time"
-                                      }
-                                      minTime={this.state.minTime}
-                                      maxTime={moment()
-                                        .endOf("day")
-                                        .toDate()}
-                                    />
+                                              .ticketingDashboard
+                                              .moveorderintoreturns
+                                          : "Move Order into Returns"}
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-pickup"
+                                        name="ordSelfPickup"
+                                        checked={this.state.ordSelfPickup}
+                                        onChange={this.handleOrdChangeOptions}
+                                      />
+                                      <label htmlFor="self-pickup">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .convertthisorderinselfpickup
+                                          : "Convert this order in Self Pickup"}
+                                      </label>
+                                    </div>
                                   </div>
-                                </div>
+                                  {this.state.ordSelfPickup && (
+                                    <>
+                                      <div className="row">
+                                        <div className="col-md-6">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.title.date
+                                              : "Date"}
+                                          </p>
+
+                                          <DatePicker
+                                            selected={this.state.OrdPickupDate}
+                                            onChange={(date) =>
+                                              this.handleOrdDateChange(date)
+                                            }
+                                            placeholderText={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext
+                                                    .ticketingDashboard
+                                                    .enterdate
+                                                : "Enter Date"
+                                            }
+                                            value={this.state.OrdPickupDate}
+                                            minDate={new Date()}
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            className="txt-1"
+                                            dateFormat="dd/MM/yyyy"
+                                          />
+                                        </div>
+                                        <div className="col-md-6">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.title.time
+                                              : "Time"}
+                                          </p>
+
+                                          <DatePicker
+                                            selected={this.state.OrdPickupTime}
+                                            onChange={(time) =>
+                                              this.handleOrdPickupTimeChange(
+                                                time
+                                              )
+                                            }
+                                            showTimeSelect
+                                            showTimeSelectOnly
+                                            timeIntervals={15}
+                                            timeCaption="Time"
+                                            dateFormat="h:mm aa"
+                                            placeholderText={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext
+                                                    .ticketingDashboard
+                                                    .entertime
+                                                : "Enter Time"
+                                            }
+                                            minTime={this.state.minTime}
+                                            maxTime={moment()
+                                              .endOf("day")
+                                              .toDate()}
+                                          />
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </>
                               )}
                             </>
                           }
@@ -1619,6 +1655,9 @@ class OrderTab extends Component {
                             this,
                             row.id
                           )}
+                          okButtonProps={{
+                            disabled: this.state.pincodeChecAvaibility,
+                          }}
                         >
                           <p
                             style={{ cursor: "pointer" }}

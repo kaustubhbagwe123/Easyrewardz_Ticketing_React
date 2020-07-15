@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { authHeader } from "./../../../helpers/authHeader";
+import DownExcel from "./../../../assets/Images/csv.png";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import Pagination from "react-pagination-js";
 import { Table } from "antd";
@@ -48,7 +50,7 @@ class OrderSetting extends Component {
       EditOrdTempLengthValidation: "",
       EditOrdTempBreadthValidation: "",
       EditOrdTempWeightValidation: "",
-      editButtonShow: false
+      editButtonShow: false,
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -98,7 +100,7 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/GetModuleConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -130,7 +132,7 @@ class OrderSetting extends Component {
         PageSize: this.state.postsPerPage,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -167,7 +169,7 @@ class OrderSetting extends Component {
         Shipment: this.state.moduleConfigData.shipment,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -205,7 +207,7 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/GetOrderConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -265,11 +267,15 @@ class OrderSetting extends Component {
         UnDeliverableText: this.state.orderConfigData.unDeliverableText,
         StoreDeliveryText: this.state.orderConfigData.storeDeliveryText,
         PaymentTenantCodeText: this.state.orderConfigData.paymentTenantCodeText,
-        RetryCount: this.state.orderConfigData.retryCount!==""?parseInt(this.state.orderConfigData.retryCount):0,
+        RetryCount:
+          this.state.orderConfigData.retryCount !== ""
+            ? parseInt(this.state.orderConfigData.retryCount)
+            : 0,
         StateFlag: this.state.orderConfigData.stateFlag,
+        CurrencyText: this.state.orderConfigData.currencyText
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -325,7 +331,7 @@ class OrderSetting extends Component {
     } else if (OrderConfig === "OrdUndelivered") {
       this.state.orderConfigData.unDeliverable = !this.state.orderConfigData
         .unDeliverable;
-    }else if (OrderConfig === "chkOrderconfigStateFlag") {
+    } else if (OrderConfig === "chkOrderconfigStateFlag") {
       this.state.orderConfigData.stateFlag = !this.state.orderConfigData
         .stateFlag;
     }
@@ -589,7 +595,7 @@ class OrderSetting extends Component {
           Weight_Unit: this.state.selectedOrdWeight,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -682,7 +688,7 @@ class OrderSetting extends Component {
           Weight_Unit: this.state.editTemplate.weight_Unit,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -920,7 +926,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .integratedsystem
+                                              .integratedsystem
                                           : "Integrated System(Sync Order)"}
                                       </label>
                                       <input
@@ -1012,7 +1018,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .storeasdeliverypartner
+                                              .storeasdeliverypartner
                                           : "Store as Delivery Partner"}
                                       </label>
                                       <input
@@ -1038,7 +1044,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .alertcommunicationviawhatsapp
+                                              .alertcommunicationviawhatsapp
                                           : "Alert Communication via Whatsapp"}
                                       </label>
                                       <input
@@ -1064,7 +1070,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .alertcommunicationviasms
+                                              .alertcommunicationviasms
                                           : "Alert Communication via SMS"}
                                       </label>
                                       <input
@@ -1086,28 +1092,28 @@ class OrderSetting extends Component {
                                     </div>
                                     {this.state.orderConfigData
                                       .alertCommunicationviaSMS ? (
-                                        <div className="ordcusinput">
-                                          <input
-                                            type="text"
-                                            name="alertCommunicationSMSText"
-                                            autoComplete="off"
-                                            placeholder={
-                                              TranslationContext !== undefined
-                                                ? TranslationContext.placeholder
+                                      <div className="ordcusinput">
+                                        <input
+                                          type="text"
+                                          name="alertCommunicationSMSText"
+                                          autoComplete="off"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
                                                   .providername
-                                                : "Provider name"
-                                            }
-                                            maxLength={15}
-                                            value={
-                                              this.state.orderConfigData
-                                                .alertCommunicationSMSText
-                                            }
-                                            onChange={this.OrderSettingOnChange.bind(
-                                              this
-                                            )}
-                                          />
-                                        </div>
-                                      ) : null}
+                                              : "Provider name"
+                                          }
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .alertCommunicationSMSText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
 
                                   <table className="cmpaign-channel-table">
@@ -1115,13 +1121,13 @@ class OrderSetting extends Component {
                                       <td>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.td
-                                            .clickwillbeenabledafter
+                                              .clickwillbeenabledafter
                                           : "Click will be enabled after"}
                                         <span>
                                           (
                                           {TranslationContext !== undefined
                                             ? TranslationContext.span
-                                              .paymentsendlinkbutton
+                                                .paymentsendlinkbutton
                                             : "Payment send link button"}
                                           )
                                         </span>
@@ -1179,9 +1185,7 @@ class OrderSetting extends Component {
                                   </table>
                                   <table className="cmpaign-channel-table">
                                     <tr>
-                                      <td>
-                                        Maximum Retry Count
-                                      </td>
+                                      <td>Maximum Retry Count</td>
                                       <td>
                                         <input
                                           type="text"
@@ -1210,8 +1214,7 @@ class OrderSetting extends Component {
                                         id="chkOrderconfigStateFlag"
                                         name="allModules"
                                         checked={
-                                          this.state.orderConfigData
-                                            .stateFlag
+                                          this.state.orderConfigData.stateFlag
                                         }
                                         onChange={this.OrderConfigFlagChange.bind(
                                           this
@@ -1221,6 +1224,25 @@ class OrderSetting extends Component {
                                         htmlFor="chkOrderconfigStateFlag"
                                         className="cr cr-float-auto"
                                       ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Currency
+                                      </label>
+                                      <input
+                                        type="text"
+                                        className="setting-txt"
+                                        name="currencyText"
+                                        value={
+                                          this.state.orderConfigData
+                                            .currencyText
+                                        }
+                                        onChange={this.OrderSettingOnChange.bind(
+                                          this
+                                        )}
+                                      />
                                     </div>
                                   </div>
 
@@ -1269,7 +1291,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .shoppingbagconvertedtoorder
+                                              .shoppingbagconvertedtoorder
                                           : "Shopping bag Converted to Order"}
                                       </label>
                                       <input
@@ -1291,23 +1313,23 @@ class OrderSetting extends Component {
                                     </div>
                                     {this.state.orderConfigData
                                       .shoppingBagConvertToOrder ? (
-                                        <div className="ordcusinput1">
-                                          <input
-                                            type="text"
-                                            name="shoppingBagConvertToOrderText"
-                                            autoComplete="off"
-                                            placeholder="Enter Template"
-                                            maxLength={500}
-                                            value={
-                                              this.state.orderConfigData
-                                                .shoppingBagConvertToOrderText
-                                            }
-                                            onChange={this.OrderSettingOnChange.bind(
-                                              this
-                                            )}
-                                          />
-                                        </div>
-                                      ) : null}
+                                      <div className="ordcusinput1">
+                                        <input
+                                          type="text"
+                                          name="shoppingBagConvertToOrderText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={500}
+                                          value={
+                                            this.state.orderConfigData
+                                              .shoppingBagConvertToOrderText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
@@ -1374,7 +1396,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .pickupscheduledgenerated
+                                              .pickupscheduledgenerated
                                           : "Pickup Scheduled/Generated"}
                                       </label>
                                       <input
@@ -1396,23 +1418,23 @@ class OrderSetting extends Component {
                                     </div>
                                     {this.state.orderConfigData
                                       .pickupScheduled ? (
-                                        <div className="ordcusinput3">
-                                          <input
-                                            type="text"
-                                            name="pickupScheduledText"
-                                            autoComplete="off"
-                                            placeholder="Enter Template"
-                                            maxLength={500}
-                                            value={
-                                              this.state.orderConfigData
-                                                .pickupScheduledText
-                                            }
-                                            onChange={this.OrderSettingOnChange.bind(
-                                              this
-                                            )}
-                                          />
-                                        </div>
-                                      ) : null}
+                                      <div className="ordcusinput3">
+                                        <input
+                                          type="text"
+                                          name="pickupScheduledText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={500}
+                                          value={
+                                            this.state.orderConfigData
+                                              .pickupScheduledText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
@@ -1566,23 +1588,23 @@ class OrderSetting extends Component {
                                     </div>
                                     {this.state.orderConfigData
                                       .unDeliverable ? (
-                                        <div className="ordcusinput7">
-                                          <input
-                                            type="text"
-                                            name="unDeliverableText"
-                                            autoComplete="off"
-                                            placeholder="Enter Template"
-                                            maxLength={500}
-                                            value={
-                                              this.state.orderConfigData
-                                                .unDeliverableText
-                                            }
-                                            onChange={this.OrderSettingOnChange.bind(
-                                              this
-                                            )}
-                                          />
-                                        </div>
-                                      ) : null}
+                                      <div className="ordcusinput7">
+                                        <input
+                                          type="text"
+                                          name="unDeliverableText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={500}
+                                          value={
+                                            this.state.orderConfigData
+                                              .unDeliverableText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
                                 </div>
                                 <button
@@ -1626,19 +1648,44 @@ class OrderSetting extends Component {
                                   style={{ margin: "0px" }}
                                 >
                                   <div className="col-md-12">
-                                    <h3>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                          .shippingtemplate
-                                        : "Shipping Template"}
-                                    </h3>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                      <h3>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .shippingtemplate
+                                          : "Shipping Template"}
+                                      </h3>
+                                      <div className="d-flex align-items-center">
+                                        <div className="down-excel mr-3">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .sampletemplate
+                                              : "Sample Template"}
+                                          </p>
+                                          <CSVLink
+                                            filename={"OrderTemplate.csv"}
+                                            data={
+                                              config.storeOrder_Template
+                                            }
+                                          >
+                                            <img
+                                              src={DownExcel}
+                                              alt="download icon"
+                                            />
+                                          </CSVLink>
+                                        </div>
+                                        <button>Upload Templates</button>
+                                      </div>
+                                    </div>
                                   </div>
                                   <div className="col-md-4">
                                     <div className="mx-slt-div m-0 px-0">
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .templatename
+                                              .templatename
                                           : "Template Name"}
                                       </label>
                                       <input
@@ -1647,8 +1694,8 @@ class OrderSetting extends Component {
                                         placeholder={
                                           TranslationContext !== undefined
                                             ? TranslationContext
-                                              .ticketingDashboard
-                                              .entertemplatename
+                                                .ticketingDashboard
+                                                .entertemplatename
                                             : "Enter Template Name"
                                         }
                                         autoComplete="off"
@@ -1676,7 +1723,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.height
+                                              .ticketingDashboard.height
                                           : "Height"}
                                       </label>
                                       <div className="d-flex">
@@ -1721,7 +1768,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.length
+                                              .ticketingDashboard.length
                                           : "Length"}
                                       </label>
                                       <div className="d-flex">
@@ -1766,7 +1813,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.breadth
+                                              .ticketingDashboard.breadth
                                           : "Breadth"}
                                       </label>
                                       <div className="d-flex">
@@ -1811,7 +1858,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.weight
+                                              .ticketingDashboard.weight
                                           : "Weight"}
                                       </label>
                                       <div className="d-flex">
@@ -1872,10 +1919,11 @@ class OrderSetting extends Component {
                             <div className="col-md-12 table-cntr store dv-table-paging">
                               <Table
                                 loading={this.state.ShipTemploading}
-                                noDataContent={TranslationContext !== undefined
-                                  ? TranslationContext.label
-                                    .norecordfound
-                                  : "No Record Found"}
+                                noDataContent={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.label.norecordfound
+                                    : "No Record Found"
+                                }
                                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                 columns={[
                                   {
@@ -1889,7 +1937,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .height
+                                            .height
                                         : "Height",
                                     dataIndex: "height",
                                     render: (row, item) => {
@@ -1904,7 +1952,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .length
+                                            .length
                                         : "Length",
                                     dataIndex: "length",
                                     render: (row, item) => {
@@ -1919,7 +1967,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .breadth
+                                            .breadth
                                         : "Breadth",
                                     dataIndex: "breath",
                                     render: (row, item) => {
@@ -1934,7 +1982,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .weight
+                                            .weight
                                         : "Weight",
                                     dataIndex: "weight",
                                     render: (row, item) => {
@@ -2019,7 +2067,7 @@ class OrderSetting extends Component {
                   <label className="popover-header-text">
                     {TranslationContext !== undefined
                       ? TranslationContext.ticketingDashboard
-                        .editshippingtemplate
+                          .editshippingtemplate
                       : "EDIT SHIPPING TEMPLATE"}
                   </label>
                 </div>
@@ -2036,7 +2084,7 @@ class OrderSetting extends Component {
                       placeholder={
                         TranslationContext !== undefined
                           ? TranslationContext.ticketingDashboard
-                            .entertemplatename
+                              .entertemplatename
                           : "Enter Template Name"
                       }
                       autoComplete="off"

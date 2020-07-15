@@ -556,6 +556,7 @@
     "deletefile": "फ़ाइल को हटाएं?",
     "areyousuredeletefile": "क्या आप द्वारा इस फाइल को हटाया जाना सुनिश्चित है?",
     "template": "टेम्पलेट",
+    "sampletemplate": "नमूना टेम्पलेट",
     "brandname": "ब्रांड का नाम",
     "entervalidpincode": "कृपया मान्य पिन कोड दर्ज करें",
     "profiledetails": "कृपया मान्य ईमेल आईडी दर्ज करें।",
@@ -1434,7 +1435,7 @@
     "action": "कार्य"
   },
   "td": {
-    "clicktd":"क्लिक",
+    "clicktd": "क्लिक",
     "maxclickallowedonanychannelcta": "किसी भी चैनल सीटीए पर अधिकतम क्लिक की अनुमति",
     "click": "क्लिक करें",
     "clickwillbeenabledafter": "क्लिक के बाद सक्षम हो जाएगा",
@@ -1886,17 +1887,18 @@
     "entertime": "समय दर्ज करें",
     "enterdate": "दिनांक दर्ज करें",
     "checkingyouravailability": "अपनी उपलब्धता की जाँच कर रहा है।",
-    "shipmentcharges":"शिपमेंट शुल्क",
-    "kidlycheckenteredstatepincode":"राज्य पिन कोड दर्ज करें",
-    "areyousureyouwanttosave":"क्या आप वाकई सहेजना चाहते हैं?",
-    "ok":"ठीक है",
-    "expectedpickupdate":"अपेक्षित पिकअप तिथि",
-    "expectedscheduledate":"उम्मीद की अनुसूची तिथि",
-    "charges":"प्रभार",
-    "theorderhasbeenconvertedtoselfpickup":"ऑर्डर को सेल्फ पिक अप में बदल दिया गया है।",
-    "pleaseselectpickupdate":"कृपया पिक तिथि चुनें।",
-    "pleaseselectpickuptime":"कृपया पिकअप समय चुनें।",
-    "pincodeisnotmapped":"पिनकोड को मैप नहीं किया गया है।"
+    "shipmentcharges": "शिपमेंट शुल्क",
+    "kidlycheckenteredstatepincode": "राज्य पिन कोड दर्ज करें",
+    "areyousureyouwanttosave": "क्या आप वाकई सहेजना चाहते हैं?",
+    "ok": "ठीक है",
+    "expectedpickupdate": "अपेक्षित पिकअप तिथि",
+    "expectedscheduledate": "उम्मीद की अनुसूची तिथि",
+    "charges": "प्रभार",
+    "theorderhasbeenconvertedtoselfpickup": "ऑर्डर को सेल्फ पिक अप में बदल दिया गया है।",
+    "pleaseselectpickupdate": "कृपया पिक तिथि चुनें।",
+    "pleaseselectpickuptime": "कृपया पिकअप समय चुनें।",
+    "pincodeisnotmapped": "पिनकोड को मैप नहीं किया गया है।",
+    "expecteddeliverydate": "अपेक्षित वितरण की तारीख"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."

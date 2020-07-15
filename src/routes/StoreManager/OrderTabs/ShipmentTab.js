@@ -761,8 +761,8 @@ class ShipmentTab extends Component {
                               <p>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.ticketingDashboard
-                                      .expectedscheduledate
-                                  : "Expected Schedule Date"}
+                                      .expecteddeliverydate
+                                  : "Expected Delivery Date"}
                                 :
                               </p>
                               <p className="username-mar">
@@ -1135,8 +1135,8 @@ class ShipmentTab extends Component {
                                   <p>
                                     {TranslationContext !== undefined
                                       ? TranslationContext.ticketingDashboard
-                                          .expectedscheduledate
-                                      : "Expected Schedule Date"}
+                                          .expecteddeliverydate
+                                      : "Expected Delivery Date"}
                                     :
                                   </p>
                                   <p className="username-mar">
