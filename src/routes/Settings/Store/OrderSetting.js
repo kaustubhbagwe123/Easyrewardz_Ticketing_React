@@ -10,7 +10,6 @@ import Pagination from "react-pagination-js";
 import { Table } from "antd";
 import config from "./../../../helpers/config";
 import Modal from "react-bootstrap/Modal";
-import { CSVLink } from "react-csv";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
