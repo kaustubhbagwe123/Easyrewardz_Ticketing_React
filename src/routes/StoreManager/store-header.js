@@ -219,6 +219,7 @@ class Header extends Component {
       recommendedData: [],
       ProfileProductTab: 0,
       activeCollpse: [1],
+      productTypeTab:0
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -2305,7 +2306,7 @@ class Header extends Component {
       .then((response) => {
         var message = response.data.message;
         var storePayURL = response.data.responseData;
-        if ((message = "Success" && storePayURL)) {
+        if (message === "Success" && storePayURL) {
           self.setState({ storePayURL });
         }
       })
@@ -2378,15 +2379,19 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           for (let i = 0; i < responseData.length; i++) {
             if (responseData[i].isShoppingBag) {
+              responseData[i].isCheck = false;
               shoppingBagData.push(responseData[i]);
             }
             if (responseData[i].isWishList) {
+              responseData[i].isCheck = false;
               wishListData.push(responseData[i]);
             }
             if (responseData[i].isRecommended) {
+              responseData[i].isCheck = false;
               recommendedData.push(responseData[i]);
             }
           }
+          debugger;
           self.setState({ shoppingBagData, wishListData, recommendedData });
         }
       })
@@ -2394,6 +2399,33 @@ class Header extends Component {
         console.log(response, "---handleGetChatCustomerProducts");
       });
   };
+
+  ////handle shopping bag ,wishlist & recommended product select
+  handleProductTabsChange = (tabIndex, itemIndex) => {
+    debugger;
+
+    ////for Shopping Bag list
+    if (tabIndex === 1) {
+      this.state.shoppingBagData[itemIndex].isCheck = !this.state
+      .shoppingBagData[itemIndex].isCheck;
+    this.setState({ shoppingBagData: this.state.shoppingBagData });
+    }
+    //// for Wish List
+    if (tabIndex === 2) {
+      this.state.wishListData[itemIndex].isCheck = !this.state
+        .wishListData[itemIndex].isCheck;
+      this.setState({ wishListData: this.state.wishListData });
+    }
+    ////for Recommended list
+    if (tabIndex === 3) {
+      this.state.recommendedData[itemIndex].isCheck = !this.state.recommendedData[itemIndex].isCheck;
+      this.setState({ recommendedData: this.state.recommendedData });
+    }
+  };
+  ////handle product type tab change
+  handleProductTypeTabChange=(index)=>{
+    this.setState({productTypeTab:index})
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -6678,7 +6710,12 @@ class Header extends Component {
                       </Tab>
                       <Tab label="Products">
                         <div className="productsbox">
-                          <Tabs>
+                          <Tabs
+                          onSelect={(index, label) => {
+                            this.handleProductTypeTabChange(index);
+                          }}
+                          selected={this.state.productTypeTab}
+                          >
                             <Tab label="Shopping Bag">
                               <div className="shoppingbag">
                                 <label className="selectalllabel">
@@ -7078,8 +7115,18 @@ class Header extends Component {
                                     ? this.state.recommendedData.map(
                                         (item, i) => {
                                           return (
-                                            <div className="prodboxx">
-                                              <Checkbox>
+                                            <div className="prodboxx" key={i}>
+                                              <Checkbox
+                                                checked={
+                                                  this.state.recommendedData[i]
+                                                    .isCheck
+                                                }
+                                                onChange={this.handleProductTabsChange.bind(
+                                                  this,
+                                                  3,
+                                                  i
+                                                )}
+                                              >
                                                 <img
                                                   src={item.imageURL}
                                                   className="ladyimg"
