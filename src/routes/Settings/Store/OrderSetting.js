@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import { authHeader } from "./../../../helpers/authHeader";
+import DownExcel from "./../../../assets/Images/csv.png";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import Pagination from "react-pagination-js";
 import { Table } from "antd";
@@ -1621,18 +1623,42 @@ class OrderSetting extends Component {
                                 className="right-sect-div"
                                 style={{ padding: "20px" }}
                               >
-                                <button>Upload Templates</button>
                                 <div
                                   className="row cmpaign-channel-table lbl-fnt-w-400 full-wid-inp"
                                   style={{ margin: "0px" }}
                                 >
                                   <div className="col-md-12">
-                                    <h3>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                            .shippingtemplate
-                                        : "Shipping Template"}
-                                    </h3>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                      <h3>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .shippingtemplate
+                                          : "Shipping Template"}
+                                      </h3>
+                                      <div className="d-flex align-items-center">
+                                        <div className="down-excel mr-3">
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .sampletemplate
+                                              : "Sample Template"}
+                                          </p>
+                                          <CSVLink
+                                            filename={"Hierarchy.csv"}
+                                            data={
+                                              config.Store_HierarchyTemplate
+                                            }
+                                          >
+                                            <img
+                                              src={DownExcel}
+                                              alt="download icon"
+                                            />
+                                          </CSVLink>
+                                        </div>
+                                        <button>Upload Templates</button>
+                                      </div>
+                                    </div>
                                   </div>
                                   <div className="col-md-4">
                                     <div className="mx-slt-div m-0 px-0">
