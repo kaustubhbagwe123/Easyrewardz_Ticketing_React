@@ -167,7 +167,7 @@ class TicketingLanguageSelection extends Component {
                   ? this.state.languageData.map((item, i) => {
                       return (
                         <button
-                          class={
+                          className={
                             item.language.split(" ")[0].toLowerCase() ===
                             this.state.language
                               ? "langbtn active"

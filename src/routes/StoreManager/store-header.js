@@ -219,6 +219,7 @@ class Header extends Component {
       recommendedData: [],
       ProfileProductTab: 0,
       activeCollpse: [1],
+      productTypeTab: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -2305,7 +2306,7 @@ class Header extends Component {
       .then((response) => {
         var message = response.data.message;
         var storePayURL = response.data.responseData;
-        if ((message = "Success" && storePayURL)) {
+        if (message === "Success" && storePayURL) {
           self.setState({ storePayURL });
         }
       })
@@ -2378,21 +2379,54 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           for (let i = 0; i < responseData.length; i++) {
             if (responseData[i].isShoppingBag) {
+              responseData[i].isCheck = false;
               shoppingBagData.push(responseData[i]);
             }
             if (responseData[i].isWishList) {
+              responseData[i].isCheck = false;
               wishListData.push(responseData[i]);
             }
             if (responseData[i].isRecommended) {
+              responseData[i].isCheck = false;
               recommendedData.push(responseData[i]);
             }
           }
+          debugger;
           self.setState({ shoppingBagData, wishListData, recommendedData });
         }
       })
       .catch((response) => {
         console.log(response, "---handleGetChatCustomerProducts");
       });
+  };
+
+  ////handle shopping bag ,wishlist & recommended product select
+  handleProductTabsChange = (tabIndex, itemIndex) => {
+    debugger;
+
+    ////for Shopping Bag list
+    if (tabIndex === 1) {
+      this.state.shoppingBagData[itemIndex].isCheck = !this.state
+        .shoppingBagData[itemIndex].isCheck;
+      this.setState({ shoppingBagData: this.state.shoppingBagData });
+    }
+    //// for Wish List
+    if (tabIndex === 2) {
+      this.state.wishListData[itemIndex].isCheck = !this.state.wishListData[
+        itemIndex
+      ].isCheck;
+      this.setState({ wishListData: this.state.wishListData });
+    }
+    ////for Recommended list
+    if (tabIndex === 3) {
+      this.state.recommendedData[itemIndex].isCheck = !this.state
+        .recommendedData[itemIndex].isCheck;
+      this.setState({ recommendedData: this.state.recommendedData });
+    }
+  };
+  ////handle product type tab change
+  handleProductTypeTabChange = (index) => {
+    this.setState({ productTypeTab: index });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -3048,7 +3082,7 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p
+                                {/* <p
                                   style={{
                                     fontWeight:
                                       chat.messageCount > 0 ? "bold" : "400",
@@ -3064,7 +3098,7 @@ class Header extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.newmessages
                                     : "New Messages"}
-                                </p>
+                                </p> */}
                                 <p>{chat.timeAgo}</p>
                               </div>
                             </div>
@@ -3090,7 +3124,7 @@ class Header extends Component {
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
-                      <Select
+                      {/* <Select
                         className="agentchatdrop-down"
                         showArrow={true}
                         value={this.state.sAgentId}
@@ -3112,7 +3146,7 @@ class Header extends Component {
                               </Option>
                             );
                           })}
-                      </Select>
+                      </Select> */}
                     </div>
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData
@@ -3151,7 +3185,7 @@ class Header extends Component {
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  <p
+                                  {/* <p
                                     className={"chat-storemng "}
                                     title="Store Manager"
                                   >
@@ -3177,7 +3211,7 @@ class Header extends Component {
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
                                       : "New Messages"}
-                                  </p>
+                                  </p> */}
                                   <p>{chat.timeAgo}</p>
                                 </div>
                               </div>
@@ -6492,6 +6526,22 @@ class Header extends Component {
                                   Tier: <b>{this.state.customerTier}</b>
                                 </span>
                               </li>
+                              <li className="contactbox">
+                                <div>
+                                  <ul>
+                                    {this.state.customerEmailID ? (
+                                      <li>
+                                        {/* <label>Email ID</label> */}
+                                        <p>{this.state.customerEmailID}</p>
+                                      </li>
+                                    ) : null}
+                                    <li>
+                                      {/* <label>Mobile No</label> */}
+                                      <p>{this.state.customerMobileNo}</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
                             </ul>
                           </div>
                           <div className="pointstable">
@@ -6499,49 +6549,23 @@ class Header extends Component {
                               <tbody>
                                 <tr>
                                   <td>
-                                    <label>Email ID</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerEmailID}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Mobile No</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerMobileNo}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
                                     <label>Total Points</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.totalPoints.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
-                                </tr>
-                                <tr>
                                   <td>
                                     <label>Lifetime Value</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.lifetimeValue.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
-                                </tr>
-                                <tr>
                                   <td>
                                     <label>Visit Count</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.visitCount.toLocaleString(
                                         "en-IN"
@@ -6553,114 +6577,127 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <div className="lasttransaction">
-                              <h3>Last Transaction</h3>
-                              {/* <img
+                            <Collapse
+                              activeKey={this.state.activeCollpse}
+                              onChange={this.handleCollpseChange.bind(this)}
+                            >
+                              <Panel header="Insights" key="1">
+                                <div className="insightsbox">
+                                  {/* <h3>Insights</h3>
+                              <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
                               /> */}
-                              <ul>
-                                <li>
-                                  <label>Bill No</label>
-                                  <span>{this.state.billNumber}</span>
-                                </li>
-                                <li>
-                                  <label>Amount</label>
-                                  <span>
-                                    {this.state.billAmount.toLocaleString(
-                                      "en-IN"
-                                    )}
-                                  </span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Store</label>
-                                  <span>{this.state.storeDetails}</span>
-                                </li>
-                                <li>
-                                  <label>Date</label>
-                                  <span>{this.state.transactionDate}</span>
-                                </li>
-                              </ul>
-                              <div className="itemtable">
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Items</th>
-                                      <th>Qty</th>
-                                      <th>Amount</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>Product Name 1</label>
-                                        <label>Product Name 2</label>
-                                        <label>Product Name 3</label>
-                                      </td>
-                                      <td>
-                                        <label>02</label>
-                                        <label>03</label>
-                                        <label>01</label>
-                                      </td>
-                                      <td>
-                                        <label>₹999</label>
-                                        <label>₹1299</label>
-                                        <label>₹12999</label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
+                                  <p>
+                                    1. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    2. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    3. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                </div>
+                              </Panel>
+                              <Panel header="Orders" key="2">
+                                <div className="ordersbox">
+                                  {/* <h3>Orders</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Delivered</label>
+                                      <span>{this.state.orderDelivered}</span>
+                                    </li>
+                                    <li>
+                                      <label>Shopping Bag</label>
+                                      <span>{this.state.orderShoppingBag}</span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Ready to Ship</label>
+                                      <span>{this.state.orderReadyToShip}</span>
+                                    </li>
+                                    <li>
+                                      <label>Returns</label>
+                                      <span>{this.state.orderReturns}</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </Panel>
+                              <Panel header="Last Transaction" key="3">
+                                <div className="lasttransaction">
+                                  {/* <h3>Last Transaction</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Bill No</label>
+                                      <span>{this.state.billNumber}</span>
+                                    </li>
+                                    <li>
+                                      <label>Amount</label>
+                                      <span>
+                                        {this.state.billAmount.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Store</label>
+                                      <span>{this.state.storeDetails}</span>
+                                    </li>
+                                    <li>
+                                      <label>Date</label>
+                                      <span>{this.state.transactionDate}</span>
+                                    </li>
+                                  </ul>
+                                  <div className="itemtable">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Items</th>
+                                          <th>Qty</th>
+                                          <th>Amount</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Product Name 1</label>
+                                            <label>Product Name 2</label>
+                                            <label>Product Name 3</label>
+                                          </td>
+                                          <td>
+                                            <label>02</label>
+                                            <label>03</label>
+                                            <label>01</label>
+                                          </td>
+                                          <td>
+                                            <label>₹999</label>
+                                            <label>₹1299</label>
+                                            <label>₹12999</label>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </Panel>
+                            </Collapse>
                           </div>
                           <button
                             type="button"
@@ -6669,16 +6706,22 @@ class Header extends Component {
                             22 Past Chat
                           </button>
                           <button
+                          style={{float:"right"}}
                             type="button"
-                            className="updateprofilelinkbtn"
+                            className="updateprofilelinkbtn pastchatmobbtn"
                           >
-                            Send Update Profile Link
+                            Action
                           </button>
                         </div>
                       </Tab>
                       <Tab label="Products">
                         <div className="productsbox">
-                          <Tabs>
+                          <Tabs
+                            onSelect={(index, label) => {
+                              this.handleProductTypeTabChange(index);
+                            }}
+                            selected={this.state.productTypeTab}
+                          >
                             <Tab label="Shopping Bag">
                               <div className="shoppingbag">
                                 <label className="selectalllabel">
@@ -6865,6 +6908,17 @@ class Header extends Component {
                                       alt="Cancel Ico"
                                     />
                                   </div>
+                                </div>
+                                <div className="tabsbotbtn-box">
+                                  <button type="button" className="tabsbotbtn">
+                                    SENT
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    ADD To CART
+                                  </button>
+                                  <button type="button" className="tabsbotbtn">
+                                    BUY NOW
+                                  </button>
                                 </div>
                               </div>
                             </Tab>
@@ -7078,8 +7132,18 @@ class Header extends Component {
                                     ? this.state.recommendedData.map(
                                         (item, i) => {
                                           return (
-                                            <div className="prodboxx">
-                                              <Checkbox>
+                                            <div className="prodboxx" key={i}>
+                                              <Checkbox
+                                                checked={
+                                                  this.state.recommendedData[i]
+                                                    .isCheck
+                                                }
+                                                onChange={this.handleProductTabsChange.bind(
+                                                  this,
+                                                  3,
+                                                  i
+                                                )}
+                                              >
                                                 <img
                                                   src={item.imageURL}
                                                   className="ladyimg"

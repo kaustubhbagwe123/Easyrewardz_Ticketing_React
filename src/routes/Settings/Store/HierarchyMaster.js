@@ -367,7 +367,7 @@ class HierarchyMaster extends Component {
       })
         .then((response) => {
           var status = response.data.message;
-          var itemData = response.data.responseData;
+          // var itemData = response.data.responseData;
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
