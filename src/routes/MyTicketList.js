@@ -1483,6 +1483,10 @@ class MyTicketList extends Component {
           self.setState({
             CategoryData: data,
           });
+        }else{
+          self.setState({
+            CategoryData: [],
+          });
         }
       })
       .catch((data) => {
