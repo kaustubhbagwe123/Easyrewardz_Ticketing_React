@@ -1308,7 +1308,10 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
-                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                      <label
+                                        className="storeRole-name-text ml-0 ordSttd-store"
+                                        style={{ marginTop: 14 }}
+                                      >
                                         Currency
                                       </label>
                                       <input
