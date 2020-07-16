@@ -1483,6 +1483,10 @@ class MyTicketList extends Component {
           self.setState({
             CategoryData: data,
           });
+        } else {
+          self.setState({
+            CategoryData: [],
+          });
         }
       })
       .catch((data) => {
@@ -3061,7 +3065,7 @@ class MyTicketList extends Component {
     }
 
     this.setState({
-      tempSearchTicketData: itemsArray, 
+      tempSearchTicketData: itemsArray,
     });
     this.StatusCloseModel();
   };
