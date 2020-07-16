@@ -44,8 +44,6 @@ class StoreSignIn extends Component {
   };
 
   componentDidMount() {
-    debugger;
-
     if (this.props.location.encProgramCode) {
       var finalEncProgramCode = this.props.location.encProgramCode;
 
@@ -71,11 +69,11 @@ class StoreSignIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption(
-        "https://multitenancyshopsterv2.dcdev.brainvire.net",
-        "enc"
-      );
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "https://multitenancyshopsterv2.dcdev.brainvire.net",
+      //   "enc"
+      // );
       // let X_Authorized_Domainname = encryption(
       //   "https://multitenancyshopster.dcdev.brainvire.net",
       //   "enc"
