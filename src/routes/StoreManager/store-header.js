@@ -800,6 +800,9 @@ class Header extends Component {
       searchItem: "",
       showHistoricalChat: false,
       isDownbtn: true,
+      message:"",
+      messageSuggestionData:[],
+      messageSuggestionTagsData:[]
     });
   }
   ////handle chat modal open
@@ -6801,6 +6804,7 @@ class Header extends Component {
                                     />
                                   ) : null}
                                 </div>
+                                {this.state.shoppingBagData.length > 0 ?
                                 <div className="tabsbotbtn-box">
                                   <button type="button" className="tabsbotbtn">
                                     SENT
@@ -6811,7 +6815,7 @@ class Header extends Component {
                                   <button type="button" className="tabsbotbtn">
                                     BUY NOW
                                   </button>
-                                </div>
+                                </div>:null}
                               </div>
                             </Tab>
                             <Tab label="Wishlist">
@@ -6893,7 +6897,7 @@ class Header extends Component {
                             </Tab>
                             <Tab label="Recommended">
                               <div className="shoppingbag">
-                                {this.state.recommendedData ? (
+                                {this.state.recommendedData.length>0 ? (
                                   <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,3)}>
                                     Select All
                                   </label>

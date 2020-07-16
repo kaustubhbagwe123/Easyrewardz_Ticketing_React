@@ -1153,7 +1153,8 @@ p {
   border-top: 1px solid #eeeeee;
 } */
 .nameplate {
-  padding: 0 15px;
+  /* padding: 0 15px; */
+  padding: 0 0px;
 }
 .pointstable table td {
   padding: 10px 0;
