@@ -33,7 +33,7 @@ class StoreAddTask extends Component {
       ispriority: "",
       isfuncation: "",
       isdepartment: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
   componentDidMount() {
@@ -53,7 +53,7 @@ class StoreAddTask extends Component {
     debugger;
     let self = this;
     if (this.state.taskTitle == "") {
-      this.setState({ istaskTitle: "Please Enter Task Titale." });
+      this.setState({ istaskTitle: "Please Enter Task Title." });
     } else {
       this.setState({ istaskTitle: "" });
     }
@@ -64,7 +64,7 @@ class StoreAddTask extends Component {
       this.setState({ isdepartment: "" });
     }
     if (this.state.funcationID == 0) {
-      this.setState({ isfuncation: "Please Select Funcation." });
+      this.setState({ isfuncation: "Please Select Function." });
     } else {
       this.setState({ isfuncation: "" });
     }
@@ -107,7 +107,7 @@ class StoreAddTask extends Component {
           headers: authHeader(),
           data: inputParams,
         })
-          .then(function (response) {
+          .then(function(response) {
             debugger;
             var message = response.data.message;
             var responseData = response.data.responseData;
@@ -142,7 +142,7 @@ class StoreAddTask extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var departmentData = response.data.responseData;
         if (message === "Success") {
@@ -165,7 +165,7 @@ class StoreAddTask extends Component {
       headers: authHeader(),
       params: { DepartmentId: DepartmentId },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var funcationData = response.data.responseData;
         if (message === "Success") {
@@ -191,7 +191,7 @@ class StoreAddTask extends Component {
         Function_ID: this.state.funcationID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var assignToData = response.data.responseData;
         if (message === "Success" && assignToData.length > 0) {
@@ -213,7 +213,7 @@ class StoreAddTask extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var priorityData = response.data.responseData;
         if (message === "Success") {
@@ -325,7 +325,7 @@ class StoreAddTask extends Component {
       <Fragment>
         <div className="row card1">
           <div className="col-md-8">
-            <div className="card" style={{ padding: "35px", height: "46.3vw" }}>
+            <div className="card" style={{ padding: "35px" }}>
               <label className="store-Edit-lblcre">
                 {TranslationContext !== undefined
                   ? TranslationContext.label.createtask
@@ -504,7 +504,7 @@ class StoreAddTask extends Component {
                     name="taskdetails"
                     rows="8"
                     className="textarea-store"
-                  // placeholder="Customer History/Security Check when.."
+                    // placeholder="Customer History/Security Check when.."
                   ></textarea>
                   {this.state.istaskDetails !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
@@ -528,8 +528,8 @@ class StoreAddTask extends Component {
                         spin
                       />
                     ) : (
-                        ""
-                      )}
+                      ""
+                    )}
                     {TranslationContext !== undefined
                       ? TranslationContext.button.submittask
                       : "SUBMIT TASK"}
