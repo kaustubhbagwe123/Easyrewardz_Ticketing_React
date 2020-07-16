@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover,Tooltip } from "antd";
+import { Table, Popover, Tooltip } from "antd";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
@@ -125,7 +125,7 @@ class DeliveredTab extends Component {
 
     this.handleGetOrderDeliveredData();
   };
-/// pagination per page item
+  /// pagination per page item
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
@@ -224,7 +224,7 @@ class DeliveredTab extends Component {
                                     ? TranslationContext.title.itemname
                                     : "Item Name",
                                 dataIndex: "itemName",
-                                width: 150,
+                                // width: 150,
                               },
                               {
                                 title:
