@@ -23,7 +23,7 @@ class StoreAddTask extends Component {
       departmentID: 0,
       funcationID: 0,
       priorityID: 0,
-      assignToID: 6,
+      assignToID: 0,
       taskTitle: "",
       taskDetails: "",
       isAddloading: false,
