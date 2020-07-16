@@ -1341,6 +1341,8 @@ p {
 }
 
 .tabsbotbtn {
+  outline: none !important;
+  cursor: pointer;
   background: none;
   border-radius: 10px;
   text-transform: uppercase;
@@ -1349,13 +1351,13 @@ p {
   font-weight: 600;
   margin: auto;
   margin-right: 10px;
-  }
-  .tabsbotbtn:last-child {
+}
+.tabsbotbtn:last-child {
   margin-right: 0px;
-  }
-  .tabsbotbtn-box {
+}
+.tabsbotbtn-box {
   text-align: center;
-  }
+}
 .pastchatmobbtn {
   display: none;
 }
@@ -1431,7 +1433,7 @@ p {
   margin-top: 3px;
   display: block;
   padding: 0 !important;
-  }
+}
 .cancelico {
   height: 21px;
   border: 2px solid;
@@ -1470,6 +1472,7 @@ p {
   background: #a5a3a3;
 }
 .prodtabl {
+  width: 100%;
   max-height: 380px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -2023,7 +2026,7 @@ p {
   padding: 8px 16px;
   padding-left: 36px;
 }
-.show-mobile{
+.show-mobile {
   display: none;
 }
 /* Responsive starts */
@@ -2040,10 +2043,10 @@ p {
 }
 
 @media all and (max-width: 576px) {
-  .show-desktop{
+  .show-desktop {
     display: none;
   }
-  .show-mobile{
+  .show-mobile {
     display: block;
   }
   .firstbox-hide {
@@ -2537,11 +2540,11 @@ p {
     margin-right: 5px;
     font-size: 11px;
     padding: 8px 8px;
-}
-.uptabs .nav-tabs .nav-link {
-  padding: 8px 8px;
-  font-size: 11px;
-}
+  }
+  .uptabs .nav-tabs .nav-link {
+    padding: 8px 8px;
+    font-size: 11px;
+  }
 }
 
 @media all and (max-width: 425px) {

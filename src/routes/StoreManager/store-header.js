@@ -220,6 +220,10 @@ class Header extends Component {
       ProfileProductTab: 0,
       activeCollpse: [1],
       productTypeTab: 0,
+      selectedRecommended: [],
+      selectedShoppingBag: [],
+      selectedWishList: [],
+      isButtonClick: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -800,9 +804,9 @@ class Header extends Component {
       searchItem: "",
       showHistoricalChat: false,
       isDownbtn: true,
-      message:"",
-      messageSuggestionData:[],
-      messageSuggestionTagsData:[]
+      message: "",
+      messageSuggestionData: [],
+      messageSuggestionTagsData: [],
     });
   }
   ////handle chat modal open
@@ -826,7 +830,7 @@ class Header extends Component {
       activeTab: 1,
       isScroll: true,
     });
-
+    this.handleCheckView();
     this.handleGetNewChat();
     this.handleGetOngoingChat();
     this.handleGetStoreAgentDetailsById(this.state.AgentID);
@@ -868,6 +872,8 @@ class Header extends Component {
                 customerName: "",
                 messageData: [],
                 isMainLoader: false,
+                isPinClick: false,
+                onHoverName: false,
               });
             }
 
@@ -897,6 +903,8 @@ class Header extends Component {
             }
           } else {
             self.setState({
+              isPinClick: false,
+              onHoverName: false,
               customerName: "",
               messageData: [],
               isMainLoader: false,
@@ -907,9 +915,11 @@ class Header extends Component {
           }
         } else {
           self.setState({
+            isPinClick: false,
             ongoingChatsData: [],
             customerName: "",
             messageData: [],
+            onHoverName: false,
             isMainLoader: false,
           });
         }
@@ -1496,6 +1506,14 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          ProfileProductTab: 0,
+          productTypeTab: 0,
+          selectedWishList: [],
+          selectedShoppingBag: [],
+          selectedRecommended: [],
+          shoppingBagData: [],
+          wishListData: [],
+          recommendedData: [],
           storeManagerId,
           showHistoricalChat: false,
           rowChatId: 0,
@@ -1538,6 +1556,14 @@ class Header extends Component {
         this.handleGetChatCustomerProfile(customerId);
       } else {
         this.setState({
+          ProfileProductTab: 0,
+          productTypeTab: 0,
+          selectedWishList: [],
+          selectedShoppingBag: [],
+          selectedRecommended: [],
+          shoppingBagData: [],
+          wishListData: [],
+          recommendedData: [],
           storeManagerId,
           rowChatId: 0,
           agentRecentChatData: [],
@@ -1587,6 +1613,14 @@ class Header extends Component {
       }
     } else {
       this.setState({
+        ProfileProductTab: 0,
+        productTypeTab: 0,
+        selectedWishList: [],
+        selectedShoppingBag: [],
+        selectedRecommended: [],
+        shoppingBagData: [],
+        wishListData: [],
+        recommendedData: [],
         storeManagerId,
         rowChatId: 0,
         agentRecentChatData: [],
@@ -2357,7 +2391,6 @@ class Header extends Component {
   };
   ////handle collpse change
   handleCollpseChange = (e) => {
-    debugger;
     this.state.activeCollpse = e[e.length - 1];
     this.setState({ activeCollpse: this.state.activeCollpse });
   };
@@ -2394,7 +2427,7 @@ class Header extends Component {
               recommendedData.push(responseData[i]);
             }
           }
-          
+
           self.setState({ shoppingBagData, wishListData, recommendedData });
         }
       })
@@ -2405,25 +2438,51 @@ class Header extends Component {
 
   ////handle shopping bag ,wishlist & recommended product select
   handleProductTabsChange = (tabIndex, itemIndex) => {
-    
     ////for Shopping Bag list
     if (tabIndex === 1) {
       this.state.shoppingBagData[itemIndex].isCheck = !this.state
         .shoppingBagData[itemIndex].isCheck;
-      this.setState({ shoppingBagData: this.state.shoppingBagData });
+      var selectedShoppingBag = [];
+      for (let k = 0; k < this.state.shoppingBagData.length; k++) {
+        if (this.state.shoppingBagData[k].isCheck) {
+          selectedShoppingBag.push(this.state.shoppingBagData[k]);
+        }
+      }
+      this.setState({
+        shoppingBagData: this.state.shoppingBagData,
+        selectedShoppingBag,
+      });
     }
     //// for Wish List
     if (tabIndex === 2) {
       this.state.wishListData[itemIndex].isCheck = !this.state.wishListData[
         itemIndex
       ].isCheck;
-      this.setState({ wishListData: this.state.wishListData });
+      var selectedWishList = [];
+      for (let k = 0; k < this.state.wishListData.length; k++) {
+        if (this.state.wishListData[k].isCheck) {
+          selectedWishList.push(this.state.wishListData[k]);
+        }
+      }
+      this.setState({
+        wishListData: this.state.wishListData,
+        selectedWishList,
+      });
     }
     ////for Recommended list
     if (tabIndex === 3) {
       this.state.recommendedData[itemIndex].isCheck = !this.state
         .recommendedData[itemIndex].isCheck;
-      this.setState({ recommendedData: this.state.recommendedData });
+      var selectedRecommended = [];
+      for (let k = 0; k < this.state.recommendedData.length; k++) {
+        if (this.state.recommendedData[k].isCheck) {
+          selectedRecommended.push(this.state.recommendedData[k]);
+        }
+      }
+      this.setState({
+        recommendedData: this.state.recommendedData,
+        selectedRecommended,
+      });
     }
   };
   ////handle product type tab change
@@ -2438,22 +2497,161 @@ class Header extends Component {
       for (let i = 0; i < this.state.shoppingBagData.length; i++) {
         this.state.shoppingBagData[i].isCheck = true;
       }
-      this.setState({ shoppingBagData: this.state.shoppingBagData });
+      var selectedShoppingBag = [];
+      for (let k = 0; k < this.state.shoppingBagData.length; k++) {
+        if (this.state.shoppingBagData[k].isCheck) {
+          selectedShoppingBag.push(this.state.shoppingBagData[k]);
+        }
+      }
+      this.setState({
+        shoppingBagData: this.state.shoppingBagData,
+        selectedShoppingBag,
+      });
     }
     ////for wish list tab select all
     if (tabIndex === 2) {
       for (let i = 0; i < this.state.wishListData.length; i++) {
         this.state.wishListData[i].isCheck = true;
       }
-      this.setState({ wishListData: this.state.wishListData });
+      var selectedWishList = [];
+      for (let k = 0; k < this.state.wishListData.length; k++) {
+        if (this.state.wishListData[k].isCheck) {
+          selectedWishList.push(this.state.wishListData[k]);
+        }
+      }
+      this.setState({
+        wishListData: this.state.wishListData,
+        selectedWishList,
+      });
     }
     ////for recommended tab select all
     if (tabIndex === 3) {
       for (let i = 0; i < this.state.recommendedData.length; i++) {
         this.state.recommendedData[i].isCheck = true;
       }
-      this.setState({ recommendedData: this.state.recommendedData });
+      var selectedRecommended = [];
+      for (let k = 0; k < this.state.recommendedData.length; k++) {
+        if (this.state.recommendedData[k].isCheck) {
+          selectedRecommended.push(this.state.recommendedData[k]);
+        }
+      }
+      this.setState({
+        recommendedData: this.state.recommendedData,
+        selectedRecommended,
+      });
     }
+  };
+  ////handle remove product
+  handleRemoveProduct = (itemCode) => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/RemoveProduct",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+        ItemCode: itemCode,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetChatCustomerProducts();
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleRemoveProduct");
+      });
+  };
+  ////handle add products to shopping bag
+  handleAddProductsToShoppingBag = () => {
+    let self = this;
+    var itemCode = "";
+    if (this.state.selectedWishList.length > 0) {
+      for (let i = 0; i < this.state.selectedWishList.length; i++) {
+        if (this.state.selectedWishList[i].isCheck) {
+          itemCode += this.state.selectedWishList[i].uniqueItemCode + ",";
+        }
+      }
+    }
+    this.setState({ isButtonClick: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/AddProductsToShoppingBag",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+        ItemCodes: itemCode,
+        IsFromRecommendation: false,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+
+        if (message === "Success" && responseData) {
+          self.setState({ selectedWishList: [], isButtonClick: false });
+          self.handleGetChatCustomerProducts();
+        } else {
+          self.setState({ isButtonClick: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---AddProductsToShoppingBag");
+      });
+  };
+  ////handle add products to wish list
+  handleAddProductsToWishlist = (formType) => {
+    let self = this;
+    var itemCode = "";
+    if (this.state.selectedRecommended.length > 0 && formType) {
+      for (let i = 0; i < this.state.selectedRecommended.length; i++) {
+        if (this.state.selectedRecommended[i].isCheck) {
+          itemCode += this.state.selectedRecommended[i].uniqueItemCode + ",";
+        }
+      }
+    }
+    if (this.state.selectedShoppingBag.length > 0 && !formType) {
+      for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
+        if (this.state.selectedShoppingBag[i].isCheck) {
+          itemCode += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
+        }
+      }
+    }
+
+    this.setState({ isButtonClick: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/AddProductsToWishlist",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+        ItemCodes: itemCode,
+        IsFromRecommendation: formType || false,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+
+        if (message === "Success" && responseData) {
+          if (formType) {
+            self.setState({ selectedRecommended: [], isButtonClick: false });
+          } else {
+            self.setState({ selectedShoppingBag: [], isButtonClick: false });
+          }
+          self.handleGetChatCustomerProducts();
+        } else {
+          self.setState({ isButtonClick: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---AddProductsToShoppingBag");
+      });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -3534,7 +3732,7 @@ class Header extends Component {
                     ? "secondbox secondbox-open"
                     : this.state.isMobileView && this.state.customerName
                     ? "secondbox secondbox-open-new-show"
-                    : "secondbox secondbox-open-new secondbox-open-new-hide"
+                    : "secondbox-open-new secondbox-open-new-hide"
                 }
               >
                 <div className="chatbot-right">
@@ -6733,7 +6931,7 @@ class Header extends Component {
                             22 Past Chat
                           </button>
                           <button
-                          style={{float:"right"}}
+                            style={{ float: "right" }}
                             type="button"
                             className="updateprofilelinkbtn pastchatmobbtn"
                           >
@@ -6752,7 +6950,13 @@ class Header extends Component {
                             <Tab label="Shopping Bag">
                               <div className="shoppingbag">
                                 {this.state.shoppingBagData.length > 0 ? (
-                                  <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,1)}>
+                                  <label
+                                    className="selectalllabel"
+                                    onClick={this.handleSelectAllProduct.bind(
+                                      this,
+                                      1
+                                    )}
+                                  >
                                     Select All
                                   </label>
                                 ) : null}
@@ -6792,6 +6996,13 @@ class Header extends Component {
                                                 src={Cancelico}
                                                 className="cancelico"
                                                 alt="Cancel Ico"
+                                                disabled={
+                                                  this.state.isButtonClick
+                                                }
+                                                onClick={this.handleRemoveProduct.bind(
+                                                  this,
+                                                  item.uniqueItemCode
+                                                )}
                                               />
                                             </div>
                                           );
@@ -6804,24 +7015,47 @@ class Header extends Component {
                                     />
                                   ) : null}
                                 </div>
-                                {this.state.shoppingBagData.length > 0 ?
-                                <div className="tabsbotbtn-box">
-                                  <button type="button" className="tabsbotbtn">
-                                    SENT
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    ADD To CART
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    BUY NOW
-                                  </button>
-                                </div>:null}
+                                {this.state.selectedShoppingBag.length > 0 ? (
+                                  <div className="tabsbotbtn-box">
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      SENT
+                                    </button>
+                                    <button
+                                      disabled={
+                                        this.state.isButtonClick ? true : false
+                                      }
+                                      type="button"
+                                      className="tabsbotbtn"
+                                      onClick={this.handleAddProductsToWishlist.bind(
+                                        this,
+                                        false
+                                      )}
+                                    >
+                                      ADD To WISHLIST
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      BUY NOW
+                                    </button>
+                                  </div>
+                                ) : null}
                               </div>
                             </Tab>
                             <Tab label="Wishlist">
                               <div className="shoppingbag">
                                 {this.state.wishListData.length > 0 ? (
-                                  <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,2)}>
+                                  <label
+                                    className="selectalllabel"
+                                    onClick={this.handleSelectAllProduct.bind(
+                                      this,
+                                      2
+                                    )}
+                                  >
                                     Select All
                                   </label>
                                 ) : null}
@@ -6857,6 +7091,13 @@ class Header extends Component {
                                               <span>{item.price}</span>
                                             ) : null}
                                             <img
+                                              disabled={
+                                                this.state.isButtonClick
+                                              }
+                                              onClick={this.handleRemoveProduct.bind(
+                                                this,
+                                                item.uniqueItemCode
+                                              )}
                                               src={Cancelico}
                                               className="cancelico"
                                               alt="Cancel Ico"
@@ -6871,7 +7112,7 @@ class Header extends Component {
                                     />
                                   ) : null}
                                 </div>
-                                {this.state.wishListData.length > 0 ? (
+                                {this.state.selectedWishList.length > 0 ? (
                                   <div className="tabsbotbtn-box">
                                     <button
                                       type="button"
@@ -6882,8 +7123,14 @@ class Header extends Component {
                                     <button
                                       type="button"
                                       className="tabsbotbtn"
+                                      disabled={
+                                        this.state.isButtonClick ? true : false
+                                      }
+                                      onClick={this.handleAddProductsToShoppingBag.bind(
+                                        this
+                                      )}
                                     >
-                                      ADD To CART
+                                      ADD To BAG
                                     </button>
                                     <button
                                       type="button"
@@ -6897,8 +7144,14 @@ class Header extends Component {
                             </Tab>
                             <Tab label="Recommended">
                               <div className="shoppingbag">
-                                {this.state.recommendedData.length>0 ? (
-                                  <label className="selectalllabel" onClick={this.handleSelectAllProduct.bind(this,3)}>
+                                {this.state.recommendedData.length > 0 ? (
+                                  <label
+                                    className="selectalllabel"
+                                    onClick={this.handleSelectAllProduct.bind(
+                                      this,
+                                      3
+                                    )}
+                                  >
                                     Select All
                                   </label>
                                 ) : null}
@@ -6935,6 +7188,13 @@ class Header extends Component {
                                                 <span>{item.price}</span>
                                               ) : null}
                                               <img
+                                                disabled={
+                                                  this.state.isButtonClick
+                                                }
+                                                onClick={this.handleRemoveProduct.bind(
+                                                  this,
+                                                  item.uniqueItemCode
+                                                )}
                                                 src={Cancelico}
                                                 className="cancelico"
                                                 alt="Cancel Ico"
@@ -6950,7 +7210,7 @@ class Header extends Component {
                                     />
                                   ) : null}
                                 </div>
-                                {this.state.recommendedData.length > 0 ? (
+                                {this.state.selectedRecommended.length > 0 ? (
                                   <div className="tabsbotbtn-box">
                                     <button
                                       type="button"
@@ -6961,8 +7221,15 @@ class Header extends Component {
                                     <button
                                       type="button"
                                       className="tabsbotbtn"
+                                      disabled={
+                                        this.state.isButtonClick ? true : false
+                                      }
+                                      onClick={this.handleAddProductsToWishlist.bind(
+                                        this,
+                                        true
+                                      )}
                                     >
-                                      ADD To CART
+                                      ADD To WISHLIST
                                     </button>
                                     <button
                                       type="button"
