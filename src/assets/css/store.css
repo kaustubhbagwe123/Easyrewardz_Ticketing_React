@@ -1025,7 +1025,8 @@ table tr th:last-child {
 }
 .cardmargin {
   margin-left: -30px;
-  height: 49.6vw;
+  /* height: 49.6vw; */
+  height: 100%;
 }
 /* StoreAddTask css end */
 /* ClaimApproveReject css start for header button and bottom page by Kalpesh */

@@ -110,8 +110,8 @@ class StoreSignIn extends Component {
               debugger;
               window.localStorage.setItem("token", res.data.responseData.token);
               window.localStorage.setItem("ERS", true);
-              // self.handleCRMRole();
-              self.props.history.push("languageSelection");
+              self.handleCRMRole();
+              // self.props.history.push("languageSelection");
             } else {
               NotificationManager.error(
                 "Username or password is invalid.",
@@ -133,7 +133,7 @@ class StoreSignIn extends Component {
     }
   }
 
-  handleCRMRole() {
+    handleCRMRole() {
     let self = this;
     axios({
       method: "post",
@@ -145,13 +145,19 @@ class StoreSignIn extends Component {
         let data = res.data.responseData.modules;
         if (msg === "Success") {
           if (data !== null) {
+            var isCallStorePayAPI = false;
             for (var i = 0; i <= data.length; i++) {
               if (i === data.length) {
-                NotificationManager.error(
-                  "You don't have any sufficient page access. Please contact administrator for access.",
-                  "",
-                  2000
-                );
+                if (isCallStorePayAPI) {
+                  self.handleGenerateStorePayLink();
+                } else {
+                  NotificationManager.error(
+                    "You don't have any sufficient page access. Please contact administrator for access.",
+                    "",
+                    2000
+                  );
+                }
+
                 self.setState({
                   loading: false,
                 });
@@ -159,52 +165,61 @@ class StoreSignIn extends Component {
                 data[i].moduleName === "Dashboard" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/storedashboard");
-                }, 400);
+                self.props.history.push("languageSelection");
                 return;
               } else if (
                 data[i].moduleName === "Tasks" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/StoreTask");
-                }, 400);
+                self.props.history.push("languageSelection");
+
                 return;
               } else if (
                 data[i].moduleName === "Claim" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/claim");
-                }, 400);
+                self.props.history.push("languageSelection");
+
                 return;
               } else if (
                 data[i].moduleName === "Campaign" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
+                self.props.history.push("languageSelection");
+
                 return;
               } else if (
                 data[i].moduleName === "Appointment" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/appointment");
-                }, 400);
+                self.props.history.push("languageSelection");
+
                 return;
               } else if (
-                data[i].moduleName === "Settings" &&
+                data[i].moduleName === "MyTicket" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
+                self.props.history.push("languageSelection");
+
                 return;
+              } else if (
+                data[i].moduleName === "Orders" &&
+                data[i].modulestatus === true
+              ) {
+                self.props.history.push("languageSelection");
+
+                return;
+              } else if (
+                data[i].moduleName === "StorePay" &&
+                data[i].modulestatus === true
+              ) {
+                isCallStorePayAPI = true;
               }
             }
+
+            // if (!isCallStorePayAPI) {
+            //   self.handleGenerateStorePayLink();
+            // }
           }
         }
       })
@@ -212,6 +227,28 @@ class StoreSignIn extends Component {
         console.log(data);
       });
   }
+  ////handle genrate store pay link
+  handleGenerateStorePayLink = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StorePay/GenerateStorePayLink",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var storePayURL = response.data.responseData;
+        if (message === "Success" && storePayURL) {
+          // self.setState({ storePayURL });
+          window.location.href = storePayURL;
+        } else {
+          // window.location = "http://www.google.com/";
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGenerateStorePayLink");
+      });
+  };
   render() {
     return (
       <div className="auth-wrapper box-center">
