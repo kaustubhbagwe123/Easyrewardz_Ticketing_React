@@ -8,7 +8,8 @@ import Headphone2Img from "./../../assets/Images/headphone2.png";
 import DownImg from "./../../assets/Images/down.png";
 import EyeImg from "./../../assets/Images/eye.png";
 import BillInvoiceImg from "./../../assets/Images/bill-Invoice.png";
-import Whatsapp from "./../../assets/Images/whatsapp.png";
+import WhatsappActive from "./../../assets/Images/whatsapp-active.png";
+import WhatsappDeactive from "./../../assets/Images/whatsapp-deactive.png";
 import CancelImg from "./../../assets/Images/cancel.png";
 import StoreIcon from "./../../assets/Images/store.png";
 import { NotificationManager } from "react-notifications";
@@ -594,29 +595,47 @@ class storeMyTicket extends Component {
                           </label>
                         </div>
                         <div className="col-md-7">
-                          {this.state.isIconDisplay &&
-                          !this.state.isChatAllreadyActive ? (
-                            <img
-                              style={{
-                                marginRight: "140px",
-                                float: "right",
-                                cursor: "pointer",
-                              }}
-                              src={Whatsapp}
-                              alt="Whatsapp"
-                              onClick={this.handleWhatsAppIconClick.bind(this)}
-                            />
-                          ) : null}
-                          <label className="mobile-number">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.customername
-                              : "Chat ID"}
-                          </label>
+                          <div className="row">
+                          <div className="col-md-3" style={{paddingRight:0}}>
+                              <label className="mobile-number">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.customername
+                                  : "Chat ID"}
+                              </label>
 
-                          <br />
-                          <label className="mobile-no">
-                            {this.state.chatID}
-                          </label>
+                              <br />
+                              <label className="mobile-no">
+                                {this.state.chatID}
+                              </label>
+                            </div>
+                            <div className="col-md-9" style={{padding:0}}>
+                              {this.state.isIconDisplay &&
+                              !this.state.isChatAllreadyActive ? (
+                                <img
+                                  style={{
+                                    width:"24px",
+                                    cursor: "pointer",
+                                  }}
+                                  title="Re-Initiate Chat"
+                                  src={WhatsappActive}
+                                  alt="WhatsappActive"
+                                  onClick={this.handleWhatsAppIconClick.bind(
+                                    this
+                                  )}
+                                />
+                              ) : (
+                                <img
+                                style={{
+                                  width:"20px",
+                                  cursor: "pointer",
+                                }}
+                                  src={WhatsappDeactive}
+                                  alt="WhatsappDeactive"
+                                />
+                              )}
+                            </div>
+                            
+                          </div>
                         </div>
                       </div>
                       <div className="row">
@@ -873,8 +892,12 @@ class storeMyTicket extends Component {
                         .map((item) => {
                           return (
                             <>
-                              <p className="label-3 pb-0" style={{marginBottom:"5px"}}>{item}</p>
-                              
+                              <p
+                                className="label-3 pb-0"
+                                style={{ marginBottom: "5px" }}
+                              >
+                                {item}
+                              </p>
                             </>
                           );
                         })

@@ -53,6 +53,7 @@ class ChatSettings extends Component {
       buttonClickCSS: 0,
       nsId: 0,
       isLoading: false,
+      isProfileAndProduct: false,
     };
   }
 
@@ -509,7 +510,7 @@ class ChatSettings extends Component {
       var soundName = this.state.chatSoundData.filter(
         (x) => x.soundID === Number(this.state.newChatSoundID)
       )[0].soundFileName;
-      
+
       const Sound1Play = new Audio(config.soundURL + soundName);
       Sound1Play.volume = Math.round(e / 10) / 10;
       Sound1Play.play();
@@ -517,7 +518,7 @@ class ChatSettings extends Component {
   };
   ////handle new message volumn change
   handleNewMessageVolumnChange = (e) => {
-    debugger
+    debugger;
     this.setState({ newMessageSoundVolume: e });
     if (Number(this.state.newMessageSoundID)) {
       var soundName = this.state.chatSoundData.filter(
@@ -838,6 +839,164 @@ class ChatSettings extends Component {
                           <div className="col-md-3"></div>
                           <div className="col-md-3"></div>
                         </div>
+
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Profile & Product of Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="idProfielProduct"
+                                  name="allModules"
+                                  checked={this.state.isProfileAndProduct}
+                                />
+                                <label
+                                  htmlFor="idProfielProduct"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Message Tab in Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="idProfielProduct"
+                                  name="allModules"
+                                  checked={this.state.isProfileAndProduct}
+                                />
+                                <label
+                                  htmlFor="idProfielProduct"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Card Tab in Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="idProfielProduct"
+                                  name="allModules"
+                                  checked={this.state.isProfileAndProduct}
+                                />
+                                <label
+                                  htmlFor="idProfielProduct"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Reccomended List Tab in Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="idProfielProduct"
+                                  name="allModules"
+                                  checked={this.state.isProfileAndProduct}
+                                />
+                                <label
+                                  htmlFor="idProfielProduct"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Schedual Visit Tab in Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="idProfielProduct"
+                                  name="allModules"
+                                  checked={this.state.isProfileAndProduct}
+                                />
+                                <label
+                                  htmlFor="idProfielProduct"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Generate Payment Link Tab in Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="idProfielProduct"
+                                  name="allModules"
+                                  checked={this.state.isProfileAndProduct}
+                                />
+                                <label
+                                  htmlFor="idProfielProduct"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+
                         <div
                           className="row"
                           style={{ width: "100%", margin: "0" }}

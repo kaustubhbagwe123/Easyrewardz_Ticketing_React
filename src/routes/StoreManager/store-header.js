@@ -1687,28 +1687,46 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
+    debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
+      // if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
+      //   if (Number(e.target.value) === 0) {
+      //     this.setState({
+      //       noOfPeopleMax: "Please enter the no of people greater than 0",
+      //     });
+      //   } else {
+      //     this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+      //   }
+      // } else {
+      //   if (e.target.value !== "") {
+      //     this.setState({
+      //       noOfPeople: "",
+      //       noOfPeopleMax:
+      //         "Maximum capacity are " + this.state.selectedSlot.remaining,
+      //     });
+      //   } else {
+      //     this.setState({
+      //       noOfPeople: "",
+      //       noOfPeopleMax: "",
+      //     });
+      //   }
+      // }
+
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) === 0) {
-          this.setState({
-            noOfPeopleMax: "Please enter the no of people greater than 0",
-          });
-        } else {
+        if (Number(e.target.value) <= 3) {
           this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+        } else {
+          this.setState({
+            noOfPeople: "",
+            noOfPeopleMax: "Maximum capacity are 3",
+          });
         }
       } else {
-        if (e.target.value !== "") {
-          this.setState({
-            noOfPeople: "",
-            noOfPeopleMax:
-              "Maximum capacity are " + this.state.selectedSlot.remaining,
-          });
-        } else {
-          this.setState({
-            noOfPeople: "",
-            noOfPeopleMax: "",
-          });
-        }
+        this.setState({
+          noOfPeople: "",
+          noOfPeopleMax:
+            "Remaining capacity are " + this.state.selectedSlot.remaining,
+        });
       }
     } else {
       this.setState({ isSelectSlot: "Please select time slot" });
@@ -3225,7 +3243,9 @@ class Header extends Component {
             <div className="row">
               <div
                 className={
-                  this.state.isMobileView && !this.state.customerName && !this.state.isHistoricalChat
+                  this.state.isMobileView &&
+                  !this.state.customerName &&
+                  !this.state.isHistoricalChat
                     ? "firstbox firstbox-show"
                     : this.state.isMobileView && this.state.isHistoricalChat
                     ? "firstbox firstbox-hide"
@@ -3936,7 +3956,7 @@ class Header extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label
                                         .customerhasendchat
-                                    : "Customer has end chat"}
+                                    : "Customer has ended the conversation"}
                                 </label>
                               ) : null}
                             </div>
@@ -6981,11 +7001,176 @@ class Header extends Component {
                                                   i
                                                 )}
                                               >
-                                                <img
-                                                  src={Ladyimg}
-                                                  className="ladyimg"
-                                                  alt="Lady Img"
-                                                />
+                                                <Popover
+                                                  overlayClassName="antcustom ant-prodesc"
+                                                  content={
+                                                    <div className="productdesc">
+                                                      <h4>{item.productName}</h4>
+                                                      <p>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.p
+                                                              .lasttransaction
+                                                          : "Last Transaction"}
+                                                        -{item.uniqueItemCode}
+                                                      </p>
+                                                      <table>
+                                                        <tbody>
+                                                          {item.color !== "" ? (
+                                                            <>
+                                                              <tr>
+                                                                <td
+                                                                  style={{
+                                                                    width:
+                                                                      "50px",
+                                                                  }}
+                                                                >
+                                                                  <label>
+                                                                    {TranslationContext !==
+                                                                    undefined
+                                                                      ? TranslationContext
+                                                                          .label
+                                                                          .colors
+                                                                      : "Colors"}
+                                                                    :
+                                                                  </label>
+                                                                </td>
+                                                                <td>
+                                                                  <ul>
+                                                                    {item.color ===
+                                                                    "Blue" ? (
+                                                                      <li>
+                                                                        <a className="colorblue">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+
+                                                                    {item.color ===
+                                                                    "Black" ? (
+                                                                      <li>
+                                                                        <a className="colorblack">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+
+                                                                    {item.color ===
+                                                                    "Grey" ? (
+                                                                      <li>
+                                                                        <a className="colorgrey">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+
+                                                                    {item.color ===
+                                                                    "Red" ? (
+                                                                      <li>
+                                                                        <a className="colorRed">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+                                                                    {item.color ===
+                                                                    "Yellow" ? (
+                                                                      <li>
+                                                                        <a className="colorYellow">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+                                                                    {item.color ===
+                                                                    "Green" ? (
+                                                                      <li>
+                                                                        <a className="colorGreen">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+                                                                  </ul>
+                                                                </td>
+                                                              </tr>
+                                                            </>
+                                                          ) : null}
+
+                                                          {item.size !== "" ? (
+                                                            <>
+                                                              <tr>
+                                                                <td>
+                                                                  <label>
+                                                                    {TranslationContext !==
+                                                                    undefined
+                                                                      ? TranslationContext
+                                                                          .label
+                                                                          .sizes
+                                                                      : "Sizes"}
+                                                                    :
+                                                                  </label>
+                                                                </td>
+                                                                <td>
+                                                                  {isNaN(
+                                                                    parseInt(
+                                                                      item.size
+                                                                    )
+                                                                  ) ===
+                                                                  false ? (
+                                                                    <ul className="sizes">
+                                                                      <li>
+                                                                        <a>
+                                                                          {
+                                                                            item.size
+                                                                          }
+                                                                        </a>
+                                                                      </li>
+                                                                    </ul>
+                                                                  ) : (
+                                                                    <ul>
+                                                                      <li>
+                                                                        <a>
+                                                                          {
+                                                                            item.size
+                                                                          }
+                                                                        </a>
+                                                                      </li>
+                                                                    </ul>
+                                                                  )}
+                                                                </td>
+                                                              </tr>
+                                                            </>
+                                                          ) : null}
+                                                        </tbody>
+                                                      </table>
+                                                      <h3>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .h3.inr
+                                                          : "INR "}
+                                                        {item.price}/-
+                                                      </h3>
+                                                    </div>
+                                                  }
+                                                  placement="left"
+                                                >
+                                                  <img
+                                                    src={Ladyimg}
+                                                    className="ladyimg"
+                                                    alt="Lady Img"
+                                                  />
+                                                </Popover>
                                               </Checkbox>
                                               {item.brandName ? (
                                                 <h3>{item.brandName}</h3>
@@ -7088,11 +7273,174 @@ class Header extends Component {
                                                 i
                                               )}
                                             >
-                                              <img
-                                                src={item.imageURL}
-                                                className="ladyimg"
-                                                alt="Lady Img"
-                                              />
+                                              <Popover
+                                                overlayClassName="antcustom ant-prodesc"
+                                                content={
+                                                  <div className="productdesc">
+                                                    <h4>{item.productName}</h4>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .lasttransaction
+                                                        : "Last Transaction"}
+                                                      -{item.uniqueItemCode}
+                                                    </p>
+                                                    <table>
+                                                      <tbody>
+                                                        {item.color !== "" ? (
+                                                          <>
+                                                            <tr>
+                                                              <td
+                                                                style={{
+                                                                  width: "50px",
+                                                                }}
+                                                              >
+                                                                <label>
+                                                                  {TranslationContext !==
+                                                                  undefined
+                                                                    ? TranslationContext
+                                                                        .label
+                                                                        .colors
+                                                                    : "Colors"}
+                                                                  :
+                                                                </label>
+                                                              </td>
+                                                              <td>
+                                                                <ul>
+                                                                  {item.color ===
+                                                                  "Blue" ? (
+                                                                    <li>
+                                                                      <a className="colorblue">
+                                                                        <span>
+                                                                          1
+                                                                        </span>
+                                                                      </a>
+                                                                    </li>
+                                                                  ) : null}
+
+                                                                  {item.color ===
+                                                                  "Black" ? (
+                                                                    <li>
+                                                                      <a className="colorblack">
+                                                                        <span>
+                                                                          1
+                                                                        </span>
+                                                                      </a>
+                                                                    </li>
+                                                                  ) : null}
+
+                                                                  {item.color ===
+                                                                  "Grey" ? (
+                                                                    <li>
+                                                                      <a className="colorgrey">
+                                                                        <span>
+                                                                          1
+                                                                        </span>
+                                                                      </a>
+                                                                    </li>
+                                                                  ) : null}
+
+                                                                  {item.color ===
+                                                                  "Red" ? (
+                                                                    <li>
+                                                                      <a className="colorRed">
+                                                                        <span>
+                                                                          1
+                                                                        </span>
+                                                                      </a>
+                                                                    </li>
+                                                                  ) : null}
+                                                                  {item.color ===
+                                                                  "Yellow" ? (
+                                                                    <li>
+                                                                      <a className="colorYellow">
+                                                                        <span>
+                                                                          1
+                                                                        </span>
+                                                                      </a>
+                                                                    </li>
+                                                                  ) : null}
+                                                                  {item.color ===
+                                                                  "Green" ? (
+                                                                    <li>
+                                                                      <a className="colorGreen">
+                                                                        <span>
+                                                                          1
+                                                                        </span>
+                                                                      </a>
+                                                                    </li>
+                                                                  ) : null}
+                                                                </ul>
+                                                              </td>
+                                                            </tr>
+                                                          </>
+                                                        ) : null}
+
+                                                        {item.size !== "" ? (
+                                                          <>
+                                                            <tr>
+                                                              <td>
+                                                                <label>
+                                                                  {TranslationContext !==
+                                                                  undefined
+                                                                    ? TranslationContext
+                                                                        .label
+                                                                        .sizes
+                                                                    : "Sizes"}
+                                                                  :
+                                                                </label>
+                                                              </td>
+                                                              <td>
+                                                                {isNaN(
+                                                                  parseInt(
+                                                                    item.size
+                                                                  )
+                                                                ) === false ? (
+                                                                  <ul className="sizes">
+                                                                    <li>
+                                                                      <a>
+                                                                        {
+                                                                          item.size
+                                                                        }
+                                                                      </a>
+                                                                    </li>
+                                                                  </ul>
+                                                                ) : (
+                                                                  <ul>
+                                                                    <li>
+                                                                      <a>
+                                                                        {
+                                                                          item.size
+                                                                        }
+                                                                      </a>
+                                                                    </li>
+                                                                  </ul>
+                                                                )}
+                                                              </td>
+                                                            </tr>
+                                                          </>
+                                                        ) : null}
+                                                      </tbody>
+                                                    </table>
+                                                    <h3>
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.h3
+                                                            .inr
+                                                        : "INR "}
+                                                      {item.price}/-
+                                                    </h3>
+                                                  </div>
+                                                }
+                                                placement="left"
+                                              >
+                                                <img
+                                                  src={Ladyimg}
+                                                  className="ladyimg"
+                                                  alt="Lady Img"
+                                                />
+                                              </Popover>
                                             </Checkbox>
                                             {item.brandName ? (
                                               <h3>{item.brandName}</h3>
@@ -7194,11 +7542,176 @@ class Header extends Component {
                                                   i
                                                 )}
                                               >
-                                                <img
-                                                  src={Ladyimg}
-                                                  className="ladyimg"
-                                                  alt="Lady Img"
-                                                />
+                                                <Popover
+                                                  overlayClassName="antcustom ant-prodesc"
+                                                  content={
+                                                    <div className="productdesc">
+                                                      <h4>{item.productName}</h4>
+                                                      <p>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.p
+                                                              .lasttransaction
+                                                          : "Last Transaction"}
+                                                        -{item.uniqueItemCode}
+                                                      </p>
+                                                      <table>
+                                                        <tbody>
+                                                          {item.color !== "" ? (
+                                                            <>
+                                                              <tr>
+                                                                <td
+                                                                  style={{
+                                                                    width:
+                                                                      "50px",
+                                                                  }}
+                                                                >
+                                                                  <label>
+                                                                    {TranslationContext !==
+                                                                    undefined
+                                                                      ? TranslationContext
+                                                                          .label
+                                                                          .colors
+                                                                      : "Colors"}
+                                                                    :
+                                                                  </label>
+                                                                </td>
+                                                                <td>
+                                                                  <ul>
+                                                                    {item.color ===
+                                                                    "Blue" ? (
+                                                                      <li>
+                                                                        <a className="colorblue">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+
+                                                                    {item.color ===
+                                                                    "Black" ? (
+                                                                      <li>
+                                                                        <a className="colorblack">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+
+                                                                    {item.color ===
+                                                                    "Grey" ? (
+                                                                      <li>
+                                                                        <a className="colorgrey">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+
+                                                                    {item.color ===
+                                                                    "Red" ? (
+                                                                      <li>
+                                                                        <a className="colorRed">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+                                                                    {item.color ===
+                                                                    "Yellow" ? (
+                                                                      <li>
+                                                                        <a className="colorYellow">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+                                                                    {item.color ===
+                                                                    "Green" ? (
+                                                                      <li>
+                                                                        <a className="colorGreen">
+                                                                          <span>
+                                                                            1
+                                                                          </span>
+                                                                        </a>
+                                                                      </li>
+                                                                    ) : null}
+                                                                  </ul>
+                                                                </td>
+                                                              </tr>
+                                                            </>
+                                                          ) : null}
+
+                                                          {item.size !== "" ? (
+                                                            <>
+                                                              <tr>
+                                                                <td>
+                                                                  <label>
+                                                                    {TranslationContext !==
+                                                                    undefined
+                                                                      ? TranslationContext
+                                                                          .label
+                                                                          .sizes
+                                                                      : "Sizes"}
+                                                                    :
+                                                                  </label>
+                                                                </td>
+                                                                <td>
+                                                                  {isNaN(
+                                                                    parseInt(
+                                                                      item.size
+                                                                    )
+                                                                  ) ===
+                                                                  false ? (
+                                                                    <ul className="sizes">
+                                                                      <li>
+                                                                        <a>
+                                                                          {
+                                                                            item.size
+                                                                          }
+                                                                        </a>
+                                                                      </li>
+                                                                    </ul>
+                                                                  ) : (
+                                                                    <ul>
+                                                                      <li>
+                                                                        <a>
+                                                                          {
+                                                                            item.size
+                                                                          }
+                                                                        </a>
+                                                                      </li>
+                                                                    </ul>
+                                                                  )}
+                                                                </td>
+                                                              </tr>
+                                                            </>
+                                                          ) : null}
+                                                        </tbody>
+                                                      </table>
+                                                      <h3>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .h3.inr
+                                                          : "INR "}
+                                                        {item.price}/-
+                                                      </h3>
+                                                    </div>
+                                                  }
+                                                  placement="left"
+                                                >
+                                                  <img
+                                                    src={Ladyimg}
+                                                    className="ladyimg"
+                                                    alt="Lady Img"
+                                                  />
+                                                </Popover>
                                               </Checkbox>
                                               {item.brandName ? (
                                                 <h3>{item.brandName}</h3>
