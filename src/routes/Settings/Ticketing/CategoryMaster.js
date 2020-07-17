@@ -35,7 +35,6 @@ import * as translationMA from "./../../../translations/marathi";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
-
 class CategoryMaster extends Component {
   constructor(props) {
     super(props);
@@ -120,7 +119,7 @@ class CategoryMaster extends Component {
       EditshowMsgSubCategory: false,
       EditshowMsgIssueType: false,
       bulkuploadLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -756,7 +755,7 @@ class CategoryMaster extends Component {
       url: config.apiUrl + "/Category/ListCategorybrandmapping",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var status = res.data.message;
         var data = res.data.responseData;
@@ -854,7 +853,7 @@ class CategoryMaster extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -889,7 +888,7 @@ class CategoryMaster extends Component {
         BrandID: braindID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let data = res.data;
         self.setState({ categoryDropData: data });
@@ -924,7 +923,7 @@ class CategoryMaster extends Component {
         CategoryID: Category_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let data = res.data.responseData;
         self.setState({ SubCategoryDropData: data });
@@ -960,7 +959,7 @@ class CategoryMaster extends Component {
         SubCategoryID: SubCat_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -987,14 +986,16 @@ class CategoryMaster extends Component {
         CategoryID: category_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetCategoryGridData();
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.categorydeletedsuccessfully
-            : "Category deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.categorydeletedsuccessfully
+              : "Category deleted successfully."
+          );
         }
       })
       .catch((data) => {
@@ -1021,14 +1022,16 @@ class CategoryMaster extends Component {
         BrandID: brand_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.categoryaddedsuccessfully
-            : "Category added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.categoryaddedsuccessfully
+              : "Category added successfully."
+          );
           self.setState({
             showMsgData: false,
           });
@@ -1056,9 +1059,11 @@ class CategoryMaster extends Component {
             self.handleGetCategoryList();
           }
         } else {
-          NotificationManager.error(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.categorynotadded
-            : "Category not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.categorynotadded
+              : "Category not added."
+          );
         }
       })
       .catch((data) => {
@@ -1092,7 +1097,7 @@ class CategoryMaster extends Component {
         SubcategoryName: value,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1121,13 +1126,17 @@ class CategoryMaster extends Component {
           self.setState({
             showMsgSubCategory: false,
           });
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.subcategoryaddedsuccessfully
-            : "SubCategory added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.subcategoryaddedsuccessfully
+              : "SubCategory added successfully."
+          );
         } else {
-          NotificationManager.error(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.subcategorynotadded
-            : "SubCategory not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.subcategorynotadded
+              : "SubCategory not added."
+          );
         }
       })
       .catch((data) => {
@@ -1160,15 +1169,17 @@ class CategoryMaster extends Component {
         IssuetypeName: value,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
         if (status === "Success") {
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.issuetypeaddedsuccessfully
-            : "Issue Type added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.issuetypeaddedsuccessfully
+              : "Issue Type added successfully."
+          );
           self.setState({
             showMsgIssueType: false,
           });
@@ -1184,9 +1195,11 @@ class CategoryMaster extends Component {
             self.handleGetIssueTypeList();
           }
         } else {
-          NotificationManager.error(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.issuetypenotadded
-            : "Issue Type not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.issuetypenotadded
+              : "Issue Type not added."
+          );
         }
       })
       .catch((data) => {
@@ -1264,14 +1277,16 @@ class CategoryMaster extends Component {
           Status: activeStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.categoryaddedsuccessfully
-              : "Category added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.categoryaddedsuccessfully
+                : "Category added successfully."
+            );
             self.setState({
               selectBrand: 0,
               list1Value: "",
@@ -1288,9 +1303,11 @@ class CategoryMaster extends Component {
               showMsgIssueType: false,
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.recordalreadyexists
-              : "Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
           } else {
             NotificationManager.error(status);
           }
@@ -1300,21 +1317,26 @@ class CategoryMaster extends Component {
         });
     } else {
       this.setState({
-        brandCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectbrand
-        : "Please Select Brand.",
-        categoryCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectcategory
-        : "Please Select Category.",
-        subcategoryCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectsubcategory
-        : "Please Select SubCategory.",
-        issueCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectissuetype
-        : "Please Select Issue type",
-        statusCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectstatus
-        : "Please Select Status",
+        brandCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectbrand
+            : "Please Select Brand.",
+        categoryCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectcategory
+            : "Please Select Category.",
+        subcategoryCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectsubcategory
+            : "Please Select SubCategory.",
+        issueCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please Select Issue type",
+        statusCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectstatus
+            : "Please Select Status",
       });
     }
   }
@@ -1379,14 +1401,16 @@ class CategoryMaster extends Component {
           Deleteflag: 0,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.categoryupdatedsuccessfully
-              : "Category updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.categoryupdatedsuccessfully
+                : "Category updated successfully."
+            );
             self.setState({
               selectBrand: 0,
               list1Value: "",
@@ -1406,9 +1430,11 @@ class CategoryMaster extends Component {
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ editmodel: false, editSaveLoading: false });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.recordalreadyexists
-              : "Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
           } else {
             NotificationManager.error(status);
             self.setState({ editmodel: false, editSaveLoading: false });
@@ -1420,21 +1446,26 @@ class CategoryMaster extends Component {
         });
     } else {
       self.setState({
-        editBrandCompulsory: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectbrand
-        : "Please Select Brand.",
-        editCategoryCompulsory: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectcategory
-        : "Please Select Category.",
-        editSubCatCompulsory: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectsubcategory
-        : "Please Select SubCategory.",
-        editIssueCompulsory: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectissuetype
-        : "Please Select Issue type",
-        editStatusCompulsory: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectstatus
-        : "Please Select Status",
+        editBrandCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectbrand
+            : "Please Select Brand.",
+        editCategoryCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectcategory
+            : "Please Select Category.",
+        editSubCatCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectsubcategory
+            : "Please Select SubCategory.",
+        editIssueCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectissuetype
+            : "Please Select Issue type",
+        editStatusCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectstatus
+            : "Please Select Status",
       });
     }
   }
@@ -1572,9 +1603,10 @@ class CategoryMaster extends Component {
     if (value === "0") {
       editCategory[e.target.name] = value;
       this.setState({
-        editBrandCompulsory: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectbrand
-        : "Please Select Brand.",
+        editBrandCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectbrand
+            : "Please Select Brand.",
         editCategory,
         categoryDropData: [],
         SubCategoryDropData: [],
@@ -1779,9 +1811,11 @@ class CategoryMaster extends Component {
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success(TranslationContext !== undefined
-      ? TranslationContext.alertmessage.filedeletedsuccessfully
-      : "File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
   handleSearchCategoryData(data, check) {
     debugger;
@@ -1804,7 +1838,7 @@ class CategoryMaster extends Component {
             searchText: data,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let status = res.data.message;
             let data = res.data.responseData;
@@ -1831,9 +1865,11 @@ class CategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.alertmessage.pleaseselectbrand
-        : "Please Select Brand.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectbrand
+          : "Please Select Brand."
+      );
     }
   }
   handleSearchEditSubCategoryData(data) {
@@ -1867,7 +1903,7 @@ class CategoryMaster extends Component {
             searchText: data,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let status = res.data.message;
             let data = res.data.responseData;
@@ -1894,9 +1930,11 @@ class CategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.alertmessage.pleaseselectcategory
-        : "Please Select Category.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectcategory
+          : "Please Select Category."
+      );
     }
   }
   handleSearchEditIssueType(data) {
@@ -1929,7 +1967,7 @@ class CategoryMaster extends Component {
             searchText: data,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
             let status = res.data.message;
             let data = res.data.responseData;
@@ -1958,9 +1996,11 @@ class CategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.alertmessage.pleaseselectsubcategory
-        : "Please Select Sub Category.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectsubcategory
+          : "Please Select Sub Category."
+      );
     }
   }
   ////handle bulk upload
@@ -1968,63 +2008,72 @@ class CategoryMaster extends Component {
     debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
-      let self = this;
-      this.setState({
-        bulkuploadLoading: true,
-      });
-      const formData = new FormData();
-
-      formData.append("file", this.state.fileN[0]);
-      // this.setState({ showProgress: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Category/BulkUploadCategory",
-        headers: authHeader(),
-        data: formData,
-      })
-        .then(function (res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.fileuploadedsuccessfully
-              : "File uploaded successfully.");
-            self.setState({
-              fileName: "",
-              fileSize: "",
-              fileN: [],
-              bulkuploadLoading: false,
-            });
-            self.handleGetCategoryGridData();
-          } else {
-            self.setState({
-              showProgress: false,
-              bulkuploadLoading: false,
-              // isFileUploadFail: true,
-              // progressValue: 0
-            });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.filenotuploaded
-              : "File not uploaded.");
-          }
-        })
-        .catch((data) => {
-          debugger;
-          if (data.message) {
-            this.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              bulkuploadLoading: false,
-            });
-          }
-          console.log(data);
+      if (this.state.fileN[0].path.split(".")[1] === "csv") {
+        let self = this;
+        this.setState({
+          bulkuploadLoading: true,
         });
+        const formData = new FormData();
+
+        formData.append("file", this.state.fileN[0]);
+        // this.setState({ showProgress: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Category/BulkUploadCategory",
+          headers: authHeader(),
+          data: formData,
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                  : "File uploaded successfully."
+              );
+              self.setState({
+                fileName: "",
+                fileSize: "",
+                fileN: [],
+                bulkuploadLoading: false,
+              });
+              self.handleGetCategoryGridData();
+            } else {
+              self.setState({
+                showProgress: false,
+                bulkuploadLoading: false,
+                // isFileUploadFail: true,
+                // progressValue: 0
+              });
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.filenotuploaded
+                  : "File not uploaded."
+              );
+            }
+          })
+          .catch((data) => {
+            debugger;
+            if (data.message) {
+              this.setState({
+                showProgress: false,
+                isFileUploadFail: true,
+                bulkuploadLoading: false,
+              });
+            }
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Only CSV files allowed.");
+      }
     } else {
       this.setState({
-        bulkuploadCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectfile
-        : "Please select file.",
+        bulkuploadCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfile
+            : "Please select file.",
       });
     }
   }
@@ -2074,9 +2123,11 @@ class CategoryMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortatoz
-                    : "SORT BY A TO Z"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2086,9 +2137,11 @@ class CategoryMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortztoa
-                    : "SORT BY Z TO A"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -2101,9 +2154,11 @@ class CategoryMaster extends Component {
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p>{TranslationContext !== undefined
-                  ? TranslationContext.p.filterbytype
-                  : "FILTER BY TYPE"}</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -2142,137 +2197,137 @@ class CategoryMaster extends Component {
                   </div>
                   {this.state.sortColumn === "brandName"
                     ? this.state.sortFilterBrandName !== null &&
-                    this.state.sortFilterBrandName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.brandName}
-                          value={item.brandName}
-                          checked={this.state.sbrandNameFilterCheckbox.includes(
-                            item.brandName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "brandName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.brandName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.brandName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterBrandName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandName}
+                            value={item.brandName}
+                            checked={this.state.sbrandNameFilterCheckbox.includes(
+                              item.brandName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "categoryName"
                     ? this.state.sortFilterCategory !== null &&
-                    this.state.sortFilterCategory.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.categoryName}
-                          value={item.categoryName}
-                          checked={this.state.scategoryNameFilterCheckbox.includes(
-                            item.categoryName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "categoryName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.categoryName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.categoryName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterCategory.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.categoryName}
+                            value={item.categoryName}
+                            checked={this.state.scategoryNameFilterCheckbox.includes(
+                              item.categoryName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "categoryName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.categoryName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.categoryName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "subCategoryName"
                     ? this.state.sortFilterSubCategory !== null &&
-                    this.state.sortFilterSubCategory.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.subCategoryName}
-                          value={item.subCategoryName}
-                          checked={this.state.ssubCategoryNameFilterCheckbox.includes(
-                            item.subCategoryName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "subCategoryName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.subCategoryName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.subCategoryName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterSubCategory.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.subCategoryName}
+                            value={item.subCategoryName}
+                            checked={this.state.ssubCategoryNameFilterCheckbox.includes(
+                              item.subCategoryName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "subCategoryName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.subCategoryName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.subCategoryName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "issueTypeName"
                     ? this.state.sortFilterIssueType !== null &&
-                    this.state.sortFilterIssueType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.issueTypeName}
-                          value={item.issueTypeName}
-                          checked={this.state.sissueTypeNameFilterCheckbox.includes(
-                            item.issueTypeName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "issueTypeName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.issueTypeName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.issueTypeName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterIssueType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.issueTypeName}
+                            value={item.issueTypeName}
+                            checked={this.state.sissueTypeNameFilterCheckbox.includes(
+                              item.issueTypeName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "issueTypeName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.issueTypeName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.issueTypeName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "statusName"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.statusName}
-                          value={item.statusName}
-                          checked={this.state.sstatusNameFilterCheckbox.includes(
-                            item.statusName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "statusName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.statusName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.statusName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.statusName}
+                            value={item.statusName}
+                            checked={this.state.sstatusNameFilterCheckbox.includes(
+                              item.statusName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "statusName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.statusName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.statusName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -2305,199 +2360,207 @@ class CategoryMaster extends Component {
                 {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : (
-                    <div className="table-cntr table-height TicketCategoyMasReact">
-                      <ReactTable
-                        data={categoryGridData}
-                        columns={[
-                          {
-                            Header: (
-                              <span
-                                className={this.state.brandColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "brandName",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.brand
-                                    : "Brand"
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.span.brandname
-                                  : "Brand Name"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "brandName",
-                          },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.categoryColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "categoryName",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.category
-                                    : "Category"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                  <div className="table-cntr table-height TicketCategoyMasReact">
+                    <ReactTable
+                      data={categoryGridData}
+                      columns={[
+                        {
+                          Header: (
+                            <span
+                              className={this.state.brandColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "brandName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.brand
+                                  : "Brand"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.brandname
+                                : "Brand Name"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "brandName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.categoryColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "categoryName",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.category
-                                  : "Category"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "categoryName",
-                          },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.subCategoryColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "subCategoryName",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.subcategory
-                                    : "SubCategory"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                                  : "Category"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.category
+                                : "Category"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "categoryName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.subCategoryColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "subCategoryName",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.subcategory
-                                  : "Sub Cat"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "subCategoryName",
-                          },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.issueColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "issueTypeName",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.issuetype
-                                    : "Issue Type"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                                  : "SubCategory"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.subcategory
+                                : "Sub Cat"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "subCategoryName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.issueColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "issueTypeName",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.issuetype
-                                  : "Issue Type"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "issueTypeName",
-                          },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.statusColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "statusName",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                                  : "Issue Type"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.issuetype
+                                : "Issue Type"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "issueTypeName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.statusColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "statusName",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.status
-                                  : "Status"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "statusName",
-                          },
-                          {
-                            Header: <span>{TranslationContext !== undefined
-                              ? TranslationContext.span.action
-                              : "Actions"}</span>,
-                            accessor: "actiondept",
-                            Cell: (row) => {
-                              var ids = row.original["brandCategoryMappingID"];
-                              return (
-                                <>
-                                  <span>
-                                    <Popover
-                                      content={
-                                        <div className="d-flex general-popover popover-body">
-                                          <div className="del-big-icon">
-                                            <img
-                                              src={DelBigIcon}
-                                              alt="del-icon"
-                                            />
-                                          </div>
-                                          <div>
-                                            <p className="font-weight-bold blak-clr">
+                                  : "Status"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "statusName",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.action
+                                : "Actions"}
+                            </span>
+                          ),
+                          accessor: "actiondept",
+                          Cell: (row) => {
+                            var ids = row.original["brandCategoryMappingID"];
+                            return (
+                              <>
+                                <span>
+                                  <Popover
+                                    content={
+                                      <div className="d-flex general-popover popover-body">
+                                        <div className="del-big-icon">
+                                          <img
+                                            src={DelBigIcon}
+                                            alt="del-icon"
+                                          />
+                                        </div>
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.deletefile
+                                              : "Delete file?"}
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .areyousuredeletefile
+                                              : "Are you sure you want to delete this file?"}
+                                          </p>
+                                          <div className="del-can">
+                                            <a href={Demo.BLANK_LINK}>
                                               {TranslationContext !== undefined
-                                                ? TranslationContext.p.deletefile
-                                                : "Delete file?"}
-                                            </p>
-                                            <p className="mt-1 fs-12">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.areyousuredeletefile
-                                                : "Are you sure you want to delete this file?"}
-                                            </p>
-                                            <div className="del-can">
-                                              <a href={Demo.BLANK_LINK}>{TranslationContext !== undefined
                                                 ? TranslationContext.a.cancel
-                                                : "CANCEL"}</a>
-                                              <button
-                                                className="butn"
-                                                type="button"
-                                                onClick={this.handleDeleteCategoryData.bind(
-                                                  this,
-                                                  ids
-                                                )}
-                                              >
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.button.delete
-                                                  : "Delete"}
-                                              </button>
-                                            </div>
+                                                : "CANCEL"}
+                                            </a>
+                                            <button
+                                              className="butn"
+                                              type="button"
+                                              onClick={this.handleDeleteCategoryData.bind(
+                                                this,
+                                                ids
+                                              )}
+                                            >
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .delete
+                                                : "Delete"}
+                                            </button>
                                           </div>
                                         </div>
-                                      }
-                                      placement="bottom"
-                                      trigger="click"
-                                    >
-                                      <img
-                                        src={RedDeleteIcon}
-                                        alt="del-icon"
-                                        className="del-btn"
-                                      />
-                                    </Popover>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      src={RedDeleteIcon}
+                                      alt="del-icon"
+                                      className="del-btn"
+                                    />
+                                  </Popover>
 
-                                    <button
-                                      className="react-tabel-button ReNewBtn"
-                                      type="button"
-                                      onClick={this.hanldeEditCategory.bind(
-                                        this,
-                                        row.original
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.edit
-                                        : "EDIT"}
-                                    </button>
-                                  </span>
-                                </>
-                              );
-                            },
+                                  <button
+                                    className="react-tabel-button ReNewBtn"
+                                    type="button"
+                                    onClick={this.hanldeEditCategory.bind(
+                                      this,
+                                      row.original
+                                    )}
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.edit
+                                      : "EDIT"}
+                                  </button>
+                                </span>
+                              </>
+                            );
                           },
-                        ]}
-                        minRows={1}
-                        resizable={false}
-                        defaultPageSize={10}
-                        showPagination={true}
-                      />
-                      {/* <div className="position-relative">
+                        },
+                      ]}
+                      minRows={1}
+                      resizable={false}
+                      defaultPageSize={10}
+                      showPagination={true}
+                    />
+                    {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -2535,8 +2598,8 @@ class CategoryMaster extends Component {
                       <p>Items per page</p>
                     </div>
                   </div> */}
-                    </div>
-                  )}
+                  </div>
+                )}
               </div>
               <div className="col-md-4">
                 <div className="store-col-2">
@@ -2606,7 +2669,8 @@ class CategoryMaster extends Component {
 
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              + {TranslationContext !== undefined
+                              +{" "}
+                              {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
                             </span>
@@ -2618,7 +2682,8 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleTogglecategoryAdd.bind(this)}
                           >
-                            + {TranslationContext !== undefined
+                            +{" "}
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
                           </span>
@@ -2696,7 +2761,8 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              + {TranslationContext !== undefined
+                              +{" "}
+                              {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
                             </span>
@@ -2708,7 +2774,8 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleSubcategoryAdd.bind(this)}
                           >
-                            + {TranslationContext !== undefined
+                            +{" "}
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
                           </span>
@@ -2780,7 +2847,8 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              + {TranslationContext !== undefined
+                              +{" "}
+                              {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
                             </span>
@@ -2792,7 +2860,8 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleIssueAdd.bind(this)}
                           >
-                            + {TranslationContext !== undefined
+                            +{" "}
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
                           </span>
@@ -2966,7 +3035,8 @@ class CategoryMaster extends Component {
                                     </p>
                                     <p className="mt-1 fs-12">
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.p.areyousuredeletefile
+                                        ? TranslationContext.p
+                                            .areyousuredeletefile
                                         : "Are you sure you want to delete this file?"}
                                     </p>
                                     <div className="del-can">
@@ -2995,30 +3065,30 @@ class CategoryMaster extends Component {
                             </div>
                           </div>
                           {this.state.fileN.length > 0 &&
-                            this.state.isFileUploadFail ? (
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
-                                  <a
-                                    className="file-retry"
-                                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.retry
-                                      : "Retry"}
-                                  </a>
-                                </div>
-                                <div>
-                                  <span className="file-failed">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.failed
-                                      : "Failed"}
-                                  </span>
-                                </div>
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.retry
+                                    : "Retry"}
+                                </a>
                               </div>
-                            ) : null}
+                              <div>
+                                <span className="file-failed">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.failed
+                                    : "Failed"}
+                                </span>
+                              </div>
+                            </div>
+                          ) : null}
                           {this.state.showProgress ? (
                             <div className="file-cntr">
                               <div className="file-dtls">
@@ -3131,7 +3201,8 @@ class CategoryMaster extends Component {
 
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          + {TranslationContext !== undefined
+                          +{" "}
+                          {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
                         </span>
@@ -3143,7 +3214,8 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditcategoryAdd.bind(this)}
                       >
-                        + {TranslationContext !== undefined
+                        +{" "}
+                        {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
                       </span>
@@ -3219,7 +3291,8 @@ class CategoryMaster extends Component {
                         ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          + {TranslationContext !== undefined
+                          +{" "}
+                          {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
                         </span>
@@ -3231,7 +3304,8 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditSubcategoryAdd.bind(this)}
                       >
-                        + {TranslationContext !== undefined
+                        +{" "}
+                        {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
                       </span>
@@ -3312,7 +3386,8 @@ class CategoryMaster extends Component {
                         ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          + {TranslationContext !== undefined
+                          +{" "}
+                          {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
                         </span>
@@ -3324,7 +3399,8 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditIssueAdd.bind(this)}
                       >
-                        + {TranslationContext !== undefined
+                        +{" "}
+                        {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
                       </span>
@@ -3420,8 +3496,8 @@ class CategoryMaster extends Component {
                         spin
                       />
                     ) : (
-                        ""
-                      )}
+                      ""
+                    )}
                     {TranslationContext !== undefined
                       ? TranslationContext.button.save
                       : "SAVE"}

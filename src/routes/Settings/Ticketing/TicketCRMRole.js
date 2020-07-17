@@ -96,7 +96,7 @@ class TicketCRMRole extends Component {
       sisRoleActiveFilterCheckbox: "",
       isortA: false,
       bulkuploadLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -493,7 +493,7 @@ class TicketCRMRole extends Component {
       url: config.apiUrl + "/CRMRole/GetCRMRoles",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var data = res.data.responseData;
         let crmRoles = res.data.responseData;
@@ -665,9 +665,10 @@ class TicketCRMRole extends Component {
     if (e === "add") {
       if (self.state.RoleName === "") {
         this.setState({
-          checkRoleName: TranslationContext !== undefined
-            ? TranslationContext.validation.required
-            : "Required"
+          checkRoleName:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.required
+              : "Required",
         });
         return false;
       }
@@ -678,9 +679,10 @@ class TicketCRMRole extends Component {
     } else if (e === "update") {
       if (this.state.editRoleName == "") {
         this.setState({
-          editCheckRoleName: TranslationContext !== undefined
-            ? TranslationContext.validation.required
-            : "Required"
+          editCheckRoleName:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.required
+              : "Required",
         });
         return false;
       }
@@ -714,9 +716,11 @@ class TicketCRMRole extends Component {
         let status = res.data.message;
         if (status === "Success") {
           if (e === "add") {
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.crmroleaddedsuccessfully
-              : "CRM Role added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmroleaddedsuccessfully
+                : "CRM Role added successfully."
+            );
             self.setState({
               RoleName: "",
               RoleisActive: "true",
@@ -732,27 +736,35 @@ class TicketCRMRole extends Component {
               editSaveLoading: false,
               editRoleNameValidMsg: "",
             });
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.crmroleupdatedsuccessfully
-              : "CRM Role updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmroleupdatedsuccessfully
+                : "CRM Role updated successfully."
+            );
             self.handleGetCRMRoles();
           }
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.recordalreadyexists
-              : "Record Already Exists ");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists "
+            );
           }
         } else {
           if (e === "add") {
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.crmrolenotadded
-              : "CRM Role not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmrolenotadded
+                : "CRM Role not added."
+            );
           } else if (e === "update") {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.crmrolenotupdated
-              : "CRM Role not updated.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmrolenotupdated
+                : "CRM Role not updated."
+            );
           }
         }
       })
@@ -777,17 +789,21 @@ class TicketCRMRole extends Component {
         CRMRoleID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.recordinuse
-            : "Record in use.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordinuse
+              : "Record in use."
+          );
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.recorddeletedsuccessfully
-            : "Record deleted Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record deleted Successfully."
+          );
           self.handleGetCRMRoles();
         }
       })
@@ -877,9 +893,10 @@ class TicketCRMRole extends Component {
         this.setState({
           editRoleName: value,
           editRoleNameValidMsg: "The role name field is required.",
-          editCheckRoleName: TranslationContext !== undefined
-            ? TranslationContext.validation.required
-            : "Required",
+          editCheckRoleName:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.required
+              : "Required",
         });
       }
     }
@@ -951,67 +968,76 @@ class TicketCRMRole extends Component {
     debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
-      let self = this;
-      this.setState({
-        bulkuploadLoading: true,
-      });
-      const formData = new FormData();
-
-      formData.append("file", this.state.fileN[0]);
-      // this.setState({ showProgress: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
-        headers: authHeader(),
-        data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
-      })
-        .then(function (res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.fileuploadedsuccessfully
-              : "File uploaded successfully.");
-            self.setState({
-              fileName: "",
-              fileSize: "",
-              fileN: [],
-              bulkuploadLoading: false,
-            });
-            self.handleGetCRMRoles();
-          } else {
-            self.setState({
-              showProgress: false,
-              bulkuploadLoading: false,
-              // isFileUploadFail: true,
-              progressValue: 0,
-            });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.filenotuploaded
-              : "File not uploaded.");
-          }
-        })
-        .catch((data) => {
-          debugger;
-          if (data.message) {
-            this.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              bulkuploadLoading: false,
-            });
-          }
-          console.log(data);
+      if (this.state.fileN[0].path.split(".")[1] === "csv") {
+        let self = this;
+        this.setState({
+          bulkuploadLoading: true,
         });
+        const formData = new FormData();
+
+        formData.append("file", this.state.fileN[0]);
+        // this.setState({ showProgress: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
+          headers: authHeader(),
+          data: formData,
+          onUploadProgress: (ev = ProgressEvent) => {
+            const progress = (ev.loaded / ev.total) * 100;
+            this.updateUploadProgress(Math.round(progress));
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                  : "File uploaded successfully."
+              );
+              self.setState({
+                fileName: "",
+                fileSize: "",
+                fileN: [],
+                bulkuploadLoading: false,
+              });
+              self.handleGetCRMRoles();
+            } else {
+              self.setState({
+                showProgress: false,
+                bulkuploadLoading: false,
+                // isFileUploadFail: true,
+                progressValue: 0,
+              });
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.filenotuploaded
+                  : "File not uploaded."
+              );
+            }
+          })
+          .catch((data) => {
+            debugger;
+            if (data.message) {
+              this.setState({
+                showProgress: false,
+                isFileUploadFail: true,
+                bulkuploadLoading: false,
+              });
+            }
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Only CSV files allowed.");
+      }
     } else {
       this.setState({
-        bulkuploadCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectfile
-        : "Please select file.",
+        bulkuploadCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfile
+            : "Please select file.",
       });
     }
   }
@@ -1025,9 +1051,11 @@ class TicketCRMRole extends Component {
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success(TranslationContext !== undefined
-      ? TranslationContext.alertmessage.filedeletedsuccessfully
-      : "File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -1054,9 +1082,11 @@ class TicketCRMRole extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortatoz
-                    : "SORT BY A TO Z"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1066,9 +1096,11 @@ class TicketCRMRole extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortztoa
-                    : "SORT BY Z TO A"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1081,9 +1113,11 @@ class TicketCRMRole extends Component {
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p>{TranslationContext !== undefined
-                  ? TranslationContext.p.filterbytype
-                  : "FILTER BY TYPE"}</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1115,82 +1149,82 @@ class TicketCRMRole extends Component {
                   </div>
                   {this.state.sortColumn === "roleName"
                     ? this.state.sortFilterRoleName !== null &&
-                    this.state.sortFilterRoleName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.roleName}
-                          id={"fil-open" + item.roleName}
-                          value={item.roleName}
-                          checked={this.state.sroleNameFilterCheckbox.includes(
-                            item.roleName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "roleName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.roleName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.roleName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterRoleName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.roleName}
+                            id={"fil-open" + item.roleName}
+                            value={item.roleName}
+                            checked={this.state.sroleNameFilterCheckbox.includes(
+                              item.roleName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "roleName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.roleName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.roleName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFilterCreated !== null &&
-                    this.state.sortFilterCreated.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdBy}
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterCreated.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "isRoleActive"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.isRoleActive}
-                          id={"fil-open" + item.isRoleActive}
-                          value={item.isRoleActive}
-                          checked={this.state.sisRoleActiveFilterCheckbox.includes(
-                            item.isRoleActive
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "isRoleActive"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.isRoleActive}>
-                          <span className="table-btn table-blue-btn">
-                            {item.isRoleActive}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.isRoleActive}
+                            id={"fil-open" + item.isRoleActive}
+                            value={item.isRoleActive}
+                            checked={this.state.sisRoleActiveFilterCheckbox.includes(
+                              item.isRoleActive
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "isRoleActive"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.isRoleActive}>
+                            <span className="table-btn table-blue-btn">
+                              {item.isRoleActive}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -1314,14 +1348,15 @@ class TicketCRMRole extends Component {
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.createdby
-                                              : "Created By"}: {row.original.createdBy}
+                                              : "Created By"}
+                                            : {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.createddate
-                                            : "Created Date"}:{" "}
-                                          {row.original.createdDate}
+                                            : "Created Date"}
+                                          : {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
@@ -1329,15 +1364,15 @@ class TicketCRMRole extends Component {
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
-                                              : "Updated By"}:{" "}
-                                            {row.original.modifiedBy}
+                                              : "Updated By"}
+                                            : {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.updateddate
-                                            : "Updated Date"}:{" "}
-                                          {row.original.modifiedDate}
+                                            : "Updated Date"}
+                                          : {row.original.modifiedDate}
                                         </p>
                                       </div>
                                     </>
@@ -1377,9 +1412,13 @@ class TicketCRMRole extends Component {
                         accessor: "isRoleActive",
                       },
                       {
-                        Header: <span>{TranslationContext !== undefined
-                          ? TranslationContext.span.action
-                          : "Actions"}</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.action
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1400,13 +1439,16 @@ class TicketCRMRole extends Component {
                                         </p>
                                         <p className="mt-1 fs-12">
                                           {TranslationContext !== undefined
-                                            ? TranslationContext.p.areyousuredeletefile
+                                            ? TranslationContext.p
+                                                .areyousuredeletefile
                                             : "Are you sure you want to delete this file?"}
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>{TranslationContext !== undefined
-                                            ? TranslationContext.a.cancel
-                                            : "CANCEL"}</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteCrmRole.bind(
@@ -1512,9 +1554,11 @@ class TicketCRMRole extends Component {
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder={TranslationContext !== undefined
-                          ? TranslationContext.placeholder.enterrolename
-                          : "Enter Role Name"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterrolename
+                            : "Enter Role Name"
+                        }
                         maxLength={25}
                         onChange={this.handleRoleName}
                       />
@@ -1676,7 +1720,8 @@ class TicketCRMRole extends Component {
                                     </p>
                                     <p className="mt-1 fs-12">
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.p.areyousuredeletefile
+                                        ? TranslationContext.p
+                                            .areyousuredeletefile
                                         : "Are you sure you want to delete this file?"}
                                     </p>
                                     <div className="del-can">
@@ -1705,30 +1750,30 @@ class TicketCRMRole extends Component {
                             </div>
                           </div>
                           {this.state.fileN.length > 0 &&
-                            this.state.isFileUploadFail ? (
-                              <div className="file-cntr">
-                                <div className="file-dtls">
-                                  <p className="file-name">
-                                    {this.state.fileName}
-                                  </p>
-                                  <a
-                                    className="file-retry"
-                                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.retry
-                                      : "Retry"}
-                                  </a>
-                                </div>
-                                <div>
-                                  <span className="file-failed">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.failed
-                                      : "Failed"}
-                                  </span>
-                                </div>
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.retry
+                                    : "Retry"}
+                                </a>
                               </div>
-                            ) : null}
+                              <div>
+                                <span className="file-failed">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.failed
+                                    : "Failed"}
+                                </span>
+                              </div>
+                            </div>
+                          ) : null}
                           {this.state.showProgress ? (
                             <div className="file-cntr">
                               <div className="file-dtls">
@@ -1791,9 +1836,11 @@ class TicketCRMRole extends Component {
                 <input
                   type="text"
                   className="txt-edit-popover"
-                  placeholder={TranslationContext !== undefined
-                    ? TranslationContext.placeholder.enterrolename
-                    : "Enter Role Name"}
+                  placeholder={
+                    TranslationContext !== undefined
+                      ? TranslationContext.placeholder.enterrolename
+                      : "Enter Role Name"
+                  }
                   maxLength={25}
                   name="editRoleName"
                   value={this.state.editRoleName}
@@ -1882,8 +1929,8 @@ class TicketCRMRole extends Component {
                         spin
                       />
                     ) : (
-                        ""
-                      )}
+                      ""
+                    )}
                     {TranslationContext !== undefined
                       ? TranslationContext.label.save
                       : "SAVE"}
