@@ -12,14 +12,12 @@ import Demo from "./../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Popover ,Spin} from "antd";
+import { Popover, Spin } from "antd";
 import ReactTable from "react-table";
 import config from "../../../helpers/config";
 import axios from "axios";
 import Select from "react-select";
-import {
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import ZoneType from "./ZoneType";
@@ -153,7 +151,7 @@ class StoreMaster extends Component {
       sphoneNumberFilterCheckbox: "",
       sstatusFilterCheckbox: "",
       bulkuploadLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -174,63 +172,82 @@ class StoreMaster extends Component {
     this.handleGetStateList();
     this.handleGetRegionList();
     this.handleGetStoreTypeList();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
-      let self = this;
-      this.setState({
-        bulkuploadLoading: true,
-      });
-      const formData = new FormData();
-
-      formData.append("file", this.state.fileN[0]);
-      // this.setState({ showProgress: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Store/BulkUploadStore",
-        headers: authHeader(),
-        data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // }
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [],bulkuploadLoading: false, });
-            self.handleGetStoreMasterData();
-          } else {
-            self.setState({
-              bulkuploadLoading: false,
-              // showProgress: false,
-              // isFileUploadFail: true,
-              // progressValue: 0
-            });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
-          }
-        })
-        .catch((data) => {
-          debugger;
-          if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true,bulkuploadLoading: false });
-          }
-          console.log(data);
+      if (this.state.fileN[0].path.split(".")[1] === "csv") {
+        let self = this;
+        this.setState({
+          bulkuploadLoading: true,
         });
+        const formData = new FormData();
+
+        formData.append("file", this.state.fileN[0]);
+        // this.setState({ showProgress: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Store/BulkUploadStore",
+          headers: authHeader(),
+          data: formData,
+          // onUploadProgress: (ev = ProgressEvent) => {
+          //   const progress = (ev.loaded / ev.total) * 100;
+          //   this.updateUploadProgress(Math.round(progress));
+          // }
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                  : "File uploaded successfully."
+              );
+              self.setState({
+                fileName: "",
+                fileSize: "",
+                fileN: [],
+                bulkuploadLoading: false,
+              });
+              self.handleGetStoreMasterData();
+            } else {
+              self.setState({
+                bulkuploadLoading: false,
+                // showProgress: false,
+                // isFileUploadFail: true,
+                // progressValue: 0
+              });
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.filenotuploaded
+                  : "File not uploaded."
+              );
+            }
+          })
+          .catch((data) => {
+            debugger;
+            if (data.message) {
+              this.setState({
+                showProgress: false,
+                isFileUploadFail: true,
+                bulkuploadLoading: false,
+              });
+            }
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Only CSV files allowed.");
+      }
     } else {
       this.setState({
         bulkuploadCompulsion: "Please select file.",
@@ -1953,7 +1970,11 @@ class StoreMaster extends Component {
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
-        NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.storedeletedsuccessfully:"Store deleted successfully.");
+        NotificationManager.success(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.storedeletedsuccessfully
+            : "Store deleted successfully."
+        );
       }
     });
   }
@@ -2016,7 +2037,11 @@ class StoreMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.storeaddedsuccessfully:"Store added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.storeaddedsuccessfully
+              : "Store added successfully."
+          );
           self.setState({
             store_code: "",
             store_name: "",
@@ -2047,7 +2072,11 @@ class StoreMaster extends Component {
             cityData: [],
           });
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.storenotadded:"Store Not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.storenotadded
+              : "Store Not added."
+          );
         }
       });
     } else {
@@ -2130,7 +2159,11 @@ class StoreMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetStoreMasterData();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.storeupdatedsuccessfully:"Store updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.storeupdatedsuccessfully
+                : "Store updated successfully."
+            );
 
             self.setState({
               editSaveLoading: false,
@@ -2644,7 +2677,11 @@ class StoreMaster extends Component {
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   render() {
@@ -2672,9 +2709,11 @@ class StoreMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
+                  <p>
+                    {TranslationContext !== undefined
                       ? TranslationContext.p.sortatoz
-                      : "SORT BY A TO Z"}</p>
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2684,9 +2723,11 @@ class StoreMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
+                  <p>
+                    {TranslationContext !== undefined
                       ? TranslationContext.p.sortztoa
-                      : "SORT BY Z TO A"}</p>
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -2694,14 +2735,17 @@ class StoreMaster extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                 {TranslationContext !== undefined
+                {TranslationContext !== undefined
                   ? TranslationContext.a.clearsearch
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p> {TranslationContext !== undefined
+                <p>
+                  {" "}
+                  {TranslationContext !== undefined
                     ? TranslationContext.p.filterbytype
-                    : "FILTER BY TYPE"}</p>
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -3054,23 +3098,21 @@ class StoreMaster extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-          {TranslationContext !== undefined
+            {TranslationContext !== undefined
               ? TranslationContext.link.setting
               : "Settings"}
-
           </Link>
           <span>&gt;</span>
           <Link to="settings" className="header-path">
-          {TranslationContext !== undefined
+            {TranslationContext !== undefined
               ? TranslationContext.link.ticketing
               : "Ticketing"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-          {TranslationContext !== undefined
+            {TranslationContext !== undefined
               ? TranslationContext.link.storemaster
               : "Store Master"}
-            
           </Link>
         </div>
         <div className="container-fluid">
@@ -3091,18 +3133,21 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
-                                TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.storename
+                                  : "Store Name"
                               )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.storename
+                                : "Store Name"}
 
-                             
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           sortable: false,
                           accessor: "storeName",
-                          width:120,
+                          width: 120,
                         },
                         {
                           Header: (
@@ -3111,16 +3156,20 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeCode",
-                                TranslationContext!==undefined?TranslationContext.span.storecode:"Store Code"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.storecode
+                                  : "Store Code"
                               )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.storecode:"Store Code"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.storecode
+                                : "Store Code"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           sortable: false,
                           accessor: "storeCode",
-                          width:120,
+                          width: 120,
                         },
                         {
                           Header: (
@@ -3132,13 +3181,15 @@ class StoreMaster extends Component {
                               //   "Brand Names"
                               // )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.brandname
+                                : "Brand Name"}
+
                               {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                             </span>
                           ),
                           accessor: "brand_Names",
-                          width:125,
+                          width: 125,
                           sortable: false,
                           Cell: (row) => {
                             if (isNaN(row.original.brand_Names)) {
@@ -3152,7 +3203,10 @@ class StoreMaster extends Component {
                                         <div>
                                           <div>
                                             <p className="title">
-                                            {TranslationContext!==undefined?TranslationContext.p.brandname:"Brand Name"}: &nbsp;
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.brandname
+                                                : "Brand Name"}
+                                              : &nbsp;
                                               <b>
                                                 {row.original["brandNames"]}
                                               </b>
@@ -3183,10 +3237,14 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "cityName",
-                                TranslationContext!==undefined?TranslationContext.span.city:"City"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.city
+                                  : "City"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.city:"City"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.city
+                                : "City"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3200,11 +3258,15 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "stateName",
-                                TranslationContext!==undefined?TranslationContext.span.state:"State"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.state
+                                  : "State"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.state:"State"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.state
+                                : "State"}
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3217,11 +3279,15 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "strPinCode",
-                                TranslationContext!==undefined?TranslationContext.span.pincode:"Pin code"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.pincode
+                                  : "Pin code"
                               )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.pincode:"Pin code"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.pincode
+                                : "Pin code"}
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3238,7 +3304,9 @@ class StoreMaster extends Component {
                             //   "Pin Code"
                             // )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.address:"Address"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.address
+                                : "Address"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3253,11 +3321,15 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "regionName",
-                                TranslationContext!==undefined?TranslationContext.span.region:"Region"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.region
+                                  : "Region"
                               )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.region:"Region"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.region
+                                : "Region"}
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3271,10 +3343,14 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "zone",
-                                TranslationContext!==undefined?TranslationContext.span.zone:"Zone"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.zone
+                                  : "Zone"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.zone:"Zone"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.zone
+                                : "Zone"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3288,15 +3364,19 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeTypeName",
-                                TranslationContext!==undefined?TranslationContext.span.storetype:"Store Type"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.storetype
+                                  : "Store Type"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.storetype:"Store Type"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.storetype
+                                : "Store Type"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           sortable: false,
-                          width:115,
+                          width: 115,
                           accessor: "storeTypeName",
                         },
                         {
@@ -3306,11 +3386,15 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "email",
-                                TranslationContext!==undefined?TranslationContext.span.emailid:"Email ID"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.emailid
+                                  : "Email ID"
                               )}
                             >
-                               {TranslationContext!==undefined?TranslationContext.span.emailid:"Email ID"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.emailid
+                                : "Email ID"}
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3325,10 +3409,14 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "phoneNumber",
-                                TranslationContext!==undefined?TranslationContext.span.phonenumber:"Phone No"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.phonenumber
+                                  : "Phone No"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.phonenumber:"Phone No"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.phonenumber
+                                : "Phone No"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3343,10 +3431,14 @@ class StoreMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "status",
-                                TranslationContext!==undefined?TranslationContext.span.status:"Status"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.status
+                                  : "Status"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3363,10 +3455,13 @@ class StoreMaster extends Component {
                         //   accessor: "status"
                         // },
                         {
-                          Header: <span>
-
-                            {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
-                          </span>,
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.actions
+                                : "Actions"}
+                            </span>
+                          ),
                           accessor: "actiondept",
                           sortable: false,
                           minWidth: 120,
@@ -3386,20 +3481,25 @@ class StoreMaster extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.p.deletefile
-                                            : "Delete file"}?
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.deletefile
+                                              : "Delete file"}
+                                            ?
                                           </p>
                                           <p className="mt-1 fs-12">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.p
-                                                .areyousureyouwanttodeletethisfile
-                                            : "Are you sure you want to delete this file"}?
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .areyousureyouwanttodeletethisfile
+                                              : "Are you sure you want to delete this file"}
+                                            ?
                                           </p>
                                           <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}> {TranslationContext !== undefined
-                                              ? TranslationContext.a.cancel
-                                              : "CANCEL"}</a>
+                                            <a href={Demo.BLANK_LINK}>
+                                              {" "}
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.a.cancel
+                                                : "CANCEL"}
+                                            </a>
                                             <button
                                               className="butn"
                                               type="button"
@@ -3408,9 +3508,10 @@ class StoreMaster extends Component {
                                                 ids
                                               )}
                                             >
-                                               {TranslationContext !== undefined
-                                              ? TranslationContext.button.delete
-                                              : "Delete"}
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .delete
+                                                : "Delete"}
                                             </button>
                                           </div>
                                         </div>
@@ -3436,8 +3537,8 @@ class StoreMaster extends Component {
                                     )}
                                   >
                                     {TranslationContext !== undefined
-                                        ? TranslationContext.mybutton.edit
-                                        : "EDIT"}
+                                      ? TranslationContext.mybutton.edit
+                                      : "EDIT"}
                                   </button>
                                 </span>
                               </>
@@ -3496,18 +3597,25 @@ class StoreMaster extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="Create-store-text">
-                    {TranslationContext!==undefined?TranslationContext.label.createstore:"CREATE STORE"}
-
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createstore
+                        : "CREATE STORE"}
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.brand
+                          : "Brand"}
                       </label>
                       <Select
                         getOptionLabel={(option) => option.brandName}
                         getOptionValue={(option) => option.brandID}
                         options={this.state.brandData}
-                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.select
+                            : "Select"
+                        }
                         // menuIsOpen={true}
                         closeMenuOnSelect={false}
                         onChange={this.handleBrandChange}
@@ -3523,12 +3631,18 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.storecode
+                          : "Store Code"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterstorecode:"Enter Store Code"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterstorecode
+                            : "Enter Store Code"
+                        }
                         maxLength={10}
                         name="store_code"
                         value={this.state.store_code}
@@ -3542,12 +3656,18 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.storename:"Store Name"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.storename
+                          : "Store Name"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterstorename:"Enter Store Name"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterstorename
+                            : "Enter Store Name"
+                        }
                         maxLength={100}
                         name="store_name"
                         value={this.state.store_name}
@@ -3561,7 +3681,9 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.storename:"State"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.storename
+                          : "State"}
                       </label>
                       <select
                         className="store-create-select"
@@ -3569,7 +3691,9 @@ class StoreMaster extends Component {
                         onChange={this.handleStateChange}
                       >
                         <option value={0}>
-                        {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
                         </option>
                         {this.state.stateData !== null &&
                           this.state.stateData.map((item, i) => (
@@ -3590,14 +3714,21 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.city:"City"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.city
+                          : "City"}
                       </label>
                       <select
                         className="store-create-select"
                         value={this.state.selectCity}
                         onChange={this.handleCityChange}
                       >
-                        <option value="0">  {TranslationContext!==undefined?TranslationContext.option.select:"Select"}</option>
+                        <option value="0">
+                          {" "}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
+                        </option>
                         {this.state.cityData !== null &&
                           this.state.cityData.map((item, i) => (
                             <option
@@ -3617,12 +3748,18 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.pincode:"Pin Code"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.pincode
+                          : "Pin Code"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpincode:"Enter Pin Code"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterpincode
+                            : "Enter Pin Code"
+                        }
                         maxLength={6}
                         name="pin_code"
                         value={this.state.pin_code}
@@ -3641,13 +3778,19 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.address:"Address"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.address
+                          : "Address"}
                       </label>
                       <textarea
                         cols="31"
                         rows="3"
                         className="store-create-textarea"
-                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enteraddress:"Enter address"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enteraddress
+                            : "Enter address"
+                        }
                         maxLength={250}
                         name="store_Address"
                         value={this.state.store_Address}
@@ -3661,7 +3804,9 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.region:"Region"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.region
+                          : "Region"}
                       </label>
                       <select
                         className="store-create-select"
@@ -3684,7 +3829,9 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.zone:"Zone"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.zone
+                          : "Zone"}
                       </label>
                       <select
                         className="store-create-select"
@@ -3692,7 +3839,9 @@ class StoreMaster extends Component {
                         onChange={this.handleZoneChange}
                       >
                         <option value="0">
-                        {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
                         </option>
                         {this.state.zoneData !== null &&
                           this.state.zoneData.map((item, s) => (
@@ -3709,7 +3858,9 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.storetype:"Store Type"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.storetype
+                          : "Store Type"}
                       </label>
                       <select
                         className="store-create-select"
@@ -3717,7 +3868,9 @@ class StoreMaster extends Component {
                         onChange={this.handleStoreTypeChange}
                       >
                         <option value="0">
-                        {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
                         </option>
                         {this.state.storeTypeData !== null &&
                           this.state.storeTypeData.map((item, t) => (
@@ -3734,13 +3887,18 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.contactdetailsemails:"Contact Details:Email"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.contactdetailsemails
+                          : "Contact Details:Email"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enteremailid:"Enter email id"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enteremailid
+                            : "Enter email id"
+                        }
                         maxLength={100}
                         name="contact_email"
                         value={this.state.contact_email}
@@ -3759,13 +3917,18 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.contactdetailsphones:"Contact Details:Phone"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.contactdetailsphones
+                          : "Contact Details:Phone"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterphoneno:"Enter phone no"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterphoneno
+                            : "Enter phone no"
+                        }
                         maxLength={10}
                         name="contact_Phone"
                         value={this.state.contact_Phone}
@@ -3784,7 +3947,9 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.status
+                          : "Status"}
                       </label>
                       <select
                         className="form-control dropdown-setting"
@@ -3792,7 +3957,9 @@ class StoreMaster extends Component {
                         onChange={this.handleStatusChange}
                       >
                         <option value="">
-                        {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "select"}
                         </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
@@ -3814,8 +3981,9 @@ class StoreMaster extends Component {
                         type="button"
                         onClick={this.handleSubmitData.bind(this)}
                       >
-                        {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
                       </button>
                     </div>
                   </div>
@@ -3823,13 +3991,17 @@ class StoreMaster extends Component {
                 <br />
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">{TranslationContext !== undefined
+                    <h3 className="pb-0">
+                      {TranslationContext !== undefined
                         ? TranslationContext.h3.bulkupload
-                        : "Bulk Upload"}</h3>
+                        : "Bulk Upload"}
+                    </h3>
                     <div className="down-excel">
-                      <p>{TranslationContext !== undefined
+                      <p>
+                        {TranslationContext !== undefined
                           ? TranslationContext.p.template
-                          : "Template"}</p>
+                          : "Template"}
+                      </p>
                       <CSVLink
                         filename={"Store.csv"}
                         data={config.storeTemplate}
@@ -3839,141 +4011,155 @@ class StoreMaster extends Component {
                     </div>
                   </div>
                   <Spin
-                    tip={TranslationContext!==undefined?TranslationContext.tip.pleasewait:"Please wait..."}
+                    tip={
+                      TranslationContext !== undefined
+                        ? TranslationContext.tip.pleasewait
+                        : "Please wait..."
+                    }
                     spinning={this.state.bulkuploadLoading}
                   >
-                  <div className="mainfileUpload">
-                    <Dropzone onDrop={this.fileUpload.bind(this)}>
-                      {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps()}>
-                          <input
-                            {...getInputProps()}
-                            className="file-upload d-none"
-                          />
-                          <div className="file-icon">
-                            <img src={FileUpload} alt="file-upload" />
-                          </div>
-                          <span className={"fileupload-span"}>{TranslationContext !== undefined
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>
+                              {TranslationContext !== undefined
                                 ? TranslationContext.span.addfile
-                                : "Add File"}</span>{TranslationContext !== undefined
-                                  ? TranslationContext.div.or
-                                  : "or"}
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.div.dropfilehere
-                                  : "Drop File here"}
-                        </div>
-                      )}
-                    </Dropzone>
-                  </div>
-                  {this.state.fileN.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.bulkuploadCompulsion}
-                    </p>
-                  )}
-                  {this.state.fileName && (
-                    <div className="file-info">
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
+                                : "Add File"}
+                            </span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.or
+                              : "or"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.dropfilehere
+                              : "Drop File here"}
                           </div>
-                          <UncontrolledPopover
-                            trigger="legacy"
-                            placement="auto"
-                            target="del-file-1"
-                            className="general-popover delete-popover"
-                          >
-                            <PopoverBody className="d-flex">
-                              <div className="del-big-icon">
-                                <img src={DelBigIcon} alt="del-icon" />
-                              </div>
-                              <div>
-                                <p className="font-weight-bold blak-clr">
-                                {TranslationContext !== undefined
-                                      ? TranslationContext.p.deletefile
-                                      : "Delete file"}?
-                                </p>
-                                <p className="mt-1 fs-12">
-                                {TranslationContext !== undefined
-                                      ? TranslationContext.p
-                                          .areyousureyouwanttodeletethisfile
-                                      : "Are you sure you want to delete this file"}?
-                                </p>
-                                <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>  {TranslationContext !== undefined
-                                        ? TranslationContext.a.cancel
-                                        : "CANCEL"}</a>
-                                  <button
-                                    className="butn"
-                                    onClick={this.handleDeleteBulkupload}
-                                  >
-                                     {TranslationContext !== undefined
-                                        ? TranslationContext.button.delete
-                                        : "Delete"}
-                                  </button>
-                                </div>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                        <div>
-                          <span className="file-size">
-                            {this.state.fileSize}
-                          </span>
-                        </div>
-                      </div>
-                      {this.state.fileN.length > 0 &&
-                      this.state.isFileUploadFail ? (
+                        )}
+                      </Dropzone>
+                    </div>
+                    {this.state.fileN.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.bulkuploadCompulsion}
+                      </p>
+                    )}
+                    {this.state.fileName && (
+                      <div className="file-info">
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a
-                              className="file-retry"
-                              onClick={this.hanldeAddBulkUpload.bind(this)}
+                            <div className="del-file" id="del-file-1">
+                              <img src={DelBlack} alt="delete-black" />
+                            </div>
+                            <UncontrolledPopover
+                              trigger="legacy"
+                              placement="auto"
+                              target="del-file-1"
+                              className="general-popover delete-popover"
                             >
+                              <PopoverBody className="d-flex">
+                                <div className="del-big-icon">
+                                  <img src={DelBigIcon} alt="del-icon" />
+                                </div>
+                                <div>
+                                  <p className="font-weight-bold blak-clr">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.deletefile
+                                      : "Delete file"}
+                                    ?
+                                  </p>
+                                  <p className="mt-1 fs-12">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p
+                                          .areyousureyouwanttodeletethisfile
+                                      : "Are you sure you want to delete this file"}
+                                    ?
+                                  </p>
+                                  <div className="del-can">
+                                    <a href={Demo.BLANK_LINK}>
+                                      {" "}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.cancel
+                                        : "CANCEL"}
+                                    </a>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleDeleteBulkupload}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.delete
+                                        : "Delete"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </PopoverBody>
+                            </UncontrolledPopover>
+                          </div>
+                          <div>
+                            <span className="file-size">
+                              {this.state.fileSize}
+                            </span>
+                          </div>
+                        </div>
+                        {this.state.fileN.length > 0 &&
+                        this.state.isFileUploadFail ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <a
+                                className="file-retry"
+                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              >
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.retry
                                   : "Retry"}
-                            </a>
-                          </div>
-                          <div>
-                            <span className="file-failed">{TranslationContext !== undefined
+                              </a>
+                            </div>
+                            <div>
+                              <span className="file-failed">
+                                {TranslationContext !== undefined
                                   ? TranslationContext.span.failed
-                                  : "Failed"}</span>
+                                  : "Failed"}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      ) : null}
-                      {this.state.showProgress ? (
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name pr-0">
-                              {this.state.fileName}
-                            </p>
-                          </div>
-                          <div>
-                            <div className="d-flex align-items-center mt-2">
-                              <ProgressBar
-                                className="file-progress"
-                                now={this.state.progressValue}
-                              />
-                              <div className="cancel-upload">
-                                <img src={UploadCancel} alt="upload cancel" />
+                        ) : null}
+                        {this.state.showProgress ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name pr-0">
+                                {this.state.fileName}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="d-flex align-items-center mt-2">
+                                <ProgressBar
+                                  className="file-progress"
+                                  now={this.state.progressValue}
+                                />
+                                <div className="cancel-upload">
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                  <button
-                    className="butn"
-                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                  >
-                    {TranslationContext !== undefined
+                        ) : null}
+                      </div>
+                    )}
+                    <button
+                      className="butn"
+                      onClick={this.hanldeAddBulkUpload.bind(this)}
+                    >
+                      {TranslationContext !== undefined
                         ? TranslationContext.button.add
                         : "ADD"}
-                  </button>
+                    </button>
                   </Spin>
                 </div>
               </div>
@@ -3986,17 +4172,28 @@ class StoreMaster extends Component {
           >
             <div className="edtpadding">
               <label className="popover-header-text">
-              {TranslationContext!==undefined?TranslationContext.label.editstore:"EDIT STORE"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.editstore
+                  : "EDIT STORE"}
               </label>
               <div className="row">
                 <div className="col-md-6">
                   <div className="div-padding-1">
-                    <label className="edit-label-1">  {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}</label>
+                    <label className="edit-label-1">
+                      {" "}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.brand
+                        : "Brand"}
+                    </label>
                     <Select
                       getOptionLabel={(option) => option.brandName}
                       getOptionValue={(option) => option.brandID}
                       options={this.state.brandData}
-                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.select
+                          : "Select"
+                      }
                       // menuIsOpen={true}
                       name="brand_IDs"
                       closeMenuOnSelect={false}
@@ -4015,11 +4212,20 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">  {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}</label>
+                    <label className="edit-label-1">
+                      {" "}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.storecode
+                        : "Store Code"}
+                    </label>
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterstorecode:"Enter Store Code"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enterstorecode
+                          : "Enter Store Code"
+                      }
                       name="store_Code"
                       maxLength={10}
                       value={this.state.userEditData.store_Code}
@@ -4034,11 +4240,20 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1"> {TranslationContext!==undefined?TranslationContext.label.storename:"Store Name"}</label>
+                    <label className="edit-label-1">
+                      {" "}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.storename
+                        : "Store Name"}
+                    </label>
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterstorename:"Enter Store Name"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enterstorename
+                          : "Enter Store Name"
+                      }
                       name="store_Name"
                       maxLength={100}
                       value={this.state.userEditData.store_Name}
@@ -4053,14 +4268,22 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">{TranslationContext!==undefined?TranslationContext.label.storename:"State"}</label>
+                    <label className="edit-label-1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.storename
+                        : "State"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="state_ID"
                       value={this.state.userEditData.state_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>{TranslationContext!==undefined?TranslationContext.option.select:"Select"}</option>
+                      <option value={0}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "Select"}
+                      </option>
                       {this.state.stateData !== null &&
                         this.state.stateData.map((item, i) => (
                           <option
@@ -4082,14 +4305,22 @@ class StoreMaster extends Component {
 
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">{TranslationContext!==undefined?TranslationContext.label.city:"City"}</label>
+                    <label className="edit-label-1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.city
+                        : "City"}
+                    </label>
                     <select
                       className="edit-dropDwon dropdown-setting"
                       name="city_ID"
                       value={this.state.userEditData.city_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>{TranslationContext!==undefined?TranslationContext.option.select:"Select"}</option>
+                      <option value={0}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "Select"}
+                      </option>
                       {this.state.cityData !== null &&
                         this.state.cityData.map((item, i) => (
                           <option
@@ -4110,11 +4341,19 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">{TranslationContext!==undefined?TranslationContext.label.pincode:"Pin Code"}</label>
+                    <label className="edit-label-1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.pincode
+                        : "Pin Code"}
+                    </label>
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpincode:"Enter Pin Code"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enterpincode
+                          : "Enter Pin Code"
+                      }
                       name="strPin_Code"
                       maxLength={11}
                       value={this.state.userEditData.strPin_Code}
@@ -4129,7 +4368,12 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1"> {TranslationContext!==undefined?TranslationContext.label.status:"Status"}</label>
+                    <label className="edit-label-1">
+                      {" "}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.status
+                        : "Status"}
+                    </label>
                     <select
                       className="form-control dropdown-setting"
                       name="status_ID"
@@ -4141,9 +4385,21 @@ class StoreMaster extends Component {
                       }
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>{TranslationContext!==undefined?TranslationContext.option.select:"select"}</option>
-                      <option value="Active">{TranslationContext!==undefined?TranslationContext.option.active:"Active"}</option>
-                      <option value="Inactive">{TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}</option>
+                      <option value={0}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "select"}
+                      </option>
+                      <option value="Active">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.active
+                          : "Active"}
+                      </option>
+                      <option value="Inactive">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.inactive
+                          : "Inactive"}
+                      </option>
                     </select>
                     {this.state.userEditData.status_ID === "0" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4154,14 +4410,22 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">{TranslationContext!==undefined?TranslationContext.label.region:"Region"}</label>
+                    <label className="edit-label-1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.region
+                        : "Region"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="region_ID"
                       value={this.state.userEditData.region_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>{TranslationContext!==undefined?TranslationContext.option.select:"select"}</option>
+                      <option value={0}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "select"}
+                      </option>
                       {this.state.regionData !== null &&
                         this.state.regionData.map((item, s) => (
                           <option key={s} value={item.regionID}>
@@ -4178,14 +4442,22 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">{TranslationContext!==undefined?TranslationContext.label.zone:"Zone"}</label>
+                    <label className="edit-label-1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.zone
+                        : "Zone"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="zone_ID"
                       value={this.state.userEditData.zone_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>{TranslationContext!==undefined?TranslationContext.option.select:"select"}</option>
+                      <option value={0}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "select"}
+                      </option>
                       {this.state.zoneData !== null &&
                         this.state.zoneData.map((item, s) => (
                           <option key={s} value={item.zoneID}>
@@ -4202,14 +4474,23 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1">{TranslationContext!==undefined?TranslationContext.label.storetype:"Store Type"}</label>
+                    <label className="edit-label-1">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.storetype
+                        : "Store Type"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="storeType_ID"
                       value={this.state.userEditData.storeType_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}> {TranslationContext!==undefined?TranslationContext.option.select:"Select"}</option>
+                      <option value={0}>
+                        {" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.select
+                          : "Select"}
+                      </option>
                       {this.state.storeTypeData !== null &&
                         this.state.storeTypeData.map((item, t) => (
                           <option key={t} value={item.storeTypeID}>
@@ -4227,12 +4508,18 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.contactdetailsemails:"Contact Details:Email"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.contactdetailsemails
+                        : "Contact Details:Email"}
                     </label>
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enteremailid:"Enter email id"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enteremailid
+                          : "Enter email id"
+                      }
                       name="email_"
                       maxLength={100}
                       value={this.state.userEditData.email_}
@@ -4253,12 +4540,18 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.contactdetailsphones:"Contact Details:Phone"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.contactdetailsphones
+                        : "Contact Details:Phone"}
                     </label>
                     <input
                       type="text"
                       className="txt-1"
-                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterphoneno:"Enter phone no"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enterphoneno
+                          : "Enter phone no"
+                      }
                       name="phoneNumber_"
                       maxLength={10}
                       value={this.state.userEditData.phoneNumber_}
@@ -4279,12 +4572,21 @@ class StoreMaster extends Component {
                 </div>
                 <div className="col-md-6">
                   <div className="pop-over-div">
-                    <label className="edit-label-1"> {TranslationContext!==undefined?TranslationContext.label.address:"Address"}</label>
+                    <label className="edit-label-1">
+                      {" "}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.address
+                        : "Address"}
+                    </label>
                     <textarea
                       cols="31"
                       rows="3"
                       className="store-create-textarea"
-                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enteraddress:"Enter address"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.enteraddress
+                          : "Enter address"
+                      }
                       name="address_"
                       maxLength={250}
                       value={this.state.userEditData.address_}
@@ -4303,8 +4605,9 @@ class StoreMaster extends Component {
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >
-                       {TranslationContext!==undefined?TranslationContext.button.cancel:"CANCEL"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.cancel
+                        : "CANCEL"}
                     </span>
                     <button
                       className="pop-over-button FlNone"
@@ -4320,8 +4623,9 @@ class StoreMaster extends Component {
                         ) : (
                           ""
                         )}
-                          {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.save
+                          : "SAVE"}
                       </label>
                     </button>
                   </div>

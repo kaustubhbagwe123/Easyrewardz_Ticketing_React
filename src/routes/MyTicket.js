@@ -1032,11 +1032,11 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketDetails() {
-    debugger
+    debugger;
     const TranslationContext = this.state.translateLanguage.default;
 
     if (this.state.statusValidate) {
-      if (this.state.checkPriorityDetails===false) {
+      if (this.state.checkPriorityDetails === false) {
         let self = this;
         this.setState({ KnowledgeBaseModal: false });
         axios({
@@ -1341,7 +1341,10 @@ class MyTicket extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ TicketPriorityData: data,checkPriorityDetails: false });
+          self.setState({
+            TicketPriorityData: data,
+            checkPriorityDetails: false,
+          });
         } else {
           self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
@@ -1526,19 +1529,19 @@ class MyTicket extends Component {
   }
   handleReAssignCommentOpen(check) {
     const TranslationContext = this.state.translateLanguage.default;
-    if(check === "assignCmd"){
-      if(this.state.agentId > 0){
+    if (check === "assignCmd") {
+      if (this.state.agentId > 0) {
         this.setState({
           ReAssignComment: !this.state.ReAssignComment,
         });
-      }else{
+      } else {
         NotificationManager.error(
           TranslationContext !== undefined
             ? TranslationContext.ticketingDashboard.pleaseselectuser
             : "Please Select User."
         );
       }
-    }else{
+    } else {
       this.setState({
         ReAssignComment: !this.state.ReAssignComment,
       });
@@ -3523,7 +3526,7 @@ class MyTicket extends Component {
                       <span className="updated-2-d-ago">
                         {TranslationContext !== undefined
                           ? TranslationContext.p.updated
-                          : "Updated"}
+                          : "Updated "}
                         {ticketDetailsData.updateDate}
                       </span>
                     </label>
@@ -3736,7 +3739,10 @@ class MyTicket extends Component {
                         <button
                           type="button"
                           className="btn btn-outline-primary"
-                          onClick={this.handleReAssignCommentOpen.bind(this,"assignCmd")}
+                          onClick={this.handleReAssignCommentOpen.bind(
+                            this,
+                            "assignCmd"
+                          )}
                         >
                           {TranslationContext !== undefined
                             ? TranslationContext.placeholder.select
