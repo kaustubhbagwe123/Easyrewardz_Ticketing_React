@@ -17,8 +17,10 @@ import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
 import UserInfo from "./../../assets/Images/user-info.png";
 import EditPen from "./../../assets/Images/pencil.png";
 import Arwdown from "./../../assets/Images/arwdwn.png";
+import BackArw from "./../../assets/Images/left-white.png";
 import Arwup from "./../../assets/Images/arwup.png";
 import Pin from "./../../assets/Images/pin.png";
+import Chatw from "./../../assets/Images/chatw.png";
 import Pin2 from "./../../assets/Images/pin2.png";
 import Ladyimg from "./../../assets/Images/ladyimg.png";
 import Cancelico from "./../../assets/Images/cancel.png";
@@ -3229,15 +3231,30 @@ class Header extends Component {
               alt="back arrow"
               onClick={this.handleChatModalClose}
             />
+            <img
+              src={Chatw}
+              className="Chatw"
+              alt="Chatw"
+            />
             <h3>
               {TranslationContext !== undefined
                 ? TranslationContext.h3.storechatwindow
-                : "Store chat window"}
+                : "Store chat"}
             </h3>
             {this.state.isMainLoader ? <div className="loader"></div> : null}
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>
+            <img
+              src={CancelIconW}
+              className="Cancelicow"
+              alt="Cancelicow"
+            />
+            <img
+              src={BackArw}
+              className="BackArw"
+              alt="BackArw"
+            />
           </div>
           <div className="container-fluid">
             <div className="row">
