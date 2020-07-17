@@ -1556,28 +1556,37 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
+    debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
-      if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) === 0) {
-          this.setState({
-            noOfPeopleMax: "Please enter the no of people greater than 0",
-          });
-        } else {
-          this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
-        }
+      // if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
+      //   if (Number(e.target.value) === 0) {
+      //     this.setState({
+      //       noOfPeopleMax: "Please enter the no of people greater than 0",
+      //     });
+      //   } else {
+      //     this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+      //   }
+      // } else {
+      //   if (e.target.value !== "") {
+      //     this.setState({
+      //       noOfPeople: "",
+      //       noOfPeopleMax:
+      //         "Maximum capacity are " + this.state.selectedSlot.remaining,
+      //     });
+      //   } else {
+      //     this.setState({
+      //       noOfPeople: "",
+      //       noOfPeopleMax: "",
+      //     });
+      //   }
+      // }
+      if (Number(e.target.value) <= 3) {
+        this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
       } else {
-        if (e.target.value !== "") {
-          this.setState({
-            noOfPeople: "",
-            noOfPeopleMax:
-              "Maximum capacity are " + this.state.selectedSlot.remaining,
-          });
-        } else {
-          this.setState({
-            noOfPeople: "",
-            noOfPeopleMax: "",
-          });
-        }
+        this.setState({
+          noOfPeople: "",
+          noOfPeopleMax: "Maximum capacity are 3",
+        });
       }
     } else {
       this.setState({ isSelectSlot: "Please select time slot" });
@@ -3356,7 +3365,7 @@ class Header extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label
                                         .customerhasendchat
-                                    : "Customer has end chat"}
+                                    : "Customer has ended the conversation"}
                                 </label>
                               ) : null}
                             </div>
