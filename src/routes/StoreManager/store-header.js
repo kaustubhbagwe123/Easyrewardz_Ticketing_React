@@ -1929,6 +1929,7 @@ class Header extends Component {
       rowChatId: 0,
       customerName: "",
       showHistoricalChat: false,
+      mainTabSelect: 2,
     });
     this.handleGetAgentChatHistory();
   };
@@ -3224,8 +3225,10 @@ class Header extends Component {
             <div className="row">
               <div
                 className={
-                  this.state.isMobileView && !this.state.customerName
+                  this.state.isMobileView && !this.state.customerName && !this.state.isHistoricalChat
                     ? "firstbox firstbox-show"
+                    : this.state.isMobileView && this.state.isHistoricalChat
+                    ? "firstbox firstbox-hide"
                     : "firstbox firstbox-hide"
                 }
               >
@@ -3730,7 +3733,8 @@ class Header extends Component {
                     ? "secondbox"
                     : this.state.customerName
                     ? "secondbox secondbox-open"
-                    : this.state.isMobileView && this.state.customerName
+                    : (this.state.isMobileView && this.state.customerName) ||
+                      (this.state.isMobileView && this.state.isHistoricalChat)
                     ? "secondbox secondbox-open-new-show"
                     : "secondbox-open-new secondbox-open-new-hide"
                 }
@@ -6978,7 +6982,7 @@ class Header extends Component {
                                                 )}
                                               >
                                                 <img
-                                                  src={item.imageURL}
+                                                  src={Ladyimg}
                                                   className="ladyimg"
                                                   alt="Lady Img"
                                                 />
@@ -6990,7 +6994,16 @@ class Header extends Component {
                                                 <h4>{item.productName}</h4>
                                               ) : null}
                                               {item.price ? (
-                                                <span>{item.price}</span>
+                                                <span>
+                                                  {item.price.toLocaleString(
+                                                    "en-IN",
+                                                    {
+                                                      style: "currency",
+                                                      currency: "INR",
+                                                      minimumFractionDigits: 0,
+                                                    }
+                                                  )}
+                                                </span>
                                               ) : null}
                                               <img
                                                 src={Cancelico}
@@ -7088,7 +7101,16 @@ class Header extends Component {
                                               <h4>{item.productName}</h4>
                                             ) : null}
                                             {item.price ? (
-                                              <span>{item.price}</span>
+                                              <span>
+                                                {item.price.toLocaleString(
+                                                  "en-IN",
+                                                  {
+                                                    style: "currency",
+                                                    currency: "INR",
+                                                    minimumFractionDigits: 0,
+                                                  }
+                                                )}
+                                              </span>
                                             ) : null}
                                             <img
                                               disabled={
@@ -7185,7 +7207,16 @@ class Header extends Component {
                                                 <h4>{item.productName}</h4>
                                               ) : null}
                                               {item.price ? (
-                                                <span>{item.price}</span>
+                                                <span>
+                                                  {item.price.toLocaleString(
+                                                    "en-IN",
+                                                    {
+                                                      style: "currency",
+                                                      currency: "INR",
+                                                      minimumFractionDigits: 0,
+                                                    }
+                                                  )}
+                                                </span>
                                               ) : null}
                                               <img
                                                 disabled={
