@@ -1006,10 +1006,10 @@ p {
   width: 20%;
 }
 .secondbox {
-  width: 45%;
+  width: 53%;
 }
 .thirdbox {
-  width: 35%;
+  width: 27%;
   position: relative;
 }
 .secondbox-open {
@@ -1061,7 +1061,7 @@ p {
   background: #2561a8;
   color: #fff;
   border-radius: 10px;
-  margin: 15px;
+  margin: 15px 30px;
   padding: 0 2px;
 }
 .uptabs .nav-tabs .nav-link.active {
@@ -1152,10 +1152,13 @@ p {
 /* .pointstable table tbody tr:first-child {
   border-top: 1px solid #eeeeee;
 } */
+.nameplate {
+  /* padding: 0 15px; */
+  padding: 0 0px;
+}
 .pointstable table td {
   padding: 10px 0;
-  font-size: 14px;
-    font-weight: normal;
+  font-size: 12px;
 }
 .pointstable table label {
   color: #333;
@@ -1167,6 +1170,7 @@ p {
 }
 .pointstable {
   margin-bottom: 10px;
+  padding: 0 15px;
 }
 .pointstable td:nth-child(1) {
   float: left;
@@ -1182,7 +1186,7 @@ p {
   text-align: left;
 }
 .pointstable td:nth-child(2) span {
-  text-align: right;
+  text-align: center;
 }
 .pointstable td:nth-child(3) span {
   text-align: right;
@@ -1194,7 +1198,7 @@ p {
 }
 .itemtable table th {
   padding: 0;
-  color: #333;
+  color: #999;
   font-weight: normal;
 }
 .itemtable table td {
@@ -1202,11 +1206,10 @@ p {
   font-size: 12px;
 }
 .itemtable table label {
-  color: #666;
-  font-weight: normal;
+  color: #333;
 }
 .itemtable {
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 .itemtable td:nth-child(1) {
   float: left;
@@ -1247,15 +1250,15 @@ p {
   margin-bottom: 10px;
 }
 .lasttransaction label {
-  font-size: 13px;
-  color: #333;
+  font-size: 12px;
+  color: #999;
   display: block;
 }
 .lasttransaction li:last-child {
-  float: none;
+  float: right;
 }
 .lasttransaction li {
-  width: 100px;
+  width: 50%;
 }
 .lasttransaction {
   padding-bottom: 4px;
@@ -1267,7 +1270,6 @@ p {
 }
 .lasttransaction {
   margin-bottom: 12px;
-  border-bottom: 1px solid #eeeeee;
 }
 .lasttransaction ul {
   margin-bottom: 10px;
@@ -1275,8 +1277,6 @@ p {
 }
 .ordersbox ul {
   margin-bottom: 7px;
-    display: flex;
-    justify-content: space-between;
 }
 .ordersbox h3 {
   font-size: 14px;
@@ -1285,9 +1285,18 @@ p {
   display: inline-block;
 }
 .ordersbox label {
-  font-size: 13px;
-  color: #666;
+  font-size: 12px;
+  color: #999;
   display: block;
+}
+.ordersbox li {
+  width: 100px;
+}
+.ordersbox li:last-child {
+  float: right;
+}
+.ordersbox li:last-child {
+  float: right;
 }
 .ordersbox span {
   font-size: 12px;
@@ -1315,10 +1324,10 @@ p {
   margin-bottom: 10px;
 }
 .insightsbox p {
-  font-size: 14px;
-    color: #666;
-    margin-bottom: 3px;
-    font-weight: normal;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 3px;
+  font-weight: normal;
 }
 .updateprofilelinkbtn {
   background: none;
@@ -1330,7 +1339,10 @@ p {
   margin: auto;
   display: block;
 }
+
 .tabsbotbtn {
+  outline: none !important;
+  cursor: pointer;
   background: none;
   border-radius: 10px;
   text-transform: uppercase;
@@ -1378,6 +1390,9 @@ p {
 .productsbox .nav-tabs .nav-link:first-child {
   padding-left: 0;
 }
+.productsbox .nav-tabs .nav-item:last-child .nav-link {
+  padding-right: 0;
+}
 .productsbox .selectalllabel {
   color: #2561a8;
   font-size: 13px;
@@ -1389,10 +1404,10 @@ p {
 .productsbox .prodboxx {
   position: relative;
   margin-right: 8px;
-    margin-bottom: 12px;
-    display: inline-table;
+  margin-bottom: 12px;
+  display: inline-table;
 }
-img.ladyimg {
+.ladyimg {
   width: 100px;
   height: 150px;
 }
@@ -1416,6 +1431,8 @@ img.ladyimg {
   font-size: 10px;
   color: #666;
   margin-top: 3px;
+  display: block;
+  padding: 0 !important;
 }
 .cancelico {
   height: 21px;
@@ -1424,7 +1441,7 @@ img.ladyimg {
   padding: 3px;
   position: absolute;
   right: 2px;
-  bottom: 34px;
+  bottom: -4px;
   cursor: pointer;
 }
 .chatupperbtn {
@@ -1455,6 +1472,7 @@ img.ladyimg {
   background: #a5a3a3;
 }
 .prodtabl {
+  width: 100%;
   max-height: 380px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1633,7 +1651,7 @@ img.ladyimg {
 }
 .agentchatdrop-down {
   margin-left: 0;
-    width: 35%;
+  width: 35%;
 }
 
 .chatactionbtn {
@@ -1643,7 +1661,7 @@ img.ladyimg {
   margin-left: 0px;
   outline: none;
   padding: 5px 10px;
-    border-radius: 10px;
+  border-radius: 10px;
 }
 #actionmodalId {
   border-radius: 8px;
@@ -1653,10 +1671,10 @@ img.ladyimg {
   margin-top: 83px;
   display: inline-block;
 }
-.actionmodalId-mr-add{
+.actionmodalId-mr-add {
   margin-right: 360px;
 }
-.actionmodalId-mr-remove{
+.actionmodalId-mr-remove {
   margin-right: 105px;
 }
 
@@ -1982,7 +2000,7 @@ img.ladyimg {
 .secondbox-open-new {
   width: 80% !important;
 }
-.Arwico{
+.Arwico {
   display: none;
 }
 .prodtabl1 .ant-collapse.ant-collapse-icon-position-left {
@@ -1991,7 +2009,8 @@ img.ladyimg {
   border-radius: 0;
 }
 .prodtabl1 .ant-collapse-header {
-  color: #2561a8 !important;
+  color: #333 !important;
+  font-weight: 600;
 }
 .prodtabl1 .ant-collapse-content {
   border: none;
@@ -2007,6 +2026,9 @@ img.ladyimg {
   padding: 8px 16px;
   padding-left: 36px;
 }
+.show-mobile {
+  display: none;
+}
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {
@@ -2021,8 +2043,13 @@ img.ladyimg {
 }
 
 @media all and (max-width: 576px) {
-  
-  .firstbox-hide{
+  .show-desktop {
+    display: none;
+  }
+  .show-mobile {
+    display: block;
+  }
+  .firstbox-hide {
     display: none;
   }
   .firstbox-show {
@@ -2047,12 +2074,12 @@ img.ladyimg {
   .thirdbox-shutter {
     height: 560px !important;
     max-height: 560px !important;
-}
+  }
   #chat-popup-overlay {
     top: 0;
   }
   .oc-bg {
-    background-color: #ECF2F4;
+    background-color: #ecf2f4;
     height: 73vh;
   }
   .chat-hist {
@@ -2077,7 +2104,7 @@ img.ladyimg {
     max-width: 100%;
   }
   .chat-trail-cntr-right .chat-trail-chat {
-    background: #CEE0E6;
+    background: #cee0e6;
     color: #333;
   }
   .thirdbox {
@@ -2098,7 +2125,7 @@ img.ladyimg {
     z-index: 999999999999;
     bottom: -10px;
     display: block;
-}
+  }
   .chattabtitle {
     padding: 0 !important;
     width: 100% !important;
@@ -2445,7 +2472,7 @@ img.ladyimg {
   }
   /* message suggestions ends */
   .uptabs .nav-tabs {
-    margin: 9px 15px;
+    margin: 9px 9px;
     padding: 0 2px;
     float: right;
   }
@@ -2463,7 +2490,7 @@ img.ladyimg {
     max-height: 345px;
   }
   .nameplate .namelabel {
-    padding: 7px 14px;
+    padding: 6px 11px;
   }
   .nameplate li:first-child {
     margin-right: 6px;
@@ -2487,13 +2514,37 @@ img.ladyimg {
   }
   .pastchatmobbtn {
     display: inline;
-    margin-right: 12px !important;
+    margin: 12px !important;
     float: left;
   }
   .productsbox .selectalllabel {
     margin-top: 12px;
   }
-  
+  .productsbox .prodboxx {
+    margin-right: 5px;
+  }
+  .thirdbox .uptabs .tab-content {
+    padding: 0 6px 15px;
+  }
+  .ladyimg {
+    width: 90px;
+    height: 125px;
+  }
+  .tabsbotbtn-box {
+    text-align: inherit;
+    margin: 10px 0;
+  }
+  .tabsbotbtn {
+    min-width: 95px;
+    width: 95px;
+    margin-right: 5px;
+    font-size: 11px;
+    padding: 8px 8px;
+  }
+  .uptabs .nav-tabs .nav-link {
+    padding: 8px 8px;
+    font-size: 11px;
+  }
 }
 
 @media all and (max-width: 425px) {

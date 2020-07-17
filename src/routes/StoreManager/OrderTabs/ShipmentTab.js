@@ -1386,7 +1386,7 @@ class ShipmentTab extends Component {
                             />
                           </div>
                         </div>
-                        <div className="dv-status m-t-20">
+                        <div className="dv-status m-t-20 ship-mar-bot">
                           <button
                             className="btn-shipment-popup"
                             style={{ marginRight: "10px" }}
@@ -1476,7 +1476,7 @@ class ShipmentTab extends Component {
                           ) : null}
                         </div>
                       </div>
-                      <div className="dv-status m-t-20">
+                      <div className="dv-status m-t-20 ship-mar-bot">
                         <button
                           className="btn-shipment-popup"
                           style={{ marginRight: "10px" }}

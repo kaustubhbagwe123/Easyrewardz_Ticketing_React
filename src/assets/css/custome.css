@@ -2972,7 +2972,7 @@ table tr th:last-child {
 .chat-info {
   /* padding: 17px; 
   border-bottom: 1px solid #e4e4e4;*/
-  padding: 8px 15px 0;
+  padding: 8px 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;

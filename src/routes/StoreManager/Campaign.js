@@ -707,7 +707,7 @@ class Campaign extends Component {
 
   /// handle Campaign status filter for individual select
   handleCheckCampIndividualStatus() {
-    debugger
+    debugger;
     var checkboxes = document.getElementsByName("CampallStatus");
     var strCampStatus = "";
     for (var i in checkboxes) {
@@ -776,9 +776,9 @@ class Campaign extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreCustomerpopupDetails",
       headers: authHeader(),
-      params:{
-        mobileNumber: rowData.customerPhoneNumber
-      }
+      params: {
+        mobileNumber: rowData.customerPhoneNumber,
+      },
     })
       .then(function(response) {
         debugger;
@@ -1066,7 +1066,7 @@ class Campaign extends Component {
                           );
                         },
                         className:
-                          "camp-status-header camp-status-header-statusFilter",
+                          "camp-status-header camp-status-header-statusFilter order-desktop",
                         filterDropdown: (data, row) => {
                           return (
                             <div className="campaign-status-drpdwn">

@@ -711,7 +711,7 @@
   margin-bottom: 0px;
 }
 
-.setting-txt{
+.setting-txt {
   float: right;
   margin-left: auto !important;
   width: 200px !important;
@@ -1019,6 +1019,10 @@
     height: 22px;
     font-size: 10px;
     min-width: auto !important;
+  }
+
+  .ship-mar-bot {
+    margin-bottom: 15px;
   }
 }
 

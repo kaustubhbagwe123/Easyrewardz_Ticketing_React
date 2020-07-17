@@ -168,6 +168,7 @@ class storeMyTicket extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
+          debugger;
           self.setState({
             ticketDetailsData: data,
             loading: false,
@@ -865,10 +866,19 @@ class storeMyTicket extends Component {
                     :
                   </label>
                 </div>
-                <div className="row" style={{ marginTop: "0" }}>
-                  <label className="label-3 pb-0">
-                    {this.state.ticketDetailsData.ticketDescription}
-                  </label>
+                <div className="" style={{ marginTop: "5px" }}>
+                  {this.state.ticketDetailsData.ticketDescription
+                    ? this.state.ticketDetailsData.ticketDescription
+                        .split(",")
+                        .map((item) => {
+                          return (
+                            <>
+                              <p className="label-3 pb-0" style={{marginBottom:"5px"}}>{item}</p>
+                              
+                            </>
+                          );
+                        })
+                    : null}
                 </div>
               </div>
               <div className="row">

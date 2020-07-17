@@ -43,7 +43,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover, Collapse, Checkbox } from "antd";
+import { Popover, Collapse, Checkbox, Empty } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -219,6 +219,11 @@ class Header extends Component {
       recommendedData: [],
       ProfileProductTab: 0,
       activeCollpse: [1],
+      productTypeTab: 0,
+      selectedRecommended: [],
+      selectedShoppingBag: [],
+      selectedWishList: [],
+      isButtonClick: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -799,6 +804,9 @@ class Header extends Component {
       searchItem: "",
       showHistoricalChat: false,
       isDownbtn: true,
+      message: "",
+      messageSuggestionData: [],
+      messageSuggestionTagsData: [],
     });
   }
   ////handle chat modal open
@@ -822,7 +830,7 @@ class Header extends Component {
       activeTab: 1,
       isScroll: true,
     });
-
+    this.handleCheckView();
     this.handleGetNewChat();
     this.handleGetOngoingChat();
     this.handleGetStoreAgentDetailsById(this.state.AgentID);
@@ -864,6 +872,8 @@ class Header extends Component {
                 customerName: "",
                 messageData: [],
                 isMainLoader: false,
+                isPinClick: false,
+                onHoverName: false,
               });
             }
 
@@ -893,6 +903,8 @@ class Header extends Component {
             }
           } else {
             self.setState({
+              isPinClick: false,
+              onHoverName: false,
               customerName: "",
               messageData: [],
               isMainLoader: false,
@@ -903,9 +915,11 @@ class Header extends Component {
           }
         } else {
           self.setState({
+            isPinClick: false,
             ongoingChatsData: [],
             customerName: "",
             messageData: [],
+            onHoverName: false,
             isMainLoader: false,
           });
         }
@@ -1492,6 +1506,14 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          ProfileProductTab: 0,
+          productTypeTab: 0,
+          selectedWishList: [],
+          selectedShoppingBag: [],
+          selectedRecommended: [],
+          shoppingBagData: [],
+          wishListData: [],
+          recommendedData: [],
           storeManagerId,
           showHistoricalChat: false,
           rowChatId: 0,
@@ -1534,6 +1556,14 @@ class Header extends Component {
         this.handleGetChatCustomerProfile(customerId);
       } else {
         this.setState({
+          ProfileProductTab: 0,
+          productTypeTab: 0,
+          selectedWishList: [],
+          selectedShoppingBag: [],
+          selectedRecommended: [],
+          shoppingBagData: [],
+          wishListData: [],
+          recommendedData: [],
           storeManagerId,
           rowChatId: 0,
           agentRecentChatData: [],
@@ -1583,6 +1613,14 @@ class Header extends Component {
       }
     } else {
       this.setState({
+        ProfileProductTab: 0,
+        productTypeTab: 0,
+        selectedWishList: [],
+        selectedShoppingBag: [],
+        selectedRecommended: [],
+        shoppingBagData: [],
+        wishListData: [],
+        recommendedData: [],
         storeManagerId,
         rowChatId: 0,
         agentRecentChatData: [],
@@ -2305,7 +2343,7 @@ class Header extends Component {
       .then((response) => {
         var message = response.data.message;
         var storePayURL = response.data.responseData;
-        if ((message = "Success" && storePayURL)) {
+        if (message === "Success" && storePayURL) {
           self.setState({ storePayURL });
         }
       })
@@ -2353,7 +2391,6 @@ class Header extends Component {
   };
   ////handle collpse change
   handleCollpseChange = (e) => {
-    debugger;
     this.state.activeCollpse = e[e.length - 1];
     this.setState({ activeCollpse: this.state.activeCollpse });
   };
@@ -2378,20 +2415,242 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           for (let i = 0; i < responseData.length; i++) {
             if (responseData[i].isShoppingBag) {
+              responseData[i].isCheck = false;
               shoppingBagData.push(responseData[i]);
             }
             if (responseData[i].isWishList) {
+              responseData[i].isCheck = false;
               wishListData.push(responseData[i]);
             }
             if (responseData[i].isRecommended) {
+              responseData[i].isCheck = false;
               recommendedData.push(responseData[i]);
             }
           }
+
           self.setState({ shoppingBagData, wishListData, recommendedData });
         }
       })
       .catch((response) => {
         console.log(response, "---handleGetChatCustomerProducts");
+      });
+  };
+
+  ////handle shopping bag ,wishlist & recommended product select
+  handleProductTabsChange = (tabIndex, itemIndex) => {
+    ////for Shopping Bag list
+    if (tabIndex === 1) {
+      this.state.shoppingBagData[itemIndex].isCheck = !this.state
+        .shoppingBagData[itemIndex].isCheck;
+      var selectedShoppingBag = [];
+      for (let k = 0; k < this.state.shoppingBagData.length; k++) {
+        if (this.state.shoppingBagData[k].isCheck) {
+          selectedShoppingBag.push(this.state.shoppingBagData[k]);
+        }
+      }
+      this.setState({
+        shoppingBagData: this.state.shoppingBagData,
+        selectedShoppingBag,
+      });
+    }
+    //// for Wish List
+    if (tabIndex === 2) {
+      this.state.wishListData[itemIndex].isCheck = !this.state.wishListData[
+        itemIndex
+      ].isCheck;
+      var selectedWishList = [];
+      for (let k = 0; k < this.state.wishListData.length; k++) {
+        if (this.state.wishListData[k].isCheck) {
+          selectedWishList.push(this.state.wishListData[k]);
+        }
+      }
+      this.setState({
+        wishListData: this.state.wishListData,
+        selectedWishList,
+      });
+    }
+    ////for Recommended list
+    if (tabIndex === 3) {
+      this.state.recommendedData[itemIndex].isCheck = !this.state
+        .recommendedData[itemIndex].isCheck;
+      var selectedRecommended = [];
+      for (let k = 0; k < this.state.recommendedData.length; k++) {
+        if (this.state.recommendedData[k].isCheck) {
+          selectedRecommended.push(this.state.recommendedData[k]);
+        }
+      }
+      this.setState({
+        recommendedData: this.state.recommendedData,
+        selectedRecommended,
+      });
+    }
+  };
+  ////handle product type tab change
+  handleProductTypeTabChange = (index) => {
+    this.setState({ productTypeTab: index });
+  };
+
+  ///handle select all product base on tab index
+  handleSelectAllProduct = (tabIndex) => {
+    ////for shopping bag list tab select all
+    if (tabIndex === 1) {
+      for (let i = 0; i < this.state.shoppingBagData.length; i++) {
+        this.state.shoppingBagData[i].isCheck = true;
+      }
+      var selectedShoppingBag = [];
+      for (let k = 0; k < this.state.shoppingBagData.length; k++) {
+        if (this.state.shoppingBagData[k].isCheck) {
+          selectedShoppingBag.push(this.state.shoppingBagData[k]);
+        }
+      }
+      this.setState({
+        shoppingBagData: this.state.shoppingBagData,
+        selectedShoppingBag,
+      });
+    }
+    ////for wish list tab select all
+    if (tabIndex === 2) {
+      for (let i = 0; i < this.state.wishListData.length; i++) {
+        this.state.wishListData[i].isCheck = true;
+      }
+      var selectedWishList = [];
+      for (let k = 0; k < this.state.wishListData.length; k++) {
+        if (this.state.wishListData[k].isCheck) {
+          selectedWishList.push(this.state.wishListData[k]);
+        }
+      }
+      this.setState({
+        wishListData: this.state.wishListData,
+        selectedWishList,
+      });
+    }
+    ////for recommended tab select all
+    if (tabIndex === 3) {
+      for (let i = 0; i < this.state.recommendedData.length; i++) {
+        this.state.recommendedData[i].isCheck = true;
+      }
+      var selectedRecommended = [];
+      for (let k = 0; k < this.state.recommendedData.length; k++) {
+        if (this.state.recommendedData[k].isCheck) {
+          selectedRecommended.push(this.state.recommendedData[k]);
+        }
+      }
+      this.setState({
+        recommendedData: this.state.recommendedData,
+        selectedRecommended,
+      });
+    }
+  };
+  ////handle remove product
+  handleRemoveProduct = (itemCode) => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/RemoveProduct",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+        ItemCode: itemCode,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetChatCustomerProducts();
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleRemoveProduct");
+      });
+  };
+  ////handle add products to shopping bag
+  handleAddProductsToShoppingBag = () => {
+    let self = this;
+    var itemCode = "";
+    if (this.state.selectedWishList.length > 0) {
+      for (let i = 0; i < this.state.selectedWishList.length; i++) {
+        if (this.state.selectedWishList[i].isCheck) {
+          itemCode += this.state.selectedWishList[i].uniqueItemCode + ",";
+        }
+      }
+    }
+    this.setState({ isButtonClick: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/AddProductsToShoppingBag",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+        ItemCodes: itemCode,
+        IsFromRecommendation: false,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+
+        if (message === "Success" && responseData) {
+          self.setState({ selectedWishList: [], isButtonClick: false });
+          self.handleGetChatCustomerProducts();
+        } else {
+          self.setState({ isButtonClick: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---AddProductsToShoppingBag");
+      });
+  };
+  ////handle add products to wish list
+  handleAddProductsToWishlist = (formType) => {
+    let self = this;
+    var itemCode = "";
+    if (this.state.selectedRecommended.length > 0 && formType) {
+      for (let i = 0; i < this.state.selectedRecommended.length; i++) {
+        if (this.state.selectedRecommended[i].isCheck) {
+          itemCode += this.state.selectedRecommended[i].uniqueItemCode + ",";
+        }
+      }
+    }
+    if (this.state.selectedShoppingBag.length > 0 && !formType) {
+      for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
+        if (this.state.selectedShoppingBag[i].isCheck) {
+          itemCode += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
+        }
+      }
+    }
+
+    this.setState({ isButtonClick: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/AddProductsToWishlist",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+        MobileNo: this.state.mobileNo,
+        ItemCodes: itemCode,
+        IsFromRecommendation: formType || false,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+
+        if (message === "Success" && responseData) {
+          if (formType) {
+            self.setState({ selectedRecommended: [], isButtonClick: false });
+          } else {
+            self.setState({ selectedShoppingBag: [], isButtonClick: false });
+          }
+          self.handleGetChatCustomerProducts();
+        } else {
+          self.setState({ isButtonClick: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---AddProductsToShoppingBag");
       });
   };
   render() {
@@ -3048,7 +3307,7 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p
+                                {/* <p
                                   style={{
                                     fontWeight:
                                       chat.messageCount > 0 ? "bold" : "400",
@@ -3064,7 +3323,7 @@ class Header extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.newmessages
                                     : "New Messages"}
-                                </p>
+                                </p> */}
                                 <p>{chat.timeAgo}</p>
                               </div>
                             </div>
@@ -3090,7 +3349,7 @@ class Header extends Component {
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
-                      <Select
+                      {/* <Select
                         className="agentchatdrop-down"
                         showArrow={true}
                         value={this.state.sAgentId}
@@ -3112,7 +3371,7 @@ class Header extends Component {
                               </Option>
                             );
                           })}
-                      </Select>
+                      </Select> */}
                     </div>
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData
@@ -3151,7 +3410,7 @@ class Header extends Component {
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  <p
+                                  {/* <p
                                     className={"chat-storemng "}
                                     title="Store Manager"
                                   >
@@ -3177,7 +3436,7 @@ class Header extends Component {
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
                                       : "New Messages"}
-                                  </p>
+                                  </p> */}
                                   <p>{chat.timeAgo}</p>
                                 </div>
                               </div>
@@ -3473,7 +3732,7 @@ class Header extends Component {
                     ? "secondbox secondbox-open"
                     : this.state.isMobileView && this.state.customerName
                     ? "secondbox secondbox-open-new-show"
-                    : "secondbox secondbox-open-new secondbox-open-new-hide"
+                    : "secondbox-open-new secondbox-open-new-hide"
                 }
               >
                 <div className="chatbot-right">
@@ -6492,6 +6751,22 @@ class Header extends Component {
                                   Tier: <b>{this.state.customerTier}</b>
                                 </span>
                               </li>
+                              <li className="contactbox">
+                                <div>
+                                  <ul>
+                                    {this.state.customerEmailID ? (
+                                      <li>
+                                        {/* <label>Email ID</label> */}
+                                        <p>{this.state.customerEmailID}</p>
+                                      </li>
+                                    ) : null}
+                                    <li>
+                                      {/* <label>Mobile No</label> */}
+                                      <p>{this.state.customerMobileNo}</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
                             </ul>
                           </div>
                           <div className="pointstable">
@@ -6499,49 +6774,23 @@ class Header extends Component {
                               <tbody>
                                 <tr>
                                   <td>
-                                    <label>Email ID</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerEmailID}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <label>Mobile No</label>
-                                  </td>
-                                  <td>
-                                    <span>{this.state.customerMobileNo}</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
                                     <label>Total Points</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.totalPoints.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
-                                </tr>
-                                <tr>
                                   <td>
                                     <label>Lifetime Value</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.lifetimeValue.toLocaleString(
                                         "en-IN"
                                       )}
                                     </span>
                                   </td>
-                                </tr>
-                                <tr>
                                   <td>
                                     <label>Visit Count</label>
-                                  </td>
-                                  <td>
                                     <span>
                                       {this.state.visitCount.toLocaleString(
                                         "en-IN"
@@ -6553,114 +6802,127 @@ class Header extends Component {
                             </table>
                           </div>
                           <div className="prodtabl1">
-                            <div className="lasttransaction">
-                              <h3>Last Transaction</h3>
-                              {/* <img
+                            <Collapse
+                              activeKey={this.state.activeCollpse}
+                              onChange={this.handleCollpseChange.bind(this)}
+                            >
+                              <Panel header="Insights" key="1">
+                                <div className="insightsbox">
+                                  {/* <h3>Insights</h3>
+                              <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
                               /> */}
-                              <ul>
-                                <li>
-                                  <label>Bill No</label>
-                                  <span>{this.state.billNumber}</span>
-                                </li>
-                                <li>
-                                  <label>Amount</label>
-                                  <span>
-                                    {this.state.billAmount.toLocaleString(
-                                      "en-IN"
-                                    )}
-                                  </span>
-                                </li>
-                              </ul>
-                              <ul>
-                                <li>
-                                  <label>Store</label>
-                                  <span>{this.state.storeDetails}</span>
-                                </li>
-                                <li>
-                                  <label>Date</label>
-                                  <span>{this.state.transactionDate}</span>
-                                </li>
-                              </ul>
-                              <div className="itemtable">
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Items</th>
-                                      <th>Qty</th>
-                                      <th>Amount</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>Product Name 1</label>
-                                        <label>Product Name 2</label>
-                                        <label>Product Name 3</label>
-                                      </td>
-                                      <td>
-                                        <label>02</label>
-                                        <label>03</label>
-                                        <label>01</label>
-                                      </td>
-                                      <td>
-                                        <label>₹999</label>
-                                        <label>₹1299</label>
-                                        <label>₹12999</label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                            <div className="ordersbox">
-                              <h3>Orders</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <ul>
-                                <li>
-                                  <label>Delivered</label>
-                                  <span>{this.state.orderDelivered}</span>
-                                </li>
-                                <li>
-                                  <label>Shopping Bag</label>
-                                  <span>{this.state.orderShoppingBag}</span>
-                                </li>
-                                <li>
-                                  <label>Ready to Ship</label>
-                                  <span>{this.state.orderReadyToShip}</span>
-                                </li>
-                                <li>
-                                  <label>Returns</label>
-                                  <span>{this.state.orderReturns}</span>
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="insightsbox">
-                              <h3>Insights</h3>
-                              {/* <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                              <p>
-                                1. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                2. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                              <p>
-                                3. Lorem Ipsum is simply dummy text of the
-                                printing industry.
-                              </p>
-                            </div>
+                                  <p>
+                                    1. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    2. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                  <p>
+                                    3. Lorem Ipsum is simply dummy text of the
+                                    printing industry.
+                                  </p>
+                                </div>
+                              </Panel>
+                              <Panel header="Orders" key="2">
+                                <div className="ordersbox">
+                                  {/* <h3>Orders</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Delivered</label>
+                                      <span>{this.state.orderDelivered}</span>
+                                    </li>
+                                    <li>
+                                      <label>Shopping Bag</label>
+                                      <span>{this.state.orderShoppingBag}</span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Ready to Ship</label>
+                                      <span>{this.state.orderReadyToShip}</span>
+                                    </li>
+                                    <li>
+                                      <label>Returns</label>
+                                      <span>{this.state.orderReturns}</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </Panel>
+                              <Panel header="Last Transaction" key="3">
+                                <div className="lasttransaction">
+                                  {/* <h3>Last Transaction</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                  <ul>
+                                    <li>
+                                      <label>Bill No</label>
+                                      <span>{this.state.billNumber}</span>
+                                    </li>
+                                    <li>
+                                      <label>Amount</label>
+                                      <span>
+                                        {this.state.billAmount.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                  <ul>
+                                    <li>
+                                      <label>Store</label>
+                                      <span>{this.state.storeDetails}</span>
+                                    </li>
+                                    <li>
+                                      <label>Date</label>
+                                      <span>{this.state.transactionDate}</span>
+                                    </li>
+                                  </ul>
+                                  <div className="itemtable">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Items</th>
+                                          <th>Qty</th>
+                                          <th>Amount</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Product Name 1</label>
+                                            <label>Product Name 2</label>
+                                            <label>Product Name 3</label>
+                                          </td>
+                                          <td>
+                                            <label>02</label>
+                                            <label>03</label>
+                                            <label>01</label>
+                                          </td>
+                                          <td>
+                                            <label>₹999</label>
+                                            <label>₹1299</label>
+                                            <label>₹12999</label>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </Panel>
+                            </Collapse>
                           </div>
                           <button
                             type="button"
@@ -6669,417 +6931,52 @@ class Header extends Component {
                             22 Past Chat
                           </button>
                           <button
+                            style={{ float: "right" }}
                             type="button"
-                            className="updateprofilelinkbtn"
+                            className="updateprofilelinkbtn pastchatmobbtn"
                           >
-                            Send Update Profile Link
+                            Action
                           </button>
                         </div>
                       </Tab>
                       <Tab label="Products">
                         <div className="productsbox">
-                          <Tabs>
+                          <Tabs
+                            onSelect={(index, label) => {
+                              this.handleProductTypeTabChange(index);
+                            }}
+                            selected={this.state.productTypeTab}
+                          >
                             <Tab label="Shopping Bag">
                               <div className="shoppingbag">
-                                <label className="selectalllabel">
-                                  Select All
-                                </label>
+                                {this.state.shoppingBagData.length > 0 ? (
+                                  <label
+                                    className="selectalllabel"
+                                    onClick={this.handleSelectAllProduct.bind(
+                                      this,
+                                      1
+                                    )}
+                                  >
+                                    Select All
+                                  </label>
+                                ) : null}
                                 <div className="prodtabl">
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </Tab>
-                            <Tab label="Wishlist">
-                              <div className="shoppingbag">
-                                <label className="selectalllabel">
-                                  Select All
-                                </label>
-                                <div className="prodtabl">
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                  <div className="prodboxx">
-                                    <img
-                                      src={Ladyimg}
-                                      className="ladyimg"
-                                      alt="Lady Img"
-                                    />
-                                    <h3>Mango</h3>
-                                    <h4>White Solid Top</h4>
-                                    <span>₹5,499</span>
-                                    <img
-                                      src={Cancelico}
-                                      className="cancelico"
-                                      alt="Cancel Ico"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="tabsbotbtn-box">
-                                  <button type="button" className="tabsbotbtn">
-                                    SENT
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    ADD To CART
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    BUY NOW
-                                  </button>
-                                </div>
-                              </div>
-                            </Tab>
-                            <Tab label="Recommended">
-                              <div className="shoppingbag">
-                                <label className="selectalllabel">
-                                  Select All
-                                </label>
-                                <div className="prodtabl">
-                                  {this.state.recommendedData
-                                    ? this.state.recommendedData.map(
+                                  {this.state.shoppingBagData
+                                    ? this.state.shoppingBagData.map(
                                         (item, i) => {
                                           return (
-                                            <div className="prodboxx">
-                                              <Checkbox>
+                                            <div className="prodboxx" key={i}>
+                                              <Checkbox
+                                                checked={
+                                                  this.state.shoppingBagData[i]
+                                                    .isCheck
+                                                }
+                                                onChange={this.handleProductTabsChange.bind(
+                                                  this,
+                                                  1,
+                                                  i
+                                                )}
+                                              >
                                                 <img
                                                   src={item.imageURL}
                                                   className="ladyimg"
@@ -7099,24 +6996,249 @@ class Header extends Component {
                                                 src={Cancelico}
                                                 className="cancelico"
                                                 alt="Cancel Ico"
+                                                disabled={
+                                                  this.state.isButtonClick
+                                                }
+                                                onClick={this.handleRemoveProduct.bind(
+                                                  this,
+                                                  item.uniqueItemCode
+                                                )}
                                               />
                                             </div>
                                           );
                                         }
                                       )
                                     : null}
+                                  {this.state.shoppingBagData.length === 0 ? (
+                                    <Empty
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    />
+                                  ) : null}
                                 </div>
-                                <div className="tabsbotbtn-box">
-                                  <button type="button" className="tabsbotbtn">
-                                    SENT
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    ADD To CART
-                                  </button>
-                                  <button type="button" className="tabsbotbtn">
-                                    BUY NOW
-                                  </button>
+                                {this.state.selectedShoppingBag.length > 0 ? (
+                                  <div className="tabsbotbtn-box">
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      SENT
+                                    </button>
+                                    <button
+                                      disabled={
+                                        this.state.isButtonClick ? true : false
+                                      }
+                                      type="button"
+                                      className="tabsbotbtn"
+                                      onClick={this.handleAddProductsToWishlist.bind(
+                                        this,
+                                        false
+                                      )}
+                                    >
+                                      ADD To WISHLIST
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      BUY NOW
+                                    </button>
+                                  </div>
+                                ) : null}
+                              </div>
+                            </Tab>
+                            <Tab label="Wishlist">
+                              <div className="shoppingbag">
+                                {this.state.wishListData.length > 0 ? (
+                                  <label
+                                    className="selectalllabel"
+                                    onClick={this.handleSelectAllProduct.bind(
+                                      this,
+                                      2
+                                    )}
+                                  >
+                                    Select All
+                                  </label>
+                                ) : null}
+                                <div className="prodtabl">
+                                  {this.state.wishListData
+                                    ? this.state.wishListData.map((item, i) => {
+                                        return (
+                                          <div className="prodboxx" key={i}>
+                                            <Checkbox
+                                              checked={
+                                                this.state.wishListData[i]
+                                                  .isCheck
+                                              }
+                                              onChange={this.handleProductTabsChange.bind(
+                                                this,
+                                                2,
+                                                i
+                                              )}
+                                            >
+                                              <img
+                                                src={item.imageURL}
+                                                className="ladyimg"
+                                                alt="Lady Img"
+                                              />
+                                            </Checkbox>
+                                            {item.brandName ? (
+                                              <h3>{item.brandName}</h3>
+                                            ) : null}
+                                            {item.productName ? (
+                                              <h4>{item.productName}</h4>
+                                            ) : null}
+                                            {item.price ? (
+                                              <span>{item.price}</span>
+                                            ) : null}
+                                            <img
+                                              disabled={
+                                                this.state.isButtonClick
+                                              }
+                                              onClick={this.handleRemoveProduct.bind(
+                                                this,
+                                                item.uniqueItemCode
+                                              )}
+                                              src={Cancelico}
+                                              className="cancelico"
+                                              alt="Cancel Ico"
+                                            />
+                                          </div>
+                                        );
+                                      })
+                                    : null}
+                                  {this.state.wishListData.length === 0 ? (
+                                    <Empty
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    />
+                                  ) : null}
                                 </div>
+                                {this.state.selectedWishList.length > 0 ? (
+                                  <div className="tabsbotbtn-box">
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      SENT
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                      disabled={
+                                        this.state.isButtonClick ? true : false
+                                      }
+                                      onClick={this.handleAddProductsToShoppingBag.bind(
+                                        this
+                                      )}
+                                    >
+                                      ADD To BAG
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      BUY NOW
+                                    </button>
+                                  </div>
+                                ) : null}
+                              </div>
+                            </Tab>
+                            <Tab label="Recommended">
+                              <div className="shoppingbag">
+                                {this.state.recommendedData.length > 0 ? (
+                                  <label
+                                    className="selectalllabel"
+                                    onClick={this.handleSelectAllProduct.bind(
+                                      this,
+                                      3
+                                    )}
+                                  >
+                                    Select All
+                                  </label>
+                                ) : null}
+                                <div className="prodtabl">
+                                  {this.state.recommendedData
+                                    ? this.state.recommendedData.map(
+                                        (item, i) => {
+                                          return (
+                                            <div className="prodboxx" key={i}>
+                                              <Checkbox
+                                                checked={
+                                                  this.state.recommendedData[i]
+                                                    .isCheck
+                                                }
+                                                onChange={this.handleProductTabsChange.bind(
+                                                  this,
+                                                  3,
+                                                  i
+                                                )}
+                                              >
+                                                <img
+                                                  src={item.imageURL}
+                                                  className="ladyimg"
+                                                  alt="Lady Img"
+                                                />
+                                              </Checkbox>
+                                              {item.brandName ? (
+                                                <h3>{item.brandName}</h3>
+                                              ) : null}
+                                              {item.productName ? (
+                                                <h4>{item.productName}</h4>
+                                              ) : null}
+                                              {item.price ? (
+                                                <span>{item.price}</span>
+                                              ) : null}
+                                              <img
+                                                disabled={
+                                                  this.state.isButtonClick
+                                                }
+                                                onClick={this.handleRemoveProduct.bind(
+                                                  this,
+                                                  item.uniqueItemCode
+                                                )}
+                                                src={Cancelico}
+                                                className="cancelico"
+                                                alt="Cancel Ico"
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                      )
+                                    : null}
+                                  {this.state.recommendedData.length === 0 ? (
+                                    <Empty
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    />
+                                  ) : null}
+                                </div>
+                                {this.state.selectedRecommended.length > 0 ? (
+                                  <div className="tabsbotbtn-box">
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      SENT
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                      disabled={
+                                        this.state.isButtonClick ? true : false
+                                      }
+                                      onClick={this.handleAddProductsToWishlist.bind(
+                                        this,
+                                        true
+                                      )}
+                                    >
+                                      ADD To WISHLIST
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="tabsbotbtn"
+                                    >
+                                      BUY NOW
+                                    </button>
+                                  </div>
+                                ) : null}
                               </div>
                             </Tab>
                           </Tabs>

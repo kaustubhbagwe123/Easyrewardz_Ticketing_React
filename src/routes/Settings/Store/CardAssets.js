@@ -96,7 +96,7 @@ class CardAssets extends Component {
         ID: imageUploadLogID,
         ItemID: itemID,
         AddToLibrary: status,
-        RejectioReason: !status ? this.state.rejectionComment : "",
+        RejectionReason: !status ? this.state.rejectionComment : "",
       },
     })
       .then(function(response) {
@@ -818,15 +818,15 @@ class CardAssets extends Component {
                                     >
                                       <ul className="dash-category-popup dashnewpopup">
                                         <li>
-                                          <label
+                                          {/* <label
                                             style={{
                                               width: "50%",
                                               fontWeight: "bold",
                                             }}
                                           >
                                             Rejection Reason
-                                          </label>
-                                          <p style={{ display: "inline" }}>
+                                          </label> */}
+                                          <p>
                                             {rowdata.rejectionReason}
                                           </p>
                                         </li>

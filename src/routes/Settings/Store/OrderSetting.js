@@ -51,7 +51,10 @@ class OrderSetting extends Component {
       EditOrdTempBreadthValidation: "",
       EditOrdTempWeightValidation: "",
       editButtonShow: false,
-      orderMessageTemplate: []
+      orderMessageTemplate: [],
+      file: {},
+      fileName: "",
+      ordSettingBtnDisabled: false,
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -275,7 +278,7 @@ class OrderSetting extends Component {
             ? parseInt(this.state.orderConfigData.retryCount)
             : 0,
         StateFlag: this.state.orderConfigData.stateFlag,
-        CurrencyText: this.state.orderConfigData.currencyText
+        CurrencyText: this.state.orderConfigData.currencyText,
       },
     })
       .then(function (res) {
@@ -603,6 +606,14 @@ class OrderSetting extends Component {
 
     this.handleGetShippingTempData();
   };
+
+  handleCheckMethod() {
+    if (this.state.fileName !== "") {
+      this.handleBulkOrderTempUpload();
+    } else {
+      this.handleSubmitShppingTemp();
+    }
+  }
   /// handle submit shipping template
   handleSubmitShppingTemp() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -614,6 +625,9 @@ class OrderSetting extends Component {
       this.state.OrdTempWeight !== ""
     ) {
       let self = this;
+      this.setState({
+        ordSettingBtnDisabled: true,
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
@@ -648,6 +662,7 @@ class OrderSetting extends Component {
               OrdTempLengthValidation: "",
               OrdTempBreadthValidation: "",
               OrdTempWeightValidation: "",
+              ordSettingBtnDisabled: false,
             });
             NotificationManager.success(
               TranslationContext !== undefined
@@ -661,6 +676,9 @@ class OrderSetting extends Component {
                 ? TranslationContext.alertmessage.templatenotadded
                 : "Template not added."
             );
+            self.setState({
+              ordSettingBtnDisabled: false,
+            });
           }
         })
         .catch((data) => {
@@ -691,7 +709,50 @@ class OrderSetting extends Component {
       });
     }
   }
-
+  /// handle Order template file upload
+  handleBulkOrderTempUpload() {
+    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({
+      ordSettingBtnDisabled: true,
+    });
+    const formData = new FormData();
+    formData.append("file", this.state.file);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/BulkUploadOrderTemplate",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then((response) => {
+        var status = response.data.message;
+        if (status === "Success") {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.fileuploadedsuccessfully
+              : "File uploaded successfully."
+          );
+          self.setState({
+            fileName: "",
+            file: {},
+            ordSettingBtnDisabled: false,
+          });
+          self.handleGetShippingTempData();
+        } else {
+          self.setState({ ordSettingBtnDisabled: false });
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.filenotuploaded
+              : "File not uploaded."
+          );
+        }
+      })
+      .catch((response) => {
+        self.setState({ ordSettingBtnDisabled: false });
+        console.log(response);
+      });
+  }
   /// update Shipping template data
   handleUpdateShippingTemplate() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -810,6 +871,25 @@ class OrderSetting extends Component {
     })
   }
 
+  /// handle file upload id change
+  handleFileUploadData = () => {
+    this.refs.ordUplTemplate.click();
+  };
+
+  /// check file format
+  handleFileUpload = (e) => {
+    var imageFile = e.target.files[0];
+    var fileName = imageFile.name;
+    if (!imageFile.name.match(/\.(csv)$/)) {
+      alert("Only csv file allowed.");
+      return false;
+    } else {
+      this.setState({
+        fileName,
+        file: imageFile,
+      });
+    }
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -1293,7 +1373,10 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
-                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                      <label
+                                        className="storeRole-name-text ml-0 ordSttd-store"
+                                        style={{ marginTop: 14 }}
+                                      >
                                         Currency
                                       </label>
                                       <input
@@ -1310,7 +1393,6 @@ class OrderSetting extends Component {
                                       />
                                     </div>
                                   </div>
-
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
@@ -1519,10 +1601,8 @@ class OrderSetting extends Component {
                                               : "Sample Template"}
                                           </p>
                                           <CSVLink
-                                            filename={"Hierarchy.csv"}
-                                            data={
-                                              config.Store_HierarchyTemplate
-                                            }
+                                            filename={"OrderTemplate.csv"}
+                                            data={config.storeOrder_Template}
                                           >
                                             <img
                                               src={DownExcel}
@@ -1530,7 +1610,21 @@ class OrderSetting extends Component {
                                             />
                                           </CSVLink>
                                         </div>
-                                        <button>Upload Templates</button>
+                                        <button
+                                          type="button"
+                                          onClick={this.handleFileUploadData}
+                                          className="curshar-pointer"
+                                        >
+                                          Upload Templates
+                                        </button>
+                                        <input
+                                          type="file"
+                                          accept=".csv"
+                                          ref="ordUplTemplate"
+                                          style={{ display: "none" }}
+                                          onChange={this.handleFileUpload}
+                                        />
+                                        &nbsp;{this.state.fileName}
                                       </div>
                                     </div>
                                   </div>
@@ -1756,9 +1850,12 @@ class OrderSetting extends Component {
                                     <button
                                       className="Schedulenext1 mb-0"
                                       type="button"
-                                      onClick={this.handleSubmitShppingTemp.bind(
+                                      onClick={this.handleCheckMethod.bind(
                                         this
                                       )}
+                                      disabled={
+                                        this.state.ordSettingBtnDisabled
+                                      }
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.button.submit

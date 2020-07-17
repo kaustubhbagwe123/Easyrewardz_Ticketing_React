@@ -45,6 +45,9 @@ class ReturnTab extends Component {
     this.setState({
       orderSearchText: searchData,
     });
+    setTimeout(() => {
+      this.handleGetOrderReturnsData();
+    }, 5);
   };
 
   /// handle Get grid data
