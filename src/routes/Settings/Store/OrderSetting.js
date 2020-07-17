@@ -842,6 +842,7 @@ class OrderSetting extends Component {
     }
   }
 
+  /// handle SMS and Whatup toggle change
   handleSMSWhatsUpOnChange = (index) => {
     let orderMessageTemplate = this.state.orderMessageTemplate;
     orderMessageTemplate[index].isActive = !orderMessageTemplate[index].isActive;
@@ -851,6 +852,7 @@ class OrderSetting extends Component {
     })
   }
 
+  /// handle SMS and Whatup text change
   handleSMSWhatsUpTextOnChange(index,e){
     const { value } = e.target;
     let orderMessageTemplate = this.state.orderMessageTemplate;
@@ -861,6 +863,7 @@ class OrderSetting extends Component {
     })
   }
 
+  /// handle SMS and Whatup store delivery text change
   handleSMSWhatsUpStoreDelTextOnChange(index,e){
     const { value } = e.target;
     let orderMessageTemplate = this.state.orderMessageTemplate;
