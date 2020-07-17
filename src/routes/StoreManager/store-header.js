@@ -1580,12 +1580,20 @@ class Header extends Component {
       //     });
       //   }
       // }
-      if (Number(e.target.value) <= 3) {
-        this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+      if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
+        if (Number(e.target.value) <= 3) {
+          this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+        } else {
+          this.setState({
+            noOfPeople: "",
+            noOfPeopleMax: "Maximum capacity are 3",
+          });
+        }
       } else {
         this.setState({
           noOfPeople: "",
-          noOfPeopleMax: "Maximum capacity are 3",
+          noOfPeopleMax:
+            "Remaining capacity are " + this.state.selectedSlot.remaining,
         });
       }
     } else {
