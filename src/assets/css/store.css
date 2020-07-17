@@ -2903,6 +2903,7 @@ table tr th:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 .tab-title {
   display: inline-block;
@@ -2948,6 +2949,7 @@ table tr th:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 .tab-title1 {
   display: inline-block;
