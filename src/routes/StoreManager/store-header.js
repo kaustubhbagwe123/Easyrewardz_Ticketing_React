@@ -187,7 +187,7 @@ class Header extends Component {
       reportAccess: "none",
       mobileHeading: "",
       messageHistoryChatData: [],
-      isMainLoader: false,
+      isMainLoader: true,
       messageSuggestionTagsData: [],
       selectedTags: 0,
       newChatSoundVolume: 0,
@@ -2674,6 +2674,11 @@ class Header extends Component {
         console.log(response, "---AddProductsToShoppingBag");
       });
   };
+
+  handleBackButton=()=>{
+    this.setState({customerName:"",isHistoricalChat:false})
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3225,36 +3230,43 @@ class Header extends Component {
           overlayId="chat-popup-overlay"
         >
           <div className="store-chat-header">
-            <img
+            {/* <img
               src={BackArrow}
               className="mobile-arrow"
               alt="back arrow"
               onClick={this.handleChatModalClose}
-            />
-            <img
-              src={Chatw}
-              className="Chatw"
-              alt="Chatw"
-            />
-            <h3>
+            /> */}
+            {this.state.isMainLoader && this.state.isMobileView ? (
+              <div className="loader"></div>
+            ) : null}
+            <img src={Chatw} className="Chatw" alt="Chatw" />
+            <h3 style={{marginRight:"15px"}}>
               {TranslationContext !== undefined
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat"}
             </h3>
-            {this.state.isMainLoader ? <div className="loader"></div> : null}
+            {this.state.isMainLoader && !this.state.isMobileView ? (
+              <div className="loader"></div>
+            ) : null}
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>
-            <img
-              src={CancelIconW}
-              className="Cancelicow"
-              alt="Cancelicow"
-            />
-            <img
-              src={BackArw}
-              className="BackArw"
-              alt="BackArw"
-            />
+            {this.state.isMobileView ? (
+              <img
+                src={CancelIconW}
+                className="Cancelicow"
+                alt="Cancelicow"
+                onClick={this.handleChatModalClose}
+              />
+            ) : null}
+            {this.state.isMobileView ? (
+              <img
+                src={BackArw}
+                className="BackArw"
+                alt="BackArw"
+                onClick={this.handleBackButton.bind(this)}
+              />
+            ) : null}
           </div>
           <div className="container-fluid">
             <div className="row">
@@ -7022,7 +7034,9 @@ class Header extends Component {
                                                   overlayClassName="antcustom ant-prodesc"
                                                   content={
                                                     <div className="productdesc">
-                                                      <h4>{item.productName}</h4>
+                                                      <h4>
+                                                        {item.productName}
+                                                      </h4>
                                                       <p>
                                                         {TranslationContext !==
                                                         undefined
@@ -7563,7 +7577,9 @@ class Header extends Component {
                                                   overlayClassName="antcustom ant-prodesc"
                                                   content={
                                                     <div className="productdesc">
-                                                      <h4>{item.productName}</h4>
+                                                      <h4>
+                                                        {item.productName}
+                                                      </h4>
                                                       <p>
                                                         {TranslationContext !==
                                                         undefined

@@ -5,9 +5,8 @@ import config from "./../../helpers/config";
 import { authHeader } from "./../../helpers/authHeader";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
-import * as translationHI from '../../translations/hindi'
-import * as translationMA from '../../translations/marathi'
-
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class Appointment extends Component {
   constructor(props) {
@@ -23,29 +22,27 @@ class Appointment extends Component {
       dayAfterTomorrowDay: "",
       status: [],
       tabFor: 1,
-      translateLanguage: {}
+      translateLanguage: {},
+      appointmentDaysData: [],
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
-    this.handleAppointmentGridData(1);
+    this.handleAppointmentGridData(1, new Date());
     this.handleAppointmentCount();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
-  handleAppointmentGridData(tabFor) {
+  handleAppointmentGridData(tabFor, adate) {
     debugger;
     let self = this;
     var date = "";
@@ -54,26 +51,10 @@ class Appointment extends Component {
       tabFor: tabFor,
       status: [],
     });
-    if (tabFor === 1) {
-      date = moment(new Date()).format("YYYY-MM-DD");
-    }
-    if (tabFor === 2) {
-      var todayDate = new Date();
-      date = moment(todayDate.setDate(todayDate.getDate() + 1)).format(
-        "YYYY-MM-DD"
-      );
-    }
-    if (tabFor === 3) {
-      var todayDate = new Date();
-      date = moment(todayDate.setDate(todayDate.getDate() + 2)).format(
-        "YYYY-MM-DD"
-      );
-    }
-
-    axios({
+     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetAppointmentList",
-      params: { AppDate: date },
+      params: { AppDate: moment(new Date(adate)).format("YYYY-MM-DD") },
       headers: authHeader(),
     })
       .then(function(res) {
@@ -99,34 +80,25 @@ class Appointment extends Component {
   }
 
   handleAppointmentCount() {
-    debugger;
+    
     let self = this;
-    var todayDate = new Date();
-    var tomorrowDate = moment(
-      todayDate.setDate(todayDate.getDate() + 1)
-    ).format("Do");
-    var dayAterTomorrowDate = moment(
-      todayDate.setDate(todayDate.getDate() + 1)
-    ).format("Do");
-    self.setState({
-      tomorrowDay: tomorrowDate,
-      dayAfterTomorrowDay: dayAterTomorrowDate,
-    });
-
+    
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetAppointmentCount",
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
+          // self.setState({
+          //   todayCount: data[0].today,
+          //   tomorrowCount: data[0].tomorrow,
+          //   dayAfterTomorrowCount: data[0].dayAfterTomorrow,
+          // });
           self.setState({
-            todayCount: data[0].today,
-            tomorrowCount: data[0].tomorrow,
-            dayAfterTomorrowCount: data[0].dayAfterTomorrow,
+            appointmentDaysData: data,
           });
         }
       })
@@ -156,7 +128,11 @@ class Appointment extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record updated successFully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record updated successFully."
+            );
           } else {
             NotificationManager.error(status);
           }
@@ -166,7 +142,11 @@ class Appointment extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectstatus:"Please select status.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectstatus
+          : "Please select status."
+      );
     }
   }
 
@@ -204,22 +184,64 @@ class Appointment extends Component {
     return (
       <div className="custom-tableak custom-table-ck custom-table-bg">
         <div className="custom-tabs">
-          <div
-            className={
-              this.state.tabFor === 1 ? "custom-tabcount" : "custom-tabcount1"
-            }
-            onClick={this.handleAppointmentGridData.bind(this, 1)}
-          >
-            <p className={this.state.tabFor === 1 ? "tab-title" : "tab-title1"}>
-              
-              {TranslationContext!==undefined?TranslationContext.p.today:"Today"}
-            </p>
-            <span
-              className={this.state.tabFor === 1 ? "tab-count" : "tab-count1"}
-            >
-              {this.state.todayCount}
-            </span>
-          </div>
+          {this.state.appointmentDaysData
+            ? this.state.appointmentDaysData.map((item, i) => {
+                var fdate = new Date(item.appointmentDate);
+                // var adate = fdate.getDate();
+                {
+                  return (
+                    <div
+                      className={
+                        this.state.tabFor === i + 1
+                          ? "custom-tabcount"
+                          : "custom-tabcount1"
+                      }
+                      onClick={this.handleAppointmentGridData.bind(
+                        this,
+                        i + 1,
+                        item.appointmentDate
+                      )}
+                    >
+                      {i === 0 ? (
+                        <p
+                          className={
+                            this.state.tabFor === i + 1
+                              ? "tab-title"
+                              : "tab-title1"
+                          }
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.today
+                            : "Today"}
+                        </p>
+                      ) : (
+                        <p
+                          className={
+                            this.state.tabFor === i + 1
+                              ? "tab-title"
+                              : "tab-title1"
+                          }
+                        >
+                          {moment(fdate.setDate(fdate.getDate() + 1)).format(
+                            "Do"
+                          )}
+                        </p>
+                      )}
+                      <span
+                        className={
+                          this.state.tabFor === i + 1
+                            ? "tab-count"
+                            : "tab-count1"
+                        }
+                      >
+                        {item.aptCount}
+                      </span>
+                    </div>
+                  );
+                }
+              })
+            : null}
+          {/* 
           <div
             className={
               this.state.tabFor === 2 ? "custom-tabcount" : "custom-tabcount1"
@@ -249,46 +271,67 @@ class Appointment extends Component {
             >
               {this.state.dayAfterTomorrowCount}
             </span>
-          </div>
+          </div> */}
         </div>
         <div className="table-cntr store">
           <Table
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.date
+                    : "Date",
                 dataIndex: "appointmentDate",
                 width: "20%",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.time:"Time",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.time
+                    : "Time",
                 dataIndex: "timeSlot",
                 width: "20%",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.appointments:"Appointments",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.appointments
+                    : "Appointments",
                 dataIndex: "nOofPeople",
                 className: "appointment-desktop",
                 width: "20%",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.appointments:"Appt.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.appointments
+                    : "Appt.",
                 dataIndex: "nOofPeople",
                 className: "appointment-mobile",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.maxcapacity:"Max Capacity",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.maxcapacity
+                    : "Max Capacity",
                 dataIndex: "maxCapacity",
                 className: "appointment-desktop",
                 width: "20%",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.maxcapacity:"Max Cap.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.maxcapacity
+                    : "Max Cap.",
                 dataIndex: "maxCapacity",
                 className: "appointment-mobile",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Actions",
                 // dataIndex: "orderPricePaid"
                 width: "20%",
               },
@@ -299,31 +342,46 @@ class Appointment extends Component {
                   dataSource={row.appointmentCustomerList}
                   columns={[
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.appointmentID:"Appointment ID",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.appointmentID
+                          : "Appointment ID",
                       dataIndex: "appointmentID",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.customername
+                          : "Customer Name",
                       dataIndex: "customerName",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.mobilenumber:"Mobile No.",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.mobilenumber
+                          : "Mobile No.",
                       dataIndex: "customerNumber",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.numberofpeople:"No. of People",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.numberofpeople
+                          : "No. of People",
                       dataIndex: "nOofPeople",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.customername
+                          : "Customer Name",
                       dataIndex: "customerName",
                       className: "appointment-mobile",
                       render: (row, item) => {
@@ -336,14 +394,20 @@ class Appointment extends Component {
                               {item.customerNumber}
                             </p>
                             <p className="appt-cust-mob">
-                        {TranslationContext!==undefined?TranslationContext.p.numberofpeople:"No. of People"}: {item.nOofPeople}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.numberofpeople
+                                : "No. of People"}
+                              : {item.nOofPeople}
                             </p>
                           </div>
                         );
                       },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.status
+                          : "Status",
                       width: "20%",
                       render: (row, item) => {
                         if (item.status !== "") {
@@ -367,20 +431,31 @@ class Appointment extends Component {
                           return (
                             <div className="appt-status">
                               <Select
-                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.selectstatus:"Select Status"}
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .selectstatus
+                                    : "Select Status"
+                                }
                                 onChange={(e) =>
                                   this.handleOnChange(e, row.appointmentID)
                                 }
                                 dropdownClassName="appt-status-dropdown"
                               >
                                 <Option value="0">
-                                {TranslationContext!==undefined?TranslationContext.option.cancel:"Cancel"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.cancel
+                                    : "Cancel"}
                                 </Option>
                                 <Option value="1">
-                                {TranslationContext!==undefined?TranslationContext.option.visited:"Visited"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.visited
+                                    : "Visited"}
                                 </Option>
                                 <Option value="2">
-                                {TranslationContext!==undefined?TranslationContext.option.notvisited:"Not Visited"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.notvisited
+                                    : "Not Visited"}
                                 </Option>
                               </Select>
                             </div>
@@ -480,7 +555,10 @@ class Appointment extends Component {
                       //   },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.actions
+                          : "Actions",
                       width: "20%",
                       render: (row, item) => {
                         if (item.status === "") {
@@ -500,7 +578,9 @@ class Appointment extends Component {
                                   )}
                                 >
                                   <label className="saveLabel">
-                                  {TranslationContext!==undefined?TranslationContext.label.update:"Update"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.update
+                                      : "Update"}
                                   </label>
                                 </button>
                               </div>

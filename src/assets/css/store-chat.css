@@ -1811,9 +1811,14 @@ p {
 .rm-header.ant-pagination-item-active {
   border-color: #2561a8 !important;
 }
-
+.Cancelicow{
+  display: none;
+}
+.BackArw{
+  display: none;
+}
 .loader {
-  margin-right: 75%;
+  margin-right: 88%;
   margin-top: 5px;
   font-size: 4px;
   width: 1em;
@@ -2146,7 +2151,8 @@ p {
     display: none;
   }
   .loader {
-    margin-left: 15px;
+    top: 13px;
+    margin-left: 100px;
     margin-right: 0% !important;
     margin-top: 0px !important;
     font-size: 4px;
@@ -2205,7 +2211,7 @@ p {
   }
   .store-chat-header {
     justify-content: inherit;
-    padding-left: 42px;
+    padding-left: 15px;
     display: block;
     padding-right: 15px;
   }
