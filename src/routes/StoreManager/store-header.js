@@ -1068,7 +1068,11 @@ class Header extends Component {
     })
       .then(function(response) {
         var chatMessageCount = response.data.responseData;
-        self.setState({ chatMessageCount });
+        if (chatMessageCount) {
+          self.setState({ chatMessageCount });
+        } else {
+          self.setState({ chatMessageCount: 0 });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleGetChatNotificationCount");
@@ -1580,20 +1584,20 @@ class Header extends Component {
       //     });
       //   }
       // }
-      if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) <= 3) {
+      if (Number(e.target.value) <= 3) {
+        if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
           this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
         } else {
           this.setState({
             noOfPeople: "",
-            noOfPeopleMax: "Maximum capacity are 3",
+            noOfPeopleMax:
+              "Remaining capacity are " + this.state.selectedSlot.remaining,
           });
         }
       } else {
         this.setState({
           noOfPeople: "",
-          noOfPeopleMax:
-            "Remaining capacity are " + this.state.selectedSlot.remaining,
+          noOfPeopleMax: "Maximum capacity are 3",
         });
       }
     } else {
@@ -2241,7 +2245,7 @@ class Header extends Component {
                   style={{ display: "none" }}
                 />
                 <span className="message-icon-cnt">
-                  {this.state.chatMessageCount}
+                  {this.state.chatMessageCount || 0}
                 </span>
               </div>
             </a>

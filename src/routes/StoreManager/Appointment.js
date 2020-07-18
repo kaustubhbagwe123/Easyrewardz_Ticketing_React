@@ -181,7 +181,7 @@ class Appointment extends Component {
           {this.state.appointmentDaysData
             ? this.state.appointmentDaysData.map((item, i) => {
                 var fdate = new Date(item.appointmentDate);
-
+                debugger;
                 {
                   return (
                     <div
@@ -216,7 +216,7 @@ class Appointment extends Component {
                               : "tab-title1"
                           }
                         >
-                          {moment(fdate.setDate(fdate.getDate() + 1)).format(
+                          {moment(fdate.setDate(fdate.getDate())).format(
                             "Do"
                           )}
                         </p>
