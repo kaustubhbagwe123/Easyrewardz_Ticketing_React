@@ -2675,66 +2675,70 @@ class Users extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
-      let self = this;
-      this.setState({
-        bulkuploadLoading: true,
-      });
-      const formData = new FormData();
-
-      formData.append("file", this.state.fileN[0]);
-      // this.setState({ showProgress: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/User/BulkUploadUser",
-        headers: authHeader(),
-        data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // }
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            NotificationManager.success(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.fileuploadedsuccessfully
-                : "File uploaded successfully."
-            );
-            self.setState({
-              fileName: "",
-              fileSize: "",
-              fileN: [],
-              bulkuploadLoading: false,
-            });
-            self.handleGetUserList();
-          } else {
-            self.setState({
-              showProgress: false,
-              bulkuploadLoading: false,
-              // isFileUploadFail: true,
-              // progressValue: 0
-            });
-            NotificationManager.error(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.filenotuploaded
-                : "File not uploaded."
-            );
-          }
-        })
-        .catch((data) => {
-          debugger;
-          if (data.message) {
-            this.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              bulkuploadLoading: false,
-            });
-          }
-          console.log(data);
+      if (this.state.fileN[0].path.split(".")[1] === "csv") {
+        let self = this;
+        this.setState({
+          bulkuploadLoading: true,
         });
+        const formData = new FormData();
+
+        formData.append("file", this.state.fileN[0]);
+        // this.setState({ showProgress: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/User/BulkUploadUser",
+          headers: authHeader(),
+          data: formData,
+          // onUploadProgress: (ev = ProgressEvent) => {
+          //   const progress = (ev.loaded / ev.total) * 100;
+          //   this.updateUploadProgress(Math.round(progress));
+          // }
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                  : "File uploaded successfully."
+              );
+              self.setState({
+                fileName: "",
+                fileSize: "",
+                fileN: [],
+                bulkuploadLoading: false,
+              });
+              self.handleGetUserList();
+            } else {
+              self.setState({
+                showProgress: false,
+                bulkuploadLoading: false,
+                // isFileUploadFail: true,
+                // progressValue: 0
+              });
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.filenotuploaded
+                  : "File not uploaded."
+              );
+            }
+          })
+          .catch((data) => {
+            debugger;
+            if (data.message) {
+              this.setState({
+                showProgress: false,
+                isFileUploadFail: true,
+                bulkuploadLoading: false,
+              });
+            }
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Only CSV files allowed.");
+      }
     } else {
       this.setState({
         bulkuploadCompulsion:
