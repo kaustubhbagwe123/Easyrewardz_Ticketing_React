@@ -975,7 +975,6 @@ class CategoryMaster extends Component {
   }
 
   handleDeleteCategoryData(category_Id) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
@@ -987,7 +986,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetCategoryGridData();
@@ -996,6 +994,8 @@ class CategoryMaster extends Component {
               ? TranslationContext.alertmessage.categorydeletedsuccessfully
               : "Category deleted successfully."
           );
+        }else{
+          NotificationManager.error(res.data.message);
         }
       })
       .catch((data) => {

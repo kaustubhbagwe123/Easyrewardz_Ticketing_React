@@ -182,7 +182,8 @@ class TicketSystemStore extends Component {
               self.handleCheckStoreID = self.handleCheckStoreID.bind(self);
             } else {
               self.setState({
-                message: res.data.message,
+                // message: res.data.message,
+                message:"Record Not Found",
                 SearchData: [],
               });
             }
