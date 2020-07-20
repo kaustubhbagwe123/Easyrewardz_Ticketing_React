@@ -21,13 +21,13 @@ import axios from "axios";
 import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
-import { CSVLink } from "react-csv"; 
+import { CSVLink } from "react-csv";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
-import * as translationHI from '../../../translations/hindi'
-import * as translationMA from '../../../translations/marathi'
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 // const CancelToken = axios.CancelToken;
 // const source = CancelToken.source();
 
@@ -43,7 +43,6 @@ const MyButton = (props) => {
 };
 
 const Content = (props) => {
- 
   const { rowData } = props;
   const [designationName, setDesignationvalue] = useState(
     rowData.designationName
@@ -56,16 +55,24 @@ const Content = (props) => {
   return (
     <div className="edtpadding">
       <label className="popover-header-text">
-      {TranslationContext!==undefined?TranslationContext.label.edithierarchy:"EDIT HIERARCHY"}
+        {TranslationContext !== undefined
+          ? TranslationContext.label.edithierarchy
+          : "EDIT HIERARCHY"}
       </label>
       <div className="pop-over-div">
         <label className="edit-label-1">
-        {TranslationContext!==undefined?TranslationContext.label.DesignationName:"Designation Name"}
+          {TranslationContext !== undefined
+            ? TranslationContext.label.DesignationName
+            : "Designation Name"}
         </label>
         <input
           type="text"
           className="txt-edit-popover"
-          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.EnterDesignationName:"Enter Designation Name"}
+          placeholder={
+            TranslationContext !== undefined
+              ? TranslationContext.placeholder.EnterDesignationName
+              : "Enter Designation Name"
+          }
           maxLength={25}
           name="designation_Name"
           value={designationName}
@@ -79,7 +86,9 @@ const Content = (props) => {
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">
-        {TranslationContext!==undefined?TranslationContext.label.ReportTo:"Report To"}
+          {TranslationContext !== undefined
+            ? TranslationContext.label.ReportTo
+            : "Report To"}
         </label>
         <select
           className="edit-dropDwon dropdown-setting"
@@ -89,10 +98,14 @@ const Content = (props) => {
           onChange={(e) => setreportToValue(e.target.value)}
         >
           <option>
-          {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+            {TranslationContext !== undefined
+              ? TranslationContext.option.select
+              : "select"}
           </option>
           <option value={0}>
-          {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+            {TranslationContext !== undefined
+              ? TranslationContext.option.root
+              : "Root"}
           </option>
           {props.reportToData !== null &&
             props.reportToData.map((item, i) => (
@@ -109,7 +122,9 @@ const Content = (props) => {
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">
-        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+          {TranslationContext !== undefined
+            ? TranslationContext.label.status
+            : "Status"}
         </label>
         <select
           className="edit-dropDwon dropdown-setting"
@@ -118,7 +133,9 @@ const Content = (props) => {
           onChange={(e) => setStatusValue(e.target.value)}
         >
           <option>
-          {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+            {TranslationContext !== undefined
+              ? TranslationContext.option.select
+              : "select"}
           </option>
           {props.activeData !== null &&
             props.activeData.map((item, j) => (
@@ -136,7 +153,9 @@ const Content = (props) => {
       <br />
       <div>
         <a className="pop-over-cancle canblue" href={Demo.BLANK_LINK}>
-        {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+          {TranslationContext !== undefined
+            ? TranslationContext.a.cancel
+            : "CANCEL"}
         </a>
         <button
           className="pop-over-button"
@@ -155,7 +174,9 @@ const Content = (props) => {
             ) : (
               ""
             )}
-            {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+            {TranslationContext !== undefined
+              ? TranslationContext.label.save
+              : "SAVE"}
           </label>
         </button>
       </div>
@@ -219,7 +240,7 @@ class TicketHierarchy extends Component {
       isortA: false,
       temphierarchyData: [],
       bulkuploadLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -260,15 +281,13 @@ class TicketHierarchy extends Component {
   componentDidMount() {
     this.handleGetHierarchyData();
     this.hanldeGetReportListDropDown();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   sortStatusZtoA() {
@@ -792,69 +811,84 @@ class TicketHierarchy extends Component {
       fileName: "",
       isOpen: false,
     });
-    NotificationManager.success( TranslationContext !== undefined
-      ? TranslationContext.alertmessage.filedeletedsuccessfully
-      : "File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
   }
   hanldeAddBulkUpload() {
+    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
-      let self = this;
-      this.setState({
-        bulkuploadLoading: true,
-      });
-      const formData = new FormData();
-
-      formData.append("file", this.state.fileN[0]);
-
-      // this.setState({ showProgress: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
-        headers: authHeader(),
-        data: formData,
-        // cancelToken: source.token,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // }
-      })
-        .then(function(res) {
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            NotificationManager.success(  TranslationContext !== undefined
-              ? TranslationContext.alertmessage.fileuploadedsuccessfully
-              : "File uploaded successfully.");
-            self.setState({
-              fileName: "",
-              fileSize: "",
-              fileN: [],
-              bulkuploadLoading: false,
-            });
-            self.handleGetHierarchyData();
-          } else {
-            self.setState({
-              showProgress: false,
-              bulkuploadLoading: false,
-              // isFileUploadFail: true,
-              // progressValue: 0
-            });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.filenotuploaded
-              : "File not uploaded.");
-          }
-        })
-        .catch((data) => {
-          if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true,bulkuploadLoading: false });
-          }
-          console.log(data);
+      if (this.state.fileN[0].path.split(".")[1] === "csv") {
+        let self = this;
+        this.setState({
+          bulkuploadLoading: true,
         });
+        const formData = new FormData();
+
+        formData.append("file", this.state.fileN[0]);
+
+        // this.setState({ showProgress: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
+          headers: authHeader(),
+          data: formData,
+          // cancelToken: source.token,
+          // onUploadProgress: (ev = ProgressEvent) => {
+          //   const progress = (ev.loaded / ev.total) * 100;
+          //   this.updateUploadProgress(Math.round(progress));
+          // }
+        })
+          .then(function(res) {
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                  : "File uploaded successfully."
+              );
+              self.setState({
+                fileName: "",
+                fileSize: "",
+                fileN: [],
+                bulkuploadLoading: false,
+              });
+              self.handleGetHierarchyData();
+            } else {
+              self.setState({
+                showProgress: false,
+                bulkuploadLoading: false,
+                // isFileUploadFail: true,
+                // progressValue: 0
+              });
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.filenotuploaded
+                  : "File not uploaded."
+              );
+            }
+          })
+          .catch((data) => {
+            if (data.message) {
+              this.setState({
+                showProgress: false,
+                isFileUploadFail: true,
+                bulkuploadLoading: false,
+              });
+            }
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Only CSV files allowed.");
+      }
     } else {
       this.setState({
         bulkuploadCompulsion: "Please select file.",
@@ -979,9 +1013,11 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success( TranslationContext !== undefined
-              ? TranslationContext.alertmessage.hierarchyaddedsuccessfully
-              : "Hierarchy added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.hierarchyaddedsuccessfully
+                : "Hierarchy added successfully."
+            );
             self.hanldeGetReportListDropDown();
             self.setState({
               designation_name: "",
@@ -993,9 +1029,11 @@ class TicketHierarchy extends Component {
               addSaveLoading: false,
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.recordalreadyexists
-              : "Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
             self.setState({ addSaveLoading: false });
           }
         })
@@ -1027,9 +1065,11 @@ class TicketHierarchy extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetHierarchyData();
-          NotificationManager.success( TranslationContext !== undefined
-            ? TranslationContext.alertmessage.designationdeletedsuccessfully
-            : "Designation deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.designationdeletedsuccessfully
+              : "Designation deleted successfully."
+          );
           self.hanldeGetReportListDropDown();
         } else {
           NotificationManager.error(res.data.message);
@@ -1070,16 +1110,20 @@ class TicketHierarchy extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetHierarchyData();
-            NotificationManager.success(  TranslationContext !== undefined
-              ? TranslationContext.alertmessage.hierarchyupdatesuccessfully
-              : "Hierarchy update successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.hierarchyupdatesuccessfully
+                : "Hierarchy update successfully."
+            );
             self.hanldeGetReportListDropDown();
             self.setState({ editSaveLoading: false });
           } else {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error(  TranslationContext !== undefined
-              ? TranslationContext.alertmessage.hierarchynotupdate
-              : "Hierarchy not update.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.hierarchynotupdate
+                : "Hierarchy not update."
+            );
           }
         })
         .catch((data) => {
@@ -1087,9 +1131,11 @@ class TicketHierarchy extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error(  TranslationContext !== undefined
-        ? TranslationContext.alertmessage.hierarchynotupdate
-        : "Hierarchy not update.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.hierarchynotupdate
+          : "Hierarchy not update."
+      );
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -1254,9 +1300,12 @@ class TicketHierarchy extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p> {TranslationContext !== undefined
+                  <p>
+                    {" "}
+                    {TranslationContext !== undefined
                       ? TranslationContext.p.sortatoz
-                      : "SORT BY A TO Z"}</p>
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1266,9 +1315,12 @@ class TicketHierarchy extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p> {TranslationContext !== undefined
+                  <p>
+                    {" "}
+                    {TranslationContext !== undefined
                       ? TranslationContext.p.sortztoa
-                      : "SORT BY Z TO A"}</p>
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1276,14 +1328,17 @@ class TicketHierarchy extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                 {TranslationContext !== undefined
+                {TranslationContext !== undefined
                   ? TranslationContext.a.clearsearch
                   : "clear search"}
               </a>
               <div className="filter-type ">
-                <p> {TranslationContext !== undefined
+                <p>
+                  {" "}
+                  {TranslationContext !== undefined
                     ? TranslationContext.p.filterbytype
-                    : "FILTER BY TYPE"}</p>
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1310,7 +1365,11 @@ class TicketHierarchy extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">{TranslationContext!==undefined?TranslationContext.span.all:"ALL"}</span>
+                      <span className="table-btn table-blue-btn">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.all
+                          : "ALL"}
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "designationName"
@@ -1427,23 +1486,21 @@ class TicketHierarchy extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-          {TranslationContext !== undefined
+            {TranslationContext !== undefined
               ? TranslationContext.link.setting
               : "Settings"}
           </Link>
           <span>&gt;</span>
           <a href="settings" className="header-path">
-          {TranslationContext !== undefined
+            {TranslationContext !== undefined
               ? TranslationContext.a.ticketing
               : "Ticketing"}
-            
           </a>
           <span>&gt;</span>
           <a href={Demo.BLANK_LINK} className="header-path active">
-          {TranslationContext !== undefined
+            {TranslationContext !== undefined
               ? TranslationContext.a.hierarchy
               : "Hierarchy"}
-            
           </a>
         </div>
         <div className="container-fluid">
@@ -1462,8 +1519,8 @@ class TicketHierarchy extends Component {
                               this,
                               "designationName",
                               TranslationContext !== undefined
-                              ? TranslationContext.span.designation
-                              : "Designation"
+                                ? TranslationContext.span.designation
+                                : "Designation"
                             )}
                           >
                             {TranslationContext !== undefined
@@ -1483,8 +1540,8 @@ class TicketHierarchy extends Component {
                               this,
                               "reportTo",
                               TranslationContext !== undefined
-                              ? TranslationContext.span.reportto
-                              : "Report To"
+                                ? TranslationContext.span.reportto
+                                : "Report To"
                             )}
                           >
                             {TranslationContext !== undefined
@@ -1504,11 +1561,11 @@ class TicketHierarchy extends Component {
                               this,
                               "createdbyperson",
                               TranslationContext !== undefined
-                              ? TranslationContext.span.createdby
-                              : "Created By"
+                                ? TranslationContext.span.createdby
+                                : "Created By"
                             )}
                           >
-                           {TranslationContext !== undefined
+                            {TranslationContext !== undefined
                               ? TranslationContext.span.createdby
                               : "Created By"}
                             <FontAwesomeIcon icon={faCaretDown} />
@@ -1528,32 +1585,36 @@ class TicketHierarchy extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                          {TranslationContext !== undefined
+                                            {TranslationContext !== undefined
                                               ? TranslationContext.p.createdby
-                                              : "Created By"}:&nbsp;
+                                              : "Created By"}
+                                            :&nbsp;
                                             {row.original["createdbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                        {TranslationContext !== undefined
+                                          {TranslationContext !== undefined
                                             ? TranslationContext.p.createddate
-                                            : "Created Date"}:&nbsp;
+                                            : "Created Date"}
+                                          :&nbsp;
                                           {row.original["createdateformat"]}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                          {TranslationContext !== undefined
+                                            {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
-                                              : "Updated By"}:&nbsp;
+                                              : "Updated By"}
+                                            :&nbsp;
                                             {row.original["updatedbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                        {TranslationContext !== undefined
+                                          {TranslationContext !== undefined
                                             ? TranslationContext.p.updateddate
-                                            : "Updated Date"}:&nbsp;
+                                            : "Updated Date"}
+                                          :&nbsp;
                                           {row.original["updateddateformat"]}
                                         </p>
                                       </div>
@@ -1580,8 +1641,8 @@ class TicketHierarchy extends Component {
                               this,
                               "status",
                               TranslationContext !== undefined
-                              ? TranslationContext.span.status
-                              : "Status"
+                                ? TranslationContext.span.status
+                                : "Status"
                             )}
                           >
                             {TranslationContext !== undefined
@@ -1595,9 +1656,14 @@ class TicketHierarchy extends Component {
                         accessor: "status",
                       },
                       {
-                        Header: <span>  {TranslationContext !== undefined
-                          ? TranslationContext.span.actions
-                          : "Actions"}</span>,
+                        Header: (
+                          <span>
+                            {" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["designationID"];
@@ -1615,15 +1681,17 @@ class TicketHierarchy extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                        {TranslationContext !== undefined
+                                          {TranslationContext !== undefined
                                             ? TranslationContext.p.deletefile
-                                            : "Delete file"}?
+                                            : "Delete file"}
+                                          ?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                        {TranslationContext !== undefined
+                                          {TranslationContext !== undefined
                                             ? TranslationContext.p
                                                 .areyousureyouwanttodeletethisfile
-                                            : "Are you sure you want to delete this file"}?
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
                                           <a
@@ -1632,7 +1700,7 @@ class TicketHierarchy extends Component {
                                               this.hide(this, "samdel" + ids)
                                             }
                                           >
-                                             {TranslationContext !== undefined
+                                            {TranslationContext !== undefined
                                               ? TranslationContext.a.cancel
                                               : "CANCEL"}
                                           </a>
@@ -1668,7 +1736,9 @@ class TicketHierarchy extends Component {
                                   content={
                                     <Content
                                       rowData={row.original}
-                                      translateLanguage={this.state.translateLanguage}
+                                      translateLanguage={
+                                        this.state.translateLanguage
+                                      }
                                       reportToData={this.state.reportToData}
                                       activeData={this.state.activeData}
                                       editdesignationNameCompulsion={
@@ -1703,9 +1773,12 @@ class TicketHierarchy extends Component {
                                     EDIT
                                   </button> */}
                                   <label className="Table-action-edit-button-text">
-                                    <MyButton> {TranslationContext !== undefined
+                                    <MyButton>
+                                      {" "}
+                                      {TranslationContext !== undefined
                                         ? TranslationContext.mybutton.edit
-                                        : "EDIT"}</MyButton>
+                                        : "EDIT"}
+                                    </MyButton>
                                   </label>
                                 </Popover>
                               </span>
@@ -1726,13 +1799,13 @@ class TicketHierarchy extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
-                    {TranslationContext !== undefined
+                      {TranslationContext !== undefined
                         ? TranslationContext.label.createhierarchy
                         : "CREATE HIERARCHY"}
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext !== undefined
+                        {TranslationContext !== undefined
                           ? TranslationContext.label.designationname
                           : "Designation Name"}
                       </label>
@@ -1758,20 +1831,28 @@ class TicketHierarchy extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to"> {TranslationContext !== undefined
+                        <label className="reports-to">
+                          {" "}
+                          {TranslationContext !== undefined
                             ? TranslationContext.label.reportto
-                            : "Reports To"}</label>
+                            : "Reports To"}
+                        </label>
                         <select
                           className="form-control dropdown-setting"
                           value={this.state.selectReportTo}
                           onChange={this.handleOnReportToChange}
                         >
-                          <option>{TranslationContext !== undefined
+                          <option>
+                            {TranslationContext !== undefined
                               ? TranslationContext.option.select
-                              : "Select"}</option>
-                          <option value={1}>  {TranslationContext !== undefined
+                              : "Select"}
+                          </option>
+                          <option value={1}>
+                            {" "}
+                            {TranslationContext !== undefined
                               ? TranslationContext.option.root
-                              : "Root"}</option>
+                              : "Root"}
+                          </option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
                               <option key={i} value={item.designationID}>
@@ -1787,17 +1868,21 @@ class TicketHierarchy extends Component {
                       </div>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">{TranslationContext !== undefined
+                      <label className="reports-to">
+                        {TranslationContext !== undefined
                           ? TranslationContext.label.status
-                          : "Status"}</label>
+                          : "Status"}
+                      </label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option>{TranslationContext !== undefined
-                              ? TranslationContext.option.select
-                              : "Select"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
+                        </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -1838,13 +1923,18 @@ class TicketHierarchy extends Component {
                 <br />
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">{TranslationContext !== undefined
+                    <h3 className="pb-0">
+                      {TranslationContext !== undefined
                         ? TranslationContext.h3.bulkupload
-                        : "Bulk Upload"}</h3>
+                        : "Bulk Upload"}
+                    </h3>
                     <div className="down-excel">
-                      <p> {TranslationContext !== undefined
+                      <p>
+                        {" "}
+                        {TranslationContext !== undefined
                           ? TranslationContext.p.template
-                          : "Template"}</p>
+                          : "Template"}
+                      </p>
                       <CSVLink
                         filename={"Hierarchy.csv"}
                         data={config.hierarchyTemplate}
@@ -1854,7 +1944,11 @@ class TicketHierarchy extends Component {
                     </div>
                   </div>
                   <Spin
-                    tip={TranslationContext!==undefined?TranslationContext.tip.pleasewait:"Please wait..."}
+                    tip={
+                      TranslationContext !== undefined
+                        ? TranslationContext.tip.pleasewait
+                        : "Please wait..."
+                    }
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">
@@ -1868,10 +1962,13 @@ class TicketHierarchy extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}> {TranslationContext !== undefined
+                            <span className={"fileupload-span"}>
+                              {" "}
+                              {TranslationContext !== undefined
                                 ? TranslationContext.span.addfile
-                                : "Add File"}</span>{" "}
-                          {TranslationContext !== undefined
+                                : "Add File"}
+                            </span>{" "}
+                            {TranslationContext !== undefined
                               ? TranslationContext.div.or
                               : "or"}
                             {TranslationContext !== undefined
@@ -1912,15 +2009,17 @@ class TicketHierarchy extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                  {TranslationContext !== undefined
+                                    {TranslationContext !== undefined
                                       ? TranslationContext.p.deletefile
-                                      : "Delete file"}?
+                                      : "Delete file"}
+                                    ?
                                   </p>
                                   <p className="mt-1 fs-12">
-                                  {TranslationContext !== undefined
+                                    {TranslationContext !== undefined
                                       ? TranslationContext.p
                                           .areyousureyouwanttodeletethisfile
-                                      : "Are you sure you want to delete this file"}?
+                                      : "Are you sure you want to delete this file"}
+                                    ?
                                   </p>
                                   <div className="del-can">
                                     <a
@@ -1935,7 +2034,7 @@ class TicketHierarchy extends Component {
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                       {TranslationContext !== undefined
+                                      {TranslationContext !== undefined
                                         ? TranslationContext.button.delete
                                         : "Delete"}
                                     </button>
@@ -1959,15 +2058,17 @@ class TicketHierarchy extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                 {TranslationContext !== undefined
+                                {TranslationContext !== undefined
                                   ? TranslationContext.span.retry
                                   : "Retry"}
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">{TranslationContext !== undefined
+                              <span className="file-failed">
+                                {TranslationContext !== undefined
                                   ? TranslationContext.span.failed
-                                  : "Failed"}</span>
+                                  : "Failed"}
+                              </span>
                             </div>
                           </div>
                         ) : null}
@@ -2001,7 +2102,7 @@ class TicketHierarchy extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                        {TranslationContext !== undefined
+                      {TranslationContext !== undefined
                         ? TranslationContext.button.add
                         : "ADD"}
                     </button>

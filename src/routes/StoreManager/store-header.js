@@ -1068,7 +1068,11 @@ class Header extends Component {
     })
       .then(function(response) {
         var chatMessageCount = response.data.responseData;
-        self.setState({ chatMessageCount });
+        if (chatMessageCount) {
+          self.setState({ chatMessageCount });
+        } else {
+          self.setState({ chatMessageCount: 0 });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleGetChatNotificationCount");
@@ -1556,28 +1560,45 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
+    debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
-      if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) === 0) {
-          this.setState({
-            noOfPeopleMax: "Please enter the no of people greater than 0",
-          });
-        } else {
+      // if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
+      //   if (Number(e.target.value) === 0) {
+      //     this.setState({
+      //       noOfPeopleMax: "Please enter the no of people greater than 0",
+      //     });
+      //   } else {
+      //     this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+      //   }
+      // } else {
+      //   if (e.target.value !== "") {
+      //     this.setState({
+      //       noOfPeople: "",
+      //       noOfPeopleMax:
+      //         "Maximum capacity are " + this.state.selectedSlot.remaining,
+      //     });
+      //   } else {
+      //     this.setState({
+      //       noOfPeople: "",
+      //       noOfPeopleMax: "",
+      //     });
+      //   }
+      // }
+      if (Number(e.target.value) <= 3) {
+        if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
           this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
-        }
-      } else {
-        if (e.target.value !== "") {
+        } else {
           this.setState({
             noOfPeople: "",
             noOfPeopleMax:
-              "Maximum capacity are " + this.state.selectedSlot.remaining,
-          });
-        } else {
-          this.setState({
-            noOfPeople: "",
-            noOfPeopleMax: "",
+              "Remaining capacity are " + this.state.selectedSlot.remaining,
           });
         }
+      } else {
+        this.setState({
+          noOfPeople: "",
+          noOfPeopleMax: "Maximum capacity are 3",
+        });
       }
     } else {
       this.setState({ isSelectSlot: "Please select time slot" });
@@ -2224,7 +2245,7 @@ class Header extends Component {
                   style={{ display: "none" }}
                 />
                 <span className="message-icon-cnt">
-                  {this.state.chatMessageCount}
+                  {this.state.chatMessageCount || 0}
                 </span>
               </div>
             </a>
@@ -3356,7 +3377,7 @@ class Header extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label
                                         .customerhasendchat
-                                    : "Customer has end chat"}
+                                    : "Customer has ended the conversation"}
                                 </label>
                               ) : null}
                             </div>
