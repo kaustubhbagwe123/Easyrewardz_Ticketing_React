@@ -63,6 +63,7 @@ class TicketSystem extends Component {
       selectedStoreIDs: [],
       IssueTypeData: [],
       TicketPriorityData: [],
+      TicketPriorityDummyData: [],
       ChannelOfPurchaseData: [],
       KbLink: false,
       Plus: false,
@@ -180,6 +181,9 @@ class TicketSystem extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
+    this.handleGetDefaultTicketPriorityList = this.handleGetDefaultTicketPriorityList.bind(
+      this
+    );
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleCopyToaster = this.handleCopyToaster.bind(this);
@@ -214,7 +218,7 @@ class TicketSystem extends Component {
       }
       this.handleGetBrandList();
       this.handleGetChannelOfPurchaseList();
-      // this.handleGetTicketPriorityList();
+      this.handleGetDefaultTicketPriorityList();
       this.handleGetAgentList();
       this.handlePlaceholderList();
     } else {
@@ -740,7 +744,36 @@ class TicketSystem extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ TicketPriorityData: data,checkPriorityDetails: false });
+          self.setState({
+            TicketPriorityData: data,
+            checkPriorityDetails: false,
+          });
+        } else {
+          self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  handleGetDefaultTicketPriorityList() {
+    let self = this;
+    debugger;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            TicketPriorityData: data,
+            TicketPriorityDummyData: data,
+            checkPriorityDetails: false,
+          });
         } else {
           self.setState({ TicketPriorityData: [], checkPriorityDetails: true });
         }
@@ -1456,7 +1489,7 @@ class TicketSystem extends Component {
       SubCategoryData: [],
       selectedSubCategory: "",
       IssueTypeData: [],
-      TicketPriorityData: [],
+      TicketPriorityData: this.state.TicketPriorityDummyData,
       selectedTicketPriority: 0,
       checkPriorityDetails: false,
     });
@@ -1491,7 +1524,7 @@ class TicketSystem extends Component {
       selectedCategory: value,
       SubCategoryData: [],
       IssueTypeData: [],
-      TicketPriorityData: [],
+      TicketPriorityData: this.state.TicketPriorityDummyData,
       selectedTicketPriority: 0,
       checkPriorityDetails: false,
     });
@@ -1504,7 +1537,7 @@ class TicketSystem extends Component {
           selectedIssueType: "",
           selectedSubCategory: "",
           SubCategoryData: [],
-          TicketPriorityData: [],
+          TicketPriorityData: this.state.TicketPriorityDummyData,
           selectedTicketPriority: 0,
           checkPriorityDetails: false,
         });
@@ -1533,7 +1566,7 @@ class TicketSystem extends Component {
     this.setState({
       selectedSubCategory: value,
       IssueTypeData: [],
-      TicketPriorityData: [],
+      TicketPriorityData: this.state.TicketPriorityDummyData,
       selectedTicketPriority: 0,
       checkPriorityDetails: false,
     });
@@ -1545,7 +1578,7 @@ class TicketSystem extends Component {
         this.setState({
           IssueTypeData: [],
           selectedIssueType: "",
-          TicketPriorityData: [],
+          TicketPriorityData: this.state.TicketPriorityDummyData,
           selectedTicketPriority: 0,
           checkPriorityDetails: false,
         });
