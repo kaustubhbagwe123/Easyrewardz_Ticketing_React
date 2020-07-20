@@ -4223,74 +4223,6 @@ class MyTicket extends Component {
                             </select>
                           </div>
                         </div>
-
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                          {/* <div className="form-group"> */}
-                          <div
-                            className={
-                              this.state.role_Name === "Supervisor"
-                                ? "form-group"
-                                : "form-group disabled-link" &&
-                                  this.state.role_Name === "Admin"
-                                ? "form-group"
-                                : "form-group disabled-link"
-                            }
-                          >
-                            <label className="label-4">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.priority
-                                : "Priority"}
-                            </label>
-                            <select
-                              className={
-                                this.state.isKB
-                                  ? "rectangle-9 select-category-placeholder iskbticket"
-                                  : "rectangle-9 select-category-placeholder"
-                              }
-                              value={this.state.selectetedParameters.priorityID}
-                              onChange={this.handleDropDownChange}
-                              name="priorityID"
-                            >
-                              <option>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.priority
-                                  : "Priority"}
-                              </option>
-                              {this.state.TicketPriorityData !== null &&
-                                this.state.TicketPriorityData.map((item, i) => {
-                                  if (
-                                    this.state.isSystemGenerated == false &&
-                                    item.priortyName === "Auto"
-                                  ) {
-                                    return null;
-                                  } else if (
-                                    this.state.isSystemGenerated == true &&
-                                    item.priortyName === "Auto"
-                                  ) {
-                                    return (
-                                      <option key={i} value={item.priorityID}>
-                                        {item.priortyName}
-                                      </option>
-                                    );
-                                  } else {
-                                    return (
-                                      <option key={i} value={item.priorityID}>
-                                        {item.priortyName}
-                                      </option>
-                                    );
-                                  }
-                                })}
-                            </select>
-                            {this.state.checkPriorityDetails && (
-                              <p style={{ color: "red", marginBottom: "0px" }}>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.ticketingDashboard
-                                      .slahasnotbeencreated
-                                  : "SLA has not been created"}
-                              </p>
-                            )}
-                          </div>
-                        </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                           {/* <div className="form-group"> */}
                           <div
@@ -4475,6 +4407,73 @@ class MyTicket extends Component {
                                   </option>
                                 ))}
                             </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          {/* <div className="form-group"> */}
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.priority
+                                : "Priority"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={this.state.selectetedParameters.priorityID}
+                              onChange={this.handleDropDownChange}
+                              name="priorityID"
+                            >
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.priority
+                                  : "Priority"}
+                              </option>
+                              {this.state.TicketPriorityData !== null &&
+                                this.state.TicketPriorityData.map((item, i) => {
+                                  if (
+                                    this.state.isSystemGenerated == false &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return null;
+                                  } else if (
+                                    this.state.isSystemGenerated == true &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  }
+                                })}
+                            </select>
+                            {this.state.checkPriorityDetails && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .slahasnotbeencreated
+                                  : "SLA has not been created"}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">

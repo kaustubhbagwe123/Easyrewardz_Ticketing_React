@@ -991,6 +991,7 @@ class TicketSystem extends Component {
   };
 
   handleAppendTicketSuggestion = (e) => {
+    debugger;
     this.setState({ toggleTitle: true });
     var startPoint = document.getElementById("titleSuggestion").selectionStart;
     var textLength = document.getElementById("titleSuggestion").value.length;
@@ -1016,6 +1017,7 @@ class TicketSystem extends Component {
   };
   handleTicSugg = (e) => {
     ////
+    debugger;
     let ticSugg = e.currentTarget.value;
     this.setState({ titleSuggValue: ticSugg });
     setTimeout(() => {
