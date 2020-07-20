@@ -1483,7 +1483,7 @@ class MyTicketList extends Component {
           self.setState({
             CategoryData: data,
           });
-        }else{
+        } else {
           self.setState({
             CategoryData: [],
           });
@@ -3065,7 +3065,7 @@ class MyTicketList extends Component {
     }
 
     this.setState({
-      tempSearchTicketData: itemsArray, 
+      tempSearchTicketData: itemsArray,
     });
     this.StatusCloseModel();
   };
@@ -4213,7 +4213,7 @@ class MyTicketList extends Component {
                 >
                   {TranslationContext !== undefined
                     ? TranslationContext.a.escalation
-                    : "Escalation"}
+                    : "Escalated"}
                   :
                   <span className="myTciket-tab-span">
                     {this.state.byEscalationCount < 9
@@ -4294,7 +4294,34 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-
+              <li
+                className="nav-item"
+                style={{ display: this.state.ReassignedByMe }}
+              >
+                <a
+                  // style={{ display: this.state.ReassignedByMe }}
+                  className="nav-link"
+                  data-toggle="tab"
+                  href="#Escalation-tab"
+                  role="tab"
+                  aria-controls="Escalation-tab"
+                  aria-selected="false"
+                  name="Reassigned"
+                  onClick={() => {
+                    this.handleSearchTicket("Reassigned");
+                  }}
+                >
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.reassigned
+                    : "Reassigned"}
+                  :
+                  <span className="myTciket-tab-span">
+                    {this.state.byReassignedCount < 9
+                      ? "0" + this.state.byReassignedCount
+                      : this.state.byReassignedCount}
+                  </span>
+                </a>
+              </li>
               <li className="nav-item" style={{ display: this.state.Closed }}>
                 <a
                   className="nav-link"
@@ -4316,58 +4343,6 @@ class MyTicketList extends Component {
                     {this.state.byClosedCount < 9
                       ? "0" + this.state.byClosedCount
                       : this.state.byClosedCount}
-                  </span>
-                </a>
-              </li>
-              <li className="nav-item" style={{ display: this.state.ReOpen }}>
-                <a
-                  className="nav-link"
-                  data-toggle="tab"
-                  href="#Escalation-tab"
-                  role="tab"
-                  aria-controls="Escalation-tab"
-                  aria-selected="false"
-                  name="ReOpen"
-                  onClick={() => {
-                    this.handleSearchTicket("ReOpen");
-                  }}
-                >
-                  {TranslationContext !== undefined
-                    ? TranslationContext.a.reopen
-                    : "Reopen"}
-                  :
-                  <span className="myTciket-tab-span">
-                    {this.state.byReOpenCount < 9
-                      ? "0" + this.state.byReOpenCount
-                      : this.state.byReOpenCount}
-                  </span>
-                </a>
-              </li>
-              <li
-                className="nav-item"
-                style={{ display: this.state.ReassignedByMe }}
-              >
-                <a
-                  // style={{ display: this.state.ReassignedByMe }}
-                  className="nav-link"
-                  data-toggle="tab"
-                  href="#Escalation-tab"
-                  role="tab"
-                  aria-controls="Escalation-tab"
-                  aria-selected="false"
-                  name="Reassigned"
-                  onClick={() => {
-                    this.handleSearchTicket("Reassigned");
-                  }}
-                >
-                  {TranslationContext !== undefined
-                    ? TranslationContext.a.reassigned
-                    : "Reassigned by me"}
-                  :
-                  <span className="myTciket-tab-span">
-                    {this.state.byReassignedCount < 9
-                      ? "0" + this.state.byReassignedCount
-                      : this.state.byReassignedCount}
                   </span>
                 </a>
               </li>
@@ -4431,12 +4406,36 @@ class MyTicketList extends Component {
                 >
                   {TranslationContext !== undefined
                     ? TranslationContext.a.draft
-                    : "Draft"}
+                    : "Drafts"}
                   :
                   <span className="myTciket-tab-span">
                     {this.state.draftCountStatus < 9
                       ? "0" + this.state.draftCountStatus
                       : this.state.draftCountStatus}
+                  </span>
+                </a>
+              </li>
+              <li className="nav-item" style={{ display: this.state.ReOpen }}>
+                <a
+                  className="nav-link"
+                  data-toggle="tab"
+                  href="#Escalation-tab"
+                  role="tab"
+                  aria-controls="Escalation-tab"
+                  aria-selected="false"
+                  name="ReOpen"
+                  onClick={() => {
+                    this.handleSearchTicket("ReOpen");
+                  }}
+                >
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.reopen
+                    : "Re-Opened"}
+                  :
+                  <span className="myTciket-tab-span">
+                    {this.state.byReOpenCount < 9
+                      ? "0" + this.state.byReOpenCount
+                      : this.state.byReOpenCount}
                   </span>
                 </a>
               </li>

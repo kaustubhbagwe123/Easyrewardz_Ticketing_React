@@ -483,15 +483,18 @@ class TicketSystemTask extends Component {
                               : "Priority"}
                           </option>
                           {this.state.TicketPriorityData !== null &&
-                            this.state.TicketPriorityData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.priorityID}
-                                className="select-sub-category-placeholder"
-                              >
-                                {item.priortyName}
-                              </option>
-                            ))}
+                            this.state.TicketPriorityData.map(
+                              (item, i) =>
+                                item.priortyName.toLowerCase() !== "auto" && (
+                                  <option
+                                    key={i}
+                                    value={item.priorityID}
+                                    className="select-sub-category-placeholder"
+                                  >
+                                    {item.priortyName}
+                                  </option>
+                                )
+                            )}
                         </select>
                         {this.validator.message(
                           "Priority",
@@ -584,7 +587,6 @@ class TicketSystemTask extends Component {
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.deletefile
                                             : "Delete file ?"}
-                                          
                                         </p>
                                         <p className="mt-1 fs-12">
                                           {TranslationContext !== undefined
