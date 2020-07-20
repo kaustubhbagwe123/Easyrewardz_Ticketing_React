@@ -3523,7 +3523,7 @@ class MyTicket extends Component {
                       <span className="updated-2-d-ago">
                         {TranslationContext !== undefined
                           ? TranslationContext.p.updated
-                          : "Updated"}
+                          : "Updated "}
                         {ticketDetailsData.updateDate}
                       </span>
                     </label>
