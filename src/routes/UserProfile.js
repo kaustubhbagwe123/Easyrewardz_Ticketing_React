@@ -14,7 +14,7 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
-      fileName: [],
+      fileName: [], 
       selectedUserID: 0,
       selectedProfilePicture: "",
       selectedFirstName: "",
