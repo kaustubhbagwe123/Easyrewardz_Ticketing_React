@@ -3737,7 +3737,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reporteedesignation
                                               : "Reportee Designation"}
-                                            : <b>Admin</b>
+                                            : <b>{row.original.designation}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
@@ -3746,7 +3746,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .issuetype
                                               : "Issue Type"}
-                                            :{" "}
+                                            :
                                             <b>{row.original.issueTypeNames}</b>
                                           </p>
                                         </div>
@@ -3789,7 +3789,7 @@ class Users extends Component {
                                                 ? TranslationContext.label
                                                     .copyescalation
                                                 : "Copy Escalation"}
-                                              :{" "}
+                                              :
                                               <b>
                                                 {TranslationContext !==
                                                 undefined
@@ -3803,7 +3803,7 @@ class Users extends Component {
                                                 ? TranslationContext.label
                                                     .copyescalation
                                                 : "Copy Escalation"}
-                                              :{" "}
+                                              :
                                               <b>
                                                 {TranslationContext !==
                                                 undefined
@@ -3821,7 +3821,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .categories
                                               : "Categories"}
-                                            :{" "}
+                                            :
                                             <b>{row.original.categoryNames}</b>
                                           </p>
                                         </div>
@@ -3831,7 +3831,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .assignescalation
                                               : "Assign Escalation"}
-                                            :{" "}
+                                            :
                                             <b>
                                               {row.original.assignEscalation}
                                             </b>
@@ -3845,7 +3845,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .subcategories
                                               : "Sub Categories"}
-                                            :{" "}
+                                            :
                                             <b>
                                               {row.original.subCategoryNames}
                                             </b>
@@ -4795,7 +4795,7 @@ class Users extends Component {
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addfile
                                 : "Add File"}
-                            </span>{" "}
+                            </span>
                             {TranslationContext !== undefined
                               ? TranslationContext.label.ordropfilehere
                               : "or Drop File here"}
