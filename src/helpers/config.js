@@ -1,5 +1,5 @@
 let config = {
-  // apiUrl: "https://localhost:44357/api",
+  //apiUrl: "https://localhost:44357/api",
   isHomeShope: true, /// make false when give Homeshop build for client
   isShowTaskTab: true, /// make false when give multiTenant build for client
 
@@ -84,7 +84,7 @@ let config = {
     [
       "Agent",
       "Active",
-      "Settings|Chat|Notification|Reports",
+      "Dashboard|Tickets|Knowledge Base",
       "Settings|Chat|Notification|Reports",
     ],
   ],
@@ -106,14 +106,14 @@ let config = {
     ],
     [
       "Paragon",
-      "Bombay",
+      "Mumbai",
       "Maharashtra",
       "380001",
       "Store-Name-01",
       "Store-address-01",
       "Store-Code-01",
-      "delhi",
-      "east",
+      "West",
+      "East",
       "Commercial",
       "Store01@gmail.com",
       "909090909",
@@ -127,7 +127,7 @@ let config = {
       "Store-Name-02",
       "Store-address-02",
       "Store-Code-02",
-      "Gujarat",
+      "East",
       "West",
       "Retail",
       "Store02@gmail.com",
