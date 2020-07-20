@@ -166,7 +166,6 @@ class StoreMaster extends Component {
     this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   componentDidMount() {
-    debugger;
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
     this.handleGetStateList();
@@ -182,7 +181,6 @@ class StoreMaster extends Component {
   }
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
         let self = this;
@@ -206,7 +204,6 @@ class StoreMaster extends Component {
           .then(function(res) {
             debugger;
             let status = res.data.message;
-            let data = res.data.responseData;
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
@@ -235,7 +232,6 @@ class StoreMaster extends Component {
             }
           })
           .catch((data) => {
-            debugger;
             if (data.message) {
               this.setState({
                 showProgress: false,
@@ -255,7 +251,6 @@ class StoreMaster extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.storeData;
     var headerName = "";
@@ -348,7 +343,6 @@ class StoreMaster extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.storeData;
     var headerName = "";
@@ -439,8 +433,6 @@ class StoreMaster extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    debugger;
-
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
 
     if (
@@ -860,7 +852,6 @@ class StoreMaster extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     if (this.state.tempstoreData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -1106,7 +1097,6 @@ class StoreMaster extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-    debugger;
 
     var sstoreNameFilterCheckbox = this.state.sstoreNameFilterCheckbox;
     var sstoreCodeFilterCheckbox = this.state.sstoreCodeFilterCheckbox;
@@ -1650,7 +1640,6 @@ class StoreMaster extends Component {
   };
 
   handleGetStoreMasterData() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -1687,7 +1676,7 @@ class StoreMaster extends Component {
             unique[data[i].storeCode] = 1;
           }
         }
-        debugger;
+
         for (let i = 0; i < distinct.length; i++) {
           if (distinct[i]) {
             self.state.sortStoreCode.push({ storeCode: distinct[i] });
@@ -1956,7 +1945,7 @@ class StoreMaster extends Component {
   }
   handleDeleteStore(store_Id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -1966,7 +1955,6 @@ class StoreMaster extends Component {
         StoreID: store_Id,
       },
     }).then(function(res) {
-      debugger;
       let status = res.data.message;
       if (status === "Record deleted Successfully") {
         self.handleGetStoreMasterData();
@@ -1980,7 +1968,7 @@ class StoreMaster extends Component {
   }
   handleSubmitData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectedBrand !== null &&
       this.state.store_code.length > 0 &&
@@ -2033,7 +2021,6 @@ class StoreMaster extends Component {
           IsActive: activeStatus,
         },
       }).then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreMasterData();
@@ -2100,7 +2087,7 @@ class StoreMaster extends Component {
 
   handleUpdateData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.modalSelectedBrand !== null &&
       this.state.modalSelectedBrand.length > 0 &&
@@ -2217,7 +2204,6 @@ class StoreMaster extends Component {
     }
   }
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -2233,7 +2219,6 @@ class StoreMaster extends Component {
     }
   };
   fileDrop = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
@@ -2251,7 +2236,6 @@ class StoreMaster extends Component {
     e.preventDefault();
   };
   handleBrandChange = (e) => {
-    debugger;
     if (e === null) {
       e = [];
     }
@@ -2263,7 +2247,6 @@ class StoreMaster extends Component {
   };
 
   handleStateChange = (e) => {
-    debugger;
     let value = parseInt(e.target.value);
     this.setState({ selectState: value, cityData: [] });
     setTimeout(() => {
@@ -2277,7 +2260,6 @@ class StoreMaster extends Component {
     this.setStoreUpdateData(data);
   }
   setStoreUpdateData(individualData) {
-    debugger;
     var userEditData = {};
     userEditData.store_ID = individualData.storeID;
     userEditData.store_Name = individualData.storeName;
@@ -2319,7 +2301,6 @@ class StoreMaster extends Component {
     });
   }
   handleOnChangeEditData = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -2366,7 +2347,6 @@ class StoreMaster extends Component {
     });
   };
   hanldeOnEmailChange = (e) => {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -2386,7 +2366,6 @@ class StoreMaster extends Component {
     }
   };
   hanldeOnPhoneChange = (e) => {
-    debugger;
     var name = e.target.name;
     if (name === "phoneNumber_") {
       var reg = /^[0-9\b]+$/;
@@ -2426,7 +2405,6 @@ class StoreMaster extends Component {
     }
   };
   hanldeOnPinCodeChange = (e) => {
-    debugger;
     var reg = /^[0-9\b]+$/;
     if (e.target.value === "" || reg.test(e.target.value)) {
       this.setState({ [e.target.name]: e.target.value });
@@ -2448,7 +2426,6 @@ class StoreMaster extends Component {
   }
 
   callBackEdit = (RoleName, Status, rowData) => {
-    debugger;
     // this.setState({RoleName,updateRoleisActive:Status})
     // this.state.RoleName = RoleName;
     // this.state.updateRoleisActive = Status;
@@ -2456,8 +2433,6 @@ class StoreMaster extends Component {
   };
 
   handleModalEditData = (e) => {
-    debugger;
-
     var name = e.target.name;
     var value = e.target.value;
     var userEditData = this.state.userEditData;
@@ -2491,7 +2466,6 @@ class StoreMaster extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "storeName") {
@@ -2672,7 +2646,7 @@ class StoreMaster extends Component {
   }
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",
