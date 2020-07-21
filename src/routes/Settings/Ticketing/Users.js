@@ -4774,7 +4774,7 @@ class Users extends Component {
                           <img src={DownExcel} alt="download icon" />
                         </CSVLink>
                       </div>
-                      <div className="down-excel">
+                      {/* <div className="down-excel">
                         <p>
                           {TranslationContext !== undefined
                             ? TranslationContext.p.template
@@ -4786,7 +4786,7 @@ class Users extends Component {
                         >
                           <img src={DownExcel} alt="download icon" />
                         </CSVLink>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <Spin
