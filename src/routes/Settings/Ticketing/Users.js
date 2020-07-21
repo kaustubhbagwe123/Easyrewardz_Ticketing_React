@@ -4775,19 +4775,6 @@ class Users extends Component {
                           <img src={DownExcel} alt="download icon" />
                         </CSVLink>
                       </div>
-                      <div className="down-excel">
-                        <p>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.template
-                            : "Template"}
-                        </p>
-                        <CSVLink
-                          filename={"User.csv"}
-                          data={config.userTemplate}
-                        >
-                          <img src={DownExcel} alt="download icon" />
-                        </CSVLink>
-                      </div>
                     </div>
                   </div>
                   <Spin
