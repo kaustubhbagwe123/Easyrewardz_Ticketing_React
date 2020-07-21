@@ -304,6 +304,7 @@ class ShipmentAssignedTab extends Component {
   }
   /// handle Pr5int Invoice data
   handlePrintInvoice(orderIds) {
+    debugger
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintInvoice",
@@ -313,9 +314,10 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         if (status === "Success") {
-          window.location.href = res.data.responseData.manifestUrl;
+          window.location.href = res.data.responseData.invoice_url;
         } else {
           NotificationManager.error(status);
         }
