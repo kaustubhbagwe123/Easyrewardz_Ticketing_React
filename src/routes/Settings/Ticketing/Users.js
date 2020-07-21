@@ -192,7 +192,6 @@ class Users extends Component {
     this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   componentDidMount() {
-    debugger;
     this.handleGetUserList();
     this.handleGetBrandList();
     this.handleGetDesignationList();
@@ -209,7 +208,6 @@ class Users extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
@@ -252,7 +250,6 @@ class Users extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
@@ -295,7 +292,6 @@ class Users extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterDesignation.length === 0 ||
       this.state.sortFilterUsername.length === 0 ||
@@ -401,8 +397,6 @@ class Users extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
-
     if (this.state.tempuserData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -479,8 +473,6 @@ class Users extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var suserNameFilterCheckbox = this.state.suserNameFilterCheckbox;
@@ -711,7 +703,6 @@ class Users extends Component {
   }
 
   hide(e, id) {
-    debugger;
     // document.getElementById(id).style.display="none";
     document.getElementById(
       id
@@ -719,7 +710,6 @@ class Users extends Component {
       "none";
   }
   show(e, id) {
-    debugger;
     if (document.getElementById(id))
       // document.getElementById(id).style.display="block";
       document.getElementById(
@@ -728,7 +718,6 @@ class Users extends Component {
         "block";
   }
   setUserEditData = (e) => {
-    debugger;
     let self = this;
     var brand = [];
     var cat = [];
@@ -811,7 +800,6 @@ class Users extends Component {
         issue.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
       }
     }
-    debugger;
 
     self.setState({
       userEditData,
@@ -833,7 +821,6 @@ class Users extends Component {
   };
 
   handleAgentValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({
       selectedSupervisorRadio: false,
@@ -847,7 +834,6 @@ class Users extends Component {
   };
 
   handleSuperValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({
       selectedAgentRadio: false,
@@ -861,7 +847,6 @@ class Users extends Component {
   };
 
   editAgentValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({ editSupervisorRadio: false, editAgentRadio: subjectvalue });
     setTimeout(() => {
@@ -872,7 +857,6 @@ class Users extends Component {
   };
 
   editSuperValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({ editAgentRadio: false, editSupervisorRadio: subjectvalue });
     setTimeout(() => {
@@ -883,12 +867,10 @@ class Users extends Component {
   };
 
   setEscn = (e) => {
-    debugger;
     this.setState({ [e.target.name]: e.currentTarget.checked });
   };
 
   editsetEscn = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.checked;
     var data = e.currentTarget.checked;
@@ -898,7 +880,6 @@ class Users extends Component {
   };
 
   handleOnChangeEditData = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -928,7 +909,6 @@ class Users extends Component {
   };
 
   hanldeMobileNoChange = (e) => {
-    debugger;
     var name = e.target.name;
     var reg = /^[0-9\b]+$/;
     if (name === "mobile_Number") {
@@ -972,7 +952,6 @@ class Users extends Component {
   };
 
   handleOnChangeUserData = (e) => {
-    debugger;
     var name = e.target.name;
     this.setState({
       [e.target.name]: e.target.value,
@@ -995,8 +974,6 @@ class Users extends Component {
     }
   };
   handleReporteeDesgnDropDown(data2, e) {
-    debugger;
-
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -1008,7 +985,6 @@ class Users extends Component {
     }, 1);
   }
   handleEditReporteeDesgnDropDown(data2, e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -1034,8 +1010,6 @@ class Users extends Component {
     }, 1);
   }
   handleDesination = (data1, e) => {
-    debugger;
-
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -1046,7 +1020,6 @@ class Users extends Component {
     }, 1);
   };
   handleEditDesination = (data1, e) => {
-    debugger;
     e.preventDefault();
     e.stopPropagation();
     var name = e.target.name;
@@ -1075,7 +1048,6 @@ class Users extends Component {
   };
 
   handleBrandChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedBrand: e, CategoryData: [] });
@@ -1089,7 +1061,6 @@ class Users extends Component {
     }
   };
   handleEditBrandChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editBrand: e, CategoryData: [] });
@@ -1114,7 +1085,6 @@ class Users extends Component {
     }
   };
   handleCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedCategory: e, SubCategoryData: [] });
@@ -1128,7 +1098,6 @@ class Users extends Component {
     }
   };
   handleEditCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editCategory: e, SubCategoryData: [] });
@@ -1152,7 +1121,6 @@ class Users extends Component {
     }
   };
   handleSubCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedSubCategory: e, IssueTypeData: [] });
@@ -1166,7 +1134,6 @@ class Users extends Component {
     }
   };
   handleEditSubCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editSubCategory: e, IssueTypeData: [] });
@@ -1190,14 +1157,12 @@ class Users extends Component {
     }
   };
   handleIssueTypeChange = (e) => {
-    debugger;
     if (e === null) {
       e = [];
     }
     this.setState({ selectedIssueType: e });
   };
   handleEditIssueTypeChange = (e) => {
-    debugger;
     if (e === null) {
       e = [];
     }
@@ -1208,7 +1173,6 @@ class Users extends Component {
     }
   };
   handleGetCRMRoleList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1216,7 +1180,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let crmroledata = res.data.responseData;
         self.setState({
           CRMRoleData: crmroledata,
@@ -1227,21 +1190,18 @@ class Users extends Component {
       });
   }
   editMethod() {
-    debugger;
     this.setState({
       personalReadOnly: false,
       buttonToggle: true,
     });
   }
   editProfileMethod() {
-    debugger;
     this.setState({
       profileReadOnly: false,
       buttonProfileToggle: true,
     });
   }
   handleGetDesignationList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1249,7 +1209,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let designationdata = res.data.responseData;
 
         self.setState({
@@ -1278,7 +1237,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1296,7 +1254,6 @@ class Users extends Component {
       });
   }
   handleGetReportTOList(data2) {
-    debugger;
     let self = this;
     let id;
     if (data2 === "add") {
@@ -1337,7 +1294,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1351,7 +1307,6 @@ class Users extends Component {
       });
   }
   handleGetCategoryList(data) {
-    debugger;
     let self = this;
     var finalBrandId = "";
     if (data === "add") {
@@ -1377,7 +1332,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1397,7 +1351,6 @@ class Users extends Component {
       });
   }
   handleGetSubCategoryList(data) {
-    debugger;
     let self = this;
     var finalCategoryId = "";
     if (data === "add") {
@@ -1423,7 +1376,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var data = res.data.responseData;
         if (status === "Success") {
@@ -1443,7 +1395,6 @@ class Users extends Component {
       });
   }
   handleGetIssueTypeList(data) {
-    debugger;
     let self = this;
     var finalSubCategoryId = "";
 
@@ -1472,7 +1423,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1492,7 +1442,6 @@ class Users extends Component {
       });
   }
   handleGetAgentList(datar) {
-    debugger;
     let self = this;
 
     axios({
@@ -1504,7 +1453,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var array = [];
         var agentdata = res.data.responseData;
         var addvalue1 = self.state.selectedAgentRadio;
@@ -1532,7 +1480,6 @@ class Users extends Component {
       });
   }
   handleGetUserList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -1543,7 +1490,6 @@ class Users extends Component {
         debugger;
         var userdata = res.data.responseData;
         var status = res.data.message;
-
         if (status === "Success") {
           self.setState({
             userData: userdata,
@@ -1647,8 +1593,6 @@ class Users extends Component {
   }
 
   handleGetUserListByID(id) {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1659,7 +1603,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
@@ -1680,7 +1623,7 @@ class Users extends Component {
 
   handleValidationEmailIdMob() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
@@ -1703,7 +1646,6 @@ class Users extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           var status = res.data.message;
           var userdata = res.data.responseData;
           if (status === "Success") {
@@ -1755,7 +1697,7 @@ class Users extends Component {
 
   handleAddPersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
@@ -1778,7 +1720,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
           let id = res.data.responseData;
           let Msg = res.data.message;
           if (Msg === "Success") {
@@ -1829,7 +1770,6 @@ class Users extends Component {
   handleEditPersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
 
-    debugger;
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
@@ -1854,8 +1794,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
-
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
@@ -1904,7 +1842,7 @@ class Users extends Component {
 
   handleAddProfileDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectedDesignation > 0 &&
       (this.state.selectedReporteeDesign > 0 ||
@@ -1925,7 +1863,6 @@ class Users extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           if (self.state.buttonProfileToggle === true) {
             if (Msg === "Success") {
@@ -1985,7 +1922,7 @@ class Users extends Component {
 
   handleAddMapCategory() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     var radiob = true;
     var agentb = true;
     if (this.state.selectedAssignEscalation === true) {
@@ -2094,8 +2031,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
-
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
@@ -2187,7 +2122,7 @@ class Users extends Component {
 
   handleDeleteUser(id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
 
     axios({
@@ -2199,7 +2134,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
           NotificationManager.error(
@@ -2222,7 +2156,7 @@ class Users extends Component {
   }
   handleSendMail(id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
 
     axios({
@@ -2234,7 +2168,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
           NotificationManager.success(
@@ -2250,7 +2183,6 @@ class Users extends Component {
   }
   handleUpdateUser() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
 
     var radiob = true;
     var agentb = true;
@@ -2406,7 +2338,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
@@ -2538,7 +2469,7 @@ class Users extends Component {
   // Onchange tab Personal to Mapped tab
   handleChangeProfileTab = () => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.userEditData.designation_ID > 0 &&
       (this.state.userEditData.reporteeDesignation_ID > 0 ||
@@ -2573,7 +2504,6 @@ class Users extends Component {
   };
 
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -2600,7 +2530,6 @@ class Users extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "designation") {
@@ -2659,7 +2588,7 @@ class Users extends Component {
 
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",
@@ -2673,7 +2602,7 @@ class Users extends Component {
   };
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
         let self = this;
@@ -2695,7 +2624,6 @@ class Users extends Component {
           // }
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -2726,7 +2654,6 @@ class Users extends Component {
             }
           })
           .catch((data) => {
-            debugger;
             if (data.message) {
               this.setState({
                 showProgress: false,
@@ -3722,7 +3649,6 @@ class Users extends Component {
                         sortable: false,
                         accessor: "designation",
                         Cell: (row) => {
-                          debugger;
                           var ids = row.original["userId"];
                           return (
                             <div>
@@ -3738,7 +3664,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reporteedesignation
                                               : "Reportee Designation"}
-                                            : <b>{row.original.designation}</b>
+                                            : <b>{row.original.reporteeDesignation}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
