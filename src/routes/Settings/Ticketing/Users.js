@@ -3821,8 +3821,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .categories
                                               : "Categories"}
-                                            :
-                                            <b>{row.original.categoryNames}</b>
+                                            :<b>{row.original.categoryNames}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
@@ -4755,21 +4754,39 @@ class Users extends Component {
                   </div>
                 </div>
                 <div className="right-sect-div">
-                  <div className="d-flex justify-content-between align-items-center pb-2">
+                  <div className="d-flex justify-content-between pb-2">
                     <h3 className="pb-0">
                       {TranslationContext !== undefined
                         ? TranslationContext.h3.bulkupload
                         : "Bulk Upload"}
                     </h3>
-                    <div className="down-excel">
-                      <p>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.p.template
-                          : "Template"}
-                      </p>
-                      <CSVLink filename={"User.csv"} data={config.userTemplate}>
-                        <img src={DownExcel} alt="download icon" />
-                      </CSVLink>
+                    <div>
+                      <div className="down-excel mb-2">
+                        <p>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"}
+                        </p>
+                        <CSVLink
+                          filename={"User.csv"}
+                          data={config.userTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
+                      </div>
+                      <div className="down-excel">
+                        <p>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"}
+                        </p>
+                        <CSVLink
+                          filename={"User.csv"}
+                          data={config.userTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
+                      </div>
                     </div>
                   </div>
                   <Spin
