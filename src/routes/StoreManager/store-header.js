@@ -241,16 +241,6 @@ class Header extends Component {
     this.handleChatModalOpen = this.handleChatModalOpen.bind(this);
   }
 
-  handleCheckView() {
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      this.setState({ isMobileView: true });
-    } else {
-      this.setState({ isMobileView: false });
-    }
-  }
-
   componentDidMount() {
     this.subscription = transferData.getProfilePic().subscribe((pic) => {
       if (pic.profilePic) {
@@ -938,7 +928,7 @@ class Header extends Component {
   };
 
   ////handle Get New Chat
-  async handleGetNewChat() {
+  async handleGetNewChat(mobileNo, msgData) {
     this.setState({ isMainLoader: true });
     let self = this;
     await axios({
@@ -949,8 +939,72 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
+        debugger;
         if (message === "Success" && newChatsData) {
           self.setState({ newChatsData, isMainLoader: false });
+
+          if (self.state.isNotiNewChat && mobileNo && msgData) {
+            const Sound1Play = new Audio(self.state.newChatSoundFile);
+            Sound1Play.volume =
+              Math.round(self.state.newChatSoundVolume / 10) / 10;
+            Sound1Play.play();
+            var chatData = newChatsData.filter((x) => x.mobileNo === mobileNo);
+            if (chatData.length > 0) {
+              notification.open({
+                key: chatData[0].chatID,
+                duration: 2.5,
+                placement: "bottomRight",
+                // message: "Notification Title",
+                className: "hide-message-title",
+                description: (
+                  <>
+                    <div
+                      className="row"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={self.handleNewChatNotification.bind(
+                        this,
+                        chatData,
+                        chatData[0].chatID
+                      )}
+                    >
+                      <div className="col-3">
+                        <div class="chat-trail-img">
+                          <span
+                            class="chat-initial"
+                            alt="face image"
+                            title="Shalini Chandra "
+                          >
+                            {chatData[0].cumtomerName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-9">
+                        <h5 title="Customer Name">
+                          {chatData[0].cumtomerName}
+                        </h5>
+                        <p
+                          style={{
+                            wordBreak: "break-word",
+                          }}
+                        >
+                          {msgData}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ),
+              });
+            } else {
+              //self.handleGetNewChat(mobileNo, msgData);
+              // self.handleGetChatNotificationCount();
+            }
+          }
         } else {
           self.setState({ newChatsData: [], isMainLoader: false });
         }
@@ -999,6 +1053,7 @@ class Header extends Component {
     let self = this;
 
     this.setState({
+      chatModal: true,
       isMainLoader: true,
       isCustEndChat: false,
       storeManagerId,
@@ -1508,6 +1563,7 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          chatModal: true,
           ProfileProductTab: 0,
           productTypeTab: 0,
           selectedWishList: [],
@@ -1558,6 +1614,7 @@ class Header extends Component {
         this.handleGetChatCustomerProfile(customerId);
       } else {
         this.setState({
+          chatModal: true,
           ProfileProductTab: 0,
           productTypeTab: 0,
           selectedWishList: [],
@@ -1615,6 +1672,7 @@ class Header extends Component {
       }
     } else {
       this.setState({
+        chatModal: true,
         ProfileProductTab: 0,
         productTypeTab: 0,
         selectedWishList: [],
@@ -1689,7 +1747,6 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
-    debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
       // if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
       //   if (Number(e.target.value) === 0) {
@@ -1716,7 +1773,10 @@ class Header extends Component {
 
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
         if (Number(e.target.value) <= 3) {
-          this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+          this.setState({
+            noOfPeople: e.target.value,
+            noOfPeopleMax: "",
+          });
         } else {
           this.setState({
             noOfPeople: "",
@@ -1731,7 +1791,9 @@ class Header extends Component {
         });
       }
     } else {
-      this.setState({ isSelectSlot: "Please select time slot" });
+      this.setState({
+        isSelectSlot: "Please select time slot",
+      });
     }
   };
   ////handle select slot button
@@ -2081,7 +2143,9 @@ class Header extends Component {
                   Sound1Play.volume =
                     Math.round(self.state.newMessageSoundVolume / 10) / 10;
                   Sound1Play.play();
-                  self.setState({ isCustEndChat: data[6] });
+                  self.setState({
+                    isCustEndChat: data[6],
+                  });
                   if (self.state.ongoingChatsData.length > 0) {
                     chatId = self.state.ongoingChatsData.filter(
                       (x) => x.mobileNo === self.state.mobileNo
@@ -2097,22 +2161,82 @@ class Header extends Component {
                   self.handleGetChatMessagesList(chatId);
                 } else {
                   /////for new ongoing message
+
                   const Sound1Play = new Audio(self.state.newMessageSoundFile);
                   Sound1Play.volume =
                     Math.round(self.state.newMessageSoundVolume / 10) / 10;
                   Sound1Play.play();
+
+                  if (self.state.isNotiNewMessage) {
+                    var chatData = self.state.ongoingChatsData.filter(
+                      (x) => x.mobileNo === data[3].substr(2)
+                    );
+                    debugger;
+                    notification.open({
+                      key: chatData[0].chatID,
+                      duration: 2.5,
+                      placement: "bottomRight",
+                      // message: "Notification Title",
+                      className: "hide-message-title",
+                      description: (
+                        <>
+                          <div
+                            className="row"
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={self.handleNotificationClick.bind(
+                              this,
+                              chatData,
+                              chatData[0].chatID
+                            )}
+                          >
+                            <div className="col-3">
+                              <div className="chat-trail-img">
+                                <span
+                                  class="chat-initial"
+                                  alt="face image"
+                                  title="Shalini Chandra "
+                                >
+                                  {chatData[0].cumtomerName
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .toUpperCase()}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col-9">
+                              <h5 title="Customer Name">
+                                {chatData[0].cumtomerName}
+                              </h5>
+                              <p
+                                style={{
+                                  wordBreak: "break-word",
+                                }}
+                              >
+                                {data[0]}
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      ),
+                    });
+                  }
+
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
                   self.handleGetChatNotificationCount();
                 }
               } else {
                 ////new chat message
-                const Sound1Play = new Audio(self.state.newChatSoundFile);
-                Sound1Play.volume =
-                  Math.round(self.state.newChatSoundVolume / 10) / 10;
-                Sound1Play.play();
-                self.handleGetNewChat();
-                self.handleGetChatNotificationCount();
+
+                setTimeout(() => {
+                  self.handleGetChatNotificationCount();
+                  self.handleGetNewChat(data[3].substr(2), data[0]);
+                }, 5000);
+
+                // self.handleGetNewChat();
               }
             }
           }
@@ -2674,11 +2798,48 @@ class Header extends Component {
         console.log(response, "---AddProductsToShoppingBag");
       });
   };
-
-  handleBackButton=()=>{
-    this.setState({customerName:"",isHistoricalChat:false})
+  ////handle mobile view back button
+  handleBackButton = () => {
+    this.setState({ customerName: "", isHistoricalChat: false });
+  };
+  ////handle notification click
+  handleNotificationClick = (chatData, notificationKey) => {
+    debugger;
+    notification.close(notificationKey);
+    this.handleOngoingChatClick(
+      chatData[0].chatID,
+      chatData[0].cumtomerName,
+      chatData[0].messageCount,
+      chatData[0].mobileNo,
+      chatData[0].customerID,
+      chatData[0].programCode,
+      chatData[0].storeID,
+      chatData[0].isCustEndChat,
+      chatData[0].storeManagerId
+    );
+  };
+  ////handle check is mobile view active or not
+  handleCheckView() {
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      this.setState({ isMobileView: true });
+    } else {
+      this.setState({ isMobileView: false });
+    }
   }
-
+  ////handle new chat notification click
+  handleNewChatNotification = (chatData, notificationKey) => {
+    notification.close(notificationKey);
+    this.handleUpdateCustomerChatStatus(
+      chatData[0].chatID,
+      chatData[0].storeManagerId,
+      chatData[0].storeID,
+      chatData[0].cumtomerName,
+      chatData[0].mobileNo,
+      chatData[0].customerID,
+      chatData[0].programCode
+    );
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3240,7 +3401,15 @@ class Header extends Component {
               <div className="loader"></div>
             ) : null}
             <img src={Chatw} className="Chatw" alt="Chatw" />
-            <h3 style={{marginRight:"15px"}}>
+            <h3
+              style={{
+                marginRight: this.state.isMainLoader
+                  ? "15px"
+                  : this.state.isMobileView
+                  ? "54%"
+                  : "90%",
+              }}
+            >
               {TranslationContext !== undefined
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat"}
