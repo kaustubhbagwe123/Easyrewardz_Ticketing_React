@@ -343,6 +343,7 @@ class StoreAddTask extends Component {
                 name="tasktitle"
                 value={this.state.taskTitle}
                 onChange={this.handleOnchange}
+                autoComplete="off"
               />
               {this.state.istaskTitle !== "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
@@ -504,6 +505,8 @@ class StoreAddTask extends Component {
                     name="taskdetails"
                     rows="8"
                     className="textarea-store"
+                    autoComplete="off"
+                    maxLength={245}
                     // placeholder="Customer History/Security Check when.."
                   ></textarea>
                   {this.state.istaskDetails !== "" && (
