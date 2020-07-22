@@ -365,6 +365,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -422,6 +423,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -490,6 +492,9 @@ class MyTicket extends Component {
         } else {
           self.setState({
             ticketDetailsData: {},
+            selectetedParameters: {},
+            mailFiled: {},
+            fileDummy:[],
             custID: 0,
           });
         }
@@ -522,6 +527,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let data = res.data.responseData;
         self.setState({
           SearchAssignData: data,
@@ -589,6 +595,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -2242,6 +2249,7 @@ class MyTicket extends Component {
         },
       })
         .then(function(res) {
+          debugger
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -2264,6 +2272,7 @@ class MyTicket extends Component {
         },
       })
         .then(function(res) {
+          debugger
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -2629,6 +2638,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
