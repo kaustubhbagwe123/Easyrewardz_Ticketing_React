@@ -3786,6 +3786,7 @@ margin-left: 30px !important;
 .manualbox ul li {
   width: 100%;
   margin-right: 30px;
+  margin-top: 15px;
 }
 .manualbox ul li:last-child {
   width: auto;
@@ -3868,4 +3869,9 @@ margin-left: 30px !important;
 }
 .statuscheckbox label {
   vertical-align: middle;
+}
+.nextbox .value {
+  width: 50px;
+    text-align: center;
+    height: calc(1.55rem + 2px);
 }

@@ -3962,13 +3962,16 @@ class StoreModule extends Component {
                                                 {
                                                   title: "Slot Occupancy",
                                                   dataIndex: "occupancy",
+                                                  render: (row, rowData) => {
+                                                    return <><input type="text" className="form-control value" value="3"/></>;
+                                                  },
                                                 },
                                                 {
                                                   title:
                                                     "Slot Status(Unable/Disble)",
 
                                                   render: (row, rowData) => {
-                                                    return <>redio button</>;
+                                                    return <>radio button</>;
                                                   },
                                                 },
                                               ]}
