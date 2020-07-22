@@ -451,7 +451,7 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(storePay);
-          this.handleGenerateStorePayLink();
+          // this.handleGenerateStorePayLink();
         }
       }
     }
@@ -2139,7 +2139,7 @@ class Header extends Component {
         var message = response.data.message;
         var storePayURL = response.data.responseData;
         if (message === "Success" && storePayURL) {
-          self.setState({ storePayURL });
+          window.open(storePayURL, "_blank");
         }
       })
       .catch((response) => {
@@ -2180,9 +2180,9 @@ class Header extends Component {
                       key={item.data}
                       className="single-menu"
                       style={{ outline: "none" }}
-                      target="_blank"
-                      href={this.state.storePayURL}
-                      disabled={this.state.storePayURL === "" ? true : false}
+                      // target="_blank"
+                      // href={this.state.storePayURL}
+                      // disabled={this.state.storePayURL === "" ? true : false}
                     >
                       {item.logoBlack ? (
                         <div className="header-icons-cntr">
@@ -2198,7 +2198,11 @@ class Header extends Component {
                           />
                         </div>
                       ) : null}
-                      <label style={{ cursor: "pointer" }} className="cusheade">
+                      <label
+                        style={{ cursor: "pointer" }}
+                        className="cusheade"
+                        onClick={this.handleGenerateStorePayLink.bind(this)}
+                      >
                         {item.data}
                       </label>
                     </a>
@@ -2616,11 +2620,11 @@ class Header extends Component {
                       <li key={item.data} style={{ outline: "none" }}>
                         <a
                           className="single-menu"
-                          href={this.state.storePayURL}
-                          target="_blank"
-                          disabled={
-                            this.state.storePayURL === "" ? true : false
-                          }
+                          // href={this.state.storePayURL}
+                          // target="_blank"
+                          // disabled={
+                          //   this.state.storePayURL === "" ? true : false
+                          // }
                         >
                           {item.logoBlack ? (
                             <span className="header-icons-cntr mr-0">
@@ -2636,7 +2640,12 @@ class Header extends Component {
                               />
                             </span>
                           ) : null}
-                          {item.data}
+
+                          <label
+                            onClick={this.handleGenerateStorePayLink.bind(this)}
+                          >
+                            {item.data}
+                          </label>
                         </a>
                       </li>
                     );
