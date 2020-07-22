@@ -2905,7 +2905,9 @@ class StoreDashboard extends Component {
                     <TaskDepartment
                       data={this.state.DashboardOpenTaskDepartmentWise}
                     />
-                  ) : null}
+                  ) : (
+                    <p>No Data Available</p>
+                  )}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
@@ -2913,7 +2915,9 @@ class StoreDashboard extends Component {
                   <p className="card-head">Task by priority</p>
                   {this.state.DashboardTaskByPriority.length > 0 ? (
                     <TaskByPriority data={this.state.DashboardTaskByPriority} />
-                  ) : null}
+                  ) : (
+                    <p>No Data Available</p>
+                  )}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
@@ -2923,7 +2927,9 @@ class StoreDashboard extends Component {
                     <OpenCompaign
                       data={this.state.DashboardOpenCampaignByType}
                     />
-                  ) : null}
+                  ) : (
+                    <p>No Data Available</p>
+                  )}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
