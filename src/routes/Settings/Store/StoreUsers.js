@@ -5215,7 +5215,9 @@ class StoreUsers extends Component {
                             value={this.state.userEdit.storeID}
                             onChange={this.handleEditOnchange}
                           >
-                            <option value="0">Select</option>
+                            <option value="0">{TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}</option>
                             {this.state.storeCodeData !== null &&
                               this.state.storeCodeData.map((item, s) => (
                                 <option

@@ -2045,6 +2045,10 @@ p {
 .show-mobile {
   display: none;
 }
+.hide-message-title .ant-notification-notice-message{
+  display: none;
+
+}
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {
@@ -2059,6 +2063,12 @@ p {
 }
 
 @media all and (max-width: 576px) {
+  .Cancelicow{
+    display: block;
+  }
+  .BackArw{
+    display: block;
+  }
   .show-desktop {
     display: none;
   }

@@ -10,11 +10,14 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import pinico from "./../../../assets/Images/clip.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import searchico from "./../../../assets/Images/serach-icon-left.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
+import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
@@ -224,13 +227,21 @@ class StoreModule extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleCampaignScriptGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((response) => {
@@ -251,7 +262,11 @@ class StoreModule extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   handleEditModal() {
@@ -287,10 +302,18 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaigndeletedsuccessfully:"Campaign deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.campaigndeletedsuccessfully
+              : "Campaign deleted successfully."
+          );
           self.handleCampaignScriptGridData();
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.campaignnotdeleted:"Campaign not deleted.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.campaignnotdeleted
+              : "Campaign not deleted."
+          );
         }
       })
       .catch((data) => {
@@ -698,10 +721,18 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recorddeletedsuccessfully:"Record Deleted Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record Deleted Successfully."
+          );
           self.handleGetTimeslotGridData();
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotdeleted:"Record Not Deleted.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordnotdeleted
+              : "Record Not Deleted."
+          );
         }
       })
       .catch((data) => {
@@ -739,10 +770,18 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully."
+          );
           self.handleGetLanguageGridData();
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:status);
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordnotupdated
+              : status
+          );
         }
       })
       .catch((data) => {
@@ -924,7 +963,11 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.attachmentsavesuccessfully:"Attachment saved successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.attachmentsavesuccessfully
+                : "Attachment saved successfully."
+            );
             self.setState({
               selectedMaxAttachSize: "0",
               selectedFileFormat: "0",
@@ -975,7 +1018,11 @@ class StoreModule extends Component {
           if (status === "Success") {
             self.handleCampaignScriptGridData();
             self.selectNoCampaign();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignsavedsuccessfully:"Campaign saved successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.campaignsavedsuccessfully
+                : "Campaign saved successfully."
+            );
             document.getElementById("campaignNameValue").textContent = "Select";
             self.setState({
               indiCampaign: "",
@@ -985,7 +1032,11 @@ class StoreModule extends Component {
               addCampaignLoading: false,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.campaignnotsaved:"Campaign not saved.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.campaignnotsaved
+                : "Campaign not saved."
+            );
             self.setState({
               addCampaignLoading: false,
             });
@@ -1025,7 +1076,11 @@ class StoreModule extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignupdatedsuccessfully:"Campaign updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.campaignupdatedsuccessfully
+                : "Campaign updated successfully."
+            );
             self.setState({
               // campaignCompulsion: "",
               updateScriptDetailsCompulsion: "",
@@ -1630,7 +1685,11 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignupdatedsuccessfully:"Campaign Updated Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.campaignupdatedsuccessfully
+                : "Campaign Updated Successfully."
+            );
           }
         })
         .catch((data) => {
@@ -1661,7 +1720,11 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.appointmentupdatedsuccessfully:"Appointment Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.appointmentupdatedsuccessfully
+              : "Appointment Updated Successfully."
+          );
         }
       })
       .catch((data) => {
@@ -1708,7 +1771,11 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.broadcastupdatedsuccessfully:"Broadcast Updated Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.broadcastupdatedsuccessfully
+                : "Broadcast Updated Successfully."
+            );
           }
         })
         .catch((data) => {
@@ -1771,10 +1838,18 @@ class StoreModule extends Component {
               slotduration: "0.5",
               maxCapacity: "",
             });
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotaddedsuccessfully:"Time Slot Added Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.timeslotaddedsuccessfully
+                : "Time Slot Added Successfully."
+            );
             self.handleGetTimeslotGridData();
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotnotadded:"Time Slot Not Added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.timeslotnotadded
+                : "Time Slot Not Added."
+            );
           }
         })
         .catch((data) => {
@@ -1817,7 +1892,11 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotupdatesuccessfully:"Time Slot Updated Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.timeslotupdatesuccessfully
+                : "Time Slot Updated Successfully."
+            );
             self.handleGetTimeslotGridData();
             self.setState({
               editSlotModal: false,
@@ -1839,9 +1918,18 @@ class StoreModule extends Component {
               status.trim().toLowerCase() ===
               "Record Already Exists".trim().toLowerCase()
             ) {
-              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.appointmentrecordalreadyexists:"Appointment Record Already Exists");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage
+                      .appointmentrecordalreadyexists
+                  : "Appointment Record Already Exists"
+              );
             } else {
-              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotnotupdated:"Time Slot Not Updated.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.timeslotnotupdated
+                  : "Time Slot Not Updated."
+              );
             }
           }
         })
@@ -1872,13 +1960,21 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.languageaddedsuccessfully:"Language Added Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.languageaddedsuccessfully
+                : "Language Added Successfully."
+            );
             self.handleGetLanguageGridData();
             self.setState({
               selectLanguage: 0,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.languagenotadded:status);
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.languagenotadded
+                : status
+            );
           }
         })
         .catch((data) => {
@@ -1967,7 +2063,11 @@ class StoreModule extends Component {
         (x) => x.storeId === e[e.length - 1]
       );
       if (isExits.length > 0) {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.slotalreadycreatedofthisstorecode:"Slot already created of this store code.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.slotalreadycreatedofthisstorecode
+            : "Slot already created of this store code."
+        );
       } else {
         if (e.length > 0) {
           this.setState({
@@ -2378,7 +2478,9 @@ class StoreModule extends Component {
                           onChange={this.setClaimTabData}
                         >
                           <option value={0}>
-                          {TranslationContext!==undefined?TranslationContext.option.selectfileformat:"Select File Format"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.selectfileformat
+                              : "Select File Format"}
                           </option>
                           {this.state.fileFormat !== null &&
                             this.state.fileFormat.map((item, i) => (
@@ -3167,10 +3269,11 @@ class StoreModule extends Component {
                                         </p>
                                       )}
                                     </td>
-                                    <td>{TranslationContext !== undefined
-                                        ? TranslationContext.td
-                                            .clicktd
-                                        : "Click"}</td>
+                                    <td>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td.clicktd
+                                        : "Click"}
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td>
@@ -3702,417 +3805,386 @@ class StoreModule extends Component {
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
-                            <div className="col-md-8 m-auto">
+                            <div className="col-md-10 m-auto">
                               <div
-                                className="right-sect-div"
+                                className="right-sect-div slot-newd"
                                 style={{ padding: "20px" }}
                               >
-                                <h3>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.h3.slotsettings
-                                    : "SLOT SETTINGS"}
-                                </h3>
-                                <div
-                                  className="row cmpaign-channel-table lbl-fnt-w-400"
-                                  style={{ margin: "0px", marginLeft: "30px" }}
-                                >
-                                  <div
-                                    className="strdrp-dwn"
-                                    style={{ width: "15%", padding: "0",marginTop:"20px" }}
-                                  >
-                                    <label style={{marginBottom:"10px"}}>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.selectstore
-                                        : "Select Store"}
-                                    </label>
-                                    <Select
-                                      mode="multiple"
-                                      style={{ width: "100%" }}
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.selectstorecode
-                                        : "Select Store Code"}
-                                      onChange={this.handleStoreChangeChange.bind(
-                                        this
-                                      )}
-                                      value={this.state.selectedStoreCode}
-                                    >
-                                      {this.state.storeCodeData !== null &&
-                                        this.state.storeCodeData.map(
-                                          (item, s) => (
-                                            <Option
-                                              key={s}
-                                              value={item.storeID}
-                                              className="select-category-placeholder"
-                                              title={item.storeCode}
+                                <Tabs>
+                                  <Tab label="Manual">
+                                    <div className="manualbox">
+                                      <div className="">
+                                        <ul>
+                                          <li>
+                                            <label>Choose Store</label>
+                                            <div className="input-group">
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Search"
+                                              />
+                                              <span className="input-group-append">
+                                                <img
+                                                  src={searchico}
+                                                  alt="search-icon"
+                                                />
+                                              </span>
+                                            </div>
+                                          </li>
+                                          <li>
+                                            <label>Operational Days</label>
+                                            <select
+                                              name=""
+                                              className="form-control"
                                             >
-                                              {item.storeCode}
-                                            </Option>
-                                          )
-                                        )}
-                                    </Select>
-                                    {this.state.selectedStoreCode.length ===
-                                      0 && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.storeCodeValidation}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div className="pd-10">
-                                    <label className="mr-10">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.storeopentime
-                                        : "Store Open Time"}
-                                    </label>
-                                    <label>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label
-                                            .storeclosetime
-                                        : "Store Close Time"}
-                                    </label>
-                                    <div className="slot-timings">
-                                      <div className="d-flex">
-                                        <select
-                                          className="slot-hour"
-                                          name="selectTimeSlot1"
-                                          value={this.state.selectTimeSlot1}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                          {this.state.TimeSlotData !== null &&
-                                            this.state.TimeSlotData.map(
-                                              (item, j) => (
-                                                <option
-                                                  value={item.TimeSlotId}
-                                                  key={j}
-                                                >
-                                                  {item.TimeSlot}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        <select
-                                          className="slot-shift"
-                                          name="selectAmPm1"
-                                          value={this.state.selectAmPm1}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                           <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
-                          </option>
-                          <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
-                          </option>
-                                        </select>
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                          </li>
+                                          <li>
+                                            <label>Select Slot Template</label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                            <a>+ Create New Template</a>
+                                          </li>
+                                          <li>
+                                            <button className="butn">
+                                              Next >>
+                                            </button>
+                                          </li>
+                                        </ul>
                                       </div>
-                                      <span className="slot-to">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.span.to
-                                          : "TO"}
-                                      </span>
-                                      <div className="d-flex">
-                                        <select
-                                          className="slot-hour"
-                                          name="selectTimeSlot2"
-                                          value={this.state.selectTimeSlot2}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                          {this.state.TimeSlotData !== null &&
-                                            this.state.TimeSlotData.map(
-                                              (item, j) => (
-                                                <option
-                                                  value={item.TimeSlotId}
-                                                  key={j}
-                                                >
-                                                  {item.TimeSlot}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        <select
-                                          className="slot-shift"
-                                          name="selectAmPm2"
-                                          value={this.state.selectAmPm2}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                          <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
-                          </option>
-                          <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
-                          </option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="pd-10">
-                                    <label className="slt-time-lbl">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.slotduration
-                                        : "Slot Duration"}
-                                    </label>
-                                    <div className="slot-timings mr-0">
-                                      <div className="d-flex">
-                                        <select
-                                          className="slot-hour"
-                                          name="slotDuration"
-                                          style={{ width: "50px" }}
-                                          value={this.state.slotDuration}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                          <option value="0.5">1/2</option>
-                                          <option value="1">1</option>
-                                          <option value="2">2</option>
-                                        </select>
-                                        <select
-                                          className="ap-select"
-                                          name="selectAmPm1"
-                                          style={{ width: "30px !important" }}
-                                          disabled={true}
-                                        >
-                                          <option value="H"> {TranslationContext!==undefined?TranslationContext.option.h:"Hr"}</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="mx-slt-div">
-                                    <label>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label
-                                            .maxcptyperslot
-                                        : "Max Cpty Per Slot"}
-                                    </label>
-                                    <input
-                                      className="mx-slt-txt"
-                                      type="text"
-                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.maxcpty:"Max Cpty"}
-                                      name="maxCapacity"
-                                      autoComplete="off"
-                                      maxLength={2}
-                                      value={this.state.maxCapacity}
-                                      onChange={this.handleSlotInputOnchange}
-                                    />
-                                    {this.state.maxCapacity === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.maxCapacityValidation}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                                <label className="slt-non-op-hr-lbl" style={{fontWeight:"400",marginLeft:"30px"}}>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label
-                                        .storenonoperationalhours
-                                    : "Store Non-Oprational Hour"}
-                                </label>
+                                      <div className="nextbox">
+                                        <ul>
+                                          <li>
+                                            <label>Choose Store</label>
+                                            <div className="input-group">
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Search"
+                                              />
+                                              <span className="input-group-append">
+                                                <img
+                                                  src={searchico}
+                                                  alt="search-icon"
+                                                />
+                                              </span>
+                                            </div>
+                                            <a style={{ float: "left" }}>
+                                              8 Store Selected >
+                                            </a>
+                                          </li>
+                                          <li>
+                                            <label>Operational Days</label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                          </li>
+                                          <li>
+                                            <label>Select Slot Template</label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                            <a>+ Create New Template</a>
+                                          </li>
+                                        </ul>
+                                        <div className="">
+                                          <Table
+                                            loading={this.state.loading}
+                                            noDataContent="No Record Found"
+                                            className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                            columns={[
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .slotno
+                                                    : "Slot Id",
 
-                                <div
-                                  className="row cmpaign-channel-table lbl-fnt-w-400"
-                                  style={{ margin: "0px", marginLeft: "15px" }}
-                                >
-                                  <div>
-                                    <label
-                                      className="mr-10"
-                                      style={{ marginLeft: "40px" }}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.from
-                                        : "From"}
-                                    </label>
-                                    <label style={{ marginLeft: "80px" }}>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.ToTime
-                                        : "To"}
-                                    </label>
-                                    <div className="slot-timings">
-                                      <div className="d-flex">
-                                        <select
-                                          className="slot-hour"
-                                          name="selectNOTimeSlot1"
-                                          value={this.state.selectNOTimeSlot1}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                          {this.state.TimeSlotData !== null &&
-                                            this.state.TimeSlotData.map(
-                                              (item, j) => (
-                                                <option
-                                                  value={item.TimeSlotId}
-                                                  key={j}
-                                                >
-                                                  {item.TimeSlot}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        <select
-                                          className="slot-shift"
-                                          name="selectNOAmPm1"
-                                          value={this.state.selectNOAmPm1}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                         <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
-                          </option>
-                          <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
-                          </option>
-                                        </select>
-                                      </div>
-                                      <span className="slot-to">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.span.to
-                                          : "TO"}
-                                      </span>
-                                      <div className="d-flex">
-                                        <select
-                                          className="slot-hour"
-                                          name="selectNOTimeSlot2"
-                                          value={this.state.selectNOTimeSlot2}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                          {this.state.TimeSlotData !== null &&
-                                            this.state.TimeSlotData.map(
-                                              (item, j) => (
-                                                <option
-                                                  value={item.TimeSlotId}
-                                                  key={j}
-                                                >
-                                                  {item.TimeSlot}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        <select
-                                          className="slot-shift"
-                                          name="selectNOAmPm2"
-                                          value={this.state.selectNOAmPm2}
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                        >
-                                         <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
-                          </option>
-                          <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
-                          </option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div style={{ marginLeft: "35px" }}>
-                                    <label className="mr-10">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label
-                                            .appointmentdays
-                                        : "Appointment Days"}
-                                    </label>
-                                    <div
-                                      className="slot-timings"
-                                      style={{
-                                        margin: "0px",
-                                        marginLeft: "10px",
-                                      }}
-                                    >
-                                      <div className="d-flex">
-                                        <select
-                                          className="slot-hour"
-                                          name="appointmentDays"
-                                          onChange={
-                                            this.handleDrop_downOnchange
-                                          }
-                                          value={this.state.appointmentDays}
-                                        >
-                                          <option value="1">1</option>
-                                          <option value="2">2</option>
-                                          <option value="3">3</option>
-                                          <option value="4">4</option>
-                                          <option value="5">5</option>
-                                          <option value="6">6</option>
-                                          <option value="7">7</option>
-                                        </select>
-                                        <select
-                                          className="ap-select"
-                                          name="selectAmPm1"
-                                          disabled={true}
-                                          style={{ width: "50px" }}
-                                        >
-                                          <option value="D"> {TranslationContext!==undefined?TranslationContext.option.days:"Days"}</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="row cmpaign-channel-table"></div>
+                                                dataIndex: "slotSettingID",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .storecode
+                                                    : "Store Code",
+                                                dataIndex: "storeCode",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .storetiming
+                                                    : "Store Timing",
+                                                dataIndex: "storeTimimg",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .nonoperationalhours
+                                                    : "Non Operational Hour",
+                                                dataIndex:
+                                                  "nonOperationalTimimg",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .slotduration
+                                                    : "Slot Duration",
+                                                dataIndex: "storeSlotDuration",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .maxcapacity
+                                                    : "Max Capacity",
+                                                dataIndex: "maxCapacity",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .totalslot
+                                                    : "Total Slot",
+                                                dataIndex: "totalSlot",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .appointmentdays
+                                                    : "Appointment Days",
+                                                dataIndex: "appointmentDays",
+                                              },
+                                              {
+                                                title:
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.header
+                                                        .actions
+                                                    : "Actions",
 
-                                <button
-                                  className="Schedulenext1 w-100 mb-0"
-                                  type="button"
-                                  onClick={this.handleSubmitTimeSlotDate.bind(
-                                    this
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.submit
-                                    : "SUBMIT"}
-                                </button>
-                                <div
-                                  className="cmpaign-channel-table slot-setting-options"
-                                  style={{ marginTop: "30px" }}
-                                >
-                                  <label className="slotstorelbl">
-                                    {" "}
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.selectstorecode
-                                      : "Select Store Code"}
-                                  </label>
-                                  <select
-                                    style={{ width: "30%" }}
-                                    name="selectStore"
-                                    value={this.state.FilterSelectStore}
-                                    onChange={this.handleChangeStoreDropdown.bind(
-                                      this
-                                    )}
-                                  >
-                                    <option value={0}>{TranslationContext!==undefined?TranslationContext.option.all:"All"}</option>
-                                    {this.state.storeCodeData !== null &&
-                                      this.state.storeCodeData.map(
-                                        (item, s) => (
-                                          <option
-                                            key={s}
-                                            value={item.storeID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.storeCode}
-                                          </option>
-                                        )
-                                      )}
-                                  </select>
-                                </div>
+                                                render: (row, rowData) => {
+                                                  var ids = row;
+                                                  return (
+                                                    <>
+                                                      <span>
+                                                        <Popover
+                                                          content={
+                                                            <div className="d-flex general-popover popover-body">
+                                                              <div className="del-big-icon">
+                                                                <img
+                                                                  src={
+                                                                    DelBigIcon
+                                                                  }
+                                                                  alt="del-icon"
+                                                                />
+                                                              </div>
+                                                              <div>
+                                                                <p className="font-weight-bold blak-clr">
+                                                                  {TranslationContext !==
+                                                                  undefined
+                                                                    ? TranslationContext
+                                                                        .p
+                                                                        .deletefile
+                                                                    : "Delete file"}
+                                                                  ?
+                                                                </p>
+                                                                <p className="mt-1 fs-12">
+                                                                  {TranslationContext !==
+                                                                  undefined
+                                                                    ? TranslationContext
+                                                                        .p
+                                                                        .areyousureyouwanttodeletethisfile
+                                                                    : "Are you sure you want to delete this file"}
+                                                                  ?
+                                                                </p>
+                                                                <div className="del-can">
+                                                                  <a
+                                                                    href={
+                                                                      Demo.BLANK_LINK
+                                                                    }
+                                                                  >
+                                                                    {TranslationContext !==
+                                                                    undefined
+                                                                      ? TranslationContext
+                                                                          .a
+                                                                          .cancel
+                                                                      : "CANCEL"}
+                                                                  </a>
+                                                                  <button
+                                                                    className="butn"
+                                                                    onClick={this.handleDeleteTimeSlot.bind(
+                                                                      this,
+                                                                      rowData.slotSettingID
+                                                                    )}
+                                                                  >
+                                                                    {TranslationContext !==
+                                                                    undefined
+                                                                      ? TranslationContext
+                                                                          .button
+                                                                          .delete
+                                                                      : "Delete"}
+                                                                  </button>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          }
+                                                          placement="bottom"
+                                                          trigger="click"
+                                                        >
+                                                          <img
+                                                            src={RedDeleteIcon}
+                                                            alt="del-icon"
+                                                            className="del-btn"
+                                                            id={ids}
+                                                          />
+                                                        </Popover>
+
+                                                        <button
+                                                          className="react-tabel-button editre"
+                                                          onClick={this.openSlotEditModal.bind(
+                                                            this,
+                                                            rowData.slotSettingID,
+                                                            rowData.storeId
+                                                          )}
+                                                        >
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .button.edit
+                                                            : "EDIT"}
+                                                        </button>
+                                                      </span>
+                                                    </>
+                                                  );
+                                                },
+                                              },
+                                            ]}
+                                            rowKey={(record) => {
+                                              if (record.slotSettingID) {
+                                                uid = uid + 1;
+                                                return (
+                                                  record.slotSettingID +
+                                                  "i" +
+                                                  uid
+                                                );
+                                              } else {
+                                                uid = uid + 1;
+                                                return "i" + uid;
+                                              }
+                                            }}
+                                          ></Table>
+                                        </div>
+
+                                        <ul>
+                                          <li>
+                                            <label>
+                                              Slot days need to display
+                                            </label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                          </li>
+                                          <li>
+                                            <label>
+                                              Applicable From (Date)
+                                            </label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                          </li>
+                                          <li>
+                                            <label>
+                                              Max People allowed in one
+                                              Appointment
+                                            </label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                          </li>
+                                        </ul>
+                                        <div className="row">
+                                          <div className="col-md-4">
+                                            <div className="statuscheckbox">
+                                              <label style={{marginRight:"15px"}}>Status</label>
+                                              <input
+                                                type="checkbox"
+                                                classNam="form-control"
+                                              />
+                                              <label>Active</label>
+                                              <input
+                                                type="checkbox"
+                                                classNam="form-control"
+                                              />
+                                              <label>Inactive</label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
+                                          <button className="butn">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Save"}
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Tab>
+                                  <Tab label="Bulk Upload">
+                                    <div className="bulkuploadbox">
+                                      <div className="addfilebox">
+                                        <img src={pinico} alt="pin-icon" />
+                                        <h3>
+                                          <span>Add File</span> or Drag here
+                                        </h3>
+                                      </div>
+                                    </div>
+                                  </Tab>
+                                </Tabs>
                               </div>
                             </div>
                           </div>
@@ -4139,39 +4211,47 @@ class StoreModule extends Component {
                                     dataIndex: "storeCode",
                                   },
                                   {
-                                    title:  TranslationContext !== undefined
-                                    ? TranslationContext.header.storetiming
-                                    : "Store Timing",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.storetiming
+                                        : "Store Timing",
                                     dataIndex: "storeTimimg",
                                   },
                                   {
-                                    title:TranslationContext !== undefined
-                                    ? TranslationContext.header.nonoperationalhours
-                                    : "Non Operational Hour",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header
+                                            .nonoperationalhours
+                                        : "Non Operational Hour",
                                     dataIndex: "nonOperationalTimimg",
                                   },
                                   {
-                                    title: TranslationContext !== undefined
-                                    ? TranslationContext.header.slotduration
-                                    : "Slot Duration",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.slotduration
+                                        : "Slot Duration",
                                     dataIndex: "storeSlotDuration",
                                   },
                                   {
-                                    title: TranslationContext !== undefined
-                                    ? TranslationContext.header.maxcapacity
-                                    : "Max Capacity",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.maxcapacity
+                                        : "Max Capacity",
                                     dataIndex: "maxCapacity",
                                   },
                                   {
-                                    title: TranslationContext !== undefined
-                                    ? TranslationContext.header.totalslot
-                                    : "Total Slot",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.totalslot
+                                        : "Total Slot",
                                     dataIndex: "totalSlot",
                                   },
                                   {
-                                    title: TranslationContext !== undefined
-                                    ? TranslationContext.header.appointmentdays
-                                    : "Appointment Days",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header
+                                            .appointmentdays
+                                        : "Appointment Days",
                                     dataIndex: "appointmentDays",
                                   },
                                   {
@@ -4379,7 +4459,7 @@ class StoreModule extends Component {
                                       debugger;
                                       return (
                                         <>
-                                          {row===true ? "Active" : "Inactive"}
+                                          {row === true ? "Active" : "Inactive"}
                                         </>
                                       );
                                     },
@@ -4611,11 +4691,15 @@ class StoreModule extends Component {
                           value={this.state.editSelectAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                         <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          <option value="AM">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.am
+                              : "AM"}
                           </option>
                           <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.pm
+                              : "PM"}
                           </option>
                         </select>
                       </div>
@@ -4641,23 +4725,30 @@ class StoreModule extends Component {
                           onChange={this.handleEditDrop_downOnchange}
                         >
                           <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.am
+                              : "AM"}
                           </option>
                           <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.pm
+                              : "PM"}
                           </option>
                         </select>
                       </div>
                     </div>
                     <label className="edit-slot-lbl">
-                    {TranslationContext!==undefined?TranslationContext.label.slotduration:"Slot Duration"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.slotduration
+                        : "Slot Duration"}
                     </label>
                     <label
                       className="edit-slot-lbl"
                       style={{ marginLeft: "48px" }}
                     >
-                      {TranslationContext!==undefined?TranslationContext.label.maximumcapacity:"Maximum Capacity"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.maximumcapacity
+                        : "Maximum Capacity"}
                     </label>
                     <div className="slot-timings">
                       <div className="d-flex">
@@ -4678,7 +4769,9 @@ class StoreModule extends Component {
                           disabled={true}
                         >
                           <option value="H">
-                          {TranslationContext!==undefined?TranslationContext.option.h:"Hr"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.h
+                              : "Hr"}
                           </option>
                         </select>
                       </div>
@@ -4686,7 +4779,11 @@ class StoreModule extends Component {
                       <input
                         style={{ width: "93px", marginLeft: "34px" }}
                         type="text"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.maxcpty:"Max Cpty"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.maxcpty
+                            : "Max Cpty"
+                        }
                         name="editmaxCapacity"
                         autoComplete="off"
                         maxLength={2}
@@ -4705,15 +4802,20 @@ class StoreModule extends Component {
                       )}
                     </div>
                     <label className="edit-slot-lbl">
-                    {TranslationContext!==undefined?TranslationContext.label.storenonoperationalhours:"Store Non-Oprational Hours"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.storenonoperationalhours
+                        : "Store Non-Oprational Hours"}
                     </label>
                     <br />
                     <label className="edit-slot-lbl edit-slot-lbl2">
-                    {TranslationContext!==undefined?TranslationContext.label.from:"From"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.from
+                        : "From"}
                     </label>
                     <label className="edit-slot-lbl edit-slot-lbl1">
-                    {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.to
+                        : "To"}
                     </label>
                     <div className="slot-timings">
                       <div className="d-flex">
@@ -4736,16 +4838,22 @@ class StoreModule extends Component {
                           value={this.state.editSelectNOAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                         <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          <option value="AM">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.am
+                              : "AM"}
                           </option>
                           <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.pm
+                              : "PM"}
                           </option>
                         </select>
                       </div>
                       <span className="slot-to">
-                      {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.to
+                          : "To"}
                       </span>
                       <div className="d-flex">
                         <select
@@ -4767,17 +4875,23 @@ class StoreModule extends Component {
                           value={this.state.editSelectNOAmPm2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                         <option value="AM">
-                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          <option value="AM">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.am
+                              : "AM"}
                           </option>
                           <option value="PM">
-                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.pm
+                              : "PM"}
                           </option>
                         </select>
                       </div>
                     </div>
                     <label className="edit-slot-lbl">
-                    {TranslationContext!==undefined?TranslationContext.label.appointmentdays:"Appointment Days"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.appointmentdays
+                        : "Appointment Days"}
                     </label>
                     <div className="slot-timings">
                       <div className="d-flex">
@@ -4802,7 +4916,9 @@ class StoreModule extends Component {
                           disabled={true}
                         >
                           <option value="D">
-                          {TranslationContext!==undefined?TranslationContext.option.days:"Days"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.days
+                              : "Days"}
                           </option>
                         </select>
                       </div>

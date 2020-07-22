@@ -55,6 +55,7 @@ class OrderSetting extends Component {
       file: {},
       fileName: "",
       ordSettingBtnDisabled: false,
+      orderWhatsAppTemplate: []
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -63,6 +64,7 @@ class OrderSetting extends Component {
     this.handleGetModuleConfigData();
     this.handleGetOrderConfigData();
     this.handleGetShippingTempData();
+    this.handleGetWhatsAppTemplateData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -893,6 +895,75 @@ class OrderSetting extends Component {
       });
     }
   };
+
+  handleGetWhatsAppTemplateData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetWhatsappTemplate",
+      headers: authHeader(),
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            orderWhatsAppTemplate: data
+          });
+        } else {
+          self.setState({
+            orderWhatsAppTemplate: []
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleWhatsAppTemplateTextOnChange(index,e){
+    const { value } = e.target;
+    let orderWhatsAppTemplate = this.state.orderWhatsAppTemplate;
+    orderWhatsAppTemplate[index].templateName = value;
+
+    this.setState({
+      orderWhatsAppTemplate
+    })
+  }
+
+  handleUpdateWhatsAppTemplateData() {
+    const TranslationContext = this.state.translateLanguage.default;
+    debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateWhatsappTemplate",
+      headers: authHeader(),
+      data: {
+        pHYWhatsAppTemplates: this.state.orderWhatsAppTemplate
+      },
+    })
+      .then(function (res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.orderupdatedsuccessfully
+              : "Order Updated Successfully."
+          );
+        } else {
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.ordernotupdated
+              : "Order Not Updated."
+          );
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2008,6 +2079,100 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
+                <Tab
+                  label={"WhatsApp Template"}
+                >
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5">
+                              <div className="right-sect-div">
+                                <h3>
+                                  WhatsApp Template
+                                </h3>
+                                <div className="module-switch-cntr">
+                                  {this.state.orderWhatsAppTemplate !== null &&
+                                    this.state.orderWhatsAppTemplate.map((item, i) => (
+                                      // <option
+                                      //   key={i}
+                                      //   value={item.subCategoryID}
+                                      //   className="select-category-placeholder"
+                                      // >
+                                      //   {item.subCategoryName}
+                                      // </option>
+                                      <div className="module-switch ord-m-t20">
+                                        <div className="switch switch-primary">
+                                          <label className="storeRole-name-text m-0 ordSttd-store">
+                                            {(() => {
+                                              switch (item.messageName) {
+                                                case 'Campaign':
+                                                  return item.messageName;
+                                                case 'Shopping Bab to order':
+                                                  return item.messageName;
+                                                case 'Payment Link':
+                                                  return item.messageName;
+                                                case 'AWB Assigned':
+                                                  return item.messageName;
+                                                case 'Delivered':
+                                                  return item.messageName;
+                                                case 'Cancelled':
+                                                  return item.messageName;
+                                                case 'Out For Delivery':
+                                                  return item.messageName;
+                                                case 'Undelivered':
+                                                  return item.messageName;
+                                              }
+                                            })()}
+                                            {/* {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .shoppingbagconvertedtoorder
+                                          : "Shopping bag Converted to Order"} */}
+                                            {/* {TranslationContext !== undefined
+                                          
+
+                                          } */}
+                                          </label>
+                                        </div>
+                                            <div className={"ordcusinput"+(i+1)}>
+                                              <input
+                                                type="text"
+                                                autoComplete="off"
+                                                placeholder="Enter Template"
+                                                maxLength={500}
+                                                value={
+                                                  item.templateName
+                                                }
+                                                onChange={this.handleWhatsAppTemplateTextOnChange.bind(
+                                                  this, i
+                                                )}
+                                              />
+                                            </div>                                          
+                                      </div>
+
+                                    ))}
+                                 </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleUpdateWhatsAppTemplateData.bind(
+                                    this
+                                  )}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+
               </Tabs>
             </section>
             {/* edit slot starts */}
