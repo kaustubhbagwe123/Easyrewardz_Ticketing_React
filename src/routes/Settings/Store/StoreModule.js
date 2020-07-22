@@ -153,6 +153,16 @@ class StoreModule extends Component {
       editSelectNOAmPm2: "",
       editAppointmentDays: "",
       editSlotDuration: "",
+      isNextClick: false,
+      slotData: [
+        {
+          no: 1,
+          startTime: "10:00 AM",
+          endTime: "10:30 AM",
+          occupancy: 3,
+          slotstatus: true,
+        },
+      ],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2096,6 +2106,13 @@ class StoreModule extends Component {
     }
   };
 
+  handleNextButtonOpen = () => {
+    this.setState({ isNextClick: true });
+  };
+  handleNextButtonClose = () => {
+    this.setState({ isNextClick: false });
+  };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3813,365 +3830,239 @@ class StoreModule extends Component {
                                 <Tabs>
                                   <Tab label="Manual">
                                     <div className="manualbox">
-                                      <div className="">
-                                        <ul>
-                                          <li>
-                                            <label>Choose Store</label>
-                                            <div className="input-group">
-                                              <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Search"
-                                              />
-                                              <span className="input-group-append">
-                                                <img
-                                                  src={searchico}
-                                                  alt="search-icon"
-                                                />
-                                              </span>
-                                            </div>
-                                          </li>
-                                          <li>
-                                            <label>Operational Days</label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                          </li>
-                                          <li>
-                                            <label>Select Slot Template</label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                            <a>+ Create New Template</a>
-                                          </li>
-                                          <li>
-                                            <button className="butn">
-                                              Next >>
-                                            </button>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      <div className="nextbox">
-                                        <ul>
-                                          <li>
-                                            <label>Choose Store</label>
-                                            <div className="input-group">
-                                              <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Search"
-                                              />
-                                              <span className="input-group-append">
-                                                <img
-                                                  src={searchico}
-                                                  alt="search-icon"
-                                                />
-                                              </span>
-                                            </div>
-                                            <a style={{ float: "left" }}>
-                                              8 Store Selected >
-                                            </a>
-                                          </li>
-                                          <li>
-                                            <label>Operational Days</label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                          </li>
-                                          <li>
-                                            <label>Select Slot Template</label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                            <a>+ Create New Template</a>
-                                          </li>
-                                        </ul>
+                                      {!this.state.isNextClick ? (
                                         <div className="">
-                                          <Table
-                                            loading={this.state.loading}
-                                            noDataContent="No Record Found"
-                                            className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                                            columns={[
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .slotno
-                                                    : "Slot Id",
-
-                                                dataIndex: "slotSettingID",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .storecode
-                                                    : "Store Code",
-                                                dataIndex: "storeCode",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .storetiming
-                                                    : "Store Timing",
-                                                dataIndex: "storeTimimg",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .nonoperationalhours
-                                                    : "Non Operational Hour",
-                                                dataIndex:
-                                                  "nonOperationalTimimg",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .slotduration
-                                                    : "Slot Duration",
-                                                dataIndex: "storeSlotDuration",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .maxcapacity
-                                                    : "Max Capacity",
-                                                dataIndex: "maxCapacity",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .totalslot
-                                                    : "Total Slot",
-                                                dataIndex: "totalSlot",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .appointmentdays
-                                                    : "Appointment Days",
-                                                dataIndex: "appointmentDays",
-                                              },
-                                              {
-                                                title:
-                                                  TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.header
-                                                        .actions
-                                                    : "Actions",
-
-                                                render: (row, rowData) => {
-                                                  var ids = row;
-                                                  return (
-                                                    <>
-                                                      <span>
-                                                        <Popover
-                                                          content={
-                                                            <div className="d-flex general-popover popover-body">
-                                                              <div className="del-big-icon">
-                                                                <img
-                                                                  src={
-                                                                    DelBigIcon
-                                                                  }
-                                                                  alt="del-icon"
-                                                                />
-                                                              </div>
-                                                              <div>
-                                                                <p className="font-weight-bold blak-clr">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .p
-                                                                        .deletefile
-                                                                    : "Delete file"}
-                                                                  ?
-                                                                </p>
-                                                                <p className="mt-1 fs-12">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .p
-                                                                        .areyousureyouwanttodeletethisfile
-                                                                    : "Are you sure you want to delete this file"}
-                                                                  ?
-                                                                </p>
-                                                                <div className="del-can">
-                                                                  <a
-                                                                    href={
-                                                                      Demo.BLANK_LINK
-                                                                    }
-                                                                  >
-                                                                    {TranslationContext !==
-                                                                    undefined
-                                                                      ? TranslationContext
-                                                                          .a
-                                                                          .cancel
-                                                                      : "CANCEL"}
-                                                                  </a>
-                                                                  <button
-                                                                    className="butn"
-                                                                    onClick={this.handleDeleteTimeSlot.bind(
-                                                                      this,
-                                                                      rowData.slotSettingID
-                                                                    )}
-                                                                  >
-                                                                    {TranslationContext !==
-                                                                    undefined
-                                                                      ? TranslationContext
-                                                                          .button
-                                                                          .delete
-                                                                      : "Delete"}
-                                                                  </button>
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                          }
-                                                          placement="bottom"
-                                                          trigger="click"
-                                                        >
-                                                          <img
-                                                            src={RedDeleteIcon}
-                                                            alt="del-icon"
-                                                            className="del-btn"
-                                                            id={ids}
-                                                          />
-                                                        </Popover>
-
-                                                        <button
-                                                          className="react-tabel-button editre"
-                                                          onClick={this.openSlotEditModal.bind(
-                                                            this,
-                                                            rowData.slotSettingID,
-                                                            rowData.storeId
-                                                          )}
-                                                        >
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .button.edit
-                                                            : "EDIT"}
-                                                        </button>
-                                                      </span>
-                                                    </>
-                                                  );
-                                                },
-                                              },
-                                            ]}
-                                            rowKey={(record) => {
-                                              if (record.slotSettingID) {
-                                                uid = uid + 1;
-                                                return (
-                                                  record.slotSettingID +
-                                                  "i" +
-                                                  uid
-                                                );
-                                              } else {
-                                                uid = uid + 1;
-                                                return "i" + uid;
-                                              }
-                                            }}
-                                          ></Table>
+                                          <ul>
+                                            <li>
+                                              <label>Choose Store</label>
+                                              <div className="input-group">
+                                                <input
+                                                  type="text"
+                                                  className="form-control"
+                                                  placeholder="Search"
+                                                />
+                                                <span className="input-group-append">
+                                                  <img
+                                                    src={searchico}
+                                                    alt="search-icon"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </li>
+                                            <li>
+                                              <label>Operational Days</label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                            </li>
+                                            <li>
+                                              <label>
+                                                Select Slot Template
+                                              </label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                              <a>+ Create New Template</a>
+                                            </li>
+                                            <li>
+                                              <button
+                                                className="butn"
+                                                onClick={this.handleNextButtonOpen.bind(
+                                                  this
+                                                )}
+                                              >
+                                                {"Next" + ">>"}
+                                              </button>
+                                            </li>
+                                          </ul>
                                         </div>
+                                      ) : null}
+                                      {this.state.isNextClick ? (
+                                        <div className="nextbox">
+                                          <ul>
+                                            <li>
+                                              <label>Choose Store</label>
+                                              <div className="input-group">
+                                                <input
+                                                  type="text"
+                                                  className="form-control"
+                                                  placeholder="Search"
+                                                />
+                                                <span className="input-group-append">
+                                                  <img
+                                                    src={searchico}
+                                                    alt="search-icon"
+                                                  />
+                                                </span>
+                                              </div>
+                                              <a style={{ float: "left" }}>
+                                                8 Store Selected >
+                                              </a>
+                                            </li>
+                                            <li>
+                                              <label>Operational Days</label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                            </li>
+                                            <li>
+                                              <label>
+                                                Select Slot Template
+                                              </label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                              <a>+ Create New Template</a>
+                                            </li>
+                                          </ul>
+                                          <div className="">
+                                            <Table
+                                              dataSource={this.state.slotData}
+                                              noDataContent="No Record Found"
+                                              pagination={false}
+                                              className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                              columns={[
+                                                {
+                                                  title: "S.No.",
 
-                                        <ul>
-                                          <li>
-                                            <label>
-                                              Slot days need to display
-                                            </label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                          </li>
-                                          <li>
-                                            <label>
-                                              Applicable From (Date)
-                                            </label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                          </li>
-                                          <li>
-                                            <label>
-                                              Max People allowed in one
-                                              Appointment
-                                            </label>
-                                            <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select>
-                                          </li>
-                                        </ul>
-                                        <div className="row">
-                                          <div className="col-md-4">
-                                            <div className="statuscheckbox">
-                                              <label style={{marginRight:"15px"}}>Status</label>
-                                              <input
-                                                type="checkbox"
-                                                classNam="form-control"
-                                              />
-                                              <label>Active</label>
-                                              <input
-                                                type="checkbox"
-                                                classNam="form-control"
-                                              />
-                                              <label>Inactive</label>
+                                                  dataIndex: "no",
+                                                },
+                                                {
+                                                  title: "Slot Start Time",
+                                                  dataIndex: "startTime",
+                                                },
+                                                {
+                                                  title: "Slot End Time",
+                                                  dataIndex: "endTime",
+                                                },
+                                                {
+                                                  title: "Slot Occupancy",
+                                                  dataIndex: "occupancy",
+                                                },
+                                                {
+                                                  title:
+                                                    "Slot Status(Unable/Disble)",
+
+                                                  render: (row, rowData) => {
+                                                    return <>redio button</>;
+                                                  },
+                                                },
+                                              ]}
+                                            ></Table>
+                                          </div>
+
+                                          <ul>
+                                            <li>
+                                              <label>
+                                                Slot days need to display
+                                              </label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                            </li>
+                                            <li>
+                                              <label>
+                                                Applicable From (Date)
+                                              </label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                            </li>
+                                            <li>
+                                              <label>
+                                                Max People allowed in one
+                                                Appointment
+                                              </label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={0}>1</option>
+                                              </select>
+                                            </li>
+                                          </ul>
+                                          <div className="row">
+                                            <div className="col-md-4">
+                                              <div className="statuscheckbox">
+                                                <label
+                                                  style={{
+                                                    marginRight: "15px",
+                                                  }}
+                                                >
+                                                  Status
+                                                </label>
+                                                <input
+                                                  type="checkbox"
+                                                  classNam="form-control"
+                                                />
+                                                <label>Active</label>
+                                                <input
+                                                  type="checkbox"
+                                                  classNam="form-control"
+                                                />
+                                                <label>Inactive</label>
+                                              </div>
                                             </div>
                                           </div>
+                                          <div className="del-can">
+                                            <a href={Demo.BLANK_LINK}>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.a.cancel
+                                                : "CANCEL"}
+                                            </a>
+                                            <button
+                                              className="butn"
+                                              onClick={this.handleNextButtonClose.bind(
+                                                this
+                                              )}
+                                            >
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .delete
+                                                : "Save"}
+                                            </button>
+                                          </div>
                                         </div>
-                                        <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.a.cancel
-                                              : "CANCEL"}
-                                          </a>
-                                          <button className="butn">
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.button.delete
-                                              : "Save"}
-                                          </button>
-                                        </div>
-                                      </div>
+                                      ) : null}
                                     </div>
                                   </Tab>
                                   <Tab label="Bulk Upload">
