@@ -21,10 +21,7 @@ import config from "../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
 import { Checkbox } from "antd";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import moment from "moment";
 import ClaimStatus from "../../../routes/ClaimStatus";
 import matchSorter from "match-sorter";
@@ -240,7 +237,6 @@ class StoreReports extends Component {
   }
 
   applyCallback = async (startDate, endDate) => {
-    debugger;
     var startArr = endDate[0].split("-");
     var dummyStart = startArr[0];
     startArr[0] = startArr[1];
@@ -258,19 +254,16 @@ class StoreReports extends Component {
   };
 
   setMultiSelectDropdown = (e, action) => {
-    debugger;
     this.setState({ [action.name]: e });
   };
 
   handleOnChangeData(e) {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
   }
 
   handleClearTabData() {
-    debugger;
     setTimeout(() => {
       this.selectNoDepartment();
       this.selectNoFunction();
@@ -309,7 +302,6 @@ class StoreReports extends Component {
   }
 
   handleClearScheduleData() {
-    debugger;
     this.setState({
       selectedTeamMember: [],
       selectScheduleDate: "",
@@ -338,7 +330,6 @@ class StoreReports extends Component {
   }
 
   handleDepartmentButton() {
-    debugger;
     let slaShowOriginal = this.state.departmentShow;
     let departmentShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.departmentOvrlayShow;
@@ -349,7 +340,6 @@ class StoreReports extends Component {
     });
   }
   selectAllDepartment = async (event) => {
-    debugger;
     var indiDepartment = "";
     var checkboxes = document.getElementsByName("allDepartment");
     document.getElementById("departmentNameValue").textContent = "All Selected";
@@ -370,7 +360,6 @@ class StoreReports extends Component {
     this.handleGetFunction();
   };
   selectNoDepartment = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allDepartment");
     document.getElementById("departmentNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -383,7 +372,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualDepartment = async (issueId, event) => {
-    debugger;
     var indiDepartment = this.state.indiDepartment;
     var separator = ",";
     var values = indiDepartment.split(separator);
@@ -419,7 +407,6 @@ class StoreReports extends Component {
   };
 
   handleClaimIssueTypeButton() {
-    debugger;
     let slaShowOriginal = this.state.claimIssueTypeShow;
     let claimIssueTypeShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.claimIssueTypeOvrlayShow;
@@ -430,7 +417,6 @@ class StoreReports extends Component {
     });
   }
   selectAllClaimIssueType = async (event) => {
-    debugger;
     var indiClaimIssueType = "";
     var checkboxes = document.getElementsByName("allClaimIssueType");
     document.getElementById("claimIssueTypeNameValue").textContent =
@@ -451,7 +437,6 @@ class StoreReports extends Component {
     });
   };
   selectNoClaimIssueType = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allClaimIssueType");
     document.getElementById("claimIssueTypeNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -464,7 +449,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualClaimIssueType = async (issueId, event) => {
-    debugger;
     var indiClaimIssueType = this.state.indiClaimIssueType;
     var separator = ",";
     var values = indiClaimIssueType.split(separator);
@@ -500,7 +484,6 @@ class StoreReports extends Component {
   };
 
   handleClaimSubCategoryButton() {
-    debugger;
     let slaShowOriginal = this.state.claimSubCategoryShow;
     let claimSubCategoryShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.claimSubCategoryOvrlayShow;
@@ -511,7 +494,6 @@ class StoreReports extends Component {
     });
   }
   selectAllClaimSubCategory = async (event) => {
-    debugger;
     var indiClaimSubCategory = "";
     var checkboxes = document.getElementsByName("allClaimSubCategory");
     document.getElementById("claimSubCategoryNameValue").textContent =
@@ -534,7 +516,6 @@ class StoreReports extends Component {
     this.handleGetClaimIssueType();
   };
   selectNoClaimSubCategory = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allClaimSubCategory");
     document.getElementById("claimSubCategoryNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -547,7 +528,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualClaimSubCategory = async (issueId, event) => {
-    debugger;
     var indiClaimSubCategory = this.state.indiClaimSubCategory;
     var separator = ",";
     var values = indiClaimSubCategory.split(separator);
@@ -585,7 +565,6 @@ class StoreReports extends Component {
   };
 
   handleClaimCategoryButton() {
-    debugger;
     let slaShowOriginal = this.state.claimCategoryShow;
     let claimCategoryShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.claimCategoryOvrlayShow;
@@ -596,7 +575,6 @@ class StoreReports extends Component {
     });
   }
   selectAllClaimCategory = async (event) => {
-    debugger;
     var indiClaimCategory = "";
     var checkboxes = document.getElementsByName("allClaimCategory");
     document.getElementById("claimCategoryNameValue").textContent =
@@ -617,7 +595,6 @@ class StoreReports extends Component {
     });
   };
   selectNoClaimCategory = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allClaimCategory");
     document.getElementById("claimCategoryNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -630,7 +607,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualClaimCategory = async (issueId, event) => {
-    debugger;
     var indiClaimCategory = this.state.indiClaimCategory;
     var separator = ",";
     var values = indiClaimCategory.split(separator);
@@ -667,7 +643,6 @@ class StoreReports extends Component {
   };
 
   handleClaimStatusButton() {
-    debugger;
     let slaShowOriginal = this.state.claimStatusShow;
     let claimStatusShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.claimStatusOvrlayShow;
@@ -678,7 +653,6 @@ class StoreReports extends Component {
     });
   }
   selectAllClaimStatus = async (event) => {
-    debugger;
     var indiClaimStatus = "";
     var checkboxes = document.getElementsByName("allClaimStatus");
     document.getElementById("claimStatusNameValue").textContent =
@@ -699,7 +673,6 @@ class StoreReports extends Component {
     });
   };
   selectNoClaimStatus = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allClaimStatus");
     document.getElementById("claimStatusNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -712,7 +685,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualClaimStatus = async (issueId, event) => {
-    debugger;
     var indiClaimStatus = this.state.indiClaimStatus;
     var separator = ",";
     var values = indiClaimStatus.split(separator);
@@ -747,7 +719,6 @@ class StoreReports extends Component {
   };
 
   handlePriorityButton() {
-    debugger;
     let slaShowOriginal = this.state.priorityShow;
     let priorityShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.priorityOvrlayShow;
@@ -758,7 +729,6 @@ class StoreReports extends Component {
     });
   }
   selectAllPriority = async (event) => {
-    debugger;
     var indiPriority = "";
     var checkboxes = document.getElementsByName("allPriority");
     document.getElementById("priorityNameValue").textContent = "All Selected";
@@ -778,7 +748,6 @@ class StoreReports extends Component {
     });
   };
   selectNoPriority = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allPriority");
     document.getElementById("priorityNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -791,7 +760,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualPriority = async (issueId, event) => {
-    debugger;
     var indiPriority = this.state.indiPriority;
     var separator = ",";
     var values = indiPriority.split(separator);
@@ -826,7 +794,6 @@ class StoreReports extends Component {
   };
 
   handleCampaignNameButton() {
-    debugger;
     let slaShowOriginal = this.state.campaignNameShow;
     let campaignNameShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.campaignNameOvrlayShow;
@@ -837,7 +804,6 @@ class StoreReports extends Component {
     });
   }
   selectAllCampaignName = async (event) => {
-    debugger;
     var indiCampaignName = "";
     var checkboxes = document.getElementsByName("allCampaignName");
     document.getElementById("campaignNameValue").textContent = "All Selected";
@@ -857,7 +823,6 @@ class StoreReports extends Component {
     });
   };
   selectNoCampaignName = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allCampaignName");
     document.getElementById("campaignNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -870,7 +835,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualCampaignName = async (issueId, event) => {
-    debugger;
     var indiCampaignName = this.state.indiCampaignName;
     var separator = ",";
     var values = indiCampaignName.split(separator);
@@ -905,7 +869,6 @@ class StoreReports extends Component {
   };
 
   handleFunctionButton() {
-    debugger;
     let slaShowOriginal = this.state.functionShow;
     let functionShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.functionOvrlayShow;
@@ -916,7 +879,6 @@ class StoreReports extends Component {
     });
   }
   selectAllFunction = async (event) => {
-    debugger;
     var indiFunction = "";
     var checkboxes = document.getElementsByName("allFunction");
     document.getElementById("functionNameValue").textContent = "All Selected";
@@ -936,7 +898,6 @@ class StoreReports extends Component {
     });
   };
   selectNoFunction = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allFunction");
     document.getElementById("functionNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -949,7 +910,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualFunction = async (issueId, event) => {
-    debugger;
     var indiFunction = this.state.indiFunction;
     var separator = ",";
     var values = indiFunction.split(separator);
@@ -984,7 +944,6 @@ class StoreReports extends Component {
   };
 
   handleCampaignStatusButton() {
-    debugger;
     let slaShowOriginal = this.state.campaignStatusShow;
     let campaignStatusShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.campaignStatusOvrlayShow;
@@ -995,7 +954,6 @@ class StoreReports extends Component {
     });
   }
   selectAllCampaignStatus = async (event) => {
-    debugger;
     var indiCampaignStatus = "";
     var checkboxes = document.getElementsByName("allCampaignStatus");
     document.getElementById("campaignStatusNameValue").textContent =
@@ -1016,7 +974,6 @@ class StoreReports extends Component {
     });
   };
   selectNoCampaignStatus = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allCampaignStatus");
     document.getElementById("campaignStatusNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -1029,7 +986,6 @@ class StoreReports extends Component {
     });
   };
   selectIndividualCampaignStatus = async (issueId, event) => {
-    debugger;
     var indiCampaignStatus = this.state.indiCampaignStatus;
     var separator = ",";
     var values = indiCampaignStatus.split(separator);
@@ -1074,7 +1030,6 @@ class StoreReports extends Component {
     // this.handleClearTabData();
   }
   handleNextPopupOpen(activeTabId) {
-    debugger;
     //this.handleAddReportClose();
     this.handleGetStoreReportSearch(activeTabId);
     this.setState({ NextPopup: true });
@@ -1092,7 +1047,6 @@ class StoreReports extends Component {
     this.handleGetStoreReports();
   }
   handleReportCreateDate(name, date) {
-    debugger;
     this.setState({ [name]: date });
   }
   handleChangeTab(index) {
@@ -1102,7 +1056,6 @@ class StoreReports extends Component {
   }
 
   handleGetDepartment() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1110,7 +1063,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1123,7 +1075,6 @@ class StoreReports extends Component {
   }
 
   handleGetFunction() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1134,7 +1085,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1148,7 +1098,6 @@ class StoreReports extends Component {
   }
 
   handleGetPriority() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -1156,7 +1105,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1169,7 +1117,6 @@ class StoreReports extends Component {
   }
 
   handleGetClaimCategory() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1178,7 +1125,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1191,7 +1137,6 @@ class StoreReports extends Component {
   }
 
   handleGetClaimSubCategory() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1200,7 +1145,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1213,7 +1157,6 @@ class StoreReports extends Component {
   }
 
   handleGetClaimIssueType() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1222,7 +1165,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1235,7 +1177,6 @@ class StoreReports extends Component {
   }
 
   handleGetUser() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1243,7 +1184,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -1256,7 +1196,6 @@ class StoreReports extends Component {
   }
 
   handleGetStoreReportSearch(activeTabId) {
-    debugger;
     let self = this;
     var taskStatus = "";
     this.setState({ selectedTaskStatus: "" });
@@ -1338,7 +1277,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         if (message === "Success" || message === "Record Not Found") {
           self.setState({ totalResult: response.data.responseData });
@@ -1350,7 +1288,6 @@ class StoreReports extends Component {
   }
 
   handleGetStoreReports() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1358,7 +1295,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success" && data.length > 0) {
@@ -1457,7 +1393,6 @@ class StoreReports extends Component {
   }
 
   ScheduleOpenModel = () => {
-    debugger;
     if (this.state.selectedReportName == "") {
       NotificationManager.error("Please enter report name");
     } else {
@@ -1471,7 +1406,6 @@ class StoreReports extends Component {
           ReportName: self.state.selectedReportName,
         },
       }).then(function(res) {
-        debugger;
         if (res.data.message === "Record Already Exists ") {
           NotificationManager.error("Report name aleady exists.");
           return;
@@ -1503,7 +1437,6 @@ class StoreReports extends Component {
   };
 
   handleScheduleDateChange(e) {
-    debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
       this.setState({
@@ -1628,7 +1561,6 @@ class StoreReports extends Component {
   }
 
   handleWeekly = (e) => {
-    debugger;
     this.setState({
       selectedNoOfWeek: e.target.value,
     });
@@ -1638,7 +1570,6 @@ class StoreReports extends Component {
   };
 
   handleWeeklyDays = async (e) => {
-    debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -1740,49 +1671,42 @@ class StoreReports extends Component {
   };
 
   handleDaysForMonth = (e) => {
-    debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value,
     });
   };
 
   handleMonthForMonth = (e) => {
-    debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value,
     });
   };
 
   handleMonthForWeek = (e) => {
-    debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value,
     });
   };
 
   handleDayForYear = (e) => {
-    debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value,
     });
   };
 
   handleWeekForWeek = (e) => {
-    debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   };
 
   handleWeekForYear = (e) => {
-    debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value,
     });
   };
 
   setTeamMember = (e) => {
-    debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, (s) => s.userID)
@@ -1792,14 +1716,12 @@ class StoreReports extends Component {
   };
 
   handleScheduleTime = (e) => {
-    debugger;
     this.setState({
       selectedScheduleTime: e,
     });
   };
 
   setNameOfDayForWeek = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -1812,7 +1734,6 @@ class StoreReports extends Component {
   };
 
   setNameOfDayForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -1825,7 +1746,6 @@ class StoreReports extends Component {
   };
 
   setNameOfMonthForDailyYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -1842,7 +1762,7 @@ class StoreReports extends Component {
     var SearchParams = {};
 
     SearchParams = JSON.stringify(this.state.ReportParams);
-    debugger;
+
     if (
       SearchParams != "" &&
       this.state.selectedReportName !== "" &&
@@ -1860,7 +1780,7 @@ class StoreReports extends Component {
       var mySQLDate = [date.getFullYear(), month, day].join("-");
       var mySQLTime = [hours, minutes, seconds].join(":");
       this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-      debugger;
+
       self = this;
       axios({
         method: "post",
@@ -1898,8 +1818,6 @@ class StoreReports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
-
           let status = res.data.message;
           let scheduleId = res.data.responseData;
           if (status === "Success") {
@@ -1957,7 +1875,6 @@ class StoreReports extends Component {
   }
 
   setNameOfMonthForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -1970,7 +1887,6 @@ class StoreReports extends Component {
   };
 
   handleSave() {
-    debugger;
     let self = this;
     var SearchParams = {};
 
@@ -1994,15 +1910,13 @@ class StoreReports extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         if (res.data.message === "Record Already Exists ") {
           NotificationManager.error("Report name aleady exists.");
           return;
         }
         setTimeout(() => {
-          debugger;
           // if (this.state.Schedule_ID > 0) {
-          debugger;
+
           axios({
             method: "post",
             url: config.apiUrl + "/StoreReport/SaveStoreReport",
@@ -2015,7 +1929,6 @@ class StoreReports extends Component {
             },
           })
             .then(function(res) {
-              debugger;
               // this.handleReportList();
               if (res.data.message === "Success") {
                 self.setState({ AddReportPopup: false });
@@ -2069,7 +1982,7 @@ class StoreReports extends Component {
           //     },
           //   })
           //     .then(function(res) {
-          //       debugger;
+          //
 
           //       let status = res.data.message;
           //       let scheduleId = res.data.responseData;
@@ -2120,10 +2033,9 @@ class StoreReports extends Component {
   }
 
   handleEditReport = (rowData) => {
-    debugger;
     this.setState({ edit: true });
     this.handleAddReportOpen();
-    debugger;
+
     setTimeout(() => {
       let allTab = JSON.parse(rowData.reportSearchParams);
       this.setState({ Schedule_ID: rowData.scheduleID });
@@ -2411,7 +2323,6 @@ class StoreReports extends Component {
   };
 
   handleDeleteStoreReports(reportID) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2420,7 +2331,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData > 0) {
@@ -2434,7 +2344,6 @@ class StoreReports extends Component {
   }
 
   handleGetCampaignName() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2442,7 +2351,6 @@ class StoreReports extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -2455,7 +2363,6 @@ class StoreReports extends Component {
   }
 
   handleDownload = (id) => {
-    debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/DownloadStoreReport",
@@ -2466,10 +2373,11 @@ class StoreReports extends Component {
     })
       .then(function(res) {
         debugger;
-        if (res.data.responseData === "") {
-          NotificationManager.error("No data in report");
-        } else {
+        var message = res.data.message;
+        if (message === "Success") {
           window.open(res.data.responseData);
+        } else {
+          NotificationManager.error("No data in report");
         }
       })
       .catch((data) => {
@@ -2478,7 +2386,6 @@ class StoreReports extends Component {
   };
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.storeReportData;
 
@@ -2521,8 +2428,6 @@ class StoreReports extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
-
     var itemsArray = [];
     itemsArray = this.state.storeReportData;
 
@@ -2564,8 +2469,6 @@ class StoreReports extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    debugger;
-
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterName.length === 0 ||
@@ -2732,8 +2635,6 @@ class StoreReports extends Component {
     }
   };
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
@@ -2996,7 +2897,6 @@ class StoreReports extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "reportName") {
       var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
@@ -3695,7 +3595,7 @@ class StoreReports extends Component {
                 <li
                   className="nav-item"
                   onClick={this.handleChangeTab.bind(this, 3)}
-                  style={{display:"none"}}
+                  style={{ display: "none" }}
                 >
                   <a
                     className={`nav-link ${this.state.tabIndex === 3 &&
@@ -3715,7 +3615,7 @@ class StoreReports extends Component {
                 <li
                   className="nav-item"
                   onClick={this.handleChangeTab.bind(this, 2)}
-                  style={{display:"none"}}
+                  style={{ display: "none" }}
                 >
                   <a
                     className={`nav-link ${this.state.tabIndex === 2 &&
