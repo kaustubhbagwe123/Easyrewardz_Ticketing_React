@@ -81,7 +81,7 @@ class RaiseClaim extends Component {
       requiredSize: "",
       selectedTicketSource: 0,
       SearchItem: [],
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.toggle = this.toggle.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -149,7 +149,7 @@ class RaiseClaim extends Component {
           RequireSize: this.state.requiredSize,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             let data = res.data.responseData;
@@ -232,7 +232,7 @@ class RaiseClaim extends Component {
           SearchText: SearchData[field],
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           //
           let status = res.data.message;
           var data = res.data.responseData;
@@ -265,7 +265,7 @@ class RaiseClaim extends Component {
       url: config.apiUrl + "/Master/getPaymentMode",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let modeData = res.data.responseData;
         self.setState({ modeData: modeData });
       })
@@ -282,7 +282,7 @@ class RaiseClaim extends Component {
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         //
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
@@ -301,7 +301,7 @@ class RaiseClaim extends Component {
       headers: authHeader(),
       params: { TicketID: ticketId },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -338,7 +338,7 @@ class RaiseClaim extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message == "Success" && responseData) {
@@ -396,7 +396,7 @@ class RaiseClaim extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -430,7 +430,7 @@ class RaiseClaim extends Component {
         BrandID: braindID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let data = res.data;
         self.setState({ categoryDropData: data });
       })
@@ -475,7 +475,7 @@ class RaiseClaim extends Component {
         CategoryID: Category_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let data = res.data.responseData;
         self.setState({ SubCategoryDropData: data });
       })
@@ -516,7 +516,7 @@ class RaiseClaim extends Component {
         SubCategoryID: SubCat_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -566,7 +566,7 @@ class RaiseClaim extends Component {
           CustomerID: CustID,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let message = res.data.message;
           let mainData = res.data.responseData;
           if (message === "Success" && mainData) {
@@ -613,7 +613,7 @@ class RaiseClaim extends Component {
           InvoiceDate: rowData.invoiceDate,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
@@ -984,33 +984,42 @@ class RaiseClaim extends Component {
   }
 
   fileUpload(e) {
+    debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     if (selectedFiles.length > 0) {
-      this.state.errors["productImg"] = "";
-      allFiles.push(selectedFiles[0]);
-      this.setState({
-        errors: this.state.errors,
-        fileName: allFiles,
-      });
-
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        this.setState({
-          imageUrl: reader.result,
-        });
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-        this.setState({
-          imageUrl: reader.result,
-        });
+      var imageFile = e.target.files[0];
+      var fileName = imageFile.name;
+      var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+      if (!allowedExtensions.exec(fileName)) {
+        alert("Please upload file having extensions .jpeg/.jpg/.png/.gif only.");
+        return false;
       } else {
+        this.state.errors["productImg"] = "";
+        allFiles.push(selectedFiles[0]);
         this.setState({
-          imageUrl: "",
+          errors: this.state.errors,
+          fileName: allFiles,
         });
+
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          this.setState({
+            imageUrl: reader.result,
+          });
+        };
+        if (file) {
+          reader.readAsDataURL(file);
+          this.setState({
+            imageUrl: reader.result,
+          });
+        } else {
+          this.setState({
+            imageUrl: "",
+          });
+        }
       }
     } else {
       if (this.state.fileName.length == 0) {
@@ -1153,7 +1162,7 @@ class RaiseClaim extends Component {
         headers: authHeader(),
         data: formData,
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -1185,7 +1194,7 @@ class RaiseClaim extends Component {
           SearchText: this.state.SrchEmailPhone.trim(),
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let SearchData = res.data.responseData[0];
           if (SearchData) {
             let GetCustId = SearchData.customerID;
@@ -1217,7 +1226,7 @@ class RaiseClaim extends Component {
         CustomerID: CustId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
         if (CustMsg === "Success") {
@@ -1381,9 +1390,11 @@ class RaiseClaim extends Component {
                       <div>
                         <div className="col-md-12">
                           <label className="label-color">
-                            <b>{TranslationContext !== undefined
-                              ? TranslationContext.label.searchcustomerby
-                              : "SEARCH CUSTOMER BY"}</b>
+                            <b>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.searchcustomerby
+                                : "SEARCH CUSTOMER BY"}
+                            </b>
                           </label>
                           <label>
                             {TranslationContext !== undefined
@@ -1397,12 +1408,16 @@ class RaiseClaim extends Component {
                             <input
                               type="text"
                               className="search-mobile-textbox"
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.placeholder.enterphoneno
-                                : "Enter Phone Number"}
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder
+                                      .entercustomerdetails
+                                  : "Enter Customer Details"
+                              }
                               name="SrchEmailPhone"
                               value={this.state.SrchEmailPhone}
                               onChange={this.handleOnChange}
+                              autoComplete="off"
                             />
                             <img
                               src={SearchBlueImg}
@@ -1416,17 +1431,19 @@ class RaiseClaim extends Component {
                               {this.state.searchCompulsion}
                             </p>
                           ) : (
-                              ""
-                            )}
+                            ""
+                          )}
                         </div>
                       </div>
                     </form>
                     <div className="col-md-12">
                       <div className="claim-status-card">
                         <label>
-                          <b>{TranslationContext !== undefined
-                            ? TranslationContext.label.claimstatusopen
-                            : "Claim Status: Open"}</b>
+                          <b>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claimstatusopen
+                              : "Claim Status: Open"}
+                          </b>
                         </label>
                         <div className="claimplus">
                           <span className="plusline1new"></span>
@@ -1475,9 +1492,12 @@ class RaiseClaim extends Component {
                                       <input
                                         type="text"
                                         className="searchtext"
-                                        placeholder={TranslationContext !== undefined
-                                          ? TranslationContext.label.searchorder
-                                          : "Search Order"}
+                                        placeholder={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .searchorder
+                                            : "Search Order"
+                                        }
                                         name="orderNumber"
                                         value={this.state.orderNumber}
                                         onChange={this.handleOrderChange.bind(
@@ -1542,51 +1562,62 @@ class RaiseClaim extends Component {
                                         },
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.invoicenumber
-                                          : "Invoice Number",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .invoicenumber
+                                            : "Invoice Number",
                                         dataIndex: "invoiceNumber",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.invoicedate
-                                          : "Invoice Date",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .invoicedate
+                                            : "Invoice Date",
                                         dataIndex: "dateFormat",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.itemcount
-                                          : "Item Count",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span.itemcount
+                                            : "Item Count",
                                         dataIndex: "itemCount",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.itemprice
-                                          : "Item Price",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span.itemprice
+                                            : "Item Price",
                                         dataIndex: "ordeItemPrice",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.pricepaid
-                                          : "Price Paid",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span.pricepaid
+                                            : "Price Paid",
                                         dataIndex: "orderPricePaid",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.storecode
-                                          : "Store Code",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span.storecode
+                                            : "Store Code",
                                         dataIndex: "storeCode",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.storeaddress
-                                          : "Store Address",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .storeaddress
+                                            : "Store Address",
                                         dataIndex: "storeAddress",
                                       },
                                       {
-                                        title: TranslationContext !== undefined
-                                          ? TranslationContext.span.discount
-                                          : "Discount",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span.discount
+                                            : "Discount",
                                         dataIndex: "discount",
                                       },
                                     ]}
@@ -1618,7 +1649,7 @@ class RaiseClaim extends Component {
                                                       checked={
                                                         this.state
                                                           .CheckBoxAllItem[
-                                                        item.articleNumber
+                                                          item.articleNumber
                                                         ] === true
                                                       }
                                                       onChange={this.checkIndividualItem.bind(
@@ -1638,33 +1669,43 @@ class RaiseClaim extends Component {
                                               },
                                             },
                                             {
-                                              title: TranslationContext !== undefined
-                                                ? TranslationContext.span.articlenumber
-                                                : "Article Number",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .articlenumber
+                                                  : "Article Number",
                                               dataIndex: "articleNumber",
                                             },
                                             {
-                                              title: TranslationContext !== undefined
-                                                ? TranslationContext.span.articlename
-                                                : "Article Name",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .articlename
+                                                  : "Article Name",
                                               dataIndex: "articleName",
                                             },
                                             {
-                                              title: TranslationContext !== undefined
-                                                ? TranslationContext.span.itemprice
-                                                : "Article MRP",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .itemprice
+                                                  : "Article MRP",
                                               dataIndex: "itemPrice",
                                             },
                                             {
-                                              title: TranslationContext !== undefined
-                                                ? TranslationContext.span.pricepaid
-                                                : "Price Paid",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .pricepaid
+                                                  : "Price Paid",
                                               dataIndex: "pricePaid",
                                             },
                                             {
-                                              title: TranslationContext !== undefined
-                                                ? TranslationContext.span.discount
-                                                : "Discount",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .discount
+                                                  : "Discount",
                                               dataIndex: "discount",
                                             },
                                           ]}
@@ -1693,9 +1734,11 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.orderid
-                                        : "Order ID"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.orderid
+                                          : "Order ID"
+                                      }
                                       name="orderId"
                                       maxLength={10}
                                       value={this.state.orderId}
@@ -1711,9 +1754,11 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.billid
-                                        : "Bill ID"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.billid
+                                          : "Bill ID"
+                                      }
                                       name="billId"
                                       maxLength={10}
                                       value={this.state.billId}
@@ -1732,9 +1777,12 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.productbarcode
-                                        : "Product Bar Code"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .productbarcode
+                                          : "Product Bar Code"
+                                      }
                                       name="productBarCode"
                                       maxLength={10}
                                       value={this.state.productBarCode}
@@ -1753,9 +1801,12 @@ class RaiseClaim extends Component {
                                       onChange={this.setTicketSourceValue}
                                       className="category-select-system dropdown-label"
                                     >
-                                      <option>{TranslationContext !== undefined
-                                        ? TranslationContext.option.channelofpurchase
-                                        : "Channel Of Purchase"}</option>
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .channelofpurchase
+                                          : "Channel Of Purchase"}
+                                      </option>
                                       {this.state.ChannelOfPurchaseData !==
                                         null &&
                                         this.state.ChannelOfPurchaseData.map(
@@ -1789,7 +1840,8 @@ class RaiseClaim extends Component {
                                         className="select-sub-category-placeholder"
                                       >
                                         {TranslationContext !== undefined
-                                          ? TranslationContext.option.modeofpayment
+                                          ? TranslationContext.option
+                                              .modeofpayment
                                           : "Mode Of Payment"}
                                       </option>
                                       {this.state.modeData !== null &&
@@ -1831,9 +1883,11 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.mrp
-                                        : "MRP"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.mrp
+                                          : "MRP"
+                                      }
                                       name="orderMRP"
                                       value={this.state.orderMRP}
                                       onChange={this.handleNumberOnchange}
@@ -1850,9 +1904,11 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.pricepaid
-                                        : "Price Paid"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.pricepaid
+                                          : "Price Paid"
+                                      }
                                       name="pricePaid"
                                       value={this.state.pricePaid}
                                       onChange={this.handleNumberOnchange}
@@ -1872,9 +1928,11 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.discount
-                                        : "Discount"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.discount
+                                          : "Discount"
+                                      }
                                       name="discount"
                                       value={this.state.discount}
                                       onChange={this.handleNumberOnchange}
@@ -1891,9 +1949,11 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.size
-                                        : "Size"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.size
+                                          : "Size"
+                                      }
                                       name="size"
                                       value={this.state.size}
                                       onChange={this.handleManuallyOnchange}
@@ -1913,9 +1973,12 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.requiredsize
-                                        : "Required Size"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .requiredsize
+                                          : "Required Size"
+                                      }
                                       name="requiredSize"
                                       value={this.state.requiredSize}
                                       onChange={this.handleManuallyOnchange}
@@ -1949,9 +2012,12 @@ class RaiseClaim extends Component {
                                       renderInput={(props) => {
                                         return (
                                           <input
-                                            placeholder={TranslationContext !== undefined
-                                              ? TranslationContext.label.purchasefromstorename
-                                              : "Purchase from Store name"}
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .purchasefromstorename
+                                                : "Purchase from Store name"
+                                            }
                                             className="addmanuallytext1 dropdown-next-div"
                                             type="text"
                                             {...props}
@@ -1995,9 +2061,12 @@ class RaiseClaim extends Component {
                                     <input
                                       type="text"
                                       className="addmanuallytext1"
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.label.purchasefromstoreaddres
-                                        : "Purchase from Store Addres"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .purchasefromstoreaddres
+                                          : "Purchase from Store Addres"
+                                      }
                                       name="purchaseFrmStorAddress"
                                       value={this.state.StorAddress.address}
                                       readOnly
@@ -2033,35 +2102,36 @@ class RaiseClaim extends Component {
                                 </div>
                               </div>
                             ) : (
-                                  <div className="uploadsearch uploadsearch-space">
-                                    <div className="row">
-                                      <div className="col-md-12 uploadsechmargin">
-                                        <label className="uploadsearch-text">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label.noorderfoundwiththisnumber
-                                            : "No order found with this number"}
-                                        </label>
-                                      </div>
-                                    </div>
-                                    <div className="row">
-                                      <div className="col-md-12 uploadsechmargin">
-                                        <button
-                                          type="button"
-                                          className="uploadsearchbtn"
-                                        >
-                                          <label
-                                            className="uploadsearchbtn-text"
-                                            onClick={this.handleAddOrder.bind(this)}
-                                          >
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label.addmanually
-                                              : "ADD MANUALLY"}
-                                          </label>
-                                        </button>
-                                      </div>
-                                    </div>
+                              <div className="uploadsearch uploadsearch-space">
+                                <div className="row">
+                                  <div className="col-md-12 uploadsechmargin">
+                                    <label className="uploadsearch-text">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .noorderfoundwiththisnumber
+                                        : "No order found with this number"}
+                                    </label>
                                   </div>
-                                )}
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-12 uploadsechmargin">
+                                    <button
+                                      type="button"
+                                      className="uploadsearchbtn"
+                                    >
+                                      <label
+                                        className="uploadsearchbtn-text"
+                                        onClick={this.handleAddOrder.bind(this)}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.addmanually
+                                          : "ADD MANUALLY"}
+                                      </label>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </CardBody>
                         </Card>
                       </Collapse>
@@ -2208,9 +2278,11 @@ class RaiseClaim extends Component {
                         <input
                           type="text"
                           className="form-control textBox"
-                          placeholder={TranslationContext !== undefined
-                            ? TranslationContext.label.claimpercentage
-                            : "Claim Percentage"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.claimpercentage
+                              : "Claim Percentage"
+                          }
                           name="claimPercentage"
                           onKeyUp={this.handlePercentageOnChange}
                           value={this.state.claimPercentage}
@@ -2278,8 +2350,8 @@ class RaiseClaim extends Component {
                         {customerData.customerName.charAt(0).toUpperCase()}
                       </span>
                     ) : (
-                        ""
-                      )}
+                      ""
+                    )}
                     {customerData.customerName}
                   </label>
                   <br />
@@ -2329,14 +2401,14 @@ class RaiseClaim extends Component {
                   {this.state.ticketId > 0 ? (
                     <label>{customerData.gender}</label>
                   ) : (
-                      <label>
-                        {customerData.genderID == 1
-                          ? "MALE"
-                          : customerData.genderID == 2
-                            ? "FEMALE"
-                            : "OTHER"}
-                      </label>
-                    )}
+                    <label>
+                      {customerData.genderID == 1
+                        ? "MALE"
+                        : customerData.genderID == 2
+                        ? "FEMALE"
+                        : "OTHER"}
+                    </label>
+                  )}
                   <br />
                 </div>
               </div>
