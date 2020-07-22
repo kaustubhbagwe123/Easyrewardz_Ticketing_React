@@ -2620,11 +2620,11 @@ class Header extends Component {
                       <li key={item.data} style={{ outline: "none" }}>
                         <a
                           className="single-menu"
-                          href={this.state.storePayURL}
-                          target="_blank"
-                          disabled={
-                            this.state.storePayURL === "" ? true : false
-                          }
+                          // href={this.state.storePayURL}
+                          // target="_blank"
+                          // disabled={
+                          //   this.state.storePayURL === "" ? true : false
+                          // }
                         >
                           {item.logoBlack ? (
                             <span className="header-icons-cntr mr-0">
@@ -2640,7 +2640,12 @@ class Header extends Component {
                               />
                             </span>
                           ) : null}
-                          {item.data}
+
+                          <label
+                            onClick={this.handleGenerateStorePayLink.bind(this)}
+                          >
+                            {item.data}
+                          </label>
                         </a>
                       </li>
                     );
