@@ -2979,7 +2979,8 @@ table tr th:last-child {
   cursor: pointer;
 }
 .chat-info.active {
-  background-color: #ecf2f4;
+  /* background-color: #ecf2f4; */
+  background-color: #CDE4FF;
 }
 .dark-blue-ini {
   background-color: #ece8fd;

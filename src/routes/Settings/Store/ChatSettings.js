@@ -54,6 +54,7 @@ class ChatSettings extends Component {
       nsId: 0,
       isLoading: false,
       isProfileAndProduct: false,
+      endChatMessage: "",
     };
   }
 
@@ -178,6 +179,10 @@ class ChatSettings extends Component {
   handleOnChange(e) {
     const { name, value } = e.target;
     if (!isNaN(value)) {
+      this.setState({
+        [name]: value,
+      });
+    } else {
       this.setState({
         [name]: value,
       });
@@ -845,6 +850,30 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div
+                                  .setlimittypeboxofchatwindow
+                              : "End Chat Message"}
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              type="text"
+                              className="chatsetngtxt"
+                              name="endChatMessage"
+                              onChange={this.handleOnChange.bind(this)}
+                              value={this.state.endChatMessage}
+                              // maxLength={3}
+                            />
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
                             Profile & Product of Chat Window
                           </div>
                           <div className="col-md-3">
@@ -866,6 +895,7 @@ class ChatSettings extends Component {
                           <div className="col-md-3"></div>
                           <div className="col-md-3"></div>
                         </div>
+
                         <div
                           className="row"
                           style={{ width: "100%", margin: "0" }}
@@ -1287,6 +1317,16 @@ class ChatSettings extends Component {
                         >
                           Show notification for new message in ongoing
                         </Checkbox>
+                        <div style={{ display: "inherit" }}>
+                          <label className="sns-lbl" style={{ width: "150px" }}>
+                            Notification Time
+                          </label>
+                          <input
+                            type="text"
+                            className="chatsetngtxt"
+                            style={{ width: "120px" }}
+                          />
+                        </div>
                       </div>
                       <div
                         className="card"
