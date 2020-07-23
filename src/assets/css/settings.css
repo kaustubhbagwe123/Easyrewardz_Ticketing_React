@@ -2120,6 +2120,16 @@
   margin-bottom: -10px !important;
 }
 
+.store-crm-roles .rvmmargin {
+  margin: 12px 0 !important;
+  display: flex;
+  align-items: baseline;
+}
+.store-crm-roles .pop-over-lbl-text-pop {
+  margin: 0;
+  margin-left: 15px;
+}
+
 .role-info .popover-body {
   margin-bottom: 10px;
 }
@@ -3661,9 +3671,9 @@
   margin-top: 0 !important;
   margin-left: 30px;
 }
-.chrdioclr.switch input[type="checkbox"] + .cr:before{
-  background: #C8C8C8;
+.chrdioclr.switch input[type="checkbox"] + .cr:before {
+  background: #c8c8c8;
 }
-.chrdioclr.switch.switch-primary input[type="checkbox"]:checked + .cr:before{
+.chrdioclr.switch.switch-primary input[type="checkbox"]:checked + .cr:before {
   background: #50d462;
 }

@@ -1335,7 +1335,7 @@ class StoreCRMRole extends Component {
                                 {row.original.roleName}
                                 <Popover
                                   content={
-                                    <div>
+                                    <div className="store-crm-roles">
                                       {row.original.modules !== null &&
                                         row.original.modules.map((item, i) => (
                                           <div className="rvmmargin" key={i}>
