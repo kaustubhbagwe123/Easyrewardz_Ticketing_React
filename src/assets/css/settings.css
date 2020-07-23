@@ -2120,6 +2120,16 @@
   margin-bottom: -10px !important;
 }
 
+.store-crm-roles .rvmmargin {
+  margin: 12px 0 !important;
+  display: flex;
+  align-items: baseline;
+}
+.store-crm-roles .pop-over-lbl-text-pop {
+  margin: 0;
+  margin-left: 15px;
+}
+
 .role-info .popover-body {
   margin-bottom: 10px;
 }
@@ -3738,6 +3748,6 @@
   margin-right: 20px;
   outline: none !important;
 }
-.cr-float-right{
-margin-left: 30px !important;
+.cr-float-right {
+  margin-left: 30px !important;
 }
