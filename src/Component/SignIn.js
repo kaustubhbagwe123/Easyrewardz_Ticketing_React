@@ -124,6 +124,9 @@ class SingIn extends Component {
     debugger;
     let self = this;
     if (this.validator.allValid()) {
+      self.setState({
+        loading: true,
+      });
       const { emailID, password } = this.state;
       var X_Authorized_userId = encryption(emailID, "enc");
 
@@ -155,18 +158,17 @@ class SingIn extends Component {
             "X-Authorized-Domainname": X_Authorized_Domainname,
           },
         }).then(function(res) {
-          debugger;
           let resValid = res.data.message;
-          self.setState({
-            loading: true,
-          });
+        
           if (resValid === "Valid Login") {
-            debugger;
             //NotificationManager.success("Login Successfull.");
             window.localStorage.setItem("token", res.data.responseData.token);
             window.localStorage.setItem("ERT", true);
             // self.handleCRMRole();
             self.props.history.push("TicketingLanguageSelection");
+            self.setState({
+              loading: false,
+            })
           } else {
             NotificationManager.error(
               "Username or password is invalid.",
