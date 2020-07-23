@@ -124,6 +124,9 @@ class SingIn extends Component {
     debugger;
     let self = this;
     if (this.validator.allValid()) {
+      self.setState({
+        loading: true,
+      });
       const { emailID, password } = this.state;
       var X_Authorized_userId = encryption(emailID, "enc");
 
@@ -169,6 +172,9 @@ class SingIn extends Component {
             // setTimeout(function () {
             //   self.props.history.push("/admin/dashboard");
             // }, 400);
+            self.setState({
+              loading: false,
+            });
           } else {
             NotificationManager.error(
               "Username or password is invalid.",

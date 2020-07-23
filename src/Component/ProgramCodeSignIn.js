@@ -17,6 +17,7 @@ class ProgramCodeSignIn extends Component {
       encProgramCode: {
         programCode: "",
       },
+      btnDisabled:false
     };
     this.validator = new SimpleReactValidator();
   }
@@ -26,6 +27,9 @@ class ProgramCodeSignIn extends Component {
     // debugger
     let self = this;
     if (this.validator.allValid()) {
+      this.setState({
+        btnDisabled:true
+      })
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
       let X_Authorized_Domainname = encryption('https://multitenancyshopster.dcdev.brainvire.net', "enc");
@@ -55,6 +59,7 @@ class ProgramCodeSignIn extends Component {
           }, 500);
           self.setState({
             encProgramCode: { programCode: encProgramCode },
+            btnDisabled:false
           });
         } else {
           NotificationManager.error(
@@ -62,7 +67,11 @@ class ProgramCodeSignIn extends Component {
             "",
             1500
           );
+          self.setState({
+            btnDisabled:false
+          })
         }
+       
       });
       // this.props.history.push("SignIn");
     } else {
@@ -112,6 +121,7 @@ class ProgramCodeSignIn extends Component {
                 <button
                   type="submit"
                   className="program-code-button"
+                  disabled={this.state.btnDisabled}
                   // onClick={this.hanleChange}
                 >
                   SUBMIT
