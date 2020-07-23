@@ -1502,7 +1502,8 @@
     "enterbrandcode": "ब्रांड कोड दर्ज करें",
     "enterbrandname": "ब्रांड नाम दर्ज करें",
     "titleid": "शीर्षक आईडी",
-    "claimraisedon": "दावा उठाया गया"
+    "claimraisedon": "दावा उठाया गया",
+    "entercustomerdetails":"ग्राहक विवरण दर्ज करें"
   },
   "title": {
     "appointmentID": "नियुक्ति आईडी",

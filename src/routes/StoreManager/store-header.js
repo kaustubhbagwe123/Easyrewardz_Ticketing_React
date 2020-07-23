@@ -45,7 +45,7 @@ import PencilImg from "./../../assets/Images/pencil.png";
 import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover, Collapse, Checkbox, Empty } from "antd";
+import { Popover, Collapse, Checkbox, Empty, Popconfirm } from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
@@ -78,7 +78,7 @@ import * as translationMA from "../../translations/marathi";
 import Dropzone from "react-dropzone";
 import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
-import ReactReponsiveModal from "react-responsive-modal";
+import DatePicker from "react-datepicker";
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -226,7 +226,18 @@ class Header extends Component {
       selectedShoppingBag: [],
       selectedWishList: [],
       isButtonClick: false,
+      buyNowClick: false,
+      colorCode: [
+        "#E8E8E8",
+        "#FFE8A7",
+        "#DAF3C0",
+        "#DDF6FC",
+        "#CDE4FF",
+        "#FFDEE2",
+      ],
+      notificationDuration: 5,
     };
+
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
     );
@@ -239,16 +250,6 @@ class Header extends Component {
     this.setAccessUser = this.setAccessUser.bind(this);
     this.handleChatModalClose = this.handleChatModalClose.bind(this);
     this.handleChatModalOpen = this.handleChatModalOpen.bind(this);
-  }
-
-  handleCheckView() {
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      this.setState({ isMobileView: true });
-    } else {
-      this.setState({ isMobileView: false });
-    }
   }
 
   componentDidMount() {
@@ -526,7 +527,7 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(storePay);
-          this.handleGenerateStorePayLink();
+          // this.handleGenerateStorePayLink();
         }
       }
     }
@@ -878,6 +879,11 @@ class Header extends Component {
                 onHoverName: false,
               });
             }
+            for (let i = 0; i < ongoingChatsData.length; i++) {
+              debugger;
+              ongoingChatsData[i].initialColor =
+                self.state.colorCode[Math.floor(Math.random() * 6)];
+            }
 
             if (self.state.newTicketChatId > 0) {
               var chatData = ongoingChatsData.filter(
@@ -912,7 +918,7 @@ class Header extends Component {
               isMainLoader: false,
             });
             self.setState({
-              ongoingChatsData,
+              ongoingChatsData: [],
             });
           }
         } else {
@@ -938,7 +944,7 @@ class Header extends Component {
   };
 
   ////handle Get New Chat
-  async handleGetNewChat() {
+  async handleGetNewChat(mobileNo, msgData) {
     this.setState({ isMainLoader: true });
     let self = this;
     await axios({
@@ -949,8 +955,76 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
+        debugger;
         if (message === "Success" && newChatsData) {
+          for (let i = 0; i < newChatsData.length; i++) {
+            newChatsData[i].initialColor =
+              self.state.colorCode[Math.floor(Math.random() * 6)];
+          }
           self.setState({ newChatsData, isMainLoader: false });
+
+          if (self.state.isNotiNewChat && mobileNo && msgData) {
+            const Sound1Play = new Audio(self.state.newChatSoundFile);
+            Sound1Play.volume =
+              Math.round(self.state.newChatSoundVolume / 10) / 10;
+            Sound1Play.play();
+            var chatData = newChatsData.filter((x) => x.mobileNo === mobileNo);
+            if (chatData.length > 0) {
+              notification.open({
+                key: chatData[0].chatID,
+                duration: 2.5,
+                placement: "bottomRight",
+                // message: "Notification Title",
+                className: "hide-message-title",
+                description: (
+                  <>
+                    <div
+                      className="row"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={self.handleNewChatNotification.bind(
+                        this,
+                        chatData,
+                        chatData[0].chatID
+                      )}
+                    >
+                      <div className="col-3">
+                        <div class="chat-trail-img">
+                          <span
+                            class="chat-initial"
+                            alt="face image"
+                            title="Shalini Chandra "
+                          >
+                            {chatData[0].cumtomerName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-9">
+                        <h5 title="Customer Name">
+                          {chatData[0].cumtomerName}
+                        </h5>
+                        <p
+                          style={{
+                            wordBreak: "break-word",
+                          }}
+                        >
+                          {msgData}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ),
+              });
+            } else {
+              //self.handleGetNewChat(mobileNo, msgData);
+              // self.handleGetChatNotificationCount();
+            }
+          }
         } else {
           self.setState({ newChatsData: [], isMainLoader: false });
         }
@@ -999,6 +1073,7 @@ class Header extends Component {
     let self = this;
 
     this.setState({
+      chatModal: true,
       isMainLoader: true,
       isCustEndChat: false,
       storeManagerId,
@@ -1508,6 +1583,7 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          chatModal: true,
           ProfileProductTab: 0,
           productTypeTab: 0,
           selectedWishList: [],
@@ -1558,6 +1634,7 @@ class Header extends Component {
         this.handleGetChatCustomerProfile(customerId);
       } else {
         this.setState({
+          chatModal: true,
           ProfileProductTab: 0,
           productTypeTab: 0,
           selectedWishList: [],
@@ -1615,6 +1692,7 @@ class Header extends Component {
       }
     } else {
       this.setState({
+        chatModal: true,
         ProfileProductTab: 0,
         productTypeTab: 0,
         selectedWishList: [],
@@ -1689,7 +1767,6 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
-    debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
       // if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
       //   if (Number(e.target.value) === 0) {
@@ -1716,7 +1793,10 @@ class Header extends Component {
 
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
         if (Number(e.target.value) <= 3) {
-          this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
+          this.setState({
+            noOfPeople: e.target.value,
+            noOfPeopleMax: "",
+          });
         } else {
           this.setState({
             noOfPeople: "",
@@ -1731,7 +1811,9 @@ class Header extends Component {
         });
       }
     } else {
-      this.setState({ isSelectSlot: "Please select time slot" });
+      this.setState({
+        isSelectSlot: "Please select time slot",
+      });
     }
   };
   ////handle select slot button
@@ -2081,7 +2163,64 @@ class Header extends Component {
                   Sound1Play.volume =
                     Math.round(self.state.newMessageSoundVolume / 10) / 10;
                   Sound1Play.play();
-                  self.setState({ isCustEndChat: data[6] });
+                  // self.setState({
+                  //   isCustEndChat: data[6],
+                  // });
+                  var chatData = self.state.ongoingChatsData.filter(
+                    (x) => x.mobileNo === data[3].substr(2)
+                  );
+                  if (!self.state.chatModal) {
+                    notification.open({
+                      key: chatData[0].chatID,
+                      duration: self.state.notificationDuration,
+                      placement: "bottomRight",
+                      // message: "Notification Title",
+                      className: "hide-message-title",
+                      description: (
+                        <>
+                          <div
+                            className="row"
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={self.handleNotificationClick.bind(
+                              this,
+                              chatData,
+                              chatData[0].chatID
+                            )}
+                          >
+                            <div className="col-3">
+                              <div className="chat-trail-img">
+                                <span
+                                  class="chat-initial"
+                                  alt="face image"
+                                  title="Shalini Chandra "
+                                >
+                                  {chatData[0].cumtomerName
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .toUpperCase()}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col-9">
+                              <h5 title="Customer Name">
+                                {chatData[0].cumtomerName}
+                              </h5>
+                              <p
+                                style={{
+                                  wordBreak: "break-word",
+                                }}
+                              >
+                                {data[0]}
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      ),
+                    });
+                  }
                   if (self.state.ongoingChatsData.length > 0) {
                     chatId = self.state.ongoingChatsData.filter(
                       (x) => x.mobileNo === self.state.mobileNo
@@ -2097,22 +2236,82 @@ class Header extends Component {
                   self.handleGetChatMessagesList(chatId);
                 } else {
                   /////for new ongoing message
+
                   const Sound1Play = new Audio(self.state.newMessageSoundFile);
                   Sound1Play.volume =
                     Math.round(self.state.newMessageSoundVolume / 10) / 10;
                   Sound1Play.play();
+
+                  if (self.state.isNotiNewMessage) {
+                    var chatData = self.state.ongoingChatsData.filter(
+                      (x) => x.mobileNo === data[3].substr(2)
+                    );
+                    debugger;
+                    notification.open({
+                      key: chatData[0].chatID,
+                      duration: 2.5,
+                      placement: "bottomRight",
+                      // message: "Notification Title",
+                      className: "hide-message-title",
+                      description: (
+                        <>
+                          <div
+                            className="row"
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={self.handleNotificationClick.bind(
+                              this,
+                              chatData,
+                              chatData[0].chatID
+                            )}
+                          >
+                            <div className="col-3">
+                              <div className="chat-trail-img">
+                                <span
+                                  class="chat-initial"
+                                  alt="face image"
+                                  title="Shalini Chandra "
+                                >
+                                  {chatData[0].cumtomerName
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .toUpperCase()}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col-9">
+                              <h5 title="Customer Name">
+                                {chatData[0].cumtomerName}
+                              </h5>
+                              <p
+                                style={{
+                                  wordBreak: "break-word",
+                                }}
+                              >
+                                {data[0]}
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      ),
+                    });
+                  }
+
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
                   self.handleGetChatNotificationCount();
                 }
               } else {
                 ////new chat message
-                const Sound1Play = new Audio(self.state.newChatSoundFile);
-                Sound1Play.volume =
-                  Math.round(self.state.newChatSoundVolume / 10) / 10;
-                Sound1Play.play();
-                self.handleGetNewChat();
-                self.handleGetChatNotificationCount();
+
+                setTimeout(() => {
+                  self.handleGetChatNotificationCount();
+                  self.handleGetNewChat(data[3].substr(2), data[0]);
+                }, 5000);
+
+                // self.handleGetNewChat();
               }
             }
           }
@@ -2155,6 +2354,7 @@ class Header extends Component {
   ////handle open action modal pop up
   handleActionOpen = () => {
     this.setState({ actionBtn: true });
+    // this.setState({ actionBtn: !this.state.actionBtn });
   };
   ////handle close action modal pop up
   handleActionClose = () => {
@@ -2674,10 +2874,60 @@ class Header extends Component {
         console.log(response, "---AddProductsToShoppingBag");
       });
   };
-
-  handleBackButton=()=>{
-    this.setState({customerName:"",isHistoricalChat:false})
+  ////handle mobile view back button
+  handleBackButton = () => {
+    this.setState({ customerName: "", isHistoricalChat: false });
+  };
+  ////handle notification click
+  handleNotificationClick = (chatData, notificationKey) => {
+    debugger;
+    notification.close(notificationKey);
+    this.handleOngoingChatClick(
+      chatData[0].chatID,
+      chatData[0].cumtomerName,
+      chatData[0].messageCount,
+      chatData[0].mobileNo,
+      chatData[0].customerID,
+      chatData[0].programCode,
+      chatData[0].storeID,
+      chatData[0].isCustEndChat,
+      chatData[0].storeManagerId
+    );
+  };
+  ////handle check is mobile view active or not
+  handleCheckView() {
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      this.setState({ isMobileView: true });
+    } else {
+      this.setState({ isMobileView: false });
+    }
   }
+  ////handle new chat notification click
+  handleNewChatNotification = (chatData, notificationKey) => {
+    notification.close(notificationKey);
+    this.handleUpdateCustomerChatStatus(
+      chatData[0].chatID,
+      chatData[0].storeManagerId,
+      chatData[0].storeID,
+      chatData[0].cumtomerName,
+      chatData[0].mobileNo,
+      chatData[0].customerID,
+      chatData[0].programCode
+    );
+  };
+  ////handle buy now button click
+  handleBuyNowButtonClick = () => {
+    this.setState({ buyNowClick: !this.state.buyNowClick });
+  };
+  ////handle address modal close
+  handleAddressModalClose = () => {
+    this.setState({ addressModal: false });
+  };
+  ////handle address modal open
+  handleAddressModalOpen = () => {
+    this.setState({ addressModal: true });
+  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -2713,10 +2963,10 @@ class Header extends Component {
                   return (
                     <a
                       key={item.data}
-                      href={this.state.storePayURL}
-                      disabled={this.state.storePayURL ? false : true}
+                      // href={this.state.storePayURL}
+                      // disabled={this.state.storePayURL ? false : true}
                       className="storepay-a single-menu"
-                      target="_blank"
+                      // target="_blank"
                     >
                       {item.logoBlack ? (
                         <div className="header-icons-cntr">
@@ -2732,7 +2982,11 @@ class Header extends Component {
                           />
                         </div>
                       ) : null}
-                      <label className="cusheade">{item.data}</label>
+                      <label
+                        onClick={this.handleGenerateStorePayLink.bind(this)}
+                      >
+                        {item.data}
+                      </label>
                     </a>
                   );
                 } else {
@@ -3158,10 +3412,10 @@ class Header extends Component {
                       <>
                         <li key={item.data}>
                           <a
-                            target="_blank"
-                            href={this.state.storePayURL}
+                            // target="_blank"
+                            // href={this.state.storePayURL}
                             className="storepay-a single-menu"
-                            disabled={this.state.storePayURL ? false : true}
+                            // disabled={this.state.storePayURL ? false : true}
                           >
                             {item.logoBlack ? (
                               <span className="header-icons-cntr mr-0">
@@ -3177,7 +3431,14 @@ class Header extends Component {
                                 />
                               </span>
                             ) : null}
-                            {item.data}
+
+                            <label
+                              onClick={this.handleGenerateStorePayLink.bind(
+                                this
+                              )}
+                            >
+                              {item.data}
+                            </label>
                           </a>
                         </li>
                       </>
@@ -3240,7 +3501,15 @@ class Header extends Component {
               <div className="loader"></div>
             ) : null}
             <img src={Chatw} className="Chatw" alt="Chatw" />
-            <h3 style={{marginRight:"15px"}}>
+            <h3
+              style={{
+                marginRight: this.state.isMainLoader
+                  ? "15px"
+                  : this.state.isMobileView
+                  ? "54%"
+                  : "90%",
+              }}
+            >
               {TranslationContext !== undefined
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat"}
@@ -3259,7 +3528,7 @@ class Header extends Component {
                 onClick={this.handleChatModalClose}
               />
             ) : null}
-            {this.state.isMobileView ? (
+            {this.state.isMobileView && this.state.customerName ? (
               <img
                 src={BackArw}
                 className="BackArw"
@@ -3281,8 +3550,14 @@ class Header extends Component {
                     : "firstbox firstbox-hide"
                 }
               >
-                <div className="chatbot-left">
-                  <div className="chat-cntr" style={{ padding: "0px" }}>
+                <div
+                  className="chatbot-left"
+                  style={{ backgroundColor: "#ECF2F4" }}
+                >
+                  <div
+                    className="chat-cntr"
+                    style={{ padding: "0px", backgroundColor: "#FFFEF7" }}
+                  >
                     <span className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span">
                       {this.state.searchChat === "" ? (
                         <img
@@ -3316,7 +3591,10 @@ class Header extends Component {
                       onChange={this.handleGetOngoingChat.bind(this)}
                     />
                   </div>
-                  <div className="chat-cntr">
+                  <div
+                    className="chat-cntr"
+                    style={{ backgroundColor: "#FFFEF7" }}
+                  >
                     <p className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.newchats
@@ -3349,7 +3627,12 @@ class Header extends Component {
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
-                              <span className="dark-blue-ini initial">
+                              <span
+                                className="initial"
+                                style={{
+                                  backgroundColor: chat.initialColor,
+                                }}
+                              >
                                 {chat.cumtomerName.charAt(0)}
                               </span>
                               <div className="name-num mx-2">
@@ -3384,14 +3667,20 @@ class Header extends Component {
                     </div>
                   </div>
                   {this.state.newChatsData.length === 0 && (
-                    <p className="no-record" style={{ marginTop: "0px" }}>
+                    <p
+                      className="no-record"
+                      style={{ marginTop: "0px", backgroundColor: "#FFFEF7" }}
+                    >
                       {TranslationContext !== undefined
                         ? TranslationContext.p.norecordsfound
                         : "No Records Found"}
                       !
                     </p>
                   )}
-                  <div className="chat-cntr oc-bg">
+                  <div
+                    className="chat-cntr oc-bg"
+                    style={{ backgroundColor: "#ECF2F4" }}
+                  >
                     <div className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.ongoingchats
@@ -3450,9 +3739,16 @@ class Header extends Component {
                               )}
                             >
                               <div className="d-flex align-items-center overflow-hidden">
-                                <span className="dark-blue-ini initial">
-                                  {chat.cumtomerName.charAt(0)}
-                                </span>
+                                <div className="chat-initial-brd">
+                                  <span
+                                    className="initial"
+                                    style={{
+                                      backgroundColor: chat.initialColor,
+                                    }}
+                                  >
+                                    {chat.cumtomerName.charAt(0)}
+                                  </span>
+                                </div>
                                 <div className="name-num mx-2">
                                   <p className="chat-name">
                                     {chat.cumtomerName}
@@ -3498,14 +3794,20 @@ class Header extends Component {
                     </div>
                   </div>
                   {this.state.ongoingChatsData.length === 0 && (
-                    <p className="no-record" style={{ marginTop: "0px" }}>
+                    <p
+                      className="no-record"
+                      style={{ marginTop: "0px", backgroundColor: "#ECF2F4" }}
+                    >
                       {TranslationContext !== undefined
                         ? TranslationContext.p.norecordsfound
                         : "No Records Found"}
                       !
                     </p>
                   )}
-                  <div className="chat-hist">
+                  <div
+                    className="chat-hist"
+                    style={{ backgroundColor: "#ECF2F4" }}
+                  >
                     <li className="nav-item">
                       <a
                         className="nav-link"
@@ -3873,6 +4175,10 @@ class Header extends Component {
                           ) : null}
                         </ul>
                         {this.state.customerName !== "" ? (
+                          // <div
+                          //   class="dropdown"
+                          //   // onBlur={this.handleActionClose.bind(this)}
+                          // >
                           <button
                             type="button"
                             className="chatactionbtn"
@@ -3889,7 +4195,35 @@ class Header extends Component {
                               className="down-white"
                             />
                           </button>
-                        ) : null}
+                        ) : /* { <div
+                              id="myDropdown"
+                              class={
+                                this.state.actionBtn
+                                  ? "dropdown-content show"
+                                  : "dropdown-content"
+                              }
+                            >
+                              <label
+                                className="myticket-submit-solve-button-text"
+                                 
+                                disabled={
+                                  this.state.isCustEndChat === false
+                                    ? true
+                                    : false
+                                }
+                                onClick={this.handleUpdateStoreManagerChatStatus.bind(
+                                  this,
+                                  3
+                                )}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.closechat
+                                  : "Close Chat"}
+                              </label>
+                            </div>
+                           }*/
+                        // </div>
+                        null}
                       </div>
                       <div
                         className="tab-content chattabtitle"
@@ -6786,13 +7120,24 @@ class Header extends Component {
                             <ul className="nameplate">
                               <li>
                                 <label
+                                  onClick={
+                                    this.state.isMobileView
+                                      ? this.handleMainTabChange.bind(this, 1)
+                                      : null
+                                  }
                                   onMouseEnter={this.handleNameHover.bind(this)}
                                   className="namelabel"
                                 >
                                   {this.state.customerName.charAt(0)}
                                 </label>
                               </li>
-                              <li>
+                              <li
+                                onClick={
+                                  this.state.isMobileView
+                                    ? this.handleMainTabChange.bind(this, 1)
+                                    : null
+                                }
+                              >
                                 <h3>{this.state.customerName}</h3>
                                 {/* <img
                                 src={EditPen}
@@ -6980,16 +7325,54 @@ class Header extends Component {
                           <button
                             type="button"
                             className="updateprofilelinkbtn pastchatmobbtn"
+                            onClick={this.handleMainTabChange.bind(this, 2)}
                           >
-                            22 Past Chat
+                            {this.state.agentRecentChatData.length < 9
+                              ? this.state.agentRecentChatData.length +
+                                "0 Past Chat"
+                              : this.state.agentRecentChatData.length +
+                                " Past Chat"}
                           </button>
-                          <button
+                          {/* <button
                             style={{ float: "right" }}
                             type="button"
                             className="updateprofilelinkbtn pastchatmobbtn"
                           >
                             Action
-                          </button>
+                          </button> */}
+                          {/* <div className="drp-mobile">
+                            <div
+                              class="dropdown"
+                              onBlur={this.handleActionClose.bind(this)}
+                            >
+                              <button
+                                style={{ float: "right" }}
+                                type="button"
+                                className="updateprofilelinkbtn pastchatmobbtn"
+                                onClick={this.handleActionOpen.bind(this)}
+                              >
+                                <label className="myticket-submit-solve-button-text">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.action
+                                    : "Action"}
+                                </label>
+                              </button>
+
+                              <div
+                                id="myDropdown"
+                                class={
+                                  this.state.actionBtn
+                                    ? "dropdown-content show"
+                                    : "dropdown-content"
+                                }
+                              >
+                                <label className="myticket-submit-solve-button-text">
+                                  Close Chat
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                         */}
                         </div>
                       </Tab>
                       <Tab label="Products">
@@ -7808,12 +8191,422 @@ class Header extends Component {
                                     >
                                       ADD To WISHLIST
                                     </button>
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
+                                    <Popover
+                                      overlayClassName="antcustom ant-prodesc"
+                                      content={
+                                        <div
+                                          className="productdesc"
+                                          style={{ display: "inline-flex" }}
+                                        >
+                                          <button
+                                            type="button"
+                                            className="tabsbotbtn"
+                                          >
+                                            Direct Buy
+                                          </button>
+                                          <button
+                                            type="button"
+                                            className="tabsbotbtn"
+                                            onClick={this.handleAddressModalOpen.bind(
+                                              this
+                                            )}
+                                          >
+                                            Add to Shopping Bag
+                                          </button>
+
+                                          {/* <Popconfirm
+                                            title={
+                                              <>
+                                                <div className="popover-input-cntr">
+                                                  <div>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .address
+                                                        : "Address"}
+                                                    </p>
+                                                    <textarea
+                                                      placeholder="Enter Address"
+                                                      name="shippingAddress"
+                                                      autoComplete="off"
+                                                      onChange={
+                                                        this.handleTextOnchage
+                                                      }
+                                                    ></textarea>
+                                                  </div>
+                                                  <div>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .landmark
+                                                        : "Landmark"}
+                                                    </p>
+                                                    <input
+                                                      type="text"
+                                                      placeholder={
+                                                        TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .placeholder
+                                                              .enterlandmark
+                                                          : "Enter Landmark"
+                                                      }
+                                                      autoComplete="off"
+                                                      name="landmark"
+                                                      onChange={
+                                                        this.handleTextOnchage
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="row">
+                                                    <div className="col-md-6">
+                                                      <p>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.p
+                                                              .landmark
+                                                          : "Pin Code"}
+                                                      </p>
+                                                      <input
+                                                        type="text"
+                                                        placeholder={
+                                                          TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .placeholder
+                                                                .enterpincode
+                                                            : "Enter Pin Code"
+                                                        }
+                                                        name="pincode"
+                                                        autoComplete="off"
+                                                        maxLength={6}
+                                                        value={
+                                                          this.state.pincode
+                                                        }
+                                                        // onChange={this.handlePinCodeCheck.bind(
+                                                        //   this,
+                                                        //   item.id
+                                                        // )}
+                                                      />
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                      <p>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.p
+                                                              .city
+                                                          : "City"}
+                                                      </p>
+                                                      <input
+                                                        type="text"
+                                                        placeholder={
+                                                          TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .placeholder
+                                                                .entercity
+                                                            : "Enter City"
+                                                        }
+                                                        autoComplete="off"
+                                                        name="city"
+                                                        onChange={
+                                                          this.handleTextOnchage
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="row">
+                                                    <div className="col-md-6">
+                                                      <p>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.p
+                                                              .state
+                                                          : "State"}
+                                                      </p>
+                                                      <input
+                                                        type="text"
+                                                        placeholder={
+                                                          TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .placeholder
+                                                                .enterstate
+                                                            : "Enter State"
+                                                        }
+                                                        name="Ordstate"
+                                                        autoComplete="off"
+                                                        value={
+                                                          this.state.Ordstate
+                                                        }
+                                                        onChange={
+                                                          this.handleTextOnchage
+                                                        }
+                                                        disabled={
+                                                          this.state
+                                                            .ordStateDisabled
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                      <p>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.p
+                                                              .country
+                                                          : "Country"}
+                                                      </p>
+                                                      <input
+                                                        type="text"
+                                                        placeholder={
+                                                          TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .placeholder
+                                                                .entercountry
+                                                            : "Enter Country"
+                                                        }
+                                                        name="country"
+                                                        autoComplete="off"
+                                                        onChange={
+                                                          this.handleTextOnchage
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                {this.state
+                                                  .pincodeChecAvaibility && (
+                                                  <p
+                                                    className="non-deliverable"
+                                                    style={{
+                                                      marginBottom: "5px",
+                                                    }}
+                                                  >
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .checkingyouravailability
+                                                      : "Checking your availability."}
+                                                  </p>
+                                                )}
+                                                {this.state
+                                                  .showPinCodereturnMsg && (
+                                                  <>
+                                                    {this.state
+                                                      .showPinStatusCodeMsg ===
+                                                    false ? (
+                                                      <p className="non-deliverable">
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .ticketingDashboard
+                                                              .kidlycheckenteredstatepincode
+                                                          : "Kidly Check Entered State Pin Code"}
+                                                      </p>
+                                                    ) : (
+                                                      <p className="non-deliverable">
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .ticketingDashboard
+                                                              .enteredpincodeisnondeliverable
+                                                          : "Entered Pin code is non deliverable"}
+                                                      </p>
+                                                    )}
+
+                                                    <div className="popover-radio-cntr">
+                                                      <div>
+                                                        <input
+                                                          type="radio"
+                                                          id="order-returns"
+                                                          name="ordMoveReturn"
+                                                          checked={
+                                                            this.state
+                                                              .ordMoveReturn
+                                                          }
+                                                          onChange={
+                                                            this
+                                                              .handleOrdChangeOptions
+                                                          }
+                                                        />
+                                                        <label htmlFor="order-returns">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .ticketingDashboard
+                                                                .moveorderintoreturns
+                                                            : "Move Order into Returns"}
+                                                        </label>
+                                                      </div>
+                                                      <div>
+                                                        <input
+                                                          type="radio"
+                                                          id="self-pickup"
+                                                          name="ordSelfPickup"
+                                                          checked={
+                                                            this.state
+                                                              .ordSelfPickup
+                                                          }
+                                                          onChange={
+                                                            this
+                                                              .handleOrdChangeOptions
+                                                          }
+                                                        />
+                                                        <label htmlFor="self-pickup">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .ticketingDashboard
+                                                                .convertthisorderinselfpickup
+                                                            : "Convert this order in Self Pickup"}
+                                                        </label>
+                                                      </div>
+                                                    </div>
+                                                    {this.state
+                                                      .ordSelfPickup && (
+                                                      <>
+                                                        <div className="row">
+                                                          <div className="col-md-6">
+                                                            <p>
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .title.date
+                                                                : "Date"}
+                                                            </p>
+
+                                                            <DatePicker
+                                                              selected={
+                                                                this.state
+                                                                  .OrdPickupDate
+                                                              }
+                                                              onChange={(
+                                                                date
+                                                              ) =>
+                                                                this.handleOrdDateChange(
+                                                                  date
+                                                                )
+                                                              }
+                                                              placeholderText={
+                                                                TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .ticketingDashboard
+                                                                      .enterdate
+                                                                  : "Enter Date"
+                                                              }
+                                                              value={
+                                                                this.state
+                                                                  .OrdPickupDate
+                                                              }
+                                                              minDate={
+                                                                new Date()
+                                                              }
+                                                              showMonthDropdown
+                                                              showYearDropdown
+                                                              className="txt-1"
+                                                              dateFormat="dd/MM/yyyy"
+                                                            />
+                                                          </div>
+                                                          <div className="col-md-6">
+                                                            <p>
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .title.time
+                                                                : "Time"}
+                                                            </p>
+
+                                                            <DatePicker
+                                                              selected={
+                                                                this.state
+                                                                  .OrdPickupTime
+                                                              }
+                                                              onChange={(
+                                                                time
+                                                              ) =>
+                                                                this.handleOrdPickupTimeChange(
+                                                                  time
+                                                                )
+                                                              }
+                                                              showTimeSelect
+                                                              showTimeSelectOnly
+                                                              timeIntervals={15}
+                                                              timeCaption="Time"
+                                                              dateFormat="h:mm aa"
+                                                              placeholderText={
+                                                                TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .ticketingDashboard
+                                                                      .entertime
+                                                                  : "Enter Time"
+                                                              }
+                                                              minTime={
+                                                                this.state
+                                                                  .minTime
+                                                              }
+                                                              maxTime={moment()
+                                                                .endOf("day")
+                                                                .toDate()}
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </>
+                                                    )}
+                                                  </>
+                                                )}
+                                              </>
+                                            }
+                                            overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
+                                            // placement="bottomRight"
+                                            // placement="left"
+                                            // onVisibleChange={(visible) =>
+                                            //   this.setState({ orderPopoverOverlay: visible })
+                                            // }
+                                            icon={false}
+                                            okText={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .proceed
+                                                : "Proceed"
+                                            }
+                                            // onConfirm={this.handleSubmitOrderAddress.bind(
+                                            //   this,
+                                            //   item.id
+                                            // )}
+                                            cancelText={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .cancel
+                                                : "Cancel"
+                                            }
+                                            okButtonProps={{
+                                              disabled: this.state
+                                                .pincodeChecAvaibility,
+                                            }}
+                                          > 
+                                            
+                                          </Popconfirm>*/}
+                                        </div>
+                                      }
+                                      // placement="left"
+                                      // visible={this.state.buyNowClick}
                                     >
-                                      BUY NOW
-                                    </button>
+                                      <button
+                                        onClick={this.handleBuyNowButtonClick.bind(
+                                          this
+                                        )}
+                                        type="button"
+                                        className="tabsbotbtn"
+                                      >
+                                        BUY NOW
+                                      </button>
+                                    </Popover>
                                   </div>
                                 ) : null}
                               </div>
@@ -7859,6 +8652,256 @@ class Header extends Component {
                   : "Close Chat"}
               </label>
             </div>
+          </div>
+        </Modal>
+        <Modal
+          open={this.state.addressModal}
+          onClose={this.handleAddressModalClose.bind(this)}
+          center
+          modalId="categoryEditModal"
+          classNames={{
+            modal:
+              "order-popover order-popover-butns order-popover-address customaddpop",
+          }}
+        >
+          <div style={{ padding: "15px" }}>
+            <div className="popover-input-cntr">
+              <div>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.address
+                    : "Address"}
+                </p>
+                <textarea
+                  placeholder="Enter Address"
+                  name="shippingAddress"
+                  autoComplete="off"
+                  onChange={this.handleTextOnchage}
+                ></textarea>
+              </div>
+              <div>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.landmark
+                    : "Landmark"}
+                </p>
+                <input
+                  type="text"
+                  placeholder={
+                    TranslationContext !== undefined
+                      ? TranslationContext.placeholder.enterlandmark
+                      : "Enter Landmark"
+                  }
+                  autoComplete="off"
+                  name="landmark"
+                  onChange={this.handleTextOnchage}
+                />
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.landmark
+                      : "Pin Code"}
+                  </p>
+                  <input
+                    type="text"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.placeholder.enterpincode
+                        : "Enter Pin Code"
+                    }
+                    name="pincode"
+                    autoComplete="off"
+                    maxLength={6}
+                    value={this.state.pincode}
+                    // onChange={this.handlePinCodeCheck.bind(
+                    //   this,
+                    //   item.id
+                    // )}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.city
+                      : "City"}
+                  </p>
+                  <input
+                    type="text"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.placeholder.entercity
+                        : "Enter City"
+                    }
+                    autoComplete="off"
+                    name="city"
+                    onChange={this.handleTextOnchage}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.state
+                      : "State"}
+                  </p>
+                  <input
+                    type="text"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.placeholder.enterstate
+                        : "Enter State"
+                    }
+                    name="Ordstate"
+                    autoComplete="off"
+                    value={this.state.Ordstate}
+                    onChange={this.handleTextOnchage}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.country
+                      : "Country"}
+                  </p>
+                  <input
+                    type="text"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.placeholder.entercountry
+                        : "Enter Country"
+                    }
+                    name="country"
+                    autoComplete="off"
+                    onChange={this.handleTextOnchage}
+                  />
+                </div>
+              </div>
+            </div>
+            {this.state.pincodeChecAvaibility && (
+              <p
+                className="non-deliverable"
+                style={{
+                  marginBottom: "5px",
+                }}
+              >
+                {TranslationContext !== undefined
+                  ? TranslationContext.ticketingDashboard
+                      .checkingyouravailability
+                  : "Checking your availability."}
+              </p>
+            )}
+            {this.state.showPinCodereturnMsg && (
+              <>
+                {this.state.showPinStatusCodeMsg === false ? (
+                  <p className="non-deliverable">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .kidlycheckenteredstatepincode
+                      : "Kidly Check Entered State Pin Code"}
+                  </p>
+                ) : (
+                  <p className="non-deliverable">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .enteredpincodeisnondeliverable
+                      : "Entered Pin code is non deliverable"}
+                  </p>
+                )}
+
+                <div className="popover-radio-cntr">
+                  <div>
+                    <input
+                      type="radio"
+                      id="order-returns"
+                      name="ordMoveReturn"
+                      checked={this.state.ordMoveReturn}
+                      onChange={this.handleOrdChangeOptions}
+                    />
+                    <label htmlFor="order-returns">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .moveorderintoreturns
+                        : "Move Order into Returns"}
+                    </label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="self-pickup"
+                      name="ordSelfPickup"
+                      checked={this.state.ordSelfPickup}
+                      onChange={this.handleOrdChangeOptions}
+                    />
+                    <label htmlFor="self-pickup">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .convertthisorderinselfpickup
+                        : "Convert this order in Self Pickup"}
+                    </label>
+                  </div>
+                </div>
+                {this.state.ordSelfPickup && (
+                  <>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <p>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.title.date
+                            : "Date"}
+                        </p>
+
+                        <DatePicker
+                          selected={this.state.OrdPickupDate}
+                          onChange={(date) => this.handleOrdDateChange(date)}
+                          placeholderText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.enterdate
+                              : "Enter Date"
+                          }
+                          value={this.state.OrdPickupDate}
+                          minDate={new Date()}
+                          showMonthDropdown
+                          showYearDropdown
+                          className="txt-1"
+                          dateFormat="dd/MM/yyyy"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <p>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.title.time
+                            : "Time"}
+                        </p>
+
+                        <DatePicker
+                          selected={this.state.OrdPickupTime}
+                          onChange={(time) =>
+                            this.handleOrdPickupTimeChange(time)
+                          }
+                          showTimeSelect
+                          showTimeSelectOnly
+                          timeIntervals={15}
+                          timeCaption="Time"
+                          dateFormat="h:mm aa"
+                          placeholderText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.ticketingDashboard.entertime
+                              : "Enter Time"
+                          }
+                          minTime={this.state.minTime}
+                          maxTime={moment()
+                            .endOf("day")
+                            .toDate()}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </Modal>
       </React.Fragment>

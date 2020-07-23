@@ -3737,7 +3737,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reporteedesignation
                                               : "Reportee Designation"}
-                                            : <b>{row.original.designation}</b>
+                                            : <b>{row.original.reporteeDesignation}</b>
                                           </p>
                                         </div>
                                         <div className="col-md-6">
@@ -4762,19 +4762,6 @@ class Users extends Component {
                     </h3>
                     <div>
                       <div className="down-excel mb-2">
-                        <p>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.template
-                            : "Template"}
-                        </p>
-                        <CSVLink
-                          filename={"User.csv"}
-                          data={config.userTemplate}
-                        >
-                          <img src={DownExcel} alt="download icon" />
-                        </CSVLink>
-                      </div>
-                      <div className="down-excel">
                         <p>
                           {TranslationContext !== undefined
                             ? TranslationContext.p.template

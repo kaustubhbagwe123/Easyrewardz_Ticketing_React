@@ -74,6 +74,7 @@ p {
 .initial {
   margin-top: 0;
   flex: 0 0 28px;
+  color: #000;
 }
 .chat-name {
   text-overflow: ellipsis;
@@ -84,7 +85,8 @@ p {
   transition: all 0.3s ease-in;
 }
 .chat-info:hover {
-  background-color: #ecf2f4;
+  /* background-color: #ecf2f4; */
+  background-color: #CDE4FF;
 }
 .mobile-chat-tabs {
   display: none;
@@ -1670,7 +1672,7 @@ p {
   display: inline-block;
   margin-right: 10px;
   margin-left: 0px;
-  outline: none;
+  outline: none !important;
   padding: 5px 10px;
   border-radius: 10px;
 }
@@ -1811,10 +1813,10 @@ p {
 .rm-header.ant-pagination-item-active {
   border-color: #2561a8 !important;
 }
-.Cancelicow{
+.Cancelicow {
   display: none;
 }
-.BackArw{
+.BackArw {
   display: none;
 }
 .loader {
@@ -2045,6 +2047,81 @@ p {
 .show-mobile {
   display: none;
 }
+.hide-message-title .ant-notification-notice-message {
+  display: none;
+}
+
+/* Dropdown Button */
+.chatdivtitle.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer !important;
+}
+
+/* Dropdown button on hover & focus */
+.chatdivtitle .dropbtn:hover,
+.dropbtn:focus {
+  background-color: #2980b9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.chatdivtitle .dropdown {
+  position: relative;
+  display: inline-block;
+  background-image: none !important;
+  float: right;
+  cursor: pointer !important;
+  width: 200px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.chatdivtitle .dropdown-content {
+  width: 100%;
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  margin-top: 35px;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 6px;
+}
+
+/* Links inside the dropdown */
+.chatdivtitle .dropdown-content label {
+  color: black;
+  padding: 25px;
+  text-decoration: none;
+  display: block;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 0;
+  cursor: pointer !important;
+}
+
+/* Change color of dropdown links on hover */
+.chatdivtitle .dropdown-content label:hover {
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer !important;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.chatdivtitle .show {
+  display: block;
+}
+
+.chat-initial-brd{
+  border: 1px solid #9A9A9A;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {
@@ -2059,6 +2136,12 @@ p {
 }
 
 @media all and (max-width: 576px) {
+  .Cancelicow {
+    display: block;
+  }
+  .BackArw {
+    display: block;
+  }
   .show-desktop {
     display: none;
   }
@@ -2224,7 +2307,7 @@ p {
     float: right;
     margin-top: 3px;
     margin-right: 10px;
-}
+  }
   .Cancelicow {
     height: 17px;
     border-radius: 50%;
@@ -2232,7 +2315,7 @@ p {
     padding: 3px;
     float: right;
     margin-top: 3px;
-}
+  }
   .mobile-arrow,
   .mobile-chat-tabs,
   .chat-tabs-mobile {

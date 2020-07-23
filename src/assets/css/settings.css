@@ -3751,3 +3751,137 @@
 .cr-float-right {
   margin-left: 30px !important;
 }
+
+/* Slot new design */
+
+.slot-newd .nav-tabs {
+  border-bottom: 1px solid #ececec;
+  margin: auto;
+  display: block;
+  text-align: center;
+}
+.slot-newd .nav-tabs .nav-item {
+  margin-bottom: 0px;
+}
+.slot-newd .nav-tabs .nav-link.active {
+  border-bottom: 3px solid #2561a8;
+}
+.slot-newd .nav-tabs .nav-link {
+  background: none;
+  border: none;
+}
+.manualbox ul {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+.manualbox label {
+  font-weight: normal;
+  font-size: 14px;
+  color: #9b9b9b;
+  margin-bottom: 3px;
+}
+.manualbox input {
+  margin-top: 0;
+}
+.manualbox select {
+  margin-top: 0;
+}
+.manualbox .input-group-append img {
+  height: 30px;
+  padding: 6px 11px;
+  width: 40px;
+  margin-top: 5px;
+}
+.manualbox ul li {
+  width: 100%;
+  margin-right: 30px;
+  margin-top: 15px;
+}
+.manualbox ul li:last-child {
+  width: auto;
+  margin-right: 0;
+}
+.manualbox .form-control {
+  background-color: #f9f9f9;
+  border: 1px solid #dadada;
+  height: calc(2.55rem + 2px);
+}
+.manualbox .input-group-append {
+  margin-left: 0;
+  background-color: #dadada;
+}
+.manualbox a {
+  color: #2561a8 !important;
+  float: right;
+}
+.manualbox .butn {
+  background-color: #fff;
+  color: #2561a8;
+  padding: 11px 0;
+  margin-top: 24px;
+}
+.bulkuploadbox .addfilebox {
+  background-color: #f9f9f9;
+  border: 1px dashed #8e8e8e;
+  width: 55%;
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  padding: 25px;
+}
+.bulkuploadbox .addfilebox h3 {
+  display: inline;
+  color: #8e8e8e;
+  text-transform: none;
+  font-size: 16px;
+  font-weight: normal;
+  padding: 0;
+}
+.bulkuploadbox .addfilebox h3 span {
+  color: #2561a8;
+  font-weight: 600;
+}
+.bulkuploadbox .addfilebox img {
+  height: 14px;
+  margin-right: 7px;
+}
+.nextbox li:last-child {
+  width: 100% !important;
+}
+.nextbox .del-can a {
+  color: #9b9b9b !important;
+  margin-right: 15px;
+  padding-top: 25px;
+  padding-bottom: 0;
+}
+.nextbox .del-can .butn {
+  width: 100px;
+  background-color: #2561a8;
+  color: #fff;
+}
+.nextbox .del-can {
+  display: flex;
+  justify-content: flex-end;
+}
+.slot-newd {
+  box-shadow: none;
+}
+.statuscheckbox {
+  display: flex;
+}
+.statuscheckbox input {
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 4px;
+}
+.statuscheckbox label {
+  vertical-align: middle;
+}
+.nextbox .value {
+  width: 50px;
+  text-align: center;
+  height: calc(1.55rem + 2px);
+}
