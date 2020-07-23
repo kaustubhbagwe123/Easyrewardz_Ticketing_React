@@ -236,6 +236,12 @@ class Header extends Component {
         "#FFDEE2",
       ],
       notificationDuration: 5,
+      shippingAddress: "",
+      shippingLandmark: "",
+      shippingPinCode: "",
+      shippingCity: "",
+      shippingState: "",
+      shippingCountry: "",
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -2927,6 +2933,49 @@ class Header extends Component {
   ////handle address modal open
   handleAddressModalOpen = () => {
     this.setState({ addressModal: true });
+  };
+  ////handle modal text on change
+  handleTextOnchage = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+  ////handle buy products on chat
+  handleBuyProductsOnChat = (isFromRecommendation, isDirectBuy) => {
+    let self = this;
+
+    var addressDetails = {};
+    addressDetails.address = this.state.shippingAddress;
+    addressDetails.landmark = this.state.shippingLandmark;
+    addressDetails.pinCode = this.state.shippingPinCode;
+    addressDetails.city = this.state.shippingCity;
+    addressDetails.state = this.state.shippingState;
+    addressDetails.country = this.state.shippingCountry;
+    // addressDetails.latitude = this.state.shippingLatitude;
+    // addressDetails.longitude = this.state.shippingLongitude;
+
+    var inputParam = {};
+    inputParam.CustomerID = this.state.customerId;
+    inputParam.CustomerMobile = this.state.mobileNo;
+    inputParam.IsFromRecommendation = isFromRecommendation;
+    inputParam.IsDirectBuy = isDirectBuy;
+    if(!isDirectBuy)
+    {
+      inputParam.CustomerAddress = addressDetails;
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/BuyProductsOnChat",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then((response) => {
+        var message = response.data.response;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+        }
+      })
+      .catch((response) => {});
   };
 
   render() {
@@ -7580,7 +7629,8 @@ class Header extends Component {
                                                   placement="left"
                                                 >
                                                   <img
-                                                    src={Ladyimg}
+                                                    src={item.imageURL}
+                                                    // src={Ladyimg}
                                                     className="ladyimg"
                                                     alt="Lady Img"
                                                   />
@@ -7850,7 +7900,8 @@ class Header extends Component {
                                                 placement="left"
                                               >
                                                 <img
-                                                  src={Ladyimg}
+                                                  src={item.imageURL}
+                                                  // src={Ladyimg}
                                                   className="ladyimg"
                                                   alt="Lady Img"
                                                 />
@@ -8123,7 +8174,8 @@ class Header extends Component {
                                                   placement="left"
                                                 >
                                                   <img
-                                                    src={Ladyimg}
+                                                    src={item.imageURL}
+                                                    // src={Ladyimg}
                                                     className="ladyimg"
                                                     alt="Lady Img"
                                                   />
@@ -8676,6 +8728,7 @@ class Header extends Component {
                   placeholder="Enter Address"
                   name="shippingAddress"
                   autoComplete="off"
+                  value={this.state.shippingAddress}
                   onChange={this.handleTextOnchage}
                 ></textarea>
               </div>
@@ -8693,7 +8746,8 @@ class Header extends Component {
                       : "Enter Landmark"
                   }
                   autoComplete="off"
-                  name="landmark"
+                  name="shippingLandmark"
+                  value={this.state.shippingLandmark}
                   onChange={this.handleTextOnchage}
                 />
               </div>
@@ -8711,10 +8765,10 @@ class Header extends Component {
                         ? TranslationContext.placeholder.enterpincode
                         : "Enter Pin Code"
                     }
-                    name="pincode"
+                    name="shippingPinCode"
                     autoComplete="off"
                     maxLength={6}
-                    value={this.state.pincode}
+                    value={this.state.shippingPinCode}
                     // onChange={this.handlePinCodeCheck.bind(
                     //   this,
                     //   item.id
@@ -8735,7 +8789,8 @@ class Header extends Component {
                         : "Enter City"
                     }
                     autoComplete="off"
-                    name="city"
+                    name="shippingCity"
+                    value={this.state.shippingCity}
                     onChange={this.handleTextOnchage}
                   />
                 </div>
@@ -8754,9 +8809,9 @@ class Header extends Component {
                         ? TranslationContext.placeholder.enterstate
                         : "Enter State"
                     }
-                    name="Ordstate"
+                    name="shippingState"
                     autoComplete="off"
-                    value={this.state.Ordstate}
+                    value={this.state.shippingState}
                     onChange={this.handleTextOnchage}
                   />
                 </div>
@@ -8773,8 +8828,9 @@ class Header extends Component {
                         ? TranslationContext.placeholder.entercountry
                         : "Enter Country"
                     }
-                    name="country"
+                    name="shippingCountry"
                     autoComplete="off"
+                    value={this.state.shippingCountry}
                     onChange={this.handleTextOnchage}
                   />
                 </div>
@@ -8810,98 +8866,21 @@ class Header extends Component {
                       : "Entered Pin code is non deliverable"}
                   </p>
                 )}
-
-                <div className="popover-radio-cntr">
-                  <div>
-                    <input
-                      type="radio"
-                      id="order-returns"
-                      name="ordMoveReturn"
-                      checked={this.state.ordMoveReturn}
-                      onChange={this.handleOrdChangeOptions}
-                    />
-                    <label htmlFor="order-returns">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.ticketingDashboard
-                            .moveorderintoreturns
-                        : "Move Order into Returns"}
-                    </label>
-                  </div>
-                  <div>
-                    <input
-                      type="radio"
-                      id="self-pickup"
-                      name="ordSelfPickup"
-                      checked={this.state.ordSelfPickup}
-                      onChange={this.handleOrdChangeOptions}
-                    />
-                    <label htmlFor="self-pickup">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.ticketingDashboard
-                            .convertthisorderinselfpickup
-                        : "Convert this order in Self Pickup"}
-                    </label>
-                  </div>
-                </div>
-                {this.state.ordSelfPickup && (
-                  <>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <p>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.title.date
-                            : "Date"}
-                        </p>
-
-                        <DatePicker
-                          selected={this.state.OrdPickupDate}
-                          onChange={(date) => this.handleOrdDateChange(date)}
-                          placeholderText={
-                            TranslationContext !== undefined
-                              ? TranslationContext.ticketingDashboard.enterdate
-                              : "Enter Date"
-                          }
-                          value={this.state.OrdPickupDate}
-                          minDate={new Date()}
-                          showMonthDropdown
-                          showYearDropdown
-                          className="txt-1"
-                          dateFormat="dd/MM/yyyy"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <p>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.title.time
-                            : "Time"}
-                        </p>
-
-                        <DatePicker
-                          selected={this.state.OrdPickupTime}
-                          onChange={(time) =>
-                            this.handleOrdPickupTimeChange(time)
-                          }
-                          showTimeSelect
-                          showTimeSelectOnly
-                          timeIntervals={15}
-                          timeCaption="Time"
-                          dateFormat="h:mm aa"
-                          placeholderText={
-                            TranslationContext !== undefined
-                              ? TranslationContext.ticketingDashboard.entertime
-                              : "Enter Time"
-                          }
-                          minTime={this.state.minTime}
-                          maxTime={moment()
-                            .endOf("day")
-                            .toDate()}
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
               </>
             )}
+            <div className="row">
+              <div class="ant-popover-buttons" style={{ marginLeft: "120px" }}>
+                <button type="button" class="ant-btn ant-btn-sm">
+                  <span>Cancel</span>
+                </button>
+                <button
+                  type="button"
+                  class="ant-btn ant-btn-primary ant-btn-sm"
+                >
+                  <span>Proceed</span>
+                </button>
+              </div>
+            </div>
           </div>
         </Modal>
       </React.Fragment>

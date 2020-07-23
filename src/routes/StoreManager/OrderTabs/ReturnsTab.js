@@ -196,6 +196,28 @@ class ReturnTab extends Component {
       });
   }
 
+  handleUpdateOnRefund(orderId) {
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/SendSMSWhatsupOnReturnCancel",
+      headers: authHeader(),
+      params: {
+        OrderId: orderId,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record Cancelled Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -384,7 +406,11 @@ class ReturnTab extends Component {
                 render: (item) => {
                   return (
                     <div className="d-flex">
-                      <button className="butn order-grid-butn order-grid-butn-orange"
+                      <button className={
+                        item.isCancelled===false
+                        ?"butn order-grid-butn order-grid-butn-orange"
+                        :"butn order-grid-butn order-grid-butn-orange order-grid-btn-disable"
+                      }
                        onClick={this.handleSendSMSWhatupOnCancel.bind(this,item.orderID)}
                       >
                         {TranslationContext !== undefined

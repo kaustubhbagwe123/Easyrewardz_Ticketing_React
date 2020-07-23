@@ -1769,8 +1769,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="cm">cm</option>
-                                          {/* <option value="feet">feet</option> */}
-                                          {/* <option value="inch">inch</option> */}
+                                          {/* <option value="feet">feet</option>
+                                          <option value="inch">inch</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempHeight === "" && (
@@ -1814,8 +1814,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="cm">cm</option>
-                                          {/* <option value="feet">feet</option> */}
-                                          {/* <option value="inch">inch</option> */}
+                                          {/* <option value="feet">feet</option>
+                                          <option value="inch">inch</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempLength === "" && (
@@ -1859,8 +1859,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="cm">cm</option>
-                                          {/* <option value="feet">feet</option> */}
-                                          {/* <option value="inch">inch</option> */}
+                                          {/* <option value="feet">feet</option>
+                                          <option value="inch">inch</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempBreadth === "" && (
@@ -1904,8 +1904,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="Kg">Kg</option>
-                                          {/* <option value="g">g</option> */}
-                                          {/* <option value="lbs">lbs</option> */}
+                                          {/* <option value="g">g</option>
+                                          <option value="lbs">lbs</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempWeight === "" && (
@@ -2247,8 +2247,8 @@ class OrderSetting extends Component {
                           onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="cm">cm</option>
-                          <option value="feet">feet</option>
-                          <option value="inch">inch</option>
+                          {/* <option value="feet">feet</option>
+                          <option value="inch">inch</option> */}
                         </select>
                         {this.state.editTemplate.height === "" && (
                           <p
@@ -2287,8 +2287,8 @@ class OrderSetting extends Component {
                           onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="cm">cm</option>
-                          <option value="feet">feet</option>
-                          <option value="inch">inch</option>
+                          {/* <option value="feet">feet</option>
+                          <option value="inch">inch</option> */}
                         </select>
                         {this.state.editTemplate.length === "" && (
                           <p
@@ -2327,8 +2327,8 @@ class OrderSetting extends Component {
                           onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="cm">cm</option>
-                          <option value="feet">feet</option>
-                          <option value="inch">inch</option>
+                          {/* <option value="feet">feet</option>
+                          <option value="inch">inch</option> */}
                         </select>
                         {this.state.editTemplate.breath === "" && (
                           <p
@@ -2367,8 +2367,8 @@ class OrderSetting extends Component {
                           onChange={this.handleEditInputOnchange.bind(this)}
                         >
                           <option value="Kg">Kg</option>
-                          <option value="g">g</option>
-                          <option value="lbs">lbs</option>
+                          {/* <option value="g">g</option>
+                          <option value="lbs">lbs</option> */}
                         </select>
                         {this.state.editTemplate.weight === "" && (
                           <p
