@@ -12694,3 +12694,8 @@ table tr th:last-child {
   .lowersec a[disabled]{
   color: #4a4a4a !important;
   }
+.userBtnDibsl{
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+

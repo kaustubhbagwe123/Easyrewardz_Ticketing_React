@@ -163,6 +163,8 @@ class Users extends Component {
       isortA: false,
       bulkuploadLoading: false,
       translateLanguage: {},
+      profileBtnDisabled:true,
+      mappedCategoryBtnDisabled:true
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -1731,6 +1733,7 @@ class Users extends Component {
             self.setState({
               getID: id,
               personalReadOnly: true,
+              profileBtnDisabled:false,
             });
             self.handleGetUserList();
           } else {
@@ -1871,6 +1874,9 @@ class Users extends Component {
                   ? TranslationContext.alertmessage.recordupdatedsuccessfully
                   : "Record updated successfully"
               );
+              self.setState({
+                mappedCategoryBtnDisabled:false
+              });
             } else {
               NotificationManager.error(
                 TranslationContext !== undefined
@@ -1888,6 +1894,7 @@ class Users extends Component {
               self.setState({
                 getID: id,
                 profileReadOnly: true,
+                mappedCategoryBtnDisabled:false
               });
               self.handleGetUserList();
             } else {
@@ -2235,7 +2242,8 @@ class Users extends Component {
       // this.state.userEditData.is_Assign_Escalation === true &&
       //this.state.userEditData.assign_ID > 0
     ) {
-      this.handleGetUserListByID(this.state.userEditData.userId);
+      debugger
+      // this.handleGetUserListByID(this.state.userEditData.userId);
       let self = this;
 
       var finalIssueTypeId = "";
@@ -2338,8 +2346,10 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
+          debugger
           let Msg = res.data.message;
           if (Msg === "Success") {
+            self.closeEditModal();
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.recordupdatedsuccessfully
@@ -2354,14 +2364,15 @@ class Users extends Component {
               multisubcategoryIDs: finalSubCategoryId,
             });
           } else {
+            self.closeEditModal();
             NotificationManager.error(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.recordnotupdated
                 : "Record Not Updated"
             );
           }
-          self.closeEditModal();
           self.handleGetUserList();
+         
         })
         .catch((error) => {
           console.log(error);
@@ -4329,7 +4340,8 @@ class Users extends Component {
                             //data-target="#mapped-category"
                             // data-toggle="collapse"
                             //href="#profile-details"
-                            className="butn"
+                            disabled={this.state.profileBtnDisabled}
+                            className={this.state.profileBtnDisabled ? "butn userBtnDibsl":"butn"}
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
                             {TranslationContext !== undefined
@@ -4669,8 +4681,9 @@ class Users extends Component {
                       </div>
                       <div className="btn-coll">
                         <button
-                          className="butn"
+                          className={this.state.mappedCategoryBtnDisabled ? "butn userBtnDibsl":"butn"}
                           onClick={this.handleAddMapCategory.bind(this)}
+                          disabled={this.state.mappedCategoryBtnDisabled}
                         >
                           {TranslationContext !== undefined
                             ? TranslationContext.label.add
