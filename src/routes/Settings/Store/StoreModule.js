@@ -163,6 +163,9 @@ class StoreModule extends Component {
           slotstatus: true,
         },
       ],
+      chooseStoreModal: false,
+      createTampleteModal: false,
+      selectedStoreModal: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2105,14 +2108,40 @@ class StoreModule extends Component {
       }
     }
   };
-
+  /////handle next button press to show
   handleNextButtonOpen = () => {
     this.setState({ isNextClick: true });
   };
+  /////handle next button press to hide
   handleNextButtonClose = () => {
     this.setState({ isNextClick: false });
   };
 
+  ////handle choose store modal open
+  handleChooseStoreOpenModal = () => {
+    this.setState({ chooseStoreModal: true });
+  };
+  ////handle choose store modal close
+  handleChooseStoreCloseModal = () => {
+    this.setState({ chooseStoreModal: false });
+  };
+
+  ////handle choose store modal open
+  handleCreateTempletetOpenModal = () => {
+    this.setState({ createTampleteModal: true });
+  };
+  ////handle choose store modal close
+  handleCreateTempletetCloseModal = () => {
+    this.setState({ createTampleteModal: false });
+  };
+  ////handle selected store modal open
+  handleSelectedStoreOpenModal = () => {
+    this.setState({ selectedStoreModal: true });
+  };
+  ////handle selected store modal clsoe
+  handleSelectedStoreCloseModal = () => {
+    this.setState({ selectedStoreModal: false });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3835,7 +3864,12 @@ class StoreModule extends Component {
                                           <ul>
                                             <li>
                                               <label>Choose Store</label>
-                                              <div className="input-group">
+                                              <div
+                                                className="input-group"
+                                                onClick={this.handleChooseStoreOpenModal.bind(
+                                                  this
+                                                )}
+                                              >
                                                 <input
                                                   type="text"
                                                   className="form-control"
@@ -3874,7 +3908,13 @@ class StoreModule extends Component {
                                                 </option>
                                                 <option value={0}>1</option>
                                               </select>
-                                              <a>+ Create New Template</a>
+                                              <a
+                                                onClick={this.handleCreateTempletetOpenModal.bind(
+                                                  this
+                                                )}
+                                              >
+                                                + Create New Template
+                                              </a>
                                             </li>
                                             <li>
                                               <button
@@ -3907,7 +3947,12 @@ class StoreModule extends Component {
                                                   />
                                                 </span>
                                               </div>
-                                              <a style={{ float: "left" }}>
+                                              <a
+                                                style={{ float: "left" }}
+                                                onClick={this.handleSelectedStoreOpenModal.bind(
+                                                  this
+                                                )}
+                                              >
                                                 8 Store Selected >
                                               </a>
                                             </li>
@@ -3963,7 +4008,15 @@ class StoreModule extends Component {
                                                   title: "Slot Occupancy",
                                                   dataIndex: "occupancy",
                                                   render: (row, rowData) => {
-                                                    return <><input type="text" className="form-control value" value="3"/></>;
+                                                    return (
+                                                      <>
+                                                        <input
+                                                          type="text"
+                                                          className="form-control value"
+                                                          value="3"
+                                                        />
+                                                      </>
+                                                    );
                                                   },
                                                 },
                                                 {
@@ -4996,6 +5049,28 @@ class StoreModule extends Component {
                   </div>
                 </div>
               </div>
+            </Modal>
+            {/* Choose Store Modal */}
+            <Modal
+              show={this.state.chooseStoreModal}
+              onHide={this.handleChooseStoreCloseModal.bind(this)}
+            >
+              <div>Choose Store</div>
+            </Modal>
+            {/* Create tamplete Modal */}
+            <Modal
+              show={this.state.createTampleteModal}
+              onHide={this.handleCreateTempletetCloseModal.bind(this)}
+            >
+              <div>Create tamplete</div>
+            </Modal>
+
+            {/* Selected Store Modal  */}
+            <Modal
+              show={this.state.selectedStoreModal}
+              onHide={this.handleSelectedStoreCloseModal.bind(this)}
+            >
+              <div>Selected Store</div>
             </Modal>
           </div>
         </div>
