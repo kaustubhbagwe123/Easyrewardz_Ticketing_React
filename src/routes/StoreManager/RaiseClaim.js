@@ -1446,12 +1446,12 @@ class RaiseClaim extends Component {
                           </b>
                         </label>
                         <div className="claimplus">
-                          <span className="plusline1new"></span>
-                          <img
+                          {/* <span className="plusline1new"></span> */}
+                          {/* <img
                             src={ArrowImg}
                             alt="Arrow"
                             className="arrow-img-1"
-                          />
+                          /> */}
                           <span className="plusline2"></span>
                           <img
                             src={PlusImg}
