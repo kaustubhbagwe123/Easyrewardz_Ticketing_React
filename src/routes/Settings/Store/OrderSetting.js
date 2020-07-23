@@ -1769,8 +1769,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="cm">cm</option>
-                                          <option value="feet">feet</option>
-                                          <option value="inch">inch</option>
+                                          {/* <option value="feet">feet</option> */}
+                                          {/* <option value="inch">inch</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempHeight === "" && (
@@ -1814,8 +1814,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="cm">cm</option>
-                                          <option value="feet">feet</option>
-                                          <option value="inch">inch</option>
+                                          {/* <option value="feet">feet</option> */}
+                                          {/* <option value="inch">inch</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempLength === "" && (
@@ -1859,8 +1859,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="cm">cm</option>
-                                          <option value="feet">feet</option>
-                                          <option value="inch">inch</option>
+                                          {/* <option value="feet">feet</option> */}
+                                          {/* <option value="inch">inch</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempBreadth === "" && (
@@ -1904,8 +1904,8 @@ class OrderSetting extends Component {
                                           )}
                                         >
                                           <option value="Kg">Kg</option>
-                                          <option value="g">g</option>
-                                          <option value="lbs">lbs</option>
+                                          {/* <option value="g">g</option> */}
+                                          {/* <option value="lbs">lbs</option> */}
                                         </select>
                                       </div>
                                       {this.state.OrdTempWeight === "" && (
