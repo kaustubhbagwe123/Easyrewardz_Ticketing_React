@@ -7,6 +7,7 @@ import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
+import CancelIcon from "./../../../assets/Images/cancel.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
@@ -5059,10 +5060,139 @@ class StoreModule extends Component {
             </Modal>
             {/* Create tamplete Modal */}
             <Modal
+              overlayId="chooseslot-main"
               show={this.state.createTampleteModal}
               onHide={this.handleCreateTempletetCloseModal.bind(this)}
             >
-              <div>Create tamplete</div>
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon"
+                onClick={this.handleCreateTempletetCloseModal.bind(this)}
+              />
+              <div className="chooseslot-box">
+                <div className="row">
+                  <div className="col-12">
+                    <h3>Choose Slot Type</h3>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <div className="statuscheckbox">
+                      <input type="checkbox" classNam="form-control" />
+                      <label>Automatic</label>
+                      <input type="checkbox" classNam="form-control" />
+                      <label>Manual</label>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <label>Template Name</label>
+                    <input type="text" className="form-control" />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-6">
+                    <label>Slot Duration</label>
+                    <select name="" className="form-control">
+                      <option value={0}>Select Timing</option>
+                      <option value={0}>1</option>
+                    </select>
+                  </div>
+                  <div className="col-12 col-md-6">
+                    <label>Gap B/w Slots</label>
+                    <select name="" className="form-control">
+                      <option value={0}>Select Timing</option>
+                      <option value={0}>1</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <h3>Store Timing</h3>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-6">
+                    <label>From</label>
+                    <select name="" className="form-control">
+                      <option value={0}>Select Timing</option>
+                      <option value={0}>1</option>
+                    </select>
+                  </div>
+                  <div className="col-12 col-md-6">
+                    <label>To</label>
+                    <select name="" className="form-control">
+                      <option value={0}>Select Timing</option>
+                      <option value={0}>1</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <h3>Non Operational Hour</h3>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-6">
+                    <label>From</label>
+                    <select name="" className="form-control">
+                      <option value={0}>Select Timing</option>
+                      <option value={0}>1</option>
+                    </select>
+                  </div>
+                  <div className="col-12 col-md-6">
+                    <label>To</label>
+                    <select name="" className="form-control">
+                      <option value={0}>Select Timing</option>
+                      <option value={0}>1</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="chooseslot-table">
+                  <Table
+                    dataSource={this.state.slotData}
+                    noDataContent="No Record Found"
+                    pagination={false}
+                    className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                    columns={[
+                      {
+                        title: "S.No.",
+
+                        dataIndex: "no",
+                      },
+                      {
+                        title: "Slot Start Time",
+                        dataIndex: "startTime",
+                      },
+                      {
+                        title: "Slot End Time",
+                        dataIndex: "endTime",
+                      },
+                    ]}
+                  ></Table>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <div className="del-can">
+                      <a href={Demo.BLANK_LINK}>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.cancel
+                          : "CANCEL"}
+                      </a>
+                      <button
+                        className="butn"
+                        onClick={this.handleNextButtonClose.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.delete
+                          : "Save"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Modal>
 
             {/* Selected Store Modal  */}
@@ -5070,7 +5200,81 @@ class StoreModule extends Component {
               show={this.state.selectedStoreModal}
               onHide={this.handleSelectedStoreCloseModal.bind(this)}
             >
-              <div>Selected Store</div>
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon"
+                onClick={this.handleSelectedStoreCloseModal.bind(this)}
+              />
+              <div className="selectstores-box">
+                <div className="row">
+                  <div className="col-12">
+                    <h3>Selected Stores</h3>
+                    <ul>
+                      <li>
+                        <div className="input-group">
+                          <label>SMB0045</label>
+                          <span className="input-group-append">
+                            <img
+                              src={CancelIcon}
+                              alt="cancel-icone"
+                              className="cust-ic"
+                            />
+                          </span>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="input-group">
+                          <label>SMB0045</label>
+                          <span className="input-group-append">
+                            <img
+                              src={CancelIcon}
+                              alt="cancel-icone"
+                              className="cust-ic"
+                            />
+                          </span>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="input-group">
+                          <label>SMB0045</label>
+                          <span className="input-group-append">
+                            <img
+                              src={CancelIcon}
+                              alt="cancel-icone"
+                              className="cust-ic"
+                            />
+                          </span>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="input-group">
+                          <label>SMB0045</label>
+                          <span className="input-group-append">
+                            <img
+                              src={CancelIcon}
+                              alt="cancel-icone"
+                              className="cust-ic"
+                            />
+                          </span>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="input-group">
+                          <label>SMB0045</label>
+                          <span className="input-group-append">
+                            <img
+                              src={CancelIcon}
+                              alt="cancel-icone"
+                              className="cust-ic"
+                            />
+                          </span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </Modal>
           </div>
         </div>
