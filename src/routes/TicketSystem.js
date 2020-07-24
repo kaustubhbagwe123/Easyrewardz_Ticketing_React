@@ -426,6 +426,7 @@ class TicketSystem extends Component {
     this.setState({ CustData });
   };
   handleChange = (date) => {
+    debugger;
     var dateFormat = moment(date).format("DD MMM YYYY");
     let CustData = this.state.CustData;
     CustData.editDOB = dateFormat;
@@ -856,7 +857,10 @@ class TicketSystem extends Component {
         }
         if (mode === "Edit") {
           self.handleEditCustomerOpen();
-          self.setState({ customerData: customerData, CustData });
+          self.setState({
+            customerData: customerData,
+            CustData,
+          });
         }
       })
       .catch((data) => {
@@ -3202,6 +3206,7 @@ class TicketSystem extends Component {
                           <div className="col-md-6 addcustdate">
                             <DatePicker
                               className="txt-1"
+                              autoComplete="off"
                               placeholderText={
                                 TranslationContext !== undefined
                                   ? TranslationContext.label.dateofbirth
