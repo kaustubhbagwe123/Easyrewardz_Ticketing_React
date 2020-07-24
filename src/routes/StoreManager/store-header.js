@@ -235,13 +235,19 @@ class Header extends Component {
         "#CDE4FF",
         "#FFDEE2",
       ],
-      notificationDuration: 5,
+      notificationTime: 5,
       shippingAddress: "",
       shippingLandmark: "",
       shippingPinCode: "",
       shippingCity: "",
       shippingState: "",
       shippingCountry: "",
+      isMessageTabActive: false,
+      isCardTabActive: false,
+      isRecommendedTabActive: false,
+      isSchedualTabActive: false,
+      isGeneratePaymentTabActive: false,
+      isChatProfileProduct: false,
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -978,7 +984,7 @@ class Header extends Component {
             if (chatData.length > 0) {
               notification.open({
                 key: chatData[0].chatID,
-                duration: 2.5,
+                duration: self.state.notificationTime,
                 placement: "bottomRight",
                 // message: "Notification Title",
                 className: "hide-message-title",
@@ -1258,7 +1264,9 @@ class Header extends Component {
     })
       .then(function(response) {
         var chatMessageCount = response.data.responseData;
-        self.setState({ chatMessageCount });
+        if (chatMessageCount) {
+          self.setState({ chatMessageCount });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleGetChatNotificationCount");
@@ -2178,7 +2186,7 @@ class Header extends Component {
                   if (!self.state.chatModal) {
                     notification.open({
                       key: chatData[0].chatID,
-                      duration: self.state.notificationDuration,
+                      duration: self.state.notificationTime,
                       placement: "bottomRight",
                       // message: "Notification Title",
                       className: "hide-message-title",
@@ -2255,7 +2263,7 @@ class Header extends Component {
                     debugger;
                     notification.open({
                       key: chatData[0].chatID,
-                      duration: 2.5,
+                      duration: self.state.notificationTime,
                       placement: "bottomRight",
                       // message: "Notification Title",
                       className: "hide-message-title",
@@ -2438,9 +2446,16 @@ class Header extends Component {
         var data = response.data.responseData;
 
         if (message === "Success" && data) {
+          debugger;
           self.setState({
             tempRemainingCount: data.chatCharLimit,
             remainingCount: data.chatCharLimit,
+            isMessageTabActive: data.message,
+            isCardTabActive: data.card,
+            isRecommendedTabActive: data.recommendedList,
+            isSchedualTabActive: data.scheduleVisit,
+            isGeneratePaymentTabActive: data.paymentLink,
+            isChatProfileProduct: data.chatProfileProduct,
           });
         } else {
           self.setState({
@@ -2512,6 +2527,7 @@ class Header extends Component {
             newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
             isNotiNewChat: responseData.isNotiNewChat || false,
             isNotiNewMessage: responseData.isNotiNewMessage || false,
+            notificationTime: responseData.notificationTime,
           });
         }
       })
@@ -2714,7 +2730,24 @@ class Header extends Component {
   };
   ////handle product type tab change
   handleProductTypeTabChange = (index) => {
-    this.setState({ productTypeTab: index });
+    this.state.shoppingBagData.forEach((element) => {
+      element.isCheck = false;
+    });
+    this.state.wishListData.forEach((element) => {
+      element.isCheck = false;
+    });
+    this.state.recommendedData.forEach((element) => {
+      element.isCheck = false;
+    });
+    this.setState({
+      shoppingBagData: this.state.shoppingBagData,
+      recommendedData: this.state.recommendedData,
+      wishListData: this.state.wishListData,
+      productTypeTab: index,
+      selectedShoppingBag: [],
+      selectedWishList: [],
+      selectedRecommended: [],
+    });
   };
 
   ///handle select all product base on tab index
@@ -2944,22 +2977,29 @@ class Header extends Component {
     let self = this;
 
     var addressDetails = {};
-    addressDetails.address = this.state.shippingAddress;
-    addressDetails.landmark = this.state.shippingLandmark;
+    addressDetails.address = this.state.shippingAddress || "";
+    addressDetails.landmark = this.state.shippingLandmark || "";
     addressDetails.pinCode = this.state.shippingPinCode;
-    addressDetails.city = this.state.shippingCity;
-    addressDetails.state = this.state.shippingState;
-    addressDetails.country = this.state.shippingCountry;
+    addressDetails.city = this.state.shippingCity || "";
+    addressDetails.state = this.state.shippingState || "";
+    addressDetails.country = this.state.shippingCountry || "";
     // addressDetails.latitude = this.state.shippingLatitude;
     // addressDetails.longitude = this.state.shippingLongitude;
+    debugger;
+    var itemCodes = "";
+    if (isFromRecommendation) {
+      for (let i = 0; i < this.state.selectedRecommended.length; i++) {
+        itemCodes += this.state.selectedRecommended[i].uniqueItemCode + ",";
+      }
+    }
 
     var inputParam = {};
     inputParam.CustomerID = this.state.customerId;
     inputParam.CustomerMobile = this.state.mobileNo;
     inputParam.IsFromRecommendation = isFromRecommendation;
     inputParam.IsDirectBuy = isDirectBuy;
-    if(!isDirectBuy)
-    {
+    inputParam.ItemCodes = itemCodes;
+    if (isDirectBuy === false) {
       inputParam.CustomerAddress = addressDetails;
     }
 
@@ -2972,6 +3012,7 @@ class Header extends Component {
       .then((response) => {
         var message = response.data.response;
         var responseData = response.data.responseData;
+        debugger;
         if (message === "Success" && responseData) {
         }
       })
@@ -3080,7 +3121,7 @@ class Header extends Component {
                   style={{ display: "none" }}
                 />
                 <span className="message-icon-cnt">
-                  {this.state.chatMessageCount}
+                  {this.state.chatMessageCount || 0}
                 </span>
               </div>
             </a>
@@ -4131,7 +4172,7 @@ class Header extends Component {
                 className={
                   this.state.onHoverName
                     ? "secondbox"
-                    : this.state.customerName
+                    : this.state.customerName && this.state.isChatProfileProduct
                     ? "secondbox secondbox-open"
                     : (this.state.isMobileView && this.state.customerName) ||
                       (this.state.isMobileView && this.state.isHistoricalChat)
@@ -4276,7 +4317,13 @@ class Header extends Component {
                       </div>
                       <div
                         className="tab-content chattabtitle"
-                        style={{ backgroundColor: "#f5f5f5" }}
+                        style={{
+                          backgroundColor: "#f5f5f5",
+                          marginTop:
+                            this.state.isChatProfileProduct === false
+                              ? "0"
+                              : "",
+                        }}
                       >
                         <div
                           className={
@@ -4385,106 +4432,131 @@ class Header extends Component {
                           >
                             {this.state.customerName !== "" ? (
                               <ul className="nav nav-tabs" role="tablist">
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.toggle.one
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#message-tab"
-                                    role="tab"
-                                    aria-controls="message-tab"
-                                    aria-selected="true"
-                                    onClick={this.handleTabClick.bind(this, 1)}
-                                    id="one"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.message
-                                      : "MESSAGE"}
-                                  </a>
-                                </li>
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.toggle.two
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#card-tab"
-                                    role="tab"
-                                    aria-controls="card-tab"
-                                    aria-selected="false"
-                                    onClick={this.handleTabClick.bind(this, 2)}
-                                    id="two"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.card
-                                      : "CARD"}
-                                  </a>
-                                </li>
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.toggle.three
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#recommended-list-tab"
-                                    role="tab"
-                                    aria-controls="recommended-list-tab"
-                                    aria-selected="false"
-                                    onClick={this.handleTabClick.bind(this, 3)}
-                                    id="three"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.recommendedlist
-                                      : "RECOMMENDED LIST"}
-                                  </a>
-                                </li>
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.toggle.four
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#schedule-visit-tab"
-                                    role="tab"
-                                    aria-controls="schedule-visit-tab"
-                                    aria-selected="false"
-                                    onClick={this.handleTabClick.bind(this, 4)}
-                                    id="four"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.schedulevisit
-                                      : "SCHEDULE VISIT"}
-                                  </a>
-                                </li>
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.toggle.five
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#generate-payment-link-tab"
-                                    role="tab"
-                                    aria-controls="generate-payment-link-tab"
-                                    aria-selected="false"
-                                    onClick={this.handleTabClick.bind(this, 5)}
-                                    id="five"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.schedulevisit
-                                      : "GENERATE PAYMENT LINK"}
-                                  </a>
-                                </li>
+                                {this.state.isMessageTabActive ? (
+                                  <li className="nav-item">
+                                    <a
+                                      className={
+                                        this.state.toggle.one
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                      data-toggle="tab"
+                                      href="#message-tab"
+                                      role="tab"
+                                      aria-controls="message-tab"
+                                      aria-selected="true"
+                                      onClick={this.handleTabClick.bind(
+                                        this,
+                                        1
+                                      )}
+                                      id="one"
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.message
+                                        : "MESSAGE"}
+                                    </a>
+                                  </li>
+                                ) : null}
+                                {this.state.isCardTabActive ? (
+                                  <li className="nav-item">
+                                    <a
+                                      className={
+                                        this.state.toggle.two
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                      data-toggle="tab"
+                                      href="#card-tab"
+                                      role="tab"
+                                      aria-controls="card-tab"
+                                      aria-selected="false"
+                                      onClick={this.handleTabClick.bind(
+                                        this,
+                                        2
+                                      )}
+                                      id="two"
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.card
+                                        : "CARD"}
+                                    </a>
+                                  </li>
+                                ) : null}
+                                {this.state.isRecommendedTabActive ? (
+                                  <li className="nav-item">
+                                    <a
+                                      className={
+                                        this.state.toggle.three
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                      data-toggle="tab"
+                                      href="#recommended-list-tab"
+                                      role="tab"
+                                      aria-controls="recommended-list-tab"
+                                      aria-selected="false"
+                                      onClick={this.handleTabClick.bind(
+                                        this,
+                                        3
+                                      )}
+                                      id="three"
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.recommendedlist
+                                        : "RECOMMENDED LIST"}
+                                    </a>
+                                  </li>
+                                ) : null}
+                                {this.state.isSchedualTabActive ? (
+                                  <li className="nav-item">
+                                    <a
+                                      className={
+                                        this.state.toggle.four
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                      data-toggle="tab"
+                                      href="#schedule-visit-tab"
+                                      role="tab"
+                                      aria-controls="schedule-visit-tab"
+                                      aria-selected="false"
+                                      onClick={this.handleTabClick.bind(
+                                        this,
+                                        4
+                                      )}
+                                      id="four"
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.schedulevisit
+                                        : "SCHEDULE VISIT"}
+                                    </a>
+                                  </li>
+                                ) : null}
+                                {this.state.isGeneratePaymentTabActive ? (
+                                  <li className="nav-item">
+                                    <a
+                                      className={
+                                        this.state.toggle.five
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                      data-toggle="tab"
+                                      href="#generate-payment-link-tab"
+                                      role="tab"
+                                      aria-controls="generate-payment-link-tab"
+                                      aria-selected="false"
+                                      onClick={this.handleTabClick.bind(
+                                        this,
+                                        5
+                                      )}
+                                      id="five"
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.schedulevisit
+                                        : "GENERATE PAYMENT LINK"}
+                                    </a>
+                                  </li>
+                                ) : null}
                               </ul>
                             ) : null}
                             <div className="tab-content">
@@ -5460,105 +5532,115 @@ class Header extends Component {
                             }}
                           >
                             <ul className="nav nav-tabs" role="tablist">
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.toggle.one
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                  data-toggle="tab"
-                                  href="#message-tab"
-                                  role="tab"
-                                  aria-controls="message-tab"
-                                  aria-selected="true"
-                                  id="one"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.a.message
-                                    : "MESSAGE"}
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.toggle.two
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                  data-toggle="tab"
-                                  href="#card-tab"
-                                  role="tab"
-                                  aria-controls="card-tab"
-                                  aria-selected="false"
-                                  onClick={this.onOpenCardModal}
-                                  id="two"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.a.card
-                                    : "CARD"}
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.toggle.three
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                  data-toggle="tab"
-                                  href="#recommended-list-tab"
-                                  role="tab"
-                                  aria-controls="recommended-list-tab"
-                                  aria-selected="false"
-                                  onClick={this.onOpenRecommendedModal}
-                                  id="three"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.a.recommendedlist
-                                    : "RECOMMENDED LIST"}
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.toggle.four
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                  data-toggle="tab"
-                                  href="#schedule-visit-tab"
-                                  role="tab"
-                                  aria-controls="schedule-visit-tab"
-                                  aria-selected="false"
-                                  onClick={this.onOpenScheduleModal}
-                                  id="four"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.a.schedulevisit
-                                    : "SCHEDULE VISIT"}
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.toggle.five
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                  data-toggle="tab"
-                                  href="#generate-payment-link-tab"
-                                  role="tab"
-                                  aria-controls="generate-payment-link-tab"
-                                  aria-selected="false"
-                                  onClick={this.onOpenPaymentModal}
-                                  id="five"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.a.generatepaymentlink
-                                    : "GENERATE PAYMENT LINK"}
-                                </a>
-                              </li>
+                              {this.state.isMessageTabActive ? (
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.one
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#message-tab"
+                                    role="tab"
+                                    aria-controls="message-tab"
+                                    aria-selected="true"
+                                    id="one"
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.message
+                                      : "MESSAGE"}
+                                  </a>
+                                </li>
+                              ) : null}
+                              {this.state.isCardTabActive ? (
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.two
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#card-tab"
+                                    role="tab"
+                                    aria-controls="card-tab"
+                                    aria-selected="false"
+                                    onClick={this.onOpenCardModal}
+                                    id="two"
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.card
+                                      : "CARD"}
+                                  </a>
+                                </li>
+                              ) : null}
+                              {this.state.isRecommendedTabActive ? (
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.three
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#recommended-list-tab"
+                                    role="tab"
+                                    aria-controls="recommended-list-tab"
+                                    aria-selected="false"
+                                    onClick={this.onOpenRecommendedModal}
+                                    id="three"
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.recommendedlist
+                                      : "RECOMMENDED LIST"}
+                                  </a>
+                                </li>
+                              ) : null}
+                              {this.state.isSchedualTabActive ? (
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.four
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#schedule-visit-tab"
+                                    role="tab"
+                                    aria-controls="schedule-visit-tab"
+                                    aria-selected="false"
+                                    onClick={this.onOpenScheduleModal}
+                                    id="four"
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.schedulevisit
+                                      : "SCHEDULE VISIT"}
+                                  </a>
+                                </li>
+                              ) : null}
+                              {this.state.isGeneratePaymentTabActive ? (
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.five
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#generate-payment-link-tab"
+                                    role="tab"
+                                    aria-controls="generate-payment-link-tab"
+                                    aria-selected="false"
+                                    onClick={this.onOpenPaymentModal}
+                                    id="five"
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.generatepaymentlink
+                                      : "GENERATE PAYMENT LINK"}
+                                  </a>
+                                </li>
+                              ) : null}
                             </ul>
                             <div className="tab-content">
                               {/* --------Message Tab----- */}
@@ -7106,290 +7188,299 @@ class Header extends Component {
                   )}
                 </div>
               </div>
-              {this.state.customerName ? (
-                <div
-                  onMouseLeave={this.handleNameHoverLeave.bind()}
-                  className={
-                    this.state.onHoverName
-                      ? "thirdbox"
-                      : this.state.isShutterOpen
-                      ? "thirdbox thirdbox-shutter"
-                      : this.state.isMobileView
-                      ? "thirdbox"
-                      : "thirdbox thirdbox-close"
-                  }
-                >
-                  <div className="uptabs">
-                    {!this.state.isShutterOpen ? (
-                      <img
-                        src={Arwdown}
-                        className="Arwico"
-                        alt="Arwico"
-                        onClick={this.handleChangeShutterWindow.bind(
-                          this,
-                          true
-                        )}
-                      />
-                    ) : (
-                      <img
-                        src={Arwup}
-                        className="Arwico"
-                        alt="Arwico"
-                        onClick={this.handleChangeShutterWindow.bind(
-                          this,
-                          false
-                        )}
-                      />
-                    )}
-                    {this.state.isPinClick ? (
-                      <img
-                        src={Pin}
-                        className="pin"
-                        alt="Pin"
-                        onClick={this.handlePinClick.bind(this)}
-                      />
-                    ) : (
-                      <img
-                        src={Pin2}
-                        className="pin"
-                        alt="Pin"
-                        onClick={this.handlePinClick.bind(this)}
-                      />
-                    )}
+              {this.state.isChatProfileProduct ? (
+                this.state.customerName ? (
+                  <div
+                    onMouseLeave={this.handleNameHoverLeave.bind()}
+                    className={
+                      this.state.onHoverName
+                        ? "thirdbox"
+                        : this.state.isShutterOpen
+                        ? "thirdbox thirdbox-shutter"
+                        : this.state.isMobileView
+                        ? "thirdbox"
+                        : "thirdbox thirdbox-close"
+                    }
+                  >
+                    <div className="uptabs">
+                      {!this.state.isShutterOpen ? (
+                        <img
+                          src={Arwdown}
+                          className="Arwico"
+                          alt="Arwico"
+                          onClick={this.handleChangeShutterWindow.bind(
+                            this,
+                            true
+                          )}
+                        />
+                      ) : (
+                        <img
+                          src={Arwup}
+                          className="Arwico"
+                          alt="Arwico"
+                          onClick={this.handleChangeShutterWindow.bind(
+                            this,
+                            false
+                          )}
+                        />
+                      )}
+                      {this.state.isPinClick ? (
+                        <img
+                          src={Pin}
+                          className="pin"
+                          alt="Pin"
+                          onClick={this.handlePinClick.bind(this)}
+                        />
+                      ) : (
+                        <img
+                          src={Pin2}
+                          className="pin"
+                          alt="Pin"
+                          onClick={this.handlePinClick.bind(this)}
+                        />
+                      )}
 
-                    <Tabs
-                      onSelect={(index, label) => {
-                        this.handleProfileProductTabChange(index);
-                      }}
-                      selected={this.state.ProfileProductTab}
-                    >
-                      <Tab label="Profile">
-                        <div className="profilebox">
-                          <div>
-                            <ul className="nameplate">
-                              <li>
-                                <label
+                      <Tabs
+                        onSelect={(index, label) => {
+                          this.handleProfileProductTabChange(index);
+                        }}
+                        selected={this.state.ProfileProductTab}
+                      >
+                        <Tab label="Profile">
+                          <div className="profilebox">
+                            <div>
+                              <ul className="nameplate">
+                                <li>
+                                  <label
+                                    onClick={
+                                      this.state.isMobileView
+                                        ? this.handleMainTabChange.bind(this, 1)
+                                        : null
+                                    }
+                                    onMouseEnter={this.handleNameHover.bind(
+                                      this
+                                    )}
+                                    className="namelabel"
+                                  >
+                                    {this.state.customerName.charAt(0)}
+                                  </label>
+                                </li>
+                                <li
                                   onClick={
                                     this.state.isMobileView
                                       ? this.handleMainTabChange.bind(this, 1)
                                       : null
                                   }
-                                  onMouseEnter={this.handleNameHover.bind(this)}
-                                  className="namelabel"
                                 >
-                                  {this.state.customerName.charAt(0)}
-                                </label>
-                              </li>
-                              <li
-                                onClick={
-                                  this.state.isMobileView
-                                    ? this.handleMainTabChange.bind(this, 1)
-                                    : null
-                                }
-                              >
-                                <h3>{this.state.customerName}</h3>
-                                {/* <img
+                                  <h3>{this.state.customerName}</h3>
+                                  {/* <img
                                 src={EditPen}
                                 style={{ marginLeft: "10px" }}
                                 alt="Edit Pen"
                               />
                               <img src={UserInfo} alt="User Info" /> */}
-                                <span>
-                                  Tier: <b>{this.state.customerTier}</b>
-                                </span>
-                              </li>
-                              <li className="contactbox">
-                                <div>
-                                  <ul>
-                                    {this.state.customerEmailID ? (
+                                  <span>
+                                    Tier: <b>{this.state.customerTier}</b>
+                                  </span>
+                                </li>
+                                <li className="contactbox">
+                                  <div>
+                                    <ul>
+                                      {this.state.customerEmailID ? (
+                                        <li>
+                                          {/* <label>Email ID</label> */}
+                                          <p>{this.state.customerEmailID}</p>
+                                        </li>
+                                      ) : null}
                                       <li>
-                                        {/* <label>Email ID</label> */}
-                                        <p>{this.state.customerEmailID}</p>
+                                        {/* <label>Mobile No</label> */}
+                                        <p>{this.state.customerMobileNo}</p>
                                       </li>
-                                    ) : null}
-                                    <li>
-                                      {/* <label>Mobile No</label> */}
-                                      <p>{this.state.customerMobileNo}</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="pointstable">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <label>Total Points</label>
-                                    <span>
-                                      {this.state.totalPoints.toLocaleString(
-                                        "en-IN"
-                                      )}
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <label>Lifetime Value</label>
-                                    <span>
-                                      {this.state.lifetimeValue.toLocaleString(
-                                        "en-IN"
-                                      )}
-                                    </span>
-                                  </td>
-                                  <td>
-                                    <label>Visit Count</label>
-                                    <span>
-                                      {this.state.visitCount.toLocaleString(
-                                        "en-IN"
-                                      )}
-                                    </span>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="prodtabl1">
-                            <Collapse
-                              activeKey={this.state.activeCollpse}
-                              onChange={this.handleCollpseChange.bind(this)}
-                            >
-                              <Panel header="Insights" key="1">
-                                <div className="insightsbox">
-                                  {/* <h3>Insights</h3>
+                                    </ul>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="pointstable">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <label>Total Points</label>
+                                      <span>
+                                        {this.state.totalPoints.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <label>Lifetime Value</label>
+                                      <span>
+                                        {this.state.lifetimeValue.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <label>Visit Count</label>
+                                      <span>
+                                        {this.state.visitCount.toLocaleString(
+                                          "en-IN"
+                                        )}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="prodtabl1">
+                              <Collapse
+                                activeKey={this.state.activeCollpse}
+                                onChange={this.handleCollpseChange.bind(this)}
+                              >
+                                <Panel header="Insights" key="1">
+                                  <div className="insightsbox">
+                                    {/* <h3>Insights</h3>
                               <img
                                 src={DownArw}
                                 className="DownArw"
                                 alt="DownArw"
                               /> */}
-                                  <p>
-                                    1. Lorem Ipsum is simply dummy text of the
-                                    printing industry.
-                                  </p>
-                                  <p>
-                                    2. Lorem Ipsum is simply dummy text of the
-                                    printing industry.
-                                  </p>
-                                  <p>
-                                    3. Lorem Ipsum is simply dummy text of the
-                                    printing industry.
-                                  </p>
-                                </div>
-                              </Panel>
-                              <Panel header="Orders" key="2">
-                                <div className="ordersbox">
-                                  {/* <h3>Orders</h3>
-                                  <img
-                                    src={DownArw}
-                                    className="DownArw"
-                                    alt="DownArw"
-                                  /> */}
-                                  <ul>
-                                    <li>
-                                      <label>Delivered</label>
-                                      <span>{this.state.orderDelivered}</span>
-                                    </li>
-                                    <li>
-                                      <label>Shopping Bag</label>
-                                      <span>{this.state.orderShoppingBag}</span>
-                                    </li>
-                                  </ul>
-                                  <ul>
-                                    <li>
-                                      <label>Ready to Ship</label>
-                                      <span>{this.state.orderReadyToShip}</span>
-                                    </li>
-                                    <li>
-                                      <label>Returns</label>
-                                      <span>{this.state.orderReturns}</span>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </Panel>
-                              <Panel header="Last Transaction" key="3">
-                                <div className="lasttransaction">
-                                  {/* <h3>Last Transaction</h3>
-                                  <img
-                                    src={DownArw}
-                                    className="DownArw"
-                                    alt="DownArw"
-                                  /> */}
-                                  <ul>
-                                    <li>
-                                      <label>Bill No</label>
-                                      <span>{this.state.billNumber}</span>
-                                    </li>
-                                    <li>
-                                      <label>Amount</label>
-                                      <span>
-                                        {this.state.billAmount.toLocaleString(
-                                          "en-IN"
-                                        )}
-                                      </span>
-                                    </li>
-                                  </ul>
-                                  <ul>
-                                    <li>
-                                      <label>Store</label>
-                                      <span>{this.state.storeDetails}</span>
-                                    </li>
-                                    <li>
-                                      <label>Date</label>
-                                      <span>{this.state.transactionDate}</span>
-                                    </li>
-                                  </ul>
-                                  <div className="itemtable">
-                                    <table>
-                                      <thead>
-                                        <tr>
-                                          <th>Items</th>
-                                          <th>Qty</th>
-                                          <th>Amount</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          <td>
-                                            <label>Product Name 1</label>
-                                            <label>Product Name 2</label>
-                                            <label>Product Name 3</label>
-                                          </td>
-                                          <td>
-                                            <label>02</label>
-                                            <label>03</label>
-                                            <label>01</label>
-                                          </td>
-                                          <td>
-                                            <label>₹999</label>
-                                            <label>₹1299</label>
-                                            <label>₹12999</label>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
+                                    <p>
+                                      1. Lorem Ipsum is simply dummy text of the
+                                      printing industry.
+                                    </p>
+                                    <p>
+                                      2. Lorem Ipsum is simply dummy text of the
+                                      printing industry.
+                                    </p>
+                                    <p>
+                                      3. Lorem Ipsum is simply dummy text of the
+                                      printing industry.
+                                    </p>
                                   </div>
-                                </div>
-                              </Panel>
-                            </Collapse>
-                          </div>
-                          <button
-                            type="button"
-                            className="updateprofilelinkbtn pastchatmobbtn"
-                            onClick={this.handleMainTabChange.bind(this, 2)}
-                          >
-                            {this.state.agentRecentChatData.length < 9
-                              ? this.state.agentRecentChatData.length +
-                                "0 Past Chat"
-                              : this.state.agentRecentChatData.length +
-                                " Past Chat"}
-                          </button>
-                          {/* <button
+                                </Panel>
+                                <Panel header="Orders" key="2">
+                                  <div className="ordersbox">
+                                    {/* <h3>Orders</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                    <ul>
+                                      <li>
+                                        <label>Delivered</label>
+                                        <span>{this.state.orderDelivered}</span>
+                                      </li>
+                                      <li>
+                                        <label>Shopping Bag</label>
+                                        <span>
+                                          {this.state.orderShoppingBag}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li>
+                                        <label>Ready to Ship</label>
+                                        <span>
+                                          {this.state.orderReadyToShip}
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <label>Returns</label>
+                                        <span>{this.state.orderReturns}</span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </Panel>
+                                <Panel header="Last Transaction" key="3">
+                                  <div className="lasttransaction">
+                                    {/* <h3>Last Transaction</h3>
+                                  <img
+                                    src={DownArw}
+                                    className="DownArw"
+                                    alt="DownArw"
+                                  /> */}
+                                    <ul>
+                                      <li>
+                                        <label>Bill No</label>
+                                        <span>{this.state.billNumber}</span>
+                                      </li>
+                                      <li>
+                                        <label>Amount</label>
+                                        <span>
+                                          {this.state.billAmount.toLocaleString(
+                                            "en-IN"
+                                          )}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li>
+                                        <label>Store</label>
+                                        <span>{this.state.storeDetails}</span>
+                                      </li>
+                                      <li>
+                                        <label>Date</label>
+                                        <span>
+                                          {this.state.transactionDate}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                    <div className="itemtable">
+                                      <table>
+                                        <thead>
+                                          <tr>
+                                            <th>Items</th>
+                                            <th>Qty</th>
+                                            <th>Amount</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <label>Product Name 1</label>
+                                              <label>Product Name 2</label>
+                                              <label>Product Name 3</label>
+                                            </td>
+                                            <td>
+                                              <label>02</label>
+                                              <label>03</label>
+                                              <label>01</label>
+                                            </td>
+                                            <td>
+                                              <label>₹999</label>
+                                              <label>₹1299</label>
+                                              <label>₹12999</label>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </Panel>
+                              </Collapse>
+                            </div>
+                            <button
+                              type="button"
+                              className="updateprofilelinkbtn pastchatmobbtn"
+                              onClick={this.handleMainTabChange.bind(this, 2)}
+                            >
+                              {this.state.agentRecentChatData.length < 9
+                                ? this.state.agentRecentChatData.length +
+                                  "0 Past Chat"
+                                : this.state.agentRecentChatData.length +
+                                  " Past Chat"}
+                            </button>
+                            <button
                             style={{ float: "right" }}
                             type="button"
                             className="updateprofilelinkbtn pastchatmobbtn"
                           >
                             Action
-                          </button> */}
-                          {/* <div className="drp-mobile">
+                          </button>
+                            {/* <div className="drp-mobile">
                             <div
                               class="dropdown"
                               onBlur={this.handleActionClose.bind(this)}
@@ -7422,851 +7513,879 @@ class Header extends Component {
                             </div>
                           </div>
                          */}
-                        </div>
-                      </Tab>
-                      <Tab label="Products">
-                        <div className="productsbox">
-                          <Tabs
-                            onSelect={(index, label) => {
-                              this.handleProductTypeTabChange(index);
-                            }}
-                            selected={this.state.productTypeTab}
-                          >
-                            <Tab label="Shopping Bag">
-                              <div className="shoppingbag">
-                                {this.state.shoppingBagData.length > 0 ? (
-                                  <label
-                                    className="selectalllabel"
-                                    onClick={this.handleSelectAllProduct.bind(
-                                      this,
-                                      1
-                                    )}
-                                  >
-                                    Select All
-                                  </label>
-                                ) : null}
-                                <div className="prodtabl">
-                                  {this.state.shoppingBagData
-                                    ? this.state.shoppingBagData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div className="prodboxx" key={i}>
-                                              <Checkbox
-                                                checked={
-                                                  this.state.shoppingBagData[i]
-                                                    .isCheck
-                                                }
-                                                onChange={this.handleProductTabsChange.bind(
-                                                  this,
-                                                  1,
-                                                  i
-                                                )}
-                                              >
-                                                <Popover
-                                                  overlayClassName="antcustom ant-prodesc"
-                                                  content={
-                                                    <div className="productdesc">
-                                                      <h4>
-                                                        {item.productName}
-                                                      </h4>
-                                                      <p>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext.p
-                                                              .lasttransaction
-                                                          : "Last Transaction"}
-                                                        -{item.uniqueItemCode}
-                                                      </p>
-                                                      <table>
-                                                        <tbody>
-                                                          {item.color !== "" ? (
-                                                            <>
-                                                              <tr>
-                                                                <td
-                                                                  style={{
-                                                                    width:
-                                                                      "50px",
-                                                                  }}
-                                                                >
-                                                                  <label>
-                                                                    {TranslationContext !==
-                                                                    undefined
-                                                                      ? TranslationContext
-                                                                          .label
-                                                                          .colors
-                                                                      : "Colors"}
-                                                                    :
-                                                                  </label>
-                                                                </td>
-                                                                <td>
-                                                                  <ul>
-                                                                    {item.color ===
-                                                                    "Blue" ? (
-                                                                      <li>
-                                                                        <a className="colorblue">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-
-                                                                    {item.color ===
-                                                                    "Black" ? (
-                                                                      <li>
-                                                                        <a className="colorblack">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-
-                                                                    {item.color ===
-                                                                    "Grey" ? (
-                                                                      <li>
-                                                                        <a className="colorgrey">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-
-                                                                    {item.color ===
-                                                                    "Red" ? (
-                                                                      <li>
-                                                                        <a className="colorRed">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-                                                                    {item.color ===
-                                                                    "Yellow" ? (
-                                                                      <li>
-                                                                        <a className="colorYellow">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-                                                                    {item.color ===
-                                                                    "Green" ? (
-                                                                      <li>
-                                                                        <a className="colorGreen">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-                                                                  </ul>
-                                                                </td>
-                                                              </tr>
-                                                            </>
-                                                          ) : null}
-
-                                                          {item.size !== "" ? (
-                                                            <>
-                                                              <tr>
-                                                                <td>
-                                                                  <label>
-                                                                    {TranslationContext !==
-                                                                    undefined
-                                                                      ? TranslationContext
-                                                                          .label
-                                                                          .sizes
-                                                                      : "Sizes"}
-                                                                    :
-                                                                  </label>
-                                                                </td>
-                                                                <td>
-                                                                  {isNaN(
-                                                                    parseInt(
-                                                                      item.size
-                                                                    )
-                                                                  ) ===
-                                                                  false ? (
-                                                                    <ul className="sizes">
-                                                                      <li>
-                                                                        <a>
-                                                                          {
-                                                                            item.size
-                                                                          }
-                                                                        </a>
-                                                                      </li>
-                                                                    </ul>
-                                                                  ) : (
-                                                                    <ul>
-                                                                      <li>
-                                                                        <a>
-                                                                          {
-                                                                            item.size
-                                                                          }
-                                                                        </a>
-                                                                      </li>
-                                                                    </ul>
-                                                                  )}
-                                                                </td>
-                                                              </tr>
-                                                            </>
-                                                          ) : null}
-                                                        </tbody>
-                                                      </table>
-                                                      <h3>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext
-                                                              .h3.inr
-                                                          : "INR "}
-                                                        {item.price}/-
-                                                      </h3>
-                                                    </div>
-                                                  }
-                                                  placement="left"
-                                                >
-                                                  <img
-                                                    src={item.imageURL}
-                                                    // src={Ladyimg}
-                                                    className="ladyimg"
-                                                    alt="Lady Img"
-                                                  />
-                                                </Popover>
-                                              </Checkbox>
-                                              {item.brandName ? (
-                                                <h3>{item.brandName}</h3>
-                                              ) : null}
-                                              {item.productName ? (
-                                                <h4>{item.productName}</h4>
-                                              ) : null}
-                                              {item.price ? (
-                                                <span>
-                                                  {item.price.toLocaleString(
-                                                    "en-IN",
-                                                    {
-                                                      style: "currency",
-                                                      currency: "INR",
-                                                      minimumFractionDigits: 0,
-                                                    }
-                                                  )}
-                                                </span>
-                                              ) : null}
-                                              <img
-                                                src={Cancelico}
-                                                className="cancelico"
-                                                alt="Cancel Ico"
-                                                disabled={
-                                                  this.state.isButtonClick
-                                                }
-                                                onClick={this.handleRemoveProduct.bind(
-                                                  this,
-                                                  item.uniqueItemCode
-                                                )}
-                                              />
-                                            </div>
-                                          );
-                                        }
-                                      )
-                                    : null}
-                                  {this.state.shoppingBagData.length === 0 ? (
-                                    <Empty
-                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                    />
-                                  ) : null}
-                                </div>
-                                {this.state.selectedShoppingBag.length > 0 ? (
-                                  <div className="tabsbotbtn-box">
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                    >
-                                      SENT
-                                    </button>
-                                    <button
-                                      disabled={
-                                        this.state.isButtonClick ? true : false
-                                      }
-                                      type="button"
-                                      className="tabsbotbtn"
-                                      onClick={this.handleAddProductsToWishlist.bind(
+                          </div>
+                        </Tab>
+                        <Tab label="Products">
+                          <div className="productsbox">
+                            <Tabs
+                              onSelect={(index, label) => {
+                                this.handleProductTypeTabChange(index);
+                              }}
+                              selected={this.state.productTypeTab}
+                            >
+                              <Tab label="Shopping Bag">
+                                <div className="shoppingbag">
+                                  {this.state.shoppingBagData.length > 0 ? (
+                                    <label
+                                      className="selectalllabel"
+                                      onClick={this.handleSelectAllProduct.bind(
                                         this,
-                                        false
+                                        1
                                       )}
                                     >
-                                      ADD To WISHLIST
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                    >
-                                      BUY NOW
-                                    </button>
+                                      Select All
+                                    </label>
+                                  ) : null}
+                                  <div className="prodtabl">
+                                    {this.state.shoppingBagData
+                                      ? this.state.shoppingBagData.map(
+                                          (item, i) => {
+                                            return (
+                                              <div className="prodboxx" key={i}>
+                                                <Checkbox
+                                                  checked={
+                                                    this.state.shoppingBagData[
+                                                      i
+                                                    ].isCheck
+                                                  }
+                                                  onChange={this.handleProductTabsChange.bind(
+                                                    this,
+                                                    1,
+                                                    i
+                                                  )}
+                                                >
+                                                  <Popover
+                                                    overlayClassName="antcustom ant-prodesc"
+                                                    content={
+                                                      <div className="productdesc">
+                                                        <h4>
+                                                          {item.productName}
+                                                        </h4>
+                                                        <p>
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .p
+                                                                .lasttransaction
+                                                            : "Last Transaction"}
+                                                          -{item.uniqueItemCode}
+                                                        </p>
+                                                        <table>
+                                                          <tbody>
+                                                            {item.color !==
+                                                            "" ? (
+                                                              <>
+                                                                <tr>
+                                                                  <td
+                                                                    style={{
+                                                                      width:
+                                                                        "50px",
+                                                                    }}
+                                                                  >
+                                                                    <label>
+                                                                      {TranslationContext !==
+                                                                      undefined
+                                                                        ? TranslationContext
+                                                                            .label
+                                                                            .colors
+                                                                        : "Colors"}
+                                                                      :
+                                                                    </label>
+                                                                  </td>
+                                                                  <td>
+                                                                    <ul>
+                                                                      {item.color ===
+                                                                      "Blue" ? (
+                                                                        <li>
+                                                                          <a className="colorblue">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Black" ? (
+                                                                        <li>
+                                                                          <a className="colorblack">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Grey" ? (
+                                                                        <li>
+                                                                          <a className="colorgrey">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Red" ? (
+                                                                        <li>
+                                                                          <a className="colorRed">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                      {item.color ===
+                                                                      "Yellow" ? (
+                                                                        <li>
+                                                                          <a className="colorYellow">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                      {item.color ===
+                                                                      "Green" ? (
+                                                                        <li>
+                                                                          <a className="colorGreen">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                    </ul>
+                                                                  </td>
+                                                                </tr>
+                                                              </>
+                                                            ) : null}
+
+                                                            {item.size !==
+                                                            "" ? (
+                                                              <>
+                                                                <tr>
+                                                                  <td>
+                                                                    <label>
+                                                                      {TranslationContext !==
+                                                                      undefined
+                                                                        ? TranslationContext
+                                                                            .label
+                                                                            .sizes
+                                                                        : "Sizes"}
+                                                                      :
+                                                                    </label>
+                                                                  </td>
+                                                                  <td>
+                                                                    {isNaN(
+                                                                      parseInt(
+                                                                        item.size
+                                                                      )
+                                                                    ) ===
+                                                                    false ? (
+                                                                      <ul className="sizes">
+                                                                        <li>
+                                                                          <a>
+                                                                            {
+                                                                              item.size
+                                                                            }
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    ) : (
+                                                                      <ul>
+                                                                        <li>
+                                                                          <a>
+                                                                            {
+                                                                              item.size
+                                                                            }
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    )}
+                                                                  </td>
+                                                                </tr>
+                                                              </>
+                                                            ) : null}
+                                                          </tbody>
+                                                        </table>
+                                                        <h3>
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .h3.inr
+                                                            : "INR "}
+                                                          {item.price}/-
+                                                        </h3>
+                                                      </div>
+                                                    }
+                                                    placement="left"
+                                                  >
+                                                    <img
+                                                      src={item.imageURL}
+                                                      // src={Ladyimg}
+                                                      className="ladyimg"
+                                                      alt="Lady Img"
+                                                    />
+                                                  </Popover>
+                                                </Checkbox>
+                                                {item.brandName ? (
+                                                  <h3>{item.brandName}</h3>
+                                                ) : null}
+                                                {item.productName ? (
+                                                  <h4>{item.productName}</h4>
+                                                ) : null}
+                                                {item.price ? (
+                                                  <span>
+                                                    {item.price.toLocaleString(
+                                                      "en-IN",
+                                                      {
+                                                        style: "currency",
+                                                        currency: "INR",
+                                                        minimumFractionDigits: 0,
+                                                      }
+                                                    )}
+                                                  </span>
+                                                ) : null}
+                                                <img
+                                                  src={Cancelico}
+                                                  className="cancelico"
+                                                  alt="Cancel Ico"
+                                                  disabled={
+                                                    this.state.isButtonClick
+                                                  }
+                                                  onClick={this.handleRemoveProduct.bind(
+                                                    this,
+                                                    item.uniqueItemCode
+                                                  )}
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                    {this.state.shoppingBagData.length === 0 ? (
+                                      <Empty
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                      />
+                                    ) : null}
                                   </div>
-                                ) : null}
-                              </div>
-                            </Tab>
-                            <Tab label="Wishlist">
-                              <div className="shoppingbag">
-                                {this.state.wishListData.length > 0 ? (
-                                  <label
-                                    className="selectalllabel"
-                                    onClick={this.handleSelectAllProduct.bind(
-                                      this,
-                                      2
-                                    )}
-                                  >
-                                    Select All
-                                  </label>
-                                ) : null}
-                                <div className="prodtabl">
-                                  {this.state.wishListData
-                                    ? this.state.wishListData.map((item, i) => {
-                                        return (
-                                          <div className="prodboxx" key={i}>
-                                            <Checkbox
-                                              checked={
-                                                this.state.wishListData[i]
-                                                  .isCheck
-                                              }
-                                              onChange={this.handleProductTabsChange.bind(
+                                  {this.state.selectedShoppingBag.length > 0 ? (
+                                    <div className="tabsbotbtn-box">
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                      >
+                                        SENT
+                                      </button>
+                                      <button
+                                        disabled={
+                                          this.state.isButtonClick
+                                            ? true
+                                            : false
+                                        }
+                                        type="button"
+                                        className="tabsbotbtn"
+                                        onClick={this.handleAddProductsToWishlist.bind(
+                                          this,
+                                          false
+                                        )}
+                                      >
+                                        ADD To WISHLIST
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                      >
+                                        BUY NOW
+                                      </button>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </Tab>
+                              <Tab label="Wishlist">
+                                <div className="shoppingbag">
+                                  {this.state.wishListData.length > 0 ? (
+                                    <label
+                                      className="selectalllabel"
+                                      onClick={this.handleSelectAllProduct.bind(
+                                        this,
+                                        2
+                                      )}
+                                    >
+                                      Select All
+                                    </label>
+                                  ) : null}
+                                  <div className="prodtabl">
+                                    {this.state.wishListData
+                                      ? this.state.wishListData.map(
+                                          (item, i) => {
+                                            return (
+                                              <div className="prodboxx" key={i}>
+                                                <Checkbox
+                                                  checked={
+                                                    this.state.wishListData[i]
+                                                      .isCheck
+                                                  }
+                                                  onChange={this.handleProductTabsChange.bind(
+                                                    this,
+                                                    2,
+                                                    i
+                                                  )}
+                                                >
+                                                  <Popover
+                                                    overlayClassName="antcustom ant-prodesc"
+                                                    content={
+                                                      <div className="productdesc">
+                                                        <h4>
+                                                          {item.productName}
+                                                        </h4>
+                                                        <p>
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .p
+                                                                .lasttransaction
+                                                            : "Last Transaction"}
+                                                          -{item.uniqueItemCode}
+                                                        </p>
+                                                        <table>
+                                                          <tbody>
+                                                            {item.color !==
+                                                            "" ? (
+                                                              <>
+                                                                <tr>
+                                                                  <td
+                                                                    style={{
+                                                                      width:
+                                                                        "50px",
+                                                                    }}
+                                                                  >
+                                                                    <label>
+                                                                      {TranslationContext !==
+                                                                      undefined
+                                                                        ? TranslationContext
+                                                                            .label
+                                                                            .colors
+                                                                        : "Colors"}
+                                                                      :
+                                                                    </label>
+                                                                  </td>
+                                                                  <td>
+                                                                    <ul>
+                                                                      {item.color ===
+                                                                      "Blue" ? (
+                                                                        <li>
+                                                                          <a className="colorblue">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Black" ? (
+                                                                        <li>
+                                                                          <a className="colorblack">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Grey" ? (
+                                                                        <li>
+                                                                          <a className="colorgrey">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Red" ? (
+                                                                        <li>
+                                                                          <a className="colorRed">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                      {item.color ===
+                                                                      "Yellow" ? (
+                                                                        <li>
+                                                                          <a className="colorYellow">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                      {item.color ===
+                                                                      "Green" ? (
+                                                                        <li>
+                                                                          <a className="colorGreen">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                    </ul>
+                                                                  </td>
+                                                                </tr>
+                                                              </>
+                                                            ) : null}
+
+                                                            {item.size !==
+                                                            "" ? (
+                                                              <>
+                                                                <tr>
+                                                                  <td>
+                                                                    <label>
+                                                                      {TranslationContext !==
+                                                                      undefined
+                                                                        ? TranslationContext
+                                                                            .label
+                                                                            .sizes
+                                                                        : "Sizes"}
+                                                                      :
+                                                                    </label>
+                                                                  </td>
+                                                                  <td>
+                                                                    {isNaN(
+                                                                      parseInt(
+                                                                        item.size
+                                                                      )
+                                                                    ) ===
+                                                                    false ? (
+                                                                      <ul className="sizes">
+                                                                        <li>
+                                                                          <a>
+                                                                            {
+                                                                              item.size
+                                                                            }
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    ) : (
+                                                                      <ul>
+                                                                        <li>
+                                                                          <a>
+                                                                            {
+                                                                              item.size
+                                                                            }
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    )}
+                                                                  </td>
+                                                                </tr>
+                                                              </>
+                                                            ) : null}
+                                                          </tbody>
+                                                        </table>
+                                                        <h3>
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .h3.inr
+                                                            : "INR "}
+                                                          {item.price}/-
+                                                        </h3>
+                                                      </div>
+                                                    }
+                                                    placement="left"
+                                                  >
+                                                    <img
+                                                      src={item.imageURL}
+                                                      // src={Ladyimg}
+                                                      className="ladyimg"
+                                                      alt="Lady Img"
+                                                    />
+                                                  </Popover>
+                                                </Checkbox>
+                                                {item.brandName ? (
+                                                  <h3>{item.brandName}</h3>
+                                                ) : null}
+                                                {item.productName ? (
+                                                  <h4>{item.productName}</h4>
+                                                ) : null}
+                                                {item.price ? (
+                                                  <span>
+                                                    {item.price.toLocaleString(
+                                                      "en-IN",
+                                                      {
+                                                        style: "currency",
+                                                        currency: "INR",
+                                                        minimumFractionDigits: 0,
+                                                      }
+                                                    )}
+                                                  </span>
+                                                ) : null}
+                                                <img
+                                                  disabled={
+                                                    this.state.isButtonClick
+                                                  }
+                                                  onClick={this.handleRemoveProduct.bind(
+                                                    this,
+                                                    item.uniqueItemCode
+                                                  )}
+                                                  src={Cancelico}
+                                                  className="cancelico"
+                                                  alt="Cancel Ico"
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                    {this.state.wishListData.length === 0 ? (
+                                      <Empty
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                      />
+                                    ) : null}
+                                  </div>
+                                  {this.state.selectedWishList.length > 0 ? (
+                                    <div className="tabsbotbtn-box">
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                      >
+                                        SENT
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                        disabled={
+                                          this.state.isButtonClick
+                                            ? true
+                                            : false
+                                        }
+                                        onClick={this.handleAddProductsToShoppingBag.bind(
+                                          this
+                                        )}
+                                      >
+                                        ADD To BAG
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                      >
+                                        BUY NOW
+                                      </button>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </Tab>
+                              <Tab label="Recommended">
+                                <div className="shoppingbag">
+                                  {this.state.recommendedData.length > 0 ? (
+                                    <label
+                                      className="selectalllabel"
+                                      onClick={this.handleSelectAllProduct.bind(
+                                        this,
+                                        3
+                                      )}
+                                    >
+                                      Select All
+                                    </label>
+                                  ) : null}
+                                  <div className="prodtabl">
+                                    {this.state.recommendedData
+                                      ? this.state.recommendedData.map(
+                                          (item, i) => {
+                                            return (
+                                              <div className="prodboxx" key={i}>
+                                                <Checkbox
+                                                  checked={
+                                                    this.state.recommendedData[
+                                                      i
+                                                    ].isCheck
+                                                  }
+                                                  onChange={this.handleProductTabsChange.bind(
+                                                    this,
+                                                    3,
+                                                    i
+                                                  )}
+                                                >
+                                                  <Popover
+                                                    overlayClassName="antcustom ant-prodesc"
+                                                    content={
+                                                      <div className="productdesc">
+                                                        <h4>
+                                                          {item.productName}
+                                                        </h4>
+                                                        <p>
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .p
+                                                                .lasttransaction
+                                                            : "Last Transaction"}
+                                                          -{item.uniqueItemCode}
+                                                        </p>
+                                                        <table>
+                                                          <tbody>
+                                                            {item.color !==
+                                                            "" ? (
+                                                              <>
+                                                                <tr>
+                                                                  <td
+                                                                    style={{
+                                                                      width:
+                                                                        "50px",
+                                                                    }}
+                                                                  >
+                                                                    <label>
+                                                                      {TranslationContext !==
+                                                                      undefined
+                                                                        ? TranslationContext
+                                                                            .label
+                                                                            .colors
+                                                                        : "Colors"}
+                                                                      :
+                                                                    </label>
+                                                                  </td>
+                                                                  <td>
+                                                                    <ul>
+                                                                      {item.color ===
+                                                                      "Blue" ? (
+                                                                        <li>
+                                                                          <a className="colorblue">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Black" ? (
+                                                                        <li>
+                                                                          <a className="colorblack">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Grey" ? (
+                                                                        <li>
+                                                                          <a className="colorgrey">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+
+                                                                      {item.color ===
+                                                                      "Red" ? (
+                                                                        <li>
+                                                                          <a className="colorRed">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                      {item.color ===
+                                                                      "Yellow" ? (
+                                                                        <li>
+                                                                          <a className="colorYellow">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                      {item.color ===
+                                                                      "Green" ? (
+                                                                        <li>
+                                                                          <a className="colorGreen">
+                                                                            <span>
+                                                                              1
+                                                                            </span>
+                                                                          </a>
+                                                                        </li>
+                                                                      ) : null}
+                                                                    </ul>
+                                                                  </td>
+                                                                </tr>
+                                                              </>
+                                                            ) : null}
+
+                                                            {item.size !==
+                                                            "" ? (
+                                                              <>
+                                                                <tr>
+                                                                  <td>
+                                                                    <label>
+                                                                      {TranslationContext !==
+                                                                      undefined
+                                                                        ? TranslationContext
+                                                                            .label
+                                                                            .sizes
+                                                                        : "Sizes"}
+                                                                      :
+                                                                    </label>
+                                                                  </td>
+                                                                  <td>
+                                                                    {isNaN(
+                                                                      parseInt(
+                                                                        item.size
+                                                                      )
+                                                                    ) ===
+                                                                    false ? (
+                                                                      <ul className="sizes">
+                                                                        <li>
+                                                                          <a>
+                                                                            {
+                                                                              item.size
+                                                                            }
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    ) : (
+                                                                      <ul>
+                                                                        <li>
+                                                                          <a>
+                                                                            {
+                                                                              item.size
+                                                                            }
+                                                                          </a>
+                                                                        </li>
+                                                                      </ul>
+                                                                    )}
+                                                                  </td>
+                                                                </tr>
+                                                              </>
+                                                            ) : null}
+                                                          </tbody>
+                                                        </table>
+                                                        <h3>
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .h3.inr
+                                                            : "INR "}
+                                                          {item.price}/-
+                                                        </h3>
+                                                      </div>
+                                                    }
+                                                    placement="left"
+                                                  >
+                                                    <img
+                                                      src={item.imageURL}
+                                                      // src={Ladyimg}
+                                                      className="ladyimg"
+                                                      alt="Lady Img"
+                                                    />
+                                                  </Popover>
+                                                </Checkbox>
+                                                {item.brandName ? (
+                                                  <h3>{item.brandName}</h3>
+                                                ) : null}
+                                                {item.productName ? (
+                                                  <h4>{item.productName}</h4>
+                                                ) : null}
+                                                {item.price ? (
+                                                  <span>
+                                                    {item.price.toLocaleString(
+                                                      "en-IN",
+                                                      {
+                                                        style: "currency",
+                                                        currency: "INR",
+                                                        minimumFractionDigits: 0,
+                                                      }
+                                                    )}
+                                                  </span>
+                                                ) : null}
+                                                <img
+                                                  disabled={
+                                                    this.state.isButtonClick
+                                                  }
+                                                  onClick={this.handleRemoveProduct.bind(
+                                                    this,
+                                                    item.uniqueItemCode
+                                                  )}
+                                                  src={Cancelico}
+                                                  className="cancelico"
+                                                  alt="Cancel Ico"
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                    {this.state.recommendedData.length === 0 ? (
+                                      <Empty
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                      />
+                                    ) : null}
+                                  </div>
+                                  {this.state.selectedRecommended.length > 0 ? (
+                                    <div className="tabsbotbtn-box">
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                      >
+                                        SENT
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="tabsbotbtn"
+                                        disabled={
+                                          this.state.isButtonClick
+                                            ? true
+                                            : false
+                                        }
+                                        onClick={this.handleAddProductsToWishlist.bind(
+                                          this,
+                                          true
+                                        )}
+                                      >
+                                        ADD To WISHLIST
+                                      </button>
+                                      <Popover
+                                        overlayClassName="antcustom ant-prodesc"
+                                        content={
+                                          <div
+                                            className="productdesc"
+                                            style={{ display: "inline-flex" }}
+                                          >
+                                            <button
+                                              type="button"
+                                              className="tabsbotbtn"
+                                              onClick={this.handleBuyProductsOnChat.bind(
                                                 this,
-                                                2,
-                                                i
+                                                true,
+                                                true
                                               )}
                                             >
-                                              <Popover
-                                                overlayClassName="antcustom ant-prodesc"
-                                                content={
-                                                  <div className="productdesc">
-                                                    <h4>{item.productName}</h4>
-                                                    <p>
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .lasttransaction
-                                                        : "Last Transaction"}
-                                                      -{item.uniqueItemCode}
-                                                    </p>
-                                                    <table>
-                                                      <tbody>
-                                                        {item.color !== "" ? (
-                                                          <>
-                                                            <tr>
-                                                              <td
-                                                                style={{
-                                                                  width: "50px",
-                                                                }}
-                                                              >
-                                                                <label>
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .colors
-                                                                    : "Colors"}
-                                                                  :
-                                                                </label>
-                                                              </td>
-                                                              <td>
-                                                                <ul>
-                                                                  {item.color ===
-                                                                  "Blue" ? (
-                                                                    <li>
-                                                                      <a className="colorblue">
-                                                                        <span>
-                                                                          1
-                                                                        </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
-
-                                                                  {item.color ===
-                                                                  "Black" ? (
-                                                                    <li>
-                                                                      <a className="colorblack">
-                                                                        <span>
-                                                                          1
-                                                                        </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
-
-                                                                  {item.color ===
-                                                                  "Grey" ? (
-                                                                    <li>
-                                                                      <a className="colorgrey">
-                                                                        <span>
-                                                                          1
-                                                                        </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
-
-                                                                  {item.color ===
-                                                                  "Red" ? (
-                                                                    <li>
-                                                                      <a className="colorRed">
-                                                                        <span>
-                                                                          1
-                                                                        </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
-                                                                  {item.color ===
-                                                                  "Yellow" ? (
-                                                                    <li>
-                                                                      <a className="colorYellow">
-                                                                        <span>
-                                                                          1
-                                                                        </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
-                                                                  {item.color ===
-                                                                  "Green" ? (
-                                                                    <li>
-                                                                      <a className="colorGreen">
-                                                                        <span>
-                                                                          1
-                                                                        </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
-                                                                </ul>
-                                                              </td>
-                                                            </tr>
-                                                          </>
-                                                        ) : null}
-
-                                                        {item.size !== "" ? (
-                                                          <>
-                                                            <tr>
-                                                              <td>
-                                                                <label>
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .sizes
-                                                                    : "Sizes"}
-                                                                  :
-                                                                </label>
-                                                              </td>
-                                                              <td>
-                                                                {isNaN(
-                                                                  parseInt(
-                                                                    item.size
-                                                                  )
-                                                                ) === false ? (
-                                                                  <ul className="sizes">
-                                                                    <li>
-                                                                      <a>
-                                                                        {
-                                                                          item.size
-                                                                        }
-                                                                      </a>
-                                                                    </li>
-                                                                  </ul>
-                                                                ) : (
-                                                                  <ul>
-                                                                    <li>
-                                                                      <a>
-                                                                        {
-                                                                          item.size
-                                                                        }
-                                                                      </a>
-                                                                    </li>
-                                                                  </ul>
-                                                                )}
-                                                              </td>
-                                                            </tr>
-                                                          </>
-                                                        ) : null}
-                                                      </tbody>
-                                                    </table>
-                                                    <h3>
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.h3
-                                                            .inr
-                                                        : "INR "}
-                                                      {item.price}/-
-                                                    </h3>
-                                                  </div>
-                                                }
-                                                placement="left"
-                                              >
-                                                <img
-                                                  src={item.imageURL}
-                                                  // src={Ladyimg}
-                                                  className="ladyimg"
-                                                  alt="Lady Img"
-                                                />
-                                              </Popover>
-                                            </Checkbox>
-                                            {item.brandName ? (
-                                              <h3>{item.brandName}</h3>
-                                            ) : null}
-                                            {item.productName ? (
-                                              <h4>{item.productName}</h4>
-                                            ) : null}
-                                            {item.price ? (
-                                              <span>
-                                                {item.price.toLocaleString(
-                                                  "en-IN",
-                                                  {
-                                                    style: "currency",
-                                                    currency: "INR",
-                                                    minimumFractionDigits: 0,
-                                                  }
-                                                )}
-                                              </span>
-                                            ) : null}
-                                            <img
-                                              disabled={
-                                                this.state.isButtonClick
-                                              }
-                                              onClick={this.handleRemoveProduct.bind(
-                                                this,
-                                                item.uniqueItemCode
+                                              Direct Buy
+                                            </button>
+                                            <button
+                                              type="button"
+                                              className="tabsbotbtn"
+                                              onClick={this.handleAddressModalOpen.bind(
+                                                this
                                               )}
-                                              src={Cancelico}
-                                              className="cancelico"
-                                              alt="Cancel Ico"
-                                            />
-                                          </div>
-                                        );
-                                      })
-                                    : null}
-                                  {this.state.wishListData.length === 0 ? (
-                                    <Empty
-                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                    />
-                                  ) : null}
-                                </div>
-                                {this.state.selectedWishList.length > 0 ? (
-                                  <div className="tabsbotbtn-box">
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                    >
-                                      SENT
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                      disabled={
-                                        this.state.isButtonClick ? true : false
-                                      }
-                                      onClick={this.handleAddProductsToShoppingBag.bind(
-                                        this
-                                      )}
-                                    >
-                                      ADD To BAG
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                    >
-                                      BUY NOW
-                                    </button>
-                                  </div>
-                                ) : null}
-                              </div>
-                            </Tab>
-                            <Tab label="Recommended">
-                              <div className="shoppingbag">
-                                {this.state.recommendedData.length > 0 ? (
-                                  <label
-                                    className="selectalllabel"
-                                    onClick={this.handleSelectAllProduct.bind(
-                                      this,
-                                      3
-                                    )}
-                                  >
-                                    Select All
-                                  </label>
-                                ) : null}
-                                <div className="prodtabl">
-                                  {this.state.recommendedData
-                                    ? this.state.recommendedData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div className="prodboxx" key={i}>
-                                              <Checkbox
-                                                checked={
-                                                  this.state.recommendedData[i]
-                                                    .isCheck
-                                                }
-                                                onChange={this.handleProductTabsChange.bind(
-                                                  this,
-                                                  3,
-                                                  i
-                                                )}
-                                              >
-                                                <Popover
-                                                  overlayClassName="antcustom ant-prodesc"
-                                                  content={
-                                                    <div className="productdesc">
-                                                      <h4>
-                                                        {item.productName}
-                                                      </h4>
-                                                      <p>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext.p
-                                                              .lasttransaction
-                                                          : "Last Transaction"}
-                                                        -{item.uniqueItemCode}
-                                                      </p>
-                                                      <table>
-                                                        <tbody>
-                                                          {item.color !== "" ? (
-                                                            <>
-                                                              <tr>
-                                                                <td
-                                                                  style={{
-                                                                    width:
-                                                                      "50px",
-                                                                  }}
-                                                                >
-                                                                  <label>
-                                                                    {TranslationContext !==
-                                                                    undefined
-                                                                      ? TranslationContext
-                                                                          .label
-                                                                          .colors
-                                                                      : "Colors"}
-                                                                    :
-                                                                  </label>
-                                                                </td>
-                                                                <td>
-                                                                  <ul>
-                                                                    {item.color ===
-                                                                    "Blue" ? (
-                                                                      <li>
-                                                                        <a className="colorblue">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
+                                            >
+                                              Add to Shopping Bag
+                                            </button>
 
-                                                                    {item.color ===
-                                                                    "Black" ? (
-                                                                      <li>
-                                                                        <a className="colorblack">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-
-                                                                    {item.color ===
-                                                                    "Grey" ? (
-                                                                      <li>
-                                                                        <a className="colorgrey">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-
-                                                                    {item.color ===
-                                                                    "Red" ? (
-                                                                      <li>
-                                                                        <a className="colorRed">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-                                                                    {item.color ===
-                                                                    "Yellow" ? (
-                                                                      <li>
-                                                                        <a className="colorYellow">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-                                                                    {item.color ===
-                                                                    "Green" ? (
-                                                                      <li>
-                                                                        <a className="colorGreen">
-                                                                          <span>
-                                                                            1
-                                                                          </span>
-                                                                        </a>
-                                                                      </li>
-                                                                    ) : null}
-                                                                  </ul>
-                                                                </td>
-                                                              </tr>
-                                                            </>
-                                                          ) : null}
-
-                                                          {item.size !== "" ? (
-                                                            <>
-                                                              <tr>
-                                                                <td>
-                                                                  <label>
-                                                                    {TranslationContext !==
-                                                                    undefined
-                                                                      ? TranslationContext
-                                                                          .label
-                                                                          .sizes
-                                                                      : "Sizes"}
-                                                                    :
-                                                                  </label>
-                                                                </td>
-                                                                <td>
-                                                                  {isNaN(
-                                                                    parseInt(
-                                                                      item.size
-                                                                    )
-                                                                  ) ===
-                                                                  false ? (
-                                                                    <ul className="sizes">
-                                                                      <li>
-                                                                        <a>
-                                                                          {
-                                                                            item.size
-                                                                          }
-                                                                        </a>
-                                                                      </li>
-                                                                    </ul>
-                                                                  ) : (
-                                                                    <ul>
-                                                                      <li>
-                                                                        <a>
-                                                                          {
-                                                                            item.size
-                                                                          }
-                                                                        </a>
-                                                                      </li>
-                                                                    </ul>
-                                                                  )}
-                                                                </td>
-                                                              </tr>
-                                                            </>
-                                                          ) : null}
-                                                        </tbody>
-                                                      </table>
-                                                      <h3>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext
-                                                              .h3.inr
-                                                          : "INR "}
-                                                        {item.price}/-
-                                                      </h3>
-                                                    </div>
-                                                  }
-                                                  placement="left"
-                                                >
-                                                  <img
-                                                    src={item.imageURL}
-                                                    // src={Ladyimg}
-                                                    className="ladyimg"
-                                                    alt="Lady Img"
-                                                  />
-                                                </Popover>
-                                              </Checkbox>
-                                              {item.brandName ? (
-                                                <h3>{item.brandName}</h3>
-                                              ) : null}
-                                              {item.productName ? (
-                                                <h4>{item.productName}</h4>
-                                              ) : null}
-                                              {item.price ? (
-                                                <span>
-                                                  {item.price.toLocaleString(
-                                                    "en-IN",
-                                                    {
-                                                      style: "currency",
-                                                      currency: "INR",
-                                                      minimumFractionDigits: 0,
-                                                    }
-                                                  )}
-                                                </span>
-                                              ) : null}
-                                              <img
-                                                disabled={
-                                                  this.state.isButtonClick
-                                                }
-                                                onClick={this.handleRemoveProduct.bind(
-                                                  this,
-                                                  item.uniqueItemCode
-                                                )}
-                                                src={Cancelico}
-                                                className="cancelico"
-                                                alt="Cancel Ico"
-                                              />
-                                            </div>
-                                          );
-                                        }
-                                      )
-                                    : null}
-                                  {this.state.recommendedData.length === 0 ? (
-                                    <Empty
-                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                    />
-                                  ) : null}
-                                </div>
-                                {this.state.selectedRecommended.length > 0 ? (
-                                  <div className="tabsbotbtn-box">
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                    >
-                                      SENT
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="tabsbotbtn"
-                                      disabled={
-                                        this.state.isButtonClick ? true : false
-                                      }
-                                      onClick={this.handleAddProductsToWishlist.bind(
-                                        this,
-                                        true
-                                      )}
-                                    >
-                                      ADD To WISHLIST
-                                    </button>
-                                    <Popover
-                                      overlayClassName="antcustom ant-prodesc"
-                                      content={
-                                        <div
-                                          className="productdesc"
-                                          style={{ display: "inline-flex" }}
-                                        >
-                                          <button
-                                            type="button"
-                                            className="tabsbotbtn"
-                                          >
-                                            Direct Buy
-                                          </button>
-                                          <button
-                                            type="button"
-                                            className="tabsbotbtn"
-                                            onClick={this.handleAddressModalOpen.bind(
-                                              this
-                                            )}
-                                          >
-                                            Add to Shopping Bag
-                                          </button>
-
-                                          {/* <Popconfirm
+                                            {/* <Popconfirm
                                             title={
                                               <>
                                                 <div className="popover-input-cntr">
@@ -8644,31 +8763,32 @@ class Header extends Component {
                                           > 
                                             
                                           </Popconfirm>*/}
-                                        </div>
-                                      }
-                                      // placement="left"
-                                      // visible={this.state.buyNowClick}
-                                    >
-                                      <button
-                                        onClick={this.handleBuyNowButtonClick.bind(
-                                          this
-                                        )}
-                                        type="button"
-                                        className="tabsbotbtn"
+                                          </div>
+                                        }
+                                        // placement="left"
+                                        // visible={this.state.buyNowClick}
                                       >
-                                        BUY NOW
-                                      </button>
-                                    </Popover>
-                                  </div>
-                                ) : null}
-                              </div>
-                            </Tab>
-                          </Tabs>
-                        </div>
-                      </Tab>
-                    </Tabs>
+                                        <button
+                                          onClick={this.handleBuyNowButtonClick.bind(
+                                            this
+                                          )}
+                                          type="button"
+                                          className="tabsbotbtn"
+                                        >
+                                          BUY NOW
+                                        </button>
+                                      </Popover>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </Tab>
+                            </Tabs>
+                          </div>
+                        </Tab>
+                      </Tabs>
+                    </div>
                   </div>
-                </div>
+                ) : null
               ) : null}
             </div>
           </div>
