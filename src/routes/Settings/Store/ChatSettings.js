@@ -56,12 +56,13 @@ class ChatSettings extends Component {
       isProfileAndProduct: false,
       endChatMessage: "",
       notificationTime: 0,
-      isMessageTabActive: true,
-      isCardTabActive: true,
-      isRecommendedListTabActive: true,
-      isScheduleVisitTabActive: true,
-      isPaymentLinkTabActive: true,
-      isChatProfileProduct: true,
+      isMessageTabActive: false,
+      isCardTabActive: false,
+      isRecommendedListTabActive: false,
+      isScheduleVisitTabActive: false,
+      isPaymentLinkTabActive: false,
+      isCustomerProfile: false,
+      isCustomerProduct: false,
     };
   }
 
@@ -104,7 +105,8 @@ class ChatSettings extends Component {
             isRecommendedListTabActive: data.recommendedList,
             isScheduleVisitTabActive: data.scheduleVisit,
             isPaymentLinkTabActive: data.paymentLink,
-            isChatProfileProduct: data.chatProfileProduct,
+            isCustomerProfile: data.customerProfile,
+            isCustomerProduct: data.customerProduct,
           });
         } else {
           self.setState({
@@ -144,7 +146,8 @@ class ChatSettings extends Component {
           RecommendedList: this.state.isRecommendedListTabActive,
           ScheduleVisit: this.state.isScheduleVisitTabActive,
           PaymentLink: this.state.isPaymentLinkTabActive,
-          ChatProfileProduct: this.state.isChatProfileProduct,
+          CustomerProfile: this.state.isCustomerProfile,
+          CustomerProduct: this.state.isCustomerProduct,
         },
       })
         .then((response) => {
@@ -473,7 +476,7 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          debugger
+          debugger;
           self.setState({
             newChatSoundID: responseData.newChatSoundID || 0,
             newMessageSoundID: responseData.newMessageSoundID || 0,
@@ -628,8 +631,11 @@ class ChatSettings extends Component {
     if (name === "isPaymentLinkTabActive") {
       this.setState({ isPaymentLinkTabActive: e.target.checked });
     }
-    if (name === "isChatProfileProduct") {
-      this.setState({ isChatProfileProduct: e.target.checked });
+    if (name === "isCustomerProfile") {
+      this.setState({ isCustomerProfile: e.target.checked });
+    }
+    if (name === "isCustomerProduct") {
+      this.setState({ isCustomerProduct: e.target.checked });
     }
   };
   render() {
@@ -895,23 +901,52 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
-                            Profile & Product of Chat Window
+                            Customer Profile in Chat Window
                           </div>
                           <div className="col-md-3">
                             <div className="module-switch crm-margin-div crm-padding-div">
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="isChatProfileProduct"
-                                  name="isChatProfileProduct"
-                                  checked={this.state.isChatProfileProduct}
+                                  id="isCustomerProfile"
+                                  name="isCustomerProfile"
+                                  checked={this.state.isCustomerProfile}
                                   onChange={this.handleRadioButtonChange.bind(
                                     this
                                   )}
-                                  checked={this.state.isChatProfileProduct}
                                 />
                                 <label
-                                  htmlFor="isChatProfileProduct"
+                                  htmlFor="isCustomerProfile"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Customer Product Tab in Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="isCustomerProduct"
+                                  name="isCustomerProduct"
+                                  checked={this.state.isCustomerProduct}
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                />
+                                <label
+                                  htmlFor="isCustomerProduct"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
