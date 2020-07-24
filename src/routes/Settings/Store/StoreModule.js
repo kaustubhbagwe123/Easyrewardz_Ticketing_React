@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Popover } from "antd";
+import { Popover, Radio } from "antd";
 import ReactTable from "react-table";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -167,6 +167,7 @@ class StoreModule extends Component {
       chooseStoreModal: false,
       createTampleteModal: false,
       selectedStoreModal: false,
+      slotAutomaticRadio: 1,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2143,6 +2144,12 @@ class StoreModule extends Component {
   handleSelectedStoreCloseModal = () => {
     this.setState({ selectedStoreModal: false });
   };
+  /// handle Slot Radio change
+  handleSlotRadioChange = (e) => {
+    this.setState({
+      slotAutomaticRadio: e.target.value,
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3954,7 +3961,7 @@ class StoreModule extends Component {
                                                   this
                                                 )}
                                               >
-                                                8 Store Selected {'>'}
+                                                8 Store Selected {">"}
                                               </a>
                                             </li>
                                             <li>
@@ -4023,7 +4030,6 @@ class StoreModule extends Component {
                                                 {
                                                   title:
                                                     "Slot Status(Unable/Disable)",
-
                                                   render: (row, rowData) => {
                                                     return <>radio button</>;
                                                   },
@@ -4860,10 +4866,13 @@ class StoreModule extends Component {
                 <div className="row">
                   <div className="col-12 col-md-10">
                     <div className="statuscheckbox">
-                      <input type="checkbox" classNam="form-control" />
-                      <label>Automatic</label>
-                      <input type="checkbox" classNam="form-control" />
-                      <label>Manual</label>
+                      <Radio.Group
+                        onChange={this.handleSlotRadioChange}
+                        value={this.state.slotAutomaticRadio}
+                      >
+                        <Radio value={1}>Automatic</Radio>
+                        <Radio value={2}>Manual</Radio>
+                      </Radio.Group>
                     </div>
                   </div>
                 </div>
