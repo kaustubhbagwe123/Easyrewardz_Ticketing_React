@@ -1087,6 +1087,20 @@
 .escalation-options .status-options input:checked + label {
   color: #2561a8;
 }
+.user-desig-pop {
+  min-width: 650px;
+  padding: 10px 20px;
+}
+.user-desig-pop .col-md-6 {
+  display: flex;
+  margin-bottom: 15px;
+}
+.user-desig-pop .row:last-child .col-md-6 {
+  margin-bottom: 0px;
+}
+.user-desig-pop .col-md-6 p {
+  flex: 0 0 160px;
+}
 /* chetan users settings ends */
 
 .breadcrumbs-row-padding {

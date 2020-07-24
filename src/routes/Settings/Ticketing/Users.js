@@ -163,8 +163,8 @@ class Users extends Component {
       isortA: false,
       bulkuploadLoading: false,
       translateLanguage: {},
-      profileBtnDisabled:true,
-      mappedCategoryBtnDisabled:true
+      profileBtnDisabled: true,
+      mappedCategoryBtnDisabled: true,
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -1733,7 +1733,7 @@ class Users extends Component {
             self.setState({
               getID: id,
               personalReadOnly: true,
-              profileBtnDisabled:false,
+              profileBtnDisabled: false,
             });
             self.handleGetUserList();
           } else {
@@ -1875,7 +1875,7 @@ class Users extends Component {
                   : "Record updated successfully"
               );
               self.setState({
-                mappedCategoryBtnDisabled:false
+                mappedCategoryBtnDisabled: false,
               });
             } else {
               NotificationManager.error(
@@ -1894,7 +1894,7 @@ class Users extends Component {
               self.setState({
                 getID: id,
                 profileReadOnly: true,
-                mappedCategoryBtnDisabled:false
+                mappedCategoryBtnDisabled: false,
               });
               self.handleGetUserList();
             } else {
@@ -2242,7 +2242,7 @@ class Users extends Component {
       // this.state.userEditData.is_Assign_Escalation === true &&
       //this.state.userEditData.assign_ID > 0
     ) {
-      debugger
+      debugger;
       // this.handleGetUserListByID(this.state.userEditData.userId);
       let self = this;
 
@@ -2346,7 +2346,7 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger
+          debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
             self.closeEditModal();
@@ -2372,7 +2372,6 @@ class Users extends Component {
             );
           }
           self.handleGetUserList();
-         
         })
         .catch((error) => {
           console.log(error);
@@ -3667,7 +3666,7 @@ class Users extends Component {
                                 {row.original.designation}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="user-desig-pop">
                                       <div className=" row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
@@ -3675,8 +3674,11 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reporteedesignation
                                               : "Reportee Designation"}
-                                            : <b>{row.original.reporteeDesignation}</b>
+                                            :{" "}
                                           </p>
+                                          <b>
+                                            {row.original.reporteeDesignation}
+                                          </b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
@@ -3685,8 +3687,8 @@ class Users extends Component {
                                                   .issuetype
                                               : "Issue Type"}
                                             :
-                                            <b>{row.original.issueTypeNames}</b>
                                           </p>
+                                          <b>{row.original.issueTypeNames}</b>
                                         </div>
                                       </div>
 
@@ -3697,16 +3699,18 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reportto
                                               : "Report To"}
-                                            : <b>{row.original.reportTo}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.reportTo}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label.crmrole
                                               : "CRM Role"}
-                                            : <b>{row.original.crmRoleName}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.crmRoleName}</b>
                                         </div>
                                       </div>
 
@@ -3716,39 +3720,46 @@ class Users extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label.brand
                                               : "Brand"}
-                                            : <b>{row.original.brandNames}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.brandNames}</b>
                                         </div>
                                         <div className="col-md-6">
                                           {row.original.isCopyEscalation ===
                                           "Yes" ? (
-                                            <p className="sub-title mx-2">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                    .copyescalation
-                                                : "Copy Escalation"}
-                                              :
+                                            <>
+                                              <p className="sub-title mx-2">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .copyescalation
+                                                  : "Copy Escalation"}
+                                                :
+                                              </p>
                                               <b>
                                                 {TranslationContext !==
                                                 undefined
                                                   ? TranslationContext.label.yes
                                                   : "Yes"}
                                               </b>
-                                            </p>
+                                            </>
                                           ) : (
-                                            <p className="sub-title mx-2">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                    .copyescalation
-                                                : "Copy Escalation"}
-                                              :
+                                            <>
+                                              <p className="sub-title mx-2">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .copyescalation
+                                                  : "Copy Escalation"}
+                                                :
+                                              </p>
                                               <b>
                                                 {TranslationContext !==
                                                 undefined
                                                   ? TranslationContext.label.no
                                                   : "No"}
                                               </b>
-                                            </p>
+                                            </>
                                           )}
                                         </div>
                                       </div>
@@ -3759,8 +3770,9 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .categories
                                               : "Categories"}
-                                            :<b>{row.original.categoryNames}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.categoryNames}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
@@ -3769,10 +3781,8 @@ class Users extends Component {
                                                   .assignescalation
                                               : "Assign Escalation"}
                                             :
-                                            <b>
-                                              {row.original.assignEscalation}
-                                            </b>
                                           </p>
+                                          <b>{row.original.assignEscalation}</b>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -3783,18 +3793,17 @@ class Users extends Component {
                                                   .subcategories
                                               : "Sub Categories"}
                                             :
-                                            <b>
-                                              {row.original.subCategoryNames}
-                                            </b>
                                           </p>
+                                          <b>{row.original.subCategoryNames}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.agentname
                                               : "Agent Name"}
-                                            : <b>{row.original.assignName}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.assignName}</b>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -3804,16 +3813,18 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .createdby
                                               : "Created By"}
-                                            : <b>{row.original.createdBy}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.createdBy}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
                                               : "Updated By"}
-                                            : <b>{row.original.updatedBy}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.updatedBy}</b>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -3822,19 +3833,21 @@ class Users extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.createddate
                                               : "Created Date"}
-                                            : <b>{row.original.createdDate}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.createdDate}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updateddate
                                               : "Updated Date"}
-                                            : <b>{row.original.updatedDate}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.updatedDate}</b>
                                         </div>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -4341,7 +4354,11 @@ class Users extends Component {
                             // data-toggle="collapse"
                             //href="#profile-details"
                             disabled={this.state.profileBtnDisabled}
-                            className={this.state.profileBtnDisabled ? "butn userBtnDibsl":"butn"}
+                            className={
+                              this.state.profileBtnDisabled
+                                ? "butn userBtnDibsl"
+                                : "butn"
+                            }
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
                             {TranslationContext !== undefined
@@ -4681,7 +4698,11 @@ class Users extends Component {
                       </div>
                       <div className="btn-coll">
                         <button
-                          className={this.state.mappedCategoryBtnDisabled ? "butn userBtnDibsl":"butn"}
+                          className={
+                            this.state.mappedCategoryBtnDisabled
+                              ? "butn userBtnDibsl"
+                              : "butn"
+                          }
                           onClick={this.handleAddMapCategory.bind(this)}
                           disabled={this.state.mappedCategoryBtnDisabled}
                         >
