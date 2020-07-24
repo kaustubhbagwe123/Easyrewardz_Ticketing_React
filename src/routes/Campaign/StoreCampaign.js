@@ -1532,8 +1532,8 @@ class StoreCampaign extends Component {
         url: config.apiUrl + "/CustomerChat/saveReInitiateChat",
         headers: authHeader(),
         data: {
-          StoreID: this.state.storeID,
-          CustomerID: this.state.customerID,
+          StoreID: itemData.storecode,
+          CustomerID: itemData.id,
           FirstName: itemData.customerName,
           LastName: "",
           MobileNo: itemData.customerNumber,
