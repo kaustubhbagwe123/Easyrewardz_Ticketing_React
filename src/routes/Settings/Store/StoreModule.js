@@ -4940,9 +4940,300 @@ class StoreModule extends Component {
                 </div>
                 <div className="storetabl">
                   <div className="row">
-                    <div className="col-12"></div>
+                    <div className="col-12">
+                      <table className="table">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col-12 col-md-12">
+                    <div style={{float:"right"}}>
+                        <a
+                          style={{color:"#666",marginRight:"30px"}}
+                         href={Demo.BLANK_LINK}>
+                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "Clear"}
+                        </a>
+                        <button
+                          className="butn"
+                          onClick={this.handleNextButtonClose.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.delete
+                            : "Apply"}
+                        </button>
+                      </div>
+                  </div>
+                </div> 
               </div>
             </Modal>
             {/* Create tamplete Modal */}
@@ -5220,6 +5511,7 @@ class StoreModule extends Component {
             <Modal
               show={this.state.selectedStoreModal}
               onHide={this.handleSelectedStoreCloseModal.bind(this)}
+              dialogClassName="selectstores-main"
             >
               <img
                 src={CancelIcon}

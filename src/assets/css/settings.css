@@ -4056,6 +4056,9 @@
 .choosestorebox .modal-content {
   border-radius: 20px;
 }
+.selectstores-main .modal-content {
+  border-radius: 20px;
+}
 .choosestore {
   padding: 25px 50px;
 }
@@ -4102,4 +4105,42 @@
 }
 .atoz li {
   margin-right: 9px;
+}
+.storetabl input {
+  margin: 4px 8px 0 0;
+  vertical-align: middle;
+}
+.storetabl label {
+  vertical-align: middle;
+  margin: 0;
+}
+.storetabl tr {
+  border-bottom: none;
+}
+.storetabl .table td {
+  border: none;
+  padding: 5px 0;
+}
+.storetabl {
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+.storetabl::-webkit-scrollbar {
+  width: 7px;
+}
+.storetabl::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.storetabl::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.storetabl::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
 }
