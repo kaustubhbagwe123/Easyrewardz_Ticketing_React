@@ -845,7 +845,7 @@ class ChatSettings extends Component {
                           <div className="col-md-3"></div>
                         </div>
 
-                        <div
+                        {/* <div
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
@@ -867,7 +867,7 @@ class ChatSettings extends Component {
                           </div>
                           <div className="col-md-3"></div>
                           <div className="col-md-3"></div>
-                        </div>
+                        </div> */}
 
                         <div
                           className="row"

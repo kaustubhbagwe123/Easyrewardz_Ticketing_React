@@ -3885,3 +3885,96 @@
   text-align: center;
   height: calc(1.55rem + 2px);
 }
+.chooseslot-box {
+  padding: 30px;
+}
+.chooseslot-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+.chooseslot-box .statuscheckbox {
+  display: flex;
+  margin-top: 10px;
+}
+.chooseslot-box .statuscheckbox input {
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-left: 0;
+  margin-top: 4px;
+}
+.chooseslot-box .statuscheckbox label {
+  vertical-align: middle;
+  margin-right: 15px;
+  margin-top: 0;
+}
+.chooseslot-box .form-control {
+  background-color: #f9f9f9;
+  border: 1px solid #dadada;
+  height: calc(2.55rem + 4px) !important;
+}
+.chooseslot-box label {
+  font-weight: normal;
+  font-size: 14px;
+  color: #9b9b9b;
+  margin-top: 10px;
+  margin-bottom: 3px;
+}
+.chooseslot-box select {
+  margin-top: 0;
+}
+.chooseslot-box a {
+  color: #2561a8 !important;
+  margin-right: 10px;
+}
+.chooseslot-box .butn {
+  background-color: #2561a8;
+    color: #fff;
+  padding: 11px 0;
+}
+.chooseslot-box .del-can {
+  display: block;
+  float: right;
+}
+.chooseslot-box select {
+  background: #ecf2f4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAA/klEQVR4nL3UzUrDQBTF8V9LQEE3iuIbCL7/wygu/AAXorYu1GIgZFzMHYhK0sTW3tXAzJx/7j1nwo5qhgp7sf6PSqirWJzgKIDbrBqveCigDxzgEPtbgnziLbRThRbL2Ew4k8e5STVY4Dm02yLYxsZ7QE4x/yOkaN3Ko0v8DkAJx4Xs21RYixdcyl2lsvFTKMWBK9HyRMgy7n6D0B/pmZzAcxxb71kTkGudcXWrTyDFhZv40qHolwjf9UEY9iBhhUfZ3LoHsogzqz4I60fSjf5cDki508idPBnh55j3UuJad2BC/F5+Er2dlJryf+sGhAHjNwWV88XXdixkp/UFw/tTyABncXQAAAAASUVORK5CYII=) no-repeat right 25px center;
+  background-size: 13px;
+  padding-right: 50px;
+  cursor: pointer;
+}
+.chooseslot-table {
+  margin: 25px 0 0;
+}
+.selectstores-box {
+  padding: 20px;
+}
+.selectstores-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.selectstores-box ul {
+  margin-bottom: 0px;
+}
+.selectstores-box ul li {
+  margin-right: 7px;
+  margin-bottom: 10px;
+}
+.selectstores-box .input-group {
+  background: #F3F3F3;
+  padding: 5px 5px 5px 10px;
+  border-radius: 50px;
+}
+.selectstores-box .cust-ic {
+  height: 20px;
+  background-color: #DADADA;
+  padding: 5px;
+  border-radius: 50%;
+}
+.selectstores-box label {
+  font-size: 12px;
+  margin-right: 5px;
+  font-weight: 600;
+}

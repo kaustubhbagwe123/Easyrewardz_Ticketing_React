@@ -596,7 +596,10 @@ class storeMyTicket extends Component {
                         </div>
                         <div className="col-md-7">
                           <div className="row">
-                          <div className="col-md-3" style={{paddingRight:0}}>
+                            <div
+                              className="col-md-3"
+                              style={{ paddingRight: 0 }}
+                            >
                               <label className="mobile-number">
                                 {TranslationContext !== undefined
                                   ? TranslationContext.label.customername
@@ -608,12 +611,12 @@ class storeMyTicket extends Component {
                                 {this.state.chatID}
                               </label>
                             </div>
-                            <div className="col-md-9" style={{padding:0}}>
+                            <div className="col-md-9" style={{ padding: 0 }}>
                               {this.state.isIconDisplay &&
                               !this.state.isChatAllreadyActive ? (
                                 <img
                                   style={{
-                                    width:"24px",
+                                    width: "24px",
                                     cursor: "pointer",
                                   }}
                                   title="Re-Initiate Chat"
@@ -623,18 +626,18 @@ class storeMyTicket extends Component {
                                     this
                                   )}
                                 />
-                              ) : (
+                              ) : this.state.isIconDisplay === true &&
+                                this.state.isChatAllreadyActive ? (
                                 <img
-                                style={{
-                                  width:"20px",
-                                  cursor: "pointer",
-                                }}
+                                  style={{
+                                    width: "20px",
+                                    cursor: "pointer",
+                                  }}
                                   src={WhatsappDeactive}
                                   alt="WhatsappDeactive"
                                 />
-                              )}
+                              ) : null}
                             </div>
-                            
                           </div>
                         </div>
                       </div>

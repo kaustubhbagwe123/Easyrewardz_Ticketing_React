@@ -609,7 +609,7 @@ class OrderTab extends Component {
                               ? OrderShopingGreen
                               : item.sourceOfOrder === "POS"
                               ? OrderBag
-                              : item.sourceOfOrder === "Wbot"
+                              : item.sourceOfOrder === "WebBot" || item.sourceOfOrder === "Ecom" || item.sourceOfOrder === "Bell"
                               ? OrderShopingBlack
                               : null
                           }
@@ -618,7 +618,7 @@ class OrderTab extends Component {
                               ? "order-shoping"
                               : item.sourceOfOrder === "POS"
                               ? "order-bag"
-                              : item.sourceOfOrder === "Wbot"
+                              : item.sourceOfOrder === "WebBot" || item.sourceOfOrder === "Ecom" || item.sourceOfOrder === "Bell"
                               ? "order-shoping"
                               : null
                           }

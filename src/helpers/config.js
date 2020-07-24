@@ -257,8 +257,8 @@ let config = {
       "Weight",
       "WeightUnit",
     ],
-    ["template1", "5", "8", "5.5", "Inch", "5", "KG"],
-    ["template2", "6", "9", "7.5", "CM", "5", "G"],
+    ["template1", "5", "8", "5.5", "CM", "5", "KG"],
+    ["template2", "6", "9", "7.5", "CM", "5", "KG"],
   ],
   //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
   // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
