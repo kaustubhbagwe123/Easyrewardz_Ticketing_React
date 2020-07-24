@@ -1523,7 +1523,7 @@ class StoreCampaign extends Component {
   }
   ////handle whats app icon click
   handleWhatsAppIconClick(itemData) {
-    debugger
+    debugger;
     let self = this;
     if (this.state.isWhatsAppIconClick === false) {
       this.setState({ isWhatsAppIconClick: true });
@@ -1563,7 +1563,7 @@ class StoreCampaign extends Component {
     } else {
       return false;
     }
-  };
+  }
   //// handle Channel onchange
   handleSelectChannelsOnchange(check) {
     if (check === "Messenger") {
@@ -2050,27 +2050,29 @@ class StoreCampaign extends Component {
                         render: (row, item) => {
                           return (
                             <div>
-                              <p
-                                className="cust-name"
-                                onClick={this.handleGetCustomerDataForModal.bind(
-                                  this,
-                                  item
-                                )}
-                              >
-                                {item.customerName}
+                              <div className="d-flex">
+                                <p
+                                  className="cust-name"
+                                  onClick={this.handleGetCustomerDataForModal.bind(
+                                    this,
+                                    item
+                                  )}
+                                >
+                                  {item.customerName}
+                                </p>
                                 <img
-                                  className="ico cr-pnt"
+                                  className="ico cr-pnt ml-2"
                                   src={Whatsapp}
                                   alt="Whatsapp Icon"
                                   onClick={this.handleWhatsAppIconClick.bind(
-                                    this,item
+                                    this,
+                                    item
                                   )}
                                 />
-                              </p>
+                              </div>
                               <span className="sml-fnt">
                                 {item.customerNumber}
                               </span>
-                              
                             </div>
                           );
                         },
@@ -2406,17 +2408,20 @@ class StoreCampaign extends Component {
                                   </label>
                                 </td>
                                 <td>
-                                  <label className="cust-name">
-                                    {row.customerName}
+                                  <div className="d-flex">
+                                    <label className="cust-name">
+                                      {row.customerName}
+                                    </label>
                                     <img
-                                      className="ico cr-pnt"
+                                      className="ico cr-pnt ml-1"
                                       src={Whatsapp}
                                       alt="Whatsapp Icon"
                                       onClick={this.handleWhatsAppIconClick.bind(
-                                        this,row
+                                        this,
+                                        row
                                       )}
                                     />
-                                  </label>
+                                  </div>
                                   <span className="sml-fnt">
                                     {row.customerNumber}
                                   </span>
