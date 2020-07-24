@@ -10360,6 +10360,14 @@ table tr th:last-child {
   min-width: auto;
   border-left-color: #ccc;
 }
+.myticlist-expand-sect .myticket-text input[type="text"] {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 20px;
+  border: 0;
+  background: #fff;
+  color: #4a4a4a;
+}
 .dapic .react-datepicker-wrapper {
   display: inline-block;
   padding: 0;
@@ -12708,4 +12716,8 @@ table tr th:last-child {
 }
 .lowersec a[disabled]{
   color: #4a4a4a !important;
+}
+
+.myticlist-expand-sect .tab-content .row.all-row > div {
+  margin-bottom: 25px;
 }
