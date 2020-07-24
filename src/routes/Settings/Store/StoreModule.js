@@ -3954,7 +3954,7 @@ class StoreModule extends Component {
                                                   this
                                                 )}
                                               >
-                                                8 Store Selected >
+                                                8 Store Selected {'>'}
                                               </a>
                                             </li>
                                             <li>
