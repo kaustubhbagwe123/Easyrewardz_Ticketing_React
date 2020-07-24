@@ -1087,6 +1087,20 @@
 .escalation-options .status-options input:checked + label {
   color: #2561a8;
 }
+.user-desig-pop {
+  min-width: 650px;
+  padding: 10px 20px;
+}
+.user-desig-pop .col-md-6 {
+  display: flex;
+  margin-bottom: 15px;
+}
+.user-desig-pop .row:last-child .col-md-6 {
+  margin-bottom: 0px;
+}
+.user-desig-pop .col-md-6 p {
+  flex: 0 0 160px;
+}
 /* chetan users settings ends */
 
 .breadcrumbs-row-padding {
@@ -3931,7 +3945,7 @@
 }
 .chooseslot-box .butn {
   background-color: #2561a8;
-    color: #fff;
+  color: #fff;
   padding: 11px 0;
 }
 .chooseslot-box .del-can {
@@ -3939,7 +3953,9 @@
   float: right;
 }
 .chooseslot-box select {
-  background: #ecf2f4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAA/klEQVR4nL3UzUrDQBTF8V9LQEE3iuIbCL7/wygu/AAXorYu1GIgZFzMHYhK0sTW3tXAzJx/7j1nwo5qhgp7sf6PSqirWJzgKIDbrBqveCigDxzgEPtbgnziLbRThRbL2Ew4k8e5STVY4Dm02yLYxsZ7QE4x/yOkaN3Ko0v8DkAJx4Xs21RYixdcyl2lsvFTKMWBK9HyRMgy7n6D0B/pmZzAcxxb71kTkGudcXWrTyDFhZv40qHolwjf9UEY9iBhhUfZ3LoHsogzqz4I60fSjf5cDki508idPBnh55j3UuJad2BC/F5+Er2dlJryf+sGhAHjNwWV88XXdixkp/UFw/tTyABncXQAAAAASUVORK5CYII=) no-repeat right 25px center;
+  background: #ecf2f4
+    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAA/klEQVR4nL3UzUrDQBTF8V9LQEE3iuIbCL7/wygu/AAXorYu1GIgZFzMHYhK0sTW3tXAzJx/7j1nwo5qhgp7sf6PSqirWJzgKIDbrBqveCigDxzgEPtbgnziLbRThRbL2Ew4k8e5STVY4Dm02yLYxsZ7QE4x/yOkaN3Ko0v8DkAJx4Xs21RYixdcyl2lsvFTKMWBK9HyRMgy7n6D0B/pmZzAcxxb71kTkGudcXWrTyDFhZv40qHolwjf9UEY9iBhhUfZ3LoHsogzqz4I60fSjf5cDki508idPBnh55j3UuJad2BC/F5+Er2dlJryf+sGhAHjNwWV88XXdixkp/UFw/tTyABncXQAAAAASUVORK5CYII=)
+    no-repeat right 25px center;
   background-size: 13px;
   padding-right: 50px;
   cursor: pointer;
@@ -3963,13 +3979,13 @@
   margin-bottom: 10px;
 }
 .selectstores-box .input-group {
-  background: #F3F3F3;
+  background: #f3f3f3;
   padding: 5px 5px 5px 10px;
   border-radius: 50px;
 }
 .selectstores-box .cust-ic {
   height: 20px;
-  background-color: #DADADA;
+  background-color: #dadada;
   padding: 5px;
   border-radius: 50%;
 }
