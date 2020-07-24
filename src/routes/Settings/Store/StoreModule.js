@@ -4022,7 +4022,7 @@ class StoreModule extends Component {
                                                 },
                                                 {
                                                   title:
-                                                    "Slot Status(Unable/Disble)",
+                                                    "Slot Status(Unable/Disable)",
 
                                                   render: (row, rowData) => {
                                                     return <>radio button</>;
