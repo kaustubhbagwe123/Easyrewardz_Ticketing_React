@@ -4176,8 +4176,31 @@ class StoreModule extends Component {
                                       TranslationContext !== undefined
                                         ? TranslationContext.header
                                             .nonoperationalhours
-                                        : "Non Operational Hour",
+                                        : "Operational Days",
                                     dataIndex: "nonOperationalTimimg",
+                                    render: (row, item) => {
+                                      return (
+                                        <Popover
+                                          overlayClassName="antcustom"
+                                          content={
+                                            <div>
+                                              <h3>Operational Days</h3>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <div className="broadcast-icon">
+                                            {item.nonOperationalTimimg}
+                                            <img
+                                              className="info-icon-cp"
+                                              src={BlackInfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </div>
+                                        </Popover>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -4207,6 +4230,36 @@ class StoreModule extends Component {
                                             .appointmentdays
                                         : "Appointment Days",
                                     dataIndex: "appointmentDays",
+                                    render: (row, item) => {
+                                      return (
+                                        <Popover
+                                          overlayClassName="antcustom"
+                                          content={
+                                            <div>
+                                              <h3>Appointment Days</h3>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <div className="broadcast-icon">
+                                            {item.appointmentDays}
+                                            <img
+                                              className="info-icon-cp"
+                                              src={BlackInfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </div>
+                                        </Popover>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title: "Status",
+                                    dataIndex: "totalSlot",
+                                    render: (row, item) => {
+                                      return <div>Active</div>;
+                                    },
                                   },
                                   {
                                     title:
