@@ -833,7 +833,7 @@ class Claim extends Component {
                                                     row.original.raiseBy +
                                                     " "}{" "}
                                                 </p>
-                                                <p>2 Hrs ago</p>
+                                                <p>{row.original.creationAgo}</p>
                                               </li>
                                               <li>
                                                 <p>
@@ -842,13 +842,13 @@ class Claim extends Component {
                                                     : "Assigned to"}{" "}
                                                   {" " + row.original.assignTo}
                                                 </p>
-                                                <p>1.5 Hrs ago</p>
+                                                <p>{row.original.assignOn}</p>
                                               </li>
                                               <li>
                                                 <p>{TranslationContext !== undefined
                                                   ? TranslationContext.p.updatedby
                                                   : "Updated by"} Vikas</p>
-                                                <p>1 Hr ago</p>
+                                                <p>{row.original.modifyOn}</p>
                                               </li>
                                               <li>
                                                 <p>
@@ -856,7 +856,7 @@ class Claim extends Component {
                                                     ? TranslationContext.p.responsetimerem
                                                     : "Response time remaining by"}
                                                 </p>
-                                                <p>30 mins</p>
+                                                <p></p>
                                               </li>
                                               <li>
                                                 <p>
@@ -864,7 +864,7 @@ class Claim extends Component {
                                                     ? TranslationContext.p.responseoverdueby
                                                     : "Response overdue by"}
                                                 </p>
-                                                <p>1 Hr</p>
+                                                <p></p>
                                               </li>
                                               <li>
                                                 <p>
@@ -872,7 +872,7 @@ class Claim extends Component {
                                                     ? TranslationContext.p.resolutionoverdueby
                                                     : "Resolution overdue by"}
                                                 </p>
-                                                <p>2 Hrs</p>
+                                                <p></p>
                                               </li>
                                             </ul>
                                           </div>
@@ -1397,7 +1397,7 @@ class Claim extends Component {
                                                     row.original.raiseBy +
                                                     " "}{" "}
                                                 </p>
-                                                <p>2 Hrs ago</p>
+                                                <p>{row.original.creationAgo}</p>
                                               </li>
                                               <li>
                                                 <p>
@@ -1406,31 +1406,31 @@ class Claim extends Component {
                                                     : "Assigned to"}{" "}
                                                   {" " + row.original.assignTo}
                                                 </p>
-                                                <p>1.5 Hrs ago</p>
+                                                <p>{row.original.assignOn}</p>
                                               </li>
                                               <li>
                                                 <p>{TranslationContext !== undefined
                                                   ? TranslationContext.p.updatedby
                                                   : "Updated by"} Vikas</p>
-                                                <p>1 Hr ago</p>
+                                                <p>{row.original.modifyOn}</p>
                                               </li>
                                               <li>
                                                 <p>{TranslationContext !== undefined
                                                   ? TranslationContext.p.responsetimerem
                                                   : "Response time remaining by"}</p>
-                                                <p>30 mins</p>
+                                                <p></p>
                                               </li>
                                               <li>
                                                 <p>{TranslationContext !== undefined
                                                   ? TranslationContext.p.responseoverdueby
                                                   : "Response overdue by"}</p>
-                                                <p>1 Hr</p>
+                                                <p></p>
                                               </li>
                                               <li>
                                                 <p>{TranslationContext !== undefined
                                                   ? TranslationContext.p.resolutionoverdueby
                                                   : "Resolution overdue by"}</p>
-                                                <p>2 Hrs</p>
+                                                <p></p>
                                               </li>
                                             </ul>
                                           </div>

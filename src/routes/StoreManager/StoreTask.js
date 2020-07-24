@@ -2792,7 +2792,7 @@ class StoreTask extends Component {
                                           </li>
                                           <li>
                                             <p>Response overdue by</p>
-                                            <p>1 Hr</p>
+                                            <p></p>
                                           </li>
                                           <li>
                                             <p>Resolution overdue by</p>
@@ -3436,7 +3436,7 @@ class StoreTask extends Component {
                                             </li>
                                             <li>
                                               <p>Response overdue by</p>
-                                              <p>1 Hr</p>
+                                              <p></p>
                                             </li>
                                             <li>
                                               <p>Resolution overdue by</p>
