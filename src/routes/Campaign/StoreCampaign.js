@@ -2412,9 +2412,6 @@ class StoreCampaign extends Component {
                                       className="ico cr-pnt"
                                       src={Whatsapp}
                                       alt="Whatsapp Icon"
-                                      onClick={this.handleWhatsAppIconClick.bind(
-                                        this,row
-                                      )}
                                     />
                                   </label>
                                   <span className="sml-fnt">
