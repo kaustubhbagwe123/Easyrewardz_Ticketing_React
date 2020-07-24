@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Popover } from "antd";
+import { Popover, Radio } from "antd";
 import ReactTable from "react-table";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import CancelIcon from "./../../../assets/Images/cancel.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import Editpencil from "./../../../assets/Images/pencil.png";
 import pinico from "./../../../assets/Images/clip.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import searchico from "./../../../assets/Images/serach-icon-left.png";
@@ -167,6 +168,7 @@ class StoreModule extends Component {
       chooseStoreModal: false,
       createTampleteModal: false,
       selectedStoreModal: false,
+      slotAutomaticRadio: 1,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2143,6 +2145,12 @@ class StoreModule extends Component {
   handleSelectedStoreCloseModal = () => {
     this.setState({ selectedStoreModal: false });
   };
+  /// handle Slot Radio change
+  handleSlotRadioChange = (e) => {
+    this.setState({
+      slotAutomaticRadio: e.target.value,
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2806,13 +2814,12 @@ class StoreModule extends Component {
                                           trigger="click"
                                         >
                                           <img
-                                            src={RedDeleteIcon}
+                                            src={DelBlack}
                                             alt="del-icon"
                                             className="del-btn"
                                             id={ids}
                                           />
                                         </Popover>
-
                                         <button
                                           className="react-tabel-button editre"
                                           id="p-edit-pop-2"
@@ -3954,7 +3961,7 @@ class StoreModule extends Component {
                                                   this
                                                 )}
                                               >
-                                                8 Store Selected >
+                                                8 Store Selected {">"}
                                               </a>
                                             </li>
                                             <li>
@@ -4022,8 +4029,7 @@ class StoreModule extends Component {
                                                 },
                                                 {
                                                   title:
-                                                    "Slot Status(Unable/Disble)",
-
+                                                    "Slot Status(Unable/Disable)",
                                                   render: (row, rowData) => {
                                                     return <>radio button</>;
                                                   },
@@ -4170,8 +4176,31 @@ class StoreModule extends Component {
                                       TranslationContext !== undefined
                                         ? TranslationContext.header
                                             .nonoperationalhours
-                                        : "Non Operational Hour",
+                                        : "Operational Days",
                                     dataIndex: "nonOperationalTimimg",
+                                    render: (row, item) => {
+                                      return (
+                                        <Popover
+                                          overlayClassName="antcustom"
+                                          content={
+                                            <div>
+                                              <h3>Operational Days</h3>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <div className="broadcast-icon">
+                                            {item.nonOperationalTimimg}
+                                            <img
+                                              className="info-icon-cp"
+                                              src={BlackInfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </div>
+                                        </Popover>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -4201,6 +4230,36 @@ class StoreModule extends Component {
                                             .appointmentdays
                                         : "Appointment Days",
                                     dataIndex: "appointmentDays",
+                                    render: (row, item) => {
+                                      return (
+                                        <Popover
+                                          overlayClassName="antcustom"
+                                          content={
+                                            <div>
+                                              <h3>Appointment Days</h3>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <div className="broadcast-icon">
+                                            {item.appointmentDays}
+                                            <img
+                                              className="info-icon-cp"
+                                              src={BlackInfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </div>
+                                        </Popover>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title: "Status",
+                                    dataIndex: "totalSlot",
+                                    render: (row, item) => {
+                                      return <div>Active</div>;
+                                    },
                                   },
                                   {
                                     title:
@@ -4213,6 +4272,17 @@ class StoreModule extends Component {
                                       return (
                                         <>
                                           <span>
+                                            <img
+                                              src={Editpencil}
+                                              alt="Edit"
+                                              className="del-btn"
+                                              // id={p-edit-pop-2}
+                                              onClick={this.openSlotEditModal.bind(
+                                                this,
+                                                rowData.slotSettingID,
+                                                rowData.storeId
+                                              )}
+                                            />
                                             <Popover
                                               content={
                                                 <div className="d-flex general-popover popover-body">
@@ -4268,14 +4338,13 @@ class StoreModule extends Component {
                                               trigger="click"
                                             >
                                               <img
-                                                src={RedDeleteIcon}
+                                                src={DelBlack}
                                                 alt="del-icon"
                                                 className="del-btn"
                                                 id={ids}
                                               />
                                             </Popover>
-
-                                            <button
+                                            {/* <button
                                               className="react-tabel-button editre"
                                               onClick={this.openSlotEditModal.bind(
                                                 this,
@@ -4286,7 +4355,7 @@ class StoreModule extends Component {
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.button.edit
                                                 : "EDIT"}
-                                            </button>
+                                            </button> */}
                                           </span>
                                         </>
                                       );
@@ -4565,316 +4634,124 @@ class StoreModule extends Component {
               onHide={this.closeSlotEditModal}
               dialogClassName="slotEditModal"
             >
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon2"
+                onClick={this.closeSlotEditModal.bind(this)}
+              />
               <div className="edtpadding">
                 <div className="">
                   <label className="popover-header-text">
                     {TranslationContext !== undefined
                       ? TranslationContext.label.editslotsettings
-                      : "EDIT SLOT SETTINGS"}
+                      : "Edit"}
                   </label>
                 </div>
                 <div className="pop-over-div edit-slot">
-                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
-                    <label className="edit-label-1">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.storecode
-                        : "Store Code"}
-                    </label>
-                    <div>
-                      <select
-                        name="editstoreCode"
-                        value={this.state.editstoreCode}
-                        disabled={true}
-                      >
-                        <option value={0}>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.option.storecode
-                            : "Store code"}
-                        </option>
-                        {this.state.storeCodeData !== null &&
-                          this.state.storeCodeData.map((item, s) => (
-                            <option
-                              key={s}
-                              value={item.storeID}
-                              className="select-category-placeholder"
-                            >
-                              {item.storeCode}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.editstoreCode === "0" && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "0px",
-                          }}
-                        >
-                          {this.state.editStoreCodeValidation}
-                        </p>
-                      )}
+                  <div className="row">
+                    <div className="col-12 col-md-6">
+                      <ul>
+                        <li>
+                          <label>Store Code</label>
+                          <span>SMB09786</span>
+                        </li>
+                        <li>
+                          <label>Store Timing</label>
+                          <span>11 AM - 8 PM</span>
+                        </li>
+                        <li>
+                          <label>Store Operational Days</label>
+                          <span>4</span>
+                        </li>
+                      </ul>
                     </div>
-                    <label className="edit-label-1">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.option.storetimings
-                        : "Store Timings"}
-                    </label>
-                    <div className="slot-timings">
-                      <div className="d-flex">
-                        <select
-                          className="slot-hour"
-                          name="editSelectTimeSlot1"
-                          value={this.state.editSelectTimeSlot1}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          {this.state.TimeSlotData !== null &&
-                            this.state.TimeSlotData.map((item, j) => (
-                              <option value={item.TimeSlotId} key={j}>
-                                {item.TimeSlot}
-                              </option>
-                            ))}
-                        </select>
-                        <select
-                          className="slot-shift"
-                          name="editSelectAmPm1"
-                          value={this.state.editSelectAmPm1}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          <option value="AM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.am
-                              : "AM"}
-                          </option>
-                          <option value="PM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.pm
-                              : "PM"}
-                          </option>
-                        </select>
-                      </div>
-                      <span className="slot-to">TO</span>
-                      <div className="d-flex">
-                        <select
-                          className="slot-hour"
-                          name="editSelectTimeSlot2"
-                          value={this.state.editSelectTimeSlot2}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          {this.state.TimeSlotData !== null &&
-                            this.state.TimeSlotData.map((item, j) => (
-                              <option value={item.TimeSlotId} key={j}>
-                                {item.TimeSlot}
-                              </option>
-                            ))}
-                        </select>
-                        <select
-                          className="slot-shift"
-                          name="editSelectAmPm2"
-                          value={this.state.editSelectAmPm2}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          <option value="AM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.am
-                              : "AM"}
-                          </option>
-                          <option value="PM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.pm
-                              : "PM"}
-                          </option>
-                        </select>
-                      </div>
+                    <div className="col-12 col-md-6">
+                      <ul>
+                        <li>
+                          <label>Slot Template</label>
+                          <span>Alternate 2</span>
+                        </li>
+                        <li>
+                          <label>Total Slots</label>
+                          <span>6</span>
+                        </li>
+                      </ul>
                     </div>
-                    <label className="edit-slot-lbl">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.slotduration
-                        : "Slot Duration"}
-                    </label>
-                    <label
-                      className="edit-slot-lbl"
-                      style={{ marginLeft: "48px" }}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.maximumcapacity
-                        : "Maximum Capacity"}
-                    </label>
-                    <div className="slot-timings">
-                      <div className="d-flex">
-                        <select
-                          className="slot-hour"
-                          name="editSlotDuration"
-                          value={this.state.editSlotDuration}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          <option value="0.5">1/2</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                        </select>
-                        <select
-                          className="slot-shift"
-                          name="editSelectAmPm1"
-                          style={{ background: "none" }}
-                          disabled={true}
-                        >
-                          <option value="H">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.h
-                              : "Hr"}
-                          </option>
-                        </select>
-                      </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="edittabs">
+                        <Table
+                          dataSource={this.state.slotData}
+                          noDataContent="No Record Found"
+                          pagination={false}
+                          className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                          columns={[
+                            {
+                              title: "S.No.",
 
-                      <input
-                        style={{ width: "93px", marginLeft: "34px" }}
-                        type="text"
-                        placeholder={
-                          TranslationContext !== undefined
-                            ? TranslationContext.placeholder.maxcpty
-                            : "Max Cpty"
-                        }
-                        name="editmaxCapacity"
-                        autoComplete="off"
-                        maxLength={2}
-                        value={this.state.editmaxCapacity}
-                        onChange={this.handleSlotEditInputOnchange}
-                      />
-                      {this.state.editmaxCapacity === "" && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "0px",
-                          }}
-                        >
-                          {this.state.editMaxCapacityValidation}
-                        </p>
-                      )}
-                    </div>
-                    <label className="edit-slot-lbl">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.storenonoperationalhours
-                        : "Store Non-Oprational Hours"}
-                    </label>
-                    <br />
-                    <label className="edit-slot-lbl edit-slot-lbl2">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.from
-                        : "From"}
-                    </label>
-                    <label className="edit-slot-lbl edit-slot-lbl1">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.to
-                        : "To"}
-                    </label>
-                    <div className="slot-timings">
-                      <div className="d-flex">
-                        <select
-                          className="slot-hour"
-                          name="editSelectNOTimeSlot1"
-                          value={this.state.editSelectNOTimeSlot1}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          {this.state.TimeSlotData !== null &&
-                            this.state.TimeSlotData.map((item, j) => (
-                              <option value={item.TimeSlotId} key={j}>
-                                {item.TimeSlot}
-                              </option>
-                            ))}
-                        </select>
-                        <select
-                          className="slot-shift"
-                          name="editSelectNOAmPm1"
-                          value={this.state.editSelectNOAmPm1}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          <option value="AM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.am
-                              : "AM"}
-                          </option>
-                          <option value="PM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.pm
-                              : "PM"}
-                          </option>
-                        </select>
-                      </div>
-                      <span className="slot-to">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.to
-                          : "To"}
-                      </span>
-                      <div className="d-flex">
-                        <select
-                          className="slot-hour"
-                          name="editSelectNOTimeSlot2"
-                          value={this.state.editSelectNOTimeSlot2}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          {this.state.TimeSlotData !== null &&
-                            this.state.TimeSlotData.map((item, j) => (
-                              <option value={item.TimeSlotId} key={j}>
-                                {item.TimeSlot}
-                              </option>
-                            ))}
-                        </select>
-                        <select
-                          className="slot-shift"
-                          name="editSelectNOAmPm2"
-                          value={this.state.editSelectNOAmPm2}
-                          onChange={this.handleEditDrop_downOnchange}
-                        >
-                          <option value="AM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.am
-                              : "AM"}
-                          </option>
-                          <option value="PM">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.pm
-                              : "PM"}
-                          </option>
-                        </select>
+                              dataIndex: "no",
+                            },
+                            {
+                              title: "Slot Start Time",
+                              dataIndex: "startTime",
+                            },
+                            {
+                              title: "Slot End Time",
+                              dataIndex: "endTime",
+                            },
+                            {
+                              title: "Slot Occupancy",
+                              dataIndex: "occupancy",
+                              render: (row, rowData) => {
+                                return (
+                                  <>
+                                    <input
+                                      type="text"
+                                      className="form-control value"
+                                      value="3"
+                                    />
+                                  </>
+                                );
+                              },
+                            },
+                            {
+                              title: "Slot Status(Unable/Disble)",
+
+                              render: (row, rowData) => {
+                                return <>radio button</>;
+                              },
+                            },
+                          ]}
+                        ></Table>
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.appointmentdays
-                        : "Appointment Days"}
-                    </label>
-                    <div className="slot-timings">
-                      <div className="d-flex">
-                        <select
-                          className="slot-hour"
-                          name="editAppointmentDays"
-                          value={this.state.editAppointmentDays}
-                          onChange={this.handleEditDrop_downOnchange}
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-6">
+                      <label>Slot days need to display</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-6">
+                      <label>Status</label>
+                      <div className="statuscheckbox">
+                        <Radio.Group
+                          onChange={this.handleSlotRadioChange}
+                          value={this.state.slotAutomaticRadio}
                         >
-                          <option value={1}>1</option>
-                          <option value={2}>2</option>
-                          <option value={3}>3</option>
-                          <option value={4}>4</option>
-                          <option value={5}>5</option>
-                          <option value={6}>6</option>
-                          <option value={7}>7</option>
-                        </select>
-                        <select
-                          className="slot-shift"
-                          name="editSelectAmPm1"
-                          style={{ background: "none", padding: "5px 7px" }}
-                          disabled={true}
-                        >
-                          <option value="D">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.days
-                              : "Days"}
-                          </option>
-                        </select>
+                          <Radio value={1}>Active</Radio>
+                          <Radio value={2}>Inactive</Radio>
+                        </Radio.Group>
                       </div>
                     </div>
                   </div>
                 </div>
                 <br />
-                <div className="text-center">
+                <div style={{ float: "right" }}>
                   <a
                     className="pop-over-cancle"
                     onClick={this.closeSlotEditModal}
@@ -5055,140 +4932,628 @@ class StoreModule extends Component {
             <Modal
               show={this.state.chooseStoreModal}
               onHide={this.handleChooseStoreCloseModal.bind(this)}
+              dialogClassName="choosestorebox"
             >
-              <div>Choose Store</div>
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon2"
+                onClick={this.handleChooseStoreCloseModal.bind(this)}
+              />
+              <div className="choosestore">
+                <div className="row">
+                  <div className="col-12 col-md-6">
+                    <label>Choose Store</label>
+                    <div className="input-group form-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search"
+                      />
+                      <span className="input-group-append">
+                        <img src={searchico} alt="search-icon" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-3">
+                    <button className="butn-selectall">Select All</button>
+                  </div>
+                  <div className="col-12 col-md-9">
+                    <ul className="atoz">
+                      <li>#</li>
+                      <li>A</li>
+                      <li>B</li>
+                      <li>C</li>
+                      <li>D</li>
+                      <li>E</li>
+                      <li>F</li>
+                      <li>G</li>
+                      <li>H</li>
+                      <li>I</li>
+                      <li>J</li>
+                      <li>K</li>
+                      <li>L</li>
+                      <li>M</li>
+                      <li>N</li>
+                      <li>O</li>
+                      <li>P</li>
+                      <li>Q</li>
+                      <li>R</li>
+                      <li>S</li>
+                      <li>T</li>
+                      <li>U</li>
+                      <li>V</li>
+                      <li>W</li>
+                      <li>Y</li>
+                      <li>Z</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="storetabl">
+                  <div className="row">
+                    <div className="col-12">
+                      <table className="table">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" checked classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                            <td>
+                              <input type="checkbox" classNam="form-control" />
+                              <label>Store 1</label>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-12">
+                    <div style={{float:"right"}}>
+                        <a
+                          style={{color:"#666",marginRight:"30px"}}
+                         href={Demo.BLANK_LINK}>
+                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "Clear"}
+                        </a>
+                        <button
+                          className="butn"
+                          onClick={this.handleNextButtonClose.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.delete
+                            : "Apply"}
+                        </button>
+                      </div>
+                  </div>
+                </div> 
+              </div>
             </Modal>
             {/* Create tamplete Modal */}
             <Modal
               overlayId="chooseslot-main"
               show={this.state.createTampleteModal}
               onHide={this.handleCreateTempletetCloseModal.bind(this)}
+              dialogClassName="chooseslot-main"
             >
               <img
                 src={CancelIcon}
                 alt="cancel-icone"
-                className="cust-icon"
+                className="cust-icon2"
                 onClick={this.handleCreateTempletetCloseModal.bind(this)}
               />
               <div className="chooseslot-box">
                 <div className="row">
-                  <div className="col-12">
+                  <div className="col-12 col-md-10">
                     <h3>Choose Slot Type</h3>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-12">
+                  <div className="col-12 col-md-10">
                     <div className="statuscheckbox">
-                      <input type="checkbox" classNam="form-control" />
-                      <label>Automatic</label>
-                      <input type="checkbox" classNam="form-control" />
-                      <label>Manual</label>
+                      <Radio.Group
+                        onChange={this.handleSlotRadioChange}
+                        value={this.state.slotAutomaticRadio}
+                      >
+                        <Radio value={1}>Automatic</Radio>
+                        <Radio value={2}>Manual</Radio>
+                      </Radio.Group>
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-12">
-                    <label>Template Name</label>
-                    <input type="text" className="form-control" />
+                <div classname="automaticbox" style={{ display: "none" }}>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <label>Template Name</label>
+                      <input type="text" className="form-control" />
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-12 col-md-6">
-                    <label>Slot Duration</label>
-                    <select name="" className="form-control">
-                      <option value={0}>Select Timing</option>
-                      <option value={0}>1</option>
-                    </select>
+                  <div className="row">
+                    <div className="col-12 col-md-5">
+                      <label>Slot Duration</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-5">
+                      <label>Gap B/w Slots</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="col-12 col-md-6">
-                    <label>Gap B/w Slots</label>
-                    <select name="" className="form-control">
-                      <option value={0}>Select Timing</option>
-                      <option value={0}>1</option>
-                    </select>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <h3>Store Timing</h3>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-12">
-                    <h3>Store Timing</h3>
+                  <div className="row">
+                    <div className="col-12 col-md-5">
+                      <label>From</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-5">
+                      <label>To</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-12 col-md-6">
-                    <label>From</label>
-                    <select name="" className="form-control">
-                      <option value={0}>Select Timing</option>
-                      <option value={0}>1</option>
-                    </select>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <h3>Non Operational Hour</h3>
+                    </div>
                   </div>
-                  <div className="col-12 col-md-6">
-                    <label>To</label>
-                    <select name="" className="form-control">
-                      <option value={0}>Select Timing</option>
-                      <option value={0}>1</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-12">
-                    <h3>Non Operational Hour</h3>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-12 col-md-6">
-                    <label>From</label>
-                    <select name="" className="form-control">
-                      <option value={0}>Select Timing</option>
-                      <option value={0}>1</option>
-                    </select>
-                  </div>
-                  <div className="col-12 col-md-6">
-                    <label>To</label>
-                    <select name="" className="form-control">
-                      <option value={0}>Select Timing</option>
-                      <option value={0}>1</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="chooseslot-table">
-                  <Table
-                    dataSource={this.state.slotData}
-                    noDataContent="No Record Found"
-                    pagination={false}
-                    className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                    columns={[
-                      {
-                        title: "S.No.",
-
-                        dataIndex: "no",
-                      },
-                      {
-                        title: "Slot Start Time",
-                        dataIndex: "startTime",
-                      },
-                      {
-                        title: "Slot End Time",
-                        dataIndex: "endTime",
-                      },
-                    ]}
-                  ></Table>
-                </div>
-                <div className="row">
-                  <div className="col-12">
-                    <div className="del-can">
-                      <a href={Demo.BLANK_LINK}>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.a.cancel
-                          : "CANCEL"}
-                      </a>
+                  <div className="row">
+                    <div className="col-12 col-md-5">
+                      <label>From</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-5">
+                      <label>To</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-2">
                       <button
-                        className="butn"
+                        className="tabbutn"
                         onClick={this.handleNextButtonClose.bind(this)}
                       >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.delete
-                          : "Save"}
+                          : "Generate Slot"}
                       </button>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <div className="chooseslot-table">
+                        <Table
+                          dataSource={this.state.slotData}
+                          noDataContent="No Record Found"
+                          pagination={false}
+                          className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                          columns={[
+                            {
+                              title: "S.No.",
+
+                              dataIndex: "no",
+                            },
+                            {
+                              title: "Slot Start Time",
+                              dataIndex: "startTime",
+                            },
+                            {
+                              title: "Slot End Time",
+                              dataIndex: "endTime",
+                            },
+                          ]}
+                        ></Table>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <div className="del-can">
+                        <a href={Demo.BLANK_LINK}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
+                        </a>
+                        <button
+                          className="butn"
+                          onClick={this.handleNextButtonClose.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.delete
+                            : "Save"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div classname="manualbox">
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <label>Template Name</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <h3>Store Timing</h3>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-5">
+                      <label>From</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-5">
+                      <label>To</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <label>Slot Duration</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-5">
+                      <label>Slot Start Time</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-5">
+                      <label>Slot End Time</label>
+                      <select name="" className="form-control">
+                        <option value={0}>Select Timing</option>
+                        <option value={0}>1</option>
+                      </select>
+                    </div>
+                    <div className="col-12 col-md-2">
+                      <button
+                        className="tabbutn"
+                        onClick={this.handleNextButtonClose.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.delete
+                          : "Add Slot"}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <div className="chooseslot-table">
+                        <Table
+                          dataSource={this.state.slotData}
+                          noDataContent="No Record Found"
+                          pagination={false}
+                          className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                          columns={[
+                            {
+                              title: "S.No.",
+
+                              dataIndex: "no",
+                            },
+                            {
+                              title: "Slot Start Time",
+                              dataIndex: "startTime",
+                            },
+                            {
+                              title: "Slot End Time",
+                              dataIndex: "endTime",
+                            },
+                            {
+                              title: "Actions",
+                              dataIndex: "endTime",
+                            },
+                          ]}
+                        ></Table>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-10">
+                      <div className="del-can">
+                        <a href={Demo.BLANK_LINK}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
+                        </a>
+                        <button
+                          className="butn"
+                          onClick={this.handleNextButtonClose.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.delete
+                            : "Save"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5199,11 +5564,12 @@ class StoreModule extends Component {
             <Modal
               show={this.state.selectedStoreModal}
               onHide={this.handleSelectedStoreCloseModal.bind(this)}
+              dialogClassName="selectstores-main"
             >
               <img
                 src={CancelIcon}
                 alt="cancel-icone"
-                className="cust-icon"
+                className="cust-icon2"
                 onClick={this.handleSelectedStoreCloseModal.bind(this)}
               />
               <div className="selectstores-box">

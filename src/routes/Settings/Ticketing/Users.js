@@ -163,6 +163,8 @@ class Users extends Component {
       isortA: false,
       bulkuploadLoading: false,
       translateLanguage: {},
+      profileBtnDisabled: true,
+      mappedCategoryBtnDisabled: true,
     };
     this.handleGetUserList = this.handleGetUserList.bind(this);
     this.handleAddPersonalDetails = this.handleAddPersonalDetails.bind(this);
@@ -192,7 +194,6 @@ class Users extends Component {
     this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   componentDidMount() {
-    debugger;
     this.handleGetUserList();
     this.handleGetBrandList();
     this.handleGetDesignationList();
@@ -209,7 +210,6 @@ class Users extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
@@ -252,7 +252,6 @@ class Users extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.userData;
 
@@ -295,7 +294,6 @@ class Users extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterDesignation.length === 0 ||
       this.state.sortFilterUsername.length === 0 ||
@@ -401,8 +399,6 @@ class Users extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
-
     if (this.state.tempuserData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -479,8 +475,6 @@ class Users extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var suserNameFilterCheckbox = this.state.suserNameFilterCheckbox;
@@ -711,7 +705,6 @@ class Users extends Component {
   }
 
   hide(e, id) {
-    debugger;
     // document.getElementById(id).style.display="none";
     document.getElementById(
       id
@@ -719,7 +712,6 @@ class Users extends Component {
       "none";
   }
   show(e, id) {
-    debugger;
     if (document.getElementById(id))
       // document.getElementById(id).style.display="block";
       document.getElementById(
@@ -728,7 +720,6 @@ class Users extends Component {
         "block";
   }
   setUserEditData = (e) => {
-    debugger;
     let self = this;
     var brand = [];
     var cat = [];
@@ -811,7 +802,6 @@ class Users extends Component {
         issue.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
       }
     }
-    debugger;
 
     self.setState({
       userEditData,
@@ -833,7 +823,6 @@ class Users extends Component {
   };
 
   handleAgentValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({
       selectedSupervisorRadio: false,
@@ -847,7 +836,6 @@ class Users extends Component {
   };
 
   handleSuperValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({
       selectedAgentRadio: false,
@@ -861,7 +849,6 @@ class Users extends Component {
   };
 
   editAgentValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({ editSupervisorRadio: false, editAgentRadio: subjectvalue });
     setTimeout(() => {
@@ -872,7 +859,6 @@ class Users extends Component {
   };
 
   editSuperValue = (datar, e) => {
-    debugger;
     let subjectvalue = e.currentTarget.checked;
     this.setState({ editAgentRadio: false, editSupervisorRadio: subjectvalue });
     setTimeout(() => {
@@ -883,12 +869,10 @@ class Users extends Component {
   };
 
   setEscn = (e) => {
-    debugger;
     this.setState({ [e.target.name]: e.currentTarget.checked });
   };
 
   editsetEscn = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.checked;
     var data = e.currentTarget.checked;
@@ -898,7 +882,6 @@ class Users extends Component {
   };
 
   handleOnChangeEditData = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -928,7 +911,6 @@ class Users extends Component {
   };
 
   hanldeMobileNoChange = (e) => {
-    debugger;
     var name = e.target.name;
     var reg = /^[0-9\b]+$/;
     if (name === "mobile_Number") {
@@ -972,7 +954,6 @@ class Users extends Component {
   };
 
   handleOnChangeUserData = (e) => {
-    debugger;
     var name = e.target.name;
     this.setState({
       [e.target.name]: e.target.value,
@@ -995,8 +976,6 @@ class Users extends Component {
     }
   };
   handleReporteeDesgnDropDown(data2, e) {
-    debugger;
-
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -1008,7 +987,6 @@ class Users extends Component {
     }, 1);
   }
   handleEditReporteeDesgnDropDown(data2, e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -1034,8 +1012,6 @@ class Users extends Component {
     }, 1);
   }
   handleDesination = (data1, e) => {
-    debugger;
-
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -1046,7 +1022,6 @@ class Users extends Component {
     }, 1);
   };
   handleEditDesination = (data1, e) => {
-    debugger;
     e.preventDefault();
     e.stopPropagation();
     var name = e.target.name;
@@ -1075,7 +1050,6 @@ class Users extends Component {
   };
 
   handleBrandChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedBrand: e, CategoryData: [] });
@@ -1089,7 +1063,6 @@ class Users extends Component {
     }
   };
   handleEditBrandChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editBrand: e, CategoryData: [] });
@@ -1114,7 +1087,6 @@ class Users extends Component {
     }
   };
   handleCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedCategory: e, SubCategoryData: [] });
@@ -1128,7 +1100,6 @@ class Users extends Component {
     }
   };
   handleEditCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editCategory: e, SubCategoryData: [] });
@@ -1152,7 +1123,6 @@ class Users extends Component {
     }
   };
   handleSubCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedSubCategory: e, IssueTypeData: [] });
@@ -1166,7 +1136,6 @@ class Users extends Component {
     }
   };
   handleEditSubCategoryChange = (data, e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editSubCategory: e, IssueTypeData: [] });
@@ -1190,14 +1159,12 @@ class Users extends Component {
     }
   };
   handleIssueTypeChange = (e) => {
-    debugger;
     if (e === null) {
       e = [];
     }
     this.setState({ selectedIssueType: e });
   };
   handleEditIssueTypeChange = (e) => {
-    debugger;
     if (e === null) {
       e = [];
     }
@@ -1208,7 +1175,6 @@ class Users extends Component {
     }
   };
   handleGetCRMRoleList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1216,7 +1182,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let crmroledata = res.data.responseData;
         self.setState({
           CRMRoleData: crmroledata,
@@ -1227,21 +1192,18 @@ class Users extends Component {
       });
   }
   editMethod() {
-    debugger;
     this.setState({
       personalReadOnly: false,
       buttonToggle: true,
     });
   }
   editProfileMethod() {
-    debugger;
     this.setState({
       profileReadOnly: false,
       buttonProfileToggle: true,
     });
   }
   handleGetDesignationList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1249,7 +1211,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let designationdata = res.data.responseData;
 
         self.setState({
@@ -1278,7 +1239,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1296,7 +1256,6 @@ class Users extends Component {
       });
   }
   handleGetReportTOList(data2) {
-    debugger;
     let self = this;
     let id;
     if (data2 === "add") {
@@ -1337,7 +1296,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1351,7 +1309,6 @@ class Users extends Component {
       });
   }
   handleGetCategoryList(data) {
-    debugger;
     let self = this;
     var finalBrandId = "";
     if (data === "add") {
@@ -1377,7 +1334,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1397,7 +1353,6 @@ class Users extends Component {
       });
   }
   handleGetSubCategoryList(data) {
-    debugger;
     let self = this;
     var finalCategoryId = "";
     if (data === "add") {
@@ -1423,7 +1378,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var data = res.data.responseData;
         if (status === "Success") {
@@ -1443,7 +1397,6 @@ class Users extends Component {
       });
   }
   handleGetIssueTypeList(data) {
-    debugger;
     let self = this;
     var finalSubCategoryId = "";
 
@@ -1472,7 +1425,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1492,7 +1444,6 @@ class Users extends Component {
       });
   }
   handleGetAgentList(datar) {
-    debugger;
     let self = this;
 
     axios({
@@ -1504,7 +1455,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var array = [];
         var agentdata = res.data.responseData;
         var addvalue1 = self.state.selectedAgentRadio;
@@ -1532,7 +1482,6 @@ class Users extends Component {
       });
   }
   handleGetUserList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -1543,7 +1492,6 @@ class Users extends Component {
         debugger;
         var userdata = res.data.responseData;
         var status = res.data.message;
-
         if (status === "Success") {
           self.setState({
             userData: userdata,
@@ -1647,8 +1595,6 @@ class Users extends Component {
   }
 
   handleGetUserListByID(id) {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1659,7 +1605,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
@@ -1680,7 +1625,7 @@ class Users extends Component {
 
   handleValidationEmailIdMob() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
@@ -1703,7 +1648,6 @@ class Users extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           var status = res.data.message;
           var userdata = res.data.responseData;
           if (status === "Success") {
@@ -1755,7 +1699,7 @@ class Users extends Component {
 
   handleAddPersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
@@ -1778,7 +1722,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
           let id = res.data.responseData;
           let Msg = res.data.message;
           if (Msg === "Success") {
@@ -1790,6 +1733,7 @@ class Users extends Component {
             self.setState({
               getID: id,
               personalReadOnly: true,
+              profileBtnDisabled: false,
             });
             self.handleGetUserList();
           } else {
@@ -1829,7 +1773,6 @@ class Users extends Component {
   handleEditPersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
 
-    debugger;
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
@@ -1854,8 +1797,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
-
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
@@ -1904,7 +1845,7 @@ class Users extends Component {
 
   handleAddProfileDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectedDesignation > 0 &&
       (this.state.selectedReporteeDesign > 0 ||
@@ -1925,7 +1866,6 @@ class Users extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           if (self.state.buttonProfileToggle === true) {
             if (Msg === "Success") {
@@ -1934,6 +1874,9 @@ class Users extends Component {
                   ? TranslationContext.alertmessage.recordupdatedsuccessfully
                   : "Record updated successfully"
               );
+              self.setState({
+                mappedCategoryBtnDisabled: false,
+              });
             } else {
               NotificationManager.error(
                 TranslationContext !== undefined
@@ -1951,6 +1894,7 @@ class Users extends Component {
               self.setState({
                 getID: id,
                 profileReadOnly: true,
+                mappedCategoryBtnDisabled: false,
               });
               self.handleGetUserList();
             } else {
@@ -1985,7 +1929,7 @@ class Users extends Component {
 
   handleAddMapCategory() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     var radiob = true;
     var agentb = true;
     if (this.state.selectedAssignEscalation === true) {
@@ -2094,8 +2038,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
-
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
@@ -2187,7 +2129,7 @@ class Users extends Component {
 
   handleDeleteUser(id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
 
     axios({
@@ -2199,7 +2141,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         if (Msg === "Record In use") {
           NotificationManager.error(
@@ -2222,7 +2163,7 @@ class Users extends Component {
   }
   handleSendMail(id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
 
     axios({
@@ -2234,7 +2175,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
           NotificationManager.success(
@@ -2250,7 +2190,6 @@ class Users extends Component {
   }
   handleUpdateUser() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
 
     var radiob = true;
     var agentb = true;
@@ -2303,7 +2242,8 @@ class Users extends Component {
       // this.state.userEditData.is_Assign_Escalation === true &&
       //this.state.userEditData.assign_ID > 0
     ) {
-      this.handleGetUserListByID(this.state.userEditData.userId);
+      debugger;
+      // this.handleGetUserListByID(this.state.userEditData.userId);
       let self = this;
 
       var finalIssueTypeId = "";
@@ -2409,6 +2349,7 @@ class Users extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
+            self.closeEditModal();
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.recordupdatedsuccessfully
@@ -2423,13 +2364,13 @@ class Users extends Component {
               multisubcategoryIDs: finalSubCategoryId,
             });
           } else {
+            self.closeEditModal();
             NotificationManager.error(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.recordnotupdated
                 : "Record Not Updated"
             );
           }
-          self.closeEditModal();
           self.handleGetUserList();
         })
         .catch((error) => {
@@ -2538,7 +2479,7 @@ class Users extends Component {
   // Onchange tab Personal to Mapped tab
   handleChangeProfileTab = () => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.userEditData.designation_ID > 0 &&
       (this.state.userEditData.reporteeDesignation_ID > 0 ||
@@ -2573,7 +2514,6 @@ class Users extends Component {
   };
 
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -2600,7 +2540,6 @@ class Users extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "designation") {
@@ -2659,7 +2598,7 @@ class Users extends Component {
 
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",
@@ -2673,7 +2612,7 @@ class Users extends Component {
   };
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
         let self = this;
@@ -2695,7 +2634,6 @@ class Users extends Component {
           // }
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -2726,7 +2664,6 @@ class Users extends Component {
             }
           })
           .catch((data) => {
-            debugger;
             if (data.message) {
               this.setState({
                 showProgress: false,
@@ -3729,7 +3666,7 @@ class Users extends Component {
                                 {row.original.designation}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="user-desig-pop">
                                       <div className=" row d-flex">
                                         <div className="col-md-6">
                                           <p className="title">
@@ -3737,8 +3674,11 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reporteedesignation
                                               : "Reportee Designation"}
-                                            : <b>{row.original.reporteeDesignation}</b>
+                                            :{" "}
                                           </p>
+                                          <b>
+                                            {row.original.reporteeDesignation}
+                                          </b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
@@ -3747,8 +3687,8 @@ class Users extends Component {
                                                   .issuetype
                                               : "Issue Type"}
                                             :
-                                            <b>{row.original.issueTypeNames}</b>
                                           </p>
+                                          <b>{row.original.issueTypeNames}</b>
                                         </div>
                                       </div>
 
@@ -3759,16 +3699,18 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reportto
                                               : "Report To"}
-                                            : <b>{row.original.reportTo}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.reportTo}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label.crmrole
                                               : "CRM Role"}
-                                            : <b>{row.original.crmRoleName}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.crmRoleName}</b>
                                         </div>
                                       </div>
 
@@ -3778,39 +3720,46 @@ class Users extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label.brand
                                               : "Brand"}
-                                            : <b>{row.original.brandNames}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.brandNames}</b>
                                         </div>
                                         <div className="col-md-6">
                                           {row.original.isCopyEscalation ===
                                           "Yes" ? (
-                                            <p className="sub-title mx-2">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                    .copyescalation
-                                                : "Copy Escalation"}
-                                              :
+                                            <>
+                                              <p className="sub-title mx-2">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .copyescalation
+                                                  : "Copy Escalation"}
+                                                :
+                                              </p>
                                               <b>
                                                 {TranslationContext !==
                                                 undefined
                                                   ? TranslationContext.label.yes
                                                   : "Yes"}
                                               </b>
-                                            </p>
+                                            </>
                                           ) : (
-                                            <p className="sub-title mx-2">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                    .copyescalation
-                                                : "Copy Escalation"}
-                                              :
+                                            <>
+                                              <p className="sub-title mx-2">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .copyescalation
+                                                  : "Copy Escalation"}
+                                                :
+                                              </p>
                                               <b>
                                                 {TranslationContext !==
                                                 undefined
                                                   ? TranslationContext.label.no
                                                   : "No"}
                                               </b>
-                                            </p>
+                                            </>
                                           )}
                                         </div>
                                       </div>
@@ -3821,8 +3770,9 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .categories
                                               : "Categories"}
-                                            :<b>{row.original.categoryNames}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.categoryNames}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
@@ -3831,10 +3781,8 @@ class Users extends Component {
                                                   .assignescalation
                                               : "Assign Escalation"}
                                             :
-                                            <b>
-                                              {row.original.assignEscalation}
-                                            </b>
                                           </p>
+                                          <b>{row.original.assignEscalation}</b>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -3845,18 +3793,17 @@ class Users extends Component {
                                                   .subcategories
                                               : "Sub Categories"}
                                             :
-                                            <b>
-                                              {row.original.subCategoryNames}
-                                            </b>
                                           </p>
+                                          <b>{row.original.subCategoryNames}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.agentname
                                               : "Agent Name"}
-                                            : <b>{row.original.assignName}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.assignName}</b>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -3866,16 +3813,18 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .createdby
                                               : "Created By"}
-                                            : <b>{row.original.createdBy}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.createdBy}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
                                               : "Updated By"}
-                                            : <b>{row.original.updatedBy}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.updatedBy}</b>
                                         </div>
                                       </div>
                                       <div className="row d-flex">
@@ -3884,19 +3833,21 @@ class Users extends Component {
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.createddate
                                               : "Created Date"}
-                                            : <b>{row.original.createdDate}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.createdDate}</b>
                                         </div>
                                         <div className="col-md-6">
                                           <p className="sub-title mx-2">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updateddate
                                               : "Updated Date"}
-                                            : <b>{row.original.updatedDate}</b>
+                                            :
                                           </p>
+                                          <b>{row.original.updatedDate}</b>
                                         </div>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -4402,7 +4353,12 @@ class Users extends Component {
                             //data-target="#mapped-category"
                             // data-toggle="collapse"
                             //href="#profile-details"
-                            className="butn"
+                            disabled={this.state.profileBtnDisabled}
+                            className={
+                              this.state.profileBtnDisabled
+                                ? "butn userBtnDibsl"
+                                : "butn"
+                            }
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
                             {TranslationContext !== undefined
@@ -4742,8 +4698,13 @@ class Users extends Component {
                       </div>
                       <div className="btn-coll">
                         <button
-                          className="butn"
+                          className={
+                            this.state.mappedCategoryBtnDisabled
+                              ? "butn userBtnDibsl"
+                              : "butn"
+                          }
                           onClick={this.handleAddMapCategory.bind(this)}
+                          disabled={this.state.mappedCategoryBtnDisabled}
                         >
                           {TranslationContext !== undefined
                             ? TranslationContext.label.add

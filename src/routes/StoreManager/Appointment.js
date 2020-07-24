@@ -222,7 +222,7 @@ class Appointment extends Component {
                               : "tab-title1"
                           }
                         >
-                          {moment(fdate.setDate(fdate.getDate() + 1)).format(
+                          {moment(fdate.setDate(fdate.getDate())).format(
                             "Do"
                           )}
                         </p>

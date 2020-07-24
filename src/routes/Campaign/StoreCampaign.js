@@ -104,11 +104,11 @@ class StoreCampaign extends Component {
       CampCustNameValidation: "",
       campaignExecutionDetails: [],
       broadcastConfiguration: {},
-      // showBroadcastChannel: false,
       storeCode: "",
       campaignCode: "",
       translateLanguage: {},
       broadCastLoading: false,
+      isWhatsAppIconClick: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -923,6 +923,7 @@ class StoreCampaign extends Component {
         },
       })
         .then(function(response) {
+          debugger;
           var message = response.data.message;
           var data = response.data.responseData;
           if (message == "Success") {
@@ -1414,6 +1415,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1517,6 +1519,49 @@ class StoreCampaign extends Component {
       self.setState({
         broadChannelValidation: "Please Choose Channel.",
       });
+    }
+  }
+  ////handle whats app icon click
+  handleWhatsAppIconClick(itemData) {
+    debugger;
+    let self = this;
+    if (this.state.isWhatsAppIconClick === false) {
+      this.setState({ isWhatsAppIconClick: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/saveReInitiateChat",
+        headers: authHeader(),
+        data: {
+          StoreID: itemData.storecode,
+          CustomerID: itemData.id,
+          FirstName: itemData.customerName,
+          LastName: "",
+          MobileNo: itemData.customerNumber,
+        },
+      })
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+          if (message === "Success" && responseData) {
+            self.setState({
+              isChatAllreadyActive: true,
+              isWhatsAppIconClick: false,
+            });
+            if (document.getElementById("chatwindow")) {
+              document.getElementById("newTicketChatId").value = responseData;
+              document.getElementById("chatwindow").click();
+            }
+          } else {
+            self.setState({ isWhatsAppIconClick: false });
+          }
+        })
+        .catch((response) => {
+          self.setState({ isWhatsAppIconClick: false });
+          console.log(response);
+        });
+    } else {
+      return false;
     }
   }
   //// handle Channel onchange
@@ -2005,20 +2050,28 @@ class StoreCampaign extends Component {
                         render: (row, item) => {
                           return (
                             <div>
-                              <p
-                                className="cust-name"
-                                onClick={this.handleGetCustomerDataForModal.bind(
-                                  this,
-                                  item
+                              <div className="d-flex">
+                                <p
+                                  className="cust-name"
+                                  onClick={this.handleGetCustomerDataForModal.bind(
+                                    this,
+                                    item
+                                  )}
+                                >
+                                  {item.customerName}
+                                </p>
+                                {item.isCustomerChating && (
+                                  <img
+                                    className="ico cr-pnt ml-2"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                    onClick={this.handleWhatsAppIconClick.bind(
+                                      this,
+                                      item
+                                    )}
+                                  />
                                 )}
-                              >
-                                {item.customerName}
-                                <img
-                                  className="ico"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                />
-                              </p>
+                              </div>
                               <span className="sml-fnt">
                                 {item.customerNumber}
                               </span>
@@ -2357,14 +2410,22 @@ class StoreCampaign extends Component {
                                   </label>
                                 </td>
                                 <td>
-                                  <label className="cust-name">
-                                    {row.customerName}
-                                    <img
-                                      className="ico"
-                                      src={Whatsapp}
-                                      alt="Whatsapp Icon"
-                                    />
-                                  </label>
+                                  <div className="d-flex">
+                                    <label className=" cust-name">
+                                      {row.customerName}
+                                    </label>
+                                    {row.isCustomerChating && (
+                                      <img
+                                        className="ico cr-pnt ml-1"
+                                        src={Whatsapp}
+                                        alt="Whatsapp Icon"
+                                        onClick={this.handleWhatsAppIconClick.bind(
+                                          this,
+                                          row
+                                        )}
+                                      />
+                                    )}
+                                  </div>
                                   <span className="sml-fnt">
                                     {row.customerNumber}
                                   </span>

@@ -491,14 +491,6 @@ class AddSearchMyTicket extends Component {
                       this.state.dob,
                       "required"
                     )} */}
-                    {/* <ModernDatepicker
-                      date={this.state.startDate}
-                      format={"DD-MM-YYYY"}
-                      className="cXcRo datePicker-modal"
-                      showBorder
-                      onChange={date => this.handleChange(date)}
-                      placeholder={"DOB"}
-                    /> */}
                   </div>
                 </div>
                 <hr />
