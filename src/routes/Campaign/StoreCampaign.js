@@ -109,7 +109,6 @@ class StoreCampaign extends Component {
       translateLanguage: {},
       broadCastLoading: false,
       isWhatsAppIconClick: false,
-      showWhatsappIconDisplay: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -936,7 +935,6 @@ class StoreCampaign extends Component {
               ChildTblLoading: false,
               loading: false,
               childTotalGridRecord: data.campaignCustomerCount,
-              showWhatsappIconDisplay: data.isCustomerChating,
             });
           } else {
             self.setState({
@@ -944,7 +942,6 @@ class StoreCampaign extends Component {
               ChildTblLoading: false,
               loading: false,
               childTotalGridRecord: 0,
-              showWhatsappIconDisplay: false,
             });
           }
         })
@@ -2063,7 +2060,7 @@ class StoreCampaign extends Component {
                                 >
                                   {item.customerName}
                                 </p>
-                                {this.state.showWhatsappIconDisplay && (
+                                {item.isCustomerChating && (
                                   <img
                                     className="ico cr-pnt ml-2"
                                     src={Whatsapp}
@@ -2417,7 +2414,7 @@ class StoreCampaign extends Component {
                                     <label className=" cust-name">
                                       {row.customerName}
                                     </label>
-                                    {this.state.showWhatsappIconDisplay && (
+                                    {row.isCustomerChating && (
                                       <img
                                         className="ico cr-pnt ml-1"
                                         src={Whatsapp}
