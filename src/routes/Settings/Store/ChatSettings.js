@@ -55,6 +55,13 @@ class ChatSettings extends Component {
       isLoading: false,
       isProfileAndProduct: false,
       endChatMessage: "",
+      notificationTime: 0,
+      isMessageTabActive: true,
+      isCardTabActive: true,
+      isRecommendedListTabActive: true,
+      isScheduleVisitTabActive: true,
+      isPaymentLinkTabActive: true,
+      isChatProfileProduct: true,
     };
   }
 
@@ -92,6 +99,12 @@ class ChatSettings extends Component {
             chatDisplayDurationHour: data.chatDisplayDuration,
             programCode: data.programCode,
             limitText: data.chatCharLimit,
+            isMessageTabActive: data.message,
+            isCardTabActive: data.card,
+            isRecommendedListTabActive: data.recommendedList,
+            isScheduleVisitTabActive: data.scheduleVisit,
+            isPaymentLinkTabActive: data.paymentLink,
+            isChatProfileProduct: data.chatProfileProduct,
           });
         } else {
           self.setState({
@@ -120,12 +133,18 @@ class ChatSettings extends Component {
         method: "post",
         url: config.apiUrl + "/CustomerChat/UpdateChatSession",
         headers: authHeader(),
-        params: {
+        data: {
           ChatSessionValue: Number(this.state.chatSessionValue),
           ChatSessionDuration: this.state.chatSessionDuration,
           ChatDisplayValue: Number(this.state.chatDisplayValue),
           ChatDisplayDuration: this.state.chatDisplayDurationHour,
           ChatCharLimit: Number(this.state.limitText),
+          Message: this.state.isMessageTabActive,
+          Card: this.state.isCardTabActive,
+          RecommendedList: this.state.isRecommendedListTabActive,
+          ScheduleVisit: this.state.isScheduleVisitTabActive,
+          PaymentLink: this.state.isPaymentLinkTabActive,
+          ChatProfileProduct: this.state.isChatProfileProduct,
         },
       })
         .then((response) => {
@@ -454,6 +473,7 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
+          debugger
           self.setState({
             newChatSoundID: responseData.newChatSoundID || 0,
             newMessageSoundID: responseData.newMessageSoundID || 0,
@@ -461,6 +481,7 @@ class ChatSettings extends Component {
             newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
             isNotiNewChat: responseData.isNotiNewChat || false,
             isNotiNewMessage: responseData.isNotiNewMessage || false,
+            notificationTime: responseData.notificationTime || 0,
             nsId: responseData.id || false,
           });
         }
@@ -484,6 +505,7 @@ class ChatSettings extends Component {
         NewMessageSoundVolume: this.state.newMessageSoundVolume,
         IsNotiNewChat: this.state.isNotiNewChat,
         IsNotiNewMessage: this.state.isNotiNewMessage,
+        NotificationTime: this.state.notificationTime,
         ID: this.state.nsId,
         IsDefault: isDefualt || false,
       },
@@ -586,6 +608,29 @@ class ChatSettings extends Component {
     setTimeout(() => {
       this.handleUpdateChatSoundNotiSetting(true);
     }, 10);
+  };
+  ////handle chat tab radio button change
+  handleRadioButtonChange = (e) => {
+    var name = e.target.name;
+
+    if (name === "isMessageTabActive") {
+      this.setState({ isMessageTabActive: e.target.checked });
+    }
+    if (name === "isCardTabActive") {
+      this.setState({ isCardTabActive: e.target.checked });
+    }
+    if (name === "isRecommendedListTabActive") {
+      this.setState({ isRecommendedListTabActive: e.target.checked });
+    }
+    if (name === "isScheduleVisitTabActive") {
+      this.setState({ isScheduleVisitTabActive: e.target.checked });
+    }
+    if (name === "isPaymentLinkTabActive") {
+      this.setState({ isPaymentLinkTabActive: e.target.checked });
+    }
+    if (name === "isChatProfileProduct") {
+      this.setState({ isChatProfileProduct: e.target.checked });
+    }
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -845,30 +890,6 @@ class ChatSettings extends Component {
                           <div className="col-md-3"></div>
                         </div>
 
-                        {/* <div
-                          className="row"
-                          style={{ width: "100%", margin: "0" }}
-                        >
-                          <div className="col-md-3">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.div
-                                  .setlimittypeboxofchatwindow
-                              : "End Chat Message"}
-                          </div>
-                          <div className="col-md-3">
-                            <input
-                              type="text"
-                              className="chatsetngtxt"
-                              name="endChatMessage"
-                              onChange={this.handleOnChange.bind(this)}
-                              value={this.state.endChatMessage}
-                              // maxLength={3}
-                            />
-                          </div>
-                          <div className="col-md-3"></div>
-                          <div className="col-md-3"></div>
-                        </div> */}
-
                         <div
                           className="row"
                           style={{ width: "100%", margin: "0" }}
@@ -881,12 +902,16 @@ class ChatSettings extends Component {
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="idProfielProduct"
-                                  name="allModules"
-                                  checked={this.state.isProfileAndProduct}
+                                  id="isChatProfileProduct"
+                                  name="isChatProfileProduct"
+                                  checked={this.state.isChatProfileProduct}
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.isChatProfileProduct}
                                 />
                                 <label
-                                  htmlFor="idProfielProduct"
+                                  htmlFor="isChatProfileProduct"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
@@ -908,12 +933,15 @@ class ChatSettings extends Component {
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="idProfielProduct"
-                                  name="allModules"
-                                  checked={this.state.isProfileAndProduct}
+                                  id="isMessageTabActive"
+                                  name="isMessageTabActive"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.isMessageTabActive}
                                 />
                                 <label
-                                  htmlFor="idProfielProduct"
+                                  htmlFor="isMessageTabActive"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
@@ -934,12 +962,15 @@ class ChatSettings extends Component {
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="idProfielProduct"
-                                  name="allModules"
-                                  checked={this.state.isProfileAndProduct}
+                                  id="isCardTabActive"
+                                  name="isCardTabActive"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.isCardTabActive}
                                 />
                                 <label
-                                  htmlFor="idProfielProduct"
+                                  htmlFor="isCardTabActive"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
@@ -960,12 +991,17 @@ class ChatSettings extends Component {
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="idProfielProduct"
-                                  name="allModules"
-                                  checked={this.state.isProfileAndProduct}
+                                  id="isRecommendedListTabActive"
+                                  name="isRecommendedListTabActive"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={
+                                    this.state.isRecommendedListTabActive
+                                  }
                                 />
                                 <label
-                                  htmlFor="idProfielProduct"
+                                  htmlFor="isRecommendedListTabActive"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
@@ -986,12 +1022,15 @@ class ChatSettings extends Component {
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="idProfielProduct"
-                                  name="allModules"
-                                  checked={this.state.isProfileAndProduct}
+                                  id="isScheduleVisitTabActive"
+                                  name="isScheduleVisitTabActive"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.isScheduleVisitTabActive}
                                 />
                                 <label
-                                  htmlFor="idProfielProduct"
+                                  htmlFor="isScheduleVisitTabActive"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
@@ -1012,12 +1051,15 @@ class ChatSettings extends Component {
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
                                   type="checkbox"
-                                  id="idProfielProduct"
-                                  name="allModules"
-                                  checked={this.state.isProfileAndProduct}
+                                  id="isPaymentLinkTabActive"
+                                  name="isPaymentLinkTabActive"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.isPaymentLinkTabActive}
                                 />
                                 <label
-                                  htmlFor="idProfielProduct"
+                                  htmlFor="isPaymentLinkTabActive"
                                   className="cr cr-float-right"
                                 ></label>
                               </div>
@@ -1323,9 +1365,18 @@ class ChatSettings extends Component {
                           </label>
                           <input
                             type="text"
+                            name="notificationTime"
+                            value={this.state.notificationTime}
+                            onChange={this.handleOnChange.bind(this)}
                             className="chatsetngtxt"
                             style={{ width: "120px" }}
                           />
+                          <span
+                            style={{ marginLeft: "5px", marginTop: "10px" }}
+                          >
+                            {" "}
+                            / Sec
+                          </span>
                         </div>
                       </div>
                       <div
