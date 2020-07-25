@@ -1532,8 +1532,8 @@ class StoreCampaign extends Component {
         url: config.apiUrl + "/CustomerChat/saveReInitiateChat",
         headers: authHeader(),
         data: {
-          StoreID: this.state.storeID,
-          CustomerID: this.state.customerID,
+          StoreID: itemData.storecode,
+          CustomerID: itemData.id,
           FirstName: itemData.customerName,
           LastName: "",
           MobileNo: itemData.customerNumber,
@@ -2060,15 +2060,17 @@ class StoreCampaign extends Component {
                                 >
                                   {item.customerName}
                                 </p>
-                                <img
-                                  className="ico cr-pnt ml-2"
-                                  src={Whatsapp}
-                                  alt="Whatsapp Icon"
-                                  onClick={this.handleWhatsAppIconClick.bind(
-                                    this,
-                                    item
-                                  )}
-                                />
+                                {item.isCustomerChating && (
+                                  <img
+                                    className="ico cr-pnt ml-2"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                    onClick={this.handleWhatsAppIconClick.bind(
+                                      this,
+                                      item
+                                    )}
+                                  />
+                                )}
                               </div>
                               <span className="sml-fnt">
                                 {item.customerNumber}
@@ -2409,18 +2411,20 @@ class StoreCampaign extends Component {
                                 </td>
                                 <td>
                                   <div className="d-flex">
-                                    <label className="cust-name">
+                                    <label className=" cust-name">
                                       {row.customerName}
                                     </label>
-                                    <img
-                                      className="ico cr-pnt ml-1"
-                                      src={Whatsapp}
-                                      alt="Whatsapp Icon"
-                                      onClick={this.handleWhatsAppIconClick.bind(
-                                        this,
-                                        row
-                                      )}
-                                    />
+                                    {row.isCustomerChating && (
+                                      <img
+                                        className="ico cr-pnt ml-1"
+                                        src={Whatsapp}
+                                        alt="Whatsapp Icon"
+                                        onClick={this.handleWhatsAppIconClick.bind(
+                                          this,
+                                          row
+                                        )}
+                                      />
+                                    )}
                                   </div>
                                   <span className="sml-fnt">
                                     {row.customerNumber}

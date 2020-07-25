@@ -13,6 +13,8 @@ import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
 class storeMyTicketList extends Component {
   constructor(props) {
@@ -39,6 +41,9 @@ class storeMyTicketList extends Component {
       ticketDetailID: 0,
       TicketSearchCount: 0,
       translateLanguage: {},
+      searchTicketParam: "ByCategory",
+      ByDateCreatDate: "",
+      mobileNumber: ""
     };
     this.handleTabChange = this.handleTabChange.bind(this);
   }
@@ -72,7 +77,7 @@ class storeMyTicketList extends Component {
         statusID: this.state.ActiveTabId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
@@ -100,7 +105,7 @@ class storeMyTicketList extends Component {
       url: config.apiUrl + "/HSChatTicketing/ChatTicketStatusCount",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -127,7 +132,7 @@ class storeMyTicketList extends Component {
       url: config.apiUrl + "/HSChatTicketing/GetChatCategory",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -155,7 +160,7 @@ class storeMyTicketList extends Component {
         categoryID: this.state.selectedCategory,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -183,7 +188,7 @@ class storeMyTicketList extends Component {
         subCategoryID: this.state.selectedSubCategory,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -215,7 +220,7 @@ class storeMyTicketList extends Component {
         TicketStatusID: parseInt(this.state.selectedTicketStatus),
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -248,7 +253,7 @@ class storeMyTicketList extends Component {
           self.setState({
             ticketDetailID: Id,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             self.props.history.push({
               pathname: "myTicket",
               ticketDetailID: Id,
@@ -300,22 +305,23 @@ class storeMyTicketList extends Component {
       this.setState({
         ActiveTabId: 101,
       });
-      setTimeout(() => {
-        this.handleGetStoreTicketGridData();
-      }, 100);
     } else if (TabId === "Open") {
       this.setState({
         ActiveTabId: 102,
       });
-      setTimeout(() => {
-        this.handleGetStoreTicketGridData();
-      }, 100);
     } else if (TabId === "Resolved") {
       this.setState({
         ActiveTabId: 103,
       });
+    }
+
+    if (this.state.searchTicketParam === "ByCategory") {
       setTimeout(() => {
         this.handleGetStoreTicketGridData();
+      }, 100);
+    } else if (this.state.searchTicketParam === "ByCustomer") {
+      setTimeout(() => {
+        this.handleGetStoreTicketByCustomerGridData();
       }, 100);
     }
   }
@@ -385,13 +391,117 @@ class storeMyTicketList extends Component {
       selectedSubCategory: 0,
       selectedIssueType: 0,
       selectedTicketStatus: 0,
-      CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
       TicketSearchCount: 0,
+      ByDateCreatDate: "",
+      mobileNumber: ""
     });
     this.handleGetStoreTicketGridData();
   }
+
+  handleSubTabChange(tabname) {
+    debugger;
+    this.setState({
+      searchTicketParam: tabname,
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedTicketStatus: 0,
+      SubCategoryData: [],
+      IssueTypeData: [],
+      TicketSearchCount: 0,
+      ByDateCreatDate: "",
+      mobileNumber: ""
+    });
+    if (tabname === "ByCategory") {
+      this.handleGetStoreTicketGridData();
+    } else if (tabname === "ByCustomer") {
+      this.handleGetStoreTicketByCustomerGridData();
+    }
+  }
+
+  handleGetStoreTicketByCustomerGridData() {
+    let self = this;
+    this.setState({
+      loading: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatTicketsByCustomer",
+      headers: authHeader(),
+      params: {
+        statusID: this.state.ActiveTabId,
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            SearchTicketData: data,
+            loading: false,
+          });
+        } else {
+          self.setState({
+            SearchTicketData: [],
+            loading: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleByDateCreate(date) {
+    //debugger;
+    this.setState({ ByDateCreatDate: date });
+  }
+
+  handleTicketByCustomerSearch() {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatTicketsByCustomerOnSearch",
+      headers: authHeader(),
+      data: {
+        CategoryId: parseInt(this.state.selectedCategory),
+        SubCategoryId: parseInt(this.state.selectedSubCategory),
+        IssueTypeId: parseInt(this.state.selectedIssueType),
+        TicketStatusID: parseInt(this.state.selectedTicketStatus),
+        ChatLastDate: this.state.ByDateCreatDate!==""?moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        ):"",
+        MobileNumber: this.state.mobileNumber
+      },
+    })
+      .then(function (res) {
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            SearchTicketData: data,
+            TicketSearchCount: data.length,
+          });
+        } else {
+          self.setState({
+            SearchTicketData: [],
+            TicketSearchCount: 0,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  hanldeOnChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -500,8 +610,8 @@ class storeMyTicketList extends Component {
                             ? TranslationContext.small.closesearch
                             : "Close Search"
                           : TranslationContext !== undefined
-                          ? TranslationContext.small.searchtickets
-                          : "Search Tickets"}
+                            ? TranslationContext.small.searchtickets
+                            : "Search Tickets"}
                       </small>
                       {this.state.collapseSearch ? (
                         <img
@@ -510,12 +620,12 @@ class storeMyTicketList extends Component {
                           alt="search-icon"
                         />
                       ) : (
-                        <img
-                          className="search-icon"
-                          src={SearchIcon}
-                          alt="search-icon"
-                        />
-                      )}
+                          <img
+                            className="search-icon"
+                            src={SearchIcon}
+                            alt="search-icon"
+                          />
+                        )}
                     </div>
                     <div>
                       <Collapse isOpen={this.state.collapseSearch}>
@@ -535,23 +645,52 @@ class storeMyTicketList extends Component {
                                       role="tab"
                                       aria-controls="category-tab"
                                       aria-selected="false"
+                                      onClick={this.handleSubTabChange.bind(this, "ByCategory")}
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.a.bycategory
                                         : "By Category"}
                                     </a>
                                   </li>
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link"
+                                      data-toggle="tab"
+                                      href="#category-tab"
+                                      role="tab"
+                                      aria-controls="category-tab"
+                                      aria-selected="false"
+                                      onClick={this.handleSubTabChange.bind(this, "ByCustomer")}
+                                    >
+                                      By Customer
+                                    </a>
+                                  </li>
                                 </ul>
                                 <div className="save-view-search">
-                                  <button
-                                    type="button"
-                                    className="btn-inv"
-                                    onClick={this.handleTicketSearch.bind(this)}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.button.viewsearch
-                                      : "View Search"}
-                                  </button>
+                                  {(() => {
+                                    if (this.state.searchTicketParam === "ByCategory") {
+                                      return (
+                                        <button
+                                          type="button"
+                                          className="btn-inv"
+                                          onClick={this.handleTicketSearch.bind(this)}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.viewsearch
+                                            : "View Search"}
+                                        </button>)
+                                    } else if (this.state.searchTicketParam === "ByCustomer") {
+                                      return (<button
+                                        type="button"
+                                        className="btn-inv"
+                                        onClick={this.handleTicketByCustomerSearch.bind(this)}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.viewsearch
+                                          : "View Search"}
+                                      </button>)
+                                    }
+                                  })()}
                                 </div>
                               </div>
 
@@ -563,7 +702,7 @@ class storeMyTicketList extends Component {
                                   aria-labelledby="category-tab"
                                 >
                                   <div className="container-fluid">
-                                    <div className="row">
+                                    <div className="row all-row">
                                       <div className="col-md-3 col-sm-6">
                                         <select
                                           name="selectedCategory"
@@ -575,7 +714,7 @@ class storeMyTicketList extends Component {
                                           <option value={0}>
                                             {TranslationContext !== undefined
                                               ? TranslationContext.option
-                                                  .category
+                                                .category
                                               : "Category"}
                                           </option>
                                           {this.state.CategoryData !== null &&
@@ -602,7 +741,7 @@ class storeMyTicketList extends Component {
                                           <option value={0}>
                                             {TranslationContext !== undefined
                                               ? TranslationContext.option
-                                                  .subcategory
+                                                .subcategory
                                               : "Sub Category"}
                                           </option>
                                           {this.state.SubCategoryData !==
@@ -630,7 +769,7 @@ class storeMyTicketList extends Component {
                                           <option value="0">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.option
-                                                  .issuetype
+                                                .issuetype
                                               : "Issue Type"}
                                           </option>
                                           {this.state.IssueTypeData !== null &&
@@ -659,7 +798,7 @@ class storeMyTicketList extends Component {
                                           <option value="0">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.option
-                                                  .ticketstatus
+                                                .ticketstatus
                                               : "Ticket Status"}
                                           </option>
                                           {this.state.TicketStatusData !==
@@ -676,6 +815,41 @@ class storeMyTicketList extends Component {
                                             )}
                                         </select>
                                       </div>
+
+                                      {(() => {
+                                        if (this.state.searchTicketParam === "ByCustomer") {
+                                          return (
+                                            <>
+                                              <div className="col-md-3 col-sm-6 myticket-text">
+                                                <input
+                                                  type="text"
+                                                  placeholder="Customer Mobile No"
+                                                  name="mobileNumber"
+                                                  value={this.state.mobileNumber}
+                                                  onChange={this.hanldeOnChange}
+                                                  autoComplete="off"
+                                                />
+                                              </div>
+                                              <div className="col-md-3 col-sm-6">
+                                                <DatePicker
+                                                  selected={this.state.ByDateCreatDate}
+                                                  onChange={this.handleByDateCreate.bind(
+                                                    this
+                                                  )}
+                                                  placeholderText={
+                                                    "Customer Last Message"
+                                                  }
+                                                  showMonthDropdown
+                                                  showYearDropdown
+                                                  dateFormat="dd/MM/yyyy"
+                                                  autoComplete="off"
+                                                  className="ant-calendar-date-picker-input"
+                                                />
+                                              </div>
+                                            </>
+                                          )
+                                        }
+                                      })()}
                                     </div>
                                   </div>
                                 </div>
@@ -684,7 +858,7 @@ class storeMyTicketList extends Component {
                                 <div className="row common-adv-padd justify-content-between">
                                   <div className="col-auto d-flex align-items-center">
                                     <p className="font-weight-bold mr-3">
-                                      <span className="blue-clr" style={{cursor:"default"}}>
+                                      <span className="blue-clr" style={{ cursor: "default" }}>
                                         {this.state.TicketSearchCount < 10
                                           ? "0" + this.state.TicketSearchCount
                                           : this.state.TicketSearchCount}
@@ -717,305 +891,504 @@ class storeMyTicketList extends Component {
                         <div className="loader-icon"></div>
                       </div>
                     ) : (
-                      <div>
-                        <div className="MyTicketListReact cus-head">
-                          <ReactTable
-                            data={this.state.SearchTicketData}
-                            columns={[
-                              {
-                                // Header: (
-                                //   <span>
-                                //     <div className="filter-type pink1 pinkmyticket">
-                                //       <div className="filter-checkbox pink2 pinkmargin">
-                                //         <input
-                                //           type="checkbox"
-                                //           id="fil-aball"
-                                //           name="ListCheckbox"
-                                //           onChange={this.checkAllCheckbox.bind(
-                                //             this
-                                //           )}
-                                //         />
-                                //         <label
-                                //           htmlFor="fil-aball"
-                                //           className="ticketid"
-                                //         >
-                                //           {TranslationContext!==undefined?TranslationContext.label.id:"ID"}
-
-                                //         </label>
-                                //       </div>
-                                //     </div>
-                                //   </span>
-                                // ),
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.id
-                                      : "ID"}
-                                  </span>
-                                ),
-                                accessor: "ticketID",
-                                Cell: (row) => {
-                                  return (
-                                    <span>
-                                      {/* <div className="filter-type pink1 pinkmyticket">
-                                        <div className="filter-checkbox pink2 pinkmargin">
-                                          <input
-                                            type="checkbox"
-                                            id={"i" + row.original.ticketID}
-                                            name="ListCheckbox"
-                                            checked={
-                                              this.state.cSelectedRow[
-                                                row.original.ticketID
-                                              ]
-                                            }
-                                            attrIds={row.original.ticketID}
-                                            onChange={() =>
-                                              this.handelCheckBoxCheckedChange(
-                                                row.original.ticketID
-                                              )
-                                            }
-                                          />
-                                          <label
-                                            htmlFor={
-                                              "i" + row.original.ticketID
-                                            }
-                                          >
+                        <div>
+                          <div className="MyTicketListReact cus-head">
+                            {(() => {
+                              if (this.state.searchTicketParam === "ByCategory") {
+                                return (<ReactTable
+                                  data={this.state.SearchTicketData}
+                                  columns={[
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.id
+                                            : "ID"}
+                                        </span>
+                                      ),
+                                      accessor: "ticketID",
+                                      Cell: (row) => {
+                                        return (
+                                          <span>
                                             {row.original.ticketID}
-                                          </label>
-                                        </div>
-                                      </div> */}
-                                      {row.original.ticketID}
-                                    </span>
-                                  );
-                                },
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.status
-                                      : "Status"}
+                                          </span>
+                                        );
+                                      },
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.status
+                                            : "Status"}
 
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "ticketStatus",
-                                Cell: (row) => {
-                                  if (row.original.ticketStatus === "Open") {
-                                    return (
-                                      <span className="table-b table-blue-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.ticketStatus === "Resolved"
-                                  ) {
-                                    return (
-                                      <span className="table-b table-green-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.ticketStatus === "New"
-                                  ) {
-                                    return (
-                                      <span className="table-b table-yellow-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  }
-                                },
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.subject
-                                      : "Subject"}
-                                  </span>
-                                ),
-                                accessor: "ticketTitle",
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.category
-                                      : "Category"}
-
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "category",
-                                sortable: false,
-                                Cell: (row) => (
-                                  <span className="one-line-outer">
-                                    <label className="one-line">
-                                      {row.original.category}
-                                    </label>
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.p
-                                                      .category
-                                                  : "Category"}
-                                              </p>
-                                              <p>{row.original.category}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.p
-                                                      .subcategory
-                                                  : "Sub Category"}
-                                              </p>
-                                              <p>{row.original.subCategory}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.p.type
-                                                  : "Type"}
-                                              </p>
-                                              <p>{row.original.issueType}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                ),
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.priority
-                                      : "Priority"}
-
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "priority",
-                                minWidth: 50,
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.assignee
-                                      : "Assignee"}
-
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "assignTo",
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.creationon
-                                      : "Creation On"}
-
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "createdOn",
-                                Cell: (row) => {
-                                  return (
-                                    <span className="one-line-outer">
-                                      <label className="one-line">
-                                        {row.original.createdOn}
-                                      </label>
-                                      <Popover
-                                      
-                                        content={
-                                          <div className="insertpop1">
-                                            <ul className="dash-creation-popup">
-                                              <li className="title">
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.li
-                                                      .creationdetails
-                                                  : "Creation details"}
-                                              </li>
-                                              <li>
-                                              <p style={{flex:"0 0 0"}}>
-                                                  
-                                                  {/* &nbsp; */}
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.p
-                                                        .createdby
-                                                    : "Created Date"}
-                                                </p>
-                                                <p style={{textAlign:"right"}} >
-                                                {row.original.createdBy}{row.original.createdBy?row.original.createdDate?" ("+row.original.createdDate+")":null:row.original.createdDate}
-                                                </p>
-                                              </li>
-
-                                              <li>
-                                                <p style={{flex:"0"}}>
-                                                  {/* &nbsp; */}
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.p
-                                                        .updatedby
-                                                    : "Updated Date"}
-                                                </p>
-                                                <p style={{textAlign:"right"}} >
-                                                  {row.original.updatedBy}
-                                                  {row.original.updatedDate?" (" +
-                                                    row.original.updatedDate +
-                                                    ")":null}
-                                                </p>
-                                              </li>
-                                            </ul>
-                                          </div>
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "ticketStatus",
+                                      Cell: (row) => {
+                                        if (row.original.ticketStatus === "Open") {
+                                          return (
+                                            <span className="table-b table-blue-btn">
+                                              <label>
+                                                {row.original.ticketStatus}
+                                              </label>
+                                            </span>
+                                          );
+                                        } else if (
+                                          row.original.ticketStatus === "Resolved"
+                                        ) {
+                                          return (
+                                            <span className="table-b table-green-btn">
+                                              <label>
+                                                {row.original.ticketStatus}
+                                              </label>
+                                            </span>
+                                          );
+                                        } else if (
+                                          row.original.ticketStatus === "New"
+                                        ) {
+                                          return (
+                                            <span className="table-b table-yellow-btn">
+                                              <label>
+                                                {row.original.ticketStatus}
+                                              </label>
+                                            </span>
+                                          );
                                         }
-                                        placement="left"
-                                      >
-                                        <img
-                                          className="info-icon info-iconcus"
-                                          src={InfoIcon}
-                                          alt="info-icon"
-                                        />
-                                      </Popover>
-                                    </span>
-                                  );
-                                },
-                              },
-                            ]}
-                            resizable={false}
-                            defaultPageSize={10}
-                            showPagination={true}
-                            getTrProps={this.HandleRowClickPage}
-                            minRows={2}
-                          />
+                                      },
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.subject
+                                            : "Subject"}
+                                        </span>
+                                      ),
+                                      accessor: "ticketTitle",
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.category
+                                            : "Category"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "category",
+                                      sortable: false,
+                                      Cell: (row) => (
+                                        <span className="one-line-outer">
+                                          <label className="one-line">
+                                            {row.original.category}
+                                          </label>
+                                          <Popover
+                                            content={
+                                              <div className="dash-creation-popup-cntr">
+                                                <ul className="dash-category-popup dashnewpopup">
+                                                  <li>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.p
+                                                          .category
+                                                        : "Category"}
+                                                    </p>
+                                                    <p>{row.original.category}</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.p
+                                                          .subcategory
+                                                        : "Sub Category"}
+                                                    </p>
+                                                    <p>{row.original.subCategory}</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.p.type
+                                                        : "Type"}
+                                                    </p>
+                                                    <p>{row.original.issueType}</p>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            }
+                                            placement="bottom"
+                                          >
+                                            <img
+                                              className="info-icon"
+                                              src={InfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </Popover>
+                                        </span>
+                                      ),
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.priority
+                                            : "Priority"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "priority",
+                                      minWidth: 50,
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.assignee
+                                            : "Assignee"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "assignTo",
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.creationon
+                                            : "Creation On"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "createdOn",
+                                      Cell: (row) => {
+                                        return (
+                                          <span className="one-line-outer">
+                                            <label className="one-line">
+                                              {row.original.createdOn}
+                                            </label>
+                                            <Popover
+
+                                              content={
+                                                <div className="insertpop1">
+                                                  <ul className="dash-creation-popup">
+                                                    <li className="title">
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.li
+                                                          .creationdetails
+                                                        : "Creation details"}
+                                                    </li>
+                                                    <li>
+                                                      <p style={{ flex: "0 0 0" }}>
+
+                                                        {/* &nbsp; */}
+                                                        {TranslationContext !==
+                                                          undefined
+                                                          ? TranslationContext.p
+                                                            .createdby
+                                                          : "Created Date"}
+                                                      </p>
+                                                      <p style={{ textAlign: "right" }} >
+                                                        {row.original.createdBy}{row.original.createdBy ? row.original.createdDate ? " (" + row.original.createdDate + ")" : null : row.original.createdDate}
+                                                      </p>
+                                                    </li>
+
+                                                    <li>
+                                                      <p style={{ flex: "0" }}>
+                                                        {/* &nbsp; */}
+                                                        {TranslationContext !==
+                                                          undefined
+                                                          ? TranslationContext.p
+                                                            .updatedby
+                                                          : "Updated Date"}
+                                                      </p>
+                                                      <p style={{ textAlign: "right" }} >
+                                                        {row.original.updatedBy}
+                                                        {row.original.updatedDate ? " (" +
+                                                          row.original.updatedDate +
+                                                          ")" : null}
+                                                      </p>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                              }
+                                              placement="left"
+                                            >
+                                              <img
+                                                className="info-icon info-iconcus"
+                                                src={InfoIcon}
+                                                alt="info-icon"
+                                              />
+                                            </Popover>
+                                          </span>
+                                        );
+                                      },
+                                    },
+                                  ]}
+                                  resizable={false}
+                                  defaultPageSize={10}
+                                  showPagination={true}
+                                  getTrProps={this.HandleRowClickPage}
+                                  minRows={2}
+                                />)
+                              } else if (this.state.searchTicketParam === "ByCustomer") {
+                                return (<ReactTable
+                                  data={this.state.SearchTicketData}
+                                  columns={[
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.id
+                                            : "ID"}
+                                        </span>
+                                      ),
+                                      accessor: "ticketID",
+                                      Cell: (row) => {
+                                        return (
+                                          <span>
+                                            {row.original.ticketID}
+                                          </span>
+                                        );
+                                      },
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.status
+                                            : "Status"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "ticketStatus",
+                                      Cell: (row) => {
+                                        if (row.original.ticketStatus === "Open") {
+                                          return (
+                                            <span className="table-b table-blue-btn">
+                                              <label>
+                                                {row.original.ticketStatus}
+                                              </label>
+                                            </span>
+                                          );
+                                        } else if (
+                                          row.original.ticketStatus === "Resolved"
+                                        ) {
+                                          return (
+                                            <span className="table-b table-green-btn">
+                                              <label>
+                                                {row.original.ticketStatus}
+                                              </label>
+                                            </span>
+                                          );
+                                        } else if (
+                                          row.original.ticketStatus === "New"
+                                        ) {
+                                          return (
+                                            <span className="table-b table-yellow-btn">
+                                              <label>
+                                                {row.original.ticketStatus}
+                                              </label>
+                                            </span>
+                                          );
+                                        }
+                                      },
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.subject
+                                            : "Subject"}
+                                        </span>
+                                      ),
+                                      accessor: "ticketTitle",
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.category
+                                            : "Category"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "category",
+                                      sortable: false,
+                                      Cell: (row) => (
+                                        <span className="one-line-outer">
+                                          <label className="one-line">
+                                            {row.original.category}
+                                          </label>
+                                          <Popover
+                                            content={
+                                              <div className="dash-creation-popup-cntr">
+                                                <ul className="dash-category-popup dashnewpopup">
+                                                  <li>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.p
+                                                          .category
+                                                        : "Category"}
+                                                    </p>
+                                                    <p>{row.original.category}</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.p
+                                                          .subcategory
+                                                        : "Sub Category"}
+                                                    </p>
+                                                    <p>{row.original.subCategory}</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.p.type
+                                                        : "Type"}
+                                                    </p>
+                                                    <p>{row.original.issueType}</p>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            }
+                                            placement="bottom"
+                                          >
+                                            <img
+                                              className="info-icon"
+                                              src={InfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </Popover>
+                                        </span>
+                                      ),
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.priority
+                                            : "Priority"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "priority",
+                                      minWidth: 50,
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.assignee
+                                            : "Assignee"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "assignTo",
+                                    },
+                                    {
+                                      Header: (
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span.creationon
+                                            : "Creation On"}
+
+                                          <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                      ),
+                                      accessor: "createdOn",
+                                      Cell: (row) => {
+                                        return (
+                                          <span className="one-line-outer">
+                                            <label className="one-line">
+                                              {row.original.createdOn}
+                                            </label>
+                                            <Popover
+
+                                              content={
+                                                <div className="insertpop1">
+                                                  <ul className="dash-creation-popup">
+                                                    <li className="title">
+                                                      {TranslationContext !==
+                                                        undefined
+                                                        ? TranslationContext.li
+                                                          .creationdetails
+                                                        : "Creation details"}
+                                                    </li>
+                                                    <li>
+                                                      <p style={{ flex: "0 0 0" }}>
+
+                                                        {/* &nbsp; */}
+                                                        {TranslationContext !==
+                                                          undefined
+                                                          ? TranslationContext.p
+                                                            .createdby
+                                                          : "Created Date"}
+                                                      </p>
+                                                      <p style={{ textAlign: "right" }} >
+                                                        {row.original.createdBy}{row.original.createdBy ? row.original.createdDate ? " (" + row.original.createdDate + ")" : null : row.original.createdDate}
+                                                      </p>
+                                                    </li>
+
+                                                    <li>
+                                                      <p style={{ flex: "0" }}>
+                                                        {/* &nbsp; */}
+                                                        {TranslationContext !==
+                                                          undefined
+                                                          ? TranslationContext.p
+                                                            .updatedby
+                                                          : "Updated Date"}
+                                                      </p>
+                                                      <p style={{ textAlign: "right" }} >
+                                                        {row.original.updatedBy}
+                                                        {row.original.updatedDate ? " (" +
+                                                          row.original.updatedDate +
+                                                          ")" : null}
+                                                      </p>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                              }
+                                              placement="left"
+                                            >
+                                              <img
+                                                className="info-icon info-iconcus"
+                                                src={InfoIcon}
+                                                alt="info-icon"
+                                              />
+                                            </Popover>
+                                          </span>
+                                        );
+                                      },
+                                    },
+                                  ]}
+                                  resizable={false}
+                                  defaultPageSize={10}
+                                  showPagination={true}
+                                  getTrProps={this.HandleRowClickPage}
+                                  minRows={2}
+                                />)
+                              }
+                            })()}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </div>
               </div>
