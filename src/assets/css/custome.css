@@ -2253,6 +2253,13 @@ table td span {
   float: right;
   margin-top: 3px;
 }
+.dashboard-popover .ant-popover-arrow {
+  display: none;
+}
+.dashboard-popover .ant-popover-inner {
+  position: relative;
+  left: -30px;
+}
 .table-btn {
   border-radius: 15px;
   min-width: 100px;
@@ -12688,14 +12695,13 @@ table tr th:last-child {
   margin-right: 10px;
   max-width: 20px;
 }
-.headers-menu a[disabled]{
+.headers-menu a[disabled] {
   color: #4a4a4a !important;
-  }
-  .lowersec a[disabled]{
+}
+.lowersec a[disabled] {
   color: #4a4a4a !important;
-  }
-.userBtnDibsl{
+}
+.userBtnDibsl {
   cursor: not-allowed !important;
   opacity: 0.6;
 }
-

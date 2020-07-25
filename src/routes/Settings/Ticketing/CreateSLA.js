@@ -1617,6 +1617,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
+                        minWidth: 200,
                         sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {

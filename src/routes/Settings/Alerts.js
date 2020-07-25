@@ -2506,8 +2506,8 @@ class Alerts extends Component {
                     onClick={this.handleAddAlertTabsOpen}
                   >
                     {TranslationContext !== undefined
-                      ? TranslationContext.button.next
-                      : "Next"}
+                      ? TranslationContext.button.saveandnext
+                      : "Save & Next"}
                   </button>
                   <Modal
                     size="lg"

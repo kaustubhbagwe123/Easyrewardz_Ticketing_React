@@ -7912,7 +7912,8 @@ class Dashboard extends Component {
                                   </ul>
                                 </div>
                               }
-                              placement="left"
+                              placement="bottom"
+                              overlayClassName="dashboard-popover"
                             >
                               <img
                                 className="info-icon info-iconcus"
