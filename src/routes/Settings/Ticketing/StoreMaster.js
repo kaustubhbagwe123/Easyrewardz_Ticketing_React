@@ -3889,7 +3889,7 @@ class StoreMaster extends Component {
                       <label className="designation-name">
                         {TranslationContext !== undefined
                           ? TranslationContext.label.contactdetailsemails
-                          : "Contact Details:Email"}
+                          : "Contact Details: Email ID"}
                       </label>
                       <input
                         type="text"
@@ -3919,7 +3919,7 @@ class StoreMaster extends Component {
                       <label className="designation-name">
                         {TranslationContext !== undefined
                           ? TranslationContext.label.contactdetailsphones
-                          : "Contact Details:Phone"}
+                          : "Contact Details: Phone No"}
                       </label>
                       <input
                         type="text"
@@ -4510,7 +4510,7 @@ class StoreMaster extends Component {
                     <label className="edit-label-1">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.contactdetailsemails
-                        : "Contact Details:Email"}
+                        : "Contact Details: Email ID"}
                     </label>
                     <input
                       type="text"
@@ -4542,7 +4542,7 @@ class StoreMaster extends Component {
                     <label className="edit-label-1">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.contactdetailsphones
-                        : "Contact Details:Phone"}
+                        : "Contact Details: Phone No"}
                     </label>
                     <input
                       type="text"

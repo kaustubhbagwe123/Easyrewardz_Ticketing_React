@@ -2508,7 +2508,7 @@ class Alerts extends Component {
                   >
                     {TranslationContext !== undefined
                       ? TranslationContext.button.next
-                      : "Next"}
+                      : "Save & Next"}
                   </button>
                   <Modal
                     size="lg"

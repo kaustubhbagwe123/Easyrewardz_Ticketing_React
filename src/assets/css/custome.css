@@ -193,7 +193,7 @@ a {
   background: #a5a3a3;
 }
 .headers-menu a {
-  color: #4a4a4a ;
+  color: #4a4a4a;
   line-height: 1;
   font-size: 16px;
 }
@@ -2253,6 +2253,13 @@ table td span {
   float: right;
   margin-top: 3px;
 }
+.dashboard-popover .ant-popover-arrow {
+  display: none;
+}
+.dashboard-popover .ant-popover-inner {
+  position: relative;
+  left: -30px;
+}
 .table-btn {
   border-radius: 15px;
   min-width: 100px;
@@ -2980,7 +2987,7 @@ table tr th:last-child {
 }
 .chat-info.active {
   /* background-color: #ecf2f4; */
-  background-color: #CDE4FF;
+  background-color: #cde4ff;
 }
 .dark-blue-ini {
   background-color: #ece8fd;
@@ -12703,9 +12710,9 @@ table tr th:last-child {
   margin-right: 10px;
   max-width: 20px;
 }
-.headers-menu a[disabled]{
+.headers-menu a[disabled] {
   color: #4a4a4a !important;
 }
-.lowersec a[disabled]{
+.lowersec a[disabled] {
   color: #4a4a4a !important;
 }
