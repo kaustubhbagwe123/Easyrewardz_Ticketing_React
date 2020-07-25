@@ -4181,10 +4181,32 @@ class StoreModule extends Component {
                                     render: (row, item) => {
                                       return (
                                         <Popover
-                                          overlayClassName="antcustom"
+                                          overlayClassName="antcustom operationalbox"
                                           content={
                                             <div>
-                                              <h3>Operational Days</h3>
+                                              <img
+                                                src={CancelIcon}
+                                                alt="cancel-icone"
+                                                className="cust-icon2"
+                                              />
+                                              <div className="operationaldays">
+                                                <div className="row">
+                                                  <div className="col-12">
+                                                    <h3>Operational Days</h3>
+                                                    <ul>
+                                                      <li>
+                                                        <label>Monday</label>
+                                                      </li>
+                                                      <li>
+                                                        <label>Tuesday</label>
+                                                      </li>
+                                                      <li>
+                                                        <label>Wednesday</label>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </div>
                                             </div>
                                           }
                                           placement="bottom"
@@ -4233,10 +4255,84 @@ class StoreModule extends Component {
                                     render: (row, item) => {
                                       return (
                                         <Popover
-                                          overlayClassName="antcustom"
+                                          overlayClassName="antcustom appointmentdaysbox"
                                           content={
                                             <div>
-                                              <h3>Appointment Days</h3>
+                                              <img
+                                                src={CancelIcon}
+                                                alt="cancel-icone"
+                                                className="cust-icon2"
+                                              />
+                                              <div className="appointmentdays">
+                                                <div className="row">
+                                                  <div className="col-12">
+                                                    <h3>Appointment Days</h3>
+                                                    <div className="">
+                                                      <Table
+                                                        dataSource={
+                                                          this.state.slotData
+                                                        }
+                                                        noDataContent="No Record Found"
+                                                        pagination={false}
+                                                        className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                                        columns={[
+                                                          {
+                                                            title: "S.No.",
+
+                                                            dataIndex: "no",
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot Start Time",
+                                                            dataIndex:
+                                                              "startTime",
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot End Time",
+                                                            dataIndex:
+                                                              "endTime",
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot Occupancy",
+                                                            dataIndex:
+                                                              "occupancy",
+                                                            render: (
+                                                              row,
+                                                              rowData
+                                                            ) => {
+                                                              return (
+                                                                <>
+                                                                  <input
+                                                                    type="text"
+                                                                    className="form-control value"
+                                                                    value="3"
+                                                                  />
+                                                                </>
+                                                              );
+                                                            },
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot Status(Unable/Disable)",
+                                                            render: (
+                                                              row,
+                                                              rowData
+                                                            ) => {
+                                                              return (
+                                                                <>
+                                                                  radio button
+                                                                </>
+                                                              );
+                                                            },
+                                                          },
+                                                        ]}
+                                                      ></Table>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
                                             </div>
                                           }
                                           placement="bottom"
@@ -4998,23 +5094,43 @@ class StoreModule extends Component {
                         <tbody>
                           <tr>
                             <td>
-                              <input type="checkbox" checked classNam="form-control" />
+                              <input
+                                type="checkbox"
+                                checked
+                                classNam="form-control"
+                              />
                               <label>Store 1</label>
                             </td>
                             <td>
-                              <input type="checkbox" checked classNam="form-control" />
+                              <input
+                                type="checkbox"
+                                checked
+                                classNam="form-control"
+                              />
                               <label>Store 1</label>
                             </td>
                             <td>
-                              <input type="checkbox" checked classNam="form-control" />
+                              <input
+                                type="checkbox"
+                                checked
+                                classNam="form-control"
+                              />
                               <label>Store 1</label>
                             </td>
                             <td>
-                              <input type="checkbox" checked classNam="form-control" />
+                              <input
+                                type="checkbox"
+                                checked
+                                classNam="form-control"
+                              />
                               <label>Store 1</label>
                             </td>
                             <td>
-                              <input type="checkbox" checked classNam="form-control" />
+                              <input
+                                type="checkbox"
+                                checked
+                                classNam="form-control"
+                              />
                               <label>Store 1</label>
                             </td>
                           </tr>
@@ -5267,26 +5383,26 @@ class StoreModule extends Component {
                 </div>
                 <div className="row">
                   <div className="col-12 col-md-12">
-                    <div style={{float:"right"}}>
-                        <a
-                          style={{color:"#666",marginRight:"30px"}}
-                         href={Demo.BLANK_LINK}>
-                          
-                          {TranslationContext !== undefined
-                            ? TranslationContext.a.cancel
-                            : "Clear"}
-                        </a>
-                        <button
-                          className="butn"
-                          onClick={this.handleNextButtonClose.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.delete
-                            : "Apply"}
-                        </button>
-                      </div>
+                    <div style={{ float: "right" }}>
+                      <a
+                        style={{ color: "#666", marginRight: "30px" }}
+                        href={Demo.BLANK_LINK}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.cancel
+                          : "Clear"}
+                      </a>
+                      <button
+                        className="butn"
+                        onClick={this.handleNextButtonClose.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.delete
+                          : "Apply"}
+                      </button>
+                    </div>
                   </div>
-                </div> 
+                </div>
               </div>
             </Modal>
             {/* Create tamplete Modal */}

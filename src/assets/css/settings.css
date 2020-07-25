@@ -4144,3 +4144,29 @@
 .storetabl::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+.operationaldays {
+  padding: 20px;
+}
+.operationaldays h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.operationaldays ul {
+  margin-bottom: 0px;
+}
+.operationaldays ul li {
+  margin-right: 7px;
+  margin-bottom: 10px;
+}
+.operationaldays label {
+  font-size: 12px;
+  margin-right: 5px;
+  font-weight: 600;
+}
+.operationaldays {
+  padding: 25px 50px;
+}
+.appointmentdays {
+  padding: 25px 50px;
+}
