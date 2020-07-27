@@ -822,6 +822,7 @@ class TicketHierarchy extends Component {
     this.setState({ progressValue: value });
   }
   hanldeAddBulkUpload() {
+    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
@@ -1506,7 +1507,7 @@ class TicketHierarchy extends Component {
           <div className="store-settings-cntr tickhierpad settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketHierarchyReact">
+                <div className="table-cntr table-height TicketHierarchyReact settings-align">
                   <ReactTable
                     data={hierarchyData}
                     columns={[
@@ -1580,7 +1581,7 @@ class TicketHierarchy extends Component {
                                 {row.original.createdbyperson}
                                 <Popover
                                   content={
-                                    <div>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
@@ -1668,7 +1669,7 @@ class TicketHierarchy extends Component {
                           var ids = row.original["designationID"];
                           return (
                             <>
-                              <span>
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div

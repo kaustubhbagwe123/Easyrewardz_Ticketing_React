@@ -40,7 +40,7 @@ class FileUploadLogs extends Component {
       screatedDateFilterCheckbox: "",
       sfileUploadStatusFilterCheckbox: "",
       isortA: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -76,7 +76,7 @@ class FileUploadLogs extends Component {
       url: config.apiUrl + "/File/GetFileUploadLogs",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let fileUploadLog = res.data.responseData;
         if (fileUploadLog !== null) {
@@ -707,9 +707,11 @@ class FileUploadLogs extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortatoz
-                    : "SORT BY A TO Z"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -719,9 +721,11 @@ class FileUploadLogs extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortztoa
-                    : "SORT BY Z TO A"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -734,9 +738,11 @@ class FileUploadLogs extends Component {
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p>{TranslationContext !== undefined
-                  ? TranslationContext.p.filterbytype
-                  : "FILTER BY TYPE"}</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -770,110 +776,110 @@ class FileUploadLogs extends Component {
                   </div>
                   {this.state.sortColumn === "fileType"
                     ? this.state.sortFilterFileType !== null &&
-                    this.state.sortFilterFileType.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.fileType}
-                          value={item.fileType}
-                          checked={this.state.sfileTypeFilterCheckbox.includes(
-                            item.fileType
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "fileType",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.fileType}>
-                          <span className="table-btn table-blue-btn">
-                            {item.fileType}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterFileType.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.fileType}
+                            value={item.fileType}
+                            checked={this.state.sfileTypeFilterCheckbox.includes(
+                              item.fileType
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "fileType",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.fileType}>
+                            <span className="table-btn table-blue-btn">
+                              {item.fileType}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "fileName"
                     ? this.state.sortFilterFileName !== null &&
-                    this.state.sortFilterFileName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.fileName}
-                          value={item.fileName}
-                          checked={this.state.sfileNameFilterCheckbox.includes(
-                            item.fileName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "fileName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.fileName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.fileName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterFileName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.fileName}
+                            value={item.fileName}
+                            checked={this.state.sfileNameFilterCheckbox.includes(
+                              item.fileName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "fileName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.fileName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.fileName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdDate"
                     ? this.state.sortFilterCreatedDate !== null &&
-                    this.state.sortFilterCreatedDate.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdDate}
-                          value={item.createdDate}
-                          checked={this.state.screatedDateFilterCheckbox.includes(
-                            item.createdDate
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdDate",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdDate}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdDate}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterCreatedDate.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdDate}
+                            value={item.createdDate}
+                            checked={this.state.screatedDateFilterCheckbox.includes(
+                              item.createdDate
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdDate",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdDate}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdDate}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "fileUploadStatus"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.fileUploadStatus}
-                          value={item.fileUploadStatus}
-                          checked={this.state.sfileUploadStatusFilterCheckbox.includes(
-                            item.fileUploadStatus
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "fileUploadStatus",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.fileUploadStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.fileUploadStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.fileUploadStatus}
+                            value={item.fileUploadStatus}
+                            checked={this.state.sfileUploadStatusFilterCheckbox.includes(
+                              item.fileUploadStatus
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "fileUploadStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.fileUploadStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.fileUploadStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -900,7 +906,7 @@ class FileUploadLogs extends Component {
           </Link>
         </div>
         <br />
-        <div className="fileUploadTable TicketFileUploadReact settingtable">
+        <div className="fileUploadTable TicketFileUploadReact settingtable settings-align">
           <ReactTable
             minRows={2}
             data={this.state.fileUploadLog}
@@ -972,19 +978,21 @@ class FileUploadLogs extends Component {
                         {row.original.date}
                         <Popover
                           content={
-                            <>
+                            <div className="settings-created-by-popover">
                               <div>
                                 <b>
                                   <p className="title">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.createdby
-                                      : "Created By"}: {row.original.createdBy}
+                                      : "Created By"}
+                                    : {row.original.createdBy}
                                   </p>
                                 </b>
                                 <p className="sub-title">
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.createddate
-                                    : "Created Date"}: {row.original.createdDate}
+                                    : "Created Date"}
+                                  : {row.original.createdDate}
                                 </p>
                               </div>
                               <div>
@@ -992,16 +1000,18 @@ class FileUploadLogs extends Component {
                                   <p className="title">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.updatedby
-                                      : "Updated By"}: {row.original.modifiedBy}
+                                      : "Updated By"}
+                                    : {row.original.modifiedBy}
                                   </p>
                                 </b>
                                 <p className="sub-title">
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.updateddate
-                                    : "Updated Date"}: {row.original.modifiedDate}
+                                    : "Updated Date"}
+                                  : {row.original.modifiedDate}
                                 </p>
                               </div>
-                            </>
+                            </div>
                           }
                           placement="bottom"
                         >
@@ -1038,9 +1048,13 @@ class FileUploadLogs extends Component {
                 accessor: "fileUploadStatus",
               },
               {
-                Header: <span>{TranslationContext !== undefined
-                  ? TranslationContext.span.errorfile
-                  : "Error File"}</span>,
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.errorfile
+                      : "Error File"}
+                  </span>
+                ),
                 accessor: "Erroor",
                 sortable: false,
                 Cell: (row) =>
@@ -1062,9 +1076,13 @@ class FileUploadLogs extends Component {
                   ),
               },
               {
-                Header: <span>{TranslationContext !== undefined
-                  ? TranslationContext.span.successfile
-                  : "Success File"}</span>,
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.successfile
+                      : "Success File"}
+                  </span>
+                ),
                 accessor: "success",
                 Cell: (row) =>
                   row.original.fileUploadStatus === "Completed" &&

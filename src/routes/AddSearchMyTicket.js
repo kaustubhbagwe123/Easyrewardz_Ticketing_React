@@ -314,7 +314,7 @@ class AddSearchMyTicket extends Component {
                   <div className="input-group" style={{ background: "none" }}>
                     <input
                       type="text"
-                      className="search-customerAddSrch"
+                      className="search-customerAddSrch search-customerAddSrch-plcholder"
                       placeholder={
                         TranslationContext !== undefined
                           ? TranslationContext.label.entercustphonenoemailid

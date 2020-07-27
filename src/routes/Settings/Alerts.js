@@ -1389,7 +1389,6 @@ class Alerts extends Component {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (
       (this.state.selectedAlertType > 0 &&
@@ -2068,7 +2067,7 @@ class Alerts extends Component {
           <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height alertsTable">
+                <div className="table-cntr table-height alertsTable settings-align">
                   <ReactTable
                     data={this.state.alert}
                     columns={[
@@ -2157,7 +2156,7 @@ class Alerts extends Component {
                                 {row.original.createdBy}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
@@ -2190,7 +2189,7 @@ class Alerts extends Component {
                                           : {row.original.modifiedDate}
                                         </p>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -2241,7 +2240,7 @@ class Alerts extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">
@@ -2507,7 +2506,7 @@ class Alerts extends Component {
                     onClick={this.handleAddAlertTabsOpen}
                   >
                     {TranslationContext !== undefined
-                      ? TranslationContext.button.next
+                      ? TranslationContext.button.saveandnext
                       : "Save & Next"}
                   </button>
                   <Modal

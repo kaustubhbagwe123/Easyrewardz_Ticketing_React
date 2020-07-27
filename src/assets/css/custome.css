@@ -4080,6 +4080,22 @@ table tr th:last-child {
   padding-right: 35px;
   background-position: right 12px center;
 }
+.settings-created-by-popover .title {
+  color: #000;
+}
+.settings-created-by-popover .sub-title {
+  font-size: 13px;
+  margin-top: 2px;
+}
+.settings-created-by-popover div {
+  margin-bottom: 18px;
+}
+.settings-created-by-popover div:last-child {
+  margin-bottom: 0px;
+}
+.settings-created-by-popover {
+  padding: 10px 20px;
+}
 /* settings ends */
 
 /* sla starts */
@@ -6495,6 +6511,22 @@ progress::-webkit-progress-bar {
   border-right: none !important;
   font-weight: 500;
 }
+.settings-align .ReactTable .rt-tbody .rt-td,
+.settings-align .ReactTable .rt-thead .rt-th.-cursor-pointer {
+  padding-right: 25px !important;
+  padding-left: 25px !important;
+}
+.settings-align-actions {
+  display: flex;
+  align-items: center;
+}
+.settings-align-actions .react-tabel-button {
+  flex: 0 0 57px;
+}
+.settings-align .del-btn,
+.settings-align .downloadaction {
+  margin-right: 20px;
+}
 .inner-custom-react-table .ReactTable .rt-tbody .rt-td {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
@@ -7946,7 +7978,8 @@ table tr th:last-child {
   background: #fff;
 }
 .report-action {
-  width: 115px;
+  /* width: 115px; */
+  width: 170px;
   display: flex;
   justify-content: flex-end;
 }

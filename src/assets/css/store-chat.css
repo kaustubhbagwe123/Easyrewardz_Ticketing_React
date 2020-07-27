@@ -86,7 +86,7 @@ p {
 }
 .chat-info:hover {
   /* background-color: #ecf2f4; */
-  background-color: #CDE4FF;
+  background-color: #cde4ff;
 }
 .mobile-chat-tabs {
   display: none;
@@ -356,6 +356,22 @@ p {
   color: #2561a8;
   padding: 0;
   font-weight: 400;
+}
+.search-customerAddSrch-plcholder::placeholder {
+  font-size: 16px;
+  color: #4a4a4a;
+}
+.search-customerAddSrch-plcholder {
+  font-size: 16px;
+  padding-left: 22px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.search-customerAddSrch-plcholder + .seacrh-img-addsearch {
+  width: 7%;
+}
+.search-customerAddSrch-plcholder + .seacrh-img-addsearch .srch-imge {
+  filter: brightness(0);
 }
 .mobile-chat-popup .input-group-addon {
   width: 30px;
@@ -2117,8 +2133,8 @@ p {
   display: block;
 }
 
-.chat-initial-brd{
-  border: 1px solid #9A9A9A;
+.chat-initial-brd {
+  border: 1px solid #9a9a9a;
   border-radius: 100%;
   width: 30px;
   height: 30px;
