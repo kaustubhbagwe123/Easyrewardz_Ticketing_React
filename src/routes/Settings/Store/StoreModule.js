@@ -4011,7 +4011,7 @@ class StoreModule extends Component {
                                               getOptionLabel={(option) => option.dayName}
                                               getOptionValue={(option) => option.dayID}
                                               options={this.state.operationalDaysData}
-                                              placeholder="Please Select Brand"
+                                              placeholder="Please Select Operational Days"
                                               closeMenuOnSelect={false}
                                               name="selectBrandMulti"
                                               // onChange={this.handleBrandChange.bind(this)}
