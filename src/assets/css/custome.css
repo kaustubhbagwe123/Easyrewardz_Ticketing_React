@@ -3289,6 +3289,7 @@ table tr th:last-child {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  background-color: #ecf2f4;
 }
 .my-tic-email1::after {
   display: none;
@@ -6996,6 +6997,31 @@ table thead tr {
 .ck-det-cntr .cke_top {
   height: 120px !important;
 }
+.ck-det-cntr-custom .cke_top {
+  height: 80px !important;
+  background: #fff;
+  border-color: #f3f3f3;
+}
+.ck-det-cntr-custom .cke {
+  border-color: #f3f3f3;
+}
+.ck-det-cntr-custom .colladrow label {
+  font-size: 14px;
+}
+.ck-det-cntr-custom .file-upload1 + label {
+  margin-right: 0;
+}
+.ck-det-cntr-custom .inputcc,
+.ck-det-cntr-custom .inputcc-one,
+.ck-det-cntr-custom .CCdi1 {
+  border-color: #f3f3f3;
+  font-weight: 400;
+}
+.ck-det-cntr-custom .CCdi1 {
+  border-left: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
 .ck-det-cntr .cke_contents {
   height: auto !important;
 }
@@ -10406,7 +10432,8 @@ table tr th:last-child {
   border-left-color: #ccc;
 }
 .diwamargin {
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
+  margin-bottom: 15px;
 }
 .ticketsystemeditor .cke_bottom {
   display: none !important;
