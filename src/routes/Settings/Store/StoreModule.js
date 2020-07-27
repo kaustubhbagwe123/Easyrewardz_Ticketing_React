@@ -3959,15 +3959,18 @@ class StoreModule extends Component {
                                                 />
                                               </span>
                                             </div>
-                                            <a
-                                              style={{ float: "left" }}
-                                              onClick={this.handleSelectedStoreOpenModal.bind(
-                                                this
-                                              )}
-                                            >
-                                              {this.state.shoreSelectedCount}
-                                              &nbsp; Store Selected {">"}
-                                            </a>
+                                            {this.state.shoreSelectedCount >
+                                              0 && (
+                                              <a
+                                                style={{ float: "left" }}
+                                                onClick={this.handleSelectedStoreOpenModal.bind(
+                                                  this
+                                                )}
+                                              >
+                                                {this.state.shoreSelectedCount}
+                                                &nbsp; Store Selected {">"}
+                                              </a>
+                                            )}
                                           </li>
                                           <li>
                                             <label>Operational Days</label>
