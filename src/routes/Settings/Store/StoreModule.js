@@ -108,6 +108,7 @@ class StoreModule extends Component {
       TimeSlotData: TimeSlotdropdown(),
       TimeSlotGridData: [],
       storeCodeData: [],
+      tempStoreCodeData: [],
       selectStore: 0,
       selectTimeSlot1: 0,
       selectTimeSlot2: 0,
@@ -170,7 +171,9 @@ class StoreModule extends Component {
       selectedStoreModal: false,
       slotAutomaticRadio: 1,
       selectedStoreIds: "",
+      selectedStoreValues: "",
       shoreSelectedCount: 0,
+      showApplyStoreData: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -672,9 +675,12 @@ class StoreModule extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ storeCodeData: data });
+          data.forEach((element) => {
+            element.isChecked = false;
+          });
+          self.setState({ storeCodeData: data, tempStoreCodeData: data });
         } else {
-          self.setState({ storeCodeData: [] });
+          self.setState({ storeCodeData: [], tempStoreCodeData: [] });
         }
       })
       .catch((response) => {
@@ -2154,61 +2160,127 @@ class StoreModule extends Component {
   };
 
   /// handle Select Store Individual
-  handleSelectStoresIndividual = async (storeID, event) => {
+  handleSelectStoresIndividual = async (data, event) => {
     debugger;
-    var selectedStoreIds = this.state.selectedStoreIds;
-    var separator = ",";
+    // var selectedStoreIds = this.state.selectedStoreIds;
+    // var selectedStoreValues = this.state.selectedStoreValues;
+    // var separator = ",";
     var storeCount = 0;
-    var values = selectedStoreIds.split(separator);
-    if (event.target.checked) {
-      var flag = values.includes(storeID.toString());
-      if (!flag) {
-        values.unshift(storeID);
-        selectedStoreIds = values.join(separator);
-      }
-      storeCount = this.state.selectedStoreIds.split(",").length;
-      await this.setState({
-        selectedStoreIds,
-        shoreSelectedCount: storeCount,
-      });
-    } else {
-      for (var i = 0; i < values.length; i++) {
-        if (values[i] === storeID) {
-          values.splice(i, 1);
-          selectedStoreIds = values.join(separator);
-        }
-      }
+    var finalValue = "";
+    var values = "";
+    this.state.storeCodeData.filter(
+      (x) => x.storeID === data.storeID
+    )[0].isChecked = !this.state.storeCodeData.filter(
+      (x) => x.storeID === data.storeID
+    )[0].isChecked;
 
-      if (this.state.selectedStoreIds.split(",").length - 1 !== 0) {
-        storeCount = this.state.selectedStoreIds.split(",").length;
-      } else {
-        storeCount = this.state.selectedStoreIds.split(",").length;
+    this.state.storeCodeData.forEach((element) => {
+      if (element.isChecked) {
+        values += element.storeName + ",";
+        storeCount += 1;
       }
-      await this.setState({
-        selectedStoreIds,
-        shoreSelectedCount: storeCount,
-      });
-    }
+    });
+
+    finalValue = values.substring(",", values.length - 1);
+    this.setState({
+      storeCodeData: this.state.storeCodeData,
+      shoreSelectedCount: storeCount,
+      selectedStoreValues: finalValue,
+    });
+    // if (event.target.checked) {
+    //   var flag = store_Ids.includes(data.storeID.toString());
+    //   if (!flag) {
+    //     store_Ids.unshift(data.storeID);
+    //     values.unshift(data.storeName);
+    //     selectedStoreIds = store_Ids.join(separator);
+    //     selectedStoreValues = values.join(separator);
+    //   }
+    //   storeCount = this.state.selectedStoreIds.split(",").length;
+    // finalValue = selectedStoreValues.substring(
+    //   ",",
+    //   selectedStoreValues.length - 1
+    // );
+    //   await this.setState({
+    //     selectedStoreIds,
+    //     selectedStoreValues: finalValue,
+    //     shoreSelectedCount: storeCount,
+    //   });
+    // } else {
+    //   for (var i = 0; i < store_Ids.length; i++) {
+    //     if (store_Ids[i] === data.storeID) {
+    //       store_Ids.splice(i, 1);
+    //       selectedStoreIds = store_Ids.join(separator);
+    //     }
+    //   }
+    //   for (var i = 0; i < values.length; i++) {
+    //     if (values[i] === data.storeName) {
+    //       values.splice(i, 1);
+    //       selectedStoreValues = values.join(separator);
+    //     }
+    //   }
+
+    //   if (this.state.selectedStoreIds.split(",").length - 1 !== 0) {
+    //     storeCount = this.state.selectedStoreIds.split(",").length;
+    //   } else {
+    //     storeCount = this.state.selectedStoreIds.split(",").length;
+    //   }
+    //   finalValue = selectedStoreValues.substring(
+    //     ",",
+    //     selectedStoreValues.length - 1
+    //   );
+    //   await this.setState({
+    //     selectedStoreIds,
+    //     selectedStoreValues: finalValue,
+    //     shoreSelectedCount: storeCount,
+    //   });
+    // }
   };
   //// handle Select All store name
-  handleSelectAllStore = async (event) => {
+  handleSelectAllStore = async (isSelectAll) => {
     debugger;
-    var selectedStoreIds = "";
-    var checkboxes = document.getElementsByName("allStore");
-    for (var i in checkboxes) {
-      if (checkboxes[i].checked === false) {
-        checkboxes[i].checked = true;
+    var storeCount = 0;
+    var finalValue = "";
+    var values = "";
+
+    this.state.storeCodeData.forEach((element) => {
+      element.isChecked = isSelectAll ? true : false;
+      if (element.isChecked) {
+        values += element.storeName + ",";
+        storeCount += 1;
       }
-    }
-    if (this.state.storeCodeData !== null) {
-      this.state.storeCodeData.forEach(allStoreId);
-      function allStoreId(item) {
-        selectedStoreIds += item.storeID + ",";
-      }
-    }
-    await this.setState({
-      selectedStoreIds,
     });
+
+    finalValue = values.substring(",", values.length - 1);
+    this.setState({
+      storeCodeData: this.state.storeCodeData,
+      shoreSelectedCount: storeCount,
+      selectedStoreValues: finalValue,
+    });
+    // var selectedStoreIds = "";
+    // var selectedStoreValues = "";
+    // var checkboxes = document.getElementsByName("allStore");
+    // for (var i in checkboxes) {
+    //   if (checkboxes[i].checked === false) {
+    //     checkboxes[i].checked = true;
+    //   }
+    // }
+    // if (this.state.storeCodeData !== null) {
+    //   this.state.storeCodeData.forEach(allStoreId);
+    //   function allStoreId(item) {
+    //     selectedStoreIds += item.storeID + ",";
+    //     selectedStoreValues += item.storeName + ",";
+    //   }
+    // }
+    // var storeCount = selectedStoreIds.split(",").length - 1;
+    // var finalValue = selectedStoreValues.substring(
+    //   ",",
+    //   selectedStoreValues.length - 1
+    // );
+    // await this.setState({
+    //   selectedStoreIds,
+    //   selectedStoreValues: finalValue,
+    //   shoreSelectedCount: storeCount,
+    // });
   };
   /// handle clear all stores
   handleUnselectStore = async () => {
@@ -2220,8 +2292,29 @@ class StoreModule extends Component {
     }
     await this.setState({
       selectedStoreIds: "",
+      selectedStoreValues: "",
+      shoreSelectedCount: 0,
+      showApplyStoreData: false,
     });
   };
+  /// handle apply selected store data
+  handleApplySelectedStore() {
+    this.setState({
+      chooseStoreModal: false,
+      showApplyStoreData: true,
+    });
+  }
+
+  handleStoreFilterData(filterData) {
+    debugger;
+    var tempstore = this.state.tempStoreCodeData;
+    var finalStore = tempstore.filter((item) =>
+      item.storeName.startsWith(filterData)
+    );
+    this.setState({
+      storeCodeData: finalStore,
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3951,6 +4044,12 @@ class StoreModule extends Component {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Search"
+                                                value={
+                                                  this.state.showApplyStoreData
+                                                    ? this.state
+                                                        .selectedStoreValues
+                                                    : ""
+                                                }
                                               />
                                               <span className="input-group-append">
                                                 <img
@@ -3959,8 +4058,7 @@ class StoreModule extends Component {
                                                 />
                                               </span>
                                             </div>
-                                            {this.state.shoreSelectedCount >
-                                              0 && (
+                                            {this.state.showApplyStoreData && (
                                               <a
                                                 style={{ float: "left" }}
                                                 onClick={this.handleSelectedStoreOpenModal.bind(
@@ -5076,7 +5174,7 @@ class StoreModule extends Component {
                   <div className="col-12 col-md-3">
                     <button
                       className="butn-selectall"
-                      onClick={this.handleSelectAllStore.bind(this)}
+                      onClick={this.handleSelectAllStore.bind(this, true)}
                     >
                       Select All
                     </button>
@@ -5084,8 +5182,12 @@ class StoreModule extends Component {
                   <div className="col-12 col-md-9">
                     <ul className="atoz">
                       <li>#</li>
-                      <li>A</li>
-                      <li>B</li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "A")}>
+                        A
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "B")}>
+                        B
+                      </li>
                       <li>C</li>
                       <li>D</li>
                       <li>E</li>
@@ -5128,9 +5230,10 @@ class StoreModule extends Component {
                                   className="form-control"
                                   name="allStore"
                                   id={item.storeID + "_" + s}
+                                  checked={item.isChecked}
                                   onChange={this.handleSelectStoresIndividual.bind(
                                     this,
-                                    item.storeID
+                                    item
                                   )}
                                 />
                                 <label
@@ -5152,13 +5255,13 @@ class StoreModule extends Component {
                       <a
                         style={{ color: "#666", marginRight: "30px" }}
                         href={Demo.BLANK_LINK}
-                        onClick={this.handleUnselectStore.bind(this)}
+                        onClick={this.handleSelectAllStore.bind(this, false)}
                       >
                         Clear
                       </a>
                       <button
                         className="butn"
-                        onClick={this.handleNextButtonClose.bind(this)}
+                        onClick={this.handleApplySelectedStore.bind(this)}
                       >
                         Apply
                       </button>
