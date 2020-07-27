@@ -169,6 +169,8 @@ class StoreModule extends Component {
       createTampleteModal: false,
       selectedStoreModal: false,
       slotAutomaticRadio: 1,
+      selectedStoreIds: "",
+      shoreSelectedCount: 0,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -180,7 +182,6 @@ class StoreModule extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.handleGetTimeslotGridData = this.handleGetTimeslotGridData.bind(this);
-    this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
 
@@ -2151,6 +2152,76 @@ class StoreModule extends Component {
       slotAutomaticRadio: e.target.value,
     });
   };
+
+  /// handle Select Store Individual
+  handleSelectStoresIndividual = async (storeID, event) => {
+    debugger;
+    var selectedStoreIds = this.state.selectedStoreIds;
+    var separator = ",";
+    var storeCount = 0;
+    var values = selectedStoreIds.split(separator);
+    if (event.target.checked) {
+      var flag = values.includes(storeID.toString());
+      if (!flag) {
+        values.unshift(storeID);
+        selectedStoreIds = values.join(separator);
+      }
+      storeCount = this.state.selectedStoreIds.split(",").length;
+      await this.setState({
+        selectedStoreIds,
+        shoreSelectedCount: storeCount,
+      });
+    } else {
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] === storeID) {
+          values.splice(i, 1);
+          selectedStoreIds = values.join(separator);
+        }
+      }
+
+      if (this.state.selectedStoreIds.split(",").length - 1 !== 0) {
+        storeCount = this.state.selectedStoreIds.split(",").length;
+      } else {
+        storeCount = this.state.selectedStoreIds.split(",").length;
+      }
+      await this.setState({
+        selectedStoreIds,
+        shoreSelectedCount: storeCount,
+      });
+    }
+  };
+  //// handle Select All store name
+  handleSelectAllStore = async (event) => {
+    debugger;
+    var selectedStoreIds = "";
+    var checkboxes = document.getElementsByName("allStore");
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === false) {
+        checkboxes[i].checked = true;
+      }
+    }
+    if (this.state.storeCodeData !== null) {
+      this.state.storeCodeData.forEach(allStoreId);
+      function allStoreId(item) {
+        selectedStoreIds += item.storeID + ",";
+      }
+    }
+    await this.setState({
+      selectedStoreIds,
+    });
+  };
+  /// handle clear all stores
+  handleUnselectStore = async () => {
+    var checkboxes = document.getElementsByName("allStore");
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === true) {
+        checkboxes[i].checked = false;
+      }
+    }
+    await this.setState({
+      selectedStoreIds: "",
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2695,24 +2766,24 @@ class StoreModule extends Component {
                                               <div>
                                                 <b>
                                                   <p className="title">
-                                                    Created By:{" "}
+                                                    Created By:
                                                     {row.original.createdBy}
                                                   </p>
                                                 </b>
                                                 <p className="sub-title">
-                                                  Created Date:{" "}
+                                                  Created Date:
                                                   {row.original.createdOn}
                                                 </p>
                                               </div>
                                               <div>
                                                 <b>
                                                   <p className="title">
-                                                    Updated By:{" "}
+                                                    Updated By:
                                                     {row.original.modifiedBy}
                                                   </p>
                                                 </b>
                                                 <p className="sub-title">
-                                                  Updated Date:{" "}
+                                                  Updated Date:
                                                   {row.original.modifiedOn}
                                                 </p>
                                               </div>
@@ -3024,7 +3095,7 @@ class StoreModule extends Component {
                                   </div>
                                   <span className={"fileupload-span"}>
                                     Add File
-                                  </span>{" "}
+                                  </span>
                                   or Drop File here
                                 </div>
                               )}
@@ -3769,7 +3840,6 @@ class StoreModule extends Component {
                                   </tr>
                                   <tr>
                                     <td>
-                                      {" "}
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
                                             .clickwillbeenabledafter
@@ -3867,64 +3937,70 @@ class StoreModule extends Component {
                                 <Tabs>
                                   <Tab label="Manual">
                                     <div className="manualbox">
-                                      {!this.state.isNextClick ? (
-                                        <div className="">
-                                          <ul>
-                                            <li>
-                                              <label>Choose Store</label>
-                                              <div
-                                                className="input-group"
-                                                onClick={this.handleChooseStoreOpenModal.bind(
-                                                  this
-                                                )}
-                                              >
-                                                <input
-                                                  type="text"
-                                                  className="form-control"
-                                                  placeholder="Search"
+                                      <div className="">
+                                        <ul>
+                                          <li>
+                                            <label>Choose Store</label>
+                                            <div
+                                              className="input-group"
+                                              onClick={this.handleChooseStoreOpenModal.bind(
+                                                this
+                                              )}
+                                            >
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Search"
+                                              />
+                                              <span className="input-group-append">
+                                                <img
+                                                  src={searchico}
+                                                  alt="search-icon"
                                                 />
-                                                <span className="input-group-append">
-                                                  <img
-                                                    src={searchico}
-                                                    alt="search-icon"
-                                                  />
-                                                </span>
-                                              </div>
-                                            </li>
-                                            <li>
-                                              <label>Operational Days</label>
-                                              <select
-                                                name=""
-                                                className="form-control"
-                                              >
-                                                <option value={0}>
-                                                  Select
-                                                </option>
-                                                <option value={0}>1</option>
-                                              </select>
-                                            </li>
-                                            <li>
-                                              <label>
-                                                Select Slot Template
-                                              </label>
-                                              <select
-                                                name=""
-                                                className="form-control"
-                                              >
-                                                <option value={0}>
-                                                  Select
-                                                </option>
-                                                <option value={0}>1</option>
-                                              </select>
+                                              </span>
+                                            </div>
+                                            {this.state.shoreSelectedCount >
+                                              0 && (
                                               <a
-                                                onClick={this.handleCreateTempletetOpenModal.bind(
+                                                style={{ float: "left" }}
+                                                onClick={this.handleSelectedStoreOpenModal.bind(
                                                   this
                                                 )}
                                               >
-                                                + Create New Template
+                                                {this.state.shoreSelectedCount}
+                                                &nbsp; Store Selected {">"}
                                               </a>
-                                            </li>
-                                            <li>
+                                            )}
+                                          </li>
+                                          <li>
+                                            <label>Operational Days</label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                          </li>
+                                          <li>
+                                            <label>Select Slot Template</label>
+                                            <select
+                                              name=""
+                                              className="form-control"
+                                            >
+                                              <option value={0}>Select</option>
+                                              <option value={0}>1</option>
+                                            </select>
+                                            <a
+                                              onClick={this.handleCreateTempletetOpenModal.bind(
+                                                this
+                                              )}
+                                            >
+                                              + Create New Template
+                                            </a>
+                                          </li>
+                                          <li>
+                                            {!this.state.isNextClick && (
                                               <button
                                                 className="butn"
                                                 onClick={this.handleNextButtonOpen.bind(
@@ -3933,65 +4009,12 @@ class StoreModule extends Component {
                                               >
                                                 {"Next" + ">>"}
                                               </button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      ) : null}
+                                            )}
+                                          </li>
+                                        </ul>
+                                      </div>
                                       {this.state.isNextClick ? (
                                         <div className="nextbox">
-                                          <ul>
-                                            <li>
-                                              <label>Choose Store</label>
-                                              <div className="input-group">
-                                                <input
-                                                  type="text"
-                                                  className="form-control"
-                                                  placeholder="Search"
-                                                />
-                                                <span className="input-group-append">
-                                                  <img
-                                                    src={searchico}
-                                                    alt="search-icon"
-                                                  />
-                                                </span>
-                                              </div>
-                                              <a
-                                                style={{ float: "left" }}
-                                                onClick={this.handleSelectedStoreOpenModal.bind(
-                                                  this
-                                                )}
-                                              >
-                                                8 Store Selected {">"}
-                                              </a>
-                                            </li>
-                                            <li>
-                                              <label>Operational Days</label>
-                                              <select
-                                                name=""
-                                                className="form-control"
-                                              >
-                                                <option value={0}>
-                                                  Select
-                                                </option>
-                                                <option value={0}>1</option>
-                                              </select>
-                                            </li>
-                                            <li>
-                                              <label>
-                                                Select Slot Template
-                                              </label>
-                                              <select
-                                                name=""
-                                                className="form-control"
-                                              >
-                                                <option value={0}>
-                                                  Select
-                                                </option>
-                                                <option value={0}>1</option>
-                                              </select>
-                                              <a>+ Create New Template</a>
-                                            </li>
-                                          </ul>
                                           <div className="">
                                             <Table
                                               dataSource={this.state.slotData}
@@ -4352,7 +4375,6 @@ class StoreModule extends Component {
                                   },
                                   {
                                     title: "Status",
-                                    dataIndex: "totalSlot",
                                     render: (row, item) => {
                                       return <div>Active</div>;
                                     },
@@ -4569,7 +4591,6 @@ class StoreModule extends Component {
                                         : "Status",
                                     dataIndex: "isActive",
                                     render: (row) => {
-                                      debugger;
                                       return (
                                         <>
                                           {row === true ? "Active" : "Inactive"}
@@ -4583,7 +4604,6 @@ class StoreModule extends Component {
                                         ? TranslationContext.header.actions
                                         : "Actions",
                                     render: (row, rowData) => {
-                                      debugger;
                                       var ids = rowData["slotId"];
 
                                       if (rowData.language) {
@@ -5054,7 +5074,12 @@ class StoreModule extends Component {
                 </div>
                 <div className="row">
                   <div className="col-12 col-md-3">
-                    <button className="butn-selectall">Select All</button>
+                    <button
+                      className="butn-selectall"
+                      onClick={this.handleSelectAllStore.bind(this)}
+                    >
+                      Select All
+                    </button>
                   </div>
                   <div className="col-12 col-md-9">
                     <ul className="atoz">
@@ -5090,294 +5115,34 @@ class StoreModule extends Component {
                 <div className="storetabl">
                   <div className="row">
                     <div className="col-12">
-                      <table className="table">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked
-                                classNam="form-control"
-                              />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked
-                                classNam="form-control"
-                              />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked
-                                classNam="form-control"
-                              />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked
-                                classNam="form-control"
-                              />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked
-                                classNam="form-control"
-                              />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                            <td>
-                              <input type="checkbox" classNam="form-control" />
-                              <label>Store 1</label>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div className="row">
+                        {this.state.storeCodeData !== null &&
+                          this.state.storeCodeData.map((item, s) => (
+                            <div
+                              className="col-12 col-sm-4 col-md-3 col-lg-3"
+                              key={s}
+                            >
+                              <div className="slotchckhceck">
+                                <input
+                                  type="checkbox"
+                                  className="form-control"
+                                  name="allStore"
+                                  id={item.storeID + "_" + s}
+                                  onChange={this.handleSelectStoresIndividual.bind(
+                                    this,
+                                    item.storeID
+                                  )}
+                                />
+                                <label
+                                  htmlFor={item.storeID + "_" + s}
+                                  title={item.storeName}
+                                >
+                                  {item.storeName}
+                                </label>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5387,18 +5152,15 @@ class StoreModule extends Component {
                       <a
                         style={{ color: "#666", marginRight: "30px" }}
                         href={Demo.BLANK_LINK}
+                        onClick={this.handleUnselectStore.bind(this)}
                       >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.a.cancel
-                          : "Clear"}
+                        Clear
                       </a>
                       <button
                         className="butn"
                         onClick={this.handleNextButtonClose.bind(this)}
                       >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.button.delete
-                          : "Apply"}
+                        Apply
                       </button>
                     </div>
                   </div>

@@ -108,7 +108,6 @@ class StoreCampaign extends Component {
       campaignCode: "",
       translateLanguage: {},
       broadCastLoading: false,
-      isWhatsAppIconClick: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -1524,44 +1523,10 @@ class StoreCampaign extends Component {
   ////handle whats app icon click
   handleWhatsAppIconClick(itemData) {
     debugger;
-    let self = this;
-    if (this.state.isWhatsAppIconClick === false) {
-      this.setState({ isWhatsAppIconClick: true });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/CustomerChat/saveReInitiateChat",
-        headers: authHeader(),
-        data: {
-          StoreID: itemData.storecode,
-          CustomerID: itemData.id,
-          FirstName: itemData.customerName,
-          LastName: "",
-          MobileNo: itemData.customerNumber,
-        },
-      })
-        .then(function(response) {
-          debugger;
-          var message = response.data.message;
-          var responseData = response.data.responseData;
-          if (message === "Success" && responseData) {
-            self.setState({
-              isChatAllreadyActive: true,
-              isWhatsAppIconClick: false,
-            });
-            if (document.getElementById("chatwindow")) {
-              document.getElementById("newTicketChatId").value = responseData;
-              document.getElementById("chatwindow").click();
-            }
-          } else {
-            self.setState({ isWhatsAppIconClick: false });
-          }
-        })
-        .catch((response) => {
-          self.setState({ isWhatsAppIconClick: false });
-          console.log(response);
-        });
-    } else {
-      return false;
+    if (document.getElementById("chatwindow")) {
+      document.getElementById("newTicketChatId").value =
+        itemData.customerChatingID;
+      document.getElementById("chatwindow").click();
     }
   }
   //// handle Channel onchange

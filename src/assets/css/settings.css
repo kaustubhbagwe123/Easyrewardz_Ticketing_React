@@ -4102,10 +4102,18 @@
   height: 28px;
   padding: 0;
   font-size: 13px;
+  cursor: pointer;
 }
 .atoz li {
   margin-right: 9px;
 }
+.storetabl .form-control {
+  height: 15px;
+  width: 15px;
+  display: inline;
+  cursor: pointer;
+}
+
 .storetabl input {
   margin: 4px 8px 0 0;
   vertical-align: middle;
@@ -4113,6 +4121,11 @@
 .storetabl label {
   vertical-align: middle;
   margin: 0;
+  text-overflow: ellipsis;
+  max-width: 130px;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #666;
 }
 .storetabl tr {
   border-bottom: none;
@@ -4169,4 +4182,8 @@
 }
 .appointmentdays {
   padding: 25px 50px;
+}
+.slotchckhceck{
+  display: flex;
+  margin-bottom: 10px;
 }
