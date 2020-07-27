@@ -3096,7 +3096,7 @@ class StoreMaster extends Component {
                 {this.state.loading === true ? (
                   <div className="loader-icon loader-icon-height"></div>
                 ) : (
-                  <div className="table-cntr table-height TicketStoreReact">
+                  <div className="table-cntr table-height TicketStoreReact settings-align">
                     <ReactTable
                       data={storeData}
                       columns={[
@@ -3174,7 +3174,7 @@ class StoreMaster extends Component {
 
                                     <Popover
                                       content={
-                                        <div>
+                                        <div className="settings-created-by-popover">
                                           <div>
                                             <p className="title">
                                               {TranslationContext !== undefined
@@ -3438,12 +3438,12 @@ class StoreMaster extends Component {
                           ),
                           accessor: "actiondept",
                           sortable: false,
-                          minWidth: 120,
+                          minWidth: 140,
                           Cell: (row) => {
                             var ids = row.original["storeID"];
                             return (
                               <>
-                                <span>
+                                <span className="settings-align-actions">
                                   <Popover
                                     content={
                                       <div className="d-flex general-popover popover-body">

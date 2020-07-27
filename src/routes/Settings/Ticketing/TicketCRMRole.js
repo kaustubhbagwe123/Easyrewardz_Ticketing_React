@@ -1254,7 +1254,7 @@ class TicketCRMRole extends Component {
           <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketCrmRoleReact">
+                <div className="table-cntr table-height TicketCrmRoleReact settings-align">
                   <ReactTable
                     minRows={2}
                     data={this.state.crmRoles}
@@ -1342,7 +1342,7 @@ class TicketCRMRole extends Component {
                                 {row.original.createdBy}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
@@ -1375,7 +1375,7 @@ class TicketCRMRole extends Component {
                                           : {row.original.modifiedDate}
                                         </p>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -1424,7 +1424,7 @@ class TicketCRMRole extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">

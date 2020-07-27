@@ -1523,7 +1523,7 @@ class CreateSLA extends Component {
           <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketSlaReact">
+                <div className="table-cntr table-height TicketSlaReact settings-align">
                   <ReactTable
                     data={this.state.sla}
                     minRows={2}
@@ -1738,7 +1738,7 @@ class CreateSLA extends Component {
                                 {row.original.createdBy}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
@@ -1771,7 +1771,7 @@ class CreateSLA extends Component {
                                           : {row.original.modifiedDate}
                                         </p>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -1817,13 +1817,14 @@ class CreateSLA extends Component {
                               : "Actions"}
                           </span>
                         ),
+                        minWidth: 120,
                         accessor: "actiondept",
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">

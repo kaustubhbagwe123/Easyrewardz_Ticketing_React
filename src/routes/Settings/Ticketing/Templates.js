@@ -1605,7 +1605,8 @@ class Templates extends Component {
           <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height template-table">
+                {/* <div className="table-cntr table-height template-table settings-align"> */}
+                <div className="table-cntr table-height settings-align">
                   <ReactTable
                     minRows={2}
                     data={this.state.template}
@@ -1694,7 +1695,7 @@ class Templates extends Component {
                                 {row.original.createdBy}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
@@ -1728,7 +1729,7 @@ class Templates extends Component {
                                           : {row.original.modifiedDate}
                                         </p>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -1776,7 +1777,7 @@ class Templates extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">

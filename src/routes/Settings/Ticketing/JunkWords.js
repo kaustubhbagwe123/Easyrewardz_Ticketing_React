@@ -108,7 +108,7 @@ class JunkWords extends Component {
       url: config.apiUrl + "/JunkWords/ListJunkWords",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var status = res.data.message;
         var data = res.data.responseData;
@@ -200,7 +200,7 @@ class JunkWords extends Component {
           Reason: this.state.Reason,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           if (res.data.message === "Success") {
             self.setState({ loading: true });
             NotificationManager.success(
@@ -241,7 +241,7 @@ class JunkWords extends Component {
           Reason: this.state.Reason,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           if (res.data.message === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -271,7 +271,7 @@ class JunkWords extends Component {
         junkKeywordID,
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         if (res.data.message === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -925,110 +925,110 @@ class JunkWords extends Component {
                     </div>
                     {this.state.sortColumn === "junkKeyword"
                       ? this.state.sortFilterjunkKeyword !== null &&
-                      this.state.sortFilterjunkKeyword.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.junkKeyword}
-                            value={item.junkKeyword}
-                            checked={this.state.sjunkKeywordFilterCheckbox.includes(
-                              item.junkKeyword
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "junkKeyword",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.junkKeyword}>
-                            <span className="table-btn table-blue-btn">
-                              {item.junkKeyword}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                        this.state.sortFilterjunkKeyword.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open" + item.junkKeyword}
+                              value={item.junkKeyword}
+                              checked={this.state.sjunkKeywordFilterCheckbox.includes(
+                                item.junkKeyword
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "junkKeyword",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.junkKeyword}>
+                              <span className="table-btn table-blue-btn">
+                                {item.junkKeyword}
+                              </span>
+                            </label>
+                          </div>
+                        ))
                       : null}
 
                     {this.state.sortColumn === "reason"
                       ? this.state.sortFilterreason !== null &&
-                      this.state.sortFilterreason.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.reason}
-                            value={item.reason}
-                            checked={this.state.sreasonFilterCheckbox.includes(
-                              item.reason
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "reason",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.reason}>
-                            <span className="table-btn table-blue-btn">
-                              {item.reason}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                        this.state.sortFilterreason.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open" + item.reason}
+                              value={item.reason}
+                              checked={this.state.sreasonFilterCheckbox.includes(
+                                item.reason
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "reason",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.reason}>
+                              <span className="table-btn table-blue-btn">
+                                {item.reason}
+                              </span>
+                            </label>
+                          </div>
+                        ))
                       : null}
 
                     {this.state.sortColumn === "enteredDate"
                       ? this.state.sortFilterenteredDate !== null &&
-                      this.state.sortFilterenteredDate.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.enteredDate}
-                            value={item.enteredDate}
-                            checked={this.state.senteredDateFilterCheckbox.includes(
-                              item.enteredDate
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "enteredDate",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.enteredDate}>
-                            <span className="table-btn table-blue-btn">
-                              {item.enteredDate}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                        this.state.sortFilterenteredDate.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open" + item.enteredDate}
+                              value={item.enteredDate}
+                              checked={this.state.senteredDateFilterCheckbox.includes(
+                                item.enteredDate
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "enteredDate",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.enteredDate}>
+                              <span className="table-btn table-blue-btn">
+                                {item.enteredDate}
+                              </span>
+                            </label>
+                          </div>
+                        ))
                       : null}
 
                     {this.state.sortColumn === "enteredBy"
                       ? this.state.sortFilterenteredBy !== null &&
-                      this.state.sortFilterenteredBy.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.enteredBy}
-                            value={item.enteredBy}
-                            checked={this.state.senteredByFilterCheckbox.includes(
-                              item.enteredBy
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "enteredBy",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.enteredBy}>
-                            <span className="table-btn table-blue-btn">
-                              {item.enteredBy}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                        this.state.sortFilterenteredBy.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open" + item.enteredBy}
+                              value={item.enteredBy}
+                              checked={this.state.senteredByFilterCheckbox.includes(
+                                item.enteredBy
+                              )}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "enteredBy",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.enteredBy}>
+                              <span className="table-btn table-blue-btn">
+                                {item.enteredBy}
+                              </span>
+                            </label>
+                          </div>
+                        ))
                       : null}
                   </div>
                 </div>
@@ -1161,6 +1161,7 @@ class JunkWords extends Component {
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
               ) : (
+                <div className="settings-align">
                   <ReactTable
                     data={datajunkwords}
                     columns={[
@@ -1251,24 +1252,24 @@ class JunkWords extends Component {
                                 {row.original.enteredBy}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
                                               : "Updated By"}
-                                          : {row.original.modifyBy}
+                                            : {row.original.modifyBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.updateddate
                                             : "Updated Date"}
-                                        : {row.original.modifyDate}
+                                          : {row.original.modifyDate}
                                         </p>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -1295,72 +1296,69 @@ class JunkWords extends Component {
                         sortable: false,
                         accessor: "actionReport",
                         Cell: (row) => (
-                          <div className="report-action">
-                            <div>
-                              <Popover
-                                content={
-                                  <div className="samdel d-flex general-popover popover-body">
-                                    <div className="del-big-icon">
-                                      <img src={DelBigIcon} alt="del-icon" />
-                                    </div>
-                                    <div>
-                                      <p className="font-weight-bold blak-clr">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.p.deleterecord
-                                          : "Delete record"}
+                          // <div className="report-action">
+                          <div className="settings-align-actions">
+                            <Popover
+                              content={
+                                <div className="samdel d-flex general-popover popover-body">
+                                  <div className="del-big-icon">
+                                    <img src={DelBigIcon} alt="del-icon" />
+                                  </div>
+                                  <div>
+                                    <p className="font-weight-bold blak-clr">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deleterecord
+                                        : "Delete record"}
                                       ?
                                     </p>
-                                      <p className="mt-1 fs-12">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.p
+                                    <p className="mt-1 fs-12">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
                                             .areyousurewanttodeletethisrecord
-                                          : "Are you sure you want to delete this record?"}
-                                      </p>
-                                      <div className="del-can">
-                                        <a>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.cancel
-                                            : "CANCEL"}
-                                        </a>
-                                        <button
-                                          className="butn"
-                                          onClick={this.handleDeleteJunkWords.bind(
-                                            this,
-                                            row.original.junkKeywordID
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label.delete
-                                            : "Delete"}
-                                        </button>
-                                      </div>
+                                        : "Are you sure you want to delete this record?"}
+                                    </p>
+                                    <div className="del-can">
+                                      <a>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.cancel
+                                          : "CANCEL"}
+                                      </a>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleDeleteJunkWords.bind(
+                                          this,
+                                          row.original.junkKeywordID
+                                        )}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.delete
+                                          : "Delete"}
+                                      </button>
                                     </div>
                                   </div>
-                                }
-                                placement="bottom"
-                                trigger="click"
-                              >
-                                <img
-                                  src={RedDeleteIcon}
-                                  alt="del-icon"
-                                  className="del-btn"
-                                />
-                              </Popover>
-                            </div>
-                            <div>
-                              <button
-                                className="react-tabel-button editre"
-                                id="p-edit-pop-2"
-                                onClick={this.handleEditJunkWords.bind(
-                                  this,
-                                  row.original
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.edit
-                                  : "EDIT"}
-                              </button>
-                            </div>
+                                </div>
+                              }
+                              placement="bottom"
+                              trigger="click"
+                            >
+                              <img
+                                src={RedDeleteIcon}
+                                alt="del-icon"
+                                className="del-btn"
+                              />
+                            </Popover>
+                            <button
+                              className="react-tabel-button editre"
+                              id="p-edit-pop-2"
+                              onClick={this.handleEditJunkWords.bind(
+                                this,
+                                row.original
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.edit
+                                : "EDIT"}
+                            </button>
                           </div>
                         ),
                       },
@@ -1370,7 +1368,8 @@ class JunkWords extends Component {
                     showPagination={true}
                     minRows={1}
                   />
-                )}
+                </div>
+              )}
             </div>
           </div>
         </div>
