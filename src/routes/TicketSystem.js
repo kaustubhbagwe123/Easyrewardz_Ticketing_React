@@ -17,7 +17,7 @@ import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
 import PlusImg from "./../assets/Images/plus.png";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
-import moment from "moment"; 
+import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
@@ -2331,7 +2331,7 @@ class TicketSystem extends Component {
                       modal: "ck-exp-width",
                     }}
                   >
-                    <div className="ck-det-cntr">
+                    <div className="ck-det-cntr ck-det-cntr-custom">
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
@@ -2718,7 +2718,7 @@ class TicketSystem extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-md-12 ck-det-cntr">
+                    <div className="col-md-12 ck-det-cntr ck-det-cntr-custom">
                       <CKEditor
                         data={this.state.editorTemplateDetails}
                         onChange={this.onAddCKEditorChange}
@@ -2898,12 +2898,9 @@ class TicketSystem extends Component {
                     </div>
                   </div>
 
-                  <div className="row m-b-10 m-t-10">
+                  <div className="row m-b-10 m-t-20">
                     <div className="col-md-4">
-                      <div
-                        className="filter-checkbox"
-                        style={{ marginLeft: "15px" }}
-                      >
+                      <div className="filter-checkbox">
                         <input
                           type="checkbox"
                           id="add-Notes"
@@ -2924,10 +2921,7 @@ class TicketSystem extends Component {
                       </div>
                     </div>
                     <div className="col-md-8">
-                      <div
-                        className="filter-checkbox"
-                        style={{ marginLeft: "15px" }}
-                      >
+                      <div className="filter-checkbox">
                         <input
                           type="checkbox"
                           id="fil-add1"
