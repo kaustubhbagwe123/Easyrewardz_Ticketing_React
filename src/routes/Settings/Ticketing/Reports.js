@@ -246,7 +246,7 @@ class Reports extends Component {
       screatedByFilterCheckbox: "",
       sreportStatusFilterCheckbox: "",
       isortA: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -799,9 +799,11 @@ class Reports extends Component {
     debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.selectedReportName == "") {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.alertmessage.pleaseenterreportname
-        : "Please enter report name");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenterreportname
+          : "Please enter report name"
+      );
     } else {
       if (this.state.selectedTeamMemberCommaSeperated) {
         var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
@@ -1136,7 +1138,7 @@ class Reports extends Component {
         DepartmentId: this.state.selectedDepartment,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
@@ -1330,7 +1332,7 @@ class Reports extends Component {
         reportSearch: allTab,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1800,7 +1802,7 @@ class Reports extends Component {
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let DepartmentData = res.data.responseData;
         self.setState({ DepartmentData: DepartmentData });
@@ -1818,7 +1820,7 @@ class Reports extends Component {
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let AssignData = res.data.responseData;
 
@@ -1839,7 +1841,7 @@ class Reports extends Component {
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let TicketPriorityData = res.data.responseData;
         self.setState({ TicketPriorityData: TicketPriorityData });
@@ -1857,7 +1859,7 @@ class Reports extends Component {
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let TicketSourceData = res.data.responseData;
         self.setState({
@@ -1877,7 +1879,7 @@ class Reports extends Component {
       url: config.apiUrl + "/Report/GetReports",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var status = res.data.message;
         var data = res.data.responseData;
@@ -1962,7 +1964,7 @@ class Reports extends Component {
     if (id == 0) {
       self.setState({ DefaultPopupName: name });
       self.setState({ OpenDefaultModal: true });
-      setTimeout(function () {
+      setTimeout(function() {
         if (name == "Total Ticket Created") {
           document.getElementById("FromDate").style.display = "block";
         } else if (name == "Total Open Ticket") {
@@ -2009,7 +2011,7 @@ class Reports extends Component {
           SchedulerID: id,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           window.open(res.data.responseData);
           // self.downloadURI(res.data.responseData,name+".csv");
@@ -2036,11 +2038,13 @@ class Reports extends Component {
           FilePath: this.state.FileURL,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.emailhasbeensend
-            : "Email has been sent");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.emailhasbeensend
+              : "Email has been sent"
+          );
           self.setState({
             loadingDownload: false,
           });
@@ -2089,7 +2093,7 @@ class Reports extends Component {
           ReportTypeID: "1",
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           self.setState({
             loadingDownload: false,
@@ -2133,7 +2137,7 @@ class Reports extends Component {
           Ticket_StatusID: this.state.selectedDefaultTicketStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           // window.open(res.data.responseData);
           self.setState({
@@ -2196,7 +2200,7 @@ class Reports extends Component {
           ReportTypeID: "3",
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           //window.open(res.data.responseData);
           self.setState({
@@ -2263,7 +2267,7 @@ class Reports extends Component {
           ReportTypeID: "4",
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           // window.open(res.data.responseData);
           self.setState({
@@ -2305,7 +2309,7 @@ class Reports extends Component {
           Ticket_StatusID: this.state.selectedDefaultTicketStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           //  window.open(res.data.responseData);
           self.setState({
@@ -2347,7 +2351,7 @@ class Reports extends Component {
           Ticket_StatusID: this.state.selectedDefaultTicketStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           //  window.open(res.data.responseData);
           self.setState({
@@ -2389,7 +2393,7 @@ class Reports extends Component {
           Ticket_StatusID: this.state.selectedDefaultTicketStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           // window.open(res.data.responseData);
           self.setState({
@@ -2438,13 +2442,15 @@ class Reports extends Component {
         ReportID: id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.recorddeletedsuccessfully
-            : "Record Deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record Deleted successfully."
+          );
           self.handleReportList();
         }
       })
@@ -2460,7 +2466,7 @@ class Reports extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -2482,7 +2488,7 @@ class Reports extends Component {
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let CategoryData = res.data;
 
@@ -2515,7 +2521,7 @@ class Reports extends Component {
         CategoryID: cateId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var SubCategoryData = res.data.responseData;
         self.setState({
@@ -2543,7 +2549,7 @@ class Reports extends Component {
         SubCategoryID: subCateId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let IssueTypeData = res.data.responseData;
         self.setState({ IssueTypeData: IssueTypeData });
@@ -2561,9 +2567,11 @@ class Reports extends Component {
 
     SearchParams = JSON.stringify(this.state.ReportParams);
     if (self.state.selectedReportName == "") {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.alertmessage.pleaseenterreportname
-        : "Please enter report name");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenterreportname
+          : "Please enter report name"
+      );
       return;
     }
     self = this;
@@ -2581,7 +2589,7 @@ class Reports extends Component {
             ScheduleID: this.state.Schedule_ID,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             // this.handleReportList();
             self.handleReportList();
             self.handleNextPopupClose();
@@ -2630,7 +2638,7 @@ class Reports extends Component {
               .selectedNameOfMonthForDailyYearCommaSeperated,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             debugger;
 
             let status = res.data.message;
@@ -2646,9 +2654,11 @@ class Reports extends Component {
               self.handleReportList();
               self.setState({ Schedule_ID: scheduleId });
               self.setState({ AddReportPopup: false });
-              NotificationManager.success(TranslationContext !== undefined
-                ? TranslationContext.alertmessage.reportsavedsuccessfully
-                : "Report saved successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.reportsavedsuccessfully
+                  : "Report saved successfully."
+              );
               self.setState({
                 ReportParams: {},
                 selectedScheduleTime: "",
@@ -2665,9 +2675,11 @@ class Reports extends Component {
               });
             } else if (status == "duplicate") {
               self.setState({ Schedule_ID: 0 });
-              NotificationManager.error(TranslationContext !== undefined
-                ? TranslationContext.alertmessage.reportnamealreadyexist
-                : "Report name already exist.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.reportnamealreadyexist
+                  : "Report name already exist."
+              );
             }
           })
           .catch((data) => {
@@ -2688,9 +2700,11 @@ class Reports extends Component {
 
     SearchParams = JSON.stringify(this.state.ReportParams);
 
-    if (SearchParams != "" && this.state.selectedReportName !== "" &&
-      this.state.selectScheduleDate !== "" && this.state.selectedScheduleTime !== ""
-
+    if (
+      SearchParams != "" &&
+      this.state.selectedReportName !== "" &&
+      this.state.selectScheduleDate !== "" &&
+      this.state.selectedScheduleTime !== ""
     ) {
       var month, day, year, hours, minutes, seconds;
       var date = new Date(this.state.selectedScheduleTime),
@@ -2740,7 +2754,7 @@ class Reports extends Component {
             .selectedNameOfMonthForDailyYearCommaSeperated,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
 
           let status = res.data.message;
@@ -2755,9 +2769,11 @@ class Reports extends Component {
             // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.schedulercreatedsuccessfully
-              : "Scheduler created successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.schedulercreatedsuccessfully
+                : "Scheduler created successfully."
+            );
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
@@ -2773,9 +2789,11 @@ class Reports extends Component {
             });
           } else if (status == "duplicate") {
             self.setState({ Schedule_ID: 0 });
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.reportnamealreadyexist
-              : "Report name already exist.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.reportnamealreadyexist
+                : "Report name already exist."
+            );
           }
         })
         .catch((data) => {
@@ -2783,31 +2801,43 @@ class Reports extends Component {
         });
     } else {
       if (this.state.selectedReportName == "") {
-        NotificationManager.error(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.pleaseaddreportname
-          : "Please add report name.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseaddreportname
+            : "Please add report name."
+        );
         return false;
       }
-      if (this.state.selectedTeamMemberCommaSeperated == undefined &&
-        this.state.selectedTeamMemberCommaSeperated != "") {
-        NotificationManager.error(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.pleaseaddteamnameforscheduler
-          : "Please add team name for schedule.");
+      if (
+        this.state.selectedTeamMemberCommaSeperated == undefined &&
+        this.state.selectedTeamMemberCommaSeperated != ""
+      ) {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseaddteamnameforscheduler
+            : "Please add team name for schedule."
+        );
       }
       if (this.state.selectScheduleDate == "") {
-        NotificationManager.error(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.pleaseselectscheduletype
-          : "Please select schedule type.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseselectscheduletype
+            : "Please select schedule type."
+        );
       }
       if (this.state.selectedScheduleTime == "") {
-        NotificationManager.error(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.pleaseselectscheduletime
-          : "Please select schedule time.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseselectscheduletime
+            : "Please select schedule time."
+        );
       }
       if (SearchParams === "") {
-        NotificationManager.error(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.pleaseaddreportforscheduler
-          : "Please add report for create scheduler.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseaddreportforscheduler
+            : "Please add report for create scheduler."
+        );
       }
     }
   }
@@ -2896,9 +2926,11 @@ class Reports extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortatoz
-                    : "SORT BY A TO Z"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2908,9 +2940,11 @@ class Reports extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortztoa
-                    : "SORT BY Z TO A"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -2923,9 +2957,11 @@ class Reports extends Component {
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p>{TranslationContext !== undefined
-                  ? TranslationContext.p.filterbytype
-                  : "FILTER BY TYPE"}</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -2960,110 +2996,110 @@ class Reports extends Component {
                   </div>
                   {this.state.sortColumn === "reportName"
                     ? this.state.sortFilterName !== null &&
-                    this.state.sortFilterName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.reportName}
-                          id={"fil-open" + item.reportName}
-                          value={item.reportName}
-                          checked={this.state.sreportNameFilterCheckbox.includes(
-                            item.reportName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportName}
+                            id={"fil-open" + item.reportName}
+                            value={item.reportName}
+                            checked={this.state.sreportNameFilterCheckbox.includes(
+                              item.reportName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "scheduleStatus"
                     ? this.state.sortFilterSchedule !== null &&
-                    this.state.sortFilterSchedule.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.scheduleStatus}
-                          id={"fil-open" + item.scheduleStatus}
-                          value={item.scheduleStatus}
-                          checked={this.state.sscheduleStatusFilterCheckbox.includes(
-                            item.scheduleStatus
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "scheduleStatus",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.scheduleStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.scheduleStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterSchedule.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.scheduleStatus}
+                            id={"fil-open" + item.scheduleStatus}
+                            value={item.scheduleStatus}
+                            checked={this.state.sscheduleStatusFilterCheckbox.includes(
+                              item.scheduleStatus
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "scheduleStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.scheduleStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.scheduleStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFilterCreatedBy !== null &&
-                    this.state.sortFilterCreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.createdBy}
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "reportStatus"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name={item.reportStatus}
-                          id={"fil-open" + item.reportStatus}
-                          value={item.reportStatus}
-                          checked={this.state.sreportStatusFilterCheckbox.includes(
-                            item.reportStatus
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "reportStatus",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.reportStatus}>
-                          <span className="table-btn table-blue-btn">
-                            {item.reportStatus}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportStatus}
+                            id={"fil-open" + item.reportStatus}
+                            value={item.reportStatus}
+                            checked={this.state.sreportStatusFilterCheckbox.includes(
+                              item.reportStatus
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -3095,7 +3131,8 @@ class Reports extends Component {
                 className="addplusbtnReport"
                 onClick={this.AddScheduler}
               >
-                + {TranslationContext !== undefined
+                +{" "}
+                {TranslationContext !== undefined
                   ? TranslationContext.button.add
                   : "Add"}
               </button>
@@ -3107,7 +3144,7 @@ class Reports extends Component {
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addreport-popup"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
@@ -3160,18 +3197,22 @@ class Reports extends Component {
                 <div className="container reportpad">
                   <div className="row">
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.selectedbrand
-                        : "Selected Brand"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.selectedbrand
+                          : "Selected Brand"}
+                      </label>
                       <select
                         className="store-create-select mt-0"
                         value={this.state.selectBrand}
                         onChange={this.setOnChangeReportData}
                         name="selectBrand"
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.select
-                          : "Select"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
+                        </option>
                         {this.state.brandData !== null &&
                           this.state.brandData.map((item, i) => (
                             <option
@@ -3190,17 +3231,21 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketsource
-                        : "Ticket Source"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.ticketsource
+                          : "Ticket Source"}
+                      </label>
                       <select
                         name="selectedTicketSource"
                         value={this.state.selectedTicketSource}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.label.ticketsource
-                          : "Ticket Source"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.ticketsource
+                            : "Ticket Source"}
+                        </option>
                         {this.state.TicketSourceData !== null &&
                           this.state.TicketSourceData.map((item, i) => (
                             <option key={i} value={item.ticketSourceId}>
@@ -3215,9 +3260,11 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.invosuborderno
-                        : "Invoice No/Sub Order No"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.invosuborderno
+                          : "Invoice No/Sub Order No"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3233,9 +3280,11 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.customeremailid
-                        : "Customer Email Id"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.customeremailid
+                          : "Customer Email Id"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3251,22 +3300,26 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.creationdate
-                        : "Creation Date"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.creationdate
+                          : "Creation Date"}
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.ReportCreateDate}
                           onChange={this.handleReportCreateDate.bind(this)}
-                          placeholderText={TranslationContext !== undefined
-                            ? TranslationContext.label.creationdate
-                            : "Creation Date"}
+                          placeholderText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.creationdate
+                              : "Creation Date"
+                          }
                           showMonthDropdown
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportCreateDate}
 
-                        // className="form-control"
+                          // className="form-control"
                         />
                         {this.state.ReportCreateDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3276,9 +3329,11 @@ class Reports extends Component {
                       </div>
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketidtitle
-                        : "Ticket Id/title"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.ticketidtitle
+                          : "Ticket Id/title"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3294,9 +3349,11 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.itemid
-                        : "Item Id"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.itemid
+                          : "Item Id"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3312,9 +3369,11 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.customermobilenumber
-                        : "Customer Mobile No."}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.customermobilenumber
+                          : "Customer Mobile No."}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3330,21 +3389,25 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.lastupdateddate
-                        : "Last Updated Date"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.lastupdateddate
+                          : "Last Updated Date"}
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.ReportLastDate}
                           onChange={this.handleReportLastDate.bind(this)}
-                          placeholderText={TranslationContext !== undefined
-                            ? TranslationContext.label.lastupdateddate
-                            : "Last Updated Date"}
+                          placeholderText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.lastupdateddate
+                              : "Last Updated Date"
+                          }
                           showMonthDropdown
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportLastDate}
-                        // className="form-control"
+                          // className="form-control"
                         />
                         {this.state.ReportLastDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3354,17 +3417,21 @@ class Reports extends Component {
                       </div>
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.priority
-                        : "Priority"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.priority
+                          : "Priority"}
+                      </label>
                       <select
                         name="selectedPriority"
                         value={this.state.selectedPriority}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.label.priority
-                          : "Priority"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.priority
+                            : "Priority"}
+                        </option>
                         {this.state.TicketPriorityData !== null &&
                           this.state.TicketPriorityData.map((item, i) => (
                             <option key={i} value={item.priorityID}>
@@ -3379,23 +3446,31 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.visitedstore
-                        : "Visited Store"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.visitedstore
+                          : "Visited Store"}
+                      </label>
                       <select
                         name="selectedVisitStore"
                         value={this.state.selectedVisitStore}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="all">{TranslationContext !== undefined
-                          ? TranslationContext.option.all
-                          : "All"}</option>
-                        <option value="yes">{TranslationContext !== undefined
-                          ? TranslationContext.option.yes
-                          : "Yes"}</option>
-                        <option value="no">{TranslationContext !== undefined
-                          ? TranslationContext.option.no
-                          : "No"}</option>
+                        <option value="all">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.all
+                            : "All"}
+                        </option>
+                        <option value="yes">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.yes
+                            : "Yes"}
+                        </option>
+                        <option value="no">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.no
+                            : "No"}
+                        </option>
                       </select>
                       {this.state.selectedVisitStore === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3404,17 +3479,21 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketassignedto
-                        : "Ticket Assigned To"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.ticketassignedto
+                          : "Ticket Assigned To"}
+                      </label>
                       <select
                         name="selectedAssignedTo"
                         value={this.state.selectedAssignedTo}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.selectassignedto
-                          : "Select Assigned To"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selectassignedto
+                            : "Select Assigned To"}
+                        </option>
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
@@ -3432,18 +3511,22 @@ class Reports extends Component {
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.category
-                        : "Category"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.category
+                          : "Category"}
+                      </label>
                       <select
                         className="add-select-category"
                         name="selectedCategory"
                         value={this.state.selectedCategory}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.selectcategory
-                          : "Select Category"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selectcategory
+                            : "Select Category"}
+                        </option>
                         {this.state.CategoryData !== null &&
                           this.state.CategoryData.map((item, i) => (
                             <option key={i} value={item.categoryID}>
@@ -3458,17 +3541,21 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.status
-                        : "Status"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.status
+                          : "Status"}
+                      </label>
                       <select
                         name="selectedTicketStatus"
                         value={this.state.selectedTicketStatus}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.label.status
-                          : "Status"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.status
+                            : "Status"}
+                        </option>
                         {this.state.TicketStatusData !== null &&
                           this.state.TicketStatusData.map((item, i) => (
                             <option key={i} value={item.ticketStatusID}>
@@ -3483,23 +3570,31 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.wanttovisitstore
-                        : "Want To Visit Store"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.wanttovisitstore
+                          : "Want To Visit Store"}
+                      </label>
                       <select
                         name="selectedWantVisitStore"
                         value={this.state.selectedWantVisitStore}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="all">{TranslationContext !== undefined
-                          ? TranslationContext.option.all
-                          : "All"}</option>
-                        <option value="yes">{TranslationContext !== undefined
-                          ? TranslationContext.option.yes
-                          : "Yes"}</option>
-                        <option value="no">{TranslationContext !== undefined
-                          ? TranslationContext.option.no
-                          : "No"}</option>
+                        <option value="all">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.all
+                            : "All"}
+                        </option>
+                        <option value="yes">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.yes
+                            : "Yes"}
+                        </option>
+                        <option value="no">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.no
+                            : "No"}
+                        </option>
                       </select>
                       {this.state.selectedWantVisitStore === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3510,18 +3605,22 @@ class Reports extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.subcategory
-                        : "Sub Category"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.subcategory
+                          : "Sub Category"}
+                      </label>
                       <select
                         className="add-select-category"
                         name="selectedSubCategory"
                         value={this.state.selectedSubCategory}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.selectsubcategory
-                          : "Select Subcategory"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selectsubcategory
+                            : "Select Subcategory"}
+                        </option>
                         {this.state.SubCategoryData !== null &&
                           this.state.SubCategoryData.map((item, i) => (
                             <option key={i} value={item.subCategoryID}>
@@ -3536,17 +3635,21 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.slastatus
-                        : "SLA Status"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.slastatus
+                          : "SLA Status"}
+                      </label>
                       <select
                         name="selectedSLAStatus"
                         value={this.state.selectedSLAStatus}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="0">{TranslationContext !== undefined
-                          ? TranslationContext.label.slastatus
-                          : "SLA Status"}</option>
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.slastatus
+                            : "SLA Status"}
+                        </option>
                         {this.state.SlaDueData !== null &&
                           this.state.SlaDueData.map((item, i) => (
                             <option key={i} value={item.slaDueID}>
@@ -3556,9 +3659,11 @@ class Reports extends Component {
                       </select>
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.visitstorecodeadd
-                        : "Want To Visit Store Code/Addres"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.visitstorecodeadd
+                          : "Want To Visit Store Code/Addres"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3576,18 +3681,22 @@ class Reports extends Component {
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.issuetype
-                        : "Issue Type"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.issuetype
+                          : "Issue Type"}
+                      </label>
                       <select
                         className="add-select-category"
                         name="selectedIssueType"
                         value={this.state.selectedIssueType}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.selectissuetype
-                          : "Select IssueType"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selectissuetype
+                            : "Select IssueType"}
+                        </option>
                         {this.state.IssueTypeData !== null &&
                           this.state.IssueTypeData.map((item, i) => (
                             <option key={i} value={item.issueTypeID}>
@@ -3602,9 +3711,11 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.claimid
-                        : "Claim ID"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.claimid
+                          : "Claim ID"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3620,9 +3731,11 @@ class Reports extends Component {
                       )}
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.purchasestore
-                        : "Purchase Store"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.purchasestore
+                          : "Purchase Store"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3643,37 +3756,49 @@ class Reports extends Component {
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.withclaim
-                        : "With Claim"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.withclaim
+                          : "With Claim"}
+                      </label>
                       <select
                         name="selectedWithClaim"
                         value={this.state.selectedWithClaim}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="no">{TranslationContext !== undefined
-                          ? TranslationContext.option.no
-                          : "No"}</option>
-                        <option value="yes">{TranslationContext !== undefined
-                          ? TranslationContext.option.yes
-                          : "Yes"}</option>
+                        <option value="no">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.no
+                            : "No"}
+                        </option>
+                        <option value="yes">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.yes
+                            : "Yes"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-3 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.withtask
-                        : "With Task"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.withtask
+                          : "With Task"}
+                      </label>
                       <select
                         name="selectedWithTaskAll"
                         value={this.state.selectedWithTaskAll}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="no">{TranslationContext !== undefined
-                          ? TranslationContext.option.no
-                          : "No"}</option>
-                        <option value="yes">{TranslationContext !== undefined
-                          ? TranslationContext.option.yes
-                          : "Yes"}</option>
+                        <option value="no">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.no
+                            : "No"}
+                        </option>
+                        <option value="yes">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.yes
+                            : "Yes"}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -3682,17 +3807,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithClaim === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.claimstatus
-                            : "Claim Status"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claimstatus
+                              : "Claim Status"}
+                          </label>
                           <select
                             name="selectedClaimStatus"
                             value={this.state.selectedClaimStatus}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.claimstatus
-                              : "Claim Status"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimstatus
+                                : "Claim Status"}
+                            </option>
                             {this.state.ClaimStatusData !== null &&
                               this.state.ClaimStatusData.map((item, i) => (
                                 <option key={i} value={item.claimStatusID}>
@@ -3712,17 +3841,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithTaskAll === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.taskstatus
-                            : "Task Status"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.taskstatus
+                              : "Task Status"}
+                          </label>
                           <select
                             name="selectedTaskStatus"
                             value={this.state.selectedTaskStatus}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.taskstatus
-                              : "Task Status"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.taskstatus
+                                : "Task Status"}
+                            </option>
                             {this.state.TaskStatusData !== null &&
                               this.state.TaskStatusData.map((item, i) => (
                                 <option key={i} value={item.taskStatusID}>
@@ -3744,17 +3877,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithClaim === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.claimcategory
-                            : "Claim Category"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claimcategory
+                              : "Claim Category"}
+                          </label>
                           <select
                             name="selectedClaimCategory"
                             value={this.state.selectedClaimCategory}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.claimcategory
-                              : "Claim Category"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimcategory
+                                : "Claim Category"}
+                            </option>
                             {this.state.CategoryData !== null &&
                               this.state.CategoryData.map((item, i) => (
                                 <option key={i} value={item.categoryID}>
@@ -3773,17 +3910,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithTaskAll === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.taskpriority
-                            : "Task Priority"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.taskpriority
+                              : "Task Priority"}
+                          </label>
                           <select
                             name="selectedTaskPriority"
                             value={this.state.selectedTaskPriority}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.taskpriority
-                              : "Task Priority"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.taskpriority
+                                : "Task Priority"}
+                            </option>
                             {this.state.TicketPriorityData !== null &&
                               this.state.TicketPriorityData.map((item, i) => (
                                 <option key={i} value={item.priorityID}>
@@ -3805,17 +3946,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithClaim === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.claimsubcategory
-                            : "Claim Sub Category"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claimsubcategory
+                              : "Claim Sub Category"}
+                          </label>
                           <select
                             name="selectedClaimSubCategory"
                             value={this.state.selectedClaimSubCategory}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.claimsubcategory
-                              : "Claim Sub Category"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimsubcategory
+                                : "Claim Sub Category"}
+                            </option>
                             {this.state.SubCategoryData !== null &&
                               this.state.SubCategoryData.map((item, i) => (
                                 <option key={i} value={item.subCategoryID}>
@@ -3834,17 +3979,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithTaskAll === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.taskdepartment
-                            : "Task Department"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.taskdepartment
+                              : "Task Department"}
+                          </label>
                           <select
                             name="selectedDepartment"
                             value={this.state.selectedDepartment}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.taskdepartment
-                              : "Task Department"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.taskdepartment
+                                : "Task Department"}
+                            </option>
                             {this.state.DepartmentData !== null &&
                               this.state.DepartmentData.map((item, i) => (
                                 <option key={i} value={item.departmentID}>
@@ -3866,17 +4015,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithClaim === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.claimissuetype
-                            : "Claim Issue Type"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claimissuetype
+                              : "Claim Issue Type"}
+                          </label>
                           <select
                             name="selectedClaimIssueType"
                             value={this.state.selectedClaimIssueType}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.claimissuetype
-                              : "Claim Issue Type"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimissuetype
+                                : "Claim Issue Type"}
+                            </option>
                             {this.state.IssueTypeData !== null &&
                               this.state.IssueTypeData.map((item, i) => (
                                 <option key={i} value={item.issueTypeID}>
@@ -3895,17 +4048,21 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       {this.state.selectedWithTaskAll === "yes" ? (
                         <>
-                          <label>{TranslationContext !== undefined
-                            ? TranslationContext.label.taskfunction
-                            : "Task Function"}</label>
+                          <label>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.taskfunction
+                              : "Task Function"}
+                          </label>
                           <select
                             name="selectedFunction"
                             value={this.state.selectedFunction}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>{TranslationContext !== undefined
-                              ? TranslationContext.label.taskfunction
-                              : "Task Function"}</option>
+                            <option>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.taskfunction
+                                : "Task Function"}
+                            </option>
                             {this.state.FunctionData !== null &&
                               this.state.FunctionData.map((item, i) => (
                                 <option key={i} value={item.functionID}>
@@ -3942,89 +4099,119 @@ class Reports extends Component {
                 <div className="container reportpad">
                   <div className="row">
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.chatid
-                        : "Chat Id"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatid
+                          : "Chat Id"}
+                      </label>
                       <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.chatstatusremark
-                        : "Chat Status Remark"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatstatusremark
+                          : "Chat Status Remark"}
+                      </label>
                       <select>
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.onchatresolution
-                          : "On Chat Resolution"}</option>
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.resolution
-                          : "Resolution"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.onchatresolution
+                            : "On Chat Resolution"}
+                        </option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.resolution
+                            : "Resolution"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.chatratings
-                        : "Chat Ratings"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatratings
+                          : "Chat Ratings"}
+                      </label>
                       <select>
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.good
-                          : "Good"}</option>
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.bad
-                          : "Bad"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.good
+                            : "Good"}
+                        </option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.bad
+                            : "Bad"}
+                        </option>
                       </select>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.chatdate
-                        : "Chat Date"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatdate
+                          : "Chat Date"}
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.ChatDate}
                           onChange={this.handleChatDate.bind(this)}
-                          placeholderText={TranslationContext !== undefined
-                            ? TranslationContext.label.chatdate
-                            : "Chat Date"}
+                          placeholderText={
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.chatdate
+                              : "Chat Date"
+                          }
                           showMonthDropdown
                           showYearDropdown
-                        // className="form-control"
+                          // className="form-control"
                         />
                         {/* <input className="no-bg" type="text" /> */}
                       </div>
                     </div>
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketid
-                        : "Ticket ID"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.ticketid
+                          : "Ticket ID"}
+                      </label>
                       <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.customeremailid
-                        : "Customer Email ID"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.customeremailid
+                          : "Customer Email ID"}
+                      </label>
                       <input className="no-bg" type="text" maxLength={100} />
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.chatstatus
-                        : "Chat Status"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatstatus
+                          : "Chat Status"}
+                      </label>
                       <select>
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.chatstart
-                          : "Chat Start"}</option>
-                        <option>{TranslationContext !== undefined
-                          ? TranslationContext.option.chatend
-                          : "Chat End"}</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.chatstart
+                            : "Chat Start"}
+                        </option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.chatend
+                            : "Chat End"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketreport">
-                      <label>{TranslationContext !== undefined
-                        ? TranslationContext.label.chatassignedto
-                        : "Chat Assigned To"}</label>
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatassignedto
+                          : "Chat Assigned To"}
+                      </label>
                       <select>
                         <option>Naman</option>
                         <option>Naman R.</option>
@@ -4060,7 +4247,7 @@ class Reports extends Component {
               modal: "schedule-width",
             }}
             overlayId="logout-ovrly"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="" id="EmailID">
               <div className="total-tic-title">
@@ -4108,8 +4295,8 @@ class Reports extends Component {
                     spin
                   />
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
                 <label className="addLable">
                   {this.state.loadingDownload ? "Please Wait ..." : "Send"}
                 </label>
@@ -4131,7 +4318,7 @@ class Reports extends Component {
               modal: "schedule-width",
             }}
             overlayId="logout-ovrly"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="" id="TotalTicketCreated">
               <div className="total-tic-title">
@@ -4151,9 +4338,11 @@ class Reports extends Component {
                         (option) => option.userID //id
                       }
                       options={this.state.AssignToData}
-                      placeholder={TranslationContext !== undefined
-                        ? TranslationContext.p.teammember
-                        : "Team Member"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.p.teammember
+                          : "Team Member"
+                      }
                       // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       onChange={this.setDefaultTeamMember.bind(this)}
@@ -4179,9 +4368,11 @@ class Reports extends Component {
                         (option) => option.ticketStatusID //id
                       }
                       options={this.state.TicketStatusData}
-                      placeholder={TranslationContext !== undefined
-                        ? TranslationContext.div.ticketstatus
-                        : "Ticket Status"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.div.ticketstatus
+                          : "Ticket Status"
+                      }
                       // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       onChange={this.setDefaultMutiStatus.bind(this)}
@@ -4208,9 +4399,11 @@ class Reports extends Component {
                   <DatePicker
                     selected={this.state.TicketClosedFrom}
                     onChange={this.handleTicketClosedFrom.bind(this)}
-                    placeholderText={TranslationContext !== undefined
-                      ? TranslationContext.div.ticketclosedfrom
-                      : "Ticket Closed From"}
+                    placeholderText={
+                      TranslationContext !== undefined
+                        ? TranslationContext.div.ticketclosedfrom
+                        : "Ticket Closed From"
+                    }
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4234,9 +4427,11 @@ class Reports extends Component {
                   <DatePicker
                     selected={this.state.TicketClosedTo}
                     onChange={this.handleTicketClosedTo.bind(this)}
-                    placeholderText={TranslationContext !== undefined
-                      ? TranslationContext.div.ticketclosedto
-                      : "Ticket Closed To"}
+                    placeholderText={
+                      TranslationContext !== undefined
+                        ? TranslationContext.div.ticketclosedto
+                        : "Ticket Closed To"
+                    }
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4257,9 +4452,11 @@ class Reports extends Component {
                   <DatePicker
                     selected={this.state.TicketCreatedFromDate}
                     onChange={this.handleTicketCreateDate.bind(this)}
-                    placeholderText={TranslationContext !== undefined
-                      ? TranslationContext.p.createddate
-                      : "Creation Date"}
+                    placeholderText={
+                      TranslationContext !== undefined
+                        ? TranslationContext.p.createddate
+                        : "Creation Date"
+                    }
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
@@ -4280,15 +4477,17 @@ class Reports extends Component {
                   <DatePicker
                     selected={this.state.TicketCreatedEndDate}
                     onChange={this.handleTicketCreateToDate.bind(this)}
-                    placeholderText={TranslationContext !== undefined
-                      ? TranslationContext.div.todate
-                      : "To Date"}
+                    placeholderText={
+                      TranslationContext !== undefined
+                        ? TranslationContext.div.todate
+                        : "To Date"
+                    }
                     showMonthDropdown
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
                     value={this.state.TicketCreatedEndDate}
 
-                  // className="form-control"
+                    // className="form-control"
                   />
                 </div>
                 <span
@@ -4308,9 +4507,11 @@ class Reports extends Component {
                       (option) => option.ticketSourceId //id
                     }
                     options={this.state.TicketSourceData}
-                    placeholder={TranslationContext !== undefined
-                      ? TranslationContext.div.ticketsource
-                      : "Ticket Source"}
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.div.ticketsource
+                        : "Ticket Source"
+                    }
                     // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setCreatedTicketSource.bind(this)}
@@ -4337,9 +4538,11 @@ class Reports extends Component {
                     value={this.state.selectedDefaultTicketStatus}
                     onChange={this.setDefaultTicketStatus}
                   >
-                    <option>{TranslationContext !== undefined
-                      ? TranslationContext.div.status
-                      : "Status"}</option>
+                    <option>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.div.status
+                        : "Status"}
+                    </option>
                     {this.state.TicketStatusData !== null &&
                       this.state.TicketStatusData.map((item, i) => (
                         <option key={i} value={item.ticketStatusID}>
@@ -4373,14 +4576,16 @@ class Reports extends Component {
                     spin
                   />
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
                 <label className="addLable">
-                  {this.state.loadingDownload ? TranslationContext !== undefined
-                    ? TranslationContext.tip.pleasewait
-                    : "Please Wait ..." : TranslationContext !== undefined
-                      ? TranslationContext.button.download
-                      : "Download"}
+                  {this.state.loadingDownload
+                    ? TranslationContext !== undefined
+                      ? TranslationContext.tip.pleasewait
+                      : "Please Wait ..."
+                    : TranslationContext !== undefined
+                    ? TranslationContext.button.download
+                    : "Download"}
                 </label>
               </button>
             </div>
@@ -4398,13 +4603,15 @@ class Reports extends Component {
             onClose={this.handleNextPopupClose}
             closeIconId="sdsg"
             modalId="nextbuttonpopup"
-          // overlayId="logout-ovrly"
+            // overlayId="logout-ovrly"
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
-                <label className="reportdetail">{TranslationContext !== undefined
-                  ? TranslationContext.label.enterreportdetails
-                  : "Enter Report Details"}</label>
+                <label className="reportdetail">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.enterreportdetails
+                    : "Enter Report Details"}
+                </label>
                 <img
                   src={CancelImg}
                   alt="CancelImg"
@@ -4415,9 +4622,11 @@ class Reports extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="totalresultcircle">
-                    <label className="totalresult">{TranslationContext !== undefined
-                      ? TranslationContext.label.totalresult
-                      : "Total Result"}</label>
+                    <label className="totalresult">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.totalresult
+                        : "Total Result"}
+                    </label>
                     <span className="totalresultnumber">
                       {this.state.totalResultCount}
                     </span>
@@ -4425,15 +4634,19 @@ class Reports extends Component {
                 </div>
                 <div className="col-md-6 rname">
                   <div className="ranmetext">
-                    <label className="renametext">{TranslationContext !== undefined
-                      ? TranslationContext.label.reportname
-                      : "Report Name"}</label>
+                    <label className="renametext">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.reportname
+                        : "Report Name"}
+                    </label>
                     <input
                       className="no-bg"
                       type="text"
-                      placeholder={TranslationContext !== undefined
-                        ? TranslationContext.label.reportname
-                        : "Report Name"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.reportname
+                          : "Report Name"
+                      }
                       maxLength={25}
                       name="selectedReportName"
                       value={this.state.selectedReportName}
@@ -4461,9 +4674,11 @@ class Reports extends Component {
                   >
                     <div>
                       <label>
-                        <b>{TranslationContext !== undefined
-                          ? TranslationContext.b.scheduledateto
-                          : "Schedule date to"}</b>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.scheduledateto
+                            : "Schedule date to"}
+                        </b>
                       </label>
                       <div>
                         <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -4473,9 +4688,11 @@ class Reports extends Component {
                               (option) => option.userID //id
                             }
                             options={this.state.AssignToData}
-                            placeholder={TranslationContext !== undefined
-                              ? TranslationContext.p.teammember
-                              : "Team Member"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.p.teammember
+                                : "Team Member"
+                            }
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
                             onChange={this.setTeamMember.bind(this)}
@@ -4498,205 +4715,282 @@ class Reports extends Component {
                             ))}
                         </select>
                         {this.state.selectScheduleDate === "230" ||
-                          this.state.selectScheduleDate === 230 ? (
-                            <div className="ScheduleDate-to">
-                              <span>
-                                <label className="every1">{TranslationContext !== undefined
+                        this.state.selectScheduleDate === 230 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">
+                                {TranslationContext !== undefined
                                   ? TranslationContext.label.every
-                                  : "Every"}</label>
-                                <input
-                                  type="text"
-                                  className="Every"
-                                  placeholder="1"
-                                  name="selectedNoOfDay"
-                                  value={this.state.selectedNoOfDay}
-                                  onChange={this.setOnChangeReportData}
-                                />
-                                <label className="every1">{TranslationContext !== undefined
+                                  : "Every"}
+                              </label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                name="selectedNoOfDay"
+                                value={this.state.selectedNoOfDay}
+                                onChange={this.setOnChangeReportData}
+                              />
+                              <label className="every1">
+                                {TranslationContext !== undefined
                                   ? TranslationContext.label.day
-                                  : "Day"}</label>
-                              </span>
-                            </div>
-                          ) : null}
+                                  : "Day"}
+                              </label>
+                            </span>
+                          </div>
+                        ) : null}
                         {this.state.selectScheduleDate === "231" ||
-                          this.state.selectScheduleDate === 231 ? (
-                            <div className="ScheduleDate-to">
-                              <span>
-                                <label className="every1">{TranslationContext !== undefined
+                        this.state.selectScheduleDate === 231 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">
+                                {TranslationContext !== undefined
                                   ? TranslationContext.label.every
-                                  : "Every"}</label>
-                                <input
-                                  type="text"
-                                  className="Every"
-                                  placeholder="1"
-                                  value={this.state.selectedNoOfWeek}
-                                  onChange={this.handleWeekly}
-                                />
-                                <label className="every1">{TranslationContext !== undefined
+                                  : "Every"}
+                              </label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfWeek}
+                                onChange={this.handleWeekly}
+                              />
+                              <label className="every1">
+                                {TranslationContext !== undefined
                                   ? TranslationContext.label.weekon
-                                  : "Week on"}</label>
-                              </span>
-                              <div
+                                  : "Week on"}
+                              </label>
+                            </span>
+                            <div
+                              style={{
+                                marginTop: "10px",
+                              }}
+                            >
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Mon"
+                                id="Mon"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.mon
+                                  : "Mon"}
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Tue"
+                                id="Tue"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.tue
+                                  : "Tue"}
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Wed"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.wed
+                                  : "Wed"}
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Thu"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.thu
+                                  : "Thu"}
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Fri"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.fri
+                                  : "Fri"}
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Sat"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.sat
+                                  : "Sat"}
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Sun"
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.checkbox.sun
+                                  : "Sun"}
+                              </Checkbox>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "232" ||
+                        this.state.selectScheduleDate === 232 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.day
+                                  : "Day"}
+                              </label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="9"
+                                value={this.state.selectedNoOfDaysForMonth}
+                                onChange={this.handleDaysForMonth}
+                              />
+                              <label className="every1">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.ofevery
+                                  : "of every"}
+                              </label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfMonthForMonth}
+                                onChange={this.handleMonthForMonth}
+                              />
+                              <label className="every1">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.months
+                                  : "months"}
+                              </label>
+                            </span>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "233" ||
+                        this.state.selectScheduleDate === 233 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.every
+                                  : "Every"}
+                              </label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                onChange={this.handleMonthForWeek}
+                                value={this.state.selectedNoOfMonthForWeek}
+                              />
+                              <label className="every1">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.monthonthe
+                                  : "month on the"}
+                              </label>
+                            </span>
+                            <div className="row mt-3">
+                              <div className="col-md-6">
+                                <select
+                                  id="inputState"
+                                  className="form-control dropdown-setting1"
+                                  onChange={this.handleWeekForWeek}
+                                  value={this.state.selectedNoOfWeekForWeek}
+                                >
+                                  <option value="0">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.select
+                                      : "Select"}
+                                  </option>
+                                  <option value="2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.second
+                                      : "Second"}
+                                  </option>
+                                  <option value="4">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.fourth
+                                      : "Four"}
+                                  </option>
+                                </select>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.days}
+                                    getOptionValue={
+                                      (option) => option.days //id
+                                    }
+                                    options={this.state.NameOfDayForWeek}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.option.select
+                                        : "Select"
+                                    }
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfDayForWeek.bind(
+                                      this
+                                    )}
+                                    value={this.state.selectedNameOfDayForWeek}
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "234" ||
+                        this.state.selectScheduleDate === 234 ? (
+                          <div className="ScheduleDate-to">
+                            <div className="row m-0">
+                              <label
+                                className="every1"
                                 style={{
-                                  marginTop: "10px",
+                                  lineHeight: "40px",
                                 }}
                               >
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Mon"
-                                  id="Mon"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.mon
-                                    : "Mon"}
-                                </Checkbox>
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Tue"
-                                  id="Tue"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.tue
-                                    : "Tue"}
-                                </Checkbox>
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Wed"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.wed
-                                    : "Wed"}
-                                </Checkbox>
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Thu"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.thu
-                                    : "Thu"}
-                                </Checkbox>
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Fri"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.fri
-                                    : "Fri"}
-                                </Checkbox>
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Sat"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.sat
-                                    : "Sat"}
-                                </Checkbox>
-                                <Checkbox
-                                  onChange={this.handleWeeklyDays}
-                                  value="Sun"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.checkbox.sun
-                                    : "Sun"}
-                                </Checkbox>
-                              </div>
-                            </div>
-                          ) : null}
-                        {this.state.selectScheduleDate === "232" ||
-                          this.state.selectScheduleDate === 232 ? (
-                            <div className="ScheduleDate-to">
-                              <span>
-                                <label className="every1">{TranslationContext !== undefined
-                                  ? TranslationContext.label.day
-                                  : "Day"}</label>
-                                <input
-                                  type="text"
-                                  className="Every"
-                                  placeholder="9"
-                                  value={this.state.selectedNoOfDaysForMonth}
-                                  onChange={this.handleDaysForMonth}
-                                />
-                                <label className="every1">{TranslationContext !== undefined
-                                  ? TranslationContext.label.ofevery
-                                  : "of every"}</label>
-                                <input
-                                  type="text"
-                                  className="Every"
-                                  placeholder="1"
-                                  value={this.state.selectedNoOfMonthForMonth}
-                                  onChange={this.handleMonthForMonth}
-                                />
-                                <label className="every1">{TranslationContext !== undefined
-                                  ? TranslationContext.label.months
-                                  : "months"}</label>
-                              </span>
-                            </div>
-                          ) : null}
-                        {this.state.selectScheduleDate === "233" ||
-                          this.state.selectScheduleDate === 233 ? (
-                            <div className="ScheduleDate-to">
-                              <span>
-                                <label className="every1">{TranslationContext !== undefined
-                                  ? TranslationContext.label.every
-                                  : "Every"}</label>
-                                <input
-                                  type="text"
-                                  className="Every"
-                                  placeholder="1"
-                                  onChange={this.handleMonthForWeek}
-                                  value={this.state.selectedNoOfMonthForWeek}
-                                />
-                                <label className="every1">{TranslationContext !== undefined
-                                  ? TranslationContext.label.monthonthe
-                                  : "month on the"}</label>
-                              </span>
-                              <div className="row mt-3">
-                                <div className="col-md-6">
-                                  <select
-                                    id="inputState"
-                                    className="form-control dropdown-setting1"
-                                    onChange={this.handleWeekForWeek}
-                                    value={this.state.selectedNoOfWeekForWeek}
-                                  >
-                                    <option value="0">{TranslationContext !== undefined
-                                      ? TranslationContext.option.select
-                                      : "Select"}</option>
-                                    <option value="2">{TranslationContext !== undefined
-                                      ? TranslationContext.option.second
-                                      : "Second"}</option>
-                                    <option value="4">{TranslationContext !== undefined
-                                      ? TranslationContext.option.fourth
-                                      : "Four"}</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                    <Select
-                                      getOptionLabel={(option) => option.days}
-                                      getOptionValue={
-                                        (option) => option.days //id
-                                      }
-                                      options={this.state.NameOfDayForWeek}
-                                      placeholder={TranslationContext !== undefined
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.on
+                                  : "on"}
+                              </label>
+                              <div className="col-md-7">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.month}
+                                    getOptionValue={
+                                      (option) => option.month //id
+                                    }
+                                    options={this.state.NameOfMonthForYear}
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.option.select
-                                        : "Select"}
-                                      // menuIsOpen={true}
-                                      closeMenuOnSelect={false}
-                                      onChange={this.setNameOfDayForWeek.bind(
-                                        this
-                                      )}
-                                      value={this.state.selectedNameOfDayForWeek}
-                                      // showNewOptionAtTop={false}
-                                      isMulti
-                                    />
-                                  </div>
+                                        : "Select"
+                                    }
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfMonthForYear.bind(
+                                      this
+                                    )}
+                                    value={
+                                      this.state.selectedNameOfMonthForYear
+                                    }
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
                                 </div>
                               </div>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfDayForDailyYear}
+                                onChange={this.handleDayForYear}
+                              />
                             </div>
-                          ) : null}
-                        {this.state.selectScheduleDate === "234" ||
-                          this.state.selectScheduleDate === 234 ? (
-                            <div className="ScheduleDate-to">
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "235" ||
+                        this.state.selectScheduleDate === 235 ? (
+                          <div className="ScheduleDate-to">
+                            <span>
                               <div className="row m-0">
                                 <label
                                   className="every1"
@@ -4705,139 +4999,100 @@ class Reports extends Component {
                                   }}
                                 >
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.label.on
-                                    : "on"}
+                                    ? TranslationContext.label.onthe
+                                    : "on the"}
                                 </label>
                                 <div className="col-md-7">
-                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                    <Select
-                                      getOptionLabel={(option) => option.month}
-                                      getOptionValue={
-                                        (option) => option.month //id
-                                      }
-                                      options={this.state.NameOfMonthForYear}
-                                      placeholder={TranslationContext !== undefined
-                                        ? TranslationContext.option.select
-                                        : "Select"}
-                                      // menuIsOpen={true}
-                                      closeMenuOnSelect={false}
-                                      onChange={this.setNameOfMonthForYear.bind(
-                                        this
-                                      )}
-                                      value={
-                                        this.state.selectedNameOfMonthForYear
-                                      }
-                                      // showNewOptionAtTop={false}
-                                      isMulti
-                                    />
-                                  </div>
-                                </div>
-                                <input
-                                  type="text"
-                                  className="Every"
-                                  placeholder="1"
-                                  value={this.state.selectedNoOfDayForDailyYear}
-                                  onChange={this.handleDayForYear}
-                                />
-                              </div>
-                            </div>
-                          ) : null}
-                        {this.state.selectScheduleDate === "235" ||
-                          this.state.selectScheduleDate === 235 ? (
-                            <div className="ScheduleDate-to">
-                              <span>
-                                <div className="row m-0">
-                                  <label
-                                    className="every1"
-                                    style={{
-                                      lineHeight: "40px",
-                                    }}
+                                  <select
+                                    id="inputState"
+                                    className="form-control dropdown-setting1"
+                                    onChange={this.handleWeekForYear}
+                                    value={this.state.selectedNoOfWeekForYear}
                                   >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.onthe
-                                      : "on the"}
-                                  </label>
-                                  <div className="col-md-7">
-                                    <select
-                                      id="inputState"
-                                      className="form-control dropdown-setting1"
-                                      onChange={this.handleWeekForYear}
-                                      value={this.state.selectedNoOfWeekForYear}
-                                    >
-                                      <option value="0">{TranslationContext !== undefined
+                                    <option value="0">
+                                      {TranslationContext !== undefined
                                         ? TranslationContext.option.select
-                                        : "Select"}</option>
-                                      <option value="2">{TranslationContext !== undefined
+                                        : "Select"}
+                                    </option>
+                                    <option value="2">
+                                      {TranslationContext !== undefined
                                         ? TranslationContext.option.second
-                                        : "Second"}</option>
-                                      <option value="4">{TranslationContext !== undefined
+                                        : "Second"}
+                                    </option>
+                                    <option value="4">
+                                      {TranslationContext !== undefined
                                         ? TranslationContext.option.fourth
-                                        : "Four"}</option>
-                                    </select>
-                                  </div>
+                                        : "Four"}
+                                    </option>
+                                  </select>
                                 </div>
-                              </span>
-                              <div className="row mt-3">
-                                <div className="col-md-5">
-                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                    <Select
-                                      getOptionLabel={(option) => option.days}
-                                      getOptionValue={
-                                        (option) => option.days //id
-                                      }
-                                      options={this.state.NameOfDayForYear}
-                                      placeholder={TranslationContext !== undefined
+                              </div>
+                            </span>
+                            <div className="row mt-3">
+                              <div className="col-md-5">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.days}
+                                    getOptionValue={
+                                      (option) => option.days //id
+                                    }
+                                    options={this.state.NameOfDayForYear}
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.option.select
-                                        : "Select"}
-                                      // menuIsOpen={true}
-                                      closeMenuOnSelect={false}
-                                      onChange={this.setNameOfDayForYear.bind(
-                                        this
-                                      )}
-                                      value={this.state.selectedNameOfDayForYear}
-                                      // showNewOptionAtTop={false}
-                                      isMulti
-                                    />
-                                  </div>
+                                        : "Select"
+                                    }
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfDayForYear.bind(
+                                      this
+                                    )}
+                                    value={this.state.selectedNameOfDayForYear}
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
                                 </div>
-                                <label
-                                  className="every1"
-                                  style={{
-                                    lineHeight: "40px",
-                                    marginLeft: "14px",
-                                  }}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.to
-                                    : "to"}
-                                </label>
-                                <div className="col-md-5">
-                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                    <Select
-                                      getOptionLabel={(option) => option.month}
-                                      getOptionValue={
-                                        (option) => option.month //id
-                                      }
-                                      options={this.state.NameOfMonthForDailyYear}
-                                      placeholder={TranslationContext !== undefined
+                              </div>
+                              <label
+                                className="every1"
+                                style={{
+                                  lineHeight: "40px",
+                                  marginLeft: "14px",
+                                }}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.to
+                                  : "to"}
+                              </label>
+                              <div className="col-md-5">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={(option) => option.month}
+                                    getOptionValue={
+                                      (option) => option.month //id
+                                    }
+                                    options={this.state.NameOfMonthForDailyYear}
+                                    placeholder={
+                                      TranslationContext !== undefined
                                         ? TranslationContext.option.select
-                                        : "Select"}
-                                      // menuIsOpen={true}
-                                      closeMenuOnSelect={false}
-                                      onChange={this.setNameOfMonthForDailyYear.bind(
-                                        this
-                                      )}
-                                      value={
-                                        this.state.selectedNameOfMonthForDailyYear
-                                      }
-                                      // showNewOptionAtTop={false}
-                                      isMulti
-                                    />
-                                  </div>
+                                        : "Select"
+                                    }
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfMonthForDailyYear.bind(
+                                      this
+                                    )}
+                                    value={
+                                      this.state.selectedNameOfMonthForDailyYear
+                                    }
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
                                 </div>
                               </div>
                             </div>
-                          ) : null}
+                          </div>
+                        ) : null}
 
                         {/* <input
                                       type="text"
@@ -4897,6 +5152,7 @@ class Reports extends Component {
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
               ) : (
+                <div className="settings-align">
                   <ReactTable
                     data={datareport}
                     columns={[
@@ -4970,19 +5226,21 @@ class Reports extends Component {
                                 {row.original.createdBy}
                                 <Popover
                                   content={
-                                    <>
+                                    <div className="settings-created-by-popover">
                                       <div>
                                         <b>
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.createdby
-                                              : "Created By"}: {row.original.createdBy}
+                                              : "Created By"}
+                                            : {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.createddate
-                                            : "Created Date"}: {row.original.createdDate}
+                                            : "Created Date"}
+                                          : {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
@@ -4990,17 +5248,18 @@ class Reports extends Component {
                                           <p className="title">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p.updatedby
-                                              : "Updated By"}: {row.original.modifiedBy}
+                                              : "Updated By"}
+                                            : {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p.updateddate
-                                            : "Updated Date"}:{" "}
-                                          {row.original.modifiedDate}
+                                            : "Updated Date"}
+                                          : {row.original.modifiedDate}
                                         </p>
                                       </div>
-                                    </>
+                                    </div>
                                   }
                                   placement="bottom"
                                 >
@@ -5038,9 +5297,13 @@ class Reports extends Component {
                         accessor: "reportStatus",
                       },
                       {
-                        Header: <span>{TranslationContext !== undefined
-                          ? TranslationContext.span.action
-                          : "Actions"}</span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.action
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actionReport",
                         sortable: false,
                         Cell: (row) => (
@@ -5063,71 +5326,74 @@ class Reports extends Component {
                               {row.original.scheduleID == 0 ? (
                                 ""
                               ) : (
-                                  <Popover
-                                    content={
-                                      <div className="samdel d-flex general-popover popover-body">
-                                        <div className="del-big-icon">
-                                          <img src={DelBigIcon} alt="del-icon" />
-                                        </div>
-                                        <div>
-                                          <p className="font-weight-bold blak-clr">
+                                <Popover
+                                  content={
+                                    <div className="samdel d-flex general-popover popover-body">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file?"}
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousuredeletefile
+                                            : "Are you sure you want to delete this file?"}
+                                        </p>
+                                        <div className="del-can">
+                                          <a>
                                             {TranslationContext !== undefined
-                                              ? TranslationContext.p.deletefile
-                                              : "Delete file?"}
-                                          </p>
-                                          <p className="mt-1 fs-12">
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.p.areyousuredeletefile
-                                              : "Are you sure you want to delete this file?"}
-                                          </p>
-                                          <div className="del-can">
-                                            <a>{TranslationContext !== undefined
                                               ? TranslationContext.a.cancel
-                                              : "CANCEL"}</a>
-                                            <button
-                                              className="butn"
-                                              onClick={this.handleDeleteReport.bind(
-                                                this,
-                                                row.original.reportID
-                                              )}
-                                            >
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.button.delete
-                                                : "Delete"}
-                                            </button>
-                                          </div>
+                                              : "CANCEL"}
+                                          </a>
+                                          <button
+                                            className="butn"
+                                            onClick={this.handleDeleteReport.bind(
+                                              this,
+                                              row.original.reportID
+                                            )}
+                                          >
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
+                                          </button>
                                         </div>
                                       </div>
-                                    }
-                                    placement="bottom"
-                                    trigger="click"
-                                  >
-                                    <img
-                                      src={RedDeleteIcon}
-                                      alt="del-icon"
-                                      className="del-btn"
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
                                     // onClick={() => this.show(this, "samdel" + ids)}
-                                    />
-                                  </Popover>
-                                )}
+                                  />
+                                </Popover>
+                              )}
                             </div>
                             <div>
                               {row.original.scheduleID == 0 ? (
                                 ""
                               ) : (
-                                  <button
-                                    className="react-tabel-button editre"
-                                    id="p-edit-pop-2"
-                                    onClick={this.handleEditReport.bind(
-                                      this,
-                                      row.original
-                                    )}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.edit
-                                      : "EDIT"}
-                                  </button>
-                                )}
+                                <button
+                                  className="react-tabel-button editre"
+                                  id="p-edit-pop-2"
+                                  onClick={this.handleEditReport.bind(
+                                    this,
+                                    row.original
+                                  )}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.edit
+                                    : "EDIT"}
+                                </button>
+                              )}
                             </div>
                           </div>
                         ),
@@ -5138,7 +5404,8 @@ class Reports extends Component {
                     showPagination={true}
                     minRows={1}
                   />
-                )}
+                </div>
+              )}
               {/* <div className="position-relative">
                 <div className="pagi">
                   <ul>

@@ -46,16 +46,24 @@ const Content = (props) => {
   return (
     <div className="edtpadding">
       <label className="popover-header-text">
-        {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.label.editbrand : "EDIT BRAND"}
+        {props.edittranslatelangCompulsion !== undefined
+          ? props.edittranslatelangCompulsion.label.editbrand
+          : "EDIT BRAND"}
       </label>
       <div className="pop-over-div">
         <label className="edit-label-1">
-          {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.label.brandcode : "Brand Code"}
+          {props.edittranslatelangCompulsion !== undefined
+            ? props.edittranslatelangCompulsion.label.brandcode
+            : "Brand Code"}
         </label>
         <input
           type="text"
           className="txt-edit-popover"
-          placeholder={props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.placeholder.enterbrandcode : "Enter Brand Code"}
+          placeholder={
+            props.edittranslatelangCompulsion !== undefined
+              ? props.edittranslatelangCompulsion.placeholder.enterbrandcode
+              : "Enter Brand Code"
+          }
           maxLength={10}
           name="brand_Code"
           value={brandCode}
@@ -69,12 +77,18 @@ const Content = (props) => {
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">
-          {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.label.brandname : "Brand Name"}
+          {props.edittranslatelangCompulsion !== undefined
+            ? props.edittranslatelangCompulsion.label.brandname
+            : "Brand Name"}
         </label>
         <input
           type="text"
           className="txt-edit-popover"
-          placeholder={props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.placeholder.enterbrandname : "Enter Brand Name"}
+          placeholder={
+            props.edittranslatelangCompulsion !== undefined
+              ? props.edittranslatelangCompulsion.placeholder.enterbrandname
+              : "Enter Brand Name"
+          }
           maxLength={25}
           name="brand_name"
           value={brandName}
@@ -88,7 +102,9 @@ const Content = (props) => {
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">
-          {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.label.status : "Status"}
+          {props.edittranslatelangCompulsion !== undefined
+            ? props.edittranslatelangCompulsion.label.status
+            : "Status"}
         </label>
         <select
           className="edit-dropDwon dropdown-setting"
@@ -97,7 +113,9 @@ const Content = (props) => {
           onChange={(e) => setStatusValue(e.target.value)}
         >
           <option>
-            {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.option.select : "select"}
+            {props.edittranslatelangCompulsion !== undefined
+              ? props.edittranslatelangCompulsion.option.select
+              : "select"}
           </option>
           {props.activeData !== null &&
             props.activeData.map((item, j) => (
@@ -115,7 +133,9 @@ const Content = (props) => {
       <br />
       <div>
         <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-          {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.a.cancel : "CANCEL"}
+          {props.edittranslatelangCompulsion !== undefined
+            ? props.edittranslatelangCompulsion.a.cancel
+            : "CANCEL"}
         </a>
         <button
           className="pop-over-button"
@@ -123,7 +143,9 @@ const Content = (props) => {
             props.handleUpdateData(e, brandID);
           }}
         >
-          {props.edittranslatelangCompulsion !== undefined ? props.edittranslatelangCompulsion.button.save : "SAVE"}
+          {props.edittranslatelangCompulsion !== undefined
+            ? props.edittranslatelangCompulsion.button.save
+            : "SAVE"}
         </button>
       </div>
     </div>
@@ -178,7 +200,7 @@ class Brands extends Component {
       screated_ByFilterCheckbox: "",
       sstatusFilterCheckbox: "",
       isortA: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -734,7 +756,7 @@ class Brands extends Component {
       url: config.apiUrl + "/Brand/BrandList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -837,14 +859,16 @@ class Brands extends Component {
           IsActive: activeStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetBrandList();
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.brandaddedsuccessfully
-              : "Brand Added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.brandaddedsuccessfully
+                : "Brand Added successfully."
+            );
             self.setState({
               brand_Code: "",
               brand_name: "",
@@ -865,15 +889,18 @@ class Brands extends Component {
         });
     } else {
       this.setState({
-        brandcodeCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseenterbrandcode
-        : "Please Enter Brand Code.",
-        brandnameCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseenterbrandname
-        : "Please Enter Brand Name.",
-        statusCompulsion: TranslationContext !== undefined
-        ? TranslationContext.validation.pleaseselectstatus
-        : "Please Select Status.",
+        brandcodeCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterbrandcode
+            : "Please Enter Brand Code.",
+        brandnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterbrandname
+            : "Please Enter Brand Name.",
+        statusCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectstatus
+            : "Please Select Status.",
       });
     }
   }
@@ -888,14 +915,16 @@ class Brands extends Component {
         BrandID: brand_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetBrandList();
-          NotificationManager.success(TranslationContext !== undefined
-            ? TranslationContext.alertmessage.branddeletesuccessfully
-            : "Brand delete successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.branddeletesuccessfully
+              : "Brand delete successfully."
+          );
         } else {
           NotificationManager.error(res.data.message);
         }
@@ -931,33 +960,40 @@ class Brands extends Component {
           IsActive: activeStatus,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetBrandList();
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.alertmessage.brandupdatedsuccessfully
-              : "Brand updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.brandupdatedsuccessfully
+                : "Brand updated successfully."
+            );
           }
         })
         .catch((data) => {
           console.log(data);
         });
     } else {
-      NotificationManager.error(TranslationContext !== undefined
-        ? TranslationContext.alertmessage.brandnotupdated
-        : "Brand not updated.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.brandnotupdated
+          : "Brand not updated."
+      );
       this.setState({
-        editbrandcodeCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.pleaseenterbrandcode
-          : "Please enter brand code.",
-        editbrandnameCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.pleaseenterbrandname
-          : "Please enter brand name.",
-        editstatusCompulsion: TranslationContext !== undefined
-          ? TranslationContext.validation.pleaseselectstatus
-          : "Please select status.",
+        editbrandcodeCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterbrandcode
+            : "Please enter brand code.",
+        editbrandnameCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseenterbrandname
+            : "Please enter brand name.",
+        editstatusCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectstatus
+            : "Please select status.",
       });
     }
   }
@@ -1065,9 +1101,11 @@ class Brands extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortatoz
-                    : "SORT BY A TO Z"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1077,9 +1115,11 @@ class Brands extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>{TranslationContext !== undefined
-                    ? TranslationContext.p.sortztoa
-                    : "SORT BY Z TO A"}</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1092,9 +1132,11 @@ class Brands extends Component {
                   : "clear search"}
               </a>
               <div className="filter-type">
-                <p>{TranslationContext !== undefined
-                  ? TranslationContext.p.filterbytype
-                  : "FILTER BY TYPE"}</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1126,110 +1168,110 @@ class Brands extends Component {
                   </div>
                   {this.state.sortColumn === "brandCode"
                     ? this.state.sortFilterBrandCode !== null &&
-                    this.state.sortFilterBrandCode.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.brandCode}
-                          value={item.brandCode}
-                          checked={this.state.sbrandCodeFilterCheckbox.includes(
-                            item.brandCode
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "brandCode",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.brandCode}>
-                          <span className="table-btn table-blue-btn">
-                            {item.brandCode}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterBrandCode.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandCode}
+                            value={item.brandCode}
+                            checked={this.state.sbrandCodeFilterCheckbox.includes(
+                              item.brandCode
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandCode",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandCode}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandCode}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "brandName"
                     ? this.state.sortFilterBrandName !== null &&
-                    this.state.sortFilterBrandName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.brandName}
-                          value={item.brandName}
-                          checked={this.state.sbrandNameFilterCheckbox.includes(
-                            item.brandName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "brandName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.brandName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.brandName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterBrandName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.brandName}
+                            value={item.brandName}
+                            checked={this.state.sbrandNameFilterCheckbox.includes(
+                              item.brandName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "brandName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.brandName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.brandName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "created_By"
                     ? this.state.sortFilterAddedBy !== null &&
-                    this.state.sortFilterAddedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.created_By}
-                          value={item.created_By}
-                          checked={this.state.screated_ByFilterCheckbox.includes(
-                            item.created_By
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "created_By",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.created_By}>
-                          <span className="table-btn table-blue-btn">
-                            {item.created_By}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterAddedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.created_By}
+                            value={item.created_By}
+                            checked={this.state.screated_ByFilterCheckbox.includes(
+                              item.created_By
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "created_By",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.created_By}>
+                            <span className="table-btn table-blue-btn">
+                              {item.created_By}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "status"
                     ? this.state.sortFilterStatus !== null &&
-                    this.state.sortFilterStatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.status}
-                          value={item.status}
-                          checked={this.state.sstatusFilterCheckbox.includes(
-                            item.status
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.status}>
-                          <span className="table-btn table-blue-btn">
-                            {item.status}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -1262,276 +1304,288 @@ class Brands extends Component {
                 {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : (
-                    <div className="table-cntr table-height TicketBrandReact">
-                      <ReactTable
-                        data={brandData}
-                        minRows={2}
-                        columns={[
-                          {
-                            Header: (
-                              <span
-                                className={this.state.brandcodeColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "brandCode",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.brandcode
-                                    : "Brand Code"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                  <div className="table-cntr table-height TicketBrandReact settings-align">
+                    <ReactTable
+                      data={brandData}
+                      minRows={2}
+                      columns={[
+                        {
+                          Header: (
+                            <span
+                              className={this.state.brandcodeColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "brandCode",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.brandcode
-                                  : "Brand Code"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "brandCode",
-                          },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.brandnameColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "brandName",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.brandname
-                                    : "Brand Name"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                                  : "Brand Code"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.brandcode
+                                : "Brand Code"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "brandCode",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.brandnameColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "brandName",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.brandname
-                                  : "Brand Name"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "brandName",
-                          },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.addedColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "created_By",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.createdby
-                                    : "Created By"
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.span.brandaddedby
-                                  : "Brand Added By"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "created_By",
-                            Cell: (row) => {
-                              return (
-                                <div>
-                                  <span>
-                                    {row.original["created_By"]}
-                                    <Popover
-                                      content={
+                                  : "Brand Name"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.brandname
+                                : "Brand Name"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "brandName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.addedColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "created_By",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.createdby
+                                  : "Created By"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.brandaddedby
+                                : "Brand Added By"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "created_By",
+                          Cell: (row) => {
+                            return (
+                              <div>
+                                <span>
+                                  {row.original["created_By"]}
+                                  <Popover
+                                    content={
+                                      <div className="settings-created-by-popover">
                                         <div>
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.createdby
-                                                  : "Created By"}:{" "}
-                                                {row.original["created_By"]}
-                                              </p>
-                                            </b>
-                                            <p className="sub-title">
+                                          <b>
+                                            <p className="title">
                                               {TranslationContext !== undefined
-                                                ? TranslationContext.p.createddate
-                                                : "Created Date"}:{" "}
-                                              {row.original["createdDateFormat"]}
+                                                ? TranslationContext.p.createdby
+                                                : "Created By"}
+                                              : {row.original["created_By"]}
                                             </p>
-                                          </div>
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.updatedby
-                                                  : "Updated By"}:{" "}
-                                                {row.original["modify_By"]}
-                                              </p>
-                                            </b>
-                                            <p className="sub-title">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.updateddate
-                                                : "Updated Date"}:{" "}
-                                              {row.original["modifyDateFormat"]}
-                                            </p>
-                                          </div>
+                                          </b>
+                                          <p className="sub-title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createddate
+                                              : "Created Date"}
+                                            :{" "}
+                                            {row.original["createdDateFormat"]}
+                                          </p>
                                         </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon-cp"
-                                        src={BlackInfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                </div>
-                              );
-                            },
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.updatedby
+                                                : "Updated By"}
+                                              : {row.original["modify_By"]}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updateddate
+                                              : "Updated Date"}
+                                            : {row.original["modifyDateFormat"]}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon-cp"
+                                      src={BlackInfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </span>
+                              </div>
+                            );
                           },
-                          {
-                            Header: (
-                              <span
-                                className={this.state.statusColor}
-                                onClick={this.StatusOpenModel.bind(
-                                  this,
-                                  "status",
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"
-                                )}
-                              >
-                                {TranslationContext !== undefined
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={this.state.statusColor}
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "status",
+                                TranslationContext !== undefined
                                   ? TranslationContext.span.status
-                                  : "Status"}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            sortable: false,
-                            accessor: "status",
-                          },
-                          {
-                            Header: <span>{TranslationContext !== undefined
-                              ? TranslationContext.span.action
-                              : "Actions"}</span>,
-                            accessor: "actiondept",
-                            sortable: false,
-                            Cell: (row) => {
-                              var brand_ID = row.original["brandID"];
-                              return (
-                                <>
-                                  <span>
-                                    <Popover
-                                      content={
-                                        <div
-                                          className="samdel d-flex general-popover popover-body"
-                                          id={"samdel" + brand_ID}
-                                        >
-                                          <div className="del-big-icon">
-                                            <img
-                                              src={DelBigIcon}
-                                              alt="del-icon"
-                                            />
-                                          </div>
-                                          <div>
-                                            <p className="font-weight-bold blak-clr">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.deletefile
-                                                : "Delete file?"}
-                                            </p>
-                                            <p className="mt-1 fs-12">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.areyousuredeletefile
-                                                : "Are you sure you want to delete this file?"}
-                                            </p>
-                                            <div className="del-can">
-                                              <a
-                                                href="#!"
-                                                className="canblue"
-                                                onClick={() =>
-                                                  this.hide(
-                                                    this,
-                                                    "samdel" + brand_ID
-                                                  )
-                                                }
-                                              >
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.a.cancel
-                                                  : "CANCEL"}
-                                              </a>
-                                              <button
-                                                className="butn"
-                                                type="button"
-                                                onClick={this.handleDeleteBrandData.bind(
+                                  : "Status"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "status",
+                        },
+                        {
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.action
+                                : "Actions"}
+                            </span>
+                          ),
+                          accessor: "actiondept",
+                          sortable: false,
+                          Cell: (row) => {
+                            var brand_ID = row.original["brandID"];
+                            return (
+                              <>
+                                <span className="settings-align-actions">
+                                  <Popover
+                                    content={
+                                      <div
+                                        className="samdel d-flex general-popover popover-body"
+                                        id={"samdel" + brand_ID}
+                                      >
+                                        <div className="del-big-icon">
+                                          <img
+                                            src={DelBigIcon}
+                                            alt="del-icon"
+                                          />
+                                        </div>
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.deletefile
+                                              : "Delete file?"}
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .areyousuredeletefile
+                                              : "Are you sure you want to delete this file?"}
+                                          </p>
+                                          <div className="del-can">
+                                            <a
+                                              href="#!"
+                                              className="canblue"
+                                              onClick={() =>
+                                                this.hide(
                                                   this,
-                                                  brand_ID
-                                                )}
-                                              >
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.button.delete
-                                                  : "Delete"}
-                                              </button>
-                                            </div>
+                                                  "samdel" + brand_ID
+                                                )
+                                              }
+                                            >
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.a.cancel
+                                                : "CANCEL"}
+                                            </a>
+                                            <button
+                                              className="butn"
+                                              type="button"
+                                              onClick={this.handleDeleteBrandData.bind(
+                                                this,
+                                                brand_ID
+                                              )}
+                                            >
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .delete
+                                                : "Delete"}
+                                            </button>
                                           </div>
                                         </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      src={RedDeleteIcon}
+                                      alt="del-icon"
+                                      className="del-btn"
+                                      onClick={() =>
+                                        this.show(this, "samdel" + brand_ID)
                                       }
-                                      placement="bottom"
-                                      trigger="click"
-                                    >
-                                      <img
-                                        src={RedDeleteIcon}
-                                        alt="del-icon"
-                                        className="del-btn"
-                                        onClick={() =>
-                                          this.show(this, "samdel" + brand_ID)
+                                    />
+                                  </Popover>
+                                  <Popover
+                                    content={
+                                      <Content
+                                        rowData={row.original}
+                                        callBackEdit={this.callBackEdit}
+                                        editbrandcodeCompulsion={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.validation
+                                                .pleaseenterbrandcode
+                                            : this.state.editbrandcodeCompulsion
                                         }
+                                        editbrandnameCompulsion={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.validation
+                                                .pleaseenterbrandname
+                                            : this.state.editbrandnameCompulsion
+                                        }
+                                        editstatusCompulsion={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.validation
+                                                .pleaseselectstatus
+                                            : this.state.editstatusCompulsion
+                                        }
+                                        edittranslatelangCompulsion={
+                                          TranslationContext
+                                        }
+                                        activeData={this.state.activeData}
+                                        handleUpdateData={this.handleUpdateData.bind(
+                                          this
+                                        )}
                                       />
-                                    </Popover>
-                                    <Popover
-                                      content={
-                                        <Content
-                                          rowData={row.original}
-                                          callBackEdit={this.callBackEdit}
-                                          editbrandcodeCompulsion={
-                                            TranslationContext !== undefined
-                                              ? TranslationContext.validation.pleaseenterbrandcode
-                                              : this.state.editbrandcodeCompulsion
-                                          }
-                                          editbrandnameCompulsion={
-                                            TranslationContext !== undefined
-                                              ? TranslationContext.validation.pleaseenterbrandname
-                                              : this.state.editbrandnameCompulsion
-                                          }
-                                          editstatusCompulsion={
-                                            TranslationContext !== undefined
-                                              ? TranslationContext.validation.pleaseselectstatus
-                                              : this.state.editstatusCompulsion
-                                          }
-                                          edittranslatelangCompulsion={
-                                            TranslationContext
-                                          }
-                                          activeData={this.state.activeData}
-                                          handleUpdateData={this.handleUpdateData.bind(
-                                            this
-                                          )}
-                                        />
-                                      }
-                                      placement="bottom"
-                                      trigger="click"
-                                    >
-                                      <label className="Table-action-edit-button-text">
-                                        <MyButton>{TranslationContext !== undefined
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <label className="Table-action-edit-button-text">
+                                      <MyButton>
+                                        {TranslationContext !== undefined
                                           ? TranslationContext.mybutton.edit
-                                          : "EDIT"}</MyButton>
-                                      </label>
-                                    </Popover>
-                                  </span>
-                                </>
-                              );
-                            },
+                                          : "EDIT"}
+                                      </MyButton>
+                                    </label>
+                                  </Popover>
+                                </span>
+                              </>
+                            );
                           },
-                        ]}
-                        resizable={false}
-                        defaultPageSize={5}
-                        showPagination={true}
-                      />
-                    </div>
-                  )}
+                        },
+                      ]}
+                      resizable={false}
+                      defaultPageSize={5}
+                      showPagination={true}
+                    />
+                  </div>
+                )}
               </div>
               <div className="col-md-4">
                 <div className="createHierarchyMask">
@@ -1545,13 +1599,16 @@ class Brands extends Component {
                       <label className="designation-name">
                         {TranslationContext !== undefined
                           ? TranslationContext.label.brandcode
-                          : "Brand Code"}</label>
+                          : "Brand Code"}
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder={TranslationContext !== undefined
-                          ? TranslationContext.placeholder.enterbrandcode
-                          : "Enter Brand Code"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterbrandcode
+                            : "Enter Brand Code"
+                        }
                         maxLength={10}
                         name="brand_Code"
                         value={this.state.brand_Code}
@@ -1574,9 +1631,11 @@ class Brands extends Component {
                         <input
                           type="text"
                           className="txt-1"
-                          placeholder={TranslationContext !== undefined
-                            ? TranslationContext.placeholder.enterbrandname
-                            : "Enter Brand Name"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.enterbrandname
+                              : "Enter Brand Name"
+                          }
                           maxLength={25}
                           name="brand_name"
                           value={this.state.brand_name}
@@ -1634,8 +1693,8 @@ class Brands extends Component {
                             spin
                           />
                         ) : (
-                            ""
-                          )}
+                          ""
+                        )}
                         {TranslationContext !== undefined
                           ? TranslationContext.button.add
                           : "ADD"}

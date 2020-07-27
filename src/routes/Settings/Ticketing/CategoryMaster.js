@@ -994,7 +994,7 @@ class CategoryMaster extends Component {
               ? TranslationContext.alertmessage.categorydeletedsuccessfully
               : "Category deleted successfully."
           );
-        }else{
+        } else {
           NotificationManager.error(res.data.message);
         }
       })
@@ -2360,7 +2360,7 @@ class CategoryMaster extends Component {
                 {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : (
-                  <div className="table-cntr table-height TicketCategoyMasReact">
+                  <div className="table-cntr table-height TicketCategoyMasReact settings-align">
                     <ReactTable
                       data={categoryGridData}
                       columns={[
@@ -2478,11 +2478,12 @@ class CategoryMaster extends Component {
                             </span>
                           ),
                           accessor: "actiondept",
+                          minWidth: 110,
                           Cell: (row) => {
                             var ids = row.original["brandCategoryMappingID"];
                             return (
                               <>
-                                <span>
+                                <span className="settings-align-actions">
                                   <Popover
                                     content={
                                       <div className="d-flex general-popover popover-body">

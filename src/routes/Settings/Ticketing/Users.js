@@ -3567,7 +3567,7 @@ class Users extends Component {
           <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketUserReact">
+                <div className="table-cntr table-height TicketUserReact settings-align">
                   <ReactTable
                     data={userData}
                     minRows={2}
@@ -3877,7 +3877,7 @@ class Users extends Component {
                           var ids = row.original["userId"];
                           return (
                             <>
-                              <span>
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div
