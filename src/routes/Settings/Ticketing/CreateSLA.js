@@ -1660,7 +1660,7 @@ class CreateSLA extends Component {
                                             %
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label.sla
-                                              : "SLA"}
+                                              : "SLA Breach"}
                                           </label>
                                           <label className="createhead-text-1">
                                             {TranslationContext !== undefined

@@ -592,8 +592,9 @@
   padding-right: 20px;
   width: 20%;
 }
-.sla-popover div:not(:first-child) label:first-child {
-  width: 40%;
+.sla-popover div:not(:first-child) label:first-child,
+.sla-popover div:not(:first-child) label:nth-child(2) {
+  width: 30%;
 }
 .created-popover .popover-body {
   padding: 25px 35px;
