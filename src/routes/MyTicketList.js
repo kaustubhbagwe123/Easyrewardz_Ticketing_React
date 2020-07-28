@@ -76,7 +76,9 @@ class MyTicketList extends Component {
       IssueTypeData: [],
       ClaimIssueTypeData: [],
       IssueTypeAllData: [],
-      TicketStatusData: TicketStatus(),
+      TicketStatusData: TicketStatus().filter(
+        (status) => status.ticketStatusID >= 101 && status.ticketStatusID <= 105
+      ),
       ScheduleOption: ScheduleDateDropDown(),
       SlaDueData: SlaDue(),
       TicketSourceData: [],

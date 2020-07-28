@@ -86,7 +86,9 @@ class Dashboard extends Component {
       SearchTicketData: [],
       SearchListData: [],
       SlaDueData: SlaDue(),
-      TicketStatusData: TicketStatus(),
+      TicketStatusData: TicketStatus().filter(
+        (status) => status.ticketStatusID >= 101 && status.ticketStatusID <= 105
+      ),
       TicketPriorityData: [],
       selectedChannelOfPurchase: [],
       selectedTicketActionType: [],
