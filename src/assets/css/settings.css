@@ -4107,6 +4107,7 @@
 }
 .atoz li {
   margin-right: 9px;
+  cursor: pointer;
 }
 .storetabl .form-control {
   height: 15px;
