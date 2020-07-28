@@ -5252,8 +5252,24 @@ class StoreModule extends Component {
                             {
                               title: "Slot Status(Unable/Disble)",
 
-                              render: (row, rowData) => {
-                                return <>radio button</>;
+                              render: (row, rowData,i) => {
+                                return (<div className="switch switch-primary">
+                                <input
+                                type="checkbox"
+                                id={"ckStatus"+i}
+                                name="allModules"
+                                // checked={
+                                //   this.state.AppointConfigData
+                                //     .generateOTP
+                                // }
+                                // onChange={this.AppoinmentConfigFlageChange.bind(
+                                //   this
+                                // )}
+                              />
+                              <label
+                                htmlFor={"ckStatus"+i}
+                                className="cr cr-float-auto"
+                              ></label></div>);
                               },
                             },
                           ]}
