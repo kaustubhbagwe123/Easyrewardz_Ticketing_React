@@ -107,7 +107,9 @@ class StoreModule extends Component {
       campProviderValidation: "",
       broadProviderValidation: "",
       TimeSlotData: TimeSlotdropdown(),
-      TimeSlotGridData: [],
+      // TimeSlotGridData: [],
+      TimeSlotGridData: [{slotSettingID: 1, storeCode:"SMB0000", storeTimimg:"10 AM-7 PM", nonOperationalTimimg:"3", slotTemplate: "Alternate 1", totalSlot: "6", appointmentDays: "10", status: "Active"},
+                        {slotSettingID: 2, storeCode:"SMB0000", storeTimimg:"10 AM-7 PM", nonOperationalTimimg:"3", slotTemplate: "Alternate 1", totalSlot: "6", appointmentDays: "10", status: "Active"}],
       storeCodeData: [],
       tempStoreCodeData: [],
       selectStore: 0,
@@ -201,7 +203,7 @@ class StoreModule extends Component {
     this.handleCampaignChannelGridData();
     this.handleGetAppointmentConfigData();
     this.handleGetBroadCastConfigData();
-    this.handleGetTimeslotGridData();
+    // this.handleGetTimeslotGridData();
     this.handleGetstoreCodeData();
     this.handleGetLanguageDropdownlist();
     this.handleGetLanguageGridData();
@@ -2027,59 +2029,60 @@ class StoreModule extends Component {
   openSlotEditModal(slotId, storeId) {
     var timeSlotEdit = {};
     let self = this;
+     
+    this.setState({editSlotModal: true})
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
+    //   headers: authHeader(),
+    //   params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
+    // })
+    //   .then(function(res) {
+    //     debugger;
+    //     var message = res.data.message;
+    //     var data = res.data.responseData;
+    //     if (message === "Success") {
+    //       var slotId = data[0].slotSettingID;
+    //       var editstoreCode = data[0].storeId;
+    //       var editmaxCapacity = data[0].maxCapacity;
+    //       var storeTimimg = data[0].storeTimimg.match(
+    //         /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
+    //       );
+    //       var nonOperationalTimimg = data[0].nonOperationalTimimg.match(
+    //         /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
+    //       );
+    //       var editSelectTimeSlot1 = storeTimimg[0];
+    //       var editSelectTimeSlot2 = storeTimimg[2];
+    //       var editSelectAmPm1 = storeTimimg[1];
+    //       var editSelectAmPm2 = storeTimimg[3];
+    //       var editSelectNOTimeSlot1 = nonOperationalTimimg[0];
+    //       var editSelectNOTimeSlot2 = nonOperationalTimimg[2];
+    //       var editSelectNOAmPm1 = nonOperationalTimimg[1];
+    //       var editSelectNOAmPm2 = nonOperationalTimimg[3];
+    //       var editAppointmentDays = data[0].appointmentDays;
+    //       var editSlotDuration = data[0].storeSlotDuration.split(" ")[0];
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
-      headers: authHeader(),
-      params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
-    })
-      .then(function(res) {
-        debugger;
-        var message = res.data.message;
-        var data = res.data.responseData;
-        if (message === "Success") {
-          var slotId = data[0].slotSettingID;
-          var editstoreCode = data[0].storeId;
-          var editmaxCapacity = data[0].maxCapacity;
-          var storeTimimg = data[0].storeTimimg.match(
-            /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
-          );
-          var nonOperationalTimimg = data[0].nonOperationalTimimg.match(
-            /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
-          );
-          var editSelectTimeSlot1 = storeTimimg[0];
-          var editSelectTimeSlot2 = storeTimimg[2];
-          var editSelectAmPm1 = storeTimimg[1];
-          var editSelectAmPm2 = storeTimimg[3];
-          var editSelectNOTimeSlot1 = nonOperationalTimimg[0];
-          var editSelectNOTimeSlot2 = nonOperationalTimimg[2];
-          var editSelectNOAmPm1 = nonOperationalTimimg[1];
-          var editSelectNOAmPm2 = nonOperationalTimimg[3];
-          var editAppointmentDays = data[0].appointmentDays;
-          var editSlotDuration = data[0].storeSlotDuration.split(" ")[0];
-
-          self.setState({
-            editSlotModal: true,
-            slotId,
-            editstoreCode,
-            editmaxCapacity,
-            editSelectTimeSlot1,
-            editSelectTimeSlot2,
-            editSelectAmPm1,
-            editSelectAmPm2,
-            editSelectNOTimeSlot1,
-            editSelectNOTimeSlot2,
-            editSelectNOAmPm1,
-            editSelectNOAmPm2,
-            editAppointmentDays,
-            editSlotDuration,
-          });
-        }
-      })
-      .catch((response) => {
-        console.log(response);
-      });
+    //       self.setState({
+    //         editSlotModal: true,
+    //         slotId,
+    //         editstoreCode,
+    //         editmaxCapacity,
+    //         editSelectTimeSlot1,
+    //         editSelectTimeSlot2,
+    //         editSelectAmPm1,
+    //         editSelectAmPm2,
+    //         editSelectNOTimeSlot1,
+    //         editSelectNOTimeSlot2,
+    //         editSelectNOAmPm1,
+    //         editSelectNOAmPm2,
+    //         editAppointmentDays,
+    //         editSlotDuration,
+    //       });
+    //     }
+    //   })
+    //   .catch((response) => {
+    //     console.log(response);
+    //   });
   }
 
   handleChangeStoreDropdown(e) {
@@ -4300,7 +4303,7 @@ class StoreModule extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12">
-                              <Table
+                              {/* <Table
                                 loading={this.state.loading}
                                 noDataContent="No Record Found"
                                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
@@ -4479,6 +4482,301 @@ class StoreModule extends Component {
                                                               return (
                                                                 <>
                                                                   radio button
+                                                                </>
+                                                              );
+                                                            },
+                                                          },
+                                                        ]}
+                                                      ></Table>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <div className="broadcast-icon">
+                                            {item.appointmentDays}
+                                            <img
+                                              className="info-icon-cp"
+                                              src={BlackInfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </div>
+                                        </Popover>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title: "Status",
+                                    render: (row, item) => {
+                                      return <div>Active</div>;
+                                    },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.actions
+                                        : "Actions",
+
+                                    render: (row, rowData) => {
+                                      var ids = row;
+                                      return (
+                                        <>
+                                          <span>
+                                            <img
+                                              src={Editpencil}
+                                              alt="Edit"
+                                              className="del-btn"
+                                              // id={p-edit-pop-2}
+                                              onClick={this.openSlotEditModal.bind(
+                                                this,
+                                                rowData.slotSettingID,
+                                                rowData.storeId
+                                              )}
+                                            />
+                                            <Popover
+                                              content={
+                                                <div className="d-flex general-popover popover-body">
+                                                  <div className="del-big-icon">
+                                                    <img
+                                                      src={DelBigIcon}
+                                                      alt="del-icon"
+                                                    />
+                                                  </div>
+                                                  <div>
+                                                    <p className="font-weight-bold blak-clr">
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .deletefile
+                                                        : "Delete file"}
+                                                      ?
+                                                    </p>
+                                                    <p className="mt-1 fs-12">
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .areyousureyouwanttodeletethisfile
+                                                        : "Are you sure you want to delete this file"}
+                                                      ?
+                                                    </p>
+                                                    <div className="del-can">
+                                                      <a href={Demo.BLANK_LINK}>
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.a
+                                                              .cancel
+                                                          : "CANCEL"}
+                                                      </a>
+                                                      <button
+                                                        className="butn"
+                                                        onClick={this.handleDeleteTimeSlot.bind(
+                                                          this,
+                                                          rowData.slotSettingID
+                                                        )}
+                                                      >
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.delete
+                                                          : "Delete"}
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              }
+                                              placement="bottom"
+                                              trigger="click"
+                                            >
+                                              <img
+                                                src={DelBlack}
+                                                alt="del-icon"
+                                                className="del-btn"
+                                                id={ids}
+                                              />
+                                            </Popover>
+                                          </span>
+                                        </>
+                                      );
+                                    },
+                                  },
+                                ]}
+                                rowKey={(record) => {
+                                  if (record.slotSettingID) {
+                                    uid = uid + 1;
+                                    return record.slotSettingID + "i" + uid;
+                                  } else {
+                                    uid = uid + 1;
+                                    return "i" + uid;
+                                  }
+                                }}
+                                pagination={{ defaultPageSize: 10 }}
+                                dataSource={this.state.TimeSlotGridData}
+                              ></Table> */}
+                              <Table
+                                loading={this.state.loading}
+                                noDataContent="No Record Found"
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                columns={[
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.storecode
+                                        : "Store Code",
+                                    dataIndex: "storeCode",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.storetiming
+                                        : "Store Timing",
+                                    dataIndex: "storeTimimg",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header
+                                            .nonoperationalhours
+                                        : "Operational Days",
+                                    dataIndex: "nonOperationalTimimg",
+                                    render: (row, item) => {
+                                      return (
+                                        <Popover
+                                          overlayClassName="antcustom operationalbox"
+                                          content={
+                                            <div>
+                                              <img
+                                                src={CancelIcon}
+                                                alt="cancel-icone"
+                                                className="cust-icon2"
+                                              />
+                                              <div className="operationaldays">
+                                                <div className="row">
+                                                  <div className="col-12">
+                                                    <h3>Operational Days</h3>
+                                                    <ul>
+                                                      <li>
+                                                        <label>Monday</label>
+                                                      </li>
+                                                      <li>
+                                                        <label>Tuesday</label>
+                                                      </li>
+                                                      <li>
+                                                        <label>Wednesday</label>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                          trigger="click"
+                                        >
+                                          <div className="broadcast-icon">
+                                            {item.nonOperationalTimimg}
+                                            <img
+                                              className="info-icon-cp"
+                                              src={BlackInfoIcon}
+                                              alt="info-icon"
+                                            />
+                                          </div>
+                                        </Popover>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title: "Slot Template",
+                                    dataIndex: "storeSlotDuration",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.totalslot
+                                        : "Total Slots",
+                                    dataIndex: "totalSlot",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header
+                                            .appointmentdays
+                                        : "Appointment Days",
+                                    dataIndex: "appointmentDays",
+                                    render: (row, item) => {
+                                      return (
+                                        <Popover
+                                          overlayClassName="antcustom appointmentdaysbox"
+                                          content={
+                                            <div>
+                                              <img
+                                                src={CancelIcon}
+                                                alt="cancel-icone"
+                                                className="cust-icon2"
+                                              />
+                                              <div className="appointmentdays">
+                                                <div className="row">
+                                                  <div className="col-12">
+                                                    <h3>Appointment Days</h3>
+                                                    <div className="">
+                                                      <Table
+                                                        dataSource={
+                                                          this.state.slotData
+                                                        }
+                                                        noDataContent="No Record Found"
+                                                        pagination={false}
+                                                        className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                                        columns={[
+                                                          {
+                                                            title: "S.No.",
+
+                                                            dataIndex: "no",
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot Start Time",
+                                                            dataIndex:
+                                                              "startTime",
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot End Time",
+                                                            dataIndex:
+                                                              "endTime",
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot Occupancy",
+                                                            dataIndex:
+                                                              "occupancy",
+                                                            render: (
+                                                              row,
+                                                              rowData
+                                                            ) => {
+                                                              return (
+                                                                <>
+                                                                  <input
+                                                                    type="text"
+                                                                    className="form-control value"
+                                                                    value="3"
+                                                                  />
+                                                                </>
+                                                              );
+                                                            },
+                                                          },
+                                                          {
+                                                            title:
+                                                              "Slot Status(Unable/Disable)",
+                                                            render: (
+                                                              row,
+                                                              rowData
+                                                            ) => {
+                                                              return (
+                                                                <>
+                                                                  Unable
                                                                 </>
                                                               );
                                                             },
