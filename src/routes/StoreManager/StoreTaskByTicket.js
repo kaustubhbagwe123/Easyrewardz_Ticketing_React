@@ -431,7 +431,6 @@ class StoreTaskByTicket extends Component {
         inputParam.TaskTitle = this.state.taskTitle;
         inputParam.TaskDescription = this.state.taskDetails;
 
-        
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/SubmitTaskByTicket",
@@ -695,7 +694,11 @@ class StoreTaskByTicket extends Component {
                       <label
                         disabled={this.state.isSubmit}
                         className="modal-lbl"
-                        className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
+                        className={
+                          this.state.isSubmit
+                            ? "modal-lbl disabled-link"
+                            : "modal-lbl"
+                        }
                         onClick={this.handleSubmitTaks.bind(this, 224)}
                       >
                         Submit as <span className="modal-lbl-1">ReOpen</span>
@@ -706,7 +709,11 @@ class StoreTaskByTicket extends Component {
                       <label
                         disabled={this.state.isSubmit}
                         className="modal-lbl"
-                        className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
+                        className={
+                          this.state.isSubmit
+                            ? "modal-lbl disabled-link"
+                            : "modal-lbl"
+                        }
                         onClick={this.handleSubmitTaks.bind(this, 222)}
                       >
                         Submit as <span className="modal-lbl-1">Solved</span>
@@ -718,7 +725,11 @@ class StoreTaskByTicket extends Component {
                       <label
                         disabled={this.state.isSubmit}
                         className="modal-lbl"
-                        className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
+                        className={
+                          this.state.isSubmit
+                            ? "modal-lbl disabled-link"
+                            : "modal-lbl"
+                        }
                         onClick={this.handleSubmitTaks.bind(this, 223)}
                       >
                         Submit as <span className="modal-lbl-2">Closed</span>
@@ -730,7 +741,7 @@ class StoreTaskByTicket extends Component {
             </div>
             <div className="row width">
               <div className="col-md-7">
-                <div className="card store-card-padding">
+                <div className="card store-card-padding h-100">
                   <label className="store-Edit-lbl"> Task Title</label>
                   <input
                     type="text"
@@ -954,7 +965,7 @@ class StoreTaskByTicket extends Component {
                 </div>
               </div>
               <div className="col-md-5" style={{ padding: "0" }}>
-                <div className="card store-card-3">
+                <div className="card store-card-3 h-100">
                   <div className="row">
                     <div className="col-md-6">
                       <label className="store-Edit-lbl">Issue Raised By:</label>
