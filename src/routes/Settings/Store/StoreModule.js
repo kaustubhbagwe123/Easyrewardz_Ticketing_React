@@ -107,8 +107,28 @@ class StoreModule extends Component {
       broadProviderValidation: "",
       TimeSlotData: TimeSlotdropdown(),
       // TimeSlotGridData: [],
-      TimeSlotGridData: [{slotSettingID: 1, storeCode:"SMB0000", storeTimimg:"10 AM-7 PM", nonOperationalTimimg:"3", slotTemplate: "Alternate 1", totalSlot: "6", appointmentDays: "10", status: "Active"},
-                        {slotSettingID: 2, storeCode:"SMB0000", storeTimimg:"10 AM-7 PM", nonOperationalTimimg:"3", slotTemplate: "Alternate 1", totalSlot: "6", appointmentDays: "10", status: "Active"}],
+      TimeSlotGridData: [
+        {
+          slotSettingID: 1,
+          storeCode: "SMB0000",
+          storeTimimg: "10 AM-7 PM",
+          nonOperationalTimimg: "3",
+          slotTemplate: "Alternate 1",
+          totalSlot: "6",
+          appointmentDays: "10",
+          status: "Active",
+        },
+        {
+          slotSettingID: 2,
+          storeCode: "SMB0000",
+          storeTimimg: "10 AM-7 PM",
+          nonOperationalTimimg: "3",
+          slotTemplate: "Alternate 1",
+          totalSlot: "6",
+          appointmentDays: "10",
+          status: "Active",
+        },
+      ],
       storeCodeData: [],
       tempStoreCodeData: [],
       selectStore: 0,
@@ -195,6 +215,7 @@ class StoreModule extends Component {
       autoStoreToCompulsory: "",
       autoNonOptFromCompulsory: "",
       autoNonOptToCompulsory: "",
+      automaticaSlotTblData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2042,8 +2063,8 @@ class StoreModule extends Component {
   openSlotEditModal(slotId, storeId) {
     var timeSlotEdit = {};
     let self = this;
-     
-    this.setState({editSlotModal: true})
+
+    this.setState({ editSlotModal: true });
     // axios({
     //   method: "post",
     //   url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
@@ -2354,17 +2375,17 @@ class StoreModule extends Component {
       this.state.autoNonOptTo !== ""
     ) {
       let self = this;
-      var OpenAt = moment(this.state.autoStoreFrom).format("HH:MM");
+
       axios({
         method: "post",
         url: config.apiUrl + "/Appointment/GetGeneratedSlots",
         headers: authHeader(),
         data: {
-          SlotTemplateName: this.state.autoTempName,
+          SlotTemplateName: this.state.autoTempName.trim(),
           SlotTemplateType: this.state.slotAutomaticRadio === 1 ? "A" : "M",
           Slotduration: parseFloat(this.state.AutoSlotDuration),
           SlotGaps: parseFloat(this.state.AutoSlotGap),
-          StoreOpenAt: OpenAt,
+          StoreOpenAt: moment(this.state.autoStoreFrom).format("HH:MM"),
           StoreCloseAt: moment(this.state.autoStoreTo).format("HH:MM"),
           StoreNonOpFromAt: moment(this.state.autoNonOptFrom).format("HH:MM"),
           StoreNonOpToAt: moment(this.state.autoNonOptTo).format("HH:MM"),
@@ -2373,6 +2394,7 @@ class StoreModule extends Component {
         .then((res) => {
           debugger;
           let status = res.data.message;
+          let data = res.data.responseData;
           if (status === "Success") {
             self.setState({
               autoTempName: "",
@@ -2389,6 +2411,7 @@ class StoreModule extends Component {
               autoStoreToCompulsory: "",
               autoNonOptFromCompulsory: "",
               autoNonOptToCompulsory: "",
+              automaticaSlotTblData:data
             });
             NotificationManager.success("Slot Generated.");
           } else {
@@ -2410,6 +2433,7 @@ class StoreModule extends Component {
       });
     }
   }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -4847,9 +4871,7 @@ class StoreModule extends Component {
                                                               rowData
                                                             ) => {
                                                               return (
-                                                                <>
-                                                                  Unable
-                                                                </>
+                                                                <>Unable</>
                                                               );
                                                             },
                                                           },
@@ -4879,7 +4901,9 @@ class StoreModule extends Component {
                                   {
                                     title: "Status",
                                     render: (row, item) => {
-                                      return <div className="tabactive">Active</div>;
+                                      return (
+                                        <div className="tabactive">Active</div>
+                                      );
                                     },
                                   },
                                   {
@@ -5861,7 +5885,7 @@ class StoreModule extends Component {
                         showTimeSelectOnly
                         timeIntervals={15}
                         timeCaption="Time"
-                        dateFormat="h:mm aa"
+                        dateFormat="hh:mm aa"
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
@@ -5968,23 +5992,22 @@ class StoreModule extends Component {
                     <div className="col-12 col-md-10">
                       <div className="chooseslot-table">
                         <Table
-                          dataSource={this.state.slotData}
+                          dataSource={this.state.automaticaSlotTblData}
                           noDataContent="No Record Found"
                           pagination={false}
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
                           columns={[
                             {
                               title: "S.No.",
-
-                              dataIndex: "no",
+                              dataIndex: "slotID",
                             },
                             {
                               title: "Slot Start Time",
-                              dataIndex: "startTime",
+                              dataIndex: "slotStartTime",
                             },
                             {
                               title: "Slot End Time",
-                              dataIndex: "endTime",
+                              dataIndex: "slotEndTime",
                             },
                           ]}
                         ></Table>
