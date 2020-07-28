@@ -816,8 +816,7 @@ class CardAssets extends Component {
                                       className="dash-creation-popup-cntr"
                                       style={{ display: "block" }}
                                     >
-                                      <ul className="dash-category-popup dashnewpopup">
-                                        <li>
+                                       
                                           {/* <label
                                             style={{
                                               width: "50%",
@@ -829,8 +828,7 @@ class CardAssets extends Component {
                                           <p>
                                             {rowdata.rejectionReason}
                                           </p>
-                                        </li>
-                                      </ul>
+                                        
                                     </div>
                                   }
                                   placement="rightBottom"
