@@ -414,7 +414,7 @@ class EditStoreTask extends Component {
       });
   }
   ////handle assign task
-  handleAssignTask() {
+  handleAssignTask(btnValue) {
     let self = this;
     axios({
       method: "post",
@@ -438,8 +438,11 @@ class EditStoreTask extends Component {
             assginToModal: false,
           });
           NotificationManager.success("Task Assign Successfully.");
-          NotificationManager.success("Comment Added successfully.");
-          self.componentDidMount();
+          if (btnValue !== "skip") {
+            NotificationManager.success("Comment Added successfully.");
+          }
+          // self.componentDidMount();
+          self.handleStoreTaskDetialsById(self.state.taskId);
         } else {
           NotificationManager.error("Task Assign Fail.");
           self.setState({ userModel: false });
@@ -690,7 +693,7 @@ class EditStoreTask extends Component {
   }
   ///handle re assign modal skip button on click
   handleSkipButtonClick() {
-    this.handleAssignTask();
+    this.handleAssignTask("skip");
   }
   ////handle assgin to modal open
   handleAssginToModalOpen() {

@@ -78,7 +78,7 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function (res) {
-        debugger;
+        
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -401,7 +401,7 @@ class storeMyTicketList extends Component {
   }
 
   handleSubTabChange(tabname) {
-    debugger;
+    
     this.setState({
       searchTicketParam: tabname,
       selectedCategory: 0,
@@ -435,7 +435,7 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function (res) {
-        debugger;
+        
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -456,7 +456,7 @@ class storeMyTicketList extends Component {
   }
 
   handleByDateCreate(date) {
-    //debugger;
+    //
     this.setState({ ByDateCreatDate: date });
   }
 

@@ -4065,7 +4065,7 @@
 }
 .cust-icon2 {
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: 10px;
   height: 14px;
   cursor: pointer;
@@ -4160,12 +4160,13 @@
   background: #a5a3a3;
 }
 .operationaldays {
-  padding: 20px;
+  padding: 8px;
 }
 .operationaldays h3 {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 15px;
+  font-weight: bold;
 }
 .operationaldays ul {
   margin-bottom: 0px;
@@ -4176,14 +4177,20 @@
 }
 .operationaldays label {
   font-size: 12px;
-  margin-right: 5px;
-  font-weight: 600;
-}
-.operationaldays {
-  padding: 25px 50px;
+    margin-right: 0;
+    font-weight: 600;
+    background-color: #ECECEC;
+    text-align: center;
+    border-radius: 50px;
+    padding: 6px 15px;
 }
 .appointmentdays {
-  padding: 25px 50px;
+  padding: 10px 30px;
+}
+.appointmentdays h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
 }
 .slotchckhceck {
   display: flex;
@@ -4194,4 +4201,24 @@
 }
 .slotFrm .react-datepicker-wrapper{
   display: block;
+}
+.tabactive {
+  background-color: #EEF4F4;
+    text-align: center;
+    border-radius: 50px;
+    padding: 6px 0;
+    color: #08B593;
+}
+.select-oper .css-yk16xz-control {
+  height: calc(2.55rem + 2px);
+  background-color: #f9f9f9;
+  border: 1px solid #dadada;
+  color: #000;
+}
+.select-oper .css-1pahdxg-control {
+  height: calc(2.55rem + 2px);
+  border: 1px solid #dadada;
+}
+.select-oper .css-1pahdxg-control:hover {
+  border: #dadada;
 }
