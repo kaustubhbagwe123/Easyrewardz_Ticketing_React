@@ -4196,6 +4196,12 @@
   display: flex;
   margin-bottom: 10px;
 }
+.cls1-hide{
+  display: none;
+}
+.slotFrm .react-datepicker-wrapper{
+  display: block;
+}
 .tabactive {
   background-color: #EEF4F4;
     text-align: center;
