@@ -677,8 +677,8 @@ class ClaimApproveReject extends Component {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
-        if (message == "Success" && responseData) {
-          NotificationManager.success("Store comment add successfully");
+        if (message == "Success") {
+          NotificationManager.success("Store comment added successfully");
         }
       })
       .catch((response) => {
@@ -717,7 +717,7 @@ class ClaimApproveReject extends Component {
   }
   ///handle re assign modal skip button on click
   handleSkipButtonClick() {
-    this.handleAddStoreComment();
+    // this.handleAddStoreComment();
     this.handleAssignClaim();
   }
   ////handle reject modal submit button on click
