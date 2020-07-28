@@ -4752,20 +4752,6 @@ class StoreModule extends Component {
                                                               "Slot Occupancy",
                                                             dataIndex:
                                                               "occupancy",
-                                                            render: (
-                                                              row,
-                                                              rowData
-                                                            ) => {
-                                                              return (
-                                                                <>
-                                                                  <input
-                                                                    type="text"
-                                                                    className="form-control value"
-                                                                    value="3"
-                                                                  />
-                                                                </>
-                                                              );
-                                                            },
                                                           },
                                                           {
                                                             title:
@@ -4807,7 +4793,7 @@ class StoreModule extends Component {
                                   {
                                     title: "Status",
                                     render: (row, item) => {
-                                      return <div>Active</div>;
+                                      return <div className="tabactive">Active</div>;
                                     },
                                   },
                                   {
