@@ -38,10 +38,9 @@ import * as translationMA from "./../../../translations/marathi";
 import { Table, Select as Aselect } from "antd";
 import Select from "react-select";
 import "antd/dist/antd.css";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
-// import { UncontrolledPopover, PopoverBody } from "reactstrap";
-// import { ProgressBar } from "react-bootstrap";
-// import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 const { Option } = Aselect;
 var uid = 0;
 class StoreModule extends Component {
@@ -179,7 +178,21 @@ class StoreModule extends Component {
       selectedStoreList: [],
       selectedStoreMdl: {},
       slotTemplateData: [],
-      showApplyStoreData: false
+      showApplyStoreData: false,
+      autoTempName: "",
+      autoStoreFrom: "",
+      autoStoreTo: "",
+      autoNonOptFrom: "",
+      autoNonOptTo: "",
+      AutoSlotDuration: 0,
+      AutoSlotGap: 0,
+      autoTempNameCompulsory: "",
+      AutoSlotDurationCompulsory: "",
+      AutoSlotGapCompulsory: "",
+      autoStoreFromCompulsory: "",
+      autoStoreToCompulsory: "",
+      autoNonOptFromCompulsory: "",
+      autoNonOptToCompulsory: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2309,21 +2322,91 @@ class StoreModule extends Component {
       method: "post",
       url: config.apiUrl + "/Appointment/GetSlotTemplates",
       headers: authHeader(),
-    }).then((res) => {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ slotTemplateData: data });
-      } else {
-        self.setState({ slotTemplateData: [] });
-      }
     })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ slotTemplateData: data });
+        } else {
+          self.setState({ slotTemplateData: [] });
+        }
+      })
       .catch((response) => {
         console.log(response);
       });
   }
 
+  /// handle Submit automatica data
+  handleSubmitAutomaticData() {
+    debugger;
+    if (
+      this.state.autoTempName !== "" &&
+      this.state.AutoSlotDuration !== 0 &&
+      this.state.AutoSlotGap !== 0 &&
+      this.state.autoStoreFrom !== "" &&
+      this.state.autoStoreTo !== "" &&
+      this.state.autoNonOptFrom !== "" &&
+      this.state.autoNonOptTo !== ""
+    ) {
+      let self = this;
+      var OpenAt = moment(this.state.autoStoreFrom).format("HH:MM");
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/GetGeneratedSlots",
+        headers: authHeader(),
+        data: {
+          SlotTemplateName: this.state.autoTempName,
+          SlotTemplateType: this.state.slotAutomaticRadio === 1 ? "A" : "M",
+          Slotduration: parseFloat(this.state.AutoSlotDuration),
+          SlotGaps: parseFloat(this.state.AutoSlotGap),
+          StoreOpenAt: OpenAt,
+          StoreCloseAt: moment(this.state.autoStoreTo).format("HH:MM"),
+          StoreNonOpFromAt: moment(this.state.autoNonOptFrom).format("HH:MM"),
+          StoreNonOpToAt: moment(this.state.autoNonOptTo).format("HH:MM"),
+        },
+      })
+        .then((res) => {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              autoTempName: "",
+              AutoSlotDuration: 0,
+              AutoSlotGap: 0,
+              autoStoreFrom: "",
+              autoStoreTo: "",
+              autoNonOptFrom: "",
+              autoNonOptTo: "",
+              autoTempNameCompulsory: "",
+              AutoSlotDurationCompulsory: "",
+              AutoSlotGapCompulsory: "",
+              autoStoreFromCompulsory: "",
+              autoStoreToCompulsory: "",
+              autoNonOptFromCompulsory: "",
+              autoNonOptToCompulsory: "",
+            });
+            NotificationManager.success("Slot Generated.");
+          } else {
+            NotificationManager.error("Slot Generated failed.");
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    } else {
+      this.setState({
+        autoTempNameCompulsory: "Please Enter Template Name.",
+        AutoSlotDurationCompulsory: "Please Select Slot Duration.",
+        AutoSlotGapCompulsory: "Please Select Slot Gap.",
+        autoStoreFromCompulsory: "Please Select From.",
+        autoStoreToCompulsory: "Please Select To.",
+        autoNonOptFromCompulsory: "Please Select From.",
+        autoNonOptToCompulsory: "Please Select To.",
+      });
+    }
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -4112,12 +4195,15 @@ class StoreModule extends Component {
                                               className="form-control"
                                             >
                                               <option value={0}>Select</option>
-                                              {this.state.slotTemplateData !== null &&
+                                              {this.state.slotTemplateData !==
+                                                null &&
                                                 this.state.slotTemplateData.map(
                                                   (item, s) => (
                                                     <option
                                                       key={s}
-                                                      value={item.slotTemplateID}
+                                                      value={
+                                                        item.slotTemplateID
+                                                      }
                                                     >
                                                       {item.slotTemplateName}
                                                     </option>
@@ -5397,27 +5483,84 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </div>
-                <div classname="automaticbox" style={{ display: "none" }}>
+                <div
+                  classname="automaticbox"
+                  style={{
+                    display:
+                      this.state.slotAutomaticRadio === 1 ? "block" : "none",
+                  }}
+                >
                   <div className="row">
                     <div className="col-12 col-md-10">
                       <label>Template Name</label>
-                      <input type="text" className="form-control" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Template Name"
+                        autoComplete="off"
+                        name="autoTempName"
+                        value={this.state.autoTempName}
+                        onChange={this.handleInputOnchange}
+                      />
+                      {this.state.autoTempName === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.autoTempNameCompulsory}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-12 col-md-5">
                       <label>Slot Duration</label>
-                      <select name="" className="form-control">
+                      <select
+                        name="AutoSlotDuration"
+                        className="form-control"
+                        value={this.state.AutoSlotDuration}
+                        onChange={(e) =>
+                          this.setState({
+                            AutoSlotDuration: e.target.value,
+                          })
+                        }
+                      >
                         <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
+                        <option value={0.25}>15 Minutes</option>
+                        <option value={0.5}>30 Minutes</option>
+                        <option value={0.75}>45 Minutes</option>
+                        <option value={1}>1 Hours</option>
+                        <option value={1.5}>1.5 Hour</option>
+                        <option value={2}>2 Hour</option>
                       </select>
+                      {this.state.AutoSlotDuration === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.AutoSlotDurationCompulsory}
+                        </p>
+                      )}
                     </div>
                     <div className="col-12 col-md-5">
                       <label>Gap B/w Slots</label>
-                      <select name="" className="form-control">
+                      <select
+                        name="AutoSlotGap"
+                        className="form-control"
+                        value={this.state.AutoSlotGap}
+                        onChange={(e) =>
+                          this.setState({
+                            AutoSlotGap: e.target.value,
+                          })
+                        }
+                      >
                         <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
+                        <option value={0.25}>15 Minutes</option>
+                        <option value={0.5}>30 Minutes</option>
+                        <option value={0.75}>45 Minutes</option>
+                        <option value={1}>1 Hours</option>
+                        <option value={1.5}>1.5 Hour</option>
+                        <option value={2}>2 Hour</option>
                       </select>
+                      {this.state.AutoSlotGap === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.AutoSlotGapCompulsory}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
@@ -5426,19 +5569,51 @@ class StoreModule extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>From</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.autoStoreFrom}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="h:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            autoStoreFrom: time,
+                          })
+                        }
+                      />
+                      {this.state.autoStoreFrom === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.autoStoreFromCompulsory}
+                        </p>
+                      )}
                     </div>
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>To</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.autoStoreTo}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="h:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            autoStoreTo: time,
+                          })
+                        }
+                      />
+                      {this.state.autoStoreTo === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.autoStoreToCompulsory}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
@@ -5447,24 +5622,57 @@ class StoreModule extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>From</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.autoNonOptFrom}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="h:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            autoNonOptFrom: time,
+                          })
+                        }
+                      />
+                      {this.state.autoNonOptFrom === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.autoNonOptFromCompulsory}
+                        </p>
+                      )}
                     </div>
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>To</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+
+                      <DatePicker
+                        selected={this.state.autoNonOptTo}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="h:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            autoNonOptTo: time,
+                          })
+                        }
+                      />
+                      {this.state.autoNonOptTo === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.autoNonOptToCompulsory}
+                        </p>
+                      )}
                     </div>
                     <div className="col-12 col-md-2">
                       <button
-                        className="tabbutn"
-                        onClick={this.handleNextButtonClose.bind(this)}
+                        className="tabbutn cr-pnt"
+                        onClick={this.handleSubmitAutomaticData.bind(this)}
                       >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.delete
@@ -5519,7 +5727,13 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </div>
-                <div classname="manualbox">
+                <div
+                  classname="manualbox"
+                  style={{
+                    display:
+                      this.state.slotAutomaticRadio === 2 ? "block" : "none",
+                  }}
+                >
                   <div className="row">
                     <div className="col-12 col-md-10">
                       <label>Template Name</label>

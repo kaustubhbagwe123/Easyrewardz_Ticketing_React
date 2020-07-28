@@ -576,6 +576,7 @@ class OrderTab extends Component {
   };
   /// handle Order pickup time change
   handleOrdPickupTimeChange(time) {
+    debugger
     this.setState({
       minTime: this.calculateMinTime(time),
       OrdPickupTime: time,
