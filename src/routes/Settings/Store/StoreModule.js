@@ -35,13 +35,14 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import "antd/dist/antd.css";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-import { Table, Select } from "antd";
+import { Table, Select as Aselect } from "antd";
+import Select from "react-select";
 import "antd/dist/antd.css";
 
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
-const { Option } = Select;
+const { Option } = Aselect;
 var uid = 0;
 class StoreModule extends Component {
   constructor(props) {
@@ -108,6 +109,7 @@ class StoreModule extends Component {
       TimeSlotData: TimeSlotdropdown(),
       TimeSlotGridData: [],
       storeCodeData: [],
+      tempStoreCodeData: [],
       selectStore: 0,
       selectTimeSlot1: 0,
       selectTimeSlot2: 0,
@@ -170,7 +172,14 @@ class StoreModule extends Component {
       selectedStoreModal: false,
       slotAutomaticRadio: 1,
       selectedStoreIds: "",
+      selectedStoreValues: "",
       shoreSelectedCount: 0,
+      operationalDaysData: [],
+      slotStoreSearch: "",
+      selectedStoreList: [],
+      selectedStoreMdl: {},
+      slotTemplateData: [],
+      showApplyStoreData: false
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -196,6 +205,8 @@ class StoreModule extends Component {
     this.handleGetstoreCodeData();
     this.handleGetLanguageDropdownlist();
     this.handleGetLanguageGridData();
+    this.handleGetOperationalDays();
+    this.handleGetSlotTemplate();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -672,9 +683,12 @@ class StoreModule extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ storeCodeData: data });
+          data.forEach((element) => {
+            element.isChecked = false;
+          });
+          self.setState({ storeCodeData: data, tempStoreCodeData: data });
         } else {
-          self.setState({ storeCodeData: [] });
+          self.setState({ storeCodeData: [], tempStoreCodeData: [] });
         }
       })
       .catch((response) => {
@@ -2154,74 +2168,162 @@ class StoreModule extends Component {
   };
 
   /// handle Select Store Individual
-  handleSelectStoresIndividual = async (storeID, event) => {
+  handleSelectStoresIndividual = async (data, event) => {
     debugger;
-    var selectedStoreIds = this.state.selectedStoreIds;
-    var separator = ",";
     var storeCount = 0;
-    var values = selectedStoreIds.split(separator);
-    if (event.target.checked) {
-      var flag = values.includes(storeID.toString());
-      if (!flag) {
-        values.unshift(storeID);
-        selectedStoreIds = values.join(separator);
-      }
-      storeCount = this.state.selectedStoreIds.split(",").length;
-      await this.setState({
-        selectedStoreIds,
-        shoreSelectedCount: storeCount,
-      });
-    } else {
-      for (var i = 0; i < values.length; i++) {
-        if (values[i] === storeID) {
-          values.splice(i, 1);
-          selectedStoreIds = values.join(separator);
-        }
-      }
+    var finalValue = "";
+    var values = "";
+    this.state.storeCodeData.filter(
+      (x) => x.storeID === data.storeID
+    )[0].isChecked = !this.state.storeCodeData.filter(
+      (x) => x.storeID === data.storeID
+    )[0].isChecked;
 
-      if (this.state.selectedStoreIds.split(",").length - 1 !== 0) {
-        storeCount = this.state.selectedStoreIds.split(",").length;
-      } else {
-        storeCount = this.state.selectedStoreIds.split(",").length;
+    this.state.storeCodeData.forEach((element) => {
+      if (element.isChecked) {
+        values += element.storeName + ",";
+        storeCount += 1;
       }
-      await this.setState({
-        selectedStoreIds,
-        shoreSelectedCount: storeCount,
-      });
-    }
+    });
+
+    finalValue = values.substring(",", values.length - 1);
+    this.setState({
+      storeCodeData: this.state.storeCodeData,
+      shoreSelectedCount: storeCount,
+      selectedStoreValues: finalValue,
+    });
   };
   //// handle Select All store name
-  handleSelectAllStore = async (event) => {
+  handleSelectAllStore = async (isSelectAll) => {
+    var storeCount = 0;
+    var finalValue = "";
+    var values = "";
+
+    this.state.storeCodeData.forEach((element) => {
+      element.isChecked = isSelectAll ? true : false;
+      if (element.isChecked) {
+        values += element.storeName + ",";
+        storeCount += 1;
+      }
+    });
+
+    finalValue = values.substring(",", values.length - 1);
+    this.setState({
+      storeCodeData: this.state.storeCodeData,
+      shoreSelectedCount: storeCount,
+      selectedStoreValues: finalValue,
+    });
+  };
+
+  /// handle apply selected store data
+  handleApplySelectedStore() {
+    this.setState({
+      chooseStoreModal: false,
+      showApplyStoreData: true,
+    });
+  }
+  /// handle filter store data
+  handleStoreFilterData(filterData) {
+    var tempstore = this.state.tempStoreCodeData;
+    var finalStore = tempstore.filter((item) =>
+      item.storeName.startsWith(filterData)
+    );
+    this.setState({
+      storeCodeData: finalStore,
+    });
+  }
+  /// handle slot store search
+  handleSlotStoreSearchOnchange(e) {
+    this.setState({ slotStoreSearch: e.target.value });
+  }
+  /// handle store search
+  handleStoreSearch = (e) => {
+    e.preventDefault();
     debugger;
-    var selectedStoreIds = "";
-    var checkboxes = document.getElementsByName("allStore");
-    for (var i in checkboxes) {
-      if (checkboxes[i].checked === false) {
-        checkboxes[i].checked = true;
-      }
+    var tempstore = this.state.tempStoreCodeData;
+    var Value = this.state.slotStoreSearch;
+
+    var FinalstoreList = tempstore.filter((item) =>
+      item.storeName.includes(Value)
+    );
+
+    if (FinalstoreList.length > 0) {
+      this.setState({ storeCodeData: FinalstoreList });
+    } else {
+      this.setState({
+        storeCodeData: [],
+      });
     }
-    if (this.state.storeCodeData !== null) {
-      this.state.storeCodeData.forEach(allStoreId);
-      function allStoreId(item) {
-        selectedStoreIds += item.storeID + ",";
-      }
-    }
-    await this.setState({
-      selectedStoreIds,
-    });
   };
-  /// handle clear all stores
-  handleUnselectStore = async () => {
-    var checkboxes = document.getElementsByName("allStore");
-    for (var i in checkboxes) {
-      if (checkboxes[i].checked === true) {
-        checkboxes[i].checked = false;
+
+  handleGetOperationalDays() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetStoreOperationalDays",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ operationalDaysData: data });
+        } else {
+          self.setState({ operationalDaysData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  //// handle Remove store from selected store
+  handleRemoveSelectedStore(store_id) {
+    debugger;
+    var storeCount = 0;
+    var finalValue = "";
+    var values = "";
+
+    this.state.storeCodeData.filter(
+      (x) => x.storeID === store_id
+    )[0].isChecked = false;
+
+    this.state.storeCodeData.forEach((element) => {
+      if (element.isChecked) {
+        storeCount += 1;
+        values += element.storeName + ",";
       }
-    }
-    await this.setState({
-      selectedStoreIds: "",
     });
-  };
+
+    finalValue = values.substring(",", values.length - 1);
+
+    this.setState({
+      storeCodeData: this.state.storeCodeData,
+      shoreSelectedCount: storeCount,
+      selectedStoreValues: finalValue,
+    });
+  }
+  handleGetSlotTemplate() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetSlotTemplates",
+      headers: authHeader(),
+    }).then((res) => {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ slotTemplateData: data });
+      } else {
+        self.setState({ slotTemplateData: [] });
+      }
+    })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3951,16 +4053,22 @@ class StoreModule extends Component {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Search"
+                                                value={
+                                                  this.state.showApplyStoreData
+                                                    ? this.state
+                                                        .selectedStoreValues
+                                                    : ""
+                                                }
                                               />
                                               <span className="input-group-append">
                                                 <img
                                                   src={searchico}
                                                   alt="search-icon"
+                                                  className="cr-pnt"
                                                 />
                                               </span>
                                             </div>
-                                            {this.state.shoreSelectedCount >
-                                              0 && (
+                                            {this.state.showApplyStoreData && (
                                               <a
                                                 style={{ float: "left" }}
                                                 onClick={this.handleSelectedStoreOpenModal.bind(
@@ -3974,13 +4082,28 @@ class StoreModule extends Component {
                                           </li>
                                           <li>
                                             <label>Operational Days</label>
-                                            <select
+                                            {/* <select
                                               name=""
                                               className="form-control"
                                             >
                                               <option value={0}>Select</option>
                                               <option value={0}>1</option>
-                                            </select>
+                                            </select> */}
+                                            <Select
+                                              className="select-oper"
+                                              getOptionLabel={(option) =>
+                                                option.dayName
+                                              }
+                                              getOptionValue={(option) =>
+                                                option.dayID
+                                              }
+                                              options={
+                                                this.state.operationalDaysData
+                                              }
+                                              placeholder="Please Select Operational Days"
+                                              closeMenuOnSelect={false}
+                                              isMulti
+                                            />
                                           </li>
                                           <li>
                                             <label>Select Slot Template</label>
@@ -3989,7 +4112,17 @@ class StoreModule extends Component {
                                               className="form-control"
                                             >
                                               <option value={0}>Select</option>
-                                              <option value={0}>1</option>
+                                              {this.state.slotTemplateData !== null &&
+                                                this.state.slotTemplateData.map(
+                                                  (item, s) => (
+                                                    <option
+                                                      key={s}
+                                                      value={item.slotTemplateID}
+                                                    >
+                                                      {item.slotTemplateName}
+                                                    </option>
+                                                  )
+                                                )}
                                             </select>
                                             <a
                                               onClick={this.handleCreateTempletetOpenModal.bind(
@@ -5060,55 +5193,119 @@ class StoreModule extends Component {
                 <div className="row">
                   <div className="col-12 col-md-6">
                     <label>Choose Store</label>
-                    <div className="input-group form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search"
-                      />
-                      <span className="input-group-append">
-                        <img src={searchico} alt="search-icon" />
-                      </span>
-                    </div>
+                    <form name="form" onSubmit={this.handleStoreSearch}>
+                      <div className="input-group form-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search"
+                          autoComplete="off"
+                          value={this.state.slotStoreSearch}
+                          onChange={this.handleSlotStoreSearchOnchange.bind(
+                            this
+                          )}
+                        />
+                        <span className="input-group-append">
+                          <img
+                            src={searchico}
+                            alt="search-icon"
+                            className="cr-pnt"
+                            onClick={this.handleStoreSearch}
+                          />
+                        </span>
+                      </div>
+                    </form>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-12 col-md-3">
                     <button
                       className="butn-selectall"
-                      onClick={this.handleSelectAllStore.bind(this)}
+                      onClick={this.handleSelectAllStore.bind(this, true)}
                     >
                       Select All
                     </button>
                   </div>
                   <div className="col-12 col-md-9">
                     <ul className="atoz">
-                      <li>#</li>
-                      <li>A</li>
-                      <li>B</li>
-                      <li>C</li>
-                      <li>D</li>
-                      <li>E</li>
-                      <li>F</li>
-                      <li>G</li>
-                      <li>H</li>
-                      <li>I</li>
-                      <li>J</li>
-                      <li>K</li>
-                      <li>L</li>
-                      <li>M</li>
-                      <li>N</li>
-                      <li>O</li>
-                      <li>P</li>
-                      <li>Q</li>
-                      <li>R</li>
-                      <li>S</li>
-                      <li>T</li>
-                      <li>U</li>
-                      <li>V</li>
-                      <li>W</li>
-                      <li>Y</li>
-                      <li>Z</li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "")}>
+                        #
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "A")}>
+                        A
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "B")}>
+                        B
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "C")}>
+                        C
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "D")}>
+                        D
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "E")}>
+                        E
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "F")}>
+                        F
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "G")}>
+                        G
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "H")}>
+                        H
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "I")}>
+                        I
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "J")}>
+                        J
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "K")}>
+                        K
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "L")}>
+                        L
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "M")}>
+                        M
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "N")}>
+                        N
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "O")}>
+                        O
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "P")}>
+                        P
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "Q")}>
+                        Q
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "R")}>
+                        R
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "S")}>
+                        S
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "T")}>
+                        T
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "U")}>
+                        U
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "V")}>
+                        V
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "W")}>
+                        W
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "Y")}>
+                        Y
+                      </li>
+                      <li onClick={this.handleStoreFilterData.bind(this, "Z")}>
+                        Z
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -5128,9 +5325,10 @@ class StoreModule extends Component {
                                   className="form-control"
                                   name="allStore"
                                   id={item.storeID + "_" + s}
+                                  checked={item.isChecked}
                                   onChange={this.handleSelectStoresIndividual.bind(
                                     this,
-                                    item.storeID
+                                    item
                                   )}
                                 />
                                 <label
@@ -5152,13 +5350,13 @@ class StoreModule extends Component {
                       <a
                         style={{ color: "#666", marginRight: "30px" }}
                         href={Demo.BLANK_LINK}
-                        onClick={this.handleUnselectStore.bind(this)}
+                        onClick={this.handleSelectAllStore.bind(this, false)}
                       >
                         Clear
                       </a>
                       <button
                         className="butn"
-                        onClick={this.handleNextButtonClose.bind(this)}
+                        onClick={this.handleApplySelectedStore.bind(this)}
                       >
                         Apply
                       </button>
@@ -5455,7 +5653,33 @@ class StoreModule extends Component {
                   <div className="col-12">
                     <h3>Selected Stores</h3>
                     <ul>
-                      <li>
+                      {this.state.storeCodeData !== null &&
+                        this.state.storeCodeData.map((item, s) => {
+                          return (
+                            <>
+                              {item.isChecked && (
+                                <li key={s}>
+                                  <div className="input-group">
+                                    <label>{item.storeName}</label>
+                                    <span className="input-group-append">
+                                      <img
+                                        src={CancelIcon}
+                                        alt="cancel-icone"
+                                        className="cust-ic cr-pnt"
+                                        onClick={this.handleRemoveSelectedStore.bind(
+                                          this,
+                                          item.storeID
+                                        )}
+                                      />
+                                    </span>
+                                  </div>
+                                </li>
+                              )}
+                            </>
+                          );
+                        })}
+
+                      {/* <li>
                         <div className="input-group">
                           <label>SMB0045</label>
                           <span className="input-group-append">
@@ -5466,55 +5690,7 @@ class StoreModule extends Component {
                             />
                           </span>
                         </div>
-                      </li>
-                      <li>
-                        <div className="input-group">
-                          <label>SMB0045</label>
-                          <span className="input-group-append">
-                            <img
-                              src={CancelIcon}
-                              alt="cancel-icone"
-                              className="cust-ic"
-                            />
-                          </span>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="input-group">
-                          <label>SMB0045</label>
-                          <span className="input-group-append">
-                            <img
-                              src={CancelIcon}
-                              alt="cancel-icone"
-                              className="cust-ic"
-                            />
-                          </span>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="input-group">
-                          <label>SMB0045</label>
-                          <span className="input-group-append">
-                            <img
-                              src={CancelIcon}
-                              alt="cancel-icone"
-                              className="cust-ic"
-                            />
-                          </span>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="input-group">
-                          <label>SMB0045</label>
-                          <span className="input-group-append">
-                            <img
-                              src={CancelIcon}
-                              alt="cancel-icone"
-                              className="cust-ic"
-                            />
-                          </span>
-                        </div>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>

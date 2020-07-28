@@ -3298,6 +3298,7 @@ table tr th:last-child {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  background-color: #ecf2f4;
 }
 .my-tic-email1::after {
   display: none;
@@ -4079,6 +4080,22 @@ table tr th:last-child {
 .temp-multi.schedule-multi .css-1hwfws3 {
   padding-right: 35px;
   background-position: right 12px center;
+}
+.settings-created-by-popover .title {
+  color: #000;
+}
+.settings-created-by-popover .sub-title {
+  font-size: 13px;
+  margin-top: 2px;
+}
+.settings-created-by-popover div {
+  margin-bottom: 18px;
+}
+.settings-created-by-popover div:last-child {
+  margin-bottom: 0px;
+}
+.settings-created-by-popover {
+  padding: 10px 20px;
 }
 /* settings ends */
 
@@ -6495,6 +6512,22 @@ progress::-webkit-progress-bar {
   border-right: none !important;
   font-weight: 500;
 }
+.settings-align .ReactTable .rt-tbody .rt-td,
+.settings-align .ReactTable .rt-thead .rt-th.-cursor-pointer {
+  padding-right: 25px !important;
+  padding-left: 25px !important;
+}
+.settings-align-actions {
+  display: flex;
+  align-items: center;
+}
+.settings-align-actions .react-tabel-button {
+  flex: 0 0 57px;
+}
+.settings-align .del-btn,
+.settings-align .downloadaction {
+  margin-right: 20px;
+}
 .inner-custom-react-table .ReactTable .rt-tbody .rt-td {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
@@ -6972,6 +7005,31 @@ table thead tr {
 } */
 .ck-det-cntr .cke_top {
   height: 120px !important;
+}
+.ck-det-cntr-custom .cke_top {
+  height: 80px !important;
+  background: #fff;
+  border-color: #f3f3f3;
+}
+.ck-det-cntr-custom .cke {
+  border-color: #f3f3f3;
+}
+.ck-det-cntr-custom .colladrow label {
+  font-size: 14px;
+}
+.ck-det-cntr-custom .file-upload1 + label {
+  margin-right: 0;
+}
+.ck-det-cntr-custom .inputcc,
+.ck-det-cntr-custom .inputcc-one,
+.ck-det-cntr-custom .CCdi1 {
+  border-color: #f3f3f3;
+  font-weight: 400;
+}
+.ck-det-cntr-custom .CCdi1 {
+  border-left: 0;
+  padding-right: 0;
+  padding-left: 0;
 }
 .ck-det-cntr .cke_contents {
   height: auto !important;
@@ -7946,7 +8004,8 @@ table tr th:last-child {
   background: #fff;
 }
 .report-action {
-  width: 115px;
+  /* width: 115px; */
+  width: 170px;
   display: flex;
   justify-content: flex-end;
 }
@@ -10390,7 +10449,8 @@ table tr th:last-child {
   border-left-color: #ccc;
 }
 .diwamargin {
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
+  margin-bottom: 15px;
 }
 .ticketsystemeditor .cke_bottom {
   display: none !important;

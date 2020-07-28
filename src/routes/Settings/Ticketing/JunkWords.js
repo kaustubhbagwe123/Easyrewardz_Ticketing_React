@@ -1161,142 +1161,143 @@ class JunkWords extends Component {
               {this.state.loading === true ? (
                 <div className="loader-icon"></div>
               ) : (
-                <ReactTable
-                  data={datajunkwords}
-                  columns={[
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "junkKeyword",
-                            TranslationContext !== undefined
+                <div className="settings-align">
+                  <ReactTable
+                    data={datajunkwords}
+                    columns={[
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "junkKeyword",
+                              TranslationContext !== undefined
+                                ? TranslationContext.strong.junkwords
+                                : "Junk Words"
+                            )}
+                          >
+                            {TranslationContext !== undefined
                               ? TranslationContext.strong.junkwords
-                              : "Junk Words"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.strong.junkwords
-                            : "Junk Words"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "junkKeyword",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "reason",
-                            TranslationContext !== undefined
-                              ? TranslationContext.span.reason
-                              : "Reason"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.reason
-                            : "Reason"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "reason",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "enteredDate",
-                            TranslationContext !== undefined
-                              ? TranslationContext.span.entereddate
-                              : "Entered Date"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.entereddate
-                            : "Entered Date"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "enteredDate",
-                    },
-                    {
-                      Header: (
-                        <span
-                          onClick={this.StatusOpenModel.bind(
-                            this,
-                            "enteredBy",
-                            TranslationContext !== undefined
-                              ? TranslationContext.span.enteredby
-                              : "Entered By"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.span.enteredby
-                            : "Entered By"}
-                          <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "enteredBy",
-                      sortable: false,
-                      Cell: (row) => {
-                        var ids = row.original["Id"];
-                        return (
-                          <div>
-                            <span>
-                              {row.original.enteredBy}
-                              <Popover
-                                content={
-                                  <>
-                                    <div>
-                                      <b>
-                                        <p className="title">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.p.updatedby
-                                            : "Updated By"}
-                                          : {row.original.modifyBy}
-                                        </p>
-                                      </b>
-                                      <p className="sub-title">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.p.updateddate
-                                          : "Updated Date"}
-                                        : {row.original.modifyDate}
-                                      </p>
-                                    </div>
-                                  </>
-                                }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon-cp"
-                                  src={BlackInfoIcon}
-                                  alt="info-icon"
-                                  id={ids}
-                                />
-                              </Popover>
-                            </span>
-                          </div>
-                        );
+                              : "Junk Words"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "junkKeyword",
                       },
-                    },
-                    {
-                      Header: (
-                        <span>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.actions
-                            : "Actions"}
-                        </span>
-                      ),
-                      sortable: false,
-                      accessor: "actionReport",
-                      Cell: (row) => (
-                        <div className="report-action">
-                          <div>
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "reason",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.reason
+                                : "Reason"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.reason
+                              : "Reason"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "reason",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "enteredDate",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.entereddate
+                                : "Entered Date"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.entereddate
+                              : "Entered Date"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "enteredDate",
+                      },
+                      {
+                        Header: (
+                          <span
+                            onClick={this.StatusOpenModel.bind(
+                              this,
+                              "enteredBy",
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.enteredby
+                                : "Entered By"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.enteredby
+                              : "Entered By"}
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "enteredBy",
+                        sortable: false,
+                        Cell: (row) => {
+                          var ids = row.original["Id"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.enteredBy}
+                                <Popover
+                                  content={
+                                    <div className="settings-created-by-popover">
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                            : {row.original.modifyBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                          : {row.original.modifyDate}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.actions
+                              : "Actions"}
+                          </span>
+                        ),
+                        sortable: false,
+                        accessor: "actionReport",
+                        Cell: (row) => (
+                          // <div className="report-action">
+                          <div className="settings-align-actions">
                             <Popover
                               content={
                                 <div className="samdel d-flex general-popover popover-body">
@@ -1346,8 +1347,6 @@ class JunkWords extends Component {
                                 className="del-btn"
                               />
                             </Popover>
-                          </div>
-                          <div>
                             <button
                               className="react-tabel-button editre"
                               id="p-edit-pop-2"
@@ -1361,15 +1360,15 @@ class JunkWords extends Component {
                                 : "EDIT"}
                             </button>
                           </div>
-                        </div>
-                      ),
-                    },
-                  ]}
-                  resizable={false}
-                  defaultPageSize={10}
-                  showPagination={true}
-                  minRows={1}
-                />
+                        ),
+                      },
+                    ]}
+                    resizable={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    minRows={1}
+                  />
+                </div>
               )}
             </div>
           </div>
