@@ -216,7 +216,7 @@ let config = {
       "ReportsTo",
       "CRMRole",
       "Status",
-      "ClaimApprover"
+      "ClaimApprover",
     ],
     [
       "Bata",
@@ -231,7 +231,7 @@ let config = {
       "xyz",
       "Admin",
       "Active",
-      "Yes"
+      "Yes",
     ],
   ],
   storeSlaTemplate: [

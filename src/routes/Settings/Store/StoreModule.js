@@ -174,11 +174,12 @@ class StoreModule extends Component {
       selectedStoreIds: "",
       selectedStoreValues: "",
       shoreSelectedCount: 0,
-      showApplyStoreData: false,
       operationalDaysData: [],
       slotStoreSearch: "",
       selectedStoreList: [],
       selectedStoreMdl: {},
+      slotTemplateData: [],
+      showApplyStoreData: false
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -205,6 +206,7 @@ class StoreModule extends Component {
     this.handleGetLanguageDropdownlist();
     this.handleGetLanguageGridData();
     this.handleGetOperationalDays();
+    this.handleGetSlotTemplate();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -2301,6 +2303,27 @@ class StoreModule extends Component {
       selectedStoreValues: finalValue,
     });
   }
+  handleGetSlotTemplate() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetSlotTemplates",
+      headers: authHeader(),
+    }).then((res) => {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ slotTemplateData: data });
+      } else {
+        self.setState({ slotTemplateData: [] });
+      }
+    })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -4079,11 +4102,6 @@ class StoreModule extends Component {
                                               }
                                               placeholder="Please Select Operational Days"
                                               closeMenuOnSelect={false}
-                                              name="selectBrandMulti"
-                                              // onChange={this.handleBrandChange.bind(this)}
-                                              value={
-                                                this.state.selectBrandMulti
-                                              }
                                               isMulti
                                             />
                                           </li>
@@ -4094,7 +4112,17 @@ class StoreModule extends Component {
                                               className="form-control"
                                             >
                                               <option value={0}>Select</option>
-                                              <option value={0}>1</option>
+                                              {this.state.slotTemplateData !== null &&
+                                                this.state.slotTemplateData.map(
+                                                  (item, s) => (
+                                                    <option
+                                                      key={s}
+                                                      value={item.slotTemplateID}
+                                                    >
+                                                      {item.slotTemplateName}
+                                                    </option>
+                                                  )
+                                                )}
                                             </select>
                                             <a
                                               onClick={this.handleCreateTempletetOpenModal.bind(
