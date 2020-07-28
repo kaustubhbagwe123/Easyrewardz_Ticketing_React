@@ -48,6 +48,7 @@ class storeMyTicket extends Component {
       isChatAllreadyActive: false,
       chatEndDateTime: "",
       isWhatsAppIconClick: false,
+      reInitiateChatDateTime: "",
     };
   }
   componentDidMount() {
@@ -165,7 +166,6 @@ class storeMyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -180,6 +180,7 @@ class storeMyTicket extends Component {
             customerMobileNumber: data.customerMobileNumber,
             storeID: data.assignTo,
             customerID: data.customerID,
+            reInitiateChatDateTime: data.reInitiateChatDateTime,
           });
 
           setTimeout(() => {
@@ -255,7 +256,6 @@ class storeMyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -287,7 +287,6 @@ class storeMyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -321,7 +320,6 @@ class storeMyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.status;
         let data = res.data.responseData;
         if (status === true) {
@@ -400,7 +398,6 @@ class storeMyTicket extends Component {
         },
       })
         .then(function(response) {
-          debugger;
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
@@ -412,6 +409,7 @@ class storeMyTicket extends Component {
               document.getElementById("newTicketChatId").value = responseData;
               document.getElementById("chatwindow").click();
             }
+            self.handleGetTicketDetails(self.state.ticket_Id);
           } else {
             self.setState({ isWhatsAppIconClick: false });
           }
@@ -633,6 +631,10 @@ class storeMyTicket extends Component {
                                     width: "20px",
                                     cursor: "pointer",
                                   }}
+                                  title={
+                                    "Re-initiate chat on " +
+                                    this.state.reInitiateChatDateTime
+                                  }
                                   src={WhatsappDeactive}
                                   alt="WhatsappDeactive"
                                 />

@@ -71,7 +71,7 @@ import moment from "moment";
 import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { Table, Select, notification, Divider, Space } from "antd";
+import { Table, Select, notification, Menu, Dropdown } from "antd";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
@@ -209,7 +209,7 @@ class Header extends Component {
       billNumber: "",
       billAmount: 0,
       transactionDate: "",
-      insights: "",
+      insights: [],
       orderDelivered: 0,
       orderShoppingBag: 0,
       orderReadyToShip: 0,
@@ -249,6 +249,7 @@ class Header extends Component {
       isGeneratePaymentTabActive: false,
       isCustomerProfile: false,
       isCustomerProduct: false,
+      selectedColor: "",
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -827,6 +828,7 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
+    
     this.setState({
       newTicketChatId:
         Number(document.getElementById("newTicketChatId").value) || 0,
@@ -893,7 +895,6 @@ class Header extends Component {
               });
             }
             for (let i = 0; i < ongoingChatsData.length; i++) {
-              debugger;
               ongoingChatsData[i].initialColor =
                 self.state.colorCode[Math.floor(Math.random() * 6)];
             }
@@ -915,10 +916,20 @@ class Header extends Component {
                 chatData[0].programCode,
                 chatData[0].storeID,
                 chatData[0].isCustEndChat,
-                chatData[0].storeManagerId
+                chatData[0].storeManagerId,
+                chatData[0].initialColor
               );
             } else {
+              
+              var selectedColor = "";
+              if (self.state.chatId > 0) {
+                var selectedColor = ongoingChatsData.filter(
+                  (x) => x.chatID === self.state.chatId
+                )[0].initialColor;
+              }
+
               self.setState({
+                selectedColor,
                 ongoingChatsData,
               });
             }
@@ -968,14 +979,19 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
-        debugger;
+        
         if (message === "Success" && newChatsData) {
           for (let i = 0; i < newChatsData.length; i++) {
             newChatsData[i].initialColor =
               self.state.colorCode[Math.floor(Math.random() * 6)];
           }
           self.setState({ newChatsData, isMainLoader: false });
-
+          if (self.state.newTicketChatId > 0) {
+            var chatData = newChatsData.filter(
+              (x) => x.chatID === self.state.newTicketChatId
+            );
+            self.handleNewChatNotification(chatData);
+          }
           if (self.state.isNotiNewChat && mobileNo && msgData) {
             const Sound1Play = new Audio(self.state.newChatSoundFile);
             Sound1Play.volume =
@@ -1267,6 +1283,8 @@ class Header extends Component {
         var chatMessageCount = response.data.responseData;
         if (chatMessageCount) {
           self.setState({ chatMessageCount });
+        } else {
+          self.setState({ chatMessageCount: chatMessageCount || 0 });
         }
       })
       .catch((response) => {
@@ -1593,11 +1611,13 @@ class Header extends Component {
     ProgramCode,
     StoreID,
     isCustEndChat,
-    storeManagerId
+    storeManagerId,
+    selectedColor
   ) => {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          selectedColor,
           chatModal: true,
           ProfileProductTab: 0,
           productTypeTab: 0,
@@ -1649,6 +1669,7 @@ class Header extends Component {
         this.handleGetChatCustomerProfile(customerId);
       } else {
         this.setState({
+          selectedColor,
           chatModal: true,
           ProfileProductTab: 0,
           productTypeTab: 0,
@@ -1707,6 +1728,7 @@ class Header extends Component {
       }
     } else {
       this.setState({
+        selectedColor,
         chatModal: true,
         ProfileProductTab: 0,
         productTypeTab: 0,
@@ -2261,7 +2283,7 @@ class Header extends Component {
                     var chatData = self.state.ongoingChatsData.filter(
                       (x) => x.mobileNo === data[3].substr(2)
                     );
-                    debugger;
+
                     notification.open({
                       key: chatData[0].chatID,
                       duration: self.state.notificationTime,
@@ -2447,7 +2469,6 @@ class Header extends Component {
         var data = response.data.responseData;
 
         if (message === "Success" && data) {
-          debugger;
           self.setState({
             tempRemainingCount: data.chatCharLimit,
             remainingCount: data.chatCharLimit,
@@ -2571,7 +2592,7 @@ class Header extends Component {
               billNumber: responseData.billNumber || "",
               billAmount: responseData.billAmount,
               transactionDate: responseData.transactionDate,
-              insights: responseData.insights || "",
+              insights: responseData.insights || [],
               orderDelivered: responseData.orderDelivered,
               orderShoppingBag: responseData.orderShoppingBag,
               orderReadyToShip: responseData.orderReadyToShip,
@@ -2928,7 +2949,6 @@ class Header extends Component {
   };
   ////handle notification click
   handleNotificationClick = (chatData, notificationKey) => {
-    debugger;
     notification.close(notificationKey);
     this.handleOngoingChatClick(
       chatData[0].chatID,
@@ -2939,7 +2959,8 @@ class Header extends Component {
       chatData[0].programCode,
       chatData[0].storeID,
       chatData[0].isCustEndChat,
-      chatData[0].storeManagerId
+      chatData[0].storeManagerId,
+      chatData[0].initialColor
     );
   };
   ////handle check is mobile view active or not
@@ -2953,7 +2974,10 @@ class Header extends Component {
   }
   ////handle new chat notification click
   handleNewChatNotification = (chatData, notificationKey) => {
-    notification.close(notificationKey);
+    if (notificationKey) {
+      notification.close(notificationKey);
+    }
+    this.setState({ newTicketChatId: 0 });
     this.handleUpdateCustomerChatStatus(
       chatData[0].chatID,
       chatData[0].storeManagerId,
@@ -2993,7 +3017,7 @@ class Header extends Component {
     addressDetails.country = this.state.shippingCountry || "";
     // addressDetails.latitude = this.state.shippingLatitude;
     // addressDetails.longitude = this.state.shippingLongitude;
-    debugger;
+
     var itemCodes = "";
     /////for recommendation
     if (isFromRecommendation) {
@@ -3048,6 +3072,56 @@ class Header extends Component {
       .catch((response) => {});
   };
 
+  handleSendProductsOnChat = () => {
+    var selectedProduct = [];
+    if (this.state.productTypeTab == 0) {
+      this.state.selectedShoppingBag.forEach((element) => {
+        selectedProduct.push(element);
+      });
+    }
+
+    if (this.state.productTypeTab == 1) {
+      this.state.selectedWishList.forEach((element) => {
+        selectedProduct.push(element);
+      });
+    }
+    if (this.state.productTypeTab == 2) {
+      this.state.selectedRecommended.forEach((element) => {
+        selectedProduct.push(element);
+      });
+    }
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/SendProductsOnChat",
+      headers: authHeader(),
+      data: {
+        ChatID: this.state.chatId,
+        Products: selectedProduct,
+        ProductFrom:
+          this.state.productTypeTab === 0 ? "shoppingbag" : "wishlist",
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+
+        if (message === "Success" && responseData) {
+          self.handleGetChatMessagesList(self.state.chatId);
+        }
+      })
+      .catch((response) => {
+        console.log(response, "----handleSendProductsOnChat");
+      });
+  };
+
+  handleMobileActionMenuClick = (e) => {
+    
+    if (e.key == 1) {
+      this.handleUpdateStoreManagerChatStatus(3)
+    }
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3647,7 +3721,8 @@ class Header extends Component {
                 onClick={this.handleChatModalClose}
               />
             ) : null}
-            {this.state.isMobileView && this.state.customerName ? (
+            {(this.state.isMobileView && this.state.customerName) ||
+            this.state.isHistoricalChat ? (
               <img
                 src={BackArw}
                 className="BackArw"
@@ -3785,17 +3860,7 @@ class Header extends Component {
                         ))}
                     </div>
                   </div>
-                  {this.state.newChatsData.length === 0 && (
-                    <p
-                      className="no-record"
-                      style={{ marginTop: "0px", backgroundColor: "#FFFEF7" }}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.p.norecordsfound
-                        : "No Records Found"}
-                      !
-                    </p>
-                  )}
+
                   <div
                     className="chat-cntr oc-bg"
                     style={{ backgroundColor: "#ECF2F4" }}
@@ -3854,7 +3919,8 @@ class Header extends Component {
                                 chat.programCode,
                                 chat.storeID,
                                 chat.isCustEndChat,
-                                chat.storeManagerId
+                                chat.storeManagerId,
+                                chat.initialColor
                               )}
                             >
                               <div className="d-flex align-items-center overflow-hidden">
@@ -3912,17 +3978,7 @@ class Header extends Component {
                         : null}
                     </div>
                   </div>
-                  {this.state.ongoingChatsData.length === 0 && (
-                    <p
-                      className="no-record"
-                      style={{ marginTop: "0px", backgroundColor: "#ECF2F4" }}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.p.norecordsfound
-                        : "No Records Found"}
-                      !
-                    </p>
-                  )}
+
                   <div
                     className="chat-hist"
                     style={{ backgroundColor: "#ECF2F4" }}
@@ -4468,7 +4524,8 @@ class Header extends Component {
                                   <li className="nav-item">
                                     <a
                                       className={
-                                        this.state.toggle.one
+                                        this.state.toggle.one &&
+                                        this.state.isMessageTabActive
                                           ? "nav-link active"
                                           : "nav-link"
                                       }
@@ -4593,874 +4650,539 @@ class Header extends Component {
                             ) : null}
                             <div className="tab-content">
                               {/* --------Message Tab----- */}
-                              <div
-                                className={
-                                  this.state.customerName !== "" &&
-                                  this.state.toggle.one
-                                    ? "tab-pane fade active show"
-                                    : "tab-pane fade"
-                                }
-                                id="message-tab"
-                                role="tabpanel"
-                                aria-labelledby="message-tab"
-                              >
-                                <div className="message-div">
-                                  <span className="message-initial">
-                                    {this.state.UserName.charAt(
-                                      0
-                                    ).toUpperCase()}
-                                  </span>
-                                  <textarea
-                                    placeholder="Search to get suggestions..."
-                                    value={this.state.message}
-                                    onChange={this.handleOnChangeCKEditor.bind(
-                                      this
-                                    )}
-                                  ></textarea>
-                                  <p className="cls-charcount">
-                                    {this.state.remainingCount +
-                                      " characters remaining..."}
-                                  </p>
-                                  {this.state.isMessage !== "" && (
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                      }}
-                                    >
-                                      {this.state.isMessage}
-                                    </p>
-                                  )}
-                                  {this.state.messageSuggestionTagsData !== null
-                                    ? this.state.messageSuggestionTagsData.map(
-                                        (item, i) => {
-                                          return (
-                                            <button
-                                              onClick={this.handleTagsButtonClick.bind(
-                                                this,
-                                                item.tagID
-                                              )}
-                                              className={
-                                                this.state.selectedTags ===
-                                                item.tagID
-                                                  ? "tagsbtn-active"
-                                                  : "tagsbtn"
-                                              }
-                                              id={item.tagID}
-                                            >
-                                              {item.tagName}
-                                            </button>
-                                          );
-                                        }
-                                      )
-                                    : null}
-                                  {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.length >
-                                      0 &&
-                                    this.state.messageSuggestionData.length >
-                                      0 && (
-                                      <div
-                                        className="suggestions-cntr setpagination"
-                                        style={{ width: "100%" }}
-                                      >
-                                        <Table
-                                          noDataContent="No Record Found"
-                                          style={{ width: "100%" }}
-                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
-                                          columns={[
-                                            {
-                                              dataIndex: "suggestionText",
-                                              render: (row, rowData) => {
-                                                i = i + 1;
-                                                return (
-                                                  <div
-                                                    className={
-                                                      this.state
-                                                        .chkSuggestion ===
-                                                      rowData.suggestionID
-                                                        ? "suggestions-tick"
-                                                        : ""
-                                                    }
-                                                    style={{ width: "100%" }}
-                                                    id={i}
-                                                    onClick={this.onOpenMobSuggestionModal.bind(
-                                                      this,
-                                                      rowData.suggestionText,
-                                                      rowData.suggestionID
-                                                    )}
-                                                  >
-                                                    <Tooltip
-                                                      placement="left"
-                                                      title={
-                                                        rowData.suggestionText
-                                                      }
-                                                    >
-                                                      <span>
-                                                        {rowData.suggestionText}
-                                                      </span>
-                                                    </Tooltip>
-                                                  </div>
-                                                );
-                                              },
-                                            },
-                                          ]}
-                                          dataSource={this.state.messageSuggestionData.filter(
-                                            (x) =>
-                                              x.tagID == this.state.selectedTags
-                                          )}
-                                          pagination={{
-                                            pageSize: 10,
-                                            defaultPageSize: 10,
-                                          }}
-                                        ></Table>
-                                      </div>
-                                    )}
-
-                                  {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].suggestion ===
-                                    1 ? (
-                                    <div
-                                      className="mobile-ck-send"
-                                      onClick={this.handleMessageSuggestion.bind(
-                                        this
-                                      )}
-                                      title={"Search"}
-                                    >
-                                      <img src={SuggSearch} alt="send img" />
-                                    </div>
-                                  ) : null}
-                                  {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].freeText ===
-                                    1 ? (
-                                    <div
-                                      className="mobile-ck-send-btn"
-                                      onClick={this.handleSaveChatMessages.bind(
-                                        this,
-                                        this.state.message,
-                                        0,
-                                        "",
-                                        ""
-                                      )}
-                                      title={"Send"}
-                                    >
-                                      <img src={Assign} alt="send img" />
-                                    </div>
-                                  ) : null}
-                                </div>
-                              </div>
-                              {/* --------Card Tab----- */}
-                              <div
-                                className={
-                                  this.state.toggle.two
-                                    ? "tab-pane fade active show"
-                                    : "tab-pane fade"
-                                }
-                                id="card-tab"
-                                role="tabpanel"
-                                aria-labelledby="card-tab"
-                              >
-                                <div>
-                                  <div
-                                    className="input-group searchtxt-new"
-                                    style={{ background: "none" }}
-                                  >
-                                    <input
-                                      type="text"
-                                      className="search-customerAddSrch searchtxt"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.placeholder
-                                              .searchitemidarticleskuid
-                                          : "Search ItemId/artcile/SKU ID"
-                                      }
-                                      name="Search"
-                                      maxLength="100"
-                                      autoComplete="off"
-                                      value={this.state.searchItem}
-                                      onChange={this.handleSearchItemChange.bind(
-                                        this
-                                      )}
-                                      onKeyPress={this.enterPressed.bind(this)}
-                                    />
-                                    <span
-                                      onClick={this.handleSearchChatItemDetails.bind(
-                                        this
-                                      )}
-                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                    >
-                                      <img
-                                        src={SearchBlueImg}
-                                        alt="SearchBlueImg"
-                                        className="srch-imge"
-                                      />
+                              {this.state.isMessageTabActive ? (
+                                <div
+                                  className={
+                                    this.state.customerName !== "" &&
+                                    this.state.toggle.one
+                                      ? "tab-pane fade active show"
+                                      : "tab-pane fade"
+                                  }
+                                  id="message-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="message-tab"
+                                >
+                                  <div className="message-div">
+                                    <span className="message-initial">
+                                      {this.state.UserName.charAt(
+                                        0
+                                      ).toUpperCase()}
                                     </span>
-                                    {this.state.searchCardData.length === 0 && (
+                                    <textarea
+                                      placeholder="Search to get suggestions..."
+                                      value={this.state.message}
+                                      onChange={this.handleOnChangeCKEditor.bind(
+                                        this
+                                      )}
+                                    ></textarea>
+                                    <p className="cls-charcount">
+                                      {this.state.remainingCount +
+                                        " characters remaining..."}
+                                    </p>
+                                    {this.state.isMessage !== "" && (
                                       <p
                                         style={{
                                           color: "red",
                                           marginBottom: "0px",
                                         }}
                                       >
-                                        {this.state.noProductFound}
+                                        {this.state.isMessage}
                                       </p>
                                     )}
-                                  </div>
-                                </div>
-                                <div className="container p-0">
-                                  <div
-                                    className="row product-card"
-                                    style={{
-                                      height: !this.state.isDownbtn
-                                        ? "100%"
-                                        : "",
-                                      maxHeight: !this.state.isDownbtn
-                                        ? "600px"
-                                        : "",
-                                    }}
-                                  >
-                                    {this.state.searchCardData !== null
-                                      ? this.state.searchCardData.map(
+                                    {this.state.messageSuggestionTagsData !==
+                                    null
+                                      ? this.state.messageSuggestionTagsData.map(
                                           (item, i) => {
                                             return (
-                                              <div className="col-md-6" key={i}>
-                                                {item.itemID ===
-                                                this.state.selectedCard ? (
-                                                  <div className="selectdot">
-                                                    <img
-                                                      src={CardTick}
-                                                      alt={"select-card"}
-                                                    />
-                                                  </div>
-                                                ) : null}
-                                                <div
-                                                  className="card"
-                                                  id={"card" + item.itemID}
-                                                >
-                                                  <div className="card-body position-relative">
-                                                    <div
-                                                      className="row"
-                                                      style={{
-                                                        margin: "0",
-                                                      }}
-                                                    >
-                                                      <div
-                                                        className="col-md-4 mb-md-0 mb-2"
-                                                        style={{
-                                                          alignSelf: "center",
-                                                        }}
-                                                      >
-                                                        {item.imageURL !==
-                                                        "" ? (
-                                                          <img
-                                                            className="chat-product-img"
-                                                            src={item.imageURL}
-                                                            alt="Product Image"
-                                                            title={
-                                                              item.productName
-                                                            }
-                                                          />
-                                                        ) : (
-                                                          <Dropzone
-                                                            maxSize={5242880}
-                                                            accept="image/jpeg, image/png,image/jpg"
-                                                            onDrop={this.handleInsertCardImageUpload.bind(
-                                                              this,
-                                                              item.uniqueItemCode
-                                                            )}
-                                                          >
-                                                            {({
-                                                              getRootProps,
-                                                              getInputProps,
-                                                            }) => (
-                                                              <div
-                                                                {...getRootProps()}
-                                                              >
-                                                                <input
-                                                                  {...getInputProps()}
-                                                                  className="file-upload d-none"
-                                                                />
-                                                                <span className="addimg">
-                                                                  <input
-                                                                    type="image"
-                                                                    alt="Add Image"
-                                                                    src={addimg}
-                                                                  />
-                                                                </span>
-                                                              </div>
-                                                            )}
-                                                          </Dropzone>
-                                                        )}
-                                                      </div>
-                                                      <div
-                                                        className="col-md-8 bkcprdt"
-                                                        onClick={this.handleSelectCard.bind(
-                                                          this,
-                                                          item.itemID,
-                                                          item.imageURL
-                                                        )}
-                                                      >
-                                                        {item.productName ? (
-                                                          <div>
-                                                            <label className="chat-product-name">
-                                                              {item.productName}
-                                                            </label>
-                                                          </div>
-                                                        ) : null}
-                                                        <div>
-                                                          {item.brandName !==
-                                                            "" &&
-                                                          item.brandName !==
-                                                            null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label.brand
-                                                                : "Brand"}{" "}
-                                                              :
-                                                              {" " +
-                                                                item.brandName}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.categoryName !==
-                                                            "" &&
-                                                          item.categoryName !==
-                                                            null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label
-                                                                    .category
-                                                                : "Category"}{" "}
-                                                              :
-                                                              {" " +
-                                                                item.categoryName}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.subCategoryName !==
-                                                            "" &&
-                                                          item.subCategoryName !==
-                                                            null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label
-                                                                    .subcategory
-                                                                : "SubCategory"}{" "}
-                                                              :
-                                                              {" " +
-                                                                item.subCategoryName}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.color !== "" &&
-                                                          item.color !==
-                                                            null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label.color
-                                                                : "Color"}{" "}
-                                                              :
-                                                              {" " + item.color}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.size !== "" &&
-                                                          item.size !== null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label.color
-                                                                : "Size"}{" "}
-                                                              :{" " + item.size}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.uniqueItemCode !==
-                                                            "" &&
-                                                          item.uniqueItemCode !==
-                                                            null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label
-                                                                    .itemcode
-                                                                : "Item Code"}{" "}
-                                                              :
-                                                              {" " +
-                                                                item.uniqueItemCode}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.discount !==
-                                                            "" &&
-                                                          parseFloat(
-                                                            item.discount
-                                                          ) !== 0 &&
-                                                          item.discount !==
-                                                            null ? (
-                                                            <label className="chat-product-code">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label
-                                                                    .discount
-                                                                : "Discount"}{" "}
-                                                              :
-                                                              {" " +
-                                                                item.discount}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.price !== "" &&
-                                                          parseFloat(
-                                                            item.price
-                                                          ) !== 0 &&
-                                                          item.price !==
-                                                            null ? (
-                                                            <label className="chat-product-prize">
-                                                              {TranslationContext !==
-                                                              undefined
-                                                                ? TranslationContext
-                                                                    .label.price
-                                                                : "Price"}{" "}
-                                                              :
-                                                              {" " + item.price}
-                                                            </label>
-                                                          ) : null}
-                                                        </div>
-                                                        {item.url !== null &&
-                                                        item.url !== "" ? (
-                                                          <div>
-                                                            <a
-                                                              href={item.url}
-                                                              target="_blank"
-                                                              className="chat-product-url"
-                                                            >
-                                                              {item.url}
-                                                            </a>
-                                                          </div>
-                                                        ) : (
-                                                          ""
-                                                        )}
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
+                                              <button
+                                                onClick={this.handleTagsButtonClick.bind(
+                                                  this,
+                                                  item.tagID
+                                                )}
+                                                className={
+                                                  this.state.selectedTags ===
+                                                  item.tagID
+                                                    ? "tagsbtn-active"
+                                                    : "tagsbtn"
+                                                }
+                                                id={item.tagID}
+                                              >
+                                                {item.tagName}
+                                              </button>
                                             );
                                           }
                                         )
                                       : null}
-                                  </div>
-                                  {this.state.searchCardData.length > 0 ? (
-                                    <div className="row m-0">
-                                      <button
-                                        style={{ cursor: "pointer" }}
-                                        className="storeUpbtn"
-                                        onClick={this.handleDownButtonClick.bind(
+                                    {this.state.messageSuggestionData !==
+                                      null &&
+                                      this.state.messageSuggestionData.length >
+                                        0 &&
+                                      this.state.messageSuggestionData.length >
+                                        0 && (
+                                        <div
+                                          className="suggestions-cntr setpagination"
+                                          style={{ width: "100%" }}
+                                        >
+                                          <Table
+                                            noDataContent="No Record Found"
+                                            style={{ width: "100%" }}
+                                            className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                            columns={[
+                                              {
+                                                dataIndex: "suggestionText",
+                                                render: (row, rowData) => {
+                                                  i = i + 1;
+                                                  return (
+                                                    <div
+                                                      className={
+                                                        this.state
+                                                          .chkSuggestion ===
+                                                        rowData.suggestionID
+                                                          ? "suggestions-tick"
+                                                          : ""
+                                                      }
+                                                      style={{ width: "100%" }}
+                                                      id={i}
+                                                      onClick={this.onOpenMobSuggestionModal.bind(
+                                                        this,
+                                                        rowData.suggestionText,
+                                                        rowData.suggestionID
+                                                      )}
+                                                    >
+                                                      <Tooltip
+                                                        placement="left"
+                                                        title={
+                                                          rowData.suggestionText
+                                                        }
+                                                      >
+                                                        <span>
+                                                          {
+                                                            rowData.suggestionText
+                                                          }
+                                                        </span>
+                                                      </Tooltip>
+                                                    </div>
+                                                  );
+                                                },
+                                              },
+                                            ]}
+                                            dataSource={this.state.messageSuggestionData.filter(
+                                              (x) =>
+                                                x.tagID ==
+                                                this.state.selectedTags
+                                            )}
+                                            pagination={{
+                                              pageSize: 10,
+                                              defaultPageSize: 10,
+                                            }}
+                                          ></Table>
+                                        </div>
+                                      )}
+
+                                    {this.state.storeAgentDetail.length !== 0 &&
+                                    this.state.storeAgentDetail[0]
+                                      .suggestion === 1 ? (
+                                      <div
+                                        className="mobile-ck-send"
+                                        onClick={this.handleMessageSuggestion.bind(
                                           this
                                         )}
+                                        title={"Search"}
                                       >
-                                        {this.state.isDownbtn ? (
-                                          <img
-                                            src={DownBlue}
-                                            alt="down-arrow"
-                                          />
-                                        ) : (
-                                          <img src={UpBlue} alt="up-arrow" />
-                                        )}
-                                      </button>
-                                      <button
-                                        className="butn"
-                                        onClick={this.handleSendCard.bind(this)}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.button.send
-                                          : "Send"}
-                                        <img
-                                          src={SendUp}
-                                          alt="send"
-                                          className="send-up float-none"
-                                        />
-                                        {this.state.isSendRecomended ? (
-                                          <FontAwesomeIcon
-                                            icon={faCircleNotch}
-                                            className="circular-loader ml-2"
-                                            spin
-                                          />
-                                        ) : (
+                                        <img src={SuggSearch} alt="send img" />
+                                      </div>
+                                    ) : null}
+                                    {this.state.storeAgentDetail.length !== 0 &&
+                                    this.state.storeAgentDetail[0].freeText ===
+                                      1 ? (
+                                      <div
+                                        className="mobile-ck-send-btn"
+                                        onClick={this.handleSaveChatMessages.bind(
+                                          this,
+                                          this.state.message,
+                                          0,
+                                          "",
                                           ""
                                         )}
-                                      </button>
-                                    </div>
-                                  ) : null}
+                                        title={"Send"}
+                                      >
+                                        <img src={Assign} alt="send img" />
+                                      </div>
+                                    ) : null}
+                                  </div>
                                 </div>
-                              </div>
-                              {/* --------Recommended List Tab----- */}
-                              <div
-                                className={
-                                  this.state.toggle.three
-                                    ? "tab-pane fade active show"
-                                    : "tab-pane fade"
-                                }
-                                id="recommended-list-tab"
-                                role="tabpanel"
-                                aria-labelledby="recommended-list-tab"
-                              >
-                                <div className="recommended-cntr">
-                                  <button
-                                    disabled={this.state.isSendRecomended}
-                                    className="butn"
-                                    onClick={this.handleSendRecommendedList.bind(
-                                      this
-                                    )}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.button
-                                          .sendrecommendedlist
-                                      : "Send Recommended List"}
-
-                                    <img
-                                      src={SendUp}
-                                      alt="send"
-                                      className="send-up float-none"
-                                    />
-                                    {this.state.isSendRecomended ? (
-                                      <FontAwesomeIcon
-                                        icon={faCircleNotch}
-                                        className="circular-loader ml-2"
-                                        spin
+                              ) : null}
+                              {/* --------Card Tab----- */}
+                              {this.state.isCardTabActive ? (
+                                <div
+                                  className={
+                                    this.state.toggle.two
+                                      ? "tab-pane fade active show"
+                                      : "tab-pane fade"
+                                  }
+                                  id="card-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="card-tab"
+                                >
+                                  <div>
+                                    <div
+                                      className="input-group searchtxt-new"
+                                      style={{ background: "none" }}
+                                    >
+                                      <input
+                                        type="text"
+                                        className="search-customerAddSrch searchtxt"
+                                        placeholder={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.placeholder
+                                                .searchitemidarticleskuid
+                                            : "Search ItemId/artcile/SKU ID"
+                                        }
+                                        name="Search"
+                                        maxLength="100"
+                                        autoComplete="off"
+                                        value={this.state.searchItem}
+                                        onChange={this.handleSearchItemChange.bind(
+                                          this
+                                        )}
+                                        onKeyPress={this.enterPressed.bind(
+                                          this
+                                        )}
                                       />
-                                    ) : (
-                                      ""
-                                    )}
-                                  </button>
-
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
-                                    }}
-                                  >
-                                    {this.state.noRecommendedFound}
-                                  </p>
-                                </div>
-                              </div>
-                              {/* --------Schedule Visit Tab----- */}
-                              <div
-                                className={
-                                  this.state.toggle.four
-                                    ? "tab-pane fade active show"
-                                    : "tab-pane fade"
-                                }
-                                id="schedule-visit-tab"
-                                role="tabpanel"
-                                aria-labelledby="schedule-visit-tab"
-                              >
-                                {this.state.availableSlot > 0 ? (
-                                  <div className="row">
-                                    <div className="col-md-7 schedule-left-cntr">
-                                      {this.state.timeSlotData !== null
-                                        ? this.state.timeSlotData.map(
+                                      <span
+                                        onClick={this.handleSearchChatItemDetails.bind(
+                                          this
+                                        )}
+                                        className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                      >
+                                        <img
+                                          src={SearchBlueImg}
+                                          alt="SearchBlueImg"
+                                          className="srch-imge"
+                                        />
+                                      </span>
+                                      {this.state.searchCardData.length ===
+                                        0 && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.noProductFound}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="container p-0">
+                                    <div
+                                      className="row product-card"
+                                      style={{
+                                        height: !this.state.isDownbtn
+                                          ? "100%"
+                                          : "",
+                                        maxHeight: !this.state.isDownbtn
+                                          ? "600px"
+                                          : "",
+                                      }}
+                                    >
+                                      {this.state.searchCardData !== null
+                                        ? this.state.searchCardData.map(
                                             (item, i) => {
-                                              return item.alreadyScheduleDetails
-                                                .length > 0 ? (
-                                                <div key={i}>
-                                                  <label className="s-lable">
-                                                    {item.day}:{item.dates}
-                                                  </label>
-                                                  <div className="schedule-btn-outer-cntr">
-                                                    <div
-                                                      className="selectdot-blue selectdot-blue-left"
-                                                      onClick={this.handleScrollLeft.bind(
-                                                        this,
-                                                        i
-                                                      )}
-                                                    >
+                                              return (
+                                                <div
+                                                  className="col-md-6"
+                                                  key={i}
+                                                >
+                                                  {item.itemID ===
+                                                  this.state.selectedCard ? (
+                                                    <div className="selectdot">
                                                       <img
-                                                        src={SchRight}
-                                                        alt="right arrow"
+                                                        src={CardTick}
+                                                        alt={"select-card"}
                                                       />
                                                     </div>
-                                                    <div
-                                                      className="schedule-btn-cntr"
-                                                      id={
-                                                        "schedule-btn-cntr" + i
-                                                      }
-                                                    >
-                                                      {item
-                                                        .alreadyScheduleDetails
-                                                        .length > 0 &&
-                                                        item.alreadyScheduleDetails.map(
-                                                          (data, k) => {
-                                                            var selectSlot = false;
-                                                            if (
-                                                              this.state
-                                                                .timeSlotData[i]
-                                                                .alreadyScheduleDetails[
-                                                                k
-                                                              ] ===
-                                                              this.state
-                                                                .selectedSlot
-                                                            ) {
-                                                              selectSlot = true;
-                                                            }
-
-                                                            if (
-                                                              data.maxCapacity ==
-                                                              data.visitedCount
-                                                            ) {
-                                                              return (
-                                                                <Tooltip
-                                                                  placement="left"
-                                                                  title={
-                                                                    data.remaining +
-                                                                    " MORE PEOPLE LEFT"
-                                                                  }
+                                                  ) : null}
+                                                  <div
+                                                    className="card"
+                                                    id={"card" + item.itemID}
+                                                  >
+                                                    <div className="card-body position-relative">
+                                                      <div
+                                                        className="row"
+                                                        style={{
+                                                          margin: "0",
+                                                        }}
+                                                      >
+                                                        <div
+                                                          className="col-md-4 mb-md-0 mb-2"
+                                                          style={{
+                                                            alignSelf: "center",
+                                                          }}
+                                                        >
+                                                          {item.imageURL !==
+                                                          "" ? (
+                                                            <img
+                                                              className="chat-product-img"
+                                                              src={
+                                                                item.imageURL
+                                                              }
+                                                              alt="Product Image"
+                                                              title={
+                                                                item.productName
+                                                              }
+                                                            />
+                                                          ) : (
+                                                            <Dropzone
+                                                              maxSize={5242880}
+                                                              accept="image/jpeg, image/png,image/jpg"
+                                                              onDrop={this.handleInsertCardImageUpload.bind(
+                                                                this,
+                                                                item.uniqueItemCode
+                                                              )}
+                                                            >
+                                                              {({
+                                                                getRootProps,
+                                                                getInputProps,
+                                                              }) => (
+                                                                <div
+                                                                  {...getRootProps()}
                                                                 >
-                                                                  <button
-                                                                    key={k}
-                                                                    disabled={
-                                                                      data.isDisabled
-                                                                    }
-                                                                    className="s-red-active"
-                                                                    style={{
-                                                                      cursor:
-                                                                        "no-drop",
-                                                                    }}
-                                                                  >
-                                                                    {
-                                                                      data.timeSlot
-                                                                    }
-                                                                  </button>
-                                                                </Tooltip>
-                                                              );
-                                                            }
-                                                            if (
-                                                              data.visitedCount >=
-                                                              (1 / 2) *
-                                                                data.maxCapacity
-                                                            ) {
-                                                              return (
-                                                                <Tooltip
-                                                                  placement="left"
-                                                                  title={
-                                                                    data.remaining +
-                                                                    " MORE PEOPLE LEFT"
-                                                                  }
-                                                                >
-                                                                  <button
-                                                                    key={k}
-                                                                    style={{
-                                                                      cursor: data.isDisabled
-                                                                        ? "no-drop"
-                                                                        : "pointer",
-                                                                    }}
-                                                                    className={
-                                                                      data.isDisabled
-                                                                        ? "s-red-active"
-                                                                        : selectSlot
-                                                                        ? "s-yellow-active"
-                                                                        : "s-yellow-btn"
-                                                                    }
-                                                                    onClick={this.handleSelectSlot.bind(
-                                                                      this,
-                                                                      data,
-                                                                      item.dates,
-                                                                      data.isDisabled
-                                                                    )}
-                                                                  >
-                                                                    {
-                                                                      data.timeSlot
-                                                                    }
-                                                                    {selectSlot ? (
-                                                                      <img
-                                                                        className="s-img-select"
-                                                                        src={
-                                                                          CircleRight
-                                                                        }
-                                                                        alt="circle-right"
-                                                                      />
-                                                                    ) : null}
-                                                                  </button>
-                                                                </Tooltip>
-                                                              );
-                                                            }
-                                                            if (
-                                                              data.visitedCount <
-                                                              (1 / 2) *
-                                                                data.maxCapacity
-                                                            ) {
-                                                              return (
-                                                                <Tooltip
-                                                                  placement="left"
-                                                                  title={
-                                                                    data.remaining +
-                                                                    " MORE PEOPLE LEFT"
-                                                                  }
-                                                                >
-                                                                  <button
-                                                                    key={k}
-                                                                    style={{
-                                                                      cursor: data.isDisabled
-                                                                        ? "no-drop"
-                                                                        : "pointer",
-                                                                    }}
-                                                                    className={
-                                                                      data.isDisabled
-                                                                        ? "s-red-active"
-                                                                        : selectSlot
-                                                                        ? "s-green-active"
-                                                                        : "s-green-btn"
-                                                                    }
-                                                                    onClick={this.handleSelectSlot.bind(
-                                                                      this,
-                                                                      data,
-                                                                      item.dates,
-                                                                      data.isDisabled
-                                                                    )}
-                                                                  >
-                                                                    {
-                                                                      data.timeSlot
-                                                                    }
-                                                                    {selectSlot ? (
-                                                                      <img
-                                                                        className="s-img-select"
-                                                                        src={
-                                                                          CircleRight
-                                                                        }
-                                                                        alt="circle-right"
-                                                                      />
-                                                                    ) : null}
-                                                                  </button>
-                                                                </Tooltip>
-                                                              );
-                                                            }
-                                                          }
-                                                        )}
-                                                    </div>
-                                                    <div
-                                                      className="selectdot-blue"
-                                                      onClick={this.handleScrollRight.bind(
-                                                        this,
-                                                        i
-                                                      )}
-                                                    >
-                                                      <img
-                                                        src={SchRight}
-                                                        alt="right arrow"
-                                                      />
+                                                                  <input
+                                                                    {...getInputProps()}
+                                                                    className="file-upload d-none"
+                                                                  />
+                                                                  <span className="addimg">
+                                                                    <input
+                                                                      type="image"
+                                                                      alt="Add Image"
+                                                                      src={
+                                                                        addimg
+                                                                      }
+                                                                    />
+                                                                  </span>
+                                                                </div>
+                                                              )}
+                                                            </Dropzone>
+                                                          )}
+                                                        </div>
+                                                        <div
+                                                          className="col-md-8 bkcprdt"
+                                                          onClick={this.handleSelectCard.bind(
+                                                            this,
+                                                            item.itemID,
+                                                            item.imageURL
+                                                          )}
+                                                        >
+                                                          {item.productName ? (
+                                                            <div>
+                                                              <label className="chat-product-name">
+                                                                {
+                                                                  item.productName
+                                                                }
+                                                              </label>
+                                                            </div>
+                                                          ) : null}
+                                                          <div>
+                                                            {item.brandName !==
+                                                              "" &&
+                                                            item.brandName !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .brand
+                                                                  : "Brand"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.brandName}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.categoryName !==
+                                                              "" &&
+                                                            item.categoryName !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .category
+                                                                  : "Category"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.categoryName}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.subCategoryName !==
+                                                              "" &&
+                                                            item.subCategoryName !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .subcategory
+                                                                  : "SubCategory"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.subCategoryName}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.color !==
+                                                              "" &&
+                                                            item.color !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .color
+                                                                  : "Color"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.color}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.size !== "" &&
+                                                            item.size !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .color
+                                                                  : "Size"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.size}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.uniqueItemCode !==
+                                                              "" &&
+                                                            item.uniqueItemCode !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .itemcode
+                                                                  : "Item Code"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.uniqueItemCode}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.discount !==
+                                                              "" &&
+                                                            parseFloat(
+                                                              item.discount
+                                                            ) !== 0 &&
+                                                            item.discount !==
+                                                              null ? (
+                                                              <label className="chat-product-code">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .discount
+                                                                  : "Discount"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.discount}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          <div>
+                                                            {item.price !==
+                                                              "" &&
+                                                            parseFloat(
+                                                              item.price
+                                                            ) !== 0 &&
+                                                            item.price !==
+                                                              null ? (
+                                                              <label className="chat-product-prize">
+                                                                {TranslationContext !==
+                                                                undefined
+                                                                  ? TranslationContext
+                                                                      .label
+                                                                      .price
+                                                                  : "Price"}{" "}
+                                                                :
+                                                                {" " +
+                                                                  item.price}
+                                                              </label>
+                                                            ) : null}
+                                                          </div>
+                                                          {item.url !== null &&
+                                                          item.url !== "" ? (
+                                                            <div>
+                                                              <a
+                                                                href={item.url}
+                                                                target="_blank"
+                                                                className="chat-product-url"
+                                                              >
+                                                                {item.url}
+                                                              </a>
+                                                            </div>
+                                                          ) : (
+                                                            ""
+                                                          )}
+                                                        </div>
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
-                                              ) : null;
+                                              );
                                             }
                                           )
                                         : null}
                                     </div>
-                                    <div className="col-md-5">
-                                      <div className="schedule-right-outer-cntr">
-                                        <div className="schedule-right-cntr">
-                                          <div>
-                                            <label className="s-lable">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                    .selectedslot
-                                                : "Selected Slot"}
-                                            </label>
-                                            {Object.keys(
-                                              this.state.selectedSlot
-                                            ).length !== 0 ? (
-                                              <button
-                                                className={
-                                                  this.state.selectedSlot
-                                                    .visitedCount <
-                                                  (1 / 2) *
-                                                    this.state.selectedSlot
-                                                      .maxCapacity
-                                                    ? "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                    : this.state.selectedSlot
-                                                        .visitedCount <
-                                                      this.state.selectedSlot
-                                                        .maxCapacity
-                                                    ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                    : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                }
-                                              >
-                                                {
-                                                  this.state.selectedSlot
-                                                    .timeSlot
-                                                }
-                                                <img
-                                                  className="s-img-select"
-                                                  src={CircleRight}
-                                                  alt="circle-right"
-                                                />
-                                              </button>
-                                            ) : null}
-                                            {this.state.isSelectSlot !== "" && (
-                                              <p
-                                                style={{
-                                                  color: "red",
-                                                  marginBottom: "0px",
-                                                }}
-                                              >
-                                                {this.state.isSelectSlot}
-                                              </p>
-                                            )}
-                                          </div>
-                                          <div>
-                                            <label className="s-lable">
-                                              No of People
-                                            </label>
-                                            <input
-                                              type="text"
-                                              value={this.state.noOfPeople}
-                                              onChange={this.handleNoOfPeopleChange.bind(
-                                                this
-                                              )}
-                                            />
-                                            {this.state.noOfPeopleMax !==
-                                              "" && (
-                                              <p
-                                                style={{
-                                                  color: "red",
-                                                  marginBottom: "0px",
-                                                  width: "131px",
-                                                }}
-                                              >
-                                                {this.state.noOfPeopleMax}
-                                              </p>
-                                            )}
-                                          </div>
-                                        </div>
+                                    {this.state.searchCardData.length > 0 ? (
+                                      <div className="row m-0">
                                         <button
-                                          className={
-                                            this.state.isSendClick
-                                              ? "butn ml-auto mt-4 isSendClick-dsle"
-                                              : "butn ml-auto mt-4"
-                                          }
-                                          onClick={this.handleScheduleVisit.bind(
+                                          style={{ cursor: "pointer" }}
+                                          className="storeUpbtn"
+                                          onClick={this.handleDownButtonClick.bind(
                                             this
                                           )}
                                         >
-                                          Send
+                                          {this.state.isDownbtn ? (
+                                            <img
+                                              src={DownBlue}
+                                              alt="down-arrow"
+                                            />
+                                          ) : (
+                                            <img src={UpBlue} alt="up-arrow" />
+                                          )}
+                                        </button>
+                                        <button
+                                          className="butn"
+                                          onClick={this.handleSendCard.bind(
+                                            this
+                                          )}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "Send"}
                                           <img
                                             src={SendUp}
                                             alt="send"
@@ -5477,80 +5199,462 @@ class Header extends Component {
                                           )}
                                         </button>
                                       </div>
-                                    </div>
+                                    ) : null}
                                   </div>
-                                ) : (
-                                  <div>
-                                    <span className="slot-span">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span
-                                            .noslotaddedforthisstore
-                                        : "No slot added for this store"}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                              {/* --------Generate Payment Link Tab----- */}
-                              <div
-                                className={
-                                  this.state.toggle.five
-                                    ? "tab-pane fade active show"
-                                    : "tab-pane fade"
-                                }
-                                id="generate-payment-link-tab"
-                                role="tabpanel"
-                                aria-labelledby="generate-payment-link-tab"
-                              >
+                                </div>
+                              ) : null}
+                              {/* --------Recommended List Tab----- */}
+                              {this.state.isRecommendedTabActive ? (
                                 <div
-                                  className="input-group searchtxt-new"
-                                  style={{ background: "none" }}
+                                  className={
+                                    this.state.toggle.three
+                                      ? "tab-pane fade active show"
+                                      : "tab-pane fade"
+                                  }
+                                  id="recommended-list-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="recommended-list-tab"
                                 >
-                                  <form style={{ width: "100%" }}>
-                                    <input
-                                      type="text"
-                                      className="search-customerAddSrch searchtxt"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.placeholder
-                                              .searchorderid
-                                          : "Search Order Id"
-                                      }
-                                      name="Search"
-                                      maxLength="100"
-                                      autoComplete="off"
-                                    />
-                                    <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                                  <div className="recommended-cntr">
+                                    <button
+                                      disabled={this.state.isSendRecomended}
+                                      className="butn"
+                                      onClick={this.handleSendRecommendedList.bind(
+                                        this
+                                      )}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .sendrecommendedlist
+                                        : "Send Recommended List"}
+
                                       <img
-                                        src={SearchBlueImg}
-                                        alt="SearchBlueImg"
-                                        className="srch-imge"
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up float-none"
                                       />
-                                    </span>
-                                  </form>
+                                      {this.state.isSendRecomended ? (
+                                        <FontAwesomeIcon
+                                          icon={faCircleNotch}
+                                          className="circular-loader ml-2"
+                                          spin
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </button>
+
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.noRecommendedFound}
+                                    </p>
+                                  </div>
                                 </div>
-                                <div className="payment-details">
-                                  <label>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.amount
-                                      : "Amount"}
-                                  </label>
-                                  <span>INR 1299</span>
+                              ) : null}
+                              {/* --------Schedule Visit Tab----- */}
+                              {this.state.isSchedualTabActive ? (
+                                <div
+                                  className={
+                                    this.state.toggle.four
+                                      ? "tab-pane fade active show"
+                                      : "tab-pane fade"
+                                  }
+                                  id="schedule-visit-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="schedule-visit-tab"
+                                >
+                                  {this.state.availableSlot > 0 ? (
+                                    <div className="row">
+                                      <div className="col-md-7 schedule-left-cntr">
+                                        {this.state.timeSlotData !== null
+                                          ? this.state.timeSlotData.map(
+                                              (item, i) => {
+                                                return item
+                                                  .alreadyScheduleDetails
+                                                  .length > 0 ? (
+                                                  <div key={i}>
+                                                    <label className="s-lable">
+                                                      {item.day}:{item.dates}
+                                                    </label>
+                                                    <div className="schedule-btn-outer-cntr">
+                                                      <div
+                                                        className="selectdot-blue selectdot-blue-left"
+                                                        onClick={this.handleScrollLeft.bind(
+                                                          this,
+                                                          i
+                                                        )}
+                                                      >
+                                                        <img
+                                                          src={SchRight}
+                                                          alt="right arrow"
+                                                        />
+                                                      </div>
+                                                      <div
+                                                        className="schedule-btn-cntr"
+                                                        id={
+                                                          "schedule-btn-cntr" +
+                                                          i
+                                                        }
+                                                      >
+                                                        {item
+                                                          .alreadyScheduleDetails
+                                                          .length > 0 &&
+                                                          item.alreadyScheduleDetails.map(
+                                                            (data, k) => {
+                                                              var selectSlot = false;
+                                                              if (
+                                                                this.state
+                                                                  .timeSlotData[
+                                                                  i
+                                                                ]
+                                                                  .alreadyScheduleDetails[
+                                                                  k
+                                                                ] ===
+                                                                this.state
+                                                                  .selectedSlot
+                                                              ) {
+                                                                selectSlot = true;
+                                                              }
+
+                                                              if (
+                                                                data.maxCapacity ==
+                                                                data.visitedCount
+                                                              ) {
+                                                                return (
+                                                                  <Tooltip
+                                                                    placement="left"
+                                                                    title={
+                                                                      data.remaining +
+                                                                      " MORE PEOPLE LEFT"
+                                                                    }
+                                                                  >
+                                                                    <button
+                                                                      key={k}
+                                                                      disabled={
+                                                                        data.isDisabled
+                                                                      }
+                                                                      className="s-red-active"
+                                                                      style={{
+                                                                        cursor:
+                                                                          "no-drop",
+                                                                      }}
+                                                                    >
+                                                                      {
+                                                                        data.timeSlot
+                                                                      }
+                                                                    </button>
+                                                                  </Tooltip>
+                                                                );
+                                                              }
+                                                              if (
+                                                                data.visitedCount >=
+                                                                (1 / 2) *
+                                                                  data.maxCapacity
+                                                              ) {
+                                                                return (
+                                                                  <Tooltip
+                                                                    placement="left"
+                                                                    title={
+                                                                      data.remaining +
+                                                                      " MORE PEOPLE LEFT"
+                                                                    }
+                                                                  >
+                                                                    <button
+                                                                      key={k}
+                                                                      style={{
+                                                                        cursor: data.isDisabled
+                                                                          ? "no-drop"
+                                                                          : "pointer",
+                                                                      }}
+                                                                      className={
+                                                                        data.isDisabled
+                                                                          ? "s-red-active"
+                                                                          : selectSlot
+                                                                          ? "s-yellow-active"
+                                                                          : "s-yellow-btn"
+                                                                      }
+                                                                      onClick={this.handleSelectSlot.bind(
+                                                                        this,
+                                                                        data,
+                                                                        item.dates,
+                                                                        data.isDisabled
+                                                                      )}
+                                                                    >
+                                                                      {
+                                                                        data.timeSlot
+                                                                      }
+                                                                      {selectSlot ? (
+                                                                        <img
+                                                                          className="s-img-select"
+                                                                          src={
+                                                                            CircleRight
+                                                                          }
+                                                                          alt="circle-right"
+                                                                        />
+                                                                      ) : null}
+                                                                    </button>
+                                                                  </Tooltip>
+                                                                );
+                                                              }
+                                                              if (
+                                                                data.visitedCount <
+                                                                (1 / 2) *
+                                                                  data.maxCapacity
+                                                              ) {
+                                                                return (
+                                                                  <Tooltip
+                                                                    placement="left"
+                                                                    title={
+                                                                      data.remaining +
+                                                                      " MORE PEOPLE LEFT"
+                                                                    }
+                                                                  >
+                                                                    <button
+                                                                      key={k}
+                                                                      style={{
+                                                                        cursor: data.isDisabled
+                                                                          ? "no-drop"
+                                                                          : "pointer",
+                                                                      }}
+                                                                      className={
+                                                                        data.isDisabled
+                                                                          ? "s-red-active"
+                                                                          : selectSlot
+                                                                          ? "s-green-active"
+                                                                          : "s-green-btn"
+                                                                      }
+                                                                      onClick={this.handleSelectSlot.bind(
+                                                                        this,
+                                                                        data,
+                                                                        item.dates,
+                                                                        data.isDisabled
+                                                                      )}
+                                                                    >
+                                                                      {
+                                                                        data.timeSlot
+                                                                      }
+                                                                      {selectSlot ? (
+                                                                        <img
+                                                                          className="s-img-select"
+                                                                          src={
+                                                                            CircleRight
+                                                                          }
+                                                                          alt="circle-right"
+                                                                        />
+                                                                      ) : null}
+                                                                    </button>
+                                                                  </Tooltip>
+                                                                );
+                                                              }
+                                                            }
+                                                          )}
+                                                      </div>
+                                                      <div
+                                                        className="selectdot-blue"
+                                                        onClick={this.handleScrollRight.bind(
+                                                          this,
+                                                          i
+                                                        )}
+                                                      >
+                                                        <img
+                                                          src={SchRight}
+                                                          alt="right arrow"
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                ) : null;
+                                              }
+                                            )
+                                          : null}
+                                      </div>
+                                      <div className="col-md-5">
+                                        <div className="schedule-right-outer-cntr">
+                                          <div className="schedule-right-cntr">
+                                            <div>
+                                              <label className="s-lable">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .selectedslot
+                                                  : "Selected Slot"}
+                                              </label>
+                                              {Object.keys(
+                                                this.state.selectedSlot
+                                              ).length !== 0 ? (
+                                                <button
+                                                  className={
+                                                    this.state.selectedSlot
+                                                      .visitedCount <
+                                                    (1 / 2) *
+                                                      this.state.selectedSlot
+                                                        .maxCapacity
+                                                      ? "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                      : this.state.selectedSlot
+                                                          .visitedCount <
+                                                        this.state.selectedSlot
+                                                          .maxCapacity
+                                                      ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                      : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                  }
+                                                >
+                                                  {
+                                                    this.state.selectedSlot
+                                                      .timeSlot
+                                                  }
+                                                  <img
+                                                    className="s-img-select"
+                                                    src={CircleRight}
+                                                    alt="circle-right"
+                                                  />
+                                                </button>
+                                              ) : null}
+                                              {this.state.isSelectSlot !==
+                                                "" && (
+                                                <p
+                                                  style={{
+                                                    color: "red",
+                                                    marginBottom: "0px",
+                                                  }}
+                                                >
+                                                  {this.state.isSelectSlot}
+                                                </p>
+                                              )}
+                                            </div>
+                                            <div>
+                                              <label className="s-lable">
+                                                No of People
+                                              </label>
+                                              <input
+                                                type="text"
+                                                value={this.state.noOfPeople}
+                                                onChange={this.handleNoOfPeopleChange.bind(
+                                                  this
+                                                )}
+                                              />
+                                              {this.state.noOfPeopleMax !==
+                                                "" && (
+                                                <p
+                                                  style={{
+                                                    color: "red",
+                                                    marginBottom: "0px",
+                                                    width: "131px",
+                                                  }}
+                                                >
+                                                  {this.state.noOfPeopleMax}
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <button
+                                            className={
+                                              this.state.isSendClick
+                                                ? "butn ml-auto mt-4 isSendClick-dsle"
+                                                : "butn ml-auto mt-4"
+                                            }
+                                            onClick={this.handleScheduleVisit.bind(
+                                              this
+                                            )}
+                                          >
+                                            Send
+                                            <img
+                                              src={SendUp}
+                                              alt="send"
+                                              className="send-up float-none"
+                                            />
+                                            {this.state.isSendRecomended ? (
+                                              <FontAwesomeIcon
+                                                icon={faCircleNotch}
+                                                className="circular-loader ml-2"
+                                                spin
+                                              />
+                                            ) : (
+                                              ""
+                                            )}
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <span className="slot-span">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span
+                                              .noslotaddedforthisstore
+                                          : "No slot added for this store"}
+                                      </span>
+                                    </div>
+                                  )}
                                 </div>
-                                <div className="payment-link-butn">
-                                  <button className="butn">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.button
-                                          .sendpaymentlink
-                                      : "Send Payment Link"}
-                                    <img
-                                      src={SendUp}
-                                      alt="send"
-                                      className="send-up"
-                                    />
-                                  </button>
+                              ) : null}
+
+                              {/* --------Generate Payment Link Tab----- */}
+                              {this.state.isGeneratePaymentTabActive ? (
+                                <div
+                                  className={
+                                    this.state.toggle.five
+                                      ? "tab-pane fade active show"
+                                      : "tab-pane fade"
+                                  }
+                                  id="generate-payment-link-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="generate-payment-link-tab"
+                                >
+                                  <div
+                                    className="input-group searchtxt-new"
+                                    style={{ background: "none" }}
+                                  >
+                                    <form style={{ width: "100%" }}>
+                                      <input
+                                        type="text"
+                                        className="search-customerAddSrch searchtxt"
+                                        placeholder={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.placeholder
+                                                .searchorderid
+                                            : "Search Order Id"
+                                        }
+                                        name="Search"
+                                        maxLength="100"
+                                        autoComplete="off"
+                                      />
+                                      <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                                        <img
+                                          src={SearchBlueImg}
+                                          alt="SearchBlueImg"
+                                          className="srch-imge"
+                                        />
+                                      </span>
+                                    </form>
+                                  </div>
+                                  <div className="payment-details">
+                                    <label>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.amount
+                                        : "Amount"}
+                                    </label>
+                                    <span>INR 1299</span>
+                                  </div>
+                                  <div className="payment-link-butn">
+                                    <button className="butn">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .sendpaymentlink
+                                        : "Send Payment Link"}
+                                      <img
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up"
+                                      />
+                                    </button>
+                                  </div>
+                                  <div className="clearfix"></div>
                                 </div>
-                                <div className="clearfix"></div>
-                              </div>
+                              ) : null}
                             </div>
                           </div>
                           <div
@@ -5676,144 +5780,150 @@ class Header extends Component {
                             </ul>
                             <div className="tab-content">
                               {/* --------Message Tab----- */}
-                              <div
-                                className="tab-pane fade show active"
-                                id="message-tab"
-                                role="tabpanel"
-                                aria-labelledby="message-tab"
-                              >
-                                <div className="message-div">
-                                  <span className="message-initial">
-                                    {this.state.UserName.charAt(
-                                      0
-                                    ).toUpperCase()}
-                                  </span>
-                                  <textarea
-                                    placeholder="Search to get suggestions..."
-                                    value={this.state.message}
-                                    onChange={this.handleOnChangeCKEditor.bind(
-                                      this
-                                    )}
-                                  ></textarea>
-                                  <p
-                                    className="cls-charcount"
-                                    style={{ fontSize: "x-small" }}
-                                  >
-                                    {this.state.remainingCount +
-                                      " characters remaining..."}
-                                  </p>
-                                  {this.state.messageSuggestionTagsData !== null
-                                    ? this.state.messageSuggestionTagsData.map(
-                                        (item, i) => {
-                                          return (
-                                            <button
-                                              onClick={this.handleTagsButtonClick.bind(
-                                                this,
-                                                item.tagID
-                                              )}
-                                              className={
-                                                this.state.selectedTags ===
-                                                item.tagID
-                                                  ? "tagsbtn-active"
-                                                  : "tagsbtn"
-                                              }
-                                              id={item.tagID}
-                                            >
-                                              {item.tagName}
-                                            </button>
-                                          );
-                                        }
-                                      )
-                                    : null}
-                                  {this.state.messageSuggestionData !== null &&
-                                  this.state.messageSuggestionData.length > 0 &&
-                                  this.state.messageSuggestionData.length >
-                                    0 ? (
-                                    <div className="suggestions-cntr">
-                                      <Table
-                                        noDataContent="No Record Found"
-                                        className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
-                                        columns={[
-                                          {
-                                            dataIndex: "suggestionText",
-                                            className: "textnowrap-table",
-                                            render: (row, rowData) => {
-                                              i = i + 1;
-                                              return (
-                                                <div
-                                                  className={
-                                                    this.state.chkSuggestion[
-                                                      i
-                                                    ] === i
-                                                      ? "suggestions-tick"
-                                                      : ""
-                                                  }
-                                                  id={i}
-                                                  onClick={this.onOpenMobSuggestionModal.bind(
-                                                    this,
-                                                    rowData.suggestionText,
-                                                    i
-                                                  )}
-                                                >
-                                                  <Tooltip
-                                                    placement="left"
-                                                    title={
-                                                      rowData.suggestionText
-                                                    }
-                                                  >
-                                                    <span>
-                                                      {rowData.suggestionText}
-                                                    </span>
-                                                  </Tooltip>
-                                                </div>
-                                              );
-                                            },
-                                          },
-                                        ]}
-                                        dataSource={this.state.messageSuggestionData.filter(
-                                          (x) =>
-                                            x.tagID === this.state.selectedTags
-                                        )}
-                                        pagination={{
-                                          pageSize: 10,
-                                          defaultPageSize: 10,
-                                        }}
-                                      ></Table>
-                                    </div>
-                                  ) : null}
-
-                                  {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].suggestion ===
-                                    1 ? (
-                                    <div
-                                      className="mobile-ck-send"
-                                      onClick={this.handleMessageSuggestion.bind(
+                              {this.state.isMessageTabActive ? (
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="message-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="message-tab"
+                                >
+                                  <div className="message-div">
+                                    <span className="message-initial">
+                                      {this.state.UserName.charAt(
+                                        0
+                                      ).toUpperCase()}
+                                    </span>
+                                    <textarea
+                                      placeholder="Search to get suggestions..."
+                                      value={this.state.message}
+                                      onChange={this.handleOnChangeCKEditor.bind(
                                         this
                                       )}
-                                      title={"Search"}
+                                    ></textarea>
+                                    <p
+                                      className="cls-charcount"
+                                      style={{ fontSize: "x-small" }}
                                     >
-                                      <img src={SuggSearch} alt="send img" />
-                                    </div>
-                                  ) : null}
-                                  {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].freeText ===
-                                    1 ? (
-                                    <div
-                                      className="mobile-ck-send-btn"
-                                      onClick={this.handleSaveChatMessages.bind(
-                                        this,
-                                        this.state.message,
-                                        0,
-                                        "",
-                                        ""
-                                      )}
-                                      title={"Send"}
-                                    >
-                                      <img src={Assign} alt="send img" />
-                                    </div>
-                                  ) : null}
+                                      {this.state.remainingCount +
+                                        " characters remaining..."}
+                                    </p>
+                                    {this.state.messageSuggestionTagsData !==
+                                    null
+                                      ? this.state.messageSuggestionTagsData.map(
+                                          (item, i) => {
+                                            return (
+                                              <button
+                                                onClick={this.handleTagsButtonClick.bind(
+                                                  this,
+                                                  item.tagID
+                                                )}
+                                                className={
+                                                  this.state.selectedTags ===
+                                                  item.tagID
+                                                    ? "tagsbtn-active"
+                                                    : "tagsbtn"
+                                                }
+                                                id={item.tagID}
+                                              >
+                                                {item.tagName}
+                                              </button>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                    {this.state.messageSuggestionData !==
+                                      null &&
+                                    this.state.messageSuggestionData.length >
+                                      0 &&
+                                    this.state.messageSuggestionData.length >
+                                      0 ? (
+                                      <div className="suggestions-cntr">
+                                        <Table
+                                          noDataContent="No Record Found"
+                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                          columns={[
+                                            {
+                                              dataIndex: "suggestionText",
+                                              className: "textnowrap-table",
+                                              render: (row, rowData) => {
+                                                i = i + 1;
+                                                return (
+                                                  <div
+                                                    className={
+                                                      this.state.chkSuggestion[
+                                                        i
+                                                      ] === i
+                                                        ? "suggestions-tick"
+                                                        : ""
+                                                    }
+                                                    id={i}
+                                                    onClick={this.onOpenMobSuggestionModal.bind(
+                                                      this,
+                                                      rowData.suggestionText,
+                                                      i
+                                                    )}
+                                                  >
+                                                    <Tooltip
+                                                      placement="left"
+                                                      title={
+                                                        rowData.suggestionText
+                                                      }
+                                                    >
+                                                      <span>
+                                                        {rowData.suggestionText}
+                                                      </span>
+                                                    </Tooltip>
+                                                  </div>
+                                                );
+                                              },
+                                            },
+                                          ]}
+                                          dataSource={this.state.messageSuggestionData.filter(
+                                            (x) =>
+                                              x.tagID ===
+                                              this.state.selectedTags
+                                          )}
+                                          pagination={{
+                                            pageSize: 10,
+                                            defaultPageSize: 10,
+                                          }}
+                                        ></Table>
+                                      </div>
+                                    ) : null}
+
+                                    {this.state.storeAgentDetail.length !== 0 &&
+                                    this.state.storeAgentDetail[0]
+                                      .suggestion === 1 ? (
+                                      <div
+                                        className="mobile-ck-send"
+                                        onClick={this.handleMessageSuggestion.bind(
+                                          this
+                                        )}
+                                        title={"Search"}
+                                      >
+                                        <img src={SuggSearch} alt="send img" />
+                                      </div>
+                                    ) : null}
+                                    {this.state.storeAgentDetail.length !== 0 &&
+                                    this.state.storeAgentDetail[0].freeText ===
+                                      1 ? (
+                                      <div
+                                        className="mobile-ck-send-btn"
+                                        onClick={this.handleSaveChatMessages.bind(
+                                          this,
+                                          this.state.message,
+                                          0,
+                                          "",
+                                          ""
+                                        )}
+                                        title={"Send"}
+                                      >
+                                        <img src={Assign} alt="send img" />
+                                      </div>
+                                    ) : null}
+                                  </div>
                                 </div>
-                              </div>
+                              ) : null}
                               {/* -------- Card Modal ----- */}
                               <Modal
                                 open={this.state.cardModal}
@@ -7363,6 +7473,10 @@ class Header extends Component {
                                         this
                                       )}
                                       className="namelabel"
+                                      style={{
+                                        backgroundColor: this.state
+                                          .selectedColor,
+                                      }}
                                     >
                                       {this.state.customerName.charAt(0)}
                                     </label>
@@ -7442,24 +7556,23 @@ class Header extends Component {
                                 >
                                   <Panel header="Insights" key="1">
                                     <div className="insightsbox">
-                                      {/* <h3>Insights</h3>
-                              <img
-                                src={DownArw}
-                                className="DownArw"
-                                alt="DownArw"
-                              /> */}
-                                      <p>
-                                        1. Lorem Ipsum is simply dummy text of
-                                        the printing industry.
-                                      </p>
-                                      <p>
-                                        2. Lorem Ipsum is simply dummy text of
-                                        the printing industry.
-                                      </p>
-                                      <p>
-                                        3. Lorem Ipsum is simply dummy text of
-                                        the printing industry.
-                                      </p>
+                                      {this.state.insights
+                                        ? this.state.insights.map(
+                                            (item, key) => {
+                                              return item.insightMessage ? (
+                                                <p>
+                                                  {key + 1}.
+                                                  {" " + item.insightMessage}
+                                                </p>
+                                              ) : null;
+                                            }
+                                          )
+                                        : null}
+                                      {this.state.insights.length === 0 ? (
+                                        <Empty
+                                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                        />
+                                      ) : null}
                                     </div>
                                   </Panel>
                                   <Panel header="Orders" key="2">
@@ -7577,13 +7690,25 @@ class Header extends Component {
                                   : this.state.agentRecentChatData.length +
                                     " Past Chat"}
                               </button>
-                              <button
-                                style={{ float: "right" }}
-                                type="button"
-                                className="updateprofilelinkbtn pastchatmobbtn"
+                              <Dropdown
+                                overlay={
+                                  <Menu
+                                    onClick={this.handleMobileActionMenuClick.bind(
+                                      this
+                                    )}
+                                  >
+                                    <Menu.Item key="1">Close Chat</Menu.Item>
+                                  </Menu>
+                                }
                               >
-                                Action
-                              </button>
+                                <button
+                                  style={{ float: "right" }}
+                                  type="button"
+                                  className="updateprofilelinkbtn pastchatmobbtn"
+                                >
+                                  Action
+                                </button>
+                              </Dropdown>
                             </div>
                           </div>
                         ) : null}
@@ -7867,6 +7992,9 @@ class Header extends Component {
                                         <button
                                           type="button"
                                           className="tabsbotbtn"
+                                          onClick={this.handleSendProductsOnChat.bind(
+                                            this
+                                          )}
                                         >
                                           SENT
                                         </button>
@@ -8185,6 +8313,9 @@ class Header extends Component {
                                         <button
                                           type="button"
                                           className="tabsbotbtn"
+                                          onClick={this.handleSendProductsOnChat.bind(
+                                            this
+                                          )}
                                         >
                                           SENT
                                         </button>
@@ -8508,6 +8639,9 @@ class Header extends Component {
                                         <button
                                           type="button"
                                           className="tabsbotbtn"
+                                          onClick={this.handleSendProductsOnChat.bind(
+                                            this
+                                          )}
                                         >
                                           SENT
                                         </button>

@@ -2123,6 +2123,10 @@ p {
   width: 30px;
   height: 30px;
 }
+.insightsbox .ant-empty .ant-empty-normal{
+  margin: 16px 0;
+}
+
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {

@@ -1524,8 +1524,7 @@ class StoreCampaign extends Component {
   handleWhatsAppIconClick(itemData) {
     debugger;
     if (document.getElementById("chatwindow")) {
-      document.getElementById("newTicketChatId").value =
-        itemData.customerChatingID;
+      document.getElementById("newTicketChatId").value =itemData.customerChatingID;
       document.getElementById("chatwindow").click();
     }
   }
