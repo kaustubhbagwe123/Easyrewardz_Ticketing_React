@@ -40,6 +40,8 @@ import Select from "react-select";
 import "antd/dist/antd.css";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 
 const { Option } = Aselect;
 var uid = 0;
@@ -220,8 +222,8 @@ class StoreModule extends Component {
       manualStoreFrom: "",
       manualStoreTo: "",
       ManualSlotDuration: 0,
-      manualSlotEnd: "",
-      manualSlotStart: "",
+      slotEndTime: "",
+      slotStartTime: "",
       manualTempNameCompulsory: "",
       manualStoreFromCompulsory: "",
       manualStoreToCompulsory: "",
@@ -229,6 +231,7 @@ class StoreModule extends Component {
       manualSlotStartCompulsory: "",
       manualSlotEndCompulsory: "",
       manualStoreTblData: [],
+      manualStoreData: {},
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2430,10 +2433,10 @@ class StoreModule extends Component {
         autoTempNameCompulsory: "Please Enter Template Name.",
         AutoSlotDurationCompulsory: "Please Select Slot Duration.",
         AutoSlotGapCompulsory: "Please Select Slot Gap.",
-        autoStoreFromCompulsory: "Please Select From.",
-        autoStoreToCompulsory: "Please Select To.",
-        autoNonOptFromCompulsory: "Please Select From.",
-        autoNonOptToCompulsory: "Please Select To.",
+        autoStoreFromCompulsory: "Please Select From Time.",
+        autoStoreToCompulsory: "Please Select To Time.",
+        autoNonOptFromCompulsory: "Please Select From Time.",
+        autoNonOptToCompulsory: "Please Select To Time.",
       });
     }
   }
@@ -2480,6 +2483,85 @@ class StoreModule extends Component {
       .catch((response) => {
         console.log(response);
       });
+  }
+
+  // /// hanlde manual input onchange
+  // handleManualInputOnchange(filed, e) {
+  //   var manualStoreData = this.state.manualStoreData;
+  //   manualStoreData[filed] = e.target.value;
+
+  //   this.setState({
+  //     manualStoreData,
+  //   });
+  // }
+
+  /// handle manual time onchange
+  handleManualTimeOnchange = (time, check) => {
+    debugger;
+    var manualStoreData = this.state.manualStoreData;
+    if (check === "slotStartTime") {
+      manualStoreData["slotStartTime"] = time;
+      manualStoreData["manualSlotStartTime"] = time;
+      // this.state.manualStoreData["slotEndTime"] = (getMinutes()+this.state
+      //   .ManualSlotDuration);
+    } else if (check === "slotEndTime") {
+      manualStoreData["slotEndTime"] = time;
+      manualStoreData["manualSlotEndTime"] = time;
+    }
+    this.setState({
+      manualStoreData,
+    });
+  };
+  /// handle Manual selct duration
+  handleManualSelectDuration = (e) => {
+    debugger;
+    let values = e.target.value;
+    var manualStoreData = this.state.manualStoreData;
+    manualStoreData[e.target.name] = e.target.selectedOptions[0].text;
+    manualStoreData["Slotduration "] = values;
+    this.setState({ ManualSlotDuration: values, manualStoreData });
+  };
+  /// handle Create Manualy create slot
+  handleAddManualySlot() {
+    debugger;
+    if (
+      this.state.manualTempName !== "" &&
+      this.state.manualStoreFrom !== "" &&
+      this.state.manualStoreTo !== "" &&
+      this.state.ManualSlotDuration !== 0 &&
+      this.state.manualStoreData.slotEndTime !== "" 
+      // && this.state.manualStoreData.slotStartTime !== ""
+    ) {
+      var manualStoreTblData = [];
+      manualStoreTblData = this.state.manualStoreTblData;
+      var start = this.state.manualStoreData["slotStartTime"];
+      var end = this.state.manualStoreData["slotEndTime"];
+
+      var ObjData = {};
+      ObjData.slotStartTime = start;
+      ObjData.slotEndTime = end;
+
+      manualStoreTblData.push(ObjData);
+      this.setState({
+        manualStoreTblData,
+      });
+      NotificationManager.success("Manual Slot Created.");
+    } else {
+      this.setState({
+        manualTempNameCompulsory: "Please Enter Template Name.",
+        manualStoreFromCompulsory: "Please Select From Time.",
+        manualStoreToCompulsory: "Please Select To Time.",
+        ManualSlotDurationCompulsory: "Please Select Slot Duration.",
+        manualSlotStartCompulsory: "Please Select Start Time.",
+        manualSlotEndCompulsory: "Please Select End Time.",
+      });
+    }
+  }
+  /// handle manual Delete slot
+  handleManualDeleteSlot(id) {
+    let manualStoreTblData = [...this.state.manualStoreTblData];
+    manualStoreTblData.splice(id, 1);
+    this.setState({ manualStoreTblData });
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -6137,9 +6219,9 @@ class StoreModule extends Component {
                         selected={this.state.manualStoreFrom}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={15}
+                        timeIntervals={60}
                         timeCaption="Time"
-                        dateFormat="hh:mm aa"
+                        dateFormat="hh:mm a"
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
@@ -6160,9 +6242,9 @@ class StoreModule extends Component {
                         selected={this.state.manualStoreTo}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={15}
+                        timeIntervals={60}
                         timeCaption="Time"
-                        dateFormat="hh:mm aa"
+                        dateFormat="hh:mm a"
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
@@ -6185,19 +6267,15 @@ class StoreModule extends Component {
                         name="ManualSlotDuration"
                         className="form-control"
                         value={this.state.ManualSlotDuration}
-                        onChange={(e) =>
-                          this.setState({
-                            ManualSlotDuration: e.target.value,
-                          })
-                        }
+                        onChange={this.handleManualSelectDuration}
                       >
                         <option value={0}>Select Timing</option>
-                        <option value={0.25}>15 Minutes</option>
-                        <option value={0.5}>30 Minutes</option>
-                        <option value={0.75}>45 Minutes</option>
-                        <option value={1}>1 Hours</option>
-                        <option value={1.5}>1.5 Hour</option>
-                        <option value={2}>2 Hour</option>
+                        <option value={15}>15 Minutes</option>
+                        <option value={30}>30 Minutes</option>
+                        <option value={45}>45 Minutes</option>
+                        <option value={60}>1 Hours</option>
+                        <option value={90}>1.5 Hour</option>
+                        <option value={120}>2 Hour</option>
                       </select>
                       {this.state.ManualSlotDuration === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6210,21 +6288,27 @@ class StoreModule extends Component {
                     <div className="col-12 col-md-5 slotFrm">
                       <label>Slot Start Time</label>
                       <DatePicker
-                        selected={this.state.manualSlotStart}
+                        selected={this.state.manualStoreData.slotStartTime}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={60}
+                        timeIntervals={15}
                         timeCaption="Time"
-                        dateFormat="hh:mm aa"
+                        dateFormat="hh:mm a"
                         placeholderText="Select Timing"
                         className="form-control"
+                        minTime={setHours(
+                          setMinutes(new Date(), 0),
+                          new Date(this.state.manualStoreFrom).getHours()
+                        )}
+                        maxTime={setHours(
+                          setMinutes(new Date(), 0),
+                          new Date(this.state.manualStoreTo).getHours()
+                        )}
                         onChange={(time) =>
-                          this.setState({
-                            manualSlotStart: time,
-                          })
+                          this.handleManualTimeOnchange(time, "slotStartTime")
                         }
                       />
-                      {this.state.manualSlotStart === "" && (
+                      {this.state.slotStartTime === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.manualSlotStartCompulsory}
                         </p>
@@ -6233,30 +6317,31 @@ class StoreModule extends Component {
                     <div className="col-12 col-md-5 slotFrm">
                       <label>Slot End Time</label>
                       <DatePicker
-                        selected={this.state.manualSlotEnd}
+                        selected={this.state.manualStoreData.slotEndTime}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={15}
                         timeCaption="Time"
-                        dateFormat="hh:mm aa"
+                        dateFormat="hh:mm a"
                         placeholderText="Select Timing"
                         className="form-control"
+                        disabled
+                        // minTime={setHours(setMinutes(new Date(), 0), 17)}
+                        // maxTime={setHours(setMinutes(new Date(), 0), 21)}
                         onChange={(time) =>
-                          this.setState({
-                            manualSlotEnd: time,
-                          })
+                          this.handleManualTimeOnchange(time, "slotEndTime")
                         }
                       />
-                      {this.state.manualSlotEnd === "" && (
+                      {/* {this.state.slotEndTime === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.manualSlotEndCompulsory}
                         </p>
-                      )}
+                      )} */}
                     </div>
                     <div className="col-12 col-md-2">
                       <button
                         className="tabbutn"
-                        onClick={this.handleNextButtonClose.bind(this)}
+                        onClick={this.handleAddManualySlot.bind(this)}
                       >
                         Add Slot
                       </button>
@@ -6273,18 +6358,46 @@ class StoreModule extends Component {
                           columns={[
                             {
                               title: "S.No.",
-                              dataIndex: "no",
+                              dataIndex: "slotID",
+                              render: (text, record, index) => index + 1,
                             },
                             {
                               title: "Slot Start Time",
-                              dataIndex: "startTime",
+                              dataIndex: "manualSlotStartTime",
+                              render: (row, rowData) => {
+                                var StartTime = moment(
+                                  rowData.slotStartTime
+                                ).format("LT");
+                                return <>{StartTime}</>;
+                              },
                             },
                             {
                               title: "Slot End Time",
-                              dataIndex: "endTime",
+                              dataIndex: "manualSlotEndTime",
+                              render: (row, rowData) => {
+                                var EndTime = moment(
+                                  rowData.slotEndTime
+                                ).format("LT");
+                                return <>{EndTime}</>;
+                              },
                             },
                             {
                               title: "Actions",
+                              render: (text, record, index) => {
+                                return (
+                                  <>
+                                    <img
+                                      src={DelBlack}
+                                      alt="del-icon"
+                                      className="del-btn cr-pnt"
+                                      onClick={this.handleManualDeleteSlot.bind(
+                                        this,
+                                        index
+                                      )}
+                                    />
+                                  </>
+                                );
+                              },
                             },
                           ]}
                         ></Table>
