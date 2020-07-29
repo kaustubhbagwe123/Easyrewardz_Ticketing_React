@@ -271,8 +271,8 @@ let config = {
   // apiUrl: 'https://ertktapistable.dscdev.brainvire.net/Api'
   // socketUrl: "http://ndjs.shopster.live/api/sendreply", /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
-  // socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
-  socketUrl: "ws://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+  socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+  // socketUrl: "ws://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
   // socketUrl: "https://api-bellchatsocketserverqa.ercx.co", /// -------Socket URL Client---------
   // socketUrl:"http://localhost:4000/",
   // soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
