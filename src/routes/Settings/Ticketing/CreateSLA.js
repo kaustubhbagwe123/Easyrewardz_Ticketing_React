@@ -1552,7 +1552,7 @@ class CreateSLA extends Component {
                           var ids = row.original["id"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.issueTpeName}
                                 <Popover
                                   content={
@@ -1597,7 +1597,7 @@ class CreateSLA extends Component {
                                   placement="bottom"
                                 >
                                   <img
-                                    className="info-icon-cp"
+                                    className="info-icon"
                                     src={BlackInfoIcon}
                                     alt="info-icon"
                                     id={ids}
@@ -1621,6 +1621,7 @@ class CreateSLA extends Component {
                         sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
+                          debugger;
                           var ids = row.original["id"];
                           let slaTarget = row.original.slaTarget,
                             priorityNameComma = "",
@@ -1631,7 +1632,7 @@ class CreateSLA extends Component {
                           }
                           priorityName = priorityNameComma.substring(
                             0,
-                            priorityNameComma.length - 1
+                            priorityNameComma.length - 2
                           );
                           return (
                             <div>
@@ -1734,7 +1735,7 @@ class CreateSLA extends Component {
                           var ids = row.original["id"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.createdBy}
                                 <Popover
                                   content={
@@ -1776,7 +1777,7 @@ class CreateSLA extends Component {
                                   placement="bottom"
                                 >
                                   <img
-                                    className="info-icon-cp"
+                                    className="info-icon"
                                     src={BlackInfoIcon}
                                     alt="info-icon"
                                     id={ids}

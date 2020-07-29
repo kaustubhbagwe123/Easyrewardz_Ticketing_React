@@ -2152,7 +2152,7 @@ class Alerts extends Component {
                           var ids = row.original["id"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.createdBy}
                                 <Popover
                                   content={

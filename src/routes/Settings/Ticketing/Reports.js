@@ -5222,7 +5222,7 @@ class Reports extends Component {
                           var ids = row.original["reportID"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.createdBy}
                                 <Popover
                                   content={

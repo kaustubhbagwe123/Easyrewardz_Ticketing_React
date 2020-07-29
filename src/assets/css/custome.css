@@ -2241,6 +2241,16 @@ table td span {
 .one-liner .info-icon {
   margin-top: 4px;
 }
+.one-liner .info-icon-cp {
+  margin-top: 5px;
+}
+.priority-one-liner span {
+  display: flex;
+  align-items: flex-start;
+}
+.priority-one-liner .info-icon-cp {
+  margin-top: 4px;
+}
 .info-icon {
   width: 17px;
   position: relative;

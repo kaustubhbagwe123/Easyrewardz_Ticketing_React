@@ -41,7 +41,7 @@ class Claim extends Component {
       tabFor: 1,
       statusID: "",
       claimCreateDate: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleOnCategoryChangeData = this.handleOnCategoryChangeData.bind(
       this
@@ -100,7 +100,7 @@ class Claim extends Component {
       headers: authHeader(),
       params: { tab_For: tabFor },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -139,7 +139,7 @@ class Claim extends Component {
       params: { BrandIds: "" },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -161,7 +161,7 @@ class Claim extends Component {
       params: { CategoryIDs: this.state.categoryID },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -183,7 +183,7 @@ class Claim extends Component {
       params: { subCategoryIDs: this.state.subCategoryID },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -204,7 +204,7 @@ class Claim extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -255,8 +255,19 @@ class Claim extends Component {
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardListClaim",
       data: {
-        claimID: this.state.claimID === "" ? 0 : parseInt(this.state.claimID),
-        ticketID: this.state.titleID === "" ? 0 : parseInt(this.state.titleID),
+        // claimID: this.state.claimID === "" ? 0 : parseInt(this.state.claimID),
+        claimID:
+          this.state.claimID === ""
+            ? 0
+            : isNaN(this.state.claimID)
+            ? -1
+            : this.state.claimID,
+        ticketID:
+          this.state.titleID === ""
+            ? 0
+            : isNaN(this.state.titleID)
+            ? -1
+            : this.state.titleID,
         claimissueType:
           this.state.issueTypeID === "" ? 0 : parseInt(this.state.issueTypeID),
         ticketMapped: this.state.isTicketMapped === "yes" ? 1 : 0,
@@ -271,7 +282,12 @@ class Claim extends Component {
         claimraiseddate: this.state.claimCreateDate
           ? moment(this.state.claimCreateDate).format("YYYY-MM-DD")
           : "",
-        taskID: this.state.taskID === "" ? 0 : parseInt(this.state.taskID),
+        taskID:
+          this.state.taskID === ""
+            ? 0
+            : isNaN(this.state.taskID)
+            ? -1
+            : this.state.taskID,
         claimstatus:
           this.state.statusID === "" ? 0 : parseInt(this.state.statusID),
         taskmapped: this.state.isTaskMapped === "no" ? 0 : 1,
@@ -280,7 +296,7 @@ class Claim extends Component {
       },
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
@@ -362,414 +378,557 @@ class Claim extends Component {
                     <div className="loader-icon"></div>
                   </div>
                 ) : (
-                    <div>
-                      <a
-                        href="#!"
-                        className="float-search"
-                        onClick={this.handleFilterCollapse.bind(this)}
-                      >
-                        <small>
-                          {this.state.FilterCollapse ? TranslationContext !== undefined
+                  <div>
+                    <a
+                      href="#!"
+                      className="float-search"
+                      onClick={this.handleFilterCollapse.bind(this)}
+                    >
+                      <small>
+                        {this.state.FilterCollapse
+                          ? TranslationContext !== undefined
                             ? TranslationContext.small.closesearch
-                            : "Close Search" : TranslationContext !== undefined
-                              ? TranslationContext.small.search
-                              : "Search"}
-                        </small>
-                        <img
-                          className="search-icon"
-                          src={SearchIcon}
-                          alt="search-icon"
-                        />
-                      </a>
-                      <Collapse isOpen={this.state.FilterCollapse}>
-                        <Card>
-                          <CardBody>
-                            <div className="table-expandable-sctn1">
-                              <div className="tab-content p-0">
-                                <ul className="nav nav-tabs" role="tablist">
-                                  <div className="tasksearchdiv">
-                                    <button
-                                      className="btn-inv"
-                                      type="button"
-                                      style={{ margin: "10px", width: "180px" }}
-                                      onClick={this.handleGetStoreFilterList.bind(
-                                        this
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.viewsearch
-                                        : "VIEW SEARCH"}
-                                    </button>
-                                  </div>
-                                </ul>
+                            : "Close Search"
+                          : TranslationContext !== undefined
+                          ? TranslationContext.small.search
+                          : "Search"}
+                      </small>
+                      <img
+                        className="search-icon"
+                        src={SearchIcon}
+                        alt="search-icon"
+                      />
+                    </a>
+                    <Collapse isOpen={this.state.FilterCollapse}>
+                      <Card>
+                        <CardBody>
+                          <div className="table-expandable-sctn1">
+                            <div className="tab-content p-0">
+                              <ul className="nav nav-tabs" role="tablist">
+                                <div className="tasksearchdiv">
+                                  <button
+                                    className="btn-inv"
+                                    type="button"
+                                    style={{ margin: "10px", width: "180px" }}
+                                    onClick={this.handleGetStoreFilterList.bind(
+                                      this
+                                    )}
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.viewsearch
+                                      : "VIEW SEARCH"}
+                                  </button>
+                                </div>
+                              </ul>
 
-                                <div className="container-fluid">
-                                  <div className="row all-row">
-                                    <div className="col-md-3">
-                                      <input
-                                        type="text"
-                                        name="claimID"
-                                        value={this.state.claimID}
-                                        onChange={this.handleOnChangeData}
-                                        autoComplete="off"
-                                        placeholder={TranslationContext !== undefined
+                              <div className="container-fluid">
+                                <div className="row all-row">
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      name="claimID"
+                                      value={this.state.claimID}
+                                      onChange={this.handleOnChangeData}
+                                      autoComplete="off"
+                                      placeholder={
+                                        TranslationContext !== undefined
                                           ? TranslationContext.label.claimid
-                                          : "Claim ID"}
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="isTicketMapped"
-                                        value={this.state.isTicketMapped}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option value="">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.ticketmapped
-                                            : "Ticket Mapped"}
-                                        </option>
-                                        <option value="yes">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.yes
-                                            : "Yes"}
-                                        </option>
-                                        <option value="no">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.no
-                                            : "No"}
-                                        </option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="categoryID"
-                                        value={this.state.categoryID}
-                                        onChange={this.handleOnCategoryChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimcategory
-                                            : "Claim Category"}
-                                        </option>
-                                        {this.state.claimCategoryName !== null &&
-                                          this.state.claimCategoryName.map(
-                                            (item, i) => (
-                                              <option value={item.categoryID}>
-                                                {item.categoryName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="statusID"
-                                        value={this.state.statusID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimstatus
-                                            : "Claim Status"}
-                                        </option>
-                                        {this.state.statusData !== null &&
-                                          this.state.statusData.map((item, i) => (
-                                            <option value={item.claimStatusID}>
-                                              {item.claimStatusName}
+                                          : "Claim ID"
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="isTicketMapped"
+                                      value={this.state.isTicketMapped}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option value="">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .ticketmapped
+                                          : "Ticket Mapped"}
+                                      </option>
+                                      <option value="yes">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.yes
+                                          : "Yes"}
+                                      </option>
+                                      <option value="no">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.no
+                                          : "No"}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="categoryID"
+                                      value={this.state.categoryID}
+                                      onChange={this.handleOnCategoryChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimcategory
+                                          : "Claim Category"}
+                                      </option>
+                                      {this.state.claimCategoryName !== null &&
+                                        this.state.claimCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.categoryID}>
+                                              {item.categoryName}
                                             </option>
-                                          ))}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <input
-                                        type="text"
-                                        name="titleID"
-                                        value={this.state.titleID}
-                                        autoComplete="off"
-                                        onChange={this.handleOnChangeData}
-                                        placeholder={TranslationContext !== undefined
-                                          ? TranslationContext.option.titleid
-                                          : "Title ID"}
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="subCategoryID"
-                                        value={this.state.subCategoryID}
-                                        onChange={
-                                          this.handleOnSubCategoryChangeData
-                                        }
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimsubcategory
-                                            : "Claim Sub Category"}
-                                        </option>
-                                        {this.state.claimSubCategoryName !==
-                                          null &&
-                                          this.state.claimSubCategoryName.map(
-                                            (item, i) => (
-                                              <option value={item.subCategoryID}>
-                                                {item.subCategoryName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <DatePicker
-                                        selected={this.state.claimCreateDate}
-                                        value={this.state.claimCreateDate}
-                                        onChange={this.handleClaimCreateDate.bind(
-                                          this,
-                                          "claimCreateDate"
+                                          )
                                         )}
-                                        placeholderText={TranslationContext !== undefined
-                                          ? TranslationContext.option.claimraisedon
-                                          : "Claim Raised On"}
-                                        showMonthDropdown
-                                        showYearDropdown
-                                        dateFormat="dd/MM/yyyy"
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="isTaskMapped"
-                                        value={this.state.isTaskMapped}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option value="">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.taskmapped
-                                            : "Task Mapped"}
-                                        </option>
-                                        <option value="yes">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.yes
-                                            : "Yes"}
-                                        </option>
-                                        <option value="no">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.no
-                                            : "No"}
-                                        </option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="issueTypeID"
-                                        value={this.state.issueTypeID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimissuetype
-                                            : "Claim Issue Type"}
-                                        </option>
-                                        {this.state.claimIssueTypeName !== null &&
-                                          this.state.claimIssueTypeName.map(
-                                            (item, i) => (
-                                              <option value={item.issueTypeID}>
-                                                {item.issueTypeName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="assignToID"
-                                        value={this.state.assignToID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.assignto
-                                            : "Assign To"}
-                                        </option>
-                                        {this.state.claimUserDate !== null &&
-                                          this.state.claimUserDate.map(
-                                            (item, i) => (
-                                              <option value={item.userID}>
-                                                {item.userName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <input
-                                        type="text"
-                                        name="taskID"
-                                        value={this.state.taskID}
-                                        onChange={this.handleOnChangeData}
-                                        autoComplete="off"
-                                        placeholder={TranslationContext !== undefined
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="statusID"
+                                      value={this.state.statusID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimstatus
+                                          : "Claim Status"}
+                                      </option>
+                                      {this.state.statusData !== null &&
+                                        this.state.statusData.map((item, i) => (
+                                          <option value={item.claimStatusID}>
+                                            {item.claimStatusName}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      name="titleID"
+                                      value={this.state.titleID}
+                                      autoComplete="off"
+                                      onChange={this.handleOnChangeData}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.option.titleid
+                                          : "Title ID"
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="subCategoryID"
+                                      value={this.state.subCategoryID}
+                                      onChange={
+                                        this.handleOnSubCategoryChangeData
+                                      }
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimsubcategory
+                                          : "Claim Sub Category"}
+                                      </option>
+                                      {this.state.claimSubCategoryName !==
+                                        null &&
+                                        this.state.claimSubCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.subCategoryID}>
+                                              {item.subCategoryName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <DatePicker
+                                      selected={this.state.claimCreateDate}
+                                      value={this.state.claimCreateDate}
+                                      onChange={this.handleClaimCreateDate.bind(
+                                        this,
+                                        "claimCreateDate"
+                                      )}
+                                      placeholderText={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimraisedon
+                                          : "Claim Raised On"
+                                      }
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dateFormat="dd/MM/yyyy"
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="isTaskMapped"
+                                      value={this.state.isTaskMapped}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option value="">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskmapped
+                                          : "Task Mapped"}
+                                      </option>
+                                      <option value="yes">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.yes
+                                          : "Yes"}
+                                      </option>
+                                      <option value="no">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.no
+                                          : "No"}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="issueTypeID"
+                                      value={this.state.issueTypeID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimissuetype
+                                          : "Claim Issue Type"}
+                                      </option>
+                                      {this.state.claimIssueTypeName !== null &&
+                                        this.state.claimIssueTypeName.map(
+                                          (item, i) => (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="assignToID"
+                                      value={this.state.assignToID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.assignto
+                                          : "Assign To"}
+                                      </option>
+                                      {this.state.claimUserDate !== null &&
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      name="taskID"
+                                      value={this.state.taskID}
+                                      onChange={this.handleOnChangeData}
+                                      autoComplete="off"
+                                      placeholder={
+                                        TranslationContext !== undefined
                                           ? TranslationContext.label.taskid
-                                          : "Task ID"}
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="raisedByID"
-                                        value={this.state.raisedByID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.raisedby
-                                            : "Raised By"}
-                                        </option>
-                                        {this.state.claimUserDate !== null &&
-                                          this.state.claimUserDate.map(
-                                            (item, i) => (
-                                              <option value={item.userID}>
-                                                {item.userName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
+                                          : "Task ID"
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="raisedByID"
+                                      value={this.state.raisedByID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.raisedby
+                                          : "Raised By"}
+                                      </option>
+                                      {this.state.claimUserDate !== null &&
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </CardBody>
-                        </Card>
-                      </Collapse>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
 
-                      <div className="table-cntr raisereactTable">
-                        <ReactTable
-                          data={this.state.raisedByMeData}
-                          columns={[
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.id
-                                    : "ID"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "claimID",
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "status",
-                              Cell: (row) => {
-                                if (row.original.status !== undefined) {
-                                  if (row.original.status === "New") {
-                                    return (
-                                      <span className="table-btn table-yellow-btn">
-                                        <label>{row.original.status}</label>
-                                      </span>
-                                    );
-                                  } else if (row.original.status === "Open") {
-                                    return (
-                                      <span className="table-btn table-blue-btn">
-                                        <label>{row.original.status}</label>
-                                      </span>
-                                    );
-                                  } else {
-                                    return (
-                                      <span className="table-btn table-green-btn">
-                                        <label>{row.original.status}</label>
-                                      </span>
-                                    );
-                                  }
+                    <div className="table-cntr raisereactTable">
+                      <ReactTable
+                        data={this.state.raisedByMeData}
+                        columns={[
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.id
+                                  : "ID"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "claimID",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.status
+                                  : "Status"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "status",
+                            Cell: (row) => {
+                              if (row.original.status !== undefined) {
+                                if (row.original.status === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                } else if (row.original.status === "Open") {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
                                 } else {
-                                  if (row.original.claimStatus === "New") {
-                                    return (
-                                      <span className="table-btn table-yellow-btn">
-                                        <label>{row.original.claimStatus}</label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.claimStatus === "Open"
-                                  ) {
-                                    return (
-                                      <span className="table-btn table-blue-btn">
-                                        <label>{row.original.claimStatus}</label>
-                                      </span>
-                                    );
-                                  } else {
-                                    return (
-                                      <span className="table-btn table-green-btn">
-                                        <label>{row.original.claimStatus}</label>
-                                      </span>
-                                    );
-                                  }
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
                                 }
-                              },
+                              } else {
+                                if (row.original.claimStatus === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else if (
+                                  row.original.claimStatus === "Open"
+                                ) {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                }
+                              }
                             },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.claimissuetype
-                                    : "Claim Issue Type"}{" "}
-                                  <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "issueTypeName",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.claimissuetype
+                                  : "Claim Issue Type"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "issueTypeName",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.category
+                                  : "Category"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "categoryName",
+                            Cell: (row) => {
+                              return (
+                                <>
+                                  {row.original.categoryName}
+                                  <Popover
+                                    content={
+                                      <div className="dash-creation-popup-cntr">
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.category
+                                                : "Category"}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {row.original.categoryName}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p
+                                                    .subcategory
+                                                : "Sub Category"}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {row.original.subCategoryName}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.type
+                                                : "Type"}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {row.original.issueTypeName}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </>
+                              );
                             },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.category
-                                    : "Category"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "categoryName",
-                              Cell: (row) => {
-                                return (
-                                  <>
-                                    {row.original.categoryName}
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.raisedby
+                                  : "Raised by"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "raiseBy",
+                            Cell: (row) => {
+                              if (row.original.raiseBy !== undefined) {
+                                return row.original.raiseBy;
+                              } else {
+                                return row.original.claimRaisedBy;
+                              }
+                            },
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.creationon
+                                  : "Creation on"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "creationOn	",
+                            Cell: (row) => {
+                              return (
+                                <div>
+                                  <span>
+                                    {row.original.creationOn}
                                     <Popover
                                       content={
                                         <div className="dash-creation-popup-cntr">
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.category
-                                                  : "Category"}
+                                          <ul className="dash-creation-popup">
+                                            <li className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.li
+                                                    .creationdetails
+                                                : "Creation details"}
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .createdby
+                                                  : "Created by" +
+                                                    " " +
+                                                    row.original.raiseBy +
+                                                    " "}{" "}
                                               </p>
-                                            </b>
-                                            <p className="sub-title">
-                                              {row.original.categoryName}
-                                            </p>
-                                          </div>
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.subcategory
-                                                  : "Sub Category"}
+                                              <p>{row.original.creationAgo}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .assignedto
+                                                  : "Assigned to"}{" "}
+                                                {" " + row.original.assignTo}
                                               </p>
-                                            </b>
-                                            <p className="sub-title">
-                                              {row.original.subCategoryName}
-                                            </p>
-                                          </div>
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.type
-                                                  : "Type"}
+                                              <p>{row.original.assignOn}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .updatedby
+                                                  : "Updated by"}{" "}
+                                                Vikas
                                               </p>
-                                            </b>
-                                            <p className="sub-title">
-                                              {row.original.issueTypeName}
-                                            </p>
-                                          </div>
+                                              <p>{row.original.modifyOn}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .responsetimerem
+                                                  : "Response time remaining by"}
+                                              </p>
+                                              <p></p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .responseoverdueby
+                                                  : "Response overdue by"}
+                                              </p>
+                                              <p></p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .resolutionoverdueby
+                                                  : "Resolution overdue by"}
+                                              </p>
+                                              <p></p>
+                                            </li>
+                                          </ul>
                                         </div>
                                       }
                                       placement="bottom"
@@ -780,142 +939,37 @@ class Claim extends Component {
                                         alt="info-icon"
                                       />
                                     </Popover>
-                                  </>
-                                );
-                              },
+                                  </span>
+                                </div>
+                              );
                             },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.raisedby
-                                    : "Raised by"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "raiseBy",
-                              Cell: (row) => {
-                                if (row.original.raiseBy !== undefined) {
-                                  return row.original.raiseBy;
-                                } else {
-                                  return row.original.claimRaisedBy;
-                                }
-                              },
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.creationon
-                                    : "Creation on"}{" "}
-                                  <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "creationOn	",
-                              Cell: (row) => {
-                                return (
-                                  <div>
-                                    <span>
-                                      {row.original.creationOn}
-                                      <Popover
-                                        content={
-                                          <div className="dash-creation-popup-cntr">
-                                            <ul className="dash-creation-popup">
-                                              <li className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.li.creationdetails
-                                                  : "Creation details"}
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.createdby
-                                                    : "Created by" + " " +
-                                                    row.original.raiseBy +
-                                                    " "}{" "}
-                                                </p>
-                                                <p>{row.original.creationAgo}</p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.assignedto
-                                                    : "Assigned to"}{" "}
-                                                  {" " + row.original.assignTo}
-                                                </p>
-                                                <p>{row.original.assignOn}</p>
-                                              </li>
-                                              <li>
-                                                <p>{TranslationContext !== undefined
-                                                  ? TranslationContext.p.updatedby
-                                                  : "Updated by"} Vikas</p>
-                                                <p>{row.original.modifyOn}</p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.responsetimerem
-                                                    : "Response time remaining by"}
-                                                </p>
-                                                <p></p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.responseoverdueby
-                                                    : "Response overdue by"}
-                                                </p>
-                                                <p></p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.resolutionoverdueby
-                                                    : "Resolution overdue by"}
-                                                </p>
-                                                <p></p>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        }
-                                        placement="bottom"
-                                      >
-                                        <img
-                                          className="info-icon"
-                                          src={InfoIcon}
-                                          alt="info-icon"
-                                        />
-                                      </Popover>
-                                    </span>
-                                  </div>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.assignto
-                                    : "Assign to"}
-                                  <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "assignTo",
-                              // Cell: (props) => (
-                              //   <span>
-                              //     <label>A, Bansal</label>
-                              //   </span>
-                              // ),
-                            },
-                          ]}
-                          // resizable={false}
-                          defaultPageSize={10}
-                          minRows={2}
-                          showPagination={true}
-                          getTrProps={this.HandleRowClickPage}
-                        />
-                      </div>
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.assignto
+                                  : "Assign to"}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "assignTo",
+                            // Cell: (props) => (
+                            //   <span>
+                            //     <label>A, Bansal</label>
+                            //   </span>
+                            // ),
+                          },
+                        ]}
+                        // resizable={false}
+                        defaultPageSize={10}
+                        minRows={2}
+                        showPagination={true}
+                        getTrProps={this.HandleRowClickPage}
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -932,415 +986,552 @@ class Claim extends Component {
                     <div className="loader-icon"></div>
                   </div>
                 ) : (
-                    <div>
-                      <a
-                        href="#!"
-                        className="float-search"
-                        onClick={this.handleFilterCollapse.bind(this)}
-                      >
-                        <small>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.small.search
-                            : "Search"}
-                        </small>
-                        <img
-                          className="search-icon"
-                          src={SearchIcon}
-                          alt="search-icon"
-                        />
-                      </a>
-                      <Collapse isOpen={this.state.FilterCollapse}>
-                        <Card>
-                          <CardBody>
-                            <div className="table-expandable-sctn1">
-                              <div className="tab-content p-0">
-                                <ul className="nav nav-tabs" role="tablist">
-                                  <div className="tasksearchdiv">
-                                    <button
-                                      className="btn-inv"
-                                      type="button"
-                                      style={{ margin: "10px", width: "180px" }}
-                                      onClick={this.handleGetStoreFilterList.bind(
-                                        this
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.viewsearch
-                                        : "VIEW SEARCH"}
-                                    </button>
-                                  </div>
-                                </ul>
+                  <div>
+                    <a
+                      href="#!"
+                      className="float-search"
+                      onClick={this.handleFilterCollapse.bind(this)}
+                    >
+                      <small>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.small.search
+                          : "Search"}
+                      </small>
+                      <img
+                        className="search-icon"
+                        src={SearchIcon}
+                        alt="search-icon"
+                      />
+                    </a>
+                    <Collapse isOpen={this.state.FilterCollapse}>
+                      <Card>
+                        <CardBody>
+                          <div className="table-expandable-sctn1">
+                            <div className="tab-content p-0">
+                              <ul className="nav nav-tabs" role="tablist">
+                                <div className="tasksearchdiv">
+                                  <button
+                                    className="btn-inv"
+                                    type="button"
+                                    style={{ margin: "10px", width: "180px" }}
+                                    onClick={this.handleGetStoreFilterList.bind(
+                                      this
+                                    )}
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.viewsearch
+                                      : "VIEW SEARCH"}
+                                  </button>
+                                </div>
+                              </ul>
 
-                                <div className="container-fluid">
-                                  <div className="row all-row">
-                                    <div className="col-md-3">
-                                      <input
-                                        type="text"
-                                        name="claimID"
-                                        value={this.state.claimID}
-                                        onChange={this.handleOnChangeData}
-                                        placeholder={TranslationContext !== undefined
+                              <div className="container-fluid">
+                                <div className="row all-row">
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      name="claimID"
+                                      value={this.state.claimID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder={
+                                        TranslationContext !== undefined
                                           ? TranslationContext.label.claimid
-                                          : "Claim ID"}
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="isTicketMapped"
-                                        value={this.state.isTicketMapped}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option value="">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.ticketmapped
-                                            : "Ticket Mapped"}
-                                        </option>
-                                        <option value="yes">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.yes
-                                            : "Yes"}
-                                        </option>
-                                        <option value="no">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.no
-                                            : "No"}
-                                        </option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="categoryID"
-                                        value={this.state.categoryID}
-                                        onChange={this.handleOnCategoryChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimcategory
-                                            : "Claim Category"}
-                                        </option>
-                                        {this.state.claimCategoryName !== null &&
-                                          this.state.claimCategoryName.map(
-                                            (item, i) => (
-                                              <option value={item.categoryID}>
-                                                {item.categoryName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="statusID"
-                                        value={this.state.statusID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimstatus
-                                            : "Claim Status"}
-                                        </option>
-                                        {this.state.statusData !== null &&
-                                          this.state.statusData.map((item, i) => (
-                                            <option value={item.claimStatusID}>
-                                              {item.claimStatusName}
+                                          : "Claim ID"
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="isTicketMapped"
+                                      value={this.state.isTicketMapped}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option value="">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .ticketmapped
+                                          : "Ticket Mapped"}
+                                      </option>
+                                      <option value="yes">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.yes
+                                          : "Yes"}
+                                      </option>
+                                      <option value="no">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.no
+                                          : "No"}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="categoryID"
+                                      value={this.state.categoryID}
+                                      onChange={this.handleOnCategoryChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimcategory
+                                          : "Claim Category"}
+                                      </option>
+                                      {this.state.claimCategoryName !== null &&
+                                        this.state.claimCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.categoryID}>
+                                              {item.categoryName}
                                             </option>
-                                          ))}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <input
-                                        type="text"
-                                        name="titleID"
-                                        value={this.state.titleID}
-                                        onChange={this.handleOnChangeData}
-                                        placeholder={TranslationContext !== undefined
-                                          ? TranslationContext.placeholder.titleid
-                                          : "Title ID"}
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="subCategoryID"
-                                        value={this.state.subCategoryID}
-                                        onChange={
-                                          this.handleOnSubCategoryChangeData
-                                        }
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimsubcategory
-                                            : "Claim Sub Category"}
-                                        </option>
-                                        {this.state.claimSubCategoryName !==
-                                          null &&
-                                          this.state.claimSubCategoryName.map(
-                                            (item, i) => (
-                                              <option value={item.subCategoryID}>
-                                                {item.subCategoryName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <DatePicker
-                                        selected={this.state.claimCreateDate}
-                                        value={this.state.claimCreateDate}
-                                        onChange={this.handleClaimCreateDate.bind(
-                                          this,
-                                          "claimCreateDate"
+                                          )
                                         )}
-                                        placeholderText={TranslationContext !== undefined
-                                          ? TranslationContext.placeholder.claimraisedon
-                                          : "Claim Raised On"}
-                                        showMonthDropdown
-                                        showYearDropdown
-                                        dateFormat="dd/MM/yyyy"
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="isTaskMapped"
-                                        value={this.state.isTaskMapped}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option value="">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.taskmapped
-                                            : "Task Mapped"}
-                                        </option>
-                                        <option value="yes">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.yes
-                                            : "Yes"}
-                                        </option>
-                                        <option value="no">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.no
-                                            : "No"}
-                                        </option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="issueTypeID"
-                                        value={this.state.issueTypeID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.claimissuetype
-                                            : "Claim Issue Type"}
-                                        </option>
-                                        {this.state.claimIssueTypeName !== null &&
-                                          this.state.claimIssueTypeName.map(
-                                            (item, i) => (
-                                              <option value={item.issueTypeID}>
-                                                {item.issueTypeName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="assignToID"
-                                        value={this.state.assignToID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.assignto
-                                            : "Assign To"}
-                                        </option>
-                                        {this.state.claimUserDate !== null &&
-                                          this.state.claimUserDate.map(
-                                            (item, i) => (
-                                              <option value={item.userID}>
-                                                {item.userName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
-                                    <div className="col-md-3">
-                                      <input
-                                        type="text"
-                                        name="taskID"
-                                        value={this.state.taskID}
-                                        onChange={this.handleOnChangeData}
-                                        placeholder={TranslationContext !== undefined
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="statusID"
+                                      value={this.state.statusID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimstatus
+                                          : "Claim Status"}
+                                      </option>
+                                      {this.state.statusData !== null &&
+                                        this.state.statusData.map((item, i) => (
+                                          <option value={item.claimStatusID}>
+                                            {item.claimStatusName}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      name="titleID"
+                                      value={this.state.titleID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .titleid
+                                          : "Title ID"
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="subCategoryID"
+                                      value={this.state.subCategoryID}
+                                      onChange={
+                                        this.handleOnSubCategoryChangeData
+                                      }
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimsubcategory
+                                          : "Claim Sub Category"}
+                                      </option>
+                                      {this.state.claimSubCategoryName !==
+                                        null &&
+                                        this.state.claimSubCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.subCategoryID}>
+                                              {item.subCategoryName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <DatePicker
+                                      selected={this.state.claimCreateDate}
+                                      value={this.state.claimCreateDate}
+                                      onChange={this.handleClaimCreateDate.bind(
+                                        this,
+                                        "claimCreateDate"
+                                      )}
+                                      placeholderText={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .claimraisedon
+                                          : "Claim Raised On"
+                                      }
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dateFormat="dd/MM/yyyy"
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="isTaskMapped"
+                                      value={this.state.isTaskMapped}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option value="">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.taskmapped
+                                          : "Task Mapped"}
+                                      </option>
+                                      <option value="yes">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.yes
+                                          : "Yes"}
+                                      </option>
+                                      <option value="no">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.no
+                                          : "No"}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="issueTypeID"
+                                      value={this.state.issueTypeID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .claimissuetype
+                                          : "Claim Issue Type"}
+                                      </option>
+                                      {this.state.claimIssueTypeName !== null &&
+                                        this.state.claimIssueTypeName.map(
+                                          (item, i) => (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="assignToID"
+                                      value={this.state.assignToID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.assignto
+                                          : "Assign To"}
+                                      </option>
+                                      {this.state.claimUserDate !== null &&
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      name="taskID"
+                                      value={this.state.taskID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder={
+                                        TranslationContext !== undefined
                                           ? TranslationContext.span.taskid
-                                          : "Task ID"}
-                                      />
-                                    </div>
-                                    <div className="col-md-3">
-                                      <select
-                                        name="raisedByID"
-                                        value={this.state.raisedByID}
-                                        onChange={this.handleOnChangeData}
-                                      >
-                                        <option>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.raisedby
-                                            : "Raised By"}
-                                        </option>
-                                        {this.state.claimUserDate !== null &&
-                                          this.state.claimUserDate.map(
-                                            (item, i) => (
-                                              <option value={item.userID}>
-                                                {item.userName}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                    </div>
+                                          : "Task ID"
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
+                                    <select
+                                      name="raisedByID"
+                                      value={this.state.raisedByID}
+                                      onChange={this.handleOnChangeData}
+                                    >
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.raisedby
+                                          : "Raised By"}
+                                      </option>
+                                      {this.state.claimUserDate !== null &&
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </CardBody>
-                        </Card>
-                      </Collapse>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
 
-                      <div className="table-cntr raisereactTable">
-                        <ReactTable
-                          data={this.state.assignToMeData}
-                          columns={[
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.id
-                                    : "ID"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "claimID",
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.status
-                                    : "Status"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "status",
-                              Cell: (row) => {
-                                if (row.original.status !== undefined) {
-                                  if (row.original.status === "New") {
-                                    return (
-                                      <span className="table-btn table-yellow-btn">
-                                        <label>{row.original.status}</label>
-                                      </span>
-                                    );
-                                  } else if (row.original.status === "Open") {
-                                    return (
-                                      <span className="table-btn table-blue-btn">
-                                        <label>{row.original.status}</label>
-                                      </span>
-                                    );
-                                  } else {
-                                    return (
-                                      <span className="table-btn table-green-btn">
-                                        <label>{row.original.status}</label>
-                                      </span>
-                                    );
-                                  }
+                    <div className="table-cntr raisereactTable">
+                      <ReactTable
+                        data={this.state.assignToMeData}
+                        columns={[
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.id
+                                  : "ID"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "claimID",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.status
+                                  : "Status"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "status",
+                            Cell: (row) => {
+                              if (row.original.status !== undefined) {
+                                if (row.original.status === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                } else if (row.original.status === "Open") {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
                                 } else {
-                                  if (row.original.claimStatus === "New") {
-                                    return (
-                                      <span className="table-btn table-yellow-btn">
-                                        <label>{row.original.claimStatus}</label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.claimStatus === "Open"
-                                  ) {
-                                    return (
-                                      <span className="table-btn table-blue-btn">
-                                        <label>{row.original.claimStatus}</label>
-                                      </span>
-                                    );
-                                  } else {
-                                    return (
-                                      <span className="table-btn table-green-btn">
-                                        <label>{row.original.claimStatus}</label>
-                                      </span>
-                                    );
-                                  }
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
                                 }
-                              },
+                              } else {
+                                if (row.original.claimStatus === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else if (
+                                  row.original.claimStatus === "Open"
+                                ) {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                }
+                              }
                             },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.claimissuetype
-                                    : "Claim Issue Type"}{" "}
-                                  <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "issueTypeName",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.claimissuetype
+                                  : "Claim Issue Type"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "issueTypeName",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.category
+                                  : "Category"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "categoryName",
+                            Cell: (row) => {
+                              return (
+                                <>
+                                  {row.original.categoryName}
+                                  <Popover
+                                    content={
+                                      <div className="dash-creation-popup-cntr">
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.category
+                                                : "Category"}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .defectivearticle
+                                              : "Defective article"}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p
+                                                    .subcategory
+                                                : "Sub Category"}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .customerwantsrefund
+                                              : "Customer wants refund"}
+                                          </p>
+                                        </div>
+                                        <div>
+                                          <b>
+                                            <p className="title">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.type
+                                                : "Type"}
+                                            </p>
+                                          </b>
+                                          <p className="sub-title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.delivery
+                                              : "Delivery"}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </>
+                              );
                             },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.category
-                                    : "Category"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "categoryName",
-                              Cell: (row) => {
-                                return (
-                                  <>
-                                    {row.original.categoryName}
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.raisedby
+                                  : "Raised by"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "raiseBy",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.creationon
+                                  : "Creation on"}{" "}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "creationOn	",
+                            Cell: (row) => {
+                              return (
+                                <div>
+                                  <span>
+                                    {row.original.creationOn}
                                     <Popover
                                       content={
                                         <div className="dash-creation-popup-cntr">
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.category
-                                                  : "Category"}
-                                              </p>
-                                            </b>
-                                            <p className="sub-title">
+                                          <ul className="dash-creation-popup">
+                                            <li className="title">
                                               {TranslationContext !== undefined
-                                                ? TranslationContext.p.defectivearticle
-                                                : "Defective article"}
-                                            </p>
-                                          </div>
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.subcategory
-                                                  : "Sub Category"}
+                                                ? TranslationContext.li
+                                                    .creationdetails
+                                                : "Creation details"}
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .createdby
+                                                  : "Created by" +
+                                                    " " +
+                                                    row.original.raiseBy +
+                                                    " "}{" "}
                                               </p>
-                                            </b>
-                                            <p className="sub-title">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.customerwantsrefund
-                                                : "Customer wants refund"}
-                                            </p>
-                                          </div>
-                                          <div>
-                                            <b>
-                                              <p className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.type
-                                                  : "Type"}
+                                              <p>{row.original.creationAgo}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .assignedto
+                                                  : "Assigned to"}{" "}
+                                                {" " + row.original.assignTo}
                                               </p>
-                                            </b>
-                                            <p className="sub-title">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.delivery
-                                                : "Delivery"}
-                                            </p>
-                                          </div>
+                                              <p>{row.original.assignOn}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .updatedby
+                                                  : "Updated by"}{" "}
+                                                Vikas
+                                              </p>
+                                              <p>{row.original.modifyOn}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .responsetimerem
+                                                  : "Response time remaining by"}
+                                              </p>
+                                              <p></p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .responseoverdueby
+                                                  : "Response overdue by"}
+                                              </p>
+                                              <p></p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .resolutionoverdueby
+                                                  : "Resolution overdue by"}
+                                              </p>
+                                              <p></p>
+                                            </li>
+                                          </ul>
                                         </div>
                                       }
                                       placement="bottom"
@@ -1351,129 +1542,37 @@ class Claim extends Component {
                                         alt="info-icon"
                                       />
                                     </Popover>
-                                  </>
-                                );
-                              },
+                                  </span>
+                                </div>
+                              );
                             },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.raisedby
-                                    : "Raised by"} <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "raiseBy",
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.creationon
-                                    : "Creation on"}{" "}
-                                  <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "creationOn	",
-                              Cell: (row) => {
-                                return (
-                                  <div>
-                                    <span>
-                                      {row.original.creationOn}
-                                      <Popover
-                                        content={
-                                          <div className="dash-creation-popup-cntr">
-                                            <ul className="dash-creation-popup">
-                                              <li className="title">
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.li.creationdetails
-                                                  : "Creation details"}
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.createdby
-                                                    : "Created by" + " " +
-                                                    row.original.raiseBy +
-                                                    " "}{" "}
-                                                </p>
-                                                <p>{row.original.creationAgo}</p>
-                                              </li>
-                                              <li>
-                                                <p>
-                                                  {TranslationContext !== undefined
-                                                    ? TranslationContext.p.assignedto
-                                                    : "Assigned to"}{" "}
-                                                  {" " + row.original.assignTo}
-                                                </p>
-                                                <p>{row.original.assignOn}</p>
-                                              </li>
-                                              <li>
-                                                <p>{TranslationContext !== undefined
-                                                  ? TranslationContext.p.updatedby
-                                                  : "Updated by"} Vikas</p>
-                                                <p>{row.original.modifyOn}</p>
-                                              </li>
-                                              <li>
-                                                <p>{TranslationContext !== undefined
-                                                  ? TranslationContext.p.responsetimerem
-                                                  : "Response time remaining by"}</p>
-                                                <p></p>
-                                              </li>
-                                              <li>
-                                                <p>{TranslationContext !== undefined
-                                                  ? TranslationContext.p.responseoverdueby
-                                                  : "Response overdue by"}</p>
-                                                <p></p>
-                                              </li>
-                                              <li>
-                                                <p>{TranslationContext !== undefined
-                                                  ? TranslationContext.p.resolutionoverdueby
-                                                  : "Resolution overdue by"}</p>
-                                                <p></p>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        }
-                                        placement="bottom"
-                                      >
-                                        <img
-                                          className="info-icon"
-                                          src={InfoIcon}
-                                          alt="info-icon"
-                                        />
-                                      </Popover>
-                                    </span>
-                                  </div>
-                                );
-                              },
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.assignto
-                                    : "Assign to"}
-                                  <FontAwesomeIcon icon={faCaretDown} />
-                                </span>
-                              ),
-                              accessor: "assignTo",
-                              // Cell: (props) => (
-                              //   <span>
-                              //     <label>A, Bansal</label>
-                              //   </span>
-                              // ),
-                            },
-                          ]}
-                          // resizable={false}
-                          defaultPageSize={10}
-                          minRows={2}
-                          showPagination={true}
-                          getTrProps={this.HandleRowClickPage}
-                        />
-                      </div>
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.assignto
+                                  : "Assign to"}
+                                <FontAwesomeIcon icon={faCaretDown} />
+                              </span>
+                            ),
+                            accessor: "assignTo",
+                            // Cell: (props) => (
+                            //   <span>
+                            //     <label>A, Bansal</label>
+                            //   </span>
+                            // ),
+                          },
+                        ]}
+                        // resizable={false}
+                        defaultPageSize={10}
+                        minRows={2}
+                        showPagination={true}
+                        getTrProps={this.HandleRowClickPage}
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
