@@ -2375,7 +2375,6 @@ class StoreModule extends Component {
       this.state.autoNonOptTo !== ""
     ) {
       let self = this;
-
       axios({
         method: "post",
         url: config.apiUrl + "/Appointment/GetGeneratedSlots",
@@ -2385,10 +2384,10 @@ class StoreModule extends Component {
           SlotTemplateType: this.state.slotAutomaticRadio === 1 ? "A" : "M",
           Slotduration: parseFloat(this.state.AutoSlotDuration),
           SlotGaps: parseFloat(this.state.AutoSlotGap),
-          StoreOpenAt: moment(this.state.autoStoreFrom).format("HH:MM"),
-          StoreCloseAt: moment(this.state.autoStoreTo).format("HH:MM"),
-          StoreNonOpFromAt: moment(this.state.autoNonOptFrom).format("HH:MM"),
-          StoreNonOpToAt: moment(this.state.autoNonOptTo).format("HH:MM"),
+          StoreOpenAt: moment(this.state.autoStoreFrom).format("HH:mm"),
+          StoreCloseAt: moment(this.state.autoStoreTo).format("HH:mm"),
+          StoreNonOpFromAt: moment(this.state.autoNonOptFrom).format("HH:mm"),
+          StoreNonOpToAt: moment(this.state.autoNonOptTo).format("HH:mm"),
         },
       })
         .then((res) => {
