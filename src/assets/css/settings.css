@@ -3643,8 +3643,14 @@
 }
 
 .chat-storemng {
-  color: #eb4d4b;
+  /* color: #eb4d4b; */
   font-weight: bold !important;
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: left;
+  font-weight: 600 !important;
 }
 
 .chat-tabslst .tab-content {
