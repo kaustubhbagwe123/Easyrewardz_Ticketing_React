@@ -216,6 +216,13 @@ class StoreModule extends Component {
       autoNonOptFromCompulsory: "",
       autoNonOptToCompulsory: "",
       automaticaSlotTblData: [],
+      manualTempName: "",
+      manualStoreFrom: "",
+      manualStoreTo: "",
+      ManualSlotDuration: 0,
+      manualSlotEnd: "",
+      manualSlotStart: "",
+      manualStoreTblData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2364,7 +2371,6 @@ class StoreModule extends Component {
 
   /// handle Submit automatica data
   handleSubmitAutomaticData() {
-    debugger;
     if (
       this.state.autoTempName !== "" &&
       this.state.AutoSlotDuration !== 0 &&
@@ -2396,13 +2402,6 @@ class StoreModule extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             self.setState({
-              autoTempName: "",
-              AutoSlotDuration: 0,
-              AutoSlotGap: 0,
-              autoStoreFrom: "",
-              autoStoreTo: "",
-              autoNonOptFrom: "",
-              autoNonOptTo: "",
               autoTempNameCompulsory: "",
               AutoSlotDurationCompulsory: "",
               AutoSlotGapCompulsory: "",
@@ -2410,7 +2409,7 @@ class StoreModule extends Component {
               autoStoreToCompulsory: "",
               autoNonOptFromCompulsory: "",
               autoNonOptToCompulsory: "",
-              automaticaSlotTblData:data
+              automaticaSlotTblData: data,
             });
             NotificationManager.success("Slot Generated.");
           } else {
@@ -2432,7 +2431,50 @@ class StoreModule extends Component {
       });
     }
   }
-
+  //// handle finale automatic save data
+  handleFinalAutomaticSaveData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/CreateSlotTemplate",
+      headers: authHeader(),
+      data: {
+        SlotTemplateName: this.state.autoTempName.trim(),
+        SlotTemplateType: this.state.slotAutomaticRadio === 1 ? "A" : "M",
+        Slotduration: parseFloat(this.state.AutoSlotDuration),
+        SlotGaps: parseFloat(this.state.AutoSlotGap),
+        StoreOpenAt: moment(this.state.autoStoreFrom).format("HH:mm"),
+        StoreCloseAt: moment(this.state.autoStoreTo).format("HH:mm"),
+        StoreNonOpFromAt: moment(this.state.autoNonOptFrom).format("HH:mm"),
+        StoreNonOpToAt: moment(this.state.autoNonOptTo).format("HH:mm"),
+        TemplateSlots: this.state.automaticaSlotTblData,
+      },
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        // let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            autoTempName: "",
+            AutoSlotDuration: 0,
+            AutoSlotGap: 0,
+            autoStoreFrom: "",
+            autoStoreTo: "",
+            autoNonOptFrom: "",
+            autoNonOptTo: "",
+            createTampleteModal: false,
+          });
+          NotificationManager.success("Automatic Template Created.");
+        } else {
+          NotificationManager.error("Automatic Template Not Created..");
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -5361,24 +5403,27 @@ class StoreModule extends Component {
                             {
                               title: "Slot Status(Unable/Disble)",
 
-                              render: (row, rowData,i) => {
-                                return (<div className="switch switch-primary">
-                                <input
-                                type="checkbox"
-                                id={"ckStatus"+i}
-                                name="allModules"
-                                // checked={
-                                //   this.state.AppointConfigData
-                                //     .generateOTP
-                                // }
-                                // onChange={this.AppoinmentConfigFlageChange.bind(
-                                //   this
-                                // )}
-                              />
-                              <label
-                                htmlFor={"ckStatus"+i}
-                                className="cr cr-float-auto"
-                              ></label></div>);
+                              render: (row, rowData, i) => {
+                                return (
+                                  <div className="switch switch-primary">
+                                    <input
+                                      type="checkbox"
+                                      id={"ckStatus" + i}
+                                      name="allModules"
+                                      // checked={
+                                      //   this.state.AppointConfigData
+                                      //     .generateOTP
+                                      // }
+                                      // onChange={this.AppoinmentConfigFlageChange.bind(
+                                      //   this
+                                      // )}
+                                    />
+                                    <label
+                                      htmlFor={"ckStatus" + i}
+                                      className="cr cr-float-auto"
+                                    ></label>
+                                  </div>
+                                );
                               },
                             },
                           ]}
@@ -5821,6 +5866,7 @@ class StoreModule extends Component {
                         className="form-control"
                         placeholder="Enter Template Name"
                         autoComplete="off"
+                        maxLength={50}
                         name="autoTempName"
                         value={this.state.autoTempName}
                         onChange={this.handleInputOnchange}
@@ -5970,7 +6016,6 @@ class StoreModule extends Component {
                     </div>
                     <div className="col-12 col-md-5 slotFrm">
                       <label>To</label>
-
                       <DatePicker
                         selected={this.state.autoNonOptTo}
                         showTimeSelect
@@ -6039,11 +6084,9 @@ class StoreModule extends Component {
                         </a>
                         <button
                           className="butn"
-                          onClick={this.handleNextButtonClose.bind(this)}
+                          onClick={this.handleFinalAutomaticSaveData.bind(this)}
                         >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.delete
-                            : "Save"}
+                          Save
                         </button>
                       </div>
                     </div>
@@ -6059,7 +6102,21 @@ class StoreModule extends Component {
                   <div className="row">
                     <div className="col-12 col-md-10">
                       <label>Template Name</label>
-                      <input type="text" className="form-control" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Template Name"
+                        autoComplete="off"
+                        maxLength={50}
+                        name="manualTempName"
+                        value={this.state.manualTempName}
+                        onChange={this.handleInputOnchange}
+                      />
+                      {this.state.manualTempName === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.manualTempNameCompulsory}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
@@ -6068,53 +6125,129 @@ class StoreModule extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>From</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.manualStoreFrom}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="hh:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            manualStoreFrom: time,
+                          })
+                        }
+                      />
+                       {this.state.manualStoreFrom === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.manualStoreFromCompulsory}
+                        </p>
+                      )}
                     </div>
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>To</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.manualStoreTo}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="hh:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            manualStoreTo: time,
+                          })
+                        }
+                      />
+                      {this.state.manualStoreTo === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.manualStoreToCompulsory}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-12 col-md-10">
                       <label>Slot Duration</label>
-                      <select name="" className="form-control">
+                      <select
+                        name="ManualSlotDuration"
+                        className="form-control"
+                        value={this.state.ManualSlotDuration}
+                        onChange={(e) =>
+                          this.setState({
+                            ManualSlotDuration: e.target.value,
+                          })
+                        }
+                      >
                         <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
+                        <option value={0.25}>15 Minutes</option>
+                        <option value={0.5}>30 Minutes</option>
+                        <option value={0.75}>45 Minutes</option>
+                        <option value={1}>1 Hours</option>
+                        <option value={1.5}>1.5 Hour</option>
+                        <option value={2}>2 Hour</option>
                       </select>
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>Slot Start Time</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.manualSlotStart}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={60}
+                        timeCaption="Time"
+                        dateFormat="hh:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            manualSlotStart: time,
+                          })
+                        }
+                      />
+                      {this.state.manualSlotStart === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.manualSlotStartCompulsory}
+                        </p>
+                      )}
                     </div>
-                    <div className="col-12 col-md-5">
+                    <div className="col-12 col-md-5 slotFrm">
                       <label>Slot End Time</label>
-                      <select name="" className="form-control">
-                        <option value={0}>Select Timing</option>
-                        <option value={0}>1</option>
-                      </select>
+                      <DatePicker
+                        selected={this.state.manualSlotEnd}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        dateFormat="hh:mm aa"
+                        placeholderText="Select Timing"
+                        className="form-control"
+                        onChange={(time) =>
+                          this.setState({
+                            manualSlotEnd: time,
+                          })
+                        }
+                      />
+                      {this.state.manualSlotStart === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.manualSlotEndCompulsory}
+                        </p>
+                      )}
                     </div>
                     <div className="col-12 col-md-2">
                       <button
                         className="tabbutn"
                         onClick={this.handleNextButtonClose.bind(this)}
                       >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.button.delete
-                          : "Add Slot"}
+                        Add Slot
                       </button>
                     </div>
                   </div>
@@ -6122,14 +6255,13 @@ class StoreModule extends Component {
                     <div className="col-12 col-md-10">
                       <div className="chooseslot-table">
                         <Table
-                          dataSource={this.state.slotData}
+                          dataSource={this.state.manualStoreTblData}
                           noDataContent="No Record Found"
                           pagination={false}
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
                           columns={[
                             {
                               title: "S.No.",
-
                               dataIndex: "no",
                             },
                             {
@@ -6142,7 +6274,6 @@ class StoreModule extends Component {
                             },
                             {
                               title: "Actions",
-                              dataIndex: "endTime",
                             },
                           ]}
                         ></Table>
@@ -6161,9 +6292,7 @@ class StoreModule extends Component {
                           className="butn"
                           onClick={this.handleNextButtonClose.bind(this)}
                         >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.delete
-                            : "Save"}
+                          Save
                         </button>
                       </div>
                     </div>
