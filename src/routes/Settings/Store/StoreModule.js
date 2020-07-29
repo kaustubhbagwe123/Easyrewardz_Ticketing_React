@@ -222,6 +222,12 @@ class StoreModule extends Component {
       ManualSlotDuration: 0,
       manualSlotEnd: "",
       manualSlotStart: "",
+      manualTempNameCompulsory: "",
+      manualStoreFromCompulsory: "",
+      manualStoreToCompulsory: "",
+      ManualSlotDurationCompulsory: "",
+      manualSlotStartCompulsory: "",
+      manualSlotEndCompulsory: "",
       manualStoreTblData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
@@ -6142,7 +6148,7 @@ class StoreModule extends Component {
                           })
                         }
                       />
-                       {this.state.manualStoreFrom === "" && (
+                      {this.state.manualStoreFrom === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.manualStoreFromCompulsory}
                         </p>
@@ -6193,6 +6199,11 @@ class StoreModule extends Component {
                         <option value={1.5}>1.5 Hour</option>
                         <option value={2}>2 Hour</option>
                       </select>
+                      {this.state.ManualSlotDuration === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ManualSlotDurationCompulsory}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
@@ -6236,7 +6247,7 @@ class StoreModule extends Component {
                           })
                         }
                       />
-                      {this.state.manualSlotStart === "" && (
+                      {this.state.manualSlotEnd === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.manualSlotEndCompulsory}
                         </p>
