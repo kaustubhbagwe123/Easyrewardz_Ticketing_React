@@ -305,7 +305,7 @@ class OrderTab extends Component {
       var formatDate = moment(new Date(this.state.OrdPickupDate)).format(
         "DD-MM-YYYY"
       );
-      var formatTime = moment(this.state.OrdPickupTime).format("HH:MM");
+      var formatTime = moment(this.state.OrdPickupTime).format("HH:mm");
       axios({
         method: "post",
         url: config.apiUrl + "/HSOrder/SetOrderHasBeenSelfPickUp",
