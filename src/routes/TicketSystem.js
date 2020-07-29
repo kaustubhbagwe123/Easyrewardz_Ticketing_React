@@ -3075,6 +3075,28 @@ class TicketSystem extends Component {
                                 </label>
                               </div>
                             </div>
+
+                            <div className="row">
+                              <div className="col-md-4">
+                                <label className="category2">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.dateofbirth
+                                    : "DOB"}
+                                </label>
+                              </div>
+                            </div>
+
+                            <div
+                              className="row"
+                              style={{ marginBottom: "20px" }}
+                            >
+                              <div className="col-md-4">
+                                <label className="category1">
+                                  {this.state.customerData.dob}
+                                </label>
+                              </div>
+                            </div>
+
                             <div className="row">
                               <button
                                 className="systemeditbutton systemeditbutton-text"

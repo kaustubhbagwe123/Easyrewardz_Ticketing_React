@@ -31,7 +31,7 @@ html {
 }
 .store-chat-header {
   background-color: #2561a8;
-  padding: 12px 28px;
+  padding: 9px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1033,8 +1033,11 @@ html {
   width: 27%;
   position: relative;
 }
+.firstbox-full {
+  width: 24%;
+}
 .secondbox-open {
-  width: 73% !important;
+  width: 69% !important;
 }
 .thirdbox-close {
   width: 7% !important;
@@ -1127,6 +1130,8 @@ html {
   font-size: 14px;
   font-weight: 600;
   display: inline-block;
+  white-space: normal;
+  word-break: break-word;
 }
 .nameplate span {
   display: block;
@@ -2656,6 +2661,7 @@ html {
     text-overflow: ellipsis;
     display: block;
     overflow: hidden;
+    margin-top: 5px;
   }
   .contactbox {
     float: right;
