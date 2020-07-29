@@ -3751,7 +3751,9 @@ class Header extends Component {
                     ? "firstbox firstbox-show"
                     : this.state.isMobileView && this.state.isHistoricalChat
                     ? "firstbox firstbox-hide"
-                    : "firstbox firstbox-hide"
+                    : this.state.onHoverName
+                    ? "firstbox firstbox-hide"
+                    : "firstbox firstbox-hide firstbox-full"
                 }
               >
                 <div
@@ -3899,7 +3901,7 @@ class Header extends Component {
                           <Option value={0}>
                             {TranslationContext !== undefined
                               ? TranslationContext.option.allstoremember
-                              : "All Store Member"}
+                              : "Agent ALL"}
                           </Option>
                           {this.state.agentData !== null &&
                             this.state.agentData.map((item, i) => {
@@ -3960,15 +3962,8 @@ class Header extends Component {
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  {!this.state.onHoverName ? (
-                                    <p
-                                      className={"chat-storemng "}
-                                      title="Store Manager"
-                                    >
-                                      {chat.storeManagerName}
-                                    </p>
-                                  ) : null}
-                                  {!this.state.onHoverName ? (
+                                  
+                                  {/* {!this.state.onHoverName ? (
                                     <p
                                       style={{
                                         fontWeight:
@@ -3992,8 +3987,17 @@ class Header extends Component {
                                         ? TranslationContext.p.newmessages
                                         : "New Messages"}
                                     </p>
-                                  ) : null}
+                                  ) : null} */}
+
                                   <p>{chat.timeAgo}</p>
+                                  {!this.state.onHoverName ? (
+                                    <p
+                                      className={"chat-storemng "}
+                                      title="Store Manager"
+                                    >
+                                      {chat.storeManagerName}
+                                    </p>
+                                  ) : null}
                                 </div>
                               </div>
                             </div>
