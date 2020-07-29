@@ -1374,7 +1374,7 @@ class Brands extends Component {
                           Cell: (row) => {
                             return (
                               <div>
-                                <span>
+                                <span className="one-liner">
                                   {row.original["created_By"]}
                                   <Popover
                                     content={

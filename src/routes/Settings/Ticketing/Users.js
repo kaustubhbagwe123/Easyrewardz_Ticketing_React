@@ -3662,7 +3662,7 @@ class Users extends Component {
                           var ids = row.original["userId"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.designation}
                                 <Popover
                                   content={

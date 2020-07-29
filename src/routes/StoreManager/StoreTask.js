@@ -838,7 +838,14 @@ class StoreTask extends Component {
 
     var inputParam = {};
 
-    inputParam.taskid = this.state.assignSearchData["taskid"] || 0;
+    // inputParam.taskid = this.state.assignSearchData["taskid"] || 0;
+    inputParam.taskid =
+      this.state.assignSearchData["taskid"] === "" ||
+      this.state.assignSearchData["taskid"] === undefined
+        ? 0
+        : isNaN(this.state.assignSearchData["taskid"])
+        ? -1
+        : this.state.assignSearchData["taskid"];
     inputParam.Department = this.state.assignSearchData["Department"] || 0;
     inputParam.tasktitle = this.state.assignSearchData["tasktitle"] || "";
     inputParam.taskstatus = this.state.assignSearchData["taskstatus"] || 0;
@@ -891,7 +898,14 @@ class StoreTask extends Component {
     debugger;
     var inputParam = {};
 
-    inputParam.taskid = this.state.raiseSearchData["taskid"] || 0;
+    // inputParam.taskid = this.state.raiseSearchData["taskid"] || 0;
+    inputParam.taskid =
+      this.state.raiseSearchData["taskid"] === "" ||
+      this.state.raiseSearchData["taskid"] === undefined
+        ? 0
+        : isNaN(this.state.raiseSearchData["taskid"])
+        ? -1
+        : this.state.raiseSearchData["taskid"];
     inputParam.Department = this.state.raiseSearchData["Department"] || 0;
     inputParam.tasktitle = this.state.raiseSearchData["tasktitle"] || "";
     inputParam.taskstatus = this.state.raiseSearchData["taskstatus"] || 0;
@@ -944,7 +958,14 @@ class StoreTask extends Component {
     debugger;
     var inputParam = {};
 
-    inputParam.taskid = this.state.ticketSearchData["taskid"] || 0;
+    // inputParam.taskid = this.state.ticketSearchData["taskid"] || 0;
+    inputParam.taskid =
+      this.state.ticketSearchData["taskid"] === "" ||
+      this.state.ticketSearchData["taskid"] === undefined
+        ? 0
+        : isNaN(this.state.ticketSearchData["taskid"])
+        ? -1
+        : this.state.ticketSearchData["taskid"];
     inputParam.Department = this.state.ticketSearchData["Department"] || 0;
     inputParam.tasktitle = this.state.ticketSearchData["tasktitle"] || "";
     inputParam.taskstatus = this.state.ticketSearchData["taskstatus"] || 0;
