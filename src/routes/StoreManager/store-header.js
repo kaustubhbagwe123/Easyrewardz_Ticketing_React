@@ -7158,7 +7158,7 @@ class Header extends Component {
                             : "My Historical Chat"}
                         </label>
                       </div>
-                      <div className="chathistory-tbl">
+                      <div className="chathistory-tbl histochat">
                         <div
                           className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
                           style={{ margin: "10px" }}

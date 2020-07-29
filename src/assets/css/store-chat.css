@@ -1689,9 +1689,26 @@ html {
 }
 .agentchatdrop-down {
   margin-left: 0;
-  width: 35%;
+  width: 43%;
 }
-
+.histochat {
+  max-height: 200px;
+  overflow: auto;
+}
+.histochat::-webkit-scrollbar {
+  width: 6px;
+}
+.histochat::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.histochat::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.histochat::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 .chatactionbtn {
   float: right;
   display: inline-block;
@@ -1762,6 +1779,7 @@ html {
   background-color: #fcfcfc;
   overflow: auto;
   margin-top: 0px;
+  margin-right: 17px;
   border-radius: 5px;
 }
 .historychatcontnet .add-bord {
@@ -2150,7 +2168,16 @@ html {
 .insightsbox .ant-empty .ant-empty-normal{
   margin: 16px 0;
 }
-
+.agentchatdrop-down .ant-select-selection--single {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #4a4a4a !important;
+}
+.agentchatdrop-down i {
+  color: blue;
+    line-height: 0;
+}
 /* Responsive starts */
 @media all and (max-width: 768px) {
   .firstbox {
@@ -2220,7 +2247,12 @@ html {
   }
   .agentchatdrop-down {
     margin-left: 0;
-    width: 35%;
+    width: 43%;
+  }
+  .agentchatdrop-down:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
   }
   .chat-trail-chat {
     background: #fff;
@@ -2291,6 +2323,7 @@ html {
   }
   #chat-popup-overlay .styles_modal__gNwvD {
     max-width: 100%;
+    background: whitesmoke;
   }
   .rounded-cross,
   /* .chatbot-left, */
