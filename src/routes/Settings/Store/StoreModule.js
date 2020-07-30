@@ -6130,7 +6130,7 @@ class StoreModule extends Component {
                         className="form-control"
                         placeholder="Enter Template Name"
                         autoComplete="off"
-                        maxLength={50}
+                        maxLength={200}
                         name="autoTempName"
                         value={this.state.autoTempName}
                         onChange={this.handleInputOnchange}
@@ -6375,7 +6375,7 @@ class StoreModule extends Component {
                         className="form-control"
                         placeholder="Enter Template Name"
                         autoComplete="off"
-                        maxLength={50}
+                        maxLength={200}
                         name="manualTempName"
                         value={this.state.manualTempName}
                         onChange={this.handleInputOnchange}
@@ -6399,7 +6399,7 @@ class StoreModule extends Component {
                         selected={this.state.manualStoreFrom}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={60}
+                        timeIntervals={30}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
                         placeholderText="Select Timing"
@@ -6422,7 +6422,7 @@ class StoreModule extends Component {
                         selected={this.state.manualStoreTo}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={60}
+                        timeIntervals={30}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
                         placeholderText="Select Timing"
@@ -6508,8 +6508,6 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         disabled
-                        // minTime={setHours(setMinutes(new Date(), 0), 17)}
-                        // maxTime={setHours(setMinutes(new Date(), 0), 21)}
                         onChange={(time) =>
                           this.handleManualTimeOnchange(time, "slotEndTime")
                         }
