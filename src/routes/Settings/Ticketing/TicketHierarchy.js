@@ -1577,7 +1577,7 @@ class TicketHierarchy extends Component {
                           // var ids = row.original["designationID"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.createdbyperson}
                                 <Popover
                                   content={

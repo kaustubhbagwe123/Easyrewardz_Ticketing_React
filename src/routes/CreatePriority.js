@@ -1533,7 +1533,7 @@ class CreatePriority extends Component {
                           render: (text, record) => {
                             //
                             return (
-                              <div>
+                              <div className="priority-one-liner">
                                 <Popover
                                   content={
                                     <div className="settings-created-by-popover">

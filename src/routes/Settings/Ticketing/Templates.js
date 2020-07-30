@@ -1691,7 +1691,7 @@ class Templates extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.createdBy}
                                 <Popover
                                   content={

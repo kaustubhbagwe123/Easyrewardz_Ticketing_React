@@ -1282,7 +1282,7 @@ class TicketCRMRole extends Component {
                           // var ids = row.original["id"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.roleName}
                                 <Popover
                                   content={
@@ -1338,7 +1338,7 @@ class TicketCRMRole extends Component {
                           var ids = row.original["id"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.createdBy}
                                 <Popover
                                   content={

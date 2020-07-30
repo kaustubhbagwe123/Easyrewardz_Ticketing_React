@@ -1248,7 +1248,7 @@ class JunkWords extends Component {
                           var ids = row.original["Id"];
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 {row.original.enteredBy}
                                 <Popover
                                   content={

@@ -3169,7 +3169,7 @@ class StoreMaster extends Component {
                             if (isNaN(row.original.brand_Names)) {
                               return (
                                 <div>
-                                  <span>
+                                  <span className="one-liner">
                                     {row.original["brand_Names"]}
 
                                     <Popover
