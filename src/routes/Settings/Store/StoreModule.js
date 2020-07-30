@@ -5198,14 +5198,6 @@ class StoreModule extends Component {
                                         ? TranslationContext.header.totalslot
                                         : "Total Slots",
                                     dataIndex: "totalSlot",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                          .appointmentdays
-                                        : "Appointment Days",
-                                    dataIndex: "appointmentDays",
                                     render: (row, item) => {
                                       return (
                                         <Popover
@@ -5289,7 +5281,7 @@ class StoreModule extends Component {
                                           trigger="click"
                                         >
                                           <div className="broadcast-icon">
-                                            {item.appointmentDays}
+                                            {item.totalSlot}
                                             <img
                                               className="info-icon-cp"
                                               src={BlackInfoIcon}
@@ -5299,6 +5291,14 @@ class StoreModule extends Component {
                                         </Popover>
                                       );
                                     },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header
+                                          .appointmentdays
+                                        : "Appointment Days",
+                                    dataIndex: "appointmentDays"                               
                                   },
                                   {
                                     title: "Status",
