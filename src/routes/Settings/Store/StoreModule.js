@@ -234,6 +234,9 @@ class StoreModule extends Component {
       manualStoreTblData: [],
       manualStoreData: {},
       mimSlotStartTimeChck: "",
+      finalSlotTemplateId: 0,
+      selectedSlotTemplate: 0,
+      SlotTemplateGridData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2184,6 +2187,7 @@ class StoreModule extends Component {
   /////handle next button press to show
   handleNextButtonOpen = () => {
     this.setState({ isNextClick: true });
+    this.handleGetSlotsByTemplateID();
   };
   /////handle next button press to hide
   handleNextButtonClose = () => {
@@ -2422,6 +2426,7 @@ class StoreModule extends Component {
               autoNonOptToCompulsory: "",
               automaticaSlotTblData: data,
             });
+
             NotificationManager.success("Slot Generated.");
           } else {
             NotificationManager.error("Slot Generated failed.");
@@ -2526,12 +2531,14 @@ class StoreModule extends Component {
             manualStoreTo: "",
             ManualSlotDuration: 0,
             createTampleteModal: false,
+            finalSlotTemplateId: data,
           });
           if (check === "Automatic") {
             NotificationManager.success("Automatic Template Created.");
           } else {
             NotificationManager.success("Manual Template Created.");
           }
+          self.handleGetSlotTemplate();
         } else {
           if (check === "Automatic") {
             NotificationManager.error("Automatic Template Not Created..");
@@ -2617,7 +2624,31 @@ class StoreModule extends Component {
     this.setState({ manualStoreTblData });
     NotificationManager.success("Slot Deleted.");
   }
-
+  /// handle Get Slots By TemplateID
+  handleGetSlotsByTemplateID() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetSlotsByTemplateID",
+      headers: authHeader(),
+      params: {
+        SlotTemplateID: this.state.selectedSlotTemplate,
+      },
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ SlotTemplateGridData: data });
+        } else {
+          self.setState({ SlotTemplateGridData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -4402,8 +4433,17 @@ class StoreModule extends Component {
                                           <li>
                                             <label>Select Slot Template</label>
                                             <select
-                                              name=""
                                               className="form-control"
+                                              name="selectedSlotTemplate"
+                                              value={
+                                                this.state.selectedSlotTemplate
+                                              }
+                                              onChange={(e) =>
+                                                this.setState({
+                                                  selectedSlotTemplate:
+                                                    e.target.value,
+                                                })
+                                              }
                                             >
                                               <option value={0}>Select</option>
                                               {this.state.slotTemplateData !==
@@ -4447,27 +4487,26 @@ class StoreModule extends Component {
                                         <div className="nextbox">
                                           <div className="">
                                             <Table
-                                              dataSource={this.state.slotData}
+                                              dataSource={this.state.SlotTemplateGridData}
                                               noDataContent="No Record Found"
                                               pagination={false}
                                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                               columns={[
                                                 {
                                                   title: "S.No.",
-
-                                                  dataIndex: "no",
+                                                  dataIndex: "slotID",
                                                 },
                                                 {
                                                   title: "Slot Start Time",
-                                                  dataIndex: "startTime",
+                                                  dataIndex: "slotStartTime",
                                                 },
                                                 {
                                                   title: "Slot End Time",
-                                                  dataIndex: "endTime",
+                                                  dataIndex: "slotEndTime",
                                                 },
                                                 {
                                                   title: "Slot Occupancy",
-                                                  dataIndex: "occupancy",
+                                                  dataIndex: "slotOccupancy",
                                                   render: (row, rowData) => {
                                                     return (
                                                       <>
@@ -6426,23 +6465,10 @@ class StoreModule extends Component {
                             {
                               title: "Slot Start Time",
                               dataIndex: "slotStartTime",
-                              // render: (row, rowData) => {
-                              //   debugger
-                              //   var StartTime = moment(
-                              //     rowData.slotStartTime
-                              //   ).format("LT");
-                              //   return <>{StartTime}</>;
-                              // },
                             },
                             {
                               title: "Slot End Time",
                               dataIndex: "slotEndTime",
-                              // render: (row, rowData) => {
-                              //   var EndTime = moment(
-                              //     rowData.slotEndTime
-                              //   ).format("LT");
-                              //   return <>{EndTime}</>;
-                              // },
                             },
                             {
                               title: "Actions",

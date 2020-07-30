@@ -4059,6 +4059,8 @@
 .choosestorebox {
   width: 800px;
   max-width: 800px;
+  margin-top: 165px;
+  margin-left: 116px;
 }
 .choosestorebox .modal-content {
   border-radius: 20px;
