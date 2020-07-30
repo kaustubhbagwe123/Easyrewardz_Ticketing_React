@@ -2485,6 +2485,43 @@ class StoreModule extends Component {
       manualStoreData,
     });
   };
+  /// handle Select automatic date
+  handleSelectAutomaticStoreToDate = (time) => {
+    if (this.state.autoStoreFrom < time) {
+      this.setState({
+        autoStoreTo: time,
+      });
+    } else {
+      NotificationManager.error(
+        "The To date must be greater than the From date.."
+      );
+    }
+  };
+
+  /// handle Select automatic date
+  handleSelectAutomaticToDates = (time) => {
+    if (this.state.autoNonOptFrom < time) {
+      this.setState({
+        autoNonOptTo: time,
+      });
+    } else {
+      NotificationManager.error(
+        "The To date must be greater than the From date.."
+      );
+    }
+  };
+  /// handle Select manual date
+  handleSelectManualStoreTodate = (time) => {
+    if (this.state.manualStoreFrom < time) {
+      this.setState({
+        manualStoreTo: time,
+      });
+    } else {
+      NotificationManager.error(
+        "The To date must be greater than the From date.."
+      );
+    }
+  };
   /// handle Manual selct duration
   handleManualSelectDuration = (e) => {
     let values = e.target.value;
@@ -6200,10 +6237,13 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
-                          this.setState({
-                            autoStoreTo: time,
-                          })
+                          this.handleSelectAutomaticStoreToDate(time)
                         }
+                        // onChange={(time) =>
+                        //   this.setState({
+                        //     autoStoreTo: time,
+                        //   })
+                        // }
                       />
                       {this.state.autoStoreTo === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6253,9 +6293,7 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
-                          this.setState({
-                            autoNonOptTo: time,
-                          })
+                          this.handleSelectAutomaticToDates(time)
                         }
                       />
                       {this.state.autoNonOptTo === "" && (
@@ -6390,9 +6428,7 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
-                          this.setState({
-                            manualStoreTo: time,
-                          })
+                          this.handleSelectManualStoreTodate(time)
                         }
                       />
                       {this.state.manualStoreTo === "" && (
