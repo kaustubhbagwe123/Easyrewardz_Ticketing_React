@@ -764,7 +764,7 @@ class Claim extends Component {
                             accessor: "categoryName",
                             Cell: (row) => {
                               return (
-                                <>
+                                <span className="one-liner">
                                   {row.original.categoryName}
                                   <Popover
                                     content={
@@ -816,7 +816,7 @@ class Claim extends Component {
                                       alt="info-icon"
                                     />
                                   </Popover>
-                                </>
+                                </span>
                               );
                             },
                           },
@@ -851,7 +851,7 @@ class Claim extends Component {
                             Cell: (row) => {
                               return (
                                 <div>
-                                  <span>
+                                  <span className="one-liner">
                                     {row.original.creationOn}
                                     <Popover
                                       content={
@@ -1366,7 +1366,7 @@ class Claim extends Component {
                             accessor: "categoryName",
                             Cell: (row) => {
                               return (
-                                <>
+                                <span className="one-liner">
                                   {row.original.categoryName}
                                   <Popover
                                     content={
@@ -1426,7 +1426,7 @@ class Claim extends Component {
                                       alt="info-icon"
                                     />
                                   </Popover>
-                                </>
+                                </span>
                               );
                             },
                           },
@@ -1454,7 +1454,7 @@ class Claim extends Component {
                             Cell: (row) => {
                               return (
                                 <div>
-                                  <span>
+                                  <span className="one-liner">
                                     {row.original.creationOn}
                                     <Popover
                                       content={
