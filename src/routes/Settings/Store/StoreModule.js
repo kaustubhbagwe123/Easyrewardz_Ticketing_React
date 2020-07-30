@@ -234,8 +234,11 @@ class StoreModule extends Component {
       finalSlotTemplateId: 0,
       selectedSlotTemplate: 0,
       SlotTemplateGridData: [],
-      // slotDaysData:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
-      // maxPeopleData:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+      slotStatus: 1,
+      applicableFromDate: new Date(),
+      slotDaysDisplay: 0,
+      maxPeopleAppointment: 0,
+      SlotDisplayCode: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1883,17 +1886,28 @@ class StoreModule extends Component {
 
     var inputParam = {};
     if (isInsert) {
+      var StoreIds = "";
+      this.state.storeCodeData.forEach((element) => {
+        if (element.isChecked) {
+          StoreIds += element.storeID + ",";
+        }
+      });
+      var StoreOpdays=""
+      this.state.operationalDays.forEach((element) => {
+        StoreOpdays += element.dayID + ",";
+      });
       inputParam.SlotId = 0;
-      inputParam.StoreIds = "";
-      inputParam.StoreOpdays = "";
-      inputParam.SlotTemplateID = "";
-      inputParam.SlotMaxCapacity = "";
-      inputParam.AppointmentDays = "";
-      inputParam.ApplicableFromDate = "";
-      inputParam.IsActive = true;
+      inputParam.StoreIds = StoreIds;
+      inputParam.StoreOpdays = StoreOpdays;
+      inputParam.SlotTemplateID = this.state.selectedSlotTemplate;
+      inputParam.SlotMaxCapacity = this.state.maxPeopleAppointment;
+      inputParam.AppointmentDays = this.state.slotDaysDisplay;
+      inputParam.ApplicableFromDate = moment(this.state.applicableFromDate)
+        .format("YYYY-MM-DD")
+        .toString();
+      inputParam.IsActive = this.state.slotStatus === 1 ? true : false;
       inputParam.TemplateSlots = this.state.SlotTemplateGridData;
-      inputParam.SlotDisplayCode = "";
-      inputParam.AppointmentDays = Number(this.state.appointmentDays);
+      inputParam.SlotDisplayCode = this.state.SlotDisplayCode;
     }
 
     axios({
@@ -1905,24 +1919,30 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          self.setState({
-            selectedStoreCode: [],
-            selectTimeSlot1: 1,
-            selectTimeSlot2: 1,
-            selectNOTimeSlot1: 1,
-            selectNOTimeSlot2: 1,
-            selectAmPm1: "AM",
-            selectAmPm2: "AM",
-            selectNOAmPm1: "AM",
-            selectNOAmPm2: "AM",
-            slotduration: "0.5",
-            maxCapacity: "",
-          });
-          NotificationManager.success(
-            TranslationContext !== undefined
-              ? TranslationContext.alertmessage.timeslotaddedsuccessfully
-              : "Time Slot Added Successfully."
-          );
+           if(isInsert)
+           {
+            self.state.storeCodeData.
+            self.state.storeCodeData.forEach(element => {
+              element.isChecked=false
+            });
+             self.setState({
+              SlotDisplayCode:0,
+              SlotTemplateGridData:[],
+              slotStatus:1,
+              applicableFromDate:new Date(),
+              maxPeopleAppointment:0,
+              slotDaysDisplay:0,
+              selectedSlotTemplate:0,
+              operationalDays:[],
+              storeCodeData:self.state.storeCodeData,     
+             })
+             NotificationManager.success(
+               TranslationContext !== undefined
+                 ? TranslationContext.alertmessage.timeslotaddedsuccessfully
+                 : "Time Slot Added Successfully."
+             );
+           }
+          
           self.handleGetTimeslotGridData();
         } else {
           NotificationManager.error(
@@ -2602,7 +2622,22 @@ class StoreModule extends Component {
       slotData,
     });
   }
-
+  ////handle radio status change
+  handleRadioStatusChange = (e) => {
+    this.setState({ slotStatus: e.target.value });
+  };
+  ///handle Applicable Form Data
+  handleApplicableFormData = (e) => {
+    this.setState({
+      applicableFromDate: e,
+    });
+  };
+  ////handle change operational days
+  handleChangeOperationalDays = (e) => {
+    this.setState({
+      operationalDays: e,
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -4361,13 +4396,7 @@ class StoreModule extends Component {
                                           </li>
                                           <li>
                                             <label>Operational Days</label>
-                                            {/* <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select> */}
+
                                             <Select
                                               className="select-oper"
                                               getOptionLabel={(option) =>
@@ -4379,6 +4408,10 @@ class StoreModule extends Component {
                                               options={
                                                 this.state.operationalDaysData
                                               }
+                                              onChange={this.handleChangeOperationalDays.bind(
+                                                this
+                                              )}
+                                              value={this.state.operationalDays}
                                               placeholder="Please Select Operational Days"
                                               closeMenuOnSelect={false}
                                               isMulti
@@ -4531,6 +4564,15 @@ class StoreModule extends Component {
                                               <select
                                                 name=""
                                                 className="form-control"
+                                                value={
+                                                  this.state.slotDaysDisplay
+                                                }
+                                                onChange={(e) => {
+                                                  this.setState({
+                                                    slotDaysDisplay:
+                                                      e.target.value,
+                                                  });
+                                                }}
                                               >
                                                 <option value={0}>
                                                   Select
@@ -4553,15 +4595,16 @@ class StoreModule extends Component {
                                               <div className="applicateDiv">
                                                 <DatePicker
                                                   selected={
-                                                    this.state.autoStoreFrom
+                                                    this.state
+                                                      .applicableFromDate
                                                   }
+                                                  minDate={moment().toDate()}
+                                                  dateFormat="dd-MM-yyyy"
                                                   placeholderText="Applicable From (Date)"
                                                   className="form-control"
-                                                  onChange={(time) =>
-                                                    this.setState({
-                                                      autoStoreFrom: time,
-                                                    })
-                                                  }
+                                                  onChange={this.handleApplicableFormData.bind(
+                                                    this
+                                                  )}
                                                 />
                                               </div>
                                             </li>
@@ -4573,6 +4616,15 @@ class StoreModule extends Component {
                                               <select
                                                 name=""
                                                 className="form-control"
+                                                value={
+                                                  this.state.maxPeopleAppointment
+                                                }
+                                                onChange={(e) => {
+                                                  this.setState({
+                                                    maxPeopleAppointment:
+                                                      e.target.value,
+                                                  });
+                                                }}
                                               >
                                                 <option value={0}>
                                                   Select
@@ -4591,38 +4643,62 @@ class StoreModule extends Component {
                                           </ul>
                                           <div className="row">
                                             <div className="col-md-4">
-                                              <div className="statuscheckbox">
-                                                {/* <label
+                                              <label>Slot Display Code</label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                                value={
+                                                  this.state.SlotDisplayCode
+                                                }
+                                                onChange={(e) => {
+                                                  this.setState({
+                                                    SlotDisplayCode:
+                                                      e.target.value,
+                                                  });
+                                                }}
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={301}>
+                                                  Current Slot
+                                                </option>
+                                                <option value={302}>
+                                                  Skip Current Slot & Show Next
+                                                  Slot
+                                                </option>
+                                                <option value={303}>
+                                                  Skip Current & Next Slot
+                                                </option>
+                                              </select>
+                                            </div>
+                                            <div className="col-md-4">
+                                              <div
+                                                className="statuscheckbox"
+                                                style={{ marginTop: "35px" }}
+                                              >
+                                                <label
                                                   style={{
                                                     marginRight: "15px",
                                                   }}
                                                 >
                                                   Status
                                                 </label>
-                                                <input
-                                                  type="checkbox"
-                                                  classNam="form-control"
-                                                />
-                                                <label>Active</label>
-                                                <input
-                                                  type="checkbox"
-                                                  classNam="form-control"
-                                                />
-                                                <label>Inactive</label> */}
+
                                                 <div className="statuscheckbox">
                                                   <Radio.Group
-                                                    onChange={
-                                                      this.handleSlotRadioChange
-                                                    }
+                                                    onChange={this.handleRadioStatusChange.bind(
+                                                      this
+                                                    )}
                                                     value={
                                                       this.state
-                                                        .slotAutomaticRadio
+                                                        .slotStatus
                                                     }
                                                   >
                                                     <Radio value={1}>
                                                       Active
                                                     </Radio>
-                                                    <Radio value={2}>
+                                                    <Radio value={0}>
                                                       Inactive
                                                     </Radio>
                                                   </Radio.Group>
@@ -4638,8 +4714,9 @@ class StoreModule extends Component {
                                             </a>
                                             <button
                                               className="butn"
-                                              onClick={this.handleNextButtonClose.bind(
-                                                this
+                                              onClick={this.handleInsertUpdateTimeSlotSetting.bind(
+                                                this,
+                                                true
                                               )}
                                             >
                                               {TranslationContext !== undefined
