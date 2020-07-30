@@ -5691,7 +5691,7 @@ class StoreModule extends Component {
                   </a>
                   <button
                     className="pop-over-button FlNone"
-                    onClick={this.handleUpdateTimeSlotData.bind(this)}
+                    // onClick={this.handleUpdateTimeSlotData.bind(this)}
                   >
                     <label className="pop-over-btnsave-text">
                       {TranslationContext !== undefined
