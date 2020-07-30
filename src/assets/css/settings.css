@@ -4228,3 +4228,22 @@
 .select-oper .css-1pahdxg-control:hover {
   border: #dadada;
 }
+.operational-select .css-yk16xz-control {
+  max-height: 45px;
+  overflow: auto;
+}
+.operational-select .css-1hwfws3 {
+  max-height: 40px;
+}
+.operational-select .css-1g48xl4-IndicatorsContainer {
+  max-height: 40px;
+}
+.slotFrm .react-datepicker-popper {
+  z-index: 999999999999;
+}
+.slotFrm .react-datepicker__time-container {
+  width: 120px;
+}
+.slotFrm .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+  width: 120px;
+}

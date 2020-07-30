@@ -4195,7 +4195,7 @@ class StoreModule extends Component {
                               >
                                 <Tabs>
                                   <Tab label="Manual">
-                                    <div className="manualbox">
+                                    <div className="manualbox operational-select">
                                       <div className="">
                                         <ul>
                                           <li>
