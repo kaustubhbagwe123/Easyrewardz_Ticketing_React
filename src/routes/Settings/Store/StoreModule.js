@@ -242,7 +242,8 @@ class StoreModule extends Component {
       slotDaysDisplay: 0,
       maxPeopleAppointment: 0,
       SlotDisplayCode: "",
-      editSlotDisplayCode: 0
+      editSlotDisplayCode: 0,
+      editSlotTemplateGridData: []
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1917,7 +1918,7 @@ class StoreModule extends Component {
       inputParam.AppointmentDays = Number(this.state.editAppointmentDays);
       inputParam.IsActive = this.state.editSlotStatus === "Active" ? true : false;
       inputParam.SlotDisplayCode = this.state.editSlotDisplayCode;
-      inputParam.TemplateSlots = this.state.SlotTemplateGridData;
+      inputParam.TemplateSlots = this.state.editSlotTemplateGridData;
     }
 
     axios({
@@ -1950,6 +1951,11 @@ class StoreModule extends Component {
                 ? TranslationContext.alertmessage.timeslotaddedsuccessfully
                 : "Time Slot Added Successfully."
             );
+          }else{
+            self.setState({
+              editSlotModal: false
+            });    
+            NotificationManager.success("Time Slot Updated Successfully.");
           }
 
           self.handleGetTimeslotGridData();
@@ -2052,8 +2058,9 @@ class StoreModule extends Component {
           var editTotalSlot = data[0].totalSlot;
           var editOperationalDays = data[0].operationalDaysCount;
           var editSlotTemplateName = data[0].slotTemplateName;
-          var SlotTemplateGridData = data[0].templateSlots;
+          var editSlotTemplateGridData = data[0].templateSlots;
           var editSlotStatus = data[0].status
+          var editSlotDisplayCode = data[0].slotDisplayCode
 
           self.setState({
             editSlotModal: true,
@@ -2074,8 +2081,9 @@ class StoreModule extends Component {
             editTotalSlot,
             editOperationalDays,
             editSlotTemplateName,
-            SlotTemplateGridData,
-            editSlotStatus
+            editSlotTemplateGridData,
+            editSlotStatus,
+            editSlotDisplayCode
           });
         }
       })
@@ -2667,13 +2675,13 @@ class StoreModule extends Component {
     if (name === "isSlotEnabled") {
       value = e.target.checked;
     }
-    let SlotTemplateGridData = [...this.state.SlotTemplateGridData];
-    SlotTemplateGridData[i] = {
-      ...SlotTemplateGridData[i],
+    let editSlotTemplateGridData = [...this.state.editSlotTemplateGridData];
+    editSlotTemplateGridData[i] = {
+      ...editSlotTemplateGridData[i],
       [name]: value,
     };
     this.setState({
-      SlotTemplateGridData,
+      editSlotTemplateGridData,
     });
   }
   ////handle radio status change
@@ -5722,7 +5730,7 @@ class StoreModule extends Component {
                     <div className="col-12">
                       <div className="edittabs">
                         <Table
-                          dataSource={this.state.SlotTemplateGridData}
+                          dataSource={this.state.editSlotTemplateGridData}
                           noDataContent="No Record Found"
                           pagination={false}
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
