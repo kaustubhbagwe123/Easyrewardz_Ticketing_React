@@ -1401,6 +1401,7 @@ html {
 }
 .tabsbotbtn-box {
   text-align: center;
+  margin-top: 15px;
 }
 .pastchatmobbtn {
   display: none;
@@ -1454,6 +1455,7 @@ html {
 .ladyimg {
   width: 100px;
   height: 150px;
+  border: 1px solid #cac4c4;
 }
 .productsbox tr {
   border-bottom: none;
@@ -2181,7 +2183,7 @@ html {
   width: 30px;
   height: 30px;
 }
-.insightsbox .ant-empty .ant-empty-normal{
+.insightsbox .ant-empty .ant-empty-normal {
   margin: 16px 0;
 }
 .agentchatdrop-down .ant-select-selection--single {
@@ -2192,7 +2194,7 @@ html {
 }
 .agentchatdrop-down i {
   color: blue;
-    line-height: 0;
+  line-height: 0;
 }
 /* Responsive starts */
 @media all and (max-width: 768px) {
@@ -2738,6 +2740,7 @@ html {
   .ladyimg {
     width: 90px;
     height: 125px;
+    border: 1px solid #cac4c4;
   }
   .tabsbotbtn-box {
     text-align: inherit;
