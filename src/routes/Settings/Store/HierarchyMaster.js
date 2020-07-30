@@ -1710,7 +1710,7 @@ class HierarchyMaster extends Component {
                           // var ids = row.original["designationID"];
                           return (
                             <div>
-                              <span>
+                              <span className="store-one-liner one-liner">
                                 {row.original["createdbyperson"]}
                                 <Popover
                                   content={

@@ -1331,7 +1331,7 @@ class StoreCRMRole extends Component {
                         Cell: (row) => {
                           // var ids = row.original["id"];
                           return (
-                            <div>
+                            <div className="one-liner store-one-liner">
                               <span>
                                 {row.original.roleName}
                                 <Popover
@@ -1400,7 +1400,7 @@ class StoreCRMRole extends Component {
                         Cell: (row) => {
                           var ids = row.original["id"];
                           return (
-                            <div>
+                            <div className="one-liner store-one-liner">
                               <span>
                                 {row.original.createdBy}
                                 <Popover
