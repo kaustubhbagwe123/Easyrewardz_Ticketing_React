@@ -2251,6 +2251,9 @@ table td span {
 .priority-one-liner .info-icon-cp {
   margin-top: 4px;
 }
+.store-one-liner .info-icon-cp {
+  margin-top: 3px;
+}
 .info-icon {
   width: 17px;
   position: relative;

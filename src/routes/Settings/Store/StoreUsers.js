@@ -3735,7 +3735,7 @@ class StoreUsers extends Component {
                           var ids = row.original["userID"];
                           return (
                             <div>
-                              <span>
+                              <span className="store-one-liner one-liner">
                                 {row.original.userName}
                                 <Popover
                                   content={
@@ -3937,7 +3937,7 @@ class StoreUsers extends Component {
                           var ids = row.original["userID"];
                           return (
                             <div>
-                              <span>
+                              <span className="store-one-liner one-liner">
                                 {row.original.reporteeName}
                                 <Popover
                                   content={
@@ -4294,7 +4294,6 @@ class StoreUsers extends Component {
                             {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
                               : "Update &; Next"}{" "}
-                           
                           </button>
                         </div>
                       ) : (
@@ -4303,7 +4302,7 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSaveStoreDetails.bind(this)}
                           >
-                             {TranslationContext !== undefined
+                            {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
                               : "SAVE & Next"}{" "}
                           </button>
@@ -4459,7 +4458,6 @@ class StoreUsers extends Component {
                             {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
                               : "Update & Next"}{" "}
-                          
                           </button>
                         </div>
                       ) : (
@@ -4468,7 +4466,7 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSavePersonalDetails.bind(this)}
                           >
-                             {TranslationContext !== undefined
+                            {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
                               : "Update & Next"}{" "}
                           </button>
@@ -4731,7 +4729,6 @@ class StoreUsers extends Component {
                             {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
                               : "SAVE &amp Next"}{" "}
-                           
                           </button>
                         </div>
                       )}
@@ -5162,7 +5159,13 @@ class StoreUsers extends Component {
                   onSelect={(index, label) => this.setState({ selTab: label })}
                   selected={this.state.selTab}
                 >
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.storedetails:"Store Details"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.storedetails
+                        : "Store Details"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5262,7 +5265,13 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.personaldetails:"Personal Details"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.personaldetails
+                        : "Personal Details"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5386,7 +5395,13 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.profiledetails:"Profile Details"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.profiledetails
+                        : "Profile Details"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5608,7 +5623,13 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label={TranslationContext!==undefined?TranslationContext.label.mappedclaimcategory:"Mapped Claim Category"}>
+                  <Tab
+                    label={
+                      TranslationContext !== undefined
+                        ? TranslationContext.label.mappedclaimcategory
+                        : "Mapped Claim Category"
+                    }
+                  >
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined

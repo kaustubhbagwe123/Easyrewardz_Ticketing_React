@@ -54,16 +54,24 @@ const Content = (props) => {
   return (
     <div className="edtpadding">
       <label className="popover-header-text">
-      {TranslationContext!==undefined?TranslationContext.label.edithierarchy:"EDIT HIERARCHY"}
-        </label>
+        {TranslationContext !== undefined
+          ? TranslationContext.label.edithierarchy
+          : "EDIT HIERARCHY"}
+      </label>
       <div className="pop-over-div">
         <label className="edit-label-1">
-        {TranslationContext!==undefined?TranslationContext.label.DesignationName:"Designation Name"}
+          {TranslationContext !== undefined
+            ? TranslationContext.label.DesignationName
+            : "Designation Name"}
         </label>
         <input
           type="text"
           className="txt-edit-popover"
-          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.EnterDesignationName:"Enter Designation Name"}
+          placeholder={
+            TranslationContext !== undefined
+              ? TranslationContext.placeholder.EnterDesignationName
+              : "Enter Designation Name"
+          }
           maxLength={25}
           name="designation_Name"
           value={designationName}
@@ -77,7 +85,9 @@ const Content = (props) => {
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">
-        {TranslationContext!==undefined?TranslationContext.label.ReportTo:"Report To"}
+          {TranslationContext !== undefined
+            ? TranslationContext.label.ReportTo
+            : "Report To"}
         </label>
         <select
           className="edit-dropDwon dropdown-setting"
@@ -87,10 +97,14 @@ const Content = (props) => {
           onChange={(e) => setreportToValue(e.target.value)}
         >
           <option>
-          {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+            {TranslationContext !== undefined
+              ? TranslationContext.option.select
+              : "select"}
           </option>
           <option value={0}>
-          {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+            {TranslationContext !== undefined
+              ? TranslationContext.option.root
+              : "Root"}
           </option>
           {props.reportToData !== null &&
             props.reportToData.map((item, i) => (
@@ -107,7 +121,9 @@ const Content = (props) => {
       </div>
       <div className="pop-over-div">
         <label className="edit-label-1">
-        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+          {TranslationContext !== undefined
+            ? TranslationContext.label.status
+            : "Status"}
         </label>
         <select
           className="edit-dropDwon dropdown-setting"
@@ -116,7 +132,9 @@ const Content = (props) => {
           onChange={(e) => setStatusValue(e.target.value)}
         >
           <option>
-          {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+            {TranslationContext !== undefined
+              ? TranslationContext.option.select
+              : "select"}
           </option>
           {props.activeData !== null &&
             props.activeData.map((item, j) => (
@@ -134,8 +152,9 @@ const Content = (props) => {
       <br />
       <div>
         <a className="pop-over-cancle canblue" href={Demo.BLANK_LINK}>
-        {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-          
+          {TranslationContext !== undefined
+            ? TranslationContext.a.cancel
+            : "CANCEL"}
         </a>
         <button
           className="pop-over-button"
@@ -154,8 +173,9 @@ const Content = (props) => {
             ) : (
               ""
             )}
-            {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.label.save
+              : "SAVE"}
           </label>
         </button>
       </div>
@@ -1450,7 +1470,9 @@ class HierarchyMaster extends Component {
                     this.state.sortFilterStatus.length > 0 ? ( */}
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">
-                      {TranslationContext!==undefined?TranslationContext.span.all:"ALL"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.all
+                          : "ALL"}
                       </span>
                     </label>
                     {/* ) : null} */}
@@ -1692,7 +1714,7 @@ class HierarchyMaster extends Component {
                           // var ids = row.original["designationID"];
                           return (
                             <div>
-                              <span>
+                              <span className="store-one-liner one-liner">
                                 {row.original["createdbyperson"]}
                                 <Popover
                                   content={
@@ -1760,8 +1782,8 @@ class HierarchyMaster extends Component {
                               this,
                               "status",
                               TranslationContext !== undefined
-                              ? TranslationContext.span.status
-                              : "Status"
+                                ? TranslationContext.span.status
+                                : "Status"
                             )}
                           >
                             {TranslationContext !== undefined
@@ -1857,7 +1879,9 @@ class HierarchyMaster extends Component {
                                   content={
                                     <Content
                                       rowData={row.original}
-                                      translateLanguage={this.state.translateLanguage}
+                                      translateLanguage={
+                                        this.state.translateLanguage
+                                      }
                                       reportToData={this.state.reportToData}
                                       activeData={this.state.activeData}
                                       editdesignationNameCompulsion={
@@ -1964,7 +1988,7 @@ class HierarchyMaster extends Component {
                               : "Select"}
                           </option>
                           <option value={-1}>
-                          {TranslationContext !== undefined
+                            {TranslationContext !== undefined
                               ? TranslationContext.option.root
                               : "Root"}
                           </option>
@@ -1993,9 +2017,11 @@ class HierarchyMaster extends Component {
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option value="0">{TranslationContext !== undefined
-                              ? TranslationContext.option.select
-                              : "Select"}</option>
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
+                        </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -2057,7 +2083,11 @@ class HierarchyMaster extends Component {
                     </div>
                   </div>
                   <Spin
-                    tip={TranslationContext!==undefined?TranslationContext.tip.pleasewait:"Please wait..."}
+                    tip={
+                      TranslationContext !== undefined
+                        ? TranslationContext.tip.pleasewait
+                        : "Please wait..."
+                    }
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">

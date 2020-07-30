@@ -270,6 +270,7 @@ class Dashboard extends Component {
       resultCount: 0,
       loading: false,
       SearchNameCompulsory: "",
+      SearchNameExists: "",
       loadingAbove: true,
       modulesItems: [],
       FinalSaveSearchData: "",
@@ -1779,6 +1780,11 @@ class Dashboard extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.name === "SearchName") {
+      this.setState({
+        SearchNameExists: "",
+      });
+    }
   }
   handleGetFunctionList() {
     let self = this;
@@ -3465,33 +3471,46 @@ class Dashboard extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.SearchName.length > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/DashBoard/DashBoardSaveSearch",
-        headers: authHeader(),
-        params: {
-          SearchSaveName: this.state.SearchName,
-          parameter: this.state.FinalSaveSearchData,
-        },
-      })
-        .then(function(res) {
-          let Msg = res.data.message;
-          if (Msg === "Success") {
-            NotificationManager.success(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage
-                    .yoursearchhasbeensavedsuccessfully
-                : "Your search has been saved successfully."
-            );
-            self.handleGetSaveSearchList();
-            self.setState({
-              SearchName: "",
-            });
-          }
-        })
-        .catch((data) => {
-          console.log(data);
+      if (
+        this.state.SearchListData.find(
+          (item) => item.searchName === this.state.SearchName
+        )
+      ) {
+        self.setState({
+          SearchNameExists: "This search name already exists.",
         });
+      } else {
+        self.setState({
+          SearchNameExists: "",
+        });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/DashBoard/DashBoardSaveSearch",
+          headers: authHeader(),
+          params: {
+            SearchSaveName: this.state.SearchName,
+            parameter: this.state.FinalSaveSearchData,
+          },
+        })
+          .then(function(res) {
+            let Msg = res.data.message;
+            if (Msg === "Success") {
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage
+                      .yoursearchhasbeensavedsuccessfully
+                  : "Your search has been saved successfully."
+              );
+              self.handleGetSaveSearchList();
+              self.setState({
+                SearchName: "",
+              });
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      }
     } else {
       self.setState({
         SearchNameCompulsory: "Please Enter Search Name.",
@@ -5317,6 +5336,16 @@ class Dashboard extends Component {
                                 }}
                               >
                                 {this.state.SearchNameCompulsory}
+                              </p>
+                            )}
+                            {this.state.SearchNameExists !== "" && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginBottom: "0px",
+                                }}
+                              >
+                                {this.state.SearchNameExists}
                               </p>
                             )}
                             <button

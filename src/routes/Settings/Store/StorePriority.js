@@ -12,8 +12,8 @@ import config from "./../../../helpers/config";
 import { Link } from "react-router-dom";
 import { authHeader } from "./../../../helpers/authHeader";
 import activeStatus from "./../../activeStatus";
-import * as translationHI from './../../../translations/hindi';
-import * as translationMA from './../../../translations/marathi';
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 import {
   NotificationContainer,
   NotificationManager,
@@ -26,7 +26,6 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import matchSorter from "match-sorter";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-
 
 let dragingIndex = -1;
 
@@ -175,7 +174,7 @@ class CreatePriority extends Component {
       isexist: "",
       editIsExist: "",
       isEditBtn: true,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -188,16 +187,13 @@ class CreatePriority extends Component {
   componentDidMount() {
     this.handleGetPriorityList();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   ////handle check prority
@@ -798,7 +794,11 @@ class CreatePriority extends Component {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.sorrywedontsortrowoflist:"Sorry we don't sort row of list");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.sorrywedontsortrowoflist
+              : "Sorry we don't sort row of list"
+          );
         }
       })
       .catch((data) => {
@@ -951,7 +951,11 @@ class CreatePriority extends Component {
             let status = res.data.message;
             if (status === "Success") {
               self.handleGetPriorityList();
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.priorityaddedsuccessfully:"Priority Added successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.priorityaddedsuccessfully
+                  : "Priority Added successfully."
+              );
               self.setState({
                 priority_name: "",
                 selectedActiveStatus: 0,
@@ -994,9 +998,17 @@ class CreatePriority extends Component {
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetPriorityList();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.prioritydeletesuccessfully:"Priority delete successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.prioritydeletesuccessfully
+              : "Priority delete successfully."
+          );
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordinuse:res.data.message);
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordinuse
+              : res.data.message
+          );
         }
       })
       .catch((data) => {
@@ -1120,7 +1132,11 @@ class CreatePriority extends Component {
                 sortFilterStatus: [],
               });
               self.handleGetPriorityList();
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.priorityupdatedsuccessfully:"Priority updated successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.priorityupdatedsuccessfully
+                  : "Priority updated successfully."
+              );
               self.setState({
                 rowData: {},
                 priority_name: "",
@@ -1357,7 +1373,9 @@ class CreatePriority extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1367,11 +1385,15 @@ class CreatePriority extends Component {
             }}
             className="header-path"
           >
-            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-             {TranslationContext!==undefined?TranslationContext.link.priority:"Priority"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.priority
+              : "Priority"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1395,7 +1417,9 @@ class CreatePriority extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -1407,8 +1431,9 @@ class CreatePriority extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -1421,12 +1446,15 @@ class CreatePriority extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -1467,9 +1495,12 @@ class CreatePriority extends Component {
                             name={item.priortyName}
                             id={"fil-open" + item.priortyName}
                             value={item.priortyName}
-                            checked={this.state.spriortyNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.priortyName)|| false}
+                            checked={
+                              this.state.spriortyNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.priortyName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyName",
@@ -1494,9 +1525,12 @@ class CreatePriority extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.createdBy)|| false}
+                            checked={
+                              this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1521,9 +1555,12 @@ class CreatePriority extends Component {
                             name={item.createdDate}
                             id={"fil-open" + item.createdDate}
                             value={item.createdDate}
-                            checked={this.state.screatedDateFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.createdDate)|| false}
+                            checked={
+                              this.state.screatedDateFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdDate) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -1548,9 +1585,12 @@ class CreatePriority extends Component {
                             name={item.priortyStatus}
                             id={"fil-open" + item.priortyStatus}
                             value={item.priortyStatus}
-                            checked={this.state.spriortyStatusFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.priortyStatus)|| false}
+                            checked={
+                              this.state.spriortyStatusFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.priortyStatus) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyStatus",
@@ -1629,8 +1669,10 @@ class CreatePriority extends Component {
                                 "Priorty Name"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.priortyname:"Priorty Name"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.priortyname
+                                : "Priorty Name"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1656,7 +1698,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyName",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.priortyname:"Priorty Name",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.priortyname
+                                        : "Priorty Name",
                                   });
                                 } else {
                                   this.setState({
@@ -1666,7 +1711,10 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyName",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.priortyname:"Priorty Name",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.priortyname
+                                        : "Priorty Name",
                                   });
                                 }
                               },
@@ -1687,8 +1735,10 @@ class CreatePriority extends Component {
                                 "Created By Name"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created By"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1715,7 +1765,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "createdBy",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createdby:"Created By",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.createdby
+                                        : "Created By",
                                   });
                                 } else {
                                   this.setState({
@@ -1724,7 +1777,10 @@ class CreatePriority extends Component {
                                     spriortyStatusFilterCheckbox: "",
                                     StatusModel: true,
                                     sortColumn: "createdBy",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createdby:"Created By",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.createdby
+                                        : "Created By",
                                   });
                                 }
                               },
@@ -1734,30 +1790,40 @@ class CreatePriority extends Component {
                           render: (text, record) => {
                             //
                             return (
-                              <div>
+                              <div className="priority-one-liner store-one-liner">
                                 <Popover
                                   content={
                                     <div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {record.createdByName}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createdby
+                                              : "Created By"}
+                                            : {record.createdByName}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
-                                          {record.createdDateFormated}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}
+                                          : {record.createdDateFormated}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}: {record.modifiedByName}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                            : {record.modifiedByName}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                         {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:{" "}
-                                          {record.modifiedDateFormated}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                          : {record.modifiedDateFormated}
                                         </p>
                                       </div>
                                     </div>
@@ -1790,7 +1856,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "createdDate",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createddate:"Created Date",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.createddate
+                                        : "Created Date",
                                   });
                                 } else {
                                   this.setState({
@@ -1800,7 +1869,10 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "createdDate",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createddate:"Created Date",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.createddate
+                                        : "Created Date",
                                   });
                                 }
                               },
@@ -1822,7 +1894,9 @@ class CreatePriority extends Component {
                                 "Created Date"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.createddate:"Created Date"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.createddate
+                                : "Created Date"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1851,7 +1925,10 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader:TranslationContext!==undefined?TranslationContext.span.prioritystatus:"Priorty Status",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.prioritystatus
+                                        : "Priorty Status",
                                   });
                                 } else {
                                   this.setState({
@@ -1861,7 +1938,10 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.prioritystatus:"Priorty Status",
+                                    sortHeader:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.prioritystatus
+                                        : "Priorty Status",
                                   });
                                 }
                               },
@@ -1883,8 +1963,10 @@ class CreatePriority extends Component {
                                 "Priorty Status"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.prioritystatus:"Priorty Status"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.prioritystatus
+                                : "Priorty Status"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1897,7 +1979,10 @@ class CreatePriority extends Component {
                           ),
                         },
                         {
-                          title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.title.actions
+                              : "Action",
                           dataIndex: "priorityID",
                           key: "priorityID",
                           headerSort: false,
@@ -1915,10 +2000,16 @@ class CreatePriority extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file"}
+                                          ?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Are you sure you want to delete this file"}?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
                                           <a
@@ -1928,7 +2019,9 @@ class CreatePriority extends Component {
                                                 .click();
                                             }}
                                           >
-                                            {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
                                           </a>
                                           <button
                                             className="butn"
@@ -1937,7 +2030,9 @@ class CreatePriority extends Component {
                                               record.priorityID
                                             )}
                                           >
-                                            {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1961,7 +2056,9 @@ class CreatePriority extends Component {
                                     record
                                   )}
                                 >
-                                   {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.edit
+                                    : "EDIT"}
                                 </button>
                               </span>
                             );
@@ -1986,17 +2083,20 @@ class CreatePriority extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department" id="createId">
-                    {TranslationContext!==undefined?TranslationContext.label.createpriority:"CREATE PRIORITY"}
-                     
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createpriority
+                        : "CREATE PRIORITY"}
                     </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">
-                     
-                      </label>
+                      <label className="designation-name"></label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpriorityname:"Enter Priority Name"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterpriorityname
+                            : "Enter Priority Name"
+                        }
                         maxLength={25}
                         name="priority_name"
                         value={this.state.priority_name}
@@ -2016,7 +2116,9 @@ class CreatePriority extends Component {
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">
-                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.status
+                          : "Status"}
                       </label>
                       <select
                         className="form-control dropdown-setting"
@@ -2024,7 +2126,9 @@ class CreatePriority extends Component {
                         onChange={this.handleActiveStatus}
                       >
                         <option value="0">
-                        {TranslationContext!==undefined?TranslationContext.option.select:"select"}  
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "select"}
                         </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, i) => (
@@ -2055,8 +2159,10 @@ class CreatePriority extends Component {
                         ) : (
                           ""
                         )}
-                        
-                        {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
                       </button>
                     </div>
                   </div>
@@ -2072,17 +2178,25 @@ class CreatePriority extends Component {
         >
           <div className="edtpadding">
             <label className="popover-header-text">
-            {TranslationContext!==undefined?TranslationContext.label.editpriorty:"EDIT PRIORITY"}
+              {TranslationContext !== undefined
+                ? TranslationContext.label.editpriorty
+                : "EDIT PRIORITY"}
             </label>
             <div className=" pop-over-div">
               <label className="pop-over-lbl-text">
-              {TranslationContext!==undefined?TranslationContext.label.priorityname:"Priority Name"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.priorityname
+                  : "Priority Name"}
               </label>
 
               <input
                 type="text"
                 className="form-control dropdown-settings"
-                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterpriorityname:"Enter Priority Name"}
+                placeholder={
+                  TranslationContext !== undefined
+                    ? TranslationContext.placeholder.enterpriorityname
+                    : "Enter Priority Name"
+                }
                 maxLength={25}
                 name="priortyName"
                 value={this.state.rowData.priortyName}
@@ -2112,7 +2226,9 @@ class CreatePriority extends Component {
             </div>
             <div className=" pop-over-div">
               <label className="pop-over-lbl-text">
-              {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.status
+                  : "Status"}
               </label>
               <select
                 className="form-control dropdown-setting"
@@ -2121,7 +2237,9 @@ class CreatePriority extends Component {
                 onChange={this.handelEditChange.bind(this)}
               >
                 <option value="">
-                {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.option.select
+                    : "select"}
                 </option>
                 {this.state.activeData !== null &&
                   this.state.activeData.map((item, j) => (
@@ -2147,8 +2265,9 @@ class CreatePriority extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.cancel
+                  : "CANCEL"}
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2166,7 +2285,9 @@ class CreatePriority extends Component {
                   ""
                 )}
                 <label className="pop-over-btnsave-text">
-                {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.save
+                    : "SAVE"}
                 </label>
               </button>
             </div>

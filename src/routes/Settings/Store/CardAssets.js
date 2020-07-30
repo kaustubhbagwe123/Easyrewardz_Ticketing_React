@@ -78,7 +78,7 @@ class CardAssets extends Component {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
-////handle approve and reject card image
+  ////handle approve and reject card image
   handleApproveRejectCardImage(imageUploadLogID, itemID, status) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -99,9 +99,17 @@ class CardAssets extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           if (status) {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imageaddedsuccessfully:"Image Added Successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.imageaddedsuccessfully
+                : "Image Added Successfully"
+            );
           } else {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imagerejectedsuccessfully:"Image Rejected Successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.imagerejectedsuccessfully
+                : "Image Rejected Successfully"
+            );
           }
         }
         self.handleGetCardImageUploadlog(1);
@@ -285,7 +293,7 @@ class CardAssets extends Component {
                         dataIndex: "createdByName",
                         render: (row, rowdata) => {
                           return (
-                            <>
+                            <span className="one-liner store-one-liner">
                               {rowdata.createdByName}
                               <Popover
                                 overlayClassName="cardassetspop"
@@ -381,12 +389,12 @@ class CardAssets extends Component {
                                 placement="bottom"
                               >
                                 <img
-                                  className="info-icon"
+                                  className="info-icon-cp"
                                   src={InfoIcon}
                                   alt="info-icon"
                                 />
                               </Popover>
-                            </>
+                            </span>
                           );
                         },
                       },
@@ -510,7 +518,7 @@ class CardAssets extends Component {
                       dataIndex: "createdByName",
                       render: (row, rowdata) => {
                         return (
-                          <>
+                          <span className="one-liner store-one-liner">
                             {rowdata.createdByName}
                             <Popover
                               overlayClassName="cardassetspop"
@@ -606,12 +614,12 @@ class CardAssets extends Component {
                               placement="bottom"
                             >
                               <img
-                                className="info-icon"
+                                className="info-icon-cp"
                                 src={InfoIcon}
                                 alt="info-icon"
                               />
                             </Popover>
-                          </>
+                          </span>
                         );
                       },
                     },
@@ -624,7 +632,7 @@ class CardAssets extends Component {
                       dataIndex: "modifyByName",
                       render: (row, rowdata) => {
                         return (
-                          <>
+                          <span className="one-liner store-one-liner">
                             {rowdata.modifyByName}
                             <Popover
                               overlayClassName="cardassetspop"
@@ -720,12 +728,12 @@ class CardAssets extends Component {
                               placement="bottom"
                             >
                               <img
-                                className="info-icon"
+                                className="info-icon-cp"
                                 src={InfoIcon}
                                 alt="info-icon"
                               />
                             </Popover>
-                          </>
+                          </span>
                         );
                       },
                     },
