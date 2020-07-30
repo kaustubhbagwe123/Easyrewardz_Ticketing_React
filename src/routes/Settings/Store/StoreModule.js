@@ -234,6 +234,8 @@ class StoreModule extends Component {
       finalSlotTemplateId: 0,
       selectedSlotTemplate: 0,
       SlotTemplateGridData: [],
+      // slotDaysData:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+      // maxPeopleData:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1874,161 +1876,68 @@ class StoreModule extends Component {
     }
   }
 
-  /// handle Timeslot add data
-  handleSubmitTimeSlotDate() {
+  /// handle insert and update slot setting
+  handleInsertUpdateTimeSlotSetting(isInsert) {
     const TranslationContext = this.state.translateLanguage.default;
     var self = this;
-    if (
-      this.state.selectedStoreCode.length > 0 &&
-      this.state.maxCapacity !== ""
-    ) {
-      debugger;
-      var storeIds = "";
-      for (let i = 0; i < this.state.selectedStoreCode.length; i++) {
-        storeIds += this.state.selectedStoreCode[i] + ",";
-      }
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
-        headers: authHeader(),
-        data: {
-          SlotId: this.state.slotId,
-          StoreIds: storeIds,
-          StoreOpenValue: Number(this.state.selectTimeSlot1),
-          StoreOpenAt: this.state.selectAmPm1,
-          StoreCloseValue: Number(this.state.selectTimeSlot2),
-          StoreCloseAt: this.state.selectAmPm2,
-          Slotduration: parseFloat(this.state.slotDuration),
-          SlotMaxCapacity: Number(this.state.maxCapacity),
-          StoreNonOpFromValue: Number(this.state.selectNOTimeSlot1),
-          StoreNonOpFromAt: this.state.selectNOAmPm1,
-          StoreNonOpToValue: Number(this.state.selectNOTimeSlot2),
-          StoreNonOpToAt: this.state.selectNOAmPm2,
-          AppointmentDays: Number(this.state.appointmentDays),
-        },
-      })
-        .then(function (res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            self.setState({
-              selectedStoreCode: [],
-              selectTimeSlot1: 1,
-              selectTimeSlot2: 1,
-              selectNOTimeSlot1: 1,
-              selectNOTimeSlot2: 1,
-              selectAmPm1: "AM",
-              selectAmPm2: "AM",
-              selectNOAmPm1: "AM",
-              selectNOAmPm2: "AM",
-              slotduration: "0.5",
-              maxCapacity: "",
-            });
-            NotificationManager.success(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.timeslotaddedsuccessfully
-                : "Time Slot Added Successfully."
-            );
-            self.handleGetTimeslotGridData();
-          } else {
-            NotificationManager.error(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.timeslotnotadded
-                : "Time Slot Not Added."
-            );
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    } else {
-      this.setState({
-        storeCodeValidation: "Required",
-        maxCapacityValidation: "Required",
-      });
+
+    var inputParam = {};
+    if (isInsert) {
+      inputParam.SlotId = 0;
+      inputParam.StoreIds = "";
+      inputParam.StoreOpdays = "";
+      inputParam.SlotTemplateID = "";
+      inputParam.SlotMaxCapacity = "";
+      inputParam.AppointmentDays = "";
+      inputParam.ApplicableFromDate = "";
+      inputParam.IsActive = true;
+      inputParam.TemplateSlots = this.state.SlotTemplateGridData;
+      inputParam.SlotDisplayCode = "";
+      inputParam.AppointmentDays = Number(this.state.appointmentDays);
     }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            selectedStoreCode: [],
+            selectTimeSlot1: 1,
+            selectTimeSlot2: 1,
+            selectNOTimeSlot1: 1,
+            selectNOTimeSlot2: 1,
+            selectAmPm1: "AM",
+            selectAmPm2: "AM",
+            selectNOAmPm1: "AM",
+            selectNOAmPm2: "AM",
+            slotduration: "0.5",
+            maxCapacity: "",
+          });
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.timeslotaddedsuccessfully
+              : "Time Slot Added Successfully."
+          );
+          self.handleGetTimeslotGridData();
+        } else {
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.timeslotnotadded
+              : "Time Slot Not Added."
+          );
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
-  /// Handle Update TimeSlot data
-  handleUpdateTimeSlotData() {
-    const TranslationContext = this.state.translateLanguage.default;
-    var self = this;
-    if (this.state.editstoreCode !== "0" && this.state.editmaxCapacity !== "") {
-      debugger;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
-        headers: authHeader(),
-        data: {
-          SlotId: this.state.slotId,
-          StoreIds: this.state.editstoreCode,
-          StoreOpenValue: Number(this.state.editSelectTimeSlot1),
-          StoreOpenAt: this.state.editSelectAmPm1,
-          StoreCloseValue: Number(this.state.editSelectTimeSlot2),
-          StoreCloseAt: this.state.editSelectAmPm2,
-          Slotduration: parseFloat(this.state.editSlotDuration),
-          SlotMaxCapacity: Number(this.state.editmaxCapacity),
-          StoreNonOpFromValue: Number(this.state.editSelectNOTimeSlot1),
-          StoreNonOpFromAt: this.state.editSelectNOAmPm1,
-          StoreNonOpToValue: Number(this.state.editSelectNOTimeSlot2),
-          StoreNonOpToAt: this.state.editSelectNOAmPm2,
-          AppointmentDays: Number(this.state.editAppointmentDays),
-        },
-      })
-        .then(function (res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.timeslotupdatesuccessfully
-                : "Time Slot Updated Successfully."
-            );
-            self.handleGetTimeslotGridData();
-            self.setState({
-              editSlotModal: false,
-              editselectTimeSlot1: 1,
-              editselectTimeSlot2: 1,
-              editselectNOTimeSlot1: 1,
-              editselectNOTimeSlot2: 1,
-              editselectAmPm1: "AM",
-              editselectAmPm2: "AM",
-              editselectNOAmPm1: "AM",
-              editselectNOAmPm2: "AM",
-              editSlotDuration: "0.5",
-              editmaxCapacity: "",
-              slotId: 0,
-            });
-          } else {
-            debugger;
-            if (
-              status.trim().toLowerCase() ===
-              "Record Already Exists".trim().toLowerCase()
-            ) {
-              NotificationManager.error(
-                TranslationContext !== undefined
-                  ? TranslationContext.alertmessage
-                    .appointmentrecordalreadyexists
-                  : "Appointment Record Already Exists"
-              );
-            } else {
-              NotificationManager.error(
-                TranslationContext !== undefined
-                  ? TranslationContext.alertmessage.timeslotnotupdated
-                  : "Time Slot Not Updated."
-              );
-            }
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    } else {
-      this.setState({
-        editStoreCodeValidation: "Required",
-        editOrderNovalidation: "Required",
-        editMaxCapacityValidation: "Required",
-      });
-    }
-  }
+ 
 
   handleSubmitLanguageDate() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -2655,6 +2564,29 @@ class StoreModule extends Component {
         console.log(response);
       });
   }
+  ////handle slot occupancy change text in table
+  handleslotOccupancyChange = (id, e) => {
+    debugger;
+    if (Number(e.target.value) <= 30) {
+      this.state.SlotTemplateGridData.filter(
+        (x) => x.slotID === id
+      )[0].slotOccupancy = e.target.value || "";
+    } else {
+      this.state.SlotTemplateGridData.filter(
+        (x) => x.slotID === id
+      )[0].slotOccupancy = "";
+    }
+    this.setState({ SlotTemplateGridData: this.state.SlotTemplateGridData });
+  };
+  handleslotActiveInActive = (id) => {
+    debugger;
+    this.state.SlotTemplateGridData.filter(
+      (x) => x.slotID === id
+    )[0].isSlotEnabled = !this.state.SlotTemplateGridData.filter(
+      (x) => x.slotID === id
+    )[0].isSlotEnabled;
+    this.setState({ SlotTemplateGridData: this.state.SlotTemplateGridData });
+  };
 
   handleEnableDisableOnChange(i, e) {
     debugger;
@@ -4512,7 +4444,9 @@ class StoreModule extends Component {
                                         <div className="nextbox">
                                           <div className="">
                                             <Table
-                                              dataSource={this.state.SlotTemplateGridData}
+                                              dataSource={
+                                                this.state.SlotTemplateGridData
+                                              }
                                               noDataContent="No Record Found"
                                               pagination={false}
                                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
@@ -4533,12 +4467,19 @@ class StoreModule extends Component {
                                                   title: "Slot Occupancy",
                                                   dataIndex: "slotOccupancy",
                                                   render: (row, rowData) => {
+                                                    debugger;
                                                     return (
                                                       <>
                                                         <input
                                                           type="text"
                                                           className="form-control value"
-                                                          value="3"
+                                                          value={
+                                                            rowData.slotOccupancy
+                                                          }
+                                                          onChange={this.handleslotOccupancyChange.bind(
+                                                            this,
+                                                            rowData.slotID
+                                                          )}
                                                         />
                                                       </>
                                                     );
@@ -4548,7 +4489,37 @@ class StoreModule extends Component {
                                                   title:
                                                     "Slot Status(Unable/Disable)",
                                                   render: (row, rowData) => {
-                                                    return <>radio button</>;
+                                                    return (
+                                                      <div className="chrdioclr switch switch-primary d-inline m-r-10 slotcheck">
+                                                        <input
+                                                          style={{
+                                                            position: "fixed",
+                                                          }}
+                                                          type="checkbox"
+                                                          id={
+                                                            "slot" +
+                                                            rowData.slotID
+                                                          }
+                                                          name="allModules"
+                                                          checked={
+                                                            rowData.isSlotEnabled
+                                                          }
+                                                          onChange={this.handleslotActiveInActive.bind(
+                                                            this,
+                                                            rowData.slotID
+                                                          )}
+                                                        />
+                                                        <label
+                                                          htmlFor={
+                                                            "slot" + row.slotID
+                                                          }
+                                                          className="cr cr-float-auto"
+                                                          style={{
+                                                            float: "inherit",
+                                                          }}
+                                                        ></label>
+                                                      </div>
+                                                    );
                                                   },
                                                 },
                                               ]}
@@ -4567,22 +4538,35 @@ class StoreModule extends Component {
                                                 <option value={0}>
                                                   Select
                                                 </option>
-                                                <option value={0}>1</option>
+                                                {Array(31)
+                                                  .fill(0)
+                                                  .map((e, i) => {
+                                                    return (
+                                                      <option value={i + 1}>
+                                                        {i + 1}
+                                                      </option>
+                                                    );
+                                                  })}
                                               </select>
                                             </li>
                                             <li>
                                               <label>
                                                 Applicable From (Date)
                                               </label>
-                                              <select
-                                                name=""
-                                                className="form-control"
-                                              >
-                                                <option value={0}>
-                                                  Select
-                                                </option>
-                                                <option value={0}>1</option>
-                                              </select>
+                                              <div className="applicateDiv">
+                                                <DatePicker
+                                                  selected={
+                                                    this.state.autoStoreFrom
+                                                  }
+                                                  placeholderText="Applicable From (Date)"
+                                                  className="form-control"
+                                                  onChange={(time) =>
+                                                    this.setState({
+                                                      autoStoreFrom: time,
+                                                    })
+                                                  }
+                                                />
+                                              </div>
                                             </li>
                                             <li>
                                               <label>
@@ -4596,14 +4580,22 @@ class StoreModule extends Component {
                                                 <option value={0}>
                                                   Select
                                                 </option>
-                                                <option value={0}>1</option>
+                                                {Array(50)
+                                                  .fill(0)
+                                                  .map((e, i) => {
+                                                    return (
+                                                      <option value={i + 1}>
+                                                        {i + 1}
+                                                      </option>
+                                                    );
+                                                  })}
                                               </select>
                                             </li>
                                           </ul>
                                           <div className="row">
                                             <div className="col-md-4">
                                               <div className="statuscheckbox">
-                                                <label
+                                                {/* <label
                                                   style={{
                                                     marginRight: "15px",
                                                   }}
@@ -4619,7 +4611,25 @@ class StoreModule extends Component {
                                                   type="checkbox"
                                                   classNam="form-control"
                                                 />
-                                                <label>Inactive</label>
+                                                <label>Inactive</label> */}
+                                                <div className="statuscheckbox">
+                                                  <Radio.Group
+                                                    onChange={
+                                                      this.handleSlotRadioChange
+                                                    }
+                                                    value={
+                                                      this.state
+                                                        .slotAutomaticRadio
+                                                    }
+                                                  >
+                                                    <Radio value={1}>
+                                                      Active
+                                                    </Radio>
+                                                    <Radio value={2}>
+                                                      Inactive
+                                                    </Radio>
+                                                  </Radio.Group>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
