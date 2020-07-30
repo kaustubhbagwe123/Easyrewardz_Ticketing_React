@@ -4235,3 +4235,10 @@
   display: inline-flex;
   overflow: hidden;
 }
+.applicateDiv.react-datepicker-wrapper{
+  display: block;
+  
+}
+.react-datepicker-wrapper{
+  width: 100%;
+}
