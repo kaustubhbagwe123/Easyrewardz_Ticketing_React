@@ -4059,14 +4059,16 @@
 .choosestorebox {
   width: 800px;
   max-width: 800px;
-  margin-top: 165px;
-  margin-left: 116px;
+  top: 200px;
+  right: 90px;
 }
 .choosestorebox .modal-content {
   border-radius: 20px;
 }
 .selectstores-main .modal-content {
   border-radius: 20px;
+  top: 308px;
+  right: 240px;
 }
 .choosestore {
   padding: 25px 50px;
@@ -4148,7 +4150,7 @@
   margin-top: 10px;
   border-top: 1px solid #eee;
   padding-top: 10px;
-  max-height: 300px;
+  max-height: 260px;
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: 15px;
