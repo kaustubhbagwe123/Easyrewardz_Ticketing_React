@@ -242,6 +242,14 @@ class Header extends Component {
       isCustomerProfile: false,
       isCustomerProduct: false,
       selectedColor: "",
+      mainProductsData: [],
+      storePinCode: "",
+      isAddress: "",
+      isPinCode: "",
+      isCity: "",
+      isState: "",
+      isCountry: "",
+      isPinCodeCheck: "",
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -1624,6 +1632,7 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          messageSuggestionTagsData: [],
           activeTab,
           selectedColor,
           chatModal: true,
@@ -1668,6 +1677,7 @@ class Header extends Component {
         this.handleGetChatCustomerProfile(customerId);
       } else {
         this.setState({
+          messageSuggestionTagsData: [],
           activeTab,
           selectedColor,
           chatModal: true,
@@ -1719,6 +1729,7 @@ class Header extends Component {
       }
     } else {
       this.setState({
+        messageSuggestionTagsData: [],
         activeTab,
         selectedColor,
         chatModal: true,
@@ -2708,7 +2719,12 @@ class Header extends Component {
             }
           }
 
-          self.setState({ shoppingBagData, wishListData, recommendedData });
+          self.setState({
+            shoppingBagData,
+            wishListData,
+            recommendedData,
+            mainProductsData: responseData,
+          });
         }
       })
       .catch((response) => {
@@ -2995,106 +3011,214 @@ class Header extends Component {
       chatData[0].programCode
     );
   };
-  ////handle buy now button click
+  ////handle buy now button 
   handleBuyNowButtonClick = () => {
     this.setState({ buyNowClick: !this.state.buyNowClick });
   };
   ////handle address modal close
   handleAddressModalClose = () => {
-    this.setState({ addressModal: false });
+    this.setState({
+      addressModal: false,
+      isPinCodeCheck: "",
+      isAddress: "",
+      isPinCode: "",
+      isCity: "",
+      isState: "",
+      isCountry: "",
+      shippingAddress: "",
+      shippingCity: "",
+      shippingLandmark: "",
+      shippingPinCode: "",
+      shippingState: "",
+      shippingCountry: "",
+    });
   };
   ////handle address modal open
   handleAddressModalOpen = () => {
     this.setState({ addressModal: true });
+    this.handleGetCheckServiceData();
   };
   ////handle modal text on change
   handleTextOnchage = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    debugger;
+    if (name === "shippingAddress") {
+      if (value) {
+        this.setState({ [name]: value, isAddress: "" });
+      } else {
+        this.setState({ [name]: value, isAddress: "Please Enter Address." });
+      }
+    }
+    if (name === "shippingPinCode") {
+      if (value) {
+        this.setState({ [name]: value, isPinCode: "" });
+      } else {
+        this.setState({ [name]: value, isPinCode: "Please Enter Pincode." });
+      }
+    }
+
+    if (name === "shippingCity") {
+      if (value) {
+        this.setState({ [name]: value, isCity: "" });
+      } else {
+        this.setState({ [name]: value, isCity: "Please Enter City." });
+      }
+    }
+
+    if (name === "shippingState") {
+      if (value) {
+        this.setState({ [name]: value, isState: "" });
+      } else {
+        this.setState({ [name]: value, isState: "Please Enter State." });
+      }
+    }
+    if (name === "shippingCountry") {
+      if (value) {
+        this.setState({ [name]: value, isCountry: "" });
+      } else {
+        this.setState({ [name]: value, isCountry: "Please Enter Country." });
+      }
+    }
+    if (name === "shippingLandmark") {
+      this.setState({ [name]: value });
+    }
   };
   ////handle buy products on chat
   handleBuyProductsOnChat = (isFromRecommendation, isDirectBuy) => {
     let self = this;
-    var addressDetails = {};
-    addressDetails.address = this.state.shippingAddress || "";
-    addressDetails.landmark = this.state.shippingLandmark || "";
-    addressDetails.pinCode = this.state.shippingPinCode;
-    addressDetails.city = this.state.shippingCity || "";
-    addressDetails.state = this.state.shippingState || "";
-    addressDetails.country = this.state.shippingCountry || "";
-    // addressDetails.latitude = this.state.shippingLatitude;
-    // addressDetails.longitude = this.state.shippingLongitude;
 
-    var itemCodes = "";
-    /////for recommendation
-    if (isFromRecommendation) {
-      for (let i = 0; i < this.state.selectedRecommended.length; i++) {
-        itemCodes += this.state.selectedRecommended[i].uniqueItemCode + ",";
-      }
+    if (!this.state.shippingAddress) {
+      this.setState({ isAddress: "Please Enter Address." });
+    } else {
+      this.setState({ isAddress: "" });
     }
-    /////for wish list
-    if (this.state.productTypeTab == 1 && isFromRecommendation === false) {
-      for (let i = 0; i < this.state.selectedWishList.length; i++) {
-        itemCodes += this.state.selectedWishList[i].uniqueItemCode + ",";
-      }
+    if (!this.state.shippingPinCode) {
+      this.setState({ isPinCode: "Please Enter Pincode." });
+    } else {
+      this.setState({ isPinCode: "" });
     }
-    /////for shopping bag list
-    if (this.state.productTypeTab == 0 && isFromRecommendation === false) {
-      for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
-        itemCodes += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
-      }
+    if (!this.state.shippingCity) {
+      this.setState({ isCity: "Please Enter City." });
+    } else {
+      this.setState({ isCity: "" });
     }
+    if (!this.state.shippingState) {
+      this.setState({ isState: "Please Enter State." });
+    } else {
+      this.setState({ isState: "" });
+    }
+    if (!this.state.shippingCountry) {
+      this.setState({ isCountry: "Please Enter Country." });
+    } else {
+      this.setState({ isCountry: "" });
+    }
+    if (
+      this.state.isAddress === "" &&
+      this.state.isPinCode === "" &&
+      this.state.isCity === "" &&
+      this.state.isState === "" &&
+      this.state.isCountry === "" &&
+      this.state.isPinCodeCheck === ""
+    ) {
+      var addressDetails = {};
+      addressDetails.address = this.state.shippingAddress || "";
+      addressDetails.landmark = this.state.shippingLandmark || "";
+      addressDetails.pinCode = this.state.shippingPinCode;
+      addressDetails.city = this.state.shippingCity || "";
+      addressDetails.state = this.state.shippingState || "";
+      addressDetails.country = this.state.shippingCountry || "";
+      // addressDetails.latitude = this.state.shippingLatitude;
+      // addressDetails.longitude = this.state.shippingLongitude;
 
-    var inputParam = {};
-    inputParam.CustomerID = this.state.customerId;
-    inputParam.CustomerMobile = this.state.mobileNo;
-    inputParam.IsFromRecommendation = isFromRecommendation;
-    inputParam.IsDirectBuy = isDirectBuy;
-    inputParam.ItemCodes = itemCodes;
-    if (isDirectBuy === false) {
-      inputParam.CustomerAddress = addressDetails;
-    }
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/BuyProductsOnChat",
-      headers: authHeader(),
-      data: inputParam,
-    })
-      .then((response) => {
-        var message = response.data.response;
-        var responseData = response.data.responseData;
-
-        if (message === "Success" && responseData) {
-          self.setState({
-            selectedRecommended: [],
-            selectedShoppingBag: [],
-            selectedWishList: [],
-            addressModal: false,
-          });
-          NotificationManager.success("Products Buy Successfully.");
-          self.handleGetChatCustomerProducts();
+      var itemCodes = "";
+      /////for recommendation
+      if (isFromRecommendation) {
+        for (let i = 0; i < this.state.selectedRecommended.length; i++) {
+          itemCodes += this.state.selectedRecommended[i].uniqueItemCode + ",";
         }
+      }
+      /////for wish list
+      if (this.state.productTypeTab == 1 && isFromRecommendation === false) {
+        for (let i = 0; i < this.state.selectedWishList.length; i++) {
+          itemCodes += this.state.selectedWishList[i].uniqueItemCode + ",";
+        }
+      }
+      /////for shopping bag list
+      if (this.state.productTypeTab == 0 && isFromRecommendation === false) {
+        for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
+          itemCodes += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
+        }
+      }
+
+      var inputParam = {};
+      inputParam.CustomerID = this.state.customerId;
+      inputParam.CustomerMobile = this.state.mobileNo;
+      inputParam.IsFromRecommendation = isFromRecommendation;
+      inputParam.IsDirectBuy = isDirectBuy;
+      inputParam.ItemCodes = itemCodes;
+      if (isDirectBuy === false) {
+        inputParam.CustomerAddress = addressDetails;
+      }
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/BuyProductsOnChat",
+        headers: authHeader(),
+        data: inputParam,
       })
-      .catch((response) => {});
+        .then((response) => {
+          var message = response.data.response;
+          var responseData = response.data.responseData;
+
+          if (message === "Success" && responseData) {
+            self.setState({
+              selectedRecommended: [],
+              selectedShoppingBag: [],
+              selectedWishList: [],
+              addressModal: false,
+              shippingAddress: "",
+              shippingCity: "",
+              shippingCountry: "",
+              shippingPinCode: "",
+              shippingState: "",
+              shippingLandmark: "",
+            });
+            NotificationManager.success("Products Buy Successfully.");
+            self.handleGetChatCustomerProducts();
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleBuyProductsOnChat");
+        });
+    }
   };
 
   handleSendProductsOnChat = () => {
+    debugger;
     var selectedProduct = [];
     if (this.state.productTypeTab == 0) {
       this.state.selectedShoppingBag.forEach((element) => {
-        selectedProduct.push(element);
+        var finleData = this.state.mainProductsData.filter(
+          (x) => x.uniqueItemCode === element.uniqueItemCode
+        )[0];
+        selectedProduct.push(finleData);
       });
     }
 
     if (this.state.productTypeTab == 1) {
       this.state.selectedWishList.forEach((element) => {
-        selectedProduct.push(element);
+        var finleData = this.state.mainProductsData.filter(
+          (x) => x.uniqueItemCode === element.uniqueItemCode
+        )[0];
+        selectedProduct.push(finleData);
       });
     }
     if (this.state.productTypeTab == 2) {
       this.state.selectedRecommended.forEach((element) => {
-        selectedProduct.push(element);
+        var finleData = this.state.mainProductsData.filter(
+          (x) => x.uniqueItemCode === element.uniqueItemCode
+        )[0];
+        selectedProduct.push(finleData);
       });
     }
 
@@ -3112,6 +3236,7 @@ class Header extends Component {
             : this.state.productTypeTab === 1
             ? "wishlist"
             : "recommended",
+        CustomerMobile: this.state.customerMobileNo,
       },
     })
       .then((response) => {
@@ -3126,11 +3251,88 @@ class Header extends Component {
         console.log(response, "----handleSendProductsOnChat");
       });
   };
-
+  ////handle mobile action menu click
   handleMobileActionMenuClick = (e) => {
     if (e.key == 1) {
       this.handleUpdateStoreManagerChatStatus(3);
     }
+  };
+  /// handle Pin code change
+  handlePinCodeCheck(e) {
+    var reg = /^[0-9\b]+$/;
+    debugger;
+    if (!isNaN(e.target.value)) {
+      this.setState({
+        shippingPinCode: e.target.value,
+        isPinCode: "",
+        isPinCodeCheck: "",
+      });
+      if (e.target.value.length === 6) {
+        this.handleCheckCourierAvailibilty(e.target.value);
+      }
+    } else {
+      this.setState({ shippingPinCode: "", isPinCode: "", isPinCodeCheck: "" });
+    }
+  }
+  ////handle get check server data
+  handleGetCheckServiceData() {
+    let self = this;
+    if (!this.state.storePinCode) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/GetStorePinCodeByUserID",
+        headers: authHeader(),
+      })
+        .then(function(response) {
+          let status = response.data.message;
+          let data = response.data.responseData;
+          if (status === "Success") {
+            self.setState({
+              storePinCode: data,
+            });
+          } else {
+            self.setState({
+              storePinCode: "",
+            });
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleGetCheckServiceData");
+        });
+    }
+  }
+  ///handle check couier availibilty
+  handleCheckCourierAvailibilty = (shippingPinCode) => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/CheckCourierAvailibilty",
+      headers: authHeader(),
+      data: {
+        Pickup_postcode: parseInt(this.state.storePinCode),
+        Delivery_postcode: parseInt(shippingPinCode),
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        debugger;
+        if (message === "Success" && responseData) {
+          var available = responseData.available;
+          var statusCode = responseData.statusCode;
+          var state = responseData.state;
+          if (available === "true" && statusCode === "200") {
+            self.setState({ shippingState: state, isPinCodeCheck: "" });
+          } else {
+            self.setState({
+              isPinCodeCheck: "Not Courier Availible",
+            });
+          }
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleCheckCourierAvailibilty");
+      });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -3962,7 +4164,6 @@ class Header extends Component {
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  
                                   {/* {!this.state.onHoverName ? (
                                     <p
                                       style={{
@@ -4516,7 +4717,7 @@ class Header extends Component {
                                                   : "BOT"}
                                               </p>
                                             )}
-                                            <p className="chat-trail-chat pd-0">
+                                            <div className="chat-trail-chat pd-0">
                                               {ReactHtmlParser(
                                                 item.message
                                                   .replace(
@@ -4528,7 +4729,7 @@ class Header extends Component {
                                                     "col-md-8"
                                                   )
                                               )}
-                                            </p>
+                                            </div>
                                             <span className="chat-trail-time">
                                               {item.chatDate + " "}
                                               {item.chatTime}
@@ -4558,7 +4759,7 @@ class Header extends Component {
                             <div
                               className="chatcontentdivtab chat-tabs-desktop"
                               style={{
-                                height: !this.state.isDownbtn ? "80%" : "",
+                                maxHeight: !this.state.isDownbtn ? "531px" : "",
                                 pointerEvents:
                                   this.state.isCustEndChat === true
                                     ? "none"
@@ -7518,7 +7719,7 @@ class Header extends Component {
                         ) : null}
                       </ul>
 
-                      <div class="tab-content">
+                      <div className="tab-content">
                         {this.state.isCustomerProfile ? (
                           <div
                             // className={"tab-pane fade show active"}
@@ -8091,9 +8292,11 @@ class Header extends Component {
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
+                                          placement="topRight"
                                           content={
                                             <div
-                                              className="productdesc"
+                                              // className="productdesc"
+                                              className=""
                                               style={{
                                                 display: "inline-flex",
                                               }}
@@ -8414,9 +8617,11 @@ class Header extends Component {
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
+                                          placement="topRight"
                                           content={
                                             <div
-                                              className="productdesc"
+                                              // className="productdesc"
+                                              className=""
                                               style={{
                                                 display: "inline-flex",
                                               }}
@@ -8744,9 +8949,11 @@ class Header extends Component {
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
+                                          placement="topRight"
                                           content={
                                             <div
-                                              className="productdesc"
+                                              // className="productdesc"
+                                              className=""
                                               style={{
                                                 display: "inline-flex",
                                               }}
@@ -8846,6 +9053,7 @@ class Header extends Component {
             </div>
           </div>
         </Modal>
+        {/* Address modal popup */}
         <Modal
           open={this.state.addressModal}
           onClose={this.handleAddressModalClose.bind(this)}
@@ -8871,6 +9079,14 @@ class Header extends Component {
                   value={this.state.shippingAddress}
                   onChange={this.handleTextOnchage}
                 ></textarea>
+                {this.state.isAddress ? (
+                  <p
+                    className="non-deliverable"
+                    style={{ marginTop: "0", textAlign: "left" }}
+                  >
+                    {this.state.isAddress}
+                  </p>
+                ) : null}
               </div>
               <div>
                 <p>
@@ -8909,12 +9125,25 @@ class Header extends Component {
                     autoComplete="off"
                     maxLength={6}
                     value={this.state.shippingPinCode}
-                    onChange={this.handleTextOnchage}
-                    // onChange={this.handlePinCodeCheck.bind(
-                    //   this,
-                    //   item.id
-                    // )}
+                    // onChange={this.handleTextOnchage}
+                    onChange={this.handlePinCodeCheck.bind(this)}
                   />
+                  {this.state.isPinCode ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isPinCode}
+                    </p>
+                  ) : null}
+                  {this.state.isPinCodeCheck ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isPinCodeCheck}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="col-md-6">
                   <p>
@@ -8934,6 +9163,14 @@ class Header extends Component {
                     value={this.state.shippingCity}
                     onChange={this.handleTextOnchage}
                   />
+                  {this.state.isCity ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isCity}
+                    </p>
+                  ) : null}
                 </div>
               </div>
               <div className="row">
@@ -8955,6 +9192,14 @@ class Header extends Component {
                     value={this.state.shippingState}
                     onChange={this.handleTextOnchage}
                   />
+                  {this.state.isState ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isState}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="col-md-6">
                   <p>
@@ -8974,41 +9219,18 @@ class Header extends Component {
                     value={this.state.shippingCountry}
                     onChange={this.handleTextOnchage}
                   />
+                  {this.state.isCountry ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isState}
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </div>
-            {this.state.pincodeChecAvaibility && (
-              <p
-                className="non-deliverable"
-                style={{
-                  marginBottom: "5px",
-                }}
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.ticketingDashboard
-                      .checkingyouravailability
-                  : "Checking your availability."}
-              </p>
-            )}
-            {this.state.showPinCodereturnMsg && (
-              <>
-                {this.state.showPinStatusCodeMsg === false ? (
-                  <p className="non-deliverable">
-                    {TranslationContext !== undefined
-                      ? TranslationContext.ticketingDashboard
-                          .kidlycheckenteredstatepincode
-                      : "Kidly Check Entered State Pin Code"}
-                  </p>
-                ) : (
-                  <p className="non-deliverable">
-                    {TranslationContext !== undefined
-                      ? TranslationContext.ticketingDashboard
-                          .enteredpincodeisnondeliverable
-                      : "Entered Pin code is non deliverable"}
-                  </p>
-                )}
-              </>
-            )}
+
             <div className="row">
               <div class="ant-popover-buttons" style={{ marginLeft: "120px" }}>
                 <button

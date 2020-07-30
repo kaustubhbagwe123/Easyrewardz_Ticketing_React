@@ -7,6 +7,7 @@ import moment from "moment";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
+import SchRight from "./../../assets/Images/sch-right.png";
 
 class Appointment extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class Appointment extends Component {
       tabFor: tabFor,
       status: [],
     });
-     axios({
+    axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetAppointmentList",
       params: { AppDate: moment(new Date(adate)).format("YYYY-MM-DD") },
@@ -80,9 +81,8 @@ class Appointment extends Component {
   }
 
   handleAppointmentCount() {
-    
     let self = this;
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetAppointmentCount",
@@ -177,6 +177,14 @@ class Appointment extends Component {
       };
     });
   }
+  ////handle scroll right
+  handleScrollRight(num) {
+    document.getElementById("AppointmentDiv").scrollLeft += 30;
+  }
+  ////handle scroll left
+  handleScrollLeft(num) {
+    document.getElementById("AppointmentDiv").scrollLeft -= 30;
+  }
 
   render() {
     const { Option } = Select;
@@ -184,63 +192,79 @@ class Appointment extends Component {
     return (
       <div className="custom-tableak custom-table-ck custom-table-bg">
         <div className="custom-tabs">
-          {this.state.appointmentDaysData
-            ? this.state.appointmentDaysData.map((item, i) => {
-                var fdate = new Date(item.appointmentDate);
-                // var adate = fdate.getDate();
-                {
-                  return (
-                    <div
-                      className={
-                        this.state.tabFor === i + 1
-                          ? "custom-tabcount"
-                          : "custom-tabcount1"
-                      }
-                      onClick={this.handleAppointmentGridData.bind(
-                        this,
-                        i + 1,
-                        item.appointmentDate
-                      )}
-                    >
-                      {i === 0 ? (
-                        <p
-                          className={
-                            this.state.tabFor === i + 1
-                              ? "tab-title"
-                              : "tab-title1"
-                          }
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.today
-                            : "Today"}
-                        </p>
-                      ) : (
-                        <p
-                          className={
-                            this.state.tabFor === i + 1
-                              ? "tab-title"
-                              : "tab-title1"
-                          }
-                        >
-                          {moment(fdate.setDate(fdate.getDate())).format(
-                            "Do"
-                          )}
-                        </p>
-                      )}
-                      <span
+          <div
+            className="selectdot-blue selectdot-blue-left"
+            onClick={this.handleScrollLeft.bind(this)}
+            style={{ marginTop: "0" }}
+          >
+            <img src={SchRight} alt="right arrow" />
+          </div>
+          <div id="AppointmentDiv" className="appointmentDiv">
+            {this.state.appointmentDaysData
+              ? this.state.appointmentDaysData.map((item, i) => {
+                  var fdate = new Date(item.appointmentDate);
+                  // var adate = fdate.getDate();
+                  {
+                    return (
+                      <div
                         className={
                           this.state.tabFor === i + 1
-                            ? "tab-count"
-                            : "tab-count1"
+                            ? "custom-tabcount"
+                            : "custom-tabcount1"
                         }
+                        onClick={this.handleAppointmentGridData.bind(
+                          this,
+                          i + 1,
+                          item.appointmentDate
+                        )}
                       >
-                        {item.aptCount}
-                      </span>
-                    </div>
-                  );
-                }
-              })
-            : null}
+                        {i === 0 ? (
+                          <p
+                            className={
+                              this.state.tabFor === i + 1
+                                ? "tab-title"
+                                : "tab-title1"
+                            }
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.today
+                              : "Today"}
+                          </p>
+                        ) : (
+                          <p
+                            className={
+                              this.state.tabFor === i + 1
+                                ? "tab-title"
+                                : "tab-title1"
+                            }
+                          >
+                            {moment(fdate.setDate(fdate.getDate())).format(
+                              "Do"
+                            )}
+                          </p>
+                        )}
+                        <span
+                          className={
+                            this.state.tabFor === i + 1
+                              ? "tab-count"
+                              : "tab-count1"
+                          }
+                        >
+                          {item.aptCount}
+                        </span>
+                      </div>
+                    );
+                  }
+                })
+              : null}
+          </div>
+          <div
+            className="selectdot-blue"
+            onClick={this.handleScrollRight.bind(this)}
+            style={{ marginTop: "0" }}
+          >
+            <img src={SchRight} alt="right arrow" />
+          </div>
           {/* 
           <div
             className={
