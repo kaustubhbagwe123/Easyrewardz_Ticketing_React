@@ -108,29 +108,29 @@ class StoreModule extends Component {
       campProviderValidation: "",
       broadProviderValidation: "",
       TimeSlotData: TimeSlotdropdown(),
-      // TimeSlotGridData: [],
-      TimeSlotGridData: [
-        {
-          slotSettingID: 1,
-          storeCode: "SMB0000",
-          storeTimimg: "10 AM-7 PM",
-          nonOperationalTimimg: "3",
-          slotTemplate: "Alternate 1",
-          totalSlot: "6",
-          appointmentDays: "10",
-          status: "Active",
-        },
-        {
-          slotSettingID: 2,
-          storeCode: "SMB0000",
-          storeTimimg: "10 AM-7 PM",
-          nonOperationalTimimg: "3",
-          slotTemplate: "Alternate 1",
-          totalSlot: "6",
-          appointmentDays: "10",
-          status: "Active",
-        },
-      ],
+      TimeSlotGridData: [],
+      // TimeSlotGridData: [
+      //   {
+      //     slotSettingID: 1,
+      //     storeCode: "SMB0000",
+      //     storeTimimg: "10 AM-7 PM",
+      //     nonOperationalTimimg: "3",
+      //     slotTemplate: "Alternate 1",
+      //     totalSlot: "6",
+      //     appointmentDays: "10",
+      //     status: "Active",
+      //   },
+      //   {
+      //     slotSettingID: 2,
+      //     storeCode: "SMB0000",
+      //     storeTimimg: "10 AM-7 PM",
+      //     nonOperationalTimimg: "3",
+      //     slotTemplate: "Alternate 1",
+      //     totalSlot: "6",
+      //     appointmentDays: "10",
+      //     status: "Active",
+      //   },
+      // ],
       storeCodeData: [],
       tempStoreCodeData: [],
       selectStore: 0,
@@ -181,15 +181,7 @@ class StoreModule extends Component {
       editAppointmentDays: "",
       editSlotDuration: "",
       isNextClick: false,
-      slotData: [
-        {
-          no: 1,
-          startTime: "10:00 AM",
-          endTime: "10:30 AM",
-          occupancy: 3,
-          slotstatus: true,
-        },
-      ],
+      slotData: [],
       chooseStoreModal: false,
       createTampleteModal: false,
       selectedStoreModal: false,
@@ -232,6 +224,11 @@ class StoreModule extends Component {
       manualSlotEndCompulsory: "",
       manualStoreTblData: [],
       manualStoreData: {},
+      operationalDays: [],
+      editTotalSlot: "",
+      editOperationalDays: "",
+      editSlotTemplateName: "",
+      storeTimimg: ""
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -253,7 +250,7 @@ class StoreModule extends Component {
     this.handleCampaignChannelGridData();
     this.handleGetAppointmentConfigData();
     this.handleGetBroadCastConfigData();
-    // this.handleGetTimeslotGridData();
+    this.handleGetTimeslotGridData();
     this.handleGetstoreCodeData();
     this.handleGetLanguageDropdownlist();
     this.handleGetLanguageGridData();
@@ -379,7 +376,7 @@ class StoreModule extends Component {
         CampaignID: deleteId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -644,7 +641,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetStoreAttachmentSettings",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -684,7 +681,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetCampaignName",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -706,7 +703,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -801,7 +798,7 @@ class StoreModule extends Component {
         SlotID: slotId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -850,7 +847,7 @@ class StoreModule extends Component {
         isActive: row.isActive,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -881,7 +878,7 @@ class StoreModule extends Component {
       headers: authHeader(),
       params: { SlotID: slotID ? slotID : 0, StoreID: storeId ? storeId : 0 },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -909,7 +906,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetAppointmentConfiguration",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -935,7 +932,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetBroadcastConfiguration",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -960,7 +957,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetCampaignScript",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -1043,7 +1040,7 @@ class StoreModule extends Component {
           FileFomatID: this.state.selectedFileFormat,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1096,7 +1093,7 @@ class StoreModule extends Component {
           Status: true,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -1155,7 +1152,7 @@ class StoreModule extends Component {
           Status: true,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -1765,7 +1762,7 @@ class StoreModule extends Component {
               : "",
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1800,7 +1797,7 @@ class StoreModule extends Component {
         OnlyCard: this.state.AppointConfigData.onlyCard,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1851,7 +1848,7 @@ class StoreModule extends Component {
           ProviderName: this.state.BroadCastConfigData.providerName,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1905,7 +1902,7 @@ class StoreModule extends Component {
           AppointmentDays: Number(this.state.appointmentDays),
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -1972,7 +1969,7 @@ class StoreModule extends Component {
           AppointmentDays: Number(this.state.editAppointmentDays),
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -2004,7 +2001,7 @@ class StoreModule extends Component {
               NotificationManager.error(
                 TranslationContext !== undefined
                   ? TranslationContext.alertmessage
-                      .appointmentrecordalreadyexists
+                    .appointmentrecordalreadyexists
                   : "Appointment Record Already Exists"
               );
             } else {
@@ -2040,7 +2037,7 @@ class StoreModule extends Component {
           languageID: parseInt(this.state.selectLanguage),
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -2081,58 +2078,67 @@ class StoreModule extends Component {
     let self = this;
 
     this.setState({ editSlotModal: true });
-    // axios({
-    //   method: "post",
-    //   url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
-    //   headers: authHeader(),
-    //   params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
-    // })
-    //   .then(function(res) {
-    //     debugger;
-    //     var message = res.data.message;
-    //     var data = res.data.responseData;
-    //     if (message === "Success") {
-    //       var slotId = data[0].slotSettingID;
-    //       var editstoreCode = data[0].storeId;
-    //       var editmaxCapacity = data[0].maxCapacity;
-    //       var storeTimimg = data[0].storeTimimg.match(
-    //         /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
-    //       );
-    //       var nonOperationalTimimg = data[0].nonOperationalTimimg.match(
-    //         /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
-    //       );
-    //       var editSelectTimeSlot1 = storeTimimg[0];
-    //       var editSelectTimeSlot2 = storeTimimg[2];
-    //       var editSelectAmPm1 = storeTimimg[1];
-    //       var editSelectAmPm2 = storeTimimg[3];
-    //       var editSelectNOTimeSlot1 = nonOperationalTimimg[0];
-    //       var editSelectNOTimeSlot2 = nonOperationalTimimg[2];
-    //       var editSelectNOAmPm1 = nonOperationalTimimg[1];
-    //       var editSelectNOAmPm2 = nonOperationalTimimg[3];
-    //       var editAppointmentDays = data[0].appointmentDays;
-    //       var editSlotDuration = data[0].storeSlotDuration.split(" ")[0];
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
+      headers: authHeader(),
+      params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
+    })
+      .then(function (res) {
+        debugger;
+        var message = res.data.message;
+        var data = res.data.responseData;
+        if (message === "Success") {
+          var slotId = data[0].slotSettingID;
+          var editstoreCode = data[0].storeCode;
+          var storeTimimg = data[0].storeTimimg.match(
+            /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
+          );
+          var storeTimimg = data[0].storeTimimg;
+          // var nonOperationalTimimg = data[0].nonOperationalTimimg.match(
+          //   /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
+          // );
+          // var editSelectTimeSlot1 = storeTimimg[0];
+          // var editSelectTimeSlot2 = storeTimimg[2];
+          // var editSelectAmPm1 = storeTimimg[1];
+          // var editSelectAmPm2 = storeTimimg[3];
+          // var editSelectNOTimeSlot1 = nonOperationalTimimg[0];
+          // var editSelectNOTimeSlot2 = nonOperationalTimimg[2];
+          // var editSelectNOAmPm1 = nonOperationalTimimg[1];
+          // var editSelectNOAmPm2 = nonOperationalTimimg[3];
+          var editAppointmentDays = data[0].appointmentDays;
+          var editSlotDuration = data[0].storeSlotDuration.split(" ")[0];
+          var editTotalSlot = data[0].totalSlot;
+          var editOperationalDays = data[0].operationalDaysCount;
+          var editSlotTemplateName = data[0].slotTemplateName;
+          var slotData = data[0].templateSlots;
 
-    //       self.setState({
-    //         editSlotModal: true,
-    //         slotId,
-    //         editstoreCode,
-    //         editmaxCapacity,
-    //         editSelectTimeSlot1,
-    //         editSelectTimeSlot2,
-    //         editSelectAmPm1,
-    //         editSelectAmPm2,
-    //         editSelectNOTimeSlot1,
-    //         editSelectNOTimeSlot2,
-    //         editSelectNOAmPm1,
-    //         editSelectNOAmPm2,
-    //         editAppointmentDays,
-    //         editSlotDuration,
-    //       });
-    //     }
-    //   })
-    //   .catch((response) => {
-    //     console.log(response);
-    //   });
+          self.setState({
+            editSlotModal: true,
+            slotId,
+            editstoreCode,
+            storeTimimg,
+            // editmaxCapacity,
+            // editSelectTimeSlot1,
+            // editSelectTimeSlot2,
+            // editSelectAmPm1,
+            // editSelectAmPm2,
+            // editSelectNOTimeSlot1,
+            // editSelectNOTimeSlot2,
+            // editSelectNOAmPm1,
+            // editSelectNOAmPm2,
+            editAppointmentDays,
+            editSlotDuration,
+            editTotalSlot,
+            editOperationalDays,
+            editSlotTemplateName,
+            slotData
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   }
 
   handleChangeStoreDropdown(e) {
@@ -2529,7 +2535,7 @@ class StoreModule extends Component {
       this.state.manualStoreFrom !== "" &&
       this.state.manualStoreTo !== "" &&
       this.state.ManualSlotDuration !== 0 &&
-      this.state.manualStoreData.slotEndTime !== "" 
+      this.state.manualStoreData.slotEndTime !== ""
       // && this.state.manualStoreData.slotStartTime !== ""
     ) {
       var manualStoreTblData = [];
@@ -2563,6 +2569,25 @@ class StoreModule extends Component {
     manualStoreTblData.splice(id, 1);
     this.setState({ manualStoreTblData });
   }
+
+  handleEnableDisableOnChange(i, e) {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value
+    if(name === "isSlotEnabled")
+    {
+      value = e.target.checked
+    }
+    let slotData = [...this.state.slotData];
+    slotData[i] = {
+      ...slotData[i],
+      [name]: value,
+    };
+    this.setState({
+      slotData
+    });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2676,83 +2701,83 @@ class StoreModule extends Component {
                   </div>
                   {this.state.sortColumn === "campaignName"
                     ? this.state.sortFiltercampaignName !== null &&
-                      this.state.sortFiltercampaignName.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.campaignName}
-                            value={item.campaignName}
-                            checked={this.state.scampaignNameFilterCheckbox.includes(
-                              item.campaignName
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "campaignName",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.campaignName}>
-                            <span className="table-btn table-blue-btn">
-                              {item.campaignName}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFiltercampaignName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.campaignName}
+                          value={item.campaignName}
+                          checked={this.state.scampaignNameFilterCheckbox.includes(
+                            item.campaignName
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "campaignName",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.campaignName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.campaignName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFiltercreatedBy !== null &&
-                      this.state.sortFiltercreatedBy.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.createdBy}
-                            value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "createdBy",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.createdBy}>
-                            <span className="table-btn table-blue-btn">
-                              {item.createdBy}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFiltercreatedBy.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.createdBy}
+                          value={item.createdBy}
+                          checked={this.state.screatedByFilterCheckbox.includes(
+                            item.createdBy
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "createdBy",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.createdBy}>
+                          <span className="table-btn table-blue-btn">
+                            {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
 
                   {this.state.sortColumn === "status"
                     ? this.state.sortFilteristatus !== null &&
-                      this.state.sortFilteristatus.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.status}
-                            value={item.status}
-                            checked={this.state.sstatusFilterCheckbox.includes(
-                              item.status
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "status",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.status}>
-                            <span className="table-btn table-blue-btn">
-                              {item.status}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                    this.state.sortFilteristatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.status}
+                          value={item.status}
+                          checked={this.state.sstatusFilterCheckbox.includes(
+                            item.status
+                          )}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "status",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.status}>
+                          <span className="table-btn table-blue-btn">
+                            {item.status}
+                          </span>
+                        </label>
+                      </div>
+                    ))
                     : null}
                 </div>
               </div>
@@ -2974,8 +2999,8 @@ class StoreModule extends Component {
                                 spin
                               />
                             ) : (
-                              ""
-                            )}
+                                ""
+                              )}
                             {TranslationContext !== undefined
                               ? TranslationContext.button.save
                               : "SAVE"}
@@ -3021,7 +3046,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
-                                        this.state.sortHeader ===
+                                          this.state.sortHeader ===
                                           "Campaign Name"
                                           ? faCaretUp
                                           : faCaretDown
@@ -3088,7 +3113,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
-                                        this.state.sortHeader === "Created by"
+                                          this.state.sortHeader === "Created by"
                                           ? faCaretUp
                                           : faCaretDown
                                       }
@@ -3163,7 +3188,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
-                                        this.state.sortHeader === "Status"
+                                          this.state.sortHeader === "Status"
                                           ? faCaretUp
                                           : faCaretDown
                                       }
@@ -3405,8 +3430,8 @@ class StoreModule extends Component {
                                 spin
                               />
                             ) : (
-                              ""
-                            )}
+                                ""
+                              )}
                             ADD
                           </button>
                         </div>
@@ -3614,15 +3639,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .providerName === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.campProviderValidation}
-                                        </p>
-                                      )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.campProviderValidation}
+                                          </p>
+                                        )}
                                     </div>
                                   ) : null}
 
@@ -3706,7 +3731,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                            .maxclickallowesonanychannelcta
+                                          .maxclickallowesonanychannelcta
                                         : "Max. click allowed on any channel CTA"}
                                     </td>
                                     <td>
@@ -3725,15 +3750,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .maxClickAllowed === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.maxClickValidation}
-                                        </p>
-                                      )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.maxClickValidation}
+                                          </p>
+                                        )}
                                     </td>
                                     <td>
                                       {TranslationContext !== undefined
@@ -3745,7 +3770,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                            .clickwillbeenabledafter
+                                          .clickwillbeenabledafter
                                         : "Click will be enabled after"}
                                     </td>
                                     <td>
@@ -3764,15 +3789,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .enableClickAfterValue === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.enabledAfterValidation}
-                                        </p>
-                                      )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.enabledAfterValidation}
+                                          </p>
+                                        )}
                                     </td>
                                     <td>
                                       <select
@@ -3834,7 +3859,7 @@ class StoreModule extends Component {
                                 <h3>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.h3
-                                        .appointmentconfiguration
+                                      .appointmentconfiguration
                                     : "APPOINTMENT CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
@@ -3944,7 +3969,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                            .otptimeconfiguration
+                                          .otptimeconfiguration
                                         : "OTP Time Configuration"}
                                     </td>
                                     <td>
@@ -3952,13 +3977,13 @@ class StoreModule extends Component {
                                         type="text"
                                         autoComplete="off"
                                         maxLength={2}
-                                        // value={
-                                        //   this.state.BroadCastConfigData
-                                        //     .enableClickAfterValue
-                                        // }
-                                        // onChange={this.BroadCastOnChange.bind(
-                                        //   this
-                                        // )}
+                                      // value={
+                                      //   this.state.BroadCastConfigData
+                                      //     .enableClickAfterValue
+                                      // }
+                                      // onChange={this.BroadCastOnChange.bind(
+                                      //   this
+                                      // )}
                                       />
                                     </td>
                                     <td>
@@ -4026,7 +4051,7 @@ class StoreModule extends Component {
                                 <h3>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.h3
-                                        .broadcastconfiguration
+                                      .broadcastconfiguration
                                     : "BROADCAST CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
@@ -4062,7 +4087,7 @@ class StoreModule extends Component {
                                           placeholder={
                                             TranslationContext !== undefined
                                               ? TranslationContext.placeholder
-                                                  .providername
+                                                .providername
                                               : "Provider name"
                                           }
                                           maxLength={15}
@@ -4076,15 +4101,15 @@ class StoreModule extends Component {
                                         />
                                         {this.state.BroadCastConfigData
                                           .providerName === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.broadProviderValidation}
-                                          </p>
-                                        )}
+                                            <p
+                                              style={{
+                                                color: "red",
+                                                marginBottom: "0px",
+                                              }}
+                                            >
+                                              {this.state.broadProviderValidation}
+                                            </p>
+                                          )}
                                       </div>
                                     ) : null}
                                   </div>
@@ -4144,7 +4169,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                            .maxclickallowesonanychannelcta
+                                          .maxclickallowesonanychannelcta
                                         : "Max. click allowed on any channel CTA"}
                                     </td>
                                     <td>
@@ -4163,15 +4188,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.BroadCastConfigData
                                         .maxClickAllowed === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.braodCastMaxClickValid}
-                                        </p>
-                                      )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.braodCastMaxClickValid}
+                                          </p>
+                                        )}
                                     </td>
                                     <td>
                                       {TranslationContext !== undefined
@@ -4183,7 +4208,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                            .clickwillbeenabledafter
+                                          .clickwillbeenabledafter
                                         : "Click will be enabled after"}
                                     </td>
                                     <td>
@@ -4202,18 +4227,18 @@ class StoreModule extends Component {
                                       />
                                       {this.state.BroadCastConfigData
                                         .enableClickAfterValue === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {
-                                            this.state
-                                              .broadCastEnabledAfterValid
-                                          }
-                                        </p>
-                                      )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {
+                                              this.state
+                                                .broadCastEnabledAfterValid
+                                            }
+                                          </p>
+                                        )}
                                     </td>
                                     <td>
                                       <select
@@ -4295,7 +4320,7 @@ class StoreModule extends Component {
                                                 value={
                                                   this.state.showApplyStoreData
                                                     ? this.state
-                                                        .selectedStoreValues
+                                                      .selectedStoreValues
                                                     : ""
                                                 }
                                               />
@@ -4518,7 +4543,7 @@ class StoreModule extends Component {
                                             >
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.button
-                                                    .delete
+                                                  .delete
                                                 : "Save"}
                                             </button>
                                           </div>
@@ -4875,12 +4900,8 @@ class StoreModule extends Component {
                                     dataIndex: "storeTimimg",
                                   },
                                   {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                            .nonoperationalhours
-                                        : "Operational Days",
-                                    dataIndex: "nonOperationalTimimg",
+                                    title: "Operational Days",
+                                    dataIndex: "operationalDaysCount",
                                     render: (row, item) => {
                                       return (
                                         <Popover
@@ -4897,15 +4918,13 @@ class StoreModule extends Component {
                                                   <div className="col-12">
                                                     <h3>Operational Days</h3>
                                                     <ul>
-                                                      <li>
-                                                        <label>Monday</label>
-                                                      </li>
-                                                      <li>
-                                                        <label>Tuesday</label>
-                                                      </li>
-                                                      <li>
-                                                        <label>Wednesday</label>
-                                                      </li>
+                                                      {item.operationalDays.split(',').map(
+                                                        (item, i) => (
+                                                          <li>
+                                                            <label>{item}</label>
+                                                          </li>
+                                                        )
+                                                      )}
                                                     </ul>
                                                   </div>
                                                 </div>
@@ -4916,7 +4935,7 @@ class StoreModule extends Component {
                                           trigger="click"
                                         >
                                           <div className="broadcast-icon">
-                                            {item.nonOperationalTimimg}
+                                            {item.operationalDaysCount}
                                             <img
                                               className="info-icon-cp"
                                               src={BlackInfoIcon}
@@ -4929,7 +4948,7 @@ class StoreModule extends Component {
                                   },
                                   {
                                     title: "Slot Template",
-                                    dataIndex: "storeSlotDuration",
+                                    dataIndex: "slotTemplateName",
                                   },
                                   {
                                     title:
@@ -4942,7 +4961,7 @@ class StoreModule extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.header
-                                            .appointmentdays
+                                          .appointmentdays
                                         : "Appointment Days",
                                     dataIndex: "appointmentDays",
                                     render: (row, item) => {
@@ -4963,7 +4982,7 @@ class StoreModule extends Component {
                                                     <div className="">
                                                       <Table
                                                         dataSource={
-                                                          this.state.slotData
+                                                          item.templateSlots
                                                         }
                                                         noDataContent="No Record Found"
                                                         pagination={false}
@@ -4971,26 +4990,32 @@ class StoreModule extends Component {
                                                         columns={[
                                                           {
                                                             title: "S.No.",
-
-                                                            dataIndex: "no",
+                                                            render: (
+                                                              row,
+                                                              rowData, i
+                                                            ) => {
+                                                              return (
+                                                                <>{i + 1}</>
+                                                              );
+                                                            }
                                                           },
                                                           {
                                                             title:
                                                               "Slot Start Time",
                                                             dataIndex:
-                                                              "startTime",
+                                                              "slotStartTime",
                                                           },
                                                           {
                                                             title:
                                                               "Slot End Time",
                                                             dataIndex:
-                                                              "endTime",
+                                                              "slotEndTime",
                                                           },
                                                           {
                                                             title:
                                                               "Slot Occupancy",
                                                             dataIndex:
-                                                              "occupancy",
+                                                              "slotOccupancy",
                                                           },
                                                           {
                                                             title:
@@ -5000,7 +5025,7 @@ class StoreModule extends Component {
                                                               rowData
                                                             ) => {
                                                               return (
-                                                                <>Unable</>
+                                                                <>{rowData.isSlotEnabled === true ? "Unable" : "Disable"}</>
                                                               );
                                                             },
                                                           },
@@ -5031,7 +5056,7 @@ class StoreModule extends Component {
                                     title: "Status",
                                     render: (row, item) => {
                                       return (
-                                        <div className="tabactive">Active</div>
+                                        <div className="tabactive">{item.status}</div>
                                       );
                                     },
                                   },
@@ -5069,26 +5094,26 @@ class StoreModule extends Component {
                                                   <div>
                                                     <p className="font-weight-bold blak-clr">
                                                       {TranslationContext !==
-                                                      undefined
+                                                        undefined
                                                         ? TranslationContext.p
-                                                            .deletefile
+                                                          .deletefile
                                                         : "Delete file"}
                                                       ?
                                                     </p>
                                                     <p className="mt-1 fs-12">
                                                       {TranslationContext !==
-                                                      undefined
+                                                        undefined
                                                         ? TranslationContext.p
-                                                            .areyousureyouwanttodeletethisfile
+                                                          .areyousureyouwanttodeletethisfile
                                                         : "Are you sure you want to delete this file"}
                                                       ?
                                                     </p>
                                                     <div className="del-can">
                                                       <a href={Demo.BLANK_LINK}>
                                                         {TranslationContext !==
-                                                        undefined
+                                                          undefined
                                                           ? TranslationContext.a
-                                                              .cancel
+                                                            .cancel
                                                           : "CANCEL"}
                                                       </a>
                                                       <button
@@ -5099,9 +5124,9 @@ class StoreModule extends Component {
                                                         )}
                                                       >
                                                         {TranslationContext !==
-                                                        undefined
+                                                          undefined
                                                           ? TranslationContext
-                                                              .button.delete
+                                                            .button.delete
                                                           : "Delete"}
                                                       </button>
                                                     </div>
@@ -5183,7 +5208,7 @@ class StoreModule extends Component {
                                       <option value={0}>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.option
-                                              .selectlanguage
+                                            .selectlanguage
                                           : "Select Language"}
                                       </option>
                                       {this.state.languageData !== null &&
@@ -5201,15 +5226,15 @@ class StoreModule extends Component {
                                     </select>
                                     {parseInt(this.state.selectLanguage) ===
                                       0 && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.languageValidation}
-                                      </p>
-                                    )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.languageValidation}
+                                        </p>
+                                      )}
                                   </div>
                                 </div>
                                 <button
@@ -5426,15 +5451,15 @@ class StoreModule extends Component {
                       <ul>
                         <li>
                           <label>Store Code</label>
-                          <span>SMB09786</span>
+                          <span>{this.state.editstoreCode}</span>
                         </li>
                         <li>
                           <label>Store Timing</label>
-                          <span>11 AM - 8 PM</span>
+                          <span>{this.state.storeTimimg}</span>
                         </li>
                         <li>
                           <label>Store Operational Days</label>
-                          <span>4</span>
+                          <span>{this.state.editOperationalDays}</span>
                         </li>
                       </ul>
                     </div>
@@ -5442,11 +5467,11 @@ class StoreModule extends Component {
                       <ul>
                         <li>
                           <label>Slot Template</label>
-                          <span>Alternate 2</span>
+                          <span>{this.state.editSlotTemplateName}</span>
                         </li>
                         <li>
                           <label>Total Slots</label>
-                          <span>6</span>
+                          <span>{this.state.editTotalSlot}</span>
                         </li>
                       </ul>
                     </div>
@@ -5462,27 +5487,37 @@ class StoreModule extends Component {
                           columns={[
                             {
                               title: "S.No.",
-
-                              dataIndex: "no",
+                              render: (
+                                row,
+                                rowData, i
+                              ) => {
+                                return (
+                                  <>{i + 1}</>
+                                );
+                              }
                             },
                             {
                               title: "Slot Start Time",
-                              dataIndex: "startTime",
+                              dataIndex: "slotStartTime",
                             },
                             {
                               title: "Slot End Time",
-                              dataIndex: "endTime",
+                              dataIndex: "slotEndTime",
                             },
                             {
                               title: "Slot Occupancy",
-                              dataIndex: "occupancy",
-                              render: (row, rowData) => {
+                              dataIndex: "slotOccupancy",
+                              render: (row, rowData, i) => {
                                 return (
                                   <>
                                     <input
                                       type="text"
                                       className="form-control value"
-                                      value="3"
+                                      name="slotOccupancy"
+                                      value={rowData.slotOccupancy}
+                                      onChange={this.handleEnableDisableOnChange.bind(
+                                        this, i
+                                      )}
                                     />
                                   </>
                                 );
@@ -5490,26 +5525,25 @@ class StoreModule extends Component {
                             },
                             {
                               title: "Slot Status(Unable/Disble)",
-
                               render: (row, rowData, i) => {
                                 return (
-                                  <div className="switch switch-primary">
-                                    <input
-                                      type="checkbox"
-                                      id={"ckStatus" + i}
-                                      name="allModules"
-                                      // checked={
-                                      //   this.state.AppointConfigData
-                                      //     .generateOTP
-                                      // }
-                                      // onChange={this.AppoinmentConfigFlageChange.bind(
-                                      //   this
-                                      // )}
-                                    />
-                                    <label
-                                      htmlFor={"ckStatus" + i}
-                                      className="cr cr-float-auto"
-                                    ></label>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <input
+                                        type="checkbox"
+                                        id={"ckStatus" + i}
+                                        name="isSlotEnabled"
+                                        checked={rowData.isSlotEnabled}
+                                        value={rowData.isSlotEnabled}
+                                        onChange={this.handleEnableDisableOnChange.bind(
+                                          this, i
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor={"ckStatus" + i}
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
                                   </div>
                                 );
                               },
@@ -5590,7 +5624,7 @@ class StoreModule extends Component {
                     // name="selectedMaxAttachSize"
                     value={this.state.updateIndiCampaignId}
                     disabled
-                    // onChange={this.setClaimTabData}
+                  // onChange={this.setClaimTabData}
                   >
                     <option value={0}>Select</option>
                     {this.state.campaignName !== null &&
@@ -5643,8 +5677,8 @@ class StoreModule extends Component {
                         spin
                       />
                     ) : (
-                      ""
-                    )}
+                        ""
+                      )}
                     {TranslationContext !== undefined
                       ? TranslationContext.button.save
                       : "SAVE"}
