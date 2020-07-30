@@ -344,7 +344,7 @@ class CardAssets extends Component {
                         dataIndex: "createdByName",
                         render: (row, rowdata) => {
                           return (
-                            <>
+                            <span className="one-liner store-one-liner">
                               {rowdata.createdByName}
                               <Popover
                                 overlayClassName="cardassetspop"
@@ -440,12 +440,12 @@ class CardAssets extends Component {
                                 placement="bottom"
                               >
                                 <img
-                                  className="info-icon"
+                                  className="info-icon-cp"
                                   src={InfoIcon}
                                   alt="info-icon"
                                 />
                               </Popover>
-                            </>
+                            </span>
                           );
                         },
                       },
@@ -569,7 +569,7 @@ class CardAssets extends Component {
                       dataIndex: "createdByName",
                       render: (row, rowdata) => {
                         return (
-                          <>
+                          <span className="one-liner store-one-liner">
                             {rowdata.createdByName}
                             <Popover
                               overlayClassName="cardassetspop"
@@ -665,12 +665,12 @@ class CardAssets extends Component {
                               placement="bottom"
                             >
                               <img
-                                className="info-icon"
+                                className="info-icon-cp"
                                 src={InfoIcon}
                                 alt="info-icon"
                               />
                             </Popover>
-                          </>
+                          </span>
                         );
                       },
                     },
@@ -683,7 +683,7 @@ class CardAssets extends Component {
                       dataIndex: "modifyByName",
                       render: (row, rowdata) => {
                         return (
-                          <>
+                          <span className="one-liner store-one-liner">
                             {rowdata.modifyByName}
                             <Popover
                               overlayClassName="cardassetspop"
@@ -779,12 +779,12 @@ class CardAssets extends Component {
                               placement="bottom"
                             >
                               <img
-                                className="info-icon"
+                                className="info-icon-cp"
                                 src={InfoIcon}
                                 alt="info-icon"
                               />
                             </Popover>
-                          </>
+                          </span>
                         );
                       },
                     },
@@ -816,8 +816,7 @@ class CardAssets extends Component {
                                       className="dash-creation-popup-cntr"
                                       style={{ display: "block" }}
                                     >
-                                       
-                                          {/* <label
+                                      {/* <label
                                             style={{
                                               width: "50%",
                                               fontWeight: "bold",
@@ -825,10 +824,7 @@ class CardAssets extends Component {
                                           >
                                             Rejection Reason
                                           </label> */}
-                                          <p>
-                                            {rowdata.rejectionReason}
-                                          </p>
-                                        
+                                      <p>{rowdata.rejectionReason}</p>
                                     </div>
                                   }
                                   placement="rightBottom"

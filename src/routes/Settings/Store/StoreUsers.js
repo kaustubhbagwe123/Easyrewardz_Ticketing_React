@@ -3735,7 +3735,7 @@ class StoreUsers extends Component {
                           var ids = row.original["userID"];
                           return (
                             <div>
-                              <span>
+                              <span className="store-one-liner one-liner">
                                 {row.original.userName}
                                 <Popover
                                   content={
@@ -3937,7 +3937,7 @@ class StoreUsers extends Component {
                           var ids = row.original["userID"];
                           return (
                             <div>
-                              <span>
+                              <span className="store-one-liner one-liner">
                                 {row.original.reporteeName}
                                 <Popover
                                   content={
@@ -5215,9 +5215,11 @@ class StoreUsers extends Component {
                             value={this.state.userEdit.storeID}
                             onChange={this.handleEditOnchange}
                           >
-                            <option value="0">{TranslationContext !== undefined
+                            <option value="0">
+                              {TranslationContext !== undefined
                                 ? TranslationContext.option.select
-                                : "Select"}</option>
+                                : "Select"}
+                            </option>
                             {this.state.storeCodeData !== null &&
                               this.state.storeCodeData.map((item, s) => (
                                 <option

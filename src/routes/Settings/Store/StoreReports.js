@@ -50,8 +50,8 @@ class StoreReports extends Component {
     let end = moment(start).add(30, "days");
     let loginstart = moment(
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-    ).subtract(30+1, "days");
-    let loginend = moment(start).add(30-1, "days");
+    ).subtract(30 + 1, "days");
+    let loginend = moment(start).add(30 - 1, "days");
     this.state = {
       AddReportPopup: false,
       NextPopup: false,
@@ -223,8 +223,7 @@ class StoreReports extends Component {
       loginDateTo: "",
       loginUsers: "0",
       loginStart: loginstart,
-      loginEnd: loginend
-
+      loginEnd: loginend,
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -1417,7 +1416,7 @@ class StoreReports extends Component {
         Enddate:
           this.state.loginDateTo === ""
             ? moment(this.state.loginEnd).format("YYYY-MM-DD")
-            : moment(this.state.loginDateTo).format("YYYY-MM-DD")
+            : moment(this.state.loginDateTo).format("YYYY-MM-DD"),
       };
     }
     this.setState({ ReportParams: paramData });
@@ -3336,7 +3335,7 @@ class StoreReports extends Component {
           var ids = row.original["id"];
           return (
             <div>
-              <span>
+              <span className="one-liner store-one-liner">
                 {row.original["createdBy"]}
                 <Popover
                   content={
