@@ -518,7 +518,7 @@ class OrderTab extends Component {
     } else {
       e.target.value = "";
     }
-    if (this.state.pincode.length === 5) {
+    if (e.target.value.length === 6) {
       setTimeout(() => {
         this.handleUpdateCheckServiceData(ordId);
       }, 100);

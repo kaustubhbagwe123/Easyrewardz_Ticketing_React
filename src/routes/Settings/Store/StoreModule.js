@@ -42,6 +42,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import { element } from "prop-types";
 
 const { Option } = Aselect;
 var uid = 0;
@@ -232,6 +233,7 @@ class StoreModule extends Component {
       manualSlotEndCompulsory: "",
       manualStoreTblData: [],
       manualStoreData: {},
+      mimSlotStartTimeChck: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2441,29 +2443,75 @@ class StoreModule extends Component {
     }
   }
   //// handle finale automatic save data
-  handleFinalAutomaticSaveData() {
+  handleFinalSaveTemplateData(check) {
     debugger;
     let self = this;
+    var inputParam = {};
+    var slot_Id = 0;
+    if (check === "Automatic") {
+      inputParam.SlotTemplateName = this.state.autoTempName.trim();
+      inputParam.SlotTemplateType = "A";
+      inputParam.Slotduration = parseFloat(this.state.AutoSlotDuration);
+      inputParam.SlotGaps = parseFloat(this.state.AutoSlotGap);
+      inputParam.StoreOpenAt = moment(this.state.autoStoreFrom).format("HH:mm");
+      inputParam.StoreCloseAt = moment(this.state.autoStoreTo).format("HH:mm");
+      inputParam.StoreNonOpFromAt = moment(this.state.autoNonOptFrom).format(
+        "HH:mm"
+      );
+      inputParam.StoreNonOpToAt = moment(this.state.autoNonOptTo).format(
+        "HH:mm"
+      );
+      inputParam.TemplateSlots = this.state.automaticaSlotTblData;
+    } else {
+      var manualSlotDuration = parseFloat(this.state.ManualSlotDuration);
+      var slot_Duration =
+        manualSlotDuration === 15
+          ? 0.25
+          : manualSlotDuration === 30
+          ? 0.5
+          : manualSlotDuration === 45
+          ? 0.5
+          : manualSlotDuration === 60
+          ? 0.75
+          : manualSlotDuration === 1
+          ? 1
+          : manualSlotDuration === 1.5
+          ? 1.5
+          : manualSlotDuration === 2
+          ? 2
+          : 0;
+
+      inputParam.SlotTemplateName = this.state.manualTempName.trim();
+      inputParam.SlotTemplateType = "M";
+      inputParam.Slotduration = slot_Duration;
+      inputParam.SlotGaps = 0;
+      inputParam.StoreOpenAt = moment(this.state.manualStoreFrom).format(
+        "HH:mm"
+      );
+      inputParam.StoreCloseAt = moment(this.state.manualStoreTo).format(
+        "HH:mm"
+      );
+      inputParam.StoreNonOpFromAt = "";
+      inputParam.StoreNonOpToAt = "";
+      this.state.manualStoreTblData.forEach((element) => {
+        slot_Id += 1;
+        element.slotID = slot_Id;
+        element.slotOccupancy = 0;
+        element.slotTemplateID = 0;
+      });
+      inputParam.TemplateSlots = this.state.manualStoreTblData;
+    }
+
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/CreateSlotTemplate",
       headers: authHeader(),
-      data: {
-        SlotTemplateName: this.state.autoTempName.trim(),
-        SlotTemplateType: this.state.slotAutomaticRadio === 1 ? "A" : "M",
-        Slotduration: parseFloat(this.state.AutoSlotDuration),
-        SlotGaps: parseFloat(this.state.AutoSlotGap),
-        StoreOpenAt: moment(this.state.autoStoreFrom).format("HH:mm"),
-        StoreCloseAt: moment(this.state.autoStoreTo).format("HH:mm"),
-        StoreNonOpFromAt: moment(this.state.autoNonOptFrom).format("HH:mm"),
-        StoreNonOpToAt: moment(this.state.autoNonOptTo).format("HH:mm"),
-        TemplateSlots: this.state.automaticaSlotTblData,
-      },
+      data: inputParam,
     })
       .then((res) => {
         debugger;
         let status = res.data.message;
-        // let data = res.data.responseData;
+        let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
             autoTempName: "",
@@ -2473,27 +2521,29 @@ class StoreModule extends Component {
             autoStoreTo: "",
             autoNonOptFrom: "",
             autoNonOptTo: "",
+            manualTempName: "",
+            manualStoreFrom: "",
+            manualStoreTo: "",
+            ManualSlotDuration: 0,
             createTampleteModal: false,
           });
-          NotificationManager.success("Automatic Template Created.");
+          if (check === "Automatic") {
+            NotificationManager.success("Automatic Template Created.");
+          } else {
+            NotificationManager.success("Manual Template Created.");
+          }
         } else {
-          NotificationManager.error("Automatic Template Not Created..");
+          if (check === "Automatic") {
+            NotificationManager.error("Automatic Template Not Created..");
+          } else {
+            NotificationManager.error("Manual Template Not Created..");
+          }
         }
       })
       .catch((response) => {
         console.log(response);
       });
   }
-
-  // /// hanlde manual input onchange
-  // handleManualInputOnchange(filed, e) {
-  //   var manualStoreData = this.state.manualStoreData;
-  //   manualStoreData[filed] = e.target.value;
-
-  //   this.setState({
-  //     manualStoreData,
-  //   });
-  // }
 
   /// handle manual time onchange
   handleManualTimeOnchange = (time, check) => {
@@ -2502,8 +2552,11 @@ class StoreModule extends Component {
     if (check === "slotStartTime") {
       manualStoreData["slotStartTime"] = time;
       manualStoreData["manualSlotStartTime"] = time;
-      // this.state.manualStoreData["slotEndTime"] = (getMinutes()+this.state
-      //   .ManualSlotDuration);
+      this.state.manualStoreData["slotEndTime"] = moment(
+        manualStoreData["slotStartTime"]
+      )
+        .add(Number(this.state.ManualSlotDuration), "m")
+        .toDate();
     } else if (check === "slotEndTime") {
       manualStoreData["slotEndTime"] = time;
       manualStoreData["manualSlotEndTime"] = time;
@@ -2514,7 +2567,6 @@ class StoreModule extends Component {
   };
   /// handle Manual selct duration
   handleManualSelectDuration = (e) => {
-    debugger;
     let values = e.target.value;
     var manualStoreData = this.state.manualStoreData;
     manualStoreData[e.target.name] = e.target.selectedOptions[0].text;
@@ -2529,7 +2581,7 @@ class StoreModule extends Component {
       this.state.manualStoreFrom !== "" &&
       this.state.manualStoreTo !== "" &&
       this.state.ManualSlotDuration !== 0 &&
-      this.state.manualStoreData.slotEndTime !== "" 
+      this.state.manualStoreData.slotEndTime !== ""
       // && this.state.manualStoreData.slotStartTime !== ""
     ) {
       var manualStoreTblData = [];
@@ -2538,12 +2590,13 @@ class StoreModule extends Component {
       var end = this.state.manualStoreData["slotEndTime"];
 
       var ObjData = {};
-      ObjData.slotStartTime = start;
-      ObjData.slotEndTime = end;
+      ObjData.slotStartTime = moment(start).format("LT");
+      ObjData.slotEndTime = moment(end).format("LT");
 
       manualStoreTblData.push(ObjData);
       this.setState({
         manualStoreTblData,
+        mimSlotStartTimeChck: this.state.manualStoreData.slotEndTime,
       });
       NotificationManager.success("Manual Slot Created.");
     } else {
@@ -2562,7 +2615,9 @@ class StoreModule extends Component {
     let manualStoreTblData = [...this.state.manualStoreTblData];
     manualStoreTblData.splice(id, 1);
     this.setState({ manualStoreTblData });
+    NotificationManager.success("Slot Deleted.");
   }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -6172,7 +6227,10 @@ class StoreModule extends Component {
                         </a>
                         <button
                           className="butn"
-                          onClick={this.handleFinalAutomaticSaveData.bind(this)}
+                          onClick={this.handleFinalSaveTemplateData.bind(
+                            this,
+                            "Automatic"
+                          )}
                         >
                           Save
                         </button>
@@ -6298,7 +6356,11 @@ class StoreModule extends Component {
                         className="form-control"
                         minTime={setHours(
                           setMinutes(new Date(), 0),
-                          new Date(this.state.manualStoreFrom).getHours()
+                          new Date(
+                            this.state.mimSlotStartTimeChck
+                              ? this.state.manualStoreData.slotEndTime
+                              : this.state.manualStoreFrom
+                          ).getHours()
                         )}
                         maxTime={setHours(
                           setMinutes(new Date(), 0),
@@ -6308,7 +6370,7 @@ class StoreModule extends Component {
                           this.handleManualTimeOnchange(time, "slotStartTime")
                         }
                       />
-                      {this.state.slotStartTime === "" && (
+                      {this.state.manualStoreData.slotStartTime === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.manualSlotStartCompulsory}
                         </p>
@@ -6340,7 +6402,7 @@ class StoreModule extends Component {
                     </div>
                     <div className="col-12 col-md-2">
                       <button
-                        className="tabbutn"
+                        className="tabbutn cr-pnt"
                         onClick={this.handleAddManualySlot.bind(this)}
                       >
                         Add Slot
@@ -6363,23 +6425,24 @@ class StoreModule extends Component {
                             },
                             {
                               title: "Slot Start Time",
-                              dataIndex: "manualSlotStartTime",
-                              render: (row, rowData) => {
-                                var StartTime = moment(
-                                  rowData.slotStartTime
-                                ).format("LT");
-                                return <>{StartTime}</>;
-                              },
+                              dataIndex: "slotStartTime",
+                              // render: (row, rowData) => {
+                              //   debugger
+                              //   var StartTime = moment(
+                              //     rowData.slotStartTime
+                              //   ).format("LT");
+                              //   return <>{StartTime}</>;
+                              // },
                             },
                             {
                               title: "Slot End Time",
-                              dataIndex: "manualSlotEndTime",
-                              render: (row, rowData) => {
-                                var EndTime = moment(
-                                  rowData.slotEndTime
-                                ).format("LT");
-                                return <>{EndTime}</>;
-                              },
+                              dataIndex: "slotEndTime",
+                              // render: (row, rowData) => {
+                              //   var EndTime = moment(
+                              //     rowData.slotEndTime
+                              //   ).format("LT");
+                              //   return <>{EndTime}</>;
+                              // },
                             },
                             {
                               title: "Actions",
@@ -6414,7 +6477,10 @@ class StoreModule extends Component {
                         </a>
                         <button
                           className="butn"
-                          onClick={this.handleNextButtonClose.bind(this)}
+                          onClick={this.handleFinalSaveTemplateData.bind(
+                            this,
+                            "Manual"
+                          )}
                         >
                           Save
                         </button>
