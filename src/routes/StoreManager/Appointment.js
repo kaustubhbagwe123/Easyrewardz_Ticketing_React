@@ -179,11 +179,11 @@ class Appointment extends Component {
   }
   ////handle scroll right
   handleScrollRight(num) {
-    document.getElementById("AppointmentDiv").scrollLeft += 30;
+    document.getElementById("AppointmentDiv").scrollLeft += 20;
   }
   ////handle scroll left
   handleScrollLeft(num) {
-    document.getElementById("AppointmentDiv").scrollLeft -= 30;
+    document.getElementById("AppointmentDiv").scrollLeft -= 20;
   }
 
   render() {
