@@ -2648,7 +2648,7 @@ class StoreTask extends Component {
                           accessor: "departmentName",
                           Cell: (row) => {
                             return (
-                              <>
+                              <span className="one-liner">
                                 {row.original.departmentName}
                                 <Popover
                                   content={
@@ -2669,7 +2669,7 @@ class StoreTask extends Component {
                                     alt="info-icon"
                                   />
                                 </Popover>
-                              </>
+                              </span>
                             );
                           },
                         },
@@ -2706,7 +2706,7 @@ class StoreTask extends Component {
                           accessor: "storeName",
                           Cell: (row) => {
                             return (
-                              <span>
+                              <span className="one-liner">
                                 <label>{row.original.storeName}</label>
                                 <Popover
                                   content={
@@ -2798,7 +2798,7 @@ class StoreTask extends Component {
                           accessor: "creationOn",
                           sortable: false,
                           Cell: (row) => (
-                            <span>
+                            <span className="one-liner">
                               <label>{row.original.creationOn}</label>
 
                               <Popover
@@ -3266,7 +3266,7 @@ class StoreTask extends Component {
                           accessor: "departmentName",
                           Cell: (row) => {
                             return (
-                              <span>
+                              <span className="one-liner">
                                 <label>{row.original.departmentName}</label>
                                 <Popover
                                   content={
@@ -3387,7 +3387,7 @@ class StoreTask extends Component {
                           accessor: "storeName",
                           Cell: (row) => {
                             return (
-                              <span>
+                              <span className="one-liner">
                                 <label>{row.original.storeName}</label>
                                 <Popover
                                   content={
@@ -3446,7 +3446,7 @@ class StoreTask extends Component {
                           accessor: "creationOn",
                           Cell: (row) => {
                             return (
-                              <span>
+                              <span className="one-liner">
                                 <label>{row.original.creationOn}</label>
 
                                 <Popover
@@ -3985,7 +3985,7 @@ class StoreTask extends Component {
                           accessor: "departmentName",
                           Cell: (row) => {
                             return (
-                              <>
+                              <span className="one-liner">
                                 {row.original.departmentName}
                                 <Popover
                                   content={
@@ -4006,7 +4006,7 @@ class StoreTask extends Component {
                                     alt="info-icon"
                                   />
                                 </Popover>
-                              </>
+                              </span>
                             );
                           },
                         },
@@ -4076,7 +4076,7 @@ class StoreTask extends Component {
                           accessor: "storeName",
                           Cell: (row) => {
                             return (
-                              <span>
+                              <span className="one-liner">
                                 <label>{row.original.storeName}</label>
                                 <Popover
                                   content={
@@ -4133,7 +4133,7 @@ class StoreTask extends Component {
                           sortable: false,
                           accessor: "creationOn",
                           Cell: (row) => (
-                            <span>
+                            <span className="one-liner">
                               <label>{row.original.creationOn}</label>
 
                               <Popover

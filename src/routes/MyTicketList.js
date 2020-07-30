@@ -242,6 +242,7 @@ class MyTicketList extends Component {
       selectedNameOfMonthForDailyYear: "",
       loading: false,
       SearchNameCompulsory: "",
+      SearchNameExists: "",
       FinalSaveSearchData: "",
       modulesItemsMyticket: [],
       Escalation: "",
@@ -1755,40 +1756,227 @@ class MyTicketList extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
-    if (this.state.SearchName.length > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/savesearch",
-        headers: authHeader(),
-        params: {
-          SearchSaveName: this.state.SearchName,
-          parameter: this.state.FinalSaveSearchData,
-        },
-      })
-        .then(function(res) {
-          debugger;
-          let Msg = res.data.message;
-          if (Msg === "Success") {
-            NotificationManager.success(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage
-                    .yoursearchhasbeensavedsuccessfully
-                : "Your search has been saved successfully."
-            );
-            self.handleGetSaveSearchList();
-            self.setState({
-              SearchName: "",
-            });
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
+
+    // ---------------By Date tab---------------------
+    var dateTab = {};
+    if (this.state.ActiveTabId === 1) {
+      if (
+        this.state.ByDateCreatDate === null ||
+        this.state.ByDateCreatDate === undefined ||
+        this.state.ByDateCreatDate === ""
+      ) {
+        dateTab["Ticket_CreatedOn"] = "";
+      } else {
+        dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      if (
+        this.state.ByDateSelectDate === null ||
+        this.state.ByDateSelectDate === undefined ||
+        this.state.ByDateSelectDate === ""
+      ) {
+        dateTab["Ticket_ModifiedOn"] = "";
+      } else {
+        dateTab["Ticket_ModifiedOn"] = moment(
+          this.state.ByDateSelectDate
+        ).format("YYYY-MM-DD");
+      }
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
     } else {
-      self.setState({
-        SearchNameCompulsory: "Please Enter Search Name.",
-      });
+      dateTab = null;
     }
+
+    // --------------------By Customer Type Tab---------------
+    var customerType = {};
+    if (this.state.ActiveTabId === 2) {
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType.trim();
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType.trim();
+      customerType["TicketID"] = this.state.TicketIdByCustType.trim();
+      customerType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCustomer;
+    } else {
+      customerType = null;
+    }
+
+    // --------------------By Ticket Type Tab-----------------
+    var ticketType = {};
+    if (this.state.ActiveTabId === 3) {
+      let purchaseIds = "";
+      let actionTypeIds = "";
+      if (this.state.selectedChannelOfPurchase != null) {
+        for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
+          purchaseIds +=
+            this.state.selectedChannelOfPurchase[i].channelOfPurchaseID + ",";
+        }
+      }
+      if (this.state.selectedTicketActionType != null) {
+        for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
+          actionTypeIds +=
+            this.state.selectedTicketActionType[i].ticketActionTypeID + ",";
+        }
+      }
+      ticketType["TicketPriorityID"] = this.state.selectedPriority;
+      ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
+    } else {
+      ticketType = null;
+    }
+    // --------------------By Category Tab-------------------
+    var categoryType = {};
+    if (this.state.ActiveTabId === 4) {
+      categoryType["CategoryId"] = this.state.selectedCategory;
+      categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+      categoryType["IssueTypeId"] = this.state.selectedIssueType;
+      categoryType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCategory;
+    } else {
+      categoryType = null;
+    }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
+
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+
+      if (
+        this.state.ByAllCreateDate === null ||
+        this.state.ByAllCreateDate === undefined ||
+        this.state.ByAllCreateDate === ""
+      ) {
+        allTab["CreatedDate"] = "";
+      } else {
+        allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+
+      if (
+        this.state.ByAllLastDate === null ||
+        this.state.ByAllLastDate === undefined ||
+        this.state.ByAllLastDate === ""
+      ) {
+        allTab["ModifiedDate"] = "";
+      } else {
+        allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      // allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
+      // allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll.trim();
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab[
+        "InvoiceNumberORSubOrderNo"
+      ] = this.state.InvoiceSubOrderByAll.trim();
+      allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll.trim();
+      allTab["CustomerMobileNo"] = this.state.MobileByAll.trim();
+      allTab["AssignTo"] = this.state.selectedAssignedTo;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll.trim();
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll.trim();
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    } else {
+      allTab = null;
+    }
+
+    // ----------------------SetState variable in Json Format for Apply Search------------------------------------
+    var ShowDataparam = {};
+
+    ShowDataparam.HeaderStatusId = this.state.headerActiveId;
+    ShowDataparam.ActiveTabId = this.state.ActiveTabId;
+    ShowDataparam.searchDataByDate = dateTab;
+    ShowDataparam.searchDataByCustomerType = customerType;
+    ShowDataparam.searchDataByTicketType = ticketType;
+    ShowDataparam.searchDataByCategoryType = categoryType;
+    ShowDataparam.SearchDataByAll = allTab;
+
+    var FinalSaveSearchData = JSON.stringify(ShowDataparam);
+    this.setState({
+      FinalSaveSearchData,
+    });
+
+    setTimeout(() => {
+      if (this.state.SearchName.length > 0) {
+        if (
+          this.state.SearchListData.find(
+            (item) => item.searchName === this.state.SearchName
+          )
+        ) {
+          self.setState({
+            SearchNameExists: "This search name already exists.",
+          });
+        } else {
+          self.setState({
+            SearchNameExists: "",
+          });
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Ticketing/savesearch",
+            headers: authHeader(),
+            params: {
+              SearchSaveName: this.state.SearchName,
+              parameter: this.state.FinalSaveSearchData,
+            },
+          })
+            .then(function(res) {
+              debugger;
+              let Msg = res.data.message;
+              if (Msg === "Success") {
+                NotificationManager.success(
+                  TranslationContext !== undefined
+                    ? TranslationContext.alertmessage
+                        .yoursearchhasbeensavedsuccessfully
+                    : "Your search has been saved successfully."
+                );
+                self.handleGetSaveSearchList();
+                self.setState({
+                  SearchName: "",
+                });
+              }
+            })
+            .catch((data) => {
+              console.log(data);
+            });
+        }
+      } else {
+        self.setState({
+          SearchNameCompulsory: "Please Enter Search Name.",
+        });
+      }
+    }, 100);
   }
   handleGetSaveSearchList() {
     //debugger;
@@ -3273,6 +3461,11 @@ class MyTicketList extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.name === "SearchName") {
+      this.setState({
+        SearchNameExists: "",
+      });
+    }
   }
   HandleRowClickPage = (rowInfo, column) => {
     if ((rowInfo, column)) {
@@ -4636,6 +4829,16 @@ class MyTicketList extends Component {
                                       }}
                                     >
                                       {this.state.SearchNameCompulsory}
+                                    </p>
+                                  )}
+                                  {this.state.SearchNameExists !== "" && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.SearchNameExists}
                                     </p>
                                   )}
                                   <button
