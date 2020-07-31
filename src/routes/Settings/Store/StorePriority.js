@@ -1617,7 +1617,7 @@ class CreatePriority extends Component {
                 {/* {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : ( */}
-                <div className="table-cntr table-height table-priority setting-table-des-antd">
+                <div className="table-cntr table-height table-priority setting-table-des-antd settings-align">
                   <DndProvider backend={HTML5Backend}>
                     <Table
                       className={
@@ -1988,7 +1988,7 @@ class CreatePriority extends Component {
                           headerSort: false,
                           render: (text, record) => {
                             return (
-                              <span className="d-flex align-items-center">
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div>

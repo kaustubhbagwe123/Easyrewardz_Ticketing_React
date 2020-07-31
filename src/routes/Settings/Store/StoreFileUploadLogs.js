@@ -12,8 +12,8 @@ import config from "./../../../helpers/config";
 import Modal from "react-bootstrap/Modal";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
-import * as translationHI from './../../../translations/hindi';
-import * as translationMA from './../../../translations/marathi';
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 
 class StoreFileUploadLogs extends Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class StoreFileUploadLogs extends Component {
       screatedDateFilterCheckbox: "",
       sfileUploadStatusFilterCheckbox: "",
       isATOZ: true,
-      translateLanguage: {}
+      translateLanguage: {},
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -51,16 +51,13 @@ class StoreFileUploadLogs extends Component {
   componentDidMount() {
     this.handleGetFileUploadLog();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   downloadDefaultReport = (csvFile) => {
@@ -758,7 +755,6 @@ class StoreFileUploadLogs extends Component {
   }
 
   render() {
-
     const TranslationContext = this.state.translateLanguage.default;
 
     const columnsTickFileUpload = [
@@ -766,10 +762,18 @@ class StoreFileUploadLogs extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Type" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "fileType",TranslationContext!==undefined?TranslationContext.span.type:"Type")}
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "fileType",
+              TranslationContext !== undefined
+                ? TranslationContext.span.type
+                : "Type"
+            )}
           >
-            {TranslationContext!==undefined?TranslationContext.span.type:"Type"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.span.type
+              : "Type"}
+
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Type"
@@ -786,10 +790,18 @@ class StoreFileUploadLogs extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Name" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "fileName", TranslationContext!==undefined?TranslationContext.span.name:"Name")}
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "fileName",
+              TranslationContext !== undefined
+                ? TranslationContext.span.name
+                : "Name"
+            )}
           >
-            {TranslationContext!==undefined?TranslationContext.span.filename:"File Name"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.span.filename
+              : "File Name"}
+
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Name"
@@ -806,10 +818,18 @@ class StoreFileUploadLogs extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Date" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "createdDate", TranslationContext!==undefined?TranslationContext.span.date:"Date")}
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "createdDate",
+              TranslationContext !== undefined
+                ? TranslationContext.span.date
+                : "Date"
+            )}
           >
-            {TranslationContext!==undefined?TranslationContext.span.date:"Date"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.span.date
+              : "Date"}
+
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Date"
@@ -833,21 +853,33 @@ class StoreFileUploadLogs extends Component {
                       <div>
                         <b>
                           <p className="title">
-                          {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.createdby
+                              : "Created By"}
+                            : {row.original.createdBy}
                           </p>
                         </b>
                         <p className="sub-title">
-                        {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}: {row.original.createdDate}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.createddate
+                            : "Created Date"}
+                          : {row.original.createdDate}
                         </p>
                       </div>
                       <div>
                         <b>
                           <p className="title">
-                          {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}: {row.original.modifiedBy}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.updatedby
+                              : "Updated By"}
+                            : {row.original.modifiedBy}
                           </p>
                         </b>
                         <p className="sub-title">
-                        {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}: {row.original.modifiedDate}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.updateddate
+                            : "Updated Date"}
+                          : {row.original.modifiedDate}
                         </p>
                       </div>
                     </>
@@ -876,10 +908,13 @@ class StoreFileUploadLogs extends Component {
               "Status"
             )}
           >
-            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+            {TranslationContext !== undefined
+              ? TranslationContext.span.status
+              : "Status"}
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ === false && this.state.sortHeader === "Status"
+                this.state.isATOZ === false &&
+                this.state.sortHeader === "Status"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -890,9 +925,13 @@ class StoreFileUploadLogs extends Component {
         accessor: "fileUploadStatus",
       },
       {
-        Header: <span>
-          {TranslationContext!==undefined?TranslationContext.span.errorfile:"Error File"}
-        </span>,
+        Header: (
+          <span>
+            {TranslationContext !== undefined
+              ? TranslationContext.span.errorfile
+              : "Error File"}
+          </span>
+        ),
         accessor: "Erroor",
         Cell: (row) =>
           row.original.fileUploadStatus === "Completed" &&
@@ -905,16 +944,21 @@ class StoreFileUploadLogs extends Component {
                   row.original.errorFilePath
                 )}
               >
-                 {TranslationContext!==undefined?TranslationContext.button.download:"DOWNLOAD"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.download
+                  : "DOWNLOAD"}
               </button>
             </div>
           ),
       },
       {
-        Header: <span>
-           {TranslationContext!==undefined?TranslationContext.span.successfile:"Success File"}
-        </span>,
+        Header: (
+          <span>
+            {TranslationContext !== undefined
+              ? TranslationContext.span.successfile
+              : "Success File"}
+          </span>
+        ),
         accessor: "success",
         Cell: (row) =>
           row.original.fileUploadStatus === "Completed" &&
@@ -927,7 +971,9 @@ class StoreFileUploadLogs extends Component {
                   row.original.successFilePath
                 )}
               >
-                  {TranslationContext!==undefined?TranslationContext.button.download:"DOWNLOAD"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.download
+                  : "DOWNLOAD"}
               </button>
             </div>
           ),
@@ -938,8 +984,9 @@ class StoreFileUploadLogs extends Component {
       <div className="mainDivPadding">
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -949,13 +996,15 @@ class StoreFileUploadLogs extends Component {
             }}
             className="header-path"
           >
-             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.fileuploadlogs:"File Upload Logs"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.fileuploadlogs
+              : "File Upload Logs"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -979,8 +1028,9 @@ class StoreFileUploadLogs extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -992,12 +1042,14 @@ class StoreFileUploadLogs extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
               <a
-              href="#!"
+                href="#!"
                 style={{
                   margin: "0 25px",
                   textDecoration: "underline",
@@ -1006,12 +1058,15 @@ class StoreFileUploadLogs extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                  {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -1049,9 +1104,11 @@ class StoreFileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.fileType}
                             value={item.fileType}
-                            checked={this.state.sfileTypeFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.fileType)||false}
+                            checked={
+                              this.state.sfileTypeFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.fileType) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileType",
@@ -1076,9 +1133,11 @@ class StoreFileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.fileName}
                             value={item.fileName}
-                            checked={this.state.sfileNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.fileName)||false}
+                            checked={
+                              this.state.sfileNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.fileName) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileName",
@@ -1103,9 +1162,12 @@ class StoreFileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdDate}
                             value={item.createdDate}
-                            checked={this.state.screatedDateFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.createdDate)||false}
+                            checked={
+                              this.state.screatedDateFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdDate) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -1130,9 +1192,13 @@ class StoreFileUploadLogs extends Component {
                             name="filter-type"
                             id={"fil-open" + item.fileUploadStatus}
                             value={item.fileUploadStatus}
-                            checked={this.state.sfileUploadStatusFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.fileUploadStatus)||false}
+                            checked={
+                              this.state.sfileUploadStatusFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.fileUploadStatus
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileUploadStatus",
@@ -1152,7 +1218,7 @@ class StoreFileUploadLogs extends Component {
             </div>
           </Modal>
         </div>
-        <div className="fileUploadTable TicketFileUploadReact settingtable setting-table-des">
+        <div className="fileUploadTable TicketFileUploadReact settingtable setting-table-des settings-align">
           <ReactTable
             minRows={2}
             data={this.state.fileUploadLog}

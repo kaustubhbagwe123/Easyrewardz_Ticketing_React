@@ -2414,7 +2414,7 @@ class ClaimCategoryMaster extends Component {
                 {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : (
-                  <div className="table-cntr table-height TicketCategoyMasReact setting-table-des">
+                  <div className="table-cntr table-height TicketCategoyMasReact setting-table-des settings-align">
                     <ReactTable
                       data={categoryGridData}
                       columns={[
@@ -2595,7 +2595,7 @@ class ClaimCategoryMaster extends Component {
                             var ids = row.original["brandCategoryMappingID"];
                             return (
                               <>
-                                <span className="d-flex align-items-center">
+                                <span className="settings-align-actions">
                                   <Popover
                                     content={
                                       <div className="d-flex general-popover popover-body">
@@ -3399,7 +3399,9 @@ class ClaimCategoryMaster extends Component {
                 <div className="divSpace">
                   <div className="dropDrownSpace">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.claimsissuetype:"Claim Issue Type"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.claimsissuetype
+                        : "Claim Issue Type"}
                     </label>
                     <Aselect
                       showSearch={true}
@@ -3475,7 +3477,9 @@ class ClaimCategoryMaster extends Component {
               </div>
               <div className="pop-over-div">
                 <label className="edit-label-1">
-                {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.status
+                    : "Status"}
                 </label>
                 <select
                   id="inputStatus"

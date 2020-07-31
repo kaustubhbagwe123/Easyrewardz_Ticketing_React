@@ -3626,7 +3626,7 @@ class StoreUsers extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreUserReact setting-table-des">
+                <div className="table-cntr table-height StoreUserReact setting-table-des settings-align">
                   <ReactTable
                     data={this.state.StoreUserData}
                     columns={[
@@ -4047,13 +4047,13 @@ class StoreUsers extends Component {
                           </span>
                         ),
                         accessor: "userID",
-                        minWidth: 120,
+                        minWidth: 140,
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
                             <>
-                              <span className="d-flex align-items-center">
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div

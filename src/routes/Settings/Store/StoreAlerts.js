@@ -2361,7 +2361,7 @@ class Alerts extends Component {
           <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height alertsTable setting-table-des">
+                <div className="table-cntr table-height alertsTable setting-table-des settings-align">
                   <ReactTable
                     data={this.state.alert}
                     columns={[
@@ -2556,7 +2556,7 @@ class Alerts extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span className="d-flex align-items-center">
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">
