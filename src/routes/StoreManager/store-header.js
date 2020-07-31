@@ -3011,7 +3011,7 @@ class Header extends Component {
       chatData[0].programCode
     );
   };
-  ////handle buy now button 
+  ////handle buy now button
   handleBuyNowButtonClick = () => {
     this.setState({ buyNowClick: !this.state.buyNowClick });
   };
@@ -3912,7 +3912,7 @@ class Header extends Component {
                   ? "15px"
                   : this.state.isMobileView
                   ? "54%"
-                  : "90%",
+                  : "88%",
               }}
             >
               {TranslationContext !== undefined
@@ -7684,7 +7684,9 @@ class Header extends Component {
                                 0
                               )}
                             >
-                              Profile
+                              {TranslationContext !== undefined
+                                ? TranslationContext.a.profile
+                                : "Profile"}
                             </a>
                           </li>
                         ) : null}
@@ -7713,7 +7715,9 @@ class Header extends Component {
                                 1
                               )}
                             >
-                              Product
+                              {TranslationContext !== undefined
+                                ? TranslationContext.a.product
+                                : "Product"}
                             </a>
                           </li>
                         ) : null}
@@ -7772,7 +7776,10 @@ class Header extends Component {
                               />
                               <img src={UserInfo} alt="User Info" /> */}
                                     <span>
-                                      Tier: <b>{this.state.customerTier}</b>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.tier
+                                        : "Tier"}
+                                      : <b>{this.state.customerTier}</b>
                                     </span>
                                   </li>
                                   <li className="contactbox">
@@ -7798,7 +7805,12 @@ class Header extends Component {
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <label>Total Points</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .totalpoints
+                                            : "Total Points"}
+                                        </label>
                                         <span>
                                           {this.state.totalPoints.toLocaleString(
                                             "en-IN"
@@ -7806,7 +7818,12 @@ class Header extends Component {
                                         </span>
                                       </td>
                                       <td>
-                                        <label>Lifetime Value</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .lifetimevalue
+                                            : "Lifetime Value"}
+                                        </label>
                                         <span>
                                           {this.state.lifetimeValue.toLocaleString(
                                             "en-IN"
@@ -7814,7 +7831,12 @@ class Header extends Component {
                                         </span>
                                       </td>
                                       <td>
-                                        <label>Visit Count</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .visitcount
+                                            : "Visit Count"}
+                                        </label>
                                         <span>
                                           {this.state.visitCount.toLocaleString(
                                             "en-IN"
@@ -7861,13 +7883,23 @@ class Header extends Component {
                                   /> */}
                                       <ul>
                                         <li>
-                                          <label>Delivered</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .delivered
+                                              : "Delivered"}
+                                          </label>
                                           <span>
                                             {this.state.orderDelivered}
                                           </span>
                                         </li>
                                         <li>
-                                          <label>Shopping Bag</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .shoppingbag
+                                              : "Shopping Bag"}
+                                          </label>
                                           <span>
                                             {this.state.orderShoppingBag}
                                           </span>
@@ -7875,13 +7907,22 @@ class Header extends Component {
                                       </ul>
                                       <ul>
                                         <li>
-                                          <label>Ready to Ship</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .readytoship
+                                              : "Ready to Ship"}
+                                          </label>
                                           <span>
                                             {this.state.orderReadyToShip}
                                           </span>
                                         </li>
                                         <li>
-                                          <label>Returns</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.returns
+                                              : "Returns"}
+                                          </label>
                                           <span>{this.state.orderReturns}</span>
                                         </li>
                                       </ul>
@@ -7897,11 +7938,19 @@ class Header extends Component {
                                   /> */}
                                       <ul>
                                         <li>
-                                          <label>Bill No</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.billno
+                                              : "Bill No"}
+                                          </label>
                                           <span>{this.state.billNumber}</span>
                                         </li>
                                         <li>
-                                          <label>Amount</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.Amount
+                                              : "Amount"}
+                                          </label>
                                           <span>
                                             {this.state.billAmount.toLocaleString(
                                               "en-IN"
@@ -7911,11 +7960,19 @@ class Header extends Component {
                                       </ul>
                                       <ul>
                                         <li>
-                                          <label>Store</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.store
+                                              : "Store"}
+                                          </label>
                                           <span>{this.state.storeDetails}</span>
                                         </li>
                                         <li>
-                                          <label>Date</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.date
+                                              : "Date"}
+                                          </label>
                                           <span>
                                             {this.state.transactionDate}
                                           </span>
@@ -7925,17 +7982,53 @@ class Header extends Component {
                                         <table>
                                           <thead>
                                             <tr>
-                                              <th>Items</th>
-                                              <th>Qty</th>
-                                              <th>Amount</th>
+                                              <th>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.th.Items
+                                                  : "Items"}
+                                              </th>
+                                              <th>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.th.qty
+                                                  : "Qty"}
+                                              </th>
+                                              <th>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.th.Amount
+                                                  : "Amount"}
+                                              </th>
                                             </tr>
                                           </thead>
                                           <tbody>
                                             <tr>
                                               <td>
-                                                <label>Product Name 1</label>
-                                                <label>Product Name 2</label>
-                                                <label>Product Name 3</label>
+                                                <label>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .productname
+                                                    : "Product Name"}{" "}
+                                                  1
+                                                </label>
+                                                <label>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .productname
+                                                    : "Product Name"}{" "}
+                                                  2
+                                                </label>
+                                                <label>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .productname
+                                                    : "Product Name"}{" "}
+                                                  3
+                                                </label>
                                               </td>
                                               <td>
                                                 <label>02</label>
@@ -7973,7 +8066,11 @@ class Header extends Component {
                                       this
                                     )}
                                   >
-                                    <Menu.Item key="1">Close Chat</Menu.Item>
+                                    <Menu.Item key="1">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.dropdown.closechat
+                                        : "Close Chat"}
+                                    </Menu.Item>
                                   </Menu>
                                 }
                               >
@@ -7982,7 +8079,9 @@ class Header extends Component {
                                   type="button"
                                   className="updateprofilelinkbtn pastchatmobbtn"
                                 >
-                                  Action
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.action
+                                    : "Action"}
                                 </button>
                               </Dropdown>
                             </div>
@@ -8016,7 +8115,9 @@ class Header extends Component {
                                           1
                                         )}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     ) : null}
                                     <div className="prodtabl">
@@ -8273,7 +8374,9 @@ class Header extends Component {
                                             this
                                           )}
                                         >
-                                          SEND
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "SEND"}
                                         </button>
                                         <button
                                           disabled={
@@ -8288,7 +8391,10 @@ class Header extends Component {
                                             false
                                           )}
                                         >
-                                          ADD To WISHLIST
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button
+                                                .addtowishlist
+                                            : "ADD To WISHLIST"}
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
@@ -8310,7 +8416,11 @@ class Header extends Component {
                                                   true
                                                 )}
                                               >
-                                                Direct Buy
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .directbuy
+                                                  : "Direct Buy"}
                                               </button>
                                               <button
                                                 type="button"
@@ -8319,7 +8429,11 @@ class Header extends Component {
                                                   this
                                                 )}
                                               >
-                                                Add to Shopping Bag
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .addtoshoppingbag
+                                                  : "Add to Shopping Bag"}
                                               </button>
                                             </div>
                                           }
@@ -8328,7 +8442,9 @@ class Header extends Component {
                                             type="button"
                                             className="tabsbotbtn"
                                           >
-                                            BUY NOW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.buynow
+                                              : "BUY NOW"}
                                           </button>
                                         </Popover>
                                       </div>
@@ -8345,7 +8461,9 @@ class Header extends Component {
                                           2
                                         )}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     ) : null}
                                     <div className="prodtabl">
@@ -8599,7 +8717,9 @@ class Header extends Component {
                                             this
                                           )}
                                         >
-                                          SEND
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "SEND"}
                                         </button>
                                         <button
                                           type="button"
@@ -8613,7 +8733,9 @@ class Header extends Component {
                                             this
                                           )}
                                         >
-                                          ADD To BAG
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.addtobag
+                                            : "ADD To BAG"}
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
@@ -8635,7 +8757,11 @@ class Header extends Component {
                                                   true
                                                 )}
                                               >
-                                                Direct Buy
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .directbuy
+                                                  : "Direct Buy"}
                                               </button>
                                               <button
                                                 type="button"
@@ -8644,7 +8770,11 @@ class Header extends Component {
                                                   this
                                                 )}
                                               >
-                                                Add to Shopping Bag
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .addtoshoppingbag
+                                                  : "Add to Shopping Bag"}
                                               </button>
                                             </div>
                                           }
@@ -8656,7 +8786,9 @@ class Header extends Component {
                                             type="button"
                                             className="tabsbotbtn"
                                           >
-                                            BUY NOW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.buynow
+                                              : "BUY NOW"}
                                           </button>
                                         </Popover>
                                       </div>
@@ -8673,7 +8805,9 @@ class Header extends Component {
                                           3
                                         )}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     ) : null}
                                     <div className="prodtabl">
@@ -8930,7 +9064,9 @@ class Header extends Component {
                                             this
                                           )}
                                         >
-                                          SEND
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "SEND"}
                                         </button>
                                         <button
                                           type="button"
@@ -8945,7 +9081,10 @@ class Header extends Component {
                                             true
                                           )}
                                         >
-                                          ADD To WISHLIST
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button
+                                                .addtowishlist
+                                            : "ADD To WISHLIST"}
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
@@ -8967,7 +9106,11 @@ class Header extends Component {
                                                   true
                                                 )}
                                               >
-                                                Direct Buy
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .directbuy
+                                                  : "Direct Buy"}
                                               </button>
                                               <button
                                                 type="button"
@@ -8976,7 +9119,11 @@ class Header extends Component {
                                                   this
                                                 )}
                                               >
-                                                Add to Shopping Bag
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .addtoshoppingbag
+                                                  : "Add to Shopping Bag"}
                                               </button>
                                             </div>
                                           }
@@ -8988,7 +9135,9 @@ class Header extends Component {
                                             type="button"
                                             className="tabsbotbtn"
                                           >
-                                            BUY NOW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.buynow
+                                              : "BUY NOW"}
                                           </button>
                                         </Popover>
                                       </div>
@@ -9238,7 +9387,11 @@ class Header extends Component {
                   class="ant-btn ant-btn-sm"
                   onClick={this.handleAddressModalClose.bind(this)}
                 >
-                  <span>Cancel</span>
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.cancel
+                      : "Cancel"}
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -9253,7 +9406,11 @@ class Header extends Component {
                     false
                   )}
                 >
-                  <span>Proceed</span>
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.proceed
+                      : "Proceed"}
+                  </span>
                 </button>
               </div>
             </div>
