@@ -9,10 +9,8 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import CancelIcon from "./../../../assets/Images/cancel.png";
 import FileUpload from "./../../../assets/Images/file.png";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import Editpencil from "./../../../assets/Images/pencil.png";
-import pinico from "./../../../assets/Images/clip.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import searchico from "./../../../assets/Images/serach-icon-left.png";
 import { authHeader } from "./../../../helpers/authHeader";
@@ -246,6 +244,8 @@ class StoreModule extends Component {
       isChooseStore: "",
       isoperationalDay: "",
       isSlotTemplete: "",
+      SlotFile: {},
+      SlotFileName: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2291,12 +2291,11 @@ class StoreModule extends Component {
   /// handle store search
   handleStoreSearch = (e) => {
     e.preventDefault();
-    debugger;
     var tempstore = this.state.tempStoreCodeData;
     var Value = this.state.slotStoreSearch;
 
     var FinalstoreList = tempstore.filter((item) =>
-      item.storeName.includes(Value)
+      item.storeName.toLowerCase().includes(Value.toLowerCase())
     );
 
     if (FinalstoreList.length > 0) {
@@ -2679,6 +2678,23 @@ class StoreModule extends Component {
         console.log(response);
       });
   }
+  /// handle Slot bulk upload
+  handleSlotFileUpload = (file) => {
+    debugger;
+    var imageFile = file[0];
+    var SlotFileName = file[0].name;
+    if (!imageFile.name.match(/\.(csv)$/)) {
+      alert("Only csv file allowed.");
+      return false;
+    } else {
+      this.setState({
+        SlotFileName,
+        SlotFile: imageFile,
+      });
+    }
+
+
+  };
   ////handle slot occupancy change text in table
   handleslotOccupancyChange = (id, e) => {
     if (Number(e.target.value) <= 30) {
@@ -4488,8 +4504,42 @@ class StoreModule extends Component {
                                 className="right-sect-div slot-newd"
                                 style={{ padding: "20px" }}
                               >
-                                <Tabs>
-                                  <Tab label="Manual">
+                                <div>
+                                  <ul className="nav nav-tabs" role="tablist">
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#Slot-Manual-Tab"
+                                        role="tab"
+                                        aria-controls="Slot-Manual-Tab"
+                                        aria-selected="true"
+                                      >
+                                        Manual
+                                      </a>
+                                    </li>
+
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#Slot-bulkUpl-Tab"
+                                        role="tab"
+                                        aria-controls="Slot-bulkUpl-Tab"
+                                        aria-selected="false"
+                                      >
+                                        Bulk Upload
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div className="tab-content p-0">
+                                  <div
+                                    className="tab-pane fade show active"
+                                    id="Slot-Manual-Tab"
+                                    role="tabpanel"
+                                    aria-labelledby="Slot-Manual-Tab"
+                                  >
                                     <div className="manualbox operational-select">
                                       <div className="">
                                         <ul>
@@ -4904,18 +4954,54 @@ class StoreModule extends Component {
                                         </div>
                                       ) : null}
                                     </div>
-                                  </Tab>
-                                  <Tab label="Bulk Upload">
-                                    <div className="bulkuploadbox">
+                                  </div>
+                                  <div
+                                    className="tab-pane fade"
+                                    id="Slot-bulkUpl-Tab"
+                                    role="tabpanel"
+                                    aria-labelledby="Slot-bulkUpl-Tab"
+                                  >
+                                    <div className="bulkuploadbox" style={{marginTop:"25px"}}>
                                       <div className="addfilebox">
-                                        <img src={pinico} alt="pin-icon" />
-                                        <h3>
-                                          <span>Add File</span> or Drag here
-                                        </h3>
+                                        <Dropzone
+                                          onDrop={this.handleSlotFileUpload}
+                                        >
+                                          {({
+                                            getRootProps,
+                                            getInputProps,
+                                          }) => (
+                                            <div {...getRootProps()}>
+                                              <input
+                                                {...getInputProps()}
+                                                className="file-upload d-none"
+                                              />
+                                              <img
+                                                src={FileUpload}
+                                                alt="file-upload"
+                                              />
+                                              <span
+                                                className={"fileupload-span"}
+                                              >
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.span
+                                                      .addfile
+                                                  : "Add File"}
+                                              </span>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.div.or
+                                                : "or"}
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.div
+                                                    .dropfilehere
+                                                : "Drop File here"}
+                                            </div>
+                                          )}
+                                        </Dropzone>
                                       </div>
                                     </div>
-                                  </Tab>
-                                </Tabs>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
