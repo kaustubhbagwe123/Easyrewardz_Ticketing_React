@@ -1174,7 +1174,8 @@ class EditStoreTask extends Component {
                   },
                 ]}
                 resizable={false}
-                defaultPageSize={5}
+                // defaultPageSize={5}
+                minRows={2}
                 showPagination={false}
               />
             </div>
