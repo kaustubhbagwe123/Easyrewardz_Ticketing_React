@@ -1506,6 +1506,7 @@ class DepartmentMaster extends Component {
               departmentData: [],
               functionData: [],
             });
+            self.handleGetBrandData();
           } else if (status === "Record Already Exists") {
             NotificationManager.error(
               TranslationContext !== undefined
