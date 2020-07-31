@@ -226,7 +226,7 @@ class OrderTab extends Component {
   handleUpdateCheckServiceData(ordId) {
     this.setState({
       pincodeChecAvaibility: true,
-      Ordstate:""
+      Ordstate: "",
     });
     var self = this;
     axios({
@@ -581,7 +581,6 @@ class OrderTab extends Component {
   };
   /// handle Order pickup time change
   handleOrdPickupTimeChange(time) {
-    debugger;
     this.setState({
       minTime: this.calculateMinTime(time),
       OrdPickupTime: time,
@@ -604,7 +603,6 @@ class OrderTab extends Component {
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
                 key: "invoiceNo",
-                // width: 80,
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center overflow-hidden">
@@ -1716,33 +1714,7 @@ class OrderTab extends Component {
               </p>
             </div>
           </div>
-          {/* <Modal
-            open={this.state.PincodeMdl}
-            onClose={this.handlePincodeMdlModalClose.bind(this)}
-            center
-            modalId="addressPincode-popup"
-            overlayId="Pincode-ovrly"
-          >
-            <div className="padding-div">
-              <h5>Entered Pincode is Not Shippable</h5>
-              <div className="main-pincodeDiv">
-                <button
-                  type="button"
-                  className="btn-cancel-status"
-                  onClick={this.handlePincodeMdlModalClose.bind(this)}
-                >
-                  Change Pincode
-                </button>
-                <button
-                  type="button"
-                  className="btn-apply-status m-l-40"
-                  onClick={this.handleSetOrderHasBeenReturn.bind(this)}
-                >
-                  Move to Returns
-                </button>
-              </div>
-            </div>
-          </Modal> */}
+
           <Modal
             open={this.state.AddressConf}
             onClose={this.handleAddressMdlModalClose.bind(this)}
