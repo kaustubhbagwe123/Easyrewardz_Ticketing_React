@@ -4263,3 +4263,6 @@
 .react-datepicker-wrapper{
   width: 100%;
 }
+.nextbox .ant-spin-nested-loading > div > .ant-spin .ant-spin-dot{
+  top:90%
+}

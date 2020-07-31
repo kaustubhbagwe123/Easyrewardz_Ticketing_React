@@ -233,8 +233,6 @@ class StoreModule extends Component {
       selectedSlotTemplate: 0,
       SlotTemplateGridData: [],
       editSlotStatus: "",
-      // slotDaysData:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
-      // maxPeopleData:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
       slotStatus: 1,
       applicableFromDate: new Date(),
       slotDaysDisplay: 0,
@@ -242,6 +240,10 @@ class StoreModule extends Component {
       SlotDisplayCode: "",
       editSlotDisplayCode: 0,
       editSlotTemplateGridData: [],
+      slotTempLoading: false,
+      isChooseStore: "",
+      isoperationalDay: "",
+      isSlotTemplete: "",
       SlotFile: {},
       SlotFileName: "",
     };
@@ -2140,8 +2142,30 @@ class StoreModule extends Component {
   };
   /////handle next button press to show
   handleNextButtonOpen = () => {
-    this.setState({ isNextClick: true });
-    this.handleGetSlotsByTemplateID();
+    if (
+      this.state.shoreSelectedCount > 0 &&
+      this.state.operationalDays.length > 0 &&
+      this.state.selectedSlotTemplate > 0
+    ) {
+      this.setState({ isNextClick: true });
+      this.handleGetSlotsByTemplateID();
+    } else {
+      if (this.state.shoreSelectedCount === 0) {
+        this.setState({ isChooseStore: "Please Select Store." });
+      } else {
+        this.setState({ isChooseStore: "" });
+      }
+      if (this.state.operationalDays.length === 0) {
+        this.setState({ isoperationalDay: "Please Select Operational Days." });
+      } else {
+        this.setState({ isoperationalDay: "" });
+      }
+      if (this.state.selectedSlotTemplate === 0) {
+        this.setState({ isSlotTemplete: "Please Select Slot Template." });
+      } else {
+        this.setState({ isSlotTemplete: "" });
+      }
+    }
   };
   /////handle next button press to hide
   handleNextButtonClose = () => {
@@ -2236,6 +2260,15 @@ class StoreModule extends Component {
 
   /// handle apply selected store data
   handleApplySelectedStore() {
+    if (this.state.shoreSelectedCount == 0) {
+      this.setState({
+        isChooseStore: "please Select Store.",
+      });
+    } else {
+      this.setState({
+        isChooseStore: "",
+      });
+    }
     this.setState({
       chooseStoreModal: false,
       showApplyStoreData: true,
@@ -2623,6 +2656,7 @@ class StoreModule extends Component {
   /// handle Get Slots By TemplateID
   handleGetSlotsByTemplateID() {
     let self = this;
+    this.setState({ slotTempLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetSlotsByTemplateID",
@@ -2632,13 +2666,12 @@ class StoreModule extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ SlotTemplateGridData: data });
+          self.setState({ SlotTemplateGridData: data, slotTempLoading: false });
         } else {
-          self.setState({ SlotTemplateGridData: [] });
+          self.setState({ SlotTemplateGridData: [], slotTempLoading: false });
         }
       })
       .catch((response) => {
@@ -2662,7 +2695,6 @@ class StoreModule extends Component {
   };
   ////handle slot occupancy change text in table
   handleslotOccupancyChange = (id, e) => {
-    debugger;
     if (Number(e.target.value) <= 30) {
       this.state.SlotTemplateGridData.filter(
         (x) => x.slotID === id
@@ -2674,8 +2706,8 @@ class StoreModule extends Component {
     }
     this.setState({ SlotTemplateGridData: this.state.SlotTemplateGridData });
   };
+  ////handle slot active inactive
   handleslotActiveInActive = (id) => {
-    debugger;
     this.state.SlotTemplateGridData.filter(
       (x) => x.slotID === id
     )[0].isSlotEnabled = !this.state.SlotTemplateGridData.filter(
@@ -2712,9 +2744,51 @@ class StoreModule extends Component {
   };
   ////handle change operational days
   handleChangeOperationalDays = (e) => {
-    this.setState({
-      operationalDays: e,
+    if (e) {
+      this.setState({
+        operationalDays: e,
+        isoperationalDay: "",
+      });
+    } else {
+      this.setState({
+        operationalDays: e,
+        isoperationalDay: "Please Select Operational Days.",
+      });
+    }
+  };
+  ////handle cancel slot button click
+  handleCancelSlot = () => {
+    this.state.storeCodeData.forEach((element) => {
+      element.isChecked = false;
     });
+    this.setState({
+      isNextClick: false,
+      storeCodeData: this.state.storeCodeData,
+      operationalDays: [],
+      selectedSlotTemplate: 0,
+      slotDaysDisplay: 0,
+      applicableFromDate: new Date(),
+      maxPeopleAppointment: 0,
+      slotDisplayCode: 0,
+      slotStatus: 1,
+      SlotTemplateGridData: [],
+      selectedStoreValues: "",
+      shoreSelectedCount: 0,
+    });
+  };
+  ////handle slot template change.
+  handleSlotTemplateChange = (e) => {
+    if (e.target.value > 0) {
+      this.setState({
+        selectedSlotTemplate: e.target.value,
+        isSlotTemplete: "",
+      });
+    } else {
+      this.setState({
+        selectedSlotTemplate: e.target.value,
+        isSlotTemplete: "Please Select Slot Template.",
+      });
+    }
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -4505,6 +4579,17 @@ class StoreModule extends Component {
                                                 &nbsp; Store Selected {">"}
                                               </a>
                                             )}
+                                            {this.state.isChooseStore ? (
+                                              <p
+                                                className="non-deliverable"
+                                                style={{
+                                                  marginTop: "0",
+                                                  textAlign: "left",
+                                                }}
+                                              >
+                                                {this.state.isChooseStore}
+                                              </p>
+                                            ) : null}
                                           </li>
                                           <li>
                                             <label>Operational Days</label>
@@ -4528,6 +4613,17 @@ class StoreModule extends Component {
                                               closeMenuOnSelect={false}
                                               isMulti
                                             />
+                                            {this.state.isoperationalDay ? (
+                                              <p
+                                                className="non-deliverable"
+                                                style={{
+                                                  marginTop: "0",
+                                                  textAlign: "left",
+                                                }}
+                                              >
+                                                {this.state.isoperationalDay}
+                                              </p>
+                                            ) : null}
                                           </li>
                                           <li>
                                             <label>Select Slot Template</label>
@@ -4537,12 +4633,9 @@ class StoreModule extends Component {
                                               value={
                                                 this.state.selectedSlotTemplate
                                               }
-                                              onChange={(e) =>
-                                                this.setState({
-                                                  selectedSlotTemplate:
-                                                    e.target.value,
-                                                })
-                                              }
+                                              onChange={this.handleSlotTemplateChange.bind(
+                                                this
+                                              )}
                                             >
                                               <option value={0}>Select</option>
                                               {this.state.slotTemplateData !==
@@ -4567,6 +4660,17 @@ class StoreModule extends Component {
                                             >
                                               + Create New Template
                                             </a>
+                                            {this.state.isSlotTemplete ? (
+                                              <p
+                                                className="non-deliverable"
+                                                style={{
+                                                  marginTop: "0",
+                                                  textAlign: "left",
+                                                }}
+                                              >
+                                                {this.state.isSlotTemplete}
+                                              </p>
+                                            ) : null}
                                           </li>
                                           <li>
                                             {!this.state.isNextClick && (
@@ -4588,6 +4692,9 @@ class StoreModule extends Component {
                                             <Table
                                               dataSource={
                                                 this.state.SlotTemplateGridData
+                                              }
+                                              loading={
+                                                this.state.slotTempLoading
                                               }
                                               noDataContent="No Record Found"
                                               pagination={false}
@@ -4819,7 +4926,12 @@ class StoreModule extends Component {
                                             </div>
                                           </div>
                                           <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>
+                                            <a
+                                              href={Demo.BLANK_LINK}
+                                              onClick={this.handleCancelSlot.bind(
+                                                this
+                                              )}
+                                            >
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.a.cancel
                                                 : "CANCEL"}
