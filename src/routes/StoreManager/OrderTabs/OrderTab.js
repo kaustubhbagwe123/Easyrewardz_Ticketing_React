@@ -226,6 +226,7 @@ class OrderTab extends Component {
   handleUpdateCheckServiceData(ordId) {
     this.setState({
       pincodeChecAvaibility: true,
+      Ordstate:""
     });
     var self = this;
     axios({
@@ -251,11 +252,15 @@ class OrderTab extends Component {
             self.setState({
               Ordstate: data.state,
               ordStateDisabled: true,
+              showPinCodereturnMsg: false,
+            });
+          } else {
+            self.setState({
+              showPinCodereturnMsg: true,
             });
           }
           self.setState({
             pincodeChecAvaibility: false,
-            showPinCodereturnMsg: true,
             orderId: ordId,
           });
         } else {
@@ -576,7 +581,7 @@ class OrderTab extends Component {
   };
   /// handle Order pickup time change
   handleOrdPickupTimeChange(time) {
-    debugger
+    debugger;
     this.setState({
       minTime: this.calculateMinTime(time),
       OrdPickupTime: time,
@@ -610,7 +615,9 @@ class OrderTab extends Component {
                               ? OrderShopingGreen
                               : item.sourceOfOrder === "POS"
                               ? OrderBag
-                              : item.sourceOfOrder === "WebBot" || item.sourceOfOrder === "Ecom" || item.sourceOfOrder === "Bell"
+                              : item.sourceOfOrder === "WebBot" ||
+                                item.sourceOfOrder === "Ecom" ||
+                                item.sourceOfOrder === "Bell"
                               ? OrderShopingBlack
                               : null
                           }
@@ -619,7 +626,9 @@ class OrderTab extends Component {
                               ? "order-shoping"
                               : item.sourceOfOrder === "POS"
                               ? "order-bag"
-                              : item.sourceOfOrder === "WebBot" || item.sourceOfOrder === "Ecom" || item.sourceOfOrder === "Bell"
+                              : item.sourceOfOrder === "WebBot" ||
+                                item.sourceOfOrder === "Ecom" ||
+                                item.sourceOfOrder === "Bell"
                               ? "order-shoping"
                               : null
                           }
