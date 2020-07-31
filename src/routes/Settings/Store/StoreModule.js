@@ -4627,19 +4627,11 @@ class StoreModule extends Component {
                                             ) : null}
                                           </li>
                                           <li>
-                                            <label>
-                                              {TranslationContext !== undefined
+                                            <label>{TranslationContext !== undefined
                                                 ? TranslationContext.label
                                                     .operationaldays
-                                                : "Operational Days"}
-                                            </label>
-                                            {/* <select
-                                              name=""
-                                              className="form-control"
-                                            >
-                                              <option value={0}>Select</option>
-                                              <option value={0}>1</option>
-                                            </select> */}
+                                                : "Operational Days"}</label>
+
                                             <Select
                                               className="select-oper"
                                               getOptionLabel={(option) =>
@@ -4974,86 +4966,6 @@ class StoreModule extends Component {
                                                         .status
                                                     : "Status"}
                                                 </label>
-                                                <input
-                                                  type="checkbox"
-                                                  classNam="form-control"
-                                                />
-                                                <label>
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.label
-                                                        .active
-                                                    : "Active"}
-                                                </label>
-                                                <input
-                                                  type="checkbox"
-                                                  classNam="form-control"
-                                                />
-                                                <label>
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.label
-                                                        .inactive
-                                                    : "InActive"}
-                                                </label>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.a.cancel
-                                                : "CANCEL"}
-                                            </a>
-                                            <button
-                                              className="butn"
-                                              onClick={this.handleNextButtonClose.bind(
-                                                this
-                                              )}
-                                            >
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.button
-                                                    .delete
-                                                : "Save"}
-                                            </button>
-                                          </div>
-                                        </div>
-                                      ) : null}
-                                    </div>
-                                  </Tab>
-                                  <Tab label="Bulk Upload">
-                                    <div className="bulkuploadbox">
-                                      <div className="addfilebox">
-                                        <img src={pinico} alt="pin-icon" />
-                                        <h3>
-                                          <span>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.span.addfile
-                                              : "Add File"}
-                                          </span>{" "}
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.h3.ordraghere
-                                            : "or Drag here"}
-                                        </h3>
-                                      </div>
-                                    </div>
-                                  </Tab>
-                                </Tabs>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-12">
-                              {/* <Table
-                                loading={this.state.loading}
-                                noDataContent="No Record Found"
-                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                                columns={[
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.slotno
-                                        : "Slot Id",
 
                                                 <div className="statuscheckbox">
                                                   <Radio.Group
@@ -5276,14 +5188,6 @@ class StoreModule extends Component {
                                         ? TranslationContext.header.totalslot
                                         : "Total Slots",
                                     dataIndex: "totalSlot",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                            .appointmentdays
-                                        : "Appointment Days",
-                                    dataIndex: "appointmentDays",
                                     render: (row, item) => {
                                       return (
                                         <Popover
@@ -5860,7 +5764,9 @@ class StoreModule extends Component {
                   </div>
                   <div className="row">
                     <div className="col-12 col-md-6">
-                      <label>Slot Display Code</label>
+                      <label>{TranslationContext !== undefined
+                              ? TranslationContext.label.slotdisplay
+                              : "Slot Display Code"}</label>
                       <select
                         name="editSlotDisplayCode"
                         className="form-control"
