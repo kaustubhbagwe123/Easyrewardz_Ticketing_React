@@ -3133,7 +3133,7 @@ class StoreUsers extends Component {
         editFuncation.length - 1
       );
 
-      inputParam.isClaimApprover = this.state.userEdit.isClaimApprover;
+      inputParam.IsClaimApprove = this.state.userEdit.isClaimApprover;
       inputParam.CRMRoleID = this.state.userEdit.roleID;
       inputParam.isActive =
         this.state.userEdit.isActive == "Active" ? true : false;
