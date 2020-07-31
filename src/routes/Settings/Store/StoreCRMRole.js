@@ -1291,7 +1291,7 @@ class StoreCRMRole extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StorCrmRoleReact align-table setting-table-des">
+                <div className="table-cntr table-height StorCrmRoleReact align-table setting-table-des settings-align">
                   <ReactTable
                     data={this.state.crmRoles}
                     columns={[
@@ -1499,7 +1499,7 @@ class StoreCRMRole extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span className="d-flex align-items-center">
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">

@@ -424,7 +424,7 @@ class EditStoreTask extends Component {
         TaskID: this.state.taskId,
         AgentID: this.state.agentId,
         CommentOnAssign: this.state.assignComment.trim(),
-        IsCommentOnAssign: 1,
+        IsCommentOnAssign: btnValue !== "skip" ? 1 : 0,
         OldAgentID: this.state.oldassignToID,
       },
     })
@@ -442,8 +442,8 @@ class EditStoreTask extends Component {
           if (btnValue !== "skip") {
             NotificationManager.success("Comment Added successfully.");
           }
-          // self.componentDidMount();
-          self.handleStoreTaskDetialsById(self.state.taskId);
+          self.componentDidMount();
+          // self.handleStoreTaskDetialsById(self.state.taskId);
         } else {
           NotificationManager.error("Task Assign Fail.");
           self.setState({ userModel: false });

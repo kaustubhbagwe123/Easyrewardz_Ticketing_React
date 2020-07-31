@@ -1608,7 +1608,7 @@ class HierarchyMaster extends Component {
           <div className="hiermas">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreHierarchyReact setting-table-des">
+                <div className="table-cntr table-height StoreHierarchyReact setting-table-des settings-align">
                   <ReactTable
                     data={hierarchyData}
                     columns={[
@@ -1816,7 +1816,7 @@ class HierarchyMaster extends Component {
                           var ids = row.original["designationID"];
                           return (
                             <>
-                              <span className="d-flex align-items-center">
+                              <span className="settings-align-actions">
                                 <Popover
                                   content={
                                     <div
