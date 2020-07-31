@@ -4266,3 +4266,8 @@
 .nextbox .ant-spin-nested-loading > div > .ant-spin .ant-spin-dot{
   top:90%
 }
+.slot-down-excel{
+  margin-left: 26rem;
+    margin-top: 10px;
+    display: flex;
+}

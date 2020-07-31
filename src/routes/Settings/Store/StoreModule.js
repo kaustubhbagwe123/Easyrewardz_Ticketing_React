@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Popover, Radio } from "antd";
+import { Popover, Radio,Spin } from "antd";
 import ReactTable from "react-table";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,6 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
@@ -246,6 +245,7 @@ class StoreModule extends Component {
       isSlotTemplete: "",
       SlotFile: {},
       SlotFileName: "",
+      bulkuploadLoading:false
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -2680,7 +2680,6 @@ class StoreModule extends Component {
   }
   /// handle Slot bulk upload
   handleSlotFileUpload = (file) => {
-    debugger;
     var imageFile = file[0];
     var SlotFileName = file[0].name;
     if (!imageFile.name.match(/\.(csv)$/)) {
@@ -2691,8 +2690,55 @@ class StoreModule extends Component {
         SlotFileName,
         SlotFile: imageFile,
       });
+      this.handleSlotBulkUpload()
     }
   };
+  /// handle slot bulk upload
+  handleSlotBulkUpload(){
+    const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({
+      bulkuploadLoading:true
+    })
+    const formData = new FormData();
+    formData.append("file", this.state.SlotFile);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/BulkUploadSlot",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then((response) => {
+        var status = response.data.message;
+        if (status === "Success") {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.fileuploadedsuccessfully
+              : "File uploaded successfully."
+          );
+          self.setState({
+            SlotFile:{},
+            SlotFileName:"",
+            bulkuploadLoading:false
+          });
+        } else {
+          self.setState({
+            bulkuploadLoading:false
+          });
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.filenotuploaded
+              : "File not uploaded."
+          );
+        }
+      })
+      .catch((response) => {
+        self.setState({
+          bulkuploadLoading:false
+        });
+        console.log(response);
+      });
+  }
   ////handle slot occupancy change text in table
   handleslotOccupancyChange = (id, e) => {
     if (Number(e.target.value) <= 30) {
@@ -4963,6 +5009,10 @@ class StoreModule extends Component {
                                       className="bulkuploadbox"
                                       style={{ marginTop: "25px" }}
                                     >
+                                      <Spin
+                    tip="Please wait..."
+                    spinning={this.state.bulkuploadLoading}
+                  >
                                       <div className="addfilebox">
                                         <Dropzone
                                           onDrop={this.handleSlotFileUpload}
@@ -5000,29 +5050,31 @@ class StoreModule extends Component {
                                                       .dropfilehere
                                                   : "Drop File here"}
                                               </div>
-                                              <div className="down-excel mr-3">
-                                                <p>
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.p
-                                                        .sampletemplate
-                                                    : "Sample Template"}
-                                                </p>
-                                                <CSVLink
-                                                  filename={"OrderTemplate.csv"}
-                                                  data={
-                                                    config.storeOrder_Template
-                                                  }
-                                                >
-                                                  <img
-                                                    src={DownExcel}
-                                                    alt="download icon"
-                                                  />
-                                                </CSVLink>
+                                              <div>
+                                                <p>{this.state.SlotFileName}</p>
                                               </div>
                                             </>
                                           )}
                                         </Dropzone>
+                                      </div>
+                                      </Spin>
+                                      <div className="slot-down-excel mr-3">
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .sampletemplate
+                                            : "Sample Template"}
+                                        </p>
+                                        <CSVLink
+                                          filename={"OrderTemplate.csv"}
+                                          data={config.storeOrder_Template}
+                                        >
+                                          <img
+                                            src={DownExcel}
+                                            alt="download icon"
+                                            style={{marginLeft:"5px"}}
+                                          />
+                                        </CSVLink>
                                       </div>
                                     </div>
                                   </div>
