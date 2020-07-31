@@ -2659,8 +2659,6 @@ class StoreModule extends Component {
         SlotFile: imageFile,
       });
     }
-
-
   };
   ////handle slot occupancy change text in table
   handleslotOccupancyChange = (id, e) => {
@@ -4849,7 +4847,10 @@ class StoreModule extends Component {
                                     role="tabpanel"
                                     aria-labelledby="Slot-bulkUpl-Tab"
                                   >
-                                    <div className="bulkuploadbox" style={{marginTop:"25px"}}>
+                                    <div
+                                      className="bulkuploadbox"
+                                      style={{ marginTop: "25px" }}
+                                    >
                                       <div className="addfilebox">
                                         <Dropzone
                                           onDrop={this.handleSlotFileUpload}
@@ -4858,32 +4859,56 @@ class StoreModule extends Component {
                                             getRootProps,
                                             getInputProps,
                                           }) => (
-                                            <div {...getRootProps()}>
-                                              <input
-                                                {...getInputProps()}
-                                                className="file-upload d-none"
-                                              />
-                                              <img
-                                                src={FileUpload}
-                                                alt="file-upload"
-                                              />
-                                              <span
-                                                className={"fileupload-span"}
-                                              >
+                                            <>
+                                              <div {...getRootProps()}>
+                                                <input
+                                                  {...getInputProps()}
+                                                  className="file-upload d-none"
+                                                />
+                                                <img
+                                                  src={FileUpload}
+                                                  alt="file-upload"
+                                                />
+                                                <span
+                                                  className={"fileupload-span"}
+                                                >
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.span
+                                                        .addfile
+                                                    : "Add File"}
+                                                </span>
                                                 {TranslationContext !==
                                                 undefined
-                                                  ? TranslationContext.span
-                                                      .addfile
-                                                  : "Add File"}
-                                              </span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.div.or
-                                                : "or"}
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.div
-                                                    .dropfilehere
-                                                : "Drop File here"}
-                                            </div>
+                                                  ? TranslationContext.div.or
+                                                  : "or"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.div
+                                                      .dropfilehere
+                                                  : "Drop File here"}
+                                              </div>
+                                              <div className="down-excel mr-3">
+                                                <p>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .sampletemplate
+                                                    : "Sample Template"}
+                                                </p>
+                                                <CSVLink
+                                                  filename={"OrderTemplate.csv"}
+                                                  data={
+                                                    config.storeOrder_Template
+                                                  }
+                                                >
+                                                  <img
+                                                    src={DownExcel}
+                                                    alt="download icon"
+                                                  />
+                                                </CSVLink>
+                                              </div>
+                                            </>
                                           )}
                                         </Dropzone>
                                       </div>
