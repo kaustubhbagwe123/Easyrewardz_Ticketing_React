@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Popover, Radio } from "antd";
+import { Popover, Radio, Spin } from "antd";
 import ReactTable from "react-table";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,17 +9,14 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import CancelIcon from "./../../../assets/Images/cancel.png";
 import FileUpload from "./../../../assets/Images/file.png";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import Editpencil from "./../../../assets/Images/pencil.png";
-import pinico from "./../../../assets/Images/clip.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import searchico from "./../../../assets/Images/serach-icon-left.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
@@ -110,28 +107,6 @@ class StoreModule extends Component {
       broadProviderValidation: "",
       TimeSlotData: TimeSlotdropdown(),
       TimeSlotGridData: [],
-      // TimeSlotGridData: [
-      //   {
-      //     slotSettingID: 1,
-      //     storeCode: "SMB0000",
-      //     storeTimimg: "10 AM-7 PM",
-      //     nonOperationalTimimg: "3",
-      //     slotTemplate: "Alternate 1",
-      //     totalSlot: "6",
-      //     appointmentDays: "10",
-      //     status: "Active",
-      //   },
-      //   {
-      //     slotSettingID: 2,
-      //     storeCode: "SMB0000",
-      //     storeTimimg: "10 AM-7 PM",
-      //     nonOperationalTimimg: "3",
-      //     slotTemplate: "Alternate 1",
-      //     totalSlot: "6",
-      //     appointmentDays: "10",
-      //     status: "Active",
-      //   },
-      // ],
       storeCodeData: [],
       tempStoreCodeData: [],
       selectStore: 0,
@@ -179,7 +154,7 @@ class StoreModule extends Component {
       editSelectNOTimeSlot2: "",
       editSelectNOAmPm1: "",
       editSelectNOAmPm2: "",
-      editAppointmentDays: "",
+      editAppointmentDays: "0",
       editSlotDuration: "",
       isNextClick: false,
       slotData: [],
@@ -234,6 +209,21 @@ class StoreModule extends Component {
       finalSlotTemplateId: 0,
       selectedSlotTemplate: 0,
       SlotTemplateGridData: [],
+      editSlotStatus: "",
+      slotStatus: 1,
+      applicableFromDate: new Date(),
+      slotDaysDisplay: 0,
+      maxPeopleAppointment: 0,
+      SlotDisplayCode: "",
+      editSlotDisplayCode: 0,
+      editSlotTemplateGridData: [],
+      slotTempLoading: false,
+      isChooseStore: "",
+      isoperationalDay: "",
+      isSlotTemplete: "",
+      SlotFile: {},
+      SlotFileName: "",
+      bulkuploadLoading: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1874,160 +1864,94 @@ class StoreModule extends Component {
     }
   }
 
-  /// handle Timeslot add data
-  handleSubmitTimeSlotDate() {
+  /// handle insert and update slot setting
+  handleInsertUpdateTimeSlotSetting(isInsert) {
     const TranslationContext = this.state.translateLanguage.default;
     var self = this;
-    if (
-      this.state.selectedStoreCode.length > 0 &&
-      this.state.maxCapacity !== ""
-    ) {
-      debugger;
-      var storeIds = "";
-      for (let i = 0; i < this.state.selectedStoreCode.length; i++) {
-        storeIds += this.state.selectedStoreCode[i] + ",";
-      }
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
-        headers: authHeader(),
-        data: {
-          SlotId: this.state.slotId,
-          StoreIds: storeIds,
-          StoreOpenValue: Number(this.state.selectTimeSlot1),
-          StoreOpenAt: this.state.selectAmPm1,
-          StoreCloseValue: Number(this.state.selectTimeSlot2),
-          StoreCloseAt: this.state.selectAmPm2,
-          Slotduration: parseFloat(this.state.slotDuration),
-          SlotMaxCapacity: Number(this.state.maxCapacity),
-          StoreNonOpFromValue: Number(this.state.selectNOTimeSlot1),
-          StoreNonOpFromAt: this.state.selectNOAmPm1,
-          StoreNonOpToValue: Number(this.state.selectNOTimeSlot2),
-          StoreNonOpToAt: this.state.selectNOAmPm2,
-          AppointmentDays: Number(this.state.appointmentDays),
-        },
-      })
-        .then(function(res) {
-          let status = res.data.message;
-          if (status === "Success") {
+
+    var inputParam = {};
+    if (isInsert) {
+      var StoreIds = "";
+      this.state.storeCodeData.forEach((element) => {
+        if (element.isChecked) {
+          StoreIds += element.storeID + ",";
+        }
+      });
+      var StoreOpdays = "";
+      this.state.operationalDays.forEach((element) => {
+        StoreOpdays += element.dayID + ",";
+      });
+      inputParam.SlotId = 0;
+      inputParam.StoreIds = StoreIds;
+      inputParam.StoreOpdays = StoreOpdays;
+      inputParam.SlotTemplateID = this.state.selectedSlotTemplate;
+      inputParam.SlotMaxCapacity = this.state.maxPeopleAppointment;
+      inputParam.AppointmentDays = this.state.slotDaysDisplay;
+      inputParam.ApplicableFromDate = moment(this.state.applicableFromDate)
+        .format("YYYY-MM-DD")
+        .toString();
+      inputParam.IsActive = this.state.slotStatus === 1 ? true : false;
+      inputParam.TemplateSlots = this.state.SlotTemplateGridData;
+      inputParam.SlotDisplayCode = this.state.SlotDisplayCode;
+    } else {
+      inputParam.SlotId = this.state.slotId;
+      inputParam.AppointmentDays = Number(this.state.editAppointmentDays);
+      inputParam.IsActive =
+        this.state.editSlotStatus === "Active" ? true : false;
+      inputParam.SlotDisplayCode = this.state.editSlotDisplayCode;
+      inputParam.TemplateSlots = this.state.editSlotTemplateGridData;
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          if (isInsert) {
+            self.state.storeCodeData.self.state.storeCodeData.forEach(
+              (element) => {
+                element.isChecked = false;
+              }
+            );
             self.setState({
-              selectedStoreCode: [],
-              selectTimeSlot1: 1,
-              selectTimeSlot2: 1,
-              selectNOTimeSlot1: 1,
-              selectNOTimeSlot2: 1,
-              selectAmPm1: "AM",
-              selectAmPm2: "AM",
-              selectNOAmPm1: "AM",
-              selectNOAmPm2: "AM",
-              slotduration: "0.5",
-              maxCapacity: "",
+              SlotDisplayCode: 0,
+              SlotTemplateGridData: [],
+              slotStatus: 1,
+              applicableFromDate: new Date(),
+              maxPeopleAppointment: 0,
+              slotDaysDisplay: 0,
+              selectedSlotTemplate: 0,
+              operationalDays: [],
+              storeCodeData: self.state.storeCodeData,
             });
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.timeslotaddedsuccessfully
                 : "Time Slot Added Successfully."
             );
-            self.handleGetTimeslotGridData();
           } else {
-            NotificationManager.error(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.timeslotnotadded
-                : "Time Slot Not Added."
-            );
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    } else {
-      this.setState({
-        storeCodeValidation: "Required",
-        maxCapacityValidation: "Required",
-      });
-    }
-  }
-
-  /// Handle Update TimeSlot data
-  handleUpdateTimeSlotData() {
-    const TranslationContext = this.state.translateLanguage.default;
-    var self = this;
-    if (this.state.editstoreCode !== "0" && this.state.editmaxCapacity !== "") {
-      debugger;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
-        headers: authHeader(),
-        data: {
-          SlotId: this.state.slotId,
-          StoreIds: this.state.editstoreCode,
-          StoreOpenValue: Number(this.state.editSelectTimeSlot1),
-          StoreOpenAt: this.state.editSelectAmPm1,
-          StoreCloseValue: Number(this.state.editSelectTimeSlot2),
-          StoreCloseAt: this.state.editSelectAmPm2,
-          Slotduration: parseFloat(this.state.editSlotDuration),
-          SlotMaxCapacity: Number(this.state.editmaxCapacity),
-          StoreNonOpFromValue: Number(this.state.editSelectNOTimeSlot1),
-          StoreNonOpFromAt: this.state.editSelectNOAmPm1,
-          StoreNonOpToValue: Number(this.state.editSelectNOTimeSlot2),
-          StoreNonOpToAt: this.state.editSelectNOAmPm2,
-          AppointmentDays: Number(this.state.editAppointmentDays),
-        },
-      })
-        .then(function(res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success(
-              TranslationContext !== undefined
-                ? TranslationContext.alertmessage.timeslotupdatesuccessfully
-                : "Time Slot Updated Successfully."
-            );
-            self.handleGetTimeslotGridData();
             self.setState({
               editSlotModal: false,
-              editselectTimeSlot1: 1,
-              editselectTimeSlot2: 1,
-              editselectNOTimeSlot1: 1,
-              editselectNOTimeSlot2: 1,
-              editselectAmPm1: "AM",
-              editselectAmPm2: "AM",
-              editselectNOAmPm1: "AM",
-              editselectNOAmPm2: "AM",
-              editSlotDuration: "0.5",
-              editmaxCapacity: "",
-              slotId: 0,
             });
-          } else {
-            debugger;
-            if (
-              status.trim().toLowerCase() ===
-              "Record Already Exists".trim().toLowerCase()
-            ) {
-              NotificationManager.error(
-                TranslationContext !== undefined
-                  ? TranslationContext.alertmessage
-                      .appointmentrecordalreadyexists
-                  : "Appointment Record Already Exists"
-              );
-            } else {
-              NotificationManager.error(
-                TranslationContext !== undefined
-                  ? TranslationContext.alertmessage.timeslotnotupdated
-                  : "Time Slot Not Updated."
-              );
-            }
+            NotificationManager.success("Time Slot Updated Successfully.");
           }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    } else {
-      this.setState({
-        editStoreCodeValidation: "Required",
-        editOrderNovalidation: "Required",
-        editMaxCapacityValidation: "Required",
+
+          self.handleGetTimeslotGridData();
+        } else {
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.timeslotnotadded
+              : "Time Slot Not Added."
+          );
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
-    }
   }
 
   handleSubmitLanguageDate() {
@@ -2116,7 +2040,9 @@ class StoreModule extends Component {
           var editTotalSlot = data[0].totalSlot;
           var editOperationalDays = data[0].operationalDaysCount;
           var editSlotTemplateName = data[0].slotTemplateName;
-          var slotData = data[0].templateSlots;
+          var editSlotTemplateGridData = data[0].templateSlots;
+          var editSlotStatus = data[0].status;
+          var editSlotDisplayCode = data[0].slotDisplayCode;
 
           self.setState({
             editSlotModal: true,
@@ -2137,7 +2063,9 @@ class StoreModule extends Component {
             editTotalSlot,
             editOperationalDays,
             editSlotTemplateName,
-            slotData,
+            editSlotTemplateGridData,
+            editSlotStatus,
+            editSlotDisplayCode,
           });
         }
       })
@@ -2192,8 +2120,30 @@ class StoreModule extends Component {
   };
   /////handle next button press to show
   handleNextButtonOpen = () => {
-    this.setState({ isNextClick: true });
-    this.handleGetSlotsByTemplateID();
+    if (
+      this.state.shoreSelectedCount > 0 &&
+      this.state.operationalDays.length > 0 &&
+      this.state.selectedSlotTemplate > 0
+    ) {
+      this.setState({ isNextClick: true });
+      this.handleGetSlotsByTemplateID();
+    } else {
+      if (this.state.shoreSelectedCount === 0) {
+        this.setState({ isChooseStore: "Please Select Store." });
+      } else {
+        this.setState({ isChooseStore: "" });
+      }
+      if (this.state.operationalDays.length === 0) {
+        this.setState({ isoperationalDay: "Please Select Operational Days." });
+      } else {
+        this.setState({ isoperationalDay: "" });
+      }
+      if (this.state.selectedSlotTemplate === 0) {
+        this.setState({ isSlotTemplete: "Please Select Slot Template." });
+      } else {
+        this.setState({ isSlotTemplete: "" });
+      }
+    }
   };
   /////handle next button press to hide
   handleNextButtonClose = () => {
@@ -2232,6 +2182,12 @@ class StoreModule extends Component {
     });
   };
 
+  handleSlotOnChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  };
   /// handle Select Store Individual
   handleSelectStoresIndividual = async (data, event) => {
     debugger;
@@ -2282,6 +2238,15 @@ class StoreModule extends Component {
 
   /// handle apply selected store data
   handleApplySelectedStore() {
+    if (this.state.shoreSelectedCount == 0) {
+      this.setState({
+        isChooseStore: "please Select Store.",
+      });
+    } else {
+      this.setState({
+        isChooseStore: "",
+      });
+    }
     this.setState({
       chooseStoreModal: false,
       showApplyStoreData: true,
@@ -2304,12 +2269,11 @@ class StoreModule extends Component {
   /// handle store search
   handleStoreSearch = (e) => {
     e.preventDefault();
-    debugger;
     var tempstore = this.state.tempStoreCodeData;
     var Value = this.state.slotStoreSearch;
 
     var FinalstoreList = tempstore.filter((item) =>
-      item.storeName.includes(Value)
+      item.storeName.toLowerCase().includes(Value.toLowerCase())
     );
 
     if (FinalstoreList.length > 0) {
@@ -2578,6 +2542,43 @@ class StoreModule extends Component {
       manualStoreData,
     });
   };
+  /// handle Select automatic date
+  handleSelectAutomaticStoreToDate = (time) => {
+    if (this.state.autoStoreFrom < time) {
+      this.setState({
+        autoStoreTo: time,
+      });
+    } else {
+      NotificationManager.error(
+        "The To date must be greater than the From date.."
+      );
+    }
+  };
+
+  /// handle Select automatic date
+  handleSelectAutomaticToDates = (time) => {
+    if (this.state.autoNonOptFrom < time) {
+      this.setState({
+        autoNonOptTo: time,
+      });
+    } else {
+      NotificationManager.error(
+        "The To date must be greater than the From date.."
+      );
+    }
+  };
+  /// handle Select manual date
+  handleSelectManualStoreTodate = (time) => {
+    if (this.state.manualStoreFrom < time) {
+      this.setState({
+        manualStoreTo: time,
+      });
+    } else {
+      NotificationManager.error(
+        "The To date must be greater than the From date.."
+      );
+    }
+  };
   /// handle Manual selct duration
   handleManualSelectDuration = (e) => {
     let values = e.target.value;
@@ -2633,6 +2634,7 @@ class StoreModule extends Component {
   /// handle Get Slots By TemplateID
   handleGetSlotsByTemplateID() {
     let self = this;
+    this.setState({ slotTempLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetSlotsByTemplateID",
@@ -2642,19 +2644,101 @@ class StoreModule extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ SlotTemplateGridData: data });
+          self.setState({ SlotTemplateGridData: data, slotTempLoading: false });
         } else {
-          self.setState({ SlotTemplateGridData: [] });
+          self.setState({ SlotTemplateGridData: [], slotTempLoading: false });
         }
       })
       .catch((response) => {
         console.log(response);
       });
   }
+  /// handle Slot bulk upload
+  handleSlotFileUpload = (file) => {
+    var imageFile = file[0];
+    var SlotFileName = file[0].name;
+    if (!imageFile.name.match(/\.(csv)$/)) {
+      alert("Only csv file allowed.");
+      return false;
+    } else {
+      this.setState({
+        SlotFileName,
+        SlotFile: imageFile,
+      });
+      this.handleSlotBulkUpload();
+    }
+  };
+  /// handle slot bulk upload
+  handleSlotBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({
+      bulkuploadLoading: true,
+    });
+    const formData = new FormData();
+    formData.append("file", this.state.SlotFile);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/BulkUploadSlot",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then((response) => {
+        var status = response.data.message;
+        if (status === "Success") {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.fileuploadedsuccessfully
+              : "File uploaded successfully."
+          );
+          self.setState({
+            SlotFile: {},
+            SlotFileName: "",
+            bulkuploadLoading: false,
+          });
+        } else {
+          self.setState({
+            bulkuploadLoading: false,
+          });
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.filenotuploaded
+              : "File not uploaded."
+          );
+        }
+      })
+      .catch((response) => {
+        self.setState({
+          bulkuploadLoading: false,
+        });
+        console.log(response);
+      });
+  }
+  ////handle slot occupancy change text in table
+  handleslotOccupancyChange = (id, e) => {
+    if (Number(e.target.value) <= 30) {
+      this.state.SlotTemplateGridData.filter(
+        (x) => x.slotID === id
+      )[0].slotOccupancy = e.target.value || "";
+    } else {
+      this.state.SlotTemplateGridData.filter(
+        (x) => x.slotID === id
+      )[0].slotOccupancy = "";
+    }
+    this.setState({ SlotTemplateGridData: this.state.SlotTemplateGridData });
+  };
+  ////handle slot active inactive
+  handleslotActiveInActive = (id) => {
+    this.state.SlotTemplateGridData.filter(
+      (x) => x.slotID === id
+    )[0].isSlotEnabled = !this.state.SlotTemplateGridData.filter(
+      (x) => x.slotID === id
+    )[0].isSlotEnabled;
+    this.setState({ SlotTemplateGridData: this.state.SlotTemplateGridData });
+  };
 
   handleEnableDisableOnChange(i, e) {
     debugger;
@@ -2663,16 +2747,73 @@ class StoreModule extends Component {
     if (name === "isSlotEnabled") {
       value = e.target.checked;
     }
-    let slotData = [...this.state.slotData];
-    slotData[i] = {
-      ...slotData[i],
+    let editSlotTemplateGridData = [...this.state.editSlotTemplateGridData];
+    editSlotTemplateGridData[i] = {
+      ...editSlotTemplateGridData[i],
       [name]: value,
     };
     this.setState({
-      slotData,
+      editSlotTemplateGridData,
     });
   }
-
+  ////handle radio status change
+  handleRadioStatusChange = (e) => {
+    this.setState({ slotStatus: e.target.value });
+  };
+  ///handle Applicable Form Data
+  handleApplicableFormData = (e) => {
+    this.setState({
+      applicableFromDate: e,
+    });
+  };
+  ////handle change operational days
+  handleChangeOperationalDays = (e) => {
+    if (e) {
+      this.setState({
+        operationalDays: e,
+        isoperationalDay: "",
+      });
+    } else {
+      this.setState({
+        operationalDays: e,
+        isoperationalDay: "Please Select Operational Days.",
+      });
+    }
+  };
+  ////handle cancel slot button click
+  handleCancelSlot = () => {
+    this.state.storeCodeData.forEach((element) => {
+      element.isChecked = false;
+    });
+    this.setState({
+      isNextClick: false,
+      storeCodeData: this.state.storeCodeData,
+      operationalDays: [],
+      selectedSlotTemplate: 0,
+      slotDaysDisplay: 0,
+      applicableFromDate: new Date(),
+      maxPeopleAppointment: 0,
+      slotDisplayCode: 0,
+      slotStatus: 1,
+      SlotTemplateGridData: [],
+      selectedStoreValues: "",
+      shoreSelectedCount: 0,
+    });
+  };
+  ////handle slot template change.
+  handleSlotTemplateChange = (e) => {
+    if (e.target.value > 0) {
+      this.setState({
+        selectedSlotTemplate: e.target.value,
+        isSlotTemplete: "",
+      });
+    } else {
+      this.setState({
+        selectedSlotTemplate: e.target.value,
+        isSlotTemplete: "Please Select Slot Template.",
+      });
+    }
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -4385,8 +4526,42 @@ class StoreModule extends Component {
                                 className="right-sect-div slot-newd"
                                 style={{ padding: "20px" }}
                               >
-                                <Tabs>
-                                  <Tab label="Manual">
+                                <div>
+                                  <ul className="nav nav-tabs" role="tablist">
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#Slot-Manual-Tab"
+                                        role="tab"
+                                        aria-controls="Slot-Manual-Tab"
+                                        aria-selected="true"
+                                      >
+                                        Manual
+                                      </a>
+                                    </li>
+
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#Slot-bulkUpl-Tab"
+                                        role="tab"
+                                        aria-controls="Slot-bulkUpl-Tab"
+                                        aria-selected="false"
+                                      >
+                                        Bulk Upload
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div className="tab-content p-0">
+                                  <div
+                                    className="tab-pane fade show active"
+                                    id="Slot-Manual-Tab"
+                                    role="tabpanel"
+                                    aria-labelledby="Slot-Manual-Tab"
+                                  >
                                     <div className="manualbox operational-select">
                                       <div className="">
                                         <ul>
@@ -4439,6 +4614,17 @@ class StoreModule extends Component {
                                                 {">"}
                                               </a>
                                             )}
+                                            {this.state.isChooseStore ? (
+                                              <p
+                                                className="non-deliverable"
+                                                style={{
+                                                  marginTop: "0",
+                                                  textAlign: "left",
+                                                }}
+                                              >
+                                                {this.state.isChooseStore}
+                                              </p>
+                                            ) : null}
                                           </li>
                                           <li>
                                             <label>
@@ -4465,10 +4651,25 @@ class StoreModule extends Component {
                                               options={
                                                 this.state.operationalDaysData
                                               }
+                                              onChange={this.handleChangeOperationalDays.bind(
+                                                this
+                                              )}
+                                              value={this.state.operationalDays}
                                               placeholder="Please Select Operational Days"
                                               closeMenuOnSelect={false}
                                               isMulti
                                             />
+                                            {this.state.isoperationalDay ? (
+                                              <p
+                                                className="non-deliverable"
+                                                style={{
+                                                  marginTop: "0",
+                                                  textAlign: "left",
+                                                }}
+                                              >
+                                                {this.state.isoperationalDay}
+                                              </p>
+                                            ) : null}
                                           </li>
                                           <li>
                                             <label>
@@ -4483,12 +4684,9 @@ class StoreModule extends Component {
                                               value={
                                                 this.state.selectedSlotTemplate
                                               }
-                                              onChange={(e) =>
-                                                this.setState({
-                                                  selectedSlotTemplate:
-                                                    e.target.value,
-                                                })
-                                              }
+                                              onChange={this.handleSlotTemplateChange.bind(
+                                                this
+                                              )}
                                             >
                                               <option value={0}>Select</option>
                                               {this.state.slotTemplateData !==
@@ -4517,6 +4715,17 @@ class StoreModule extends Component {
                                                     .createnewtemplate
                                                 : "Create New Template"}
                                             </a>
+                                            {this.state.isSlotTemplete ? (
+                                              <p
+                                                className="non-deliverable"
+                                                style={{
+                                                  marginTop: "0",
+                                                  textAlign: "left",
+                                                }}
+                                              >
+                                                {this.state.isSlotTemplete}
+                                              </p>
+                                            ) : null}
                                           </li>
                                           <li>
                                             {!this.state.isNextClick && (
@@ -4539,6 +4748,9 @@ class StoreModule extends Component {
                                               dataSource={
                                                 this.state.SlotTemplateGridData
                                               }
+                                              loading={
+                                                this.state.slotTempLoading
+                                              }
                                               noDataContent="No Record Found"
                                               pagination={false}
                                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
@@ -4559,12 +4771,19 @@ class StoreModule extends Component {
                                                   title: "Slot Occupancy",
                                                   dataIndex: "slotOccupancy",
                                                   render: (row, rowData) => {
+                                                    debugger;
                                                     return (
                                                       <>
                                                         <input
                                                           type="text"
                                                           className="form-control value"
-                                                          value="3"
+                                                          value={
+                                                            rowData.slotOccupancy
+                                                          }
+                                                          onChange={this.handleslotOccupancyChange.bind(
+                                                            this,
+                                                            rowData.slotID
+                                                          )}
                                                         />
                                                       </>
                                                     );
@@ -4574,7 +4793,37 @@ class StoreModule extends Component {
                                                   title:
                                                     "Slot Status(Unable/Disable)",
                                                   render: (row, rowData) => {
-                                                    return <>radio button</>;
+                                                    return (
+                                                      <div className="chrdioclr switch switch-primary d-inline m-r-10 slotcheck">
+                                                        <input
+                                                          style={{
+                                                            position: "fixed",
+                                                          }}
+                                                          type="checkbox"
+                                                          id={
+                                                            "slot" +
+                                                            rowData.slotID
+                                                          }
+                                                          name="allModules"
+                                                          checked={
+                                                            rowData.isSlotEnabled
+                                                          }
+                                                          onChange={this.handleslotActiveInActive.bind(
+                                                            this,
+                                                            rowData.slotID
+                                                          )}
+                                                        />
+                                                        <label
+                                                          htmlFor={
+                                                            "slot" + row.slotID
+                                                          }
+                                                          className="cr cr-float-auto"
+                                                          style={{
+                                                            float: "inherit",
+                                                          }}
+                                                        ></label>
+                                                      </div>
+                                                    );
                                                   },
                                                 },
                                               ]}
@@ -4593,11 +4842,28 @@ class StoreModule extends Component {
                                               <select
                                                 name=""
                                                 className="form-control"
+                                                value={
+                                                  this.state.slotDaysDisplay
+                                                }
+                                                onChange={(e) => {
+                                                  this.setState({
+                                                    slotDaysDisplay:
+                                                      e.target.value,
+                                                  });
+                                                }}
                                               >
                                                 <option value={0}>
                                                   Select
                                                 </option>
-                                                <option value={0}>1</option>
+                                                {Array(31)
+                                                  .fill(0)
+                                                  .map((e, i) => {
+                                                    return (
+                                                      <option value={i + 1}>
+                                                        {i + 1}
+                                                      </option>
+                                                    );
+                                                  })}
                                               </select>
                                             </li>
                                             <li>
@@ -4608,15 +4874,21 @@ class StoreModule extends Component {
                                                       .applicablefromdate
                                                   : "Applicable From (Date)"}
                                               </label>
-                                              <select
-                                                name=""
-                                                className="form-control"
-                                              >
-                                                <option value={0}>
-                                                  Select
-                                                </option>
-                                                <option value={0}>1</option>
-                                              </select>
+                                              <div className="applicateDiv">
+                                                <DatePicker
+                                                  selected={
+                                                    this.state
+                                                      .applicableFromDate
+                                                  }
+                                                  minDate={moment().toDate()}
+                                                  dateFormat="dd-MM-yyyy"
+                                                  placeholderText="Applicable From (Date)"
+                                                  className="form-control"
+                                                  onChange={this.handleApplicableFormData.bind(
+                                                    this
+                                                  )}
+                                                />
+                                              </div>
                                             </li>
                                             <li>
                                               <label>
@@ -4629,17 +4901,68 @@ class StoreModule extends Component {
                                               <select
                                                 name=""
                                                 className="form-control"
+                                                value={
+                                                  this.state
+                                                    .maxPeopleAppointment
+                                                }
+                                                onChange={(e) => {
+                                                  this.setState({
+                                                    maxPeopleAppointment:
+                                                      e.target.value,
+                                                  });
+                                                }}
                                               >
                                                 <option value={0}>
                                                   Select
                                                 </option>
-                                                <option value={0}>1</option>
+                                                {Array(50)
+                                                  .fill(0)
+                                                  .map((e, i) => {
+                                                    return (
+                                                      <option value={i + 1}>
+                                                        {i + 1}
+                                                      </option>
+                                                    );
+                                                  })}
                                               </select>
                                             </li>
                                           </ul>
                                           <div className="row">
                                             <div className="col-md-4">
-                                              <div className="statuscheckbox">
+                                              <label>Slot Display Code</label>
+                                              <select
+                                                name=""
+                                                className="form-control"
+                                                value={
+                                                  this.state.SlotDisplayCode
+                                                }
+                                                onChange={(e) => {
+                                                  this.setState({
+                                                    SlotDisplayCode:
+                                                      e.target.value,
+                                                  });
+                                                }}
+                                              >
+                                                <option value={0}>
+                                                  Select
+                                                </option>
+                                                <option value={301}>
+                                                  Current Slot
+                                                </option>
+                                                <option value={302}>
+                                                  Skip Current Slot & Show Next
+                                                  Slot
+                                                </option>
+                                                <option value={303}>
+                                                  Skip Current & Next Slot
+                                                </option>
+                                              </select>
+                                            </div>
+                                            <div className="col-md-4">
+                                              <div
+                                                className="statuscheckbox"
+                                                style={{ marginTop: "35px" }}
+                                              >
                                                 <label
                                                   style={{
                                                     marginRight: "15px",
@@ -4732,308 +5055,143 @@ class StoreModule extends Component {
                                         ? TranslationContext.header.slotno
                                         : "Slot Id",
 
-                                    dataIndex: "slotSettingID",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.storecode
-                                        : "Store Code",
-                                    dataIndex: "storeCode",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.storetiming
-                                        : "Store Timing",
-                                    dataIndex: "storeTimimg",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                            .nonoperationalhours
-                                        : "Operational Days",
-                                    dataIndex: "nonOperationalTimimg",
-                                    render: (row, item) => {
-                                      return (
-                                        <Popover
-                                          overlayClassName="antcustom operationalbox"
-                                          content={
-                                            <div>
-                                              <img
-                                                src={CancelIcon}
-                                                alt="cancel-icone"
-                                                className="cust-icon2"
-                                              />
-                                              <div className="operationaldays">
-                                                <div className="row">
-                                                  <div className="col-12">
-                                                    <h3>Operational Days</h3>
-                                                    <ul>
-                                                      <li>
-                                                        <label>Monday</label>
-                                                      </li>
-                                                      <li>
-                                                        <label>Tuesday</label>
-                                                      </li>
-                                                      <li>
-                                                        <label>Wednesday</label>
-                                                      </li>
-                                                    </ul>
-                                                  </div>
+                                                <div className="statuscheckbox">
+                                                  <Radio.Group
+                                                    onChange={this.handleRadioStatusChange.bind(
+                                                      this
+                                                    )}
+                                                    value={
+                                                      this.state.slotStatus
+                                                    }
+                                                  >
+                                                    <Radio value={1}>
+                                                      Active
+                                                    </Radio>
+                                                    <Radio value={0}>
+                                                      Inactive
+                                                    </Radio>
+                                                  </Radio.Group>
                                                 </div>
                                               </div>
                                             </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        >
-                                          <div className="broadcast-icon">
-                                            {item.nonOperationalTimimg}
-                                            <img
-                                              className="info-icon-cp"
-                                              src={BlackInfoIcon}
-                                              alt="info-icon"
-                                            />
                                           </div>
-                                        </Popover>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.slotduration
-                                        : "Slot Duration",
-                                    dataIndex: "storeSlotDuration",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.maxcapacity
-                                        : "Max Capacity",
-                                    dataIndex: "maxCapacity",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.totalslot
-                                        : "Total Slot",
-                                    dataIndex: "totalSlot",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                            .appointmentdays
-                                        : "Appointment Days",
-                                    dataIndex: "appointmentDays",
-                                    render: (row, item) => {
-                                      return (
-                                        <Popover
-                                          overlayClassName="antcustom appointmentdaysbox"
-                                          content={
-                                            <div>
-                                              <img
-                                                src={CancelIcon}
-                                                alt="cancel-icone"
-                                                className="cust-icon2"
-                                              />
-                                              <div className="appointmentdays">
-                                                <div className="row">
-                                                  <div className="col-12">
-                                                    <h3>Appointment Days</h3>
-                                                    <div className="">
-                                                      <Table
-                                                        dataSource={
-                                                          this.state.slotData
-                                                        }
-                                                        noDataContent="No Record Found"
-                                                        pagination={false}
-                                                        className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                                                        columns={[
-                                                          {
-                                                            title: "S.No.",
-
-                                                            dataIndex: "no",
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot Start Time",
-                                                            dataIndex:
-                                                              "startTime",
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot End Time",
-                                                            dataIndex:
-                                                              "endTime",
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot Occupancy",
-                                                            dataIndex:
-                                                              "occupancy",
-                                                            render: (
-                                                              row,
-                                                              rowData
-                                                            ) => {
-                                                              return (
-                                                                <>
-                                                                  <input
-                                                                    type="text"
-                                                                    className="form-control value"
-                                                                    value="3"
-                                                                  />
-                                                                </>
-                                                              );
-                                                            },
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot Status(Unable/Disable)",
-                                                            render: (
-                                                              row,
-                                                              rowData
-                                                            ) => {
-                                                              return (
-                                                                <>
-                                                                  radio button
-                                                                </>
-                                                              );
-                                                            },
-                                                          },
-                                                        ]}
-                                                      ></Table>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        >
-                                          <div className="broadcast-icon">
-                                            {item.appointmentDays}
-                                            <img
-                                              className="info-icon-cp"
-                                              src={BlackInfoIcon}
-                                              alt="info-icon"
-                                            />
-                                          </div>
-                                        </Popover>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title: "Status",
-                                    render: (row, item) => {
-                                      return <div>Active</div>;
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.actions
-                                        : "Actions",
-
-                                    render: (row, rowData) => {
-                                      var ids = row;
-                                      return (
-                                        <>
-                                          <span>
-                                            <img
-                                              src={Editpencil}
-                                              alt="Edit"
-                                              className="del-btn"
-                                              // id={p-edit-pop-2}
-                                              onClick={this.openSlotEditModal.bind(
-                                                this,
-                                                rowData.slotSettingID,
-                                                rowData.storeId
+                                          <div className="del-can">
+                                            <a
+                                              href={Demo.BLANK_LINK}
+                                              onClick={this.handleCancelSlot.bind(
+                                                this
                                               )}
-                                            />
-                                            <Popover
-                                              content={
-                                                <div className="d-flex general-popover popover-body">
-                                                  <div className="del-big-icon">
-                                                    <img
-                                                      src={DelBigIcon}
-                                                      alt="del-icon"
-                                                    />
-                                                  </div>
-                                                  <div>
-                                                    <p className="font-weight-bold blak-clr">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .deletefile
-                                                        : "Delete file"}
-                                                      ?
-                                                    </p>
-                                                    <p className="mt-1 fs-12">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .areyousureyouwanttodeletethisfile
-                                                        : "Are you sure you want to delete this file"}
-                                                      ?
-                                                    </p>
-                                                    <div className="del-can">
-                                                      <a href={Demo.BLANK_LINK}>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext.a
-                                                              .cancel
-                                                          : "CANCEL"}
-                                                      </a>
-                                                      <button
-                                                        className="butn"
-                                                        onClick={this.handleDeleteTimeSlot.bind(
-                                                          this,
-                                                          rowData.slotSettingID
-                                                        )}
-                                                      >
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext
-                                                              .button.delete
-                                                          : "Delete"}
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              }
-                                              placement="bottom"
-                                              trigger="click"
                                             >
-                                              <img
-                                                src={DelBlack}
-                                                alt="del-icon"
-                                                className="del-btn"
-                                                id={ids}
-                                              />
-                                            </Popover>
-                                          </span>
-                                        </>
-                                      );
-                                    },
-                                  },
-                                ]}
-                                rowKey={(record) => {
-                                  if (record.slotSettingID) {
-                                    uid = uid + 1;
-                                    return record.slotSettingID + "i" + uid;
-                                  } else {
-                                    uid = uid + 1;
-                                    return "i" + uid;
-                                  }
-                                }}
-                                pagination={{ defaultPageSize: 10 }}
-                                dataSource={this.state.TimeSlotGridData}
-                              ></Table> */}
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.a.cancel
+                                                : "CANCEL"}
+                                            </a>
+                                            <button
+                                              className="butn"
+                                              onClick={this.handleInsertUpdateTimeSlotSetting.bind(
+                                                this,
+                                                true
+                                              )}
+                                            >
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .delete
+                                                : "Save"}
+                                            </button>
+                                          </div>
+                                        </div>
+                                      ) : null}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="tab-pane fade"
+                                    id="Slot-bulkUpl-Tab"
+                                    role="tabpanel"
+                                    aria-labelledby="Slot-bulkUpl-Tab"
+                                  >
+                                    <div
+                                      className="bulkuploadbox"
+                                      style={{ marginTop: "25px" }}
+                                    >
+                                      <Spin
+                                        tip="Please wait..."
+                                        spinning={this.state.bulkuploadLoading}
+                                      >
+                                        <div className="addfilebox">
+                                          <Dropzone
+                                            onDrop={this.handleSlotFileUpload}
+                                          >
+                                            {({
+                                              getRootProps,
+                                              getInputProps,
+                                            }) => (
+                                              <>
+                                                <div {...getRootProps()}>
+                                                  <input
+                                                    {...getInputProps()}
+                                                    className="file-upload d-none"
+                                                  />
+                                                  <img
+                                                    src={FileUpload}
+                                                    alt="file-upload"
+                                                  />
+                                                  <span
+                                                    className={
+                                                      "fileupload-span"
+                                                    }
+                                                  >
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .addfile
+                                                      : "Add File"}
+                                                  </span>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.div.or
+                                                    : "or"}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.div
+                                                        .dropfilehere
+                                                    : "Drop File here"}
+                                                </div>
+                                                <div>
+                                                  <p>
+                                                    {this.state.SlotFileName}
+                                                  </p>
+                                                </div>
+                                              </>
+                                            )}
+                                          </Dropzone>
+                                        </div>
+                                      </Spin>
+                                      <div className="slot-down-excel mr-3">
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .sampletemplate
+                                            : "Sample Template"}
+                                        </p>
+                                        <CSVLink
+                                          filename={"OrderTemplate.csv"}
+                                          data={config.storeOrder_Template}
+                                        >
+                                          <img
+                                            src={DownExcel}
+                                            alt="download icon"
+                                            style={{ marginLeft: "5px" }}
+                                          />
+                                        </CSVLink>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12">
                               <Table
                                 loading={this.state.loading}
                                 noDataContent="No Record Found"
@@ -5215,7 +5373,7 @@ class StoreModule extends Component {
                                           trigger="click"
                                         >
                                           <div className="broadcast-icon">
-                                            {item.appointmentDays}
+                                            {item.totalSlot}
                                             <img
                                               className="info-icon-cp"
                                               src={BlackInfoIcon}
@@ -5225,6 +5383,14 @@ class StoreModule extends Component {
                                         </Popover>
                                       );
                                     },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header
+                                            .appointmentdays
+                                        : "Appointment Days",
+                                    dataIndex: "appointmentDays",
                                   },
                                   {
                                     title: "Status",
@@ -5319,18 +5485,6 @@ class StoreModule extends Component {
                                                 id={ids}
                                               />
                                             </Popover>
-                                            {/* <button
-                                              className="react-tabel-button editre"
-                                              onClick={this.openSlotEditModal.bind(
-                                                this,
-                                                rowData.slotSettingID,
-                                                rowData.storeId
-                                              )}
-                                            >
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.button.edit
-                                                : "EDIT"}
-                                            </button> */}
                                           </span>
                                         </>
                                       );
@@ -5513,85 +5667,6 @@ class StoreModule extends Component {
                                 pagination={{ defaultPageSize: 10 }}
                                 dataSource={this.state.languageGridData}
                               ></Table>
-                              {/* <ReactTable
-                                data={this.state.languageGridData}
-                                columns={[
-                                  {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.languagename
-                                        : "Language Name",
-                                    accessor: "language",
-                                    sortable: false,
-                                  },
-                                  {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.status
-                                        : "Status",
-                                    accessor: "isActive",
-                                    sortable: false,
-                                    Cell: (row) => {
-                                      return (
-                                        <div>
-                                          <span>
-                                            {row.original.isActive
-                                              ? "Active"
-                                              : "Inactive"}
-                                          </span>
-                                        </div>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.actions
-                                        : "Actions",
-                                    sortable: false,
-                                    Cell: (row) => {
-                                      var ids = row.original["slotId"];
-
-                                      if (row.original.language) {
-                                        var langage = row.original.language.split(
-                                          " "
-                                        )[0];
-                                        if (
-                                          langage.toLowerCase() ==
-                                          "English".toLowerCase()
-                                        ) {
-                                          return <></>;
-                                        } else {
-                                          return (
-                                            <div className="switch switch-primary d-inline m-r-10">
-                                              <input
-                                                type="checkbox"
-                                                id={"lang" + row.index}
-                                                name="allModules"
-                                                onClick={this.handleDeleteLanguage.bind(
-                                                  this,
-                                                  row.original
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={"lang" + row.index}
-                                                className="cr cr-float-auto"
-                                                style={{ float: "inherit" }}
-                                              ></label>
-                                            </div>
-                                          );
-                                        }
-                                      } else {
-                                        return <></>;
-                                      }
-                                    },
-                                  },
-                                ]}
-                                
-                                minRows={2}
-                                defaultPageSize={10}
-                                showPagination={true}
-                              /> */}
                             </div>
                           </div>
                         </div>
@@ -5676,7 +5751,7 @@ class StoreModule extends Component {
                     <div className="col-12">
                       <div className="edittabs">
                         <Table
-                          dataSource={this.state.slotData}
+                          dataSource={this.state.editSlotTemplateGridData}
                           noDataContent="No Record Found"
                           pagination={false}
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
@@ -5748,14 +5823,21 @@ class StoreModule extends Component {
                   </div>
                   <div className="row">
                     <div className="col-12 col-md-6">
-                      <label>
-                      {TranslationContext !== undefined
+                      <label>{TranslationContext !== undefined
                               ? TranslationContext.label.slotdays
-                              : "Slot days need to display"}
-                      </label>
-                      <select name="" className="form-control">
+                              : "Slot days need to display"}</label>
+                      <select
+                        name="editAppointmentDays"
+                        className="form-control"
+                        value={this.state.editAppointmentDays}
+                        onChange={this.handleSlotOnChange}
+                      >
                         <option value={0}>Select</option>
-                        <option value={0}>1</option>
+                        {Array(31)
+                          .fill(0)
+                          .map((e, i) => {
+                            return <option value={i + 1}>{i + 1}</option>;
+                          })}
                       </select>
                     </div>
                     <div className="col-12 col-md-6">
@@ -5766,13 +5848,32 @@ class StoreModule extends Component {
                       </label>
                       <div className="statuscheckbox">
                         <Radio.Group
-                          onChange={this.handleSlotRadioChange}
-                          value={this.state.slotAutomaticRadio}
+                          onChange={this.handleSlotOnChange}
+                          name="editSlotStatus"
+                          value={this.state.editSlotStatus}
                         >
-                          <Radio value={1}>Active</Radio>
-                          <Radio value={2}>Inactive</Radio>
+                          <Radio value="Active">Active</Radio>
+                          <Radio value="InActive">Inactive</Radio>
                         </Radio.Group>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12 col-md-6">
+                      <label>Slot Display Code</label>
+                      <select
+                        name="editSlotDisplayCode"
+                        className="form-control"
+                        value={this.state.editSlotDisplayCode}
+                        onChange={this.handleSlotOnChange}
+                      >
+                        <option value={0}>Select</option>
+                        <option value={301}>Current Slot</option>
+                        <option value={302}>
+                          Skip Current Slot & Show Next Slot
+                        </option>
+                        <option value={303}>Skip Current & Next Slot</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -5788,7 +5889,10 @@ class StoreModule extends Component {
                   </a>
                   <button
                     className="pop-over-button FlNone"
-                    onClick={this.handleUpdateTimeSlotData.bind(this)}
+                    onClick={this.handleInsertUpdateTimeSlotSetting.bind(
+                      this,
+                      false
+                    )}
                   >
                     <label className="pop-over-btnsave-text">
                       {TranslationContext !== undefined
@@ -6208,7 +6312,7 @@ class StoreModule extends Component {
                         className="form-control"
                         placeholder="Enter Template Name"
                         autoComplete="off"
-                        maxLength={50}
+                        maxLength={200}
                         name="autoTempName"
                         value={this.state.autoTempName}
                         onChange={this.handleInputOnchange}
@@ -6331,10 +6435,13 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
-                          this.setState({
-                            autoStoreTo: time,
-                          })
+                          this.handleSelectAutomaticStoreToDate(time)
                         }
+                        // onChange={(time) =>
+                        //   this.setState({
+                        //     autoStoreTo: time,
+                        //   })
+                        // }
                       />
                       {this.state.autoStoreTo === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6392,9 +6499,7 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
-                          this.setState({
-                            autoNonOptTo: time,
-                          })
+                          this.handleSelectAutomaticToDates(time)
                         }
                       />
                       {this.state.autoNonOptTo === "" && (
@@ -6482,7 +6587,7 @@ class StoreModule extends Component {
                         className="form-control"
                         placeholder="Enter Template Name"
                         autoComplete="off"
-                        maxLength={50}
+                        maxLength={200}
                         name="manualTempName"
                         value={this.state.manualTempName}
                         onChange={this.handleInputOnchange}
@@ -6512,7 +6617,7 @@ class StoreModule extends Component {
                         selected={this.state.manualStoreFrom}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={60}
+                        timeIntervals={30}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
                         placeholderText="Select Timing"
@@ -6535,15 +6640,13 @@ class StoreModule extends Component {
                         selected={this.state.manualStoreTo}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={60}
+                        timeIntervals={30}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
                         placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
-                          this.setState({
-                            manualStoreTo: time,
-                          })
+                          this.handleSelectManualStoreTodate(time)
                         }
                       />
                       {this.state.manualStoreTo === "" && (
@@ -6635,8 +6738,6 @@ class StoreModule extends Component {
                         placeholderText="Select Timing"
                         className="form-control"
                         disabled
-                        // minTime={setHours(setMinutes(new Date(), 0), 17)}
-                        // maxTime={setHours(setMinutes(new Date(), 0), 21)}
                         onChange={(time) =>
                           this.handleManualTimeOnchange(time, "slotEndTime")
                         }
@@ -6775,19 +6876,6 @@ class StoreModule extends Component {
                             </>
                           );
                         })}
-
-                      {/* <li>
-                        <div className="input-group">
-                          <label>SMB0045</label>
-                          <span className="input-group-append">
-                            <img
-                              src={CancelIcon}
-                              alt="cancel-icone"
-                              className="cust-ic"
-                            />
-                          </span>
-                        </div>
-                      </li> */}
                     </ul>
                   </div>
                 </div>

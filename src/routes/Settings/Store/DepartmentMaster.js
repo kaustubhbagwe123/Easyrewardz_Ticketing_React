@@ -1506,6 +1506,7 @@ class DepartmentMaster extends Component {
               departmentData: [],
               functionData: [],
             });
+            self.handleGetBrandData();
           } else if (status === "Record Already Exists") {
             NotificationManager.error(
               TranslationContext !== undefined
@@ -2148,7 +2149,7 @@ class DepartmentMaster extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height deptMaster setting-table-des">
+                <div className="table-cntr table-height deptMaster setting-table-des settings-align">
                   <ReactTable
                     data={this.state.departmentGrid}
                     columns={[
@@ -2363,12 +2364,13 @@ class DepartmentMaster extends Component {
                               : "Actions"}
                           </span>
                         ),
+                        width: 135,
                         accessor: "actiondept",
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["departmentBrandMappingID"];
                           return (
-                            <div className="d-flex align-items-center">
+                            <div className="settings-align-actions">
                               <Popover
                                 content={
                                   <div className="d-flex general-popover popover-body">
@@ -2415,8 +2417,7 @@ class DepartmentMaster extends Component {
                                 <img
                                   src={DeleteIcon}
                                   alt="del-icon"
-                                  className="downloadaction"
-                                  style={{ marginRight: "5px" }}
+                                  className="del-btn"
                                 />
                               </Popover>
                               <button
@@ -2731,9 +2732,11 @@ class DepartmentMaster extends Component {
                     />
                   </div>
                   <div className="div-cntr">
-                    <label>{TranslationContext !== undefined
+                    <label>
+                      {TranslationContext !== undefined
                         ? TranslationContext.label.status
-                        : "Status"}</label>
+                        : "Status"}
+                    </label>
                     <select
                       name="selectStatus"
                       value={this.state.selectStatus}

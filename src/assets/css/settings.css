@@ -4256,3 +4256,18 @@
   display: inline-flex;
   overflow: hidden;
 }
+.applicateDiv.react-datepicker-wrapper{
+  display: block;
+  
+}
+.react-datepicker-wrapper{
+  width: 100%;
+}
+.nextbox .ant-spin-nested-loading > div > .ant-spin .ant-spin-dot{
+  top:90%
+}
+.slot-down-excel{
+  margin-left: 26rem;
+    margin-top: 10px;
+    display: flex;
+}

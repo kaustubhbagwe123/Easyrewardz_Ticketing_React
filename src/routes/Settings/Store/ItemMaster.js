@@ -1655,7 +1655,7 @@ class ItemMaster extends Component {
           <div className="store-settings-cntr item-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreItemMasterReact setting-table-des">
+                <div className="table-cntr table-height StoreItemMasterReact setting-table-des settings-align">
                   <ReactTable
                     data={this.state.itemData}
                     columns={[
