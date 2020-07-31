@@ -246,6 +246,7 @@ class StoreModule extends Component {
       isSlotTemplete: "",
       SlotFile: {},
       SlotFileName: "",
+      isSlotSaveClick:false
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1915,6 +1916,7 @@ class StoreModule extends Component {
       inputParam.IsActive = this.state.slotStatus === 1 ? true : false;
       inputParam.TemplateSlots = this.state.SlotTemplateGridData;
       inputParam.SlotDisplayCode = this.state.SlotDisplayCode;
+      this.setState({isSlotSaveClick:true})
     } else {
       inputParam.SlotId = this.state.slotId;
       inputParam.AppointmentDays = Number(this.state.editAppointmentDays);
@@ -1932,9 +1934,10 @@ class StoreModule extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
+        debugger
         if (status === "Success") {
           if (isInsert) {
-            self.state.storeCodeData.self.state.storeCodeData.forEach(
+            self.state.storeCodeData.forEach(
               (element) => {
                 element.isChecked = false;
               }
@@ -1949,6 +1952,10 @@ class StoreModule extends Component {
               selectedSlotTemplate: 0,
               operationalDays: [],
               storeCodeData: self.state.storeCodeData,
+              isNextClick: false,
+              shoreSelectedCount: 0,
+              selectedStoreValues: "",
+              isSlotSaveClick:false
             });
             NotificationManager.success(
               TranslationContext !== undefined
@@ -4792,6 +4799,10 @@ class StoreModule extends Component {
                                                   this.setState({
                                                     slotDaysDisplay:
                                                       e.target.value,
+                                                    isSlotDaysDisplay:
+                                                      e.target.value === 0
+                                                        ? "Please Select Slot Display Days"
+                                                        : "",
                                                   });
                                                 }}
                                               >
@@ -4808,6 +4819,17 @@ class StoreModule extends Component {
                                                     );
                                                   })}
                                               </select>
+                                              {this.state.isSlotDaysDisplay ? (
+                                                <p
+                                                  className="non-deliverable"
+                                                  style={{
+                                                    marginTop: "0",
+                                                    textAlign: "left",
+                                                  }}
+                                                >
+                                                  {this.state.isoperationalDay}
+                                                </p>
+                                              ) : null}
                                             </li>
                                             <li>
                                               <label>
@@ -4939,6 +4961,9 @@ class StoreModule extends Component {
                                                 : "CANCEL"}
                                             </a>
                                             <button
+                                              disabled={
+                                                this.state.isSlotSaveClick
+                                              }
                                               className="butn"
                                               onClick={this.handleInsertUpdateTimeSlotSetting.bind(
                                                 this,
@@ -4961,7 +4986,10 @@ class StoreModule extends Component {
                                     role="tabpanel"
                                     aria-labelledby="Slot-bulkUpl-Tab"
                                   >
-                                    <div className="bulkuploadbox" style={{marginTop:"25px"}}>
+                                    <div
+                                      className="bulkuploadbox"
+                                      style={{ marginTop: "25px" }}
+                                    >
                                       <div className="addfilebox">
                                         <Dropzone
                                           onDrop={this.handleSlotFileUpload}

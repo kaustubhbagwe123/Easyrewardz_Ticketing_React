@@ -1207,7 +1207,12 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages(messageStringData, messagewhatsAppContent, imageURL) {
+  handleSaveChatMessages(
+    messageStringData,
+    messagewhatsAppContent,
+    imageURL,
+    isCard
+  ) {
     let self = this;
 
     var messagecontent = "";
@@ -1247,7 +1252,7 @@ class Header extends Component {
               messageSuggestionTagsData: [],
               selectedTags: 0,
               cardModal: false,
-              selectedCard: 0,
+              // selectedCard: 0,
               remainingCount: self.state.tempRemainingCount,
               suggestionModal: false,
               suggestionModalMob: false,
@@ -1255,12 +1260,16 @@ class Header extends Component {
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat();
-            self.handleSendMessageToCustomer(
-              messagecontent,
-              0,
-              messagewhatsAppContent,
-              imageURL
-            );
+            if (isCard) {
+              self.handleSendProductsOnChat(true);
+            } else {
+              self.handleSendMessageToCustomer(
+                messagecontent,
+                0,
+                messagewhatsAppContent,
+                imageURL
+              );
+            }
           } else {
             self.setState({ isSendRecomended: false, isMainLoader: false });
           }
@@ -1336,9 +1345,9 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetTimeSlot",
       headers: authHeader(),
-      params: {
-        storeID: 1,
-      },
+      // params: {
+      //   storeID: 1,
+      // },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -1822,9 +1831,10 @@ class Header extends Component {
       //     });
       //   }
       // }
+      debugger;
 
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) <= 3) {
+        if (Number(e.target.value) <= this.state.selectedSlot.maxCapacity) {
           this.setState({
             noOfPeople: e.target.value,
             noOfPeopleMax: "",
@@ -1832,7 +1842,8 @@ class Header extends Component {
         } else {
           this.setState({
             noOfPeople: "",
-            noOfPeopleMax: "Maximum capacity are 3",
+            noOfPeopleMax:
+              "Maximum capacity are " + this.state.selectedSlot.maxCapacity,
           });
         }
       } else {
@@ -1902,6 +1913,7 @@ class Header extends Component {
   }
   ////handle card send button
   handleSendCard() {
+    debugger;
     if (this.state.selectedCard > 0) {
       var messageStringData = document.getElementById(
         "card" + this.state.selectedCard
@@ -1955,7 +1967,8 @@ class Header extends Component {
       this.handleSaveChatMessages(
         messageStringData,
         messagewhatsAppContent,
-        imageURL
+        imageURL,
+        true
       );
     }
   }
@@ -3011,7 +3024,7 @@ class Header extends Component {
       chatData[0].programCode
     );
   };
-  ////handle buy now button 
+  ////handle buy now button
   handleBuyNowButtonClick = () => {
     this.setState({ buyNowClick: !this.state.buyNowClick });
   };
@@ -3193,33 +3206,43 @@ class Header extends Component {
     }
   };
 
-  handleSendProductsOnChat = () => {
+  handleSendProductsOnChat = (isCard) => {
     debugger;
     var selectedProduct = [];
-    if (this.state.productTypeTab == 0) {
-      this.state.selectedShoppingBag.forEach((element) => {
-        var finleData = this.state.mainProductsData.filter(
-          (x) => x.uniqueItemCode === element.uniqueItemCode
-        )[0];
-        selectedProduct.push(finleData);
+    if (isCard) {
+      selectedProduct = this.state.searchCardData.filter(
+        (x) => x.itemID === this.state.selectedCard
+      );
+      selectedProduct.forEach((element) => {
+        element.IsCard = true;
+       
       });
-    }
+    } else {
+      if (this.state.productTypeTab == 0) {
+        this.state.selectedShoppingBag.forEach((element) => {
+          var finleData = this.state.mainProductsData.filter(
+            (x) => x.uniqueItemCode === element.uniqueItemCode
+          )[0];
+          selectedProduct.push(finleData);
+        });
+      }
 
-    if (this.state.productTypeTab == 1) {
-      this.state.selectedWishList.forEach((element) => {
-        var finleData = this.state.mainProductsData.filter(
-          (x) => x.uniqueItemCode === element.uniqueItemCode
-        )[0];
-        selectedProduct.push(finleData);
-      });
-    }
-    if (this.state.productTypeTab == 2) {
-      this.state.selectedRecommended.forEach((element) => {
-        var finleData = this.state.mainProductsData.filter(
-          (x) => x.uniqueItemCode === element.uniqueItemCode
-        )[0];
-        selectedProduct.push(finleData);
-      });
+      if (this.state.productTypeTab == 1) {
+        this.state.selectedWishList.forEach((element) => {
+          var finleData = this.state.mainProductsData.filter(
+            (x) => x.uniqueItemCode === element.uniqueItemCode
+          )[0];
+          selectedProduct.push(finleData);
+        });
+      }
+      if (this.state.productTypeTab == 2) {
+        this.state.selectedRecommended.forEach((element) => {
+          var finleData = this.state.mainProductsData.filter(
+            (x) => x.uniqueItemCode === element.uniqueItemCode
+          )[0];
+          selectedProduct.push(finleData);
+        });
+      }
     }
 
     let self = this;
@@ -3230,12 +3253,6 @@ class Header extends Component {
       data: {
         ChatID: this.state.chatId,
         Products: selectedProduct,
-        ProductFrom:
-          this.state.productTypeTab === 0
-            ? "shoppingbag"
-            : this.state.productTypeTab === 1
-            ? "wishlist"
-            : "recommended",
         CustomerMobile: this.state.customerMobileNo,
       },
     })
@@ -3244,7 +3261,10 @@ class Header extends Component {
         var responseData = response.data.responseData;
 
         if (message === "Success" && responseData) {
-          self.handleGetChatMessagesList(self.state.chatId);
+          if (!isCard) {
+            self.setState({ selectedCard: 0 });
+            self.handleGetChatMessagesList(self.state.chatId);
+          }
         }
       })
       .catch((response) => {
