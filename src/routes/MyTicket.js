@@ -3100,98 +3100,6 @@ class MyTicket extends Component {
     }
   }
   // // -------------------------------Check box selected all code start-------------------------------
-  // onCheckMasterAllChange(invoiceNumber, rowData) {
-  //   const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
-  //   newSelected[invoiceNumber] = !this.state.CheckBoxAllOrder[invoiceNumber];
-  //   this.setState({
-  //     CheckBoxAllOrder: invoiceNumber ? newSelected : false
-  //   });
-  //   var selectedRow = [];
-  //   var CselectedRow = [];
-  //   if (this.state.SelectedAllOrder.length === 0) {
-  //     selectedRow.push(rowData);
-  //     var Order_Master = this.state.OrderSubItem.filter(
-  //       x => x.invoiceNumber === invoiceNumber
-  //     );
-  //     if (Order_Master.length > 0) {
-  //       var objCheckBoxAllItem = new Object();
-  //       for (let j = 0; j < Order_Master.length; j++) {
-  //         objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
-
-  //         CselectedRow.push(Order_Master[j]);
-  //       }
-  //       this.setState({
-  //         CheckBoxAllItem: objCheckBoxAllItem
-  //       });
-  //     }
-  //     this.setState({
-  //       SelectedAllOrder: selectedRow,
-  //       SelectedAllItem: CselectedRow
-  //     });
-  //   } else {
-  //     if (newSelected[invoiceNumber] === true) {
-  //       for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
-  //         if (this.state.SelectedAllOrder[i] === rowData) {
-  //           selectedRow = this.state.SelectedAllOrder;
-  //           selectedRow.push(rowData);
-  //           var Order_Master = this.state.OrderSubItem.filter(
-  //             x => x.invoiceNumber === invoiceNumber
-  //           );
-  //           if (Order_Master.length > 0) {
-  //             var objCheckBoxAllItem = new Object();
-  //             for (let j = 0; j < Order_Master.length; j++) {
-  //               objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
-
-  //               CselectedRow.push(Order_Master[j]);
-  //             }
-  //             this.setState({
-  //               CheckBoxAllItem: objCheckBoxAllItem
-  //             });
-  //           }
-
-  //           this.setState({
-  //             SelectedAllOrder: selectedRow,
-  //             SelectedAllItem: CselectedRow
-  //           });
-
-  //           break;
-  //         }
-  //       }
-  //     } else {
-  //       for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
-  //         if (this.state.SelectedAllOrder[i] === rowData) {
-  //           selectedRow = this.state.SelectedAllOrder;
-  //           selectedRow.splice(i, 1);
-  //           var Order_Master = this.state.OrderSubItem.filter(
-  //             x => x.invoiceNumber === invoiceNumber
-  //           );
-  //           if (Order_Master.length > 0) {
-  //             var objCheckBoxAllItem = new Object();
-  //             for (let j = 0; j < Order_Master.length; j++) {
-  //               objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
-  //             }
-  //             this.setState({
-  //               CheckBoxAllItem: objCheckBoxAllItem
-  //             });
-  //           }
-
-  //           this.setState({
-  //             SelectedAllOrder: selectedRow,
-  //             SelectedAllItem: []
-  //           });
-
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   this.setState({
-  //     SelectedAllOrder: selectedRow,
-  //     SelectedAllItem: CselectedRow,
-  //     selectedProduct: selectedRow
-  //   });
-  // }
 
   checkIndividualItem(articleNumber, rowData) {
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
@@ -7969,16 +7877,6 @@ class MyTicket extends Component {
                                   </div>
                                 </label>
                               </li>
-
-                              {/* <li style={{ float: "right" }}>
-                              <button
-                                className="send"
-                                type="button"
-                                onClick={this.handleSendMailData.bind(this, 1)}
-                              >
-                                Send
-                              </button>
-                            </li> */}
                             </ul>
                           </div>
                         </div>

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Popover, Radio } from "antd";
+import { Popover, Radio, Spin } from "antd";
 import ReactTable from "react-table";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,6 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
@@ -33,15 +32,15 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import "antd/dist/antd.css";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-import { Table, Select as Aselect } from "antd";
+import { Table, Select as Aselect, Modal as ModalAntd } from "antd";
 import Select from "react-select";
-import "antd/dist/antd.css";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import { element } from "prop-types";
 
+
+const { confirm } = ModalAntd;
 const { Option } = Aselect;
 var uid = 0;
 class StoreModule extends Component {
@@ -108,28 +107,6 @@ class StoreModule extends Component {
       broadProviderValidation: "",
       TimeSlotData: TimeSlotdropdown(),
       TimeSlotGridData: [],
-      // TimeSlotGridData: [
-      //   {
-      //     slotSettingID: 1,
-      //     storeCode: "SMB0000",
-      //     storeTimimg: "10 AM-7 PM",
-      //     nonOperationalTimimg: "3",
-      //     slotTemplate: "Alternate 1",
-      //     totalSlot: "6",
-      //     appointmentDays: "10",
-      //     status: "Active",
-      //   },
-      //   {
-      //     slotSettingID: 2,
-      //     storeCode: "SMB0000",
-      //     storeTimimg: "10 AM-7 PM",
-      //     nonOperationalTimimg: "3",
-      //     slotTemplate: "Alternate 1",
-      //     totalSlot: "6",
-      //     appointmentDays: "10",
-      //     status: "Active",
-      //   },
-      // ],
       storeCodeData: [],
       tempStoreCodeData: [],
       selectStore: 0,
@@ -246,7 +223,8 @@ class StoreModule extends Component {
       isSlotTemplete: "",
       SlotFile: {},
       SlotFileName: "",
-      isSlotSaveClick:false
+      isSlotSaveClick: false,
+      bulkuploadLoading: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1916,7 +1894,7 @@ class StoreModule extends Component {
       inputParam.IsActive = this.state.slotStatus === 1 ? true : false;
       inputParam.TemplateSlots = this.state.SlotTemplateGridData;
       inputParam.SlotDisplayCode = this.state.SlotDisplayCode;
-      this.setState({isSlotSaveClick:true})
+      this.setState({ isSlotSaveClick: true });
     } else {
       inputParam.SlotId = this.state.slotId;
       inputParam.AppointmentDays = Number(this.state.editAppointmentDays);
@@ -1934,14 +1912,12 @@ class StoreModule extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
-        debugger
+        debugger;
         if (status === "Success") {
           if (isInsert) {
-            self.state.storeCodeData.forEach(
-              (element) => {
-                element.isChecked = false;
-              }
-            );
+            self.state.storeCodeData.forEach((element) => {
+              element.isChecked = false;
+            });
             self.setState({
               SlotDisplayCode: 0,
               SlotTemplateGridData: [],
@@ -1955,7 +1931,7 @@ class StoreModule extends Component {
               isNextClick: false,
               shoreSelectedCount: 0,
               selectedStoreValues: "",
-              isSlotSaveClick:false
+              isSlotSaveClick: false,
             });
             NotificationManager.success(
               TranslationContext !== undefined
@@ -2687,7 +2663,6 @@ class StoreModule extends Component {
   }
   /// handle Slot bulk upload
   handleSlotFileUpload = (file) => {
-    debugger;
     var imageFile = file[0];
     var SlotFileName = file[0].name;
     if (!imageFile.name.match(/\.(csv)$/)) {
@@ -2698,10 +2673,55 @@ class StoreModule extends Component {
         SlotFileName,
         SlotFile: imageFile,
       });
+      this.handleSlotBulkUpload();
     }
-
-
   };
+  /// handle slot bulk upload
+  handleSlotBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({
+      bulkuploadLoading: true,
+    });
+    const formData = new FormData();
+    formData.append("file", this.state.SlotFile);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/BulkUploadSlot",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then((response) => {
+        var status = response.data.message;
+        if (status === "Success") {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.fileuploadedsuccessfully
+              : "File uploaded successfully."
+          );
+          self.setState({
+            SlotFile: {},
+            SlotFileName: "",
+            bulkuploadLoading: false,
+          });
+        } else {
+          self.setState({
+            bulkuploadLoading: false,
+          });
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.filenotuploaded
+              : "File not uploaded."
+          );
+        }
+      })
+      .catch((response) => {
+        self.setState({
+          bulkuploadLoading: false,
+        });
+        console.log(response);
+      });
+  }
   ////handle slot occupancy change text in table
   handleslotOccupancyChange = (id, e) => {
     if (Number(e.target.value) <= 30) {
@@ -2798,6 +2818,37 @@ class StoreModule extends Component {
         isSlotTemplete: "Please Select Slot Template.",
       });
     }
+  };
+
+  handleGetAppointmentCountOnSlotID = (slotId) => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetAppointmentCountOnSlotID",
+      headers: authHeader(),
+      params: { SlotSettingID: slotId },
+    })
+      .then((response) => {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success") {
+          confirm({
+            title: "This Slot Already Appointment Created",
+            // icon: <ExclamationCircleOutlined />,
+            content: "Do you want to Delete ?",
+            onOk() {
+              self.handleDeleteTimeSlot(slotId);
+            },
+            onCancel() {},
+          });
+        } else {
+          self.handleDeleteTimeSlot(slotId);
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetAppointmentCountOnSlotID");
+      });
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -4990,42 +5041,76 @@ class StoreModule extends Component {
                                       className="bulkuploadbox"
                                       style={{ marginTop: "25px" }}
                                     >
-                                      <div className="addfilebox">
-                                        <Dropzone
-                                          onDrop={this.handleSlotFileUpload}
+                                      <Spin
+                                        tip="Please wait..."
+                                        spinning={this.state.bulkuploadLoading}
+                                      >
+                                        <div className="addfilebox">
+                                          <Dropzone
+                                            onDrop={this.handleSlotFileUpload}
+                                          >
+                                            {({
+                                              getRootProps,
+                                              getInputProps,
+                                            }) => (
+                                              <>
+                                                <div {...getRootProps()}>
+                                                  <input
+                                                    {...getInputProps()}
+                                                    className="file-upload d-none"
+                                                  />
+                                                  <img
+                                                    src={FileUpload}
+                                                    alt="file-upload"
+                                                  />
+                                                  <span
+                                                    className={
+                                                      "fileupload-span"
+                                                    }
+                                                  >
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .addfile
+                                                      : "Add File"}
+                                                  </span>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.div.or
+                                                    : "or"}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.div
+                                                        .dropfilehere
+                                                    : "Drop File here"}
+                                                </div>
+                                                <div>
+                                                  <p>
+                                                    {this.state.SlotFileName}
+                                                  </p>
+                                                </div>
+                                              </>
+                                            )}
+                                          </Dropzone>
+                                        </div>
+                                      </Spin>
+                                      <div className="slot-down-excel mr-3">
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .sampletemplate
+                                            : "Sample Template"}
+                                        </p>
+                                        <CSVLink
+                                          filename={"OrderTemplate.csv"}
+                                          data={config.storeOrder_Template}
                                         >
-                                          {({
-                                            getRootProps,
-                                            getInputProps,
-                                          }) => (
-                                            <div {...getRootProps()}>
-                                              <input
-                                                {...getInputProps()}
-                                                className="file-upload d-none"
-                                              />
-                                              <img
-                                                src={FileUpload}
-                                                alt="file-upload"
-                                              />
-                                              <span
-                                                className={"fileupload-span"}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.span
-                                                      .addfile
-                                                  : "Add File"}
-                                              </span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.div.or
-                                                : "or"}
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.div
-                                                    .dropfilehere
-                                                : "Drop File here"}
-                                            </div>
-                                          )}
-                                        </Dropzone>
+                                          <img
+                                            src={DownExcel}
+                                            alt="download icon"
+                                            style={{ marginLeft: "5px" }}
+                                          />
+                                        </CSVLink>
                                       </div>
                                     </div>
                                   </div>
@@ -5035,319 +5120,6 @@ class StoreModule extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12">
-                              {/* <Table
-                                loading={this.state.loading}
-                                noDataContent="No Record Found"
-                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                                columns={[
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.slotno
-                                        : "Slot Id",
-
-                                    dataIndex: "slotSettingID",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.storecode
-                                        : "Store Code",
-                                    dataIndex: "storeCode",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.storetiming
-                                        : "Store Timing",
-                                    dataIndex: "storeTimimg",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                            .nonoperationalhours
-                                        : "Operational Days",
-                                    dataIndex: "nonOperationalTimimg",
-                                    render: (row, item) => {
-                                      return (
-                                        <Popover
-                                          overlayClassName="antcustom operationalbox"
-                                          content={
-                                            <div>
-                                              <img
-                                                src={CancelIcon}
-                                                alt="cancel-icone"
-                                                className="cust-icon2"
-                                              />
-                                              <div className="operationaldays">
-                                                <div className="row">
-                                                  <div className="col-12">
-                                                    <h3>Operational Days</h3>
-                                                    <ul>
-                                                      <li>
-                                                        <label>Monday</label>
-                                                      </li>
-                                                      <li>
-                                                        <label>Tuesday</label>
-                                                      </li>
-                                                      <li>
-                                                        <label>Wednesday</label>
-                                                      </li>
-                                                    </ul>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        >
-                                          <div className="broadcast-icon">
-                                            {item.nonOperationalTimimg}
-                                            <img
-                                              className="info-icon-cp"
-                                              src={BlackInfoIcon}
-                                              alt="info-icon"
-                                            />
-                                          </div>
-                                        </Popover>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.slotduration
-                                        : "Slot Duration",
-                                    dataIndex: "storeSlotDuration",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.maxcapacity
-                                        : "Max Capacity",
-                                    dataIndex: "maxCapacity",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.totalslot
-                                        : "Total Slot",
-                                    dataIndex: "totalSlot",
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header
-                                            .appointmentdays
-                                        : "Appointment Days",
-                                    dataIndex: "appointmentDays",
-                                    render: (row, item) => {
-                                      return (
-                                        <Popover
-                                          overlayClassName="antcustom appointmentdaysbox"
-                                          content={
-                                            <div>
-                                              <img
-                                                src={CancelIcon}
-                                                alt="cancel-icone"
-                                                className="cust-icon2"
-                                              />
-                                              <div className="appointmentdays">
-                                                <div className="row">
-                                                  <div className="col-12">
-                                                    <h3>Appointment Days</h3>
-                                                    <div className="">
-                                                      <Table
-                                                        dataSource={
-                                                          this.state.slotData
-                                                        }
-                                                        noDataContent="No Record Found"
-                                                        pagination={false}
-                                                        className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                                                        columns={[
-                                                          {
-                                                            title: "S.No.",
-
-                                                            dataIndex: "no",
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot Start Time",
-                                                            dataIndex:
-                                                              "startTime",
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot End Time",
-                                                            dataIndex:
-                                                              "endTime",
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot Occupancy",
-                                                            dataIndex:
-                                                              "occupancy",
-                                                            render: (
-                                                              row,
-                                                              rowData
-                                                            ) => {
-                                                              return (
-                                                                <>
-                                                                  <input
-                                                                    type="text"
-                                                                    className="form-control value"
-                                                                    value="3"
-                                                                  />
-                                                                </>
-                                                              );
-                                                            },
-                                                          },
-                                                          {
-                                                            title:
-                                                              "Slot Status(Unable/Disable)",
-                                                            render: (
-                                                              row,
-                                                              rowData
-                                                            ) => {
-                                                              return (
-                                                                <>
-                                                                  radio button
-                                                                </>
-                                                              );
-                                                            },
-                                                          },
-                                                        ]}
-                                                      ></Table>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        >
-                                          <div className="broadcast-icon">
-                                            {item.appointmentDays}
-                                            <img
-                                              className="info-icon-cp"
-                                              src={BlackInfoIcon}
-                                              alt="info-icon"
-                                            />
-                                          </div>
-                                        </Popover>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title: "Status",
-                                    render: (row, item) => {
-                                      return <div>Active</div>;
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.actions
-                                        : "Actions",
-
-                                    render: (row, rowData) => {
-                                      var ids = row;
-                                      return (
-                                        <>
-                                          <span>
-                                            <img
-                                              src={Editpencil}
-                                              alt="Edit"
-                                              className="del-btn"
-                                              // id={p-edit-pop-2}
-                                              onClick={this.openSlotEditModal.bind(
-                                                this,
-                                                rowData.slotSettingID,
-                                                rowData.storeId
-                                              )}
-                                            />
-                                            <Popover
-                                              content={
-                                                <div className="d-flex general-popover popover-body">
-                                                  <div className="del-big-icon">
-                                                    <img
-                                                      src={DelBigIcon}
-                                                      alt="del-icon"
-                                                    />
-                                                  </div>
-                                                  <div>
-                                                    <p className="font-weight-bold blak-clr">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .deletefile
-                                                        : "Delete file"}
-                                                      ?
-                                                    </p>
-                                                    <p className="mt-1 fs-12">
-                                                      {TranslationContext !==
-                                                      undefined
-                                                        ? TranslationContext.p
-                                                            .areyousureyouwanttodeletethisfile
-                                                        : "Are you sure you want to delete this file"}
-                                                      ?
-                                                    </p>
-                                                    <div className="del-can">
-                                                      <a href={Demo.BLANK_LINK}>
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext.a
-                                                              .cancel
-                                                          : "CANCEL"}
-                                                      </a>
-                                                      <button
-                                                        className="butn"
-                                                        onClick={this.handleDeleteTimeSlot.bind(
-                                                          this,
-                                                          rowData.slotSettingID
-                                                        )}
-                                                      >
-                                                        {TranslationContext !==
-                                                        undefined
-                                                          ? TranslationContext
-                                                              .button.delete
-                                                          : "Delete"}
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              }
-                                              placement="bottom"
-                                              trigger="click"
-                                            >
-                                              <img
-                                                src={DelBlack}
-                                                alt="del-icon"
-                                                className="del-btn"
-                                                id={ids}
-                                              />
-                                            </Popover>
-                                          </span>
-                                        </>
-                                      );
-                                    },
-                                  },
-                                ]}
-                                rowKey={(record) => {
-                                  if (record.slotSettingID) {
-                                    uid = uid + 1;
-                                    return record.slotSettingID + "i" + uid;
-                                  } else {
-                                    uid = uid + 1;
-                                    return "i" + uid;
-                                  }
-                                }}
-                                pagination={{ defaultPageSize: 10 }}
-                                dataSource={this.state.TimeSlotGridData}
-                              ></Table> */}
                               <Table
                                 loading={this.state.loading}
                                 noDataContent="No Record Found"
@@ -5596,7 +5368,7 @@ class StoreModule extends Component {
                                                       </a>
                                                       <button
                                                         className="butn"
-                                                        onClick={this.handleDeleteTimeSlot.bind(
+                                                        onClick={this.handleGetAppointmentCountOnSlotID.bind(
                                                           this,
                                                           rowData.slotSettingID
                                                         )}
@@ -5621,18 +5393,6 @@ class StoreModule extends Component {
                                                 id={ids}
                                               />
                                             </Popover>
-                                            {/* <button
-                                              className="react-tabel-button editre"
-                                              onClick={this.openSlotEditModal.bind(
-                                                this,
-                                                rowData.slotSettingID,
-                                                rowData.storeId
-                                              )}
-                                            >
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.button.edit
-                                                : "EDIT"}
-                                            </button> */}
                                           </span>
                                         </>
                                       );
@@ -5815,85 +5575,6 @@ class StoreModule extends Component {
                                 pagination={{ defaultPageSize: 10 }}
                                 dataSource={this.state.languageGridData}
                               ></Table>
-                              {/* <ReactTable
-                                data={this.state.languageGridData}
-                                columns={[
-                                  {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.languagename
-                                        : "Language Name",
-                                    accessor: "language",
-                                    sortable: false,
-                                  },
-                                  {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.status
-                                        : "Status",
-                                    accessor: "isActive",
-                                    sortable: false,
-                                    Cell: (row) => {
-                                      return (
-                                        <div>
-                                          <span>
-                                            {row.original.isActive
-                                              ? "Active"
-                                              : "Inactive"}
-                                          </span>
-                                        </div>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.actions
-                                        : "Actions",
-                                    sortable: false,
-                                    Cell: (row) => {
-                                      var ids = row.original["slotId"];
-
-                                      if (row.original.language) {
-                                        var langage = row.original.language.split(
-                                          " "
-                                        )[0];
-                                        if (
-                                          langage.toLowerCase() ==
-                                          "English".toLowerCase()
-                                        ) {
-                                          return <></>;
-                                        } else {
-                                          return (
-                                            <div className="switch switch-primary d-inline m-r-10">
-                                              <input
-                                                type="checkbox"
-                                                id={"lang" + row.index}
-                                                name="allModules"
-                                                onClick={this.handleDeleteLanguage.bind(
-                                                  this,
-                                                  row.original
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={"lang" + row.index}
-                                                className="cr cr-float-auto"
-                                                style={{ float: "inherit" }}
-                                              ></label>
-                                            </div>
-                                          );
-                                        }
-                                      } else {
-                                        return <></>;
-                                      }
-                                    },
-                                  },
-                                ]}
-                                
-                                minRows={2}
-                                defaultPageSize={10}
-                                showPagination={true}
-                              /> */}
                             </div>
                           </div>
                         </div>
@@ -7002,19 +6683,6 @@ class StoreModule extends Component {
                             </>
                           );
                         })}
-
-                      {/* <li>
-                        <div className="input-group">
-                          <label>SMB0045</label>
-                          <span className="input-group-append">
-                            <img
-                              src={CancelIcon}
-                              alt="cancel-icone"
-                              className="cust-ic"
-                            />
-                          </span>
-                        </div>
-                      </li> */}
                     </ul>
                   </div>
                 </div>

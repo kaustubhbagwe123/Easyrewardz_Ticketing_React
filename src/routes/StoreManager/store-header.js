@@ -250,6 +250,7 @@ class Header extends Component {
       isState: "",
       isCountry: "",
       isPinCodeCheck: "",
+      maxPeopleAllow: 0,
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -1353,14 +1354,20 @@ class Header extends Component {
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
         var availableSlot = 0;
-
+        debugger;
         if (message == "Success" && timeSlotData) {
           for (var i = 0; i < timeSlotData.length; i++) {
             if (timeSlotData[i].alreadyScheduleDetails.length > 0) {
               availableSlot += 1;
             }
           }
-          self.setState({ timeSlotData, isSendClick: false, availableSlot });
+          var maxPeopleAllow = timeSlotData[0].maxPeopleAllowed;
+          self.setState({
+            timeSlotData,
+            isSendClick: false,
+            availableSlot,
+            maxPeopleAllow,
+          });
         } else {
           self.setState({ timeSlotData, isSendClick: false });
         }
@@ -1834,7 +1841,7 @@ class Header extends Component {
       debugger;
 
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) <= this.state.selectedSlot.maxCapacity) {
+        if (Number(e.target.value) <= this.state.maxPeopleAllow) {
           this.setState({
             noOfPeople: e.target.value,
             noOfPeopleMax: "",
@@ -1843,7 +1850,7 @@ class Header extends Component {
           this.setState({
             noOfPeople: "",
             noOfPeopleMax:
-              "Maximum capacity are " + this.state.selectedSlot.maxCapacity,
+              "Maximum capacity are " + this.state.maxPeopleAllow,
           });
         }
       } else {
@@ -2868,7 +2875,7 @@ class Header extends Component {
     }
   };
   ////handle remove product
-  handleRemoveProduct = (itemCode) => {
+  handleRemoveProduct = (itemCode,fromType) => {
     let self = this;
     axios({
       method: "post",
@@ -2878,6 +2885,7 @@ class Header extends Component {
         CustomerID: this.state.customerId,
         MobileNo: this.state.mobileNo,
         ItemCode: itemCode,
+        RemoveFrom:fromType
       },
     })
       .then((response) => {
@@ -3215,7 +3223,6 @@ class Header extends Component {
       );
       selectedProduct.forEach((element) => {
         element.IsCard = true;
-       
       });
     } else {
       if (this.state.productTypeTab == 0) {
@@ -8268,7 +8275,8 @@ class Header extends Component {
                                                     }
                                                     onClick={this.handleRemoveProduct.bind(
                                                       this,
-                                                      item.uniqueItemCode
+                                                      item.uniqueItemCode,
+                                                      "S"
                                                     )}
                                                   />
                                                 </div>
@@ -8593,7 +8601,8 @@ class Header extends Component {
                                                     }
                                                     onClick={this.handleRemoveProduct.bind(
                                                       this,
-                                                      item.uniqueItemCode
+                                                      item.uniqueItemCode,
+                                                      "W"
                                                     )}
                                                     src={Cancelico}
                                                     className="cancelico"
@@ -8922,7 +8931,8 @@ class Header extends Component {
                                                     }
                                                     onClick={this.handleRemoveProduct.bind(
                                                       this,
-                                                      item.uniqueItemCode
+                                                      item.uniqueItemCode,
+                                                      "R"
                                                     )}
                                                     src={Cancelico}
                                                     className="cancelico"

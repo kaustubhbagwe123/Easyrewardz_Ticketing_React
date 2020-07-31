@@ -31,7 +31,7 @@ class Appointment extends Component {
   }
 
   componentDidMount() {
-    this.handleAppointmentGridData(1, new Date());
+    // this.handleAppointmentGridData(1, new Date());
     this.handleAppointmentCount();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
@@ -97,9 +97,11 @@ class Appointment extends Component {
           //   tomorrowCount: data[0].tomorrow,
           //   dayAfterTomorrowCount: data[0].dayAfterTomorrow,
           // });
+
           self.setState({
             appointmentDaysData: data,
           });
+          self.handleAppointmentGridData(1,data[0].appointmentDate)
         }
       })
       .catch((data) => {
@@ -218,7 +220,7 @@ class Appointment extends Component {
                           item.appointmentDate
                         )}
                       >
-                        {i === 0 ? (
+                        {i === 0 && new Date()=== new Date(item.appointmentDate) ? (
                           <p
                             className={
                               this.state.tabFor === i + 1
