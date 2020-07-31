@@ -3623,15 +3623,21 @@ class StoreDashboard extends Component {
                                         Creation details
                                       </li>
                                       <li>
-                                        <p>Created by Naman</p>
+                                        <p>
+                                          Created by {row.original.createdBy}
+                                        </p>
                                         <p>2 Hrs ago</p>
                                       </li>
                                       <li>
-                                        <p>Assigned to Vikas</p>
+                                        <p>
+                                          Assigned to {row.original.assigntoId}
+                                        </p>
                                         <p>1.5 Hrs ago</p>
                                       </li>
                                       <li>
-                                        <p>Updated by Vikas</p>
+                                        <p>
+                                          Updated by {row.original.modifiedBy}
+                                        </p>
                                         <p>1 Hr ago</p>
                                       </li>
                                       <li>

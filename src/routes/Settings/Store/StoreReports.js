@@ -6041,7 +6041,7 @@ class StoreReports extends Component {
           {/* </div> */}
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr reactreport setting-table-des">
+          <div className="store-settings-cntr reactreport setting-table-des settings-align">
             <div style={{ backgroundColor: "#fff" }}>
               <ReactTable
                 data={datareport}
