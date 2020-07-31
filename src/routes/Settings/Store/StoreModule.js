@@ -2211,12 +2211,11 @@ class StoreModule extends Component {
   /// handle store search
   handleStoreSearch = (e) => {
     e.preventDefault();
-    debugger;
     var tempstore = this.state.tempStoreCodeData;
     var Value = this.state.slotStoreSearch;
 
     var FinalstoreList = tempstore.filter((item) =>
-      item.storeName.includes(Value)
+      item.storeName.toLowerCase().includes(Value.toLowerCase())
     );
 
     if (FinalstoreList.length > 0) {
