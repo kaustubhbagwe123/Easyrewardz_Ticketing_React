@@ -1632,11 +1632,6 @@ class Header extends Component {
       activeTab = 1;
     }
 
-    if (this.state.isCustomerProfile) {
-      this.setState({ ProfileProductTab: 0 });
-    } else {
-      this.setState({ ProfileProductTab: 1 });
-    }
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1726,11 +1721,9 @@ class Header extends Component {
         if (count === 0) {
           this.handleGetChatMessagesList(id);
           this.handleGetAgentRecentChat(customerId);
-          this.handleGetChatCustomerProfile(customerId);
         } else {
           this.handleMakeAsReadOnGoingChat(id);
           this.handleGetAgentRecentChat(customerId);
-          this.handleGetChatCustomerProfile(customerId);
         }
       }
     } else {
@@ -1777,9 +1770,15 @@ class Header extends Component {
       });
       this.handleGetChatMessagesList(id);
       this.handleGetAgentRecentChat(customerId);
-      this.handleGetChatCustomerProfile(customerId);
     }
     this.setState({ isHistoricalChat: false, isDownbtn: true });
+    if (this.state.isCustomerProfile) {
+      this.setState({ ProfileProductTab: 0 });
+      this.handleGetChatCustomerProfile(customerId);
+    } else {
+      this.setState({ ProfileProductTab: 1 });
+      this.handleGetChatCustomerProducts();
+    }
   };
   ////handle close card modal
   onCloseCardModal = () => {
@@ -2635,16 +2634,18 @@ class Header extends Component {
   };
   ////handle name hover leave
   handleNameHoverLeave = () => {
+    debugger
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
         onHoverName: false,
       });
+      if (this.state.isCustomerProfile) {
+        this.setState({ ProfileProductTab: 0 });
+      } else {
+        this.setState({ ProfileProductTab: 1 });
+      }
     }
-    if (this.state.isCustomerProfile) {
-      this.setState({ ProfileProductTab: 0 });
-    } else {
-      this.setState({ ProfileProductTab: 1 });
-    }
+    
   };
   ////handle pin click
   handlePinClick = () => {
@@ -7776,7 +7777,9 @@ class Header extends Component {
                                       <div>
                                         <ul>
                                           <li>
-                                            <p>{this.state.mobileNo}</p>
+                                            <p title="Mobile No">
+                                              {this.state.mobileNo}
+                                            </p>
                                           </li>
                                         </ul>
                                       </div>
@@ -8057,7 +8060,8 @@ class Header extends Component {
                                           type="button"
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
-                                            this
+                                            this,
+                                            false
                                           )}
                                         >
                                           {TranslationContext !== undefined
@@ -8400,7 +8404,9 @@ class Header extends Component {
                                           type="button"
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
-                                            this
+                                            this,
+                                            false,
+                                            
                                           )}
                                         >
                                           {TranslationContext !== undefined
@@ -8748,7 +8754,8 @@ class Header extends Component {
                                           type="button"
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
-                                            this
+                                            this,
+                                            false
                                           )}
                                         >
                                           {TranslationContext !== undefined
