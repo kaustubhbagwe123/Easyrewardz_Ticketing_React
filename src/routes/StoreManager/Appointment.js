@@ -31,9 +31,7 @@ class Appointment extends Component {
   }
 
   componentDidMount() {
-    this.handleAppointmentGridData(1, new Date());
     this.handleAppointmentCount();
-
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -82,7 +80,6 @@ class Appointment extends Component {
 
   handleAppointmentCount() {
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetAppointmentCount",
@@ -92,14 +89,10 @@ class Appointment extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
-          // self.setState({
-          //   todayCount: data[0].today,
-          //   tomorrowCount: data[0].tomorrow,
-          //   dayAfterTomorrowCount: data[0].dayAfterTomorrow,
-          // });
           self.setState({
             appointmentDaysData: data,
           });
+          self.handleAppointmentGridData(1, data[0].appointmentDate);
         }
       })
       .catch((data) => {
@@ -218,8 +211,10 @@ class Appointment extends Component {
                           item.appointmentDate
                         )}
                       >
-                        {i === 0 ? (
+                        {i === 0 &&
+                        new Date() === new Date(item.appointmentDate) ? (
                           <p
+                            style={{ marginRight: "10px" }}
                             className={
                               this.state.tabFor === i + 1
                                 ? "tab-title"
@@ -232,6 +227,7 @@ class Appointment extends Component {
                           </p>
                         ) : (
                           <p
+                            style={{ marginRight: "10px" }}
                             className={
                               this.state.tabFor === i + 1
                                 ? "tab-title"
@@ -265,37 +261,6 @@ class Appointment extends Component {
           >
             <img src={SchRight} alt="right arrow" />
           </div>
-          {/* 
-          <div
-            className={
-              this.state.tabFor === 2 ? "custom-tabcount" : "custom-tabcount1"
-            }
-            onClick={this.handleAppointmentGridData.bind(this, 2)}
-          >
-            <p className={this.state.tabFor === 2 ? "tab-title" : "tab-title1"}>
-              {this.state.tomorrowDay}
-            </p>
-            <span
-              className={this.state.tabFor === 2 ? "tab-count" : "tab-count1"}
-            >
-              {this.state.tomorrowCount}
-            </span>
-          </div>
-          <div
-            className={
-              this.state.tabFor === 3 ? "custom-tabcount" : "custom-tabcount1"
-            }
-            onClick={this.handleAppointmentGridData.bind(this, 3)}
-          >
-            <p className={this.state.tabFor === 3 ? "tab-title" : "tab-title1"}>
-              {this.state.dayAfterTomorrowDay}
-            </p>
-            <span
-              className={this.state.tabFor === 3 ? "tab-count" : "tab-count1"}
-            >
-              {this.state.dayAfterTomorrowCount}
-            </span>
-          </div> */}
         </div>
         <div className="table-cntr store">
           <Table
@@ -356,7 +321,7 @@ class Appointment extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Actions",
-                // dataIndex: "orderPricePaid"
+
                 width: "20%",
               },
             ]}
@@ -486,97 +451,6 @@ class Appointment extends Component {
                           );
                         }
                       },
-                      //   render: (row, item) => {
-                      //     return (
-                      //       <div className="d-flex">
-                      //         <div>
-                      //           <input
-                      //             type="radio"
-                      //             name={
-                      //               "campaign-status-" + item.campaignCustomerID
-                      //             }
-                      //             className="campaign-status-btn"
-                      //             id={"contactBtnGreen" + item.campaignCustomerID}
-                      //             onChange={this.onStatusChange.bind(
-                      //               this,
-                      //               item.campaignTypeID,
-                      //               item.campaignCustomerID
-                      //             )}
-                      //             value="100"
-                      //             checked={item.campaignStatus === 100}
-                      //           />
-                      //           <label
-                      //             className="table-btnlabel contactBtnGreen"
-                      //             htmlFor={
-                      //               "contactBtnGreen" + item.campaignCustomerID
-                      //             }
-                      //           >
-                      //             Contacted
-                      //           </label>
-                      //         </div>
-                      //         <div className="position-relative">
-                      //           {item.noOfTimesNotContacted !== 0 &&
-                      //             item.campaignStatus === 101 && (
-                      //               <div className="not-contacted-count">
-                      //                 {item.noOfTimesNotContacted}
-                      //               </div>
-                      //             )}
-                      //           <input
-                      //             type="radio"
-                      //             name={
-                      //               "campaign-status-" + item.campaignCustomerID
-                      //             }
-                      //             className="campaign-status-btn"
-                      //             id={
-                      //               "notConnectedBtnRed" + item.campaignCustomerID
-                      //             }
-                      //             onChange={this.onStatusChange.bind(
-                      //               this,
-                      //               item.campaignTypeID,
-                      //               item.campaignCustomerID
-                      //             )}
-                      //             value="101"
-                      //             checked={item.campaignStatus === 101}
-                      //           />
-                      //           <label
-                      //             className="table-btnlabel notConnectedBtnRed"
-                      //             htmlFor={
-                      //               "notConnectedBtnRed" + item.campaignCustomerID
-                      //             }
-                      //           >
-                      //             Not Contacted
-                      //           </label>
-                      //         </div>
-                      //         <div>
-                      //           <input
-                      //             type="radio"
-                      //             name={
-                      //               "campaign-status-" + item.campaignCustomerID
-                      //             }
-                      //             className="campaign-status-btn"
-                      //             id={
-                      //               "followUpBtnYellow" + item.campaignCustomerID
-                      //             }
-                      //             onChange={this.onStatusChange.bind(
-                      //               this,
-                      //               item.campaignTypeID,
-                      //               item.campaignCustomerID
-                      //             )}
-                      //             value="102"
-                      //             checked={item.campaignStatus === 102}
-                      //           />
-                      //           <label
-                      //             className="table-btnlabel followUpBtnYellow"
-                      //             htmlFor={
-                      //               "followUpBtnYellow" + item.campaignCustomerID
-                      //             }
-                      //           >
-                      //             Follow Up
-                      //           </label>
-                      //         </div>
-                      //       </div>
-                      //     );
-                      //   },
                     },
                     {
                       title:
