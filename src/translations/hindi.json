@@ -508,7 +508,13 @@
     "gapslots":"स्लॉट्स के बीच अंतर",
     "slotstarttime":"स्लॉट प्रारंभ समय",
     "slotendtime":"स्लॉट अंत समय",
-    "slotdisplay":"स्लॉट प्रदर्शन कोड"
+    "slotdisplay":"स्लॉट प्रदर्शन कोड",
+    "newchatassigned":"नया चैट सौंपा गया है",
+    "newmessages": "नए संदेश",
+    "notificationtime": "अधिसूचना का समय",
+    "sounds": "आवाज़",
+    "newmessage": "नया संदेश",
+    "soundcontroller": "ध्वनि नियंत्रक"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -697,7 +703,8 @@
     "paymentdate": "भुगतान तिथि",
     "lasttransaction": "अंतिम लेन-देन",
     "No": "शुन्य",
-    "pleaseentervalidpincode": "कृपया मान्य पिन कोड दर्ज करें।"
+    "pleaseentervalidpincode": "कृपया मान्य पिन कोड दर्ज करें।",
+    "charactersremaining": " शेष वर्ण..."
   },
   "small": {
     "moreinsights": "अधिक जानकारी देखें",
@@ -1177,7 +1184,9 @@
     "addtoshoppingbag":"शॉपिंग बैग में जोड़ें",
     "buynow":"अभी खरीदें",
     "addtobag":"झोले में डालो",
-    "addslot":"स्लॉट जोड़ें"
+    "addslot":"स्लॉट जोड़ें",
+    "resetdefault": "बाकी डिफ़ॉल्ट",
+    "savechanges": "परिवर्तनों को सुरक्षित करें"
   },
   "strong": {
     "hierarchy": "अनुक्रम",
@@ -1295,7 +1304,9 @@
     "store": "दुकान",
     "ticketing": "टिकिट लेना",
     "articlemapping": "लेख मानचित्रण",
-    "AirwayBillNo": "एयरवेबिल संख्या"
+    "AirwayBillNo": "एयरवेबिल संख्या",
+    "shownotificationsfornewchatassigned": "सौंपे गए नए चैट के लिए सूचनाएं दिखाएं",
+    "shownotificationfornewmessageinongoing": "चल रहे नए संदेश के लिए अधिसूचना दिखाएं"
   },
   "link": {
     "setting": "समायोजन",
@@ -1954,5 +1965,13 @@
   },
   "dropdown": {
     "closechat":"गपशप"
+  },
+  "panel": {
+    "insights":"अंतर्दृष्टि",
+    "orders": "आदेश",
+    "lasttransaction": "अंतिम लेन-देन"
+  },
+  "tab": {
+    "notificationsandsounds":"सूचनाएं और ध्वनियाँ"
   }
 }

@@ -4575,7 +4575,10 @@ class Header extends Component {
                                       ></textarea>
                                       <p className="cls-charcount">
                                         {this.state.remainingCount +
-                                          " characters remaining..."}
+                                          (TranslationContext !== undefined
+                                          ? TranslationContext.p
+                                              .charactersremaining
+                                          : " characters remaining...")}
                                       </p>
                                       {this.state.isMessage !== "" && (
                                         <p
@@ -5727,7 +5730,11 @@ class Header extends Component {
                                       style={{ fontSize: "x-small" }}
                                     >
                                       {this.state.remainingCount +
-                                        " characters remaining..."}
+                                        TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .charactersremaining
+                                            : " characters remaining..."
+                                        }
                                     </p>
                                     {this.state.messageSuggestionTagsData !==
                                     null
@@ -7494,7 +7501,10 @@ class Header extends Component {
                                   activeKey={this.state.activeCollpse}
                                   onChange={this.handleCollpseChange.bind(this)}
                                 >
-                                  <Panel header="Insights" key="1">
+                                  <Panel header={TranslationContext !== undefined
+                                              ? TranslationContext.panel
+                                                  .insights
+                                              : "Insights"} key="1">
                                     <div className="insightsbox">
                                       {this.state.insights
                                         ? this.state.insights.map(
@@ -7515,7 +7525,10 @@ class Header extends Component {
                                       ) : null}
                                     </div>
                                   </Panel>
-                                  <Panel header="Orders" key="2">
+                                  <Panel header={TranslationContext !== undefined
+                                              ? TranslationContext.panel
+                                                  .orders
+                                              : "Orders"} key="2">
                                     <div className="ordersbox">
                                       {/* <h3>Orders</h3>
                                   <img
@@ -7570,7 +7583,10 @@ class Header extends Component {
                                       </ul>
                                     </div>
                                   </Panel>
-                                  <Panel header="Last Transaction" key="3">
+                                  <Panel header={TranslationContext !== undefined
+                                              ? TranslationContext.panel
+                                                  .lasttransaction
+                                              : "Last Transaction"} key="3">
                                     <div className="lasttransaction">
                                       <ul>
                                         <li>
