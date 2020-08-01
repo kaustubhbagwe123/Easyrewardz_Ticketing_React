@@ -1341,7 +1341,7 @@ class Header extends Component {
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
         var availableSlot = 0;
-        debugger;
+
         if (message == "Success" && timeSlotData) {
           for (var i = 0; i < timeSlotData.length; i++) {
             if (timeSlotData[i].alreadyScheduleDetails.length > 0) {
@@ -1776,8 +1776,11 @@ class Header extends Component {
       this.setState({ ProfileProductTab: 0 });
       this.handleGetChatCustomerProfile(customerId);
     } else {
-      this.setState({ ProfileProductTab: 1 });
-      this.handleGetChatCustomerProducts();
+      if(this.state.isCustomerProduct)
+      {
+        this.setState({ ProfileProductTab: 1 });
+        this.handleGetChatCustomerProducts();
+      }
     }
   };
   ////handle close card modal
@@ -1883,7 +1886,6 @@ class Header extends Component {
   }
   ////handle card send button
   handleSendCard() {
-    debugger;
     if (this.state.selectedCard > 0) {
       var messageStringData = document.getElementById(
         "card" + this.state.selectedCard
@@ -2634,7 +2636,6 @@ class Header extends Component {
   };
   ////handle name hover leave
   handleNameHoverLeave = () => {
-    debugger
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
         onHoverName: false,
@@ -2645,7 +2646,6 @@ class Header extends Component {
         this.setState({ ProfileProductTab: 1 });
       }
     }
-    
   };
   ////handle pin click
   handlePinClick = () => {
@@ -3033,7 +3033,7 @@ class Header extends Component {
   ////handle modal text on change
   handleTextOnchage = (e) => {
     const { name, value } = e.target;
-    debugger;
+
     if (name === "shippingAddress") {
       if (value) {
         this.setState({ [name]: value, isAddress: "" });
@@ -3182,7 +3182,6 @@ class Header extends Component {
   };
 
   handleSendProductsOnChat = (isCard) => {
-    debugger;
     var selectedProduct = [];
     if (isCard) {
       selectedProduct = this.state.searchCardData.filter(
@@ -3254,7 +3253,7 @@ class Header extends Component {
   /// handle Pin code change
   handlePinCodeCheck(e) {
     var reg = /^[0-9\b]+$/;
-    debugger;
+
     if (!isNaN(e.target.value)) {
       this.setState({
         shippingPinCode: e.target.value,
@@ -3310,7 +3309,7 @@ class Header extends Component {
       .then((response) => {
         var message = response.data.message;
         var responseData = response.data.responseData;
-        debugger;
+
         if (message === "Success" && responseData) {
           var available = responseData.available;
           var statusCode = responseData.statusCode;
@@ -8405,8 +8404,7 @@ class Header extends Component {
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
                                             this,
-                                            false,
-                                            
+                                            false
                                           )}
                                         >
                                           {TranslationContext !== undefined
