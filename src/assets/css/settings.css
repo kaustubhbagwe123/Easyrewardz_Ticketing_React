@@ -4271,3 +4271,6 @@
     margin-top: 10px;
     display: flex;
 }
+.appoint-txtarea{
+  width: 100% !important;
+}
