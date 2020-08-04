@@ -894,7 +894,7 @@ class Claim extends Component {
                                                   ? TranslationContext.p
                                                       .updatedby
                                                   : "Updated by"}{" "}
-                                                Vikas
+                                                {row.original.modifiedBy}
                                               </p>
                                               <p>{row.original.modifyOn}</p>
                                             </li>
@@ -1497,7 +1497,7 @@ class Claim extends Component {
                                                   ? TranslationContext.p
                                                       .updatedby
                                                   : "Updated by"}{" "}
-                                                Vikas
+                                                {row.original.modifiedBy}
                                               </p>
                                               <p>{row.original.modifyOn}</p>
                                             </li>
@@ -1507,11 +1507,16 @@ class Claim extends Component {
                                                 undefined
                                                   ? TranslationContext.p
                                                       .responsetimerem
-                                                  : "Response time remaining by"}
+                                                  : "Resolution time remaining by"}
                                               </p>
-                                              <p></p>
+                                              <p>
+                                                {
+                                                  row.original
+                                                    .resolutionTimeRemaining
+                                                }
+                                              </p>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                               <p>
                                                 {TranslationContext !==
                                                 undefined
@@ -1520,7 +1525,7 @@ class Claim extends Component {
                                                   : "Response overdue by"}
                                               </p>
                                               <p></p>
-                                            </li>
+                                            </li> */}
                                             <li>
                                               <p>
                                                 {TranslationContext !==
@@ -1529,7 +1534,12 @@ class Claim extends Component {
                                                       .resolutionoverdueby
                                                   : "Resolution overdue by"}
                                               </p>
-                                              <p></p>
+                                              <p>
+                                                {
+                                                  row.original
+                                                    .resolutionOverdueBy
+                                                }
+                                              </p>
                                             </li>
                                           </ul>
                                         </div>
