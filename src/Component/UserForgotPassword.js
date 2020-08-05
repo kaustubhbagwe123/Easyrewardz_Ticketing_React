@@ -24,7 +24,6 @@ class UserForgotPassword extends Component {
     this.validator = new SimpleReactValidator();
   }
   handlechange = e => {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -66,9 +65,8 @@ class UserForgotPassword extends Component {
       },
       headers: authHeader()
     }).then(function(response) {
-      // let data = response;
-      debugger;
       let Msg = response.data.responseData;
+      debugger;
       if (Msg === "Update password successfully") {
         NotificationManager.success("Password Changed successfully.", '', 1500);
         setTimeout(function() {
