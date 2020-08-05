@@ -13,7 +13,7 @@ import Modal from "react-bootstrap/Modal";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-
+var uid = 0;
 class OrderSetting extends Component {
   constructor(props) {
     super(props);
@@ -150,7 +150,7 @@ class OrderSetting extends Component {
           });
         } else {
           self.setState({
-            ShippingTempData: {},
+            ShippingTempData: [],
             totalCount: 0,
             ShipTemploading: false,
           });
@@ -2044,7 +2044,15 @@ class OrderSetting extends Component {
                                     },
                                   },
                                 ]}
-                                rowKey="id"
+                                rowKey={(record) => {
+                                  if (record.id) {
+                                    uid = uid + 1;
+                                    return record.id + "i" + uid;
+                                  } else {
+                                    uid = uid + 1;
+                                    return "i" + uid;
+                                  }
+                                }}
                                 pagination={false}
                                 dataSource={this.state.ShippingTempData}
                               ></Table>
