@@ -55,7 +55,7 @@ class OrderSetting extends Component {
       file: {},
       fileName: "",
       ordSettingBtnDisabled: false,
-      orderWhatsAppTemplate: []
+      orderWhatsAppTemplate: [],
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
@@ -106,7 +106,7 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/GetModuleConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -138,7 +138,7 @@ class OrderSetting extends Component {
         PageSize: this.state.postsPerPage,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -175,7 +175,7 @@ class OrderSetting extends Component {
         Shipment: this.state.moduleConfigData.shipment,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -213,19 +213,19 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/GetOrderConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
             orderConfigData: data,
-            orderMessageTemplate: data.pHYOrderMessageTemplates
+            orderMessageTemplate: data.pHYOrderMessageTemplates,
           });
         } else {
           self.setState({
             orderConfigData: {},
-            orderMessageTemplate: []
+            orderMessageTemplate: [],
           });
         }
       })
@@ -283,7 +283,7 @@ class OrderSetting extends Component {
         CurrencyText: this.state.orderConfigData.currencyText,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -312,10 +312,10 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/UpdateOrderConfigurationMessageTemplate",
       headers: authHeader(),
       data: {
-        pHYOrderMessageTemplates: this.state.orderMessageTemplate
+        pHYOrderMessageTemplates: this.state.orderMessageTemplate,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -646,7 +646,7 @@ class OrderSetting extends Component {
           Weight_Unit: this.state.selectedOrdWeight,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -786,7 +786,7 @@ class OrderSetting extends Component {
           Weight_Unit: this.state.editTemplate.weight_Unit,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -847,33 +847,34 @@ class OrderSetting extends Component {
   /// handle SMS and Whatup toggle change
   handleSMSWhatsUpOnChange = (index) => {
     let orderMessageTemplate = this.state.orderMessageTemplate;
-    orderMessageTemplate[index].isActive = !orderMessageTemplate[index].isActive;
-    
+    orderMessageTemplate[index].isActive = !orderMessageTemplate[index]
+      .isActive;
+
     this.setState({
-      orderMessageTemplate
-    })
-  }
+      orderMessageTemplate,
+    });
+  };
 
   /// handle SMS and Whatup text change
-  handleSMSWhatsUpTextOnChange(index,e){
+  handleSMSWhatsUpTextOnChange(index, e) {
     const { value } = e.target;
     let orderMessageTemplate = this.state.orderMessageTemplate;
     orderMessageTemplate[index].description = value;
 
     this.setState({
-      orderMessageTemplate
-    })
+      orderMessageTemplate,
+    });
   }
 
   /// handle SMS and Whatup store delivery text change
-  handleSMSWhatsUpStoreDelTextOnChange(index,e){
+  handleSMSWhatsUpStoreDelTextOnChange(index, e) {
     const { value } = e.target;
     let orderMessageTemplate = this.state.orderMessageTemplate;
     orderMessageTemplate[index].storeDeliveryDescription = value;
 
     this.setState({
-      orderMessageTemplate
-    })
+      orderMessageTemplate,
+    });
   }
 
   /// handle file upload id change
@@ -903,17 +904,17 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/GetWhatsappTemplate",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            orderWhatsAppTemplate: data
+            orderWhatsAppTemplate: data,
           });
         } else {
           self.setState({
-            orderWhatsAppTemplate: []
+            orderWhatsAppTemplate: [],
           });
         }
       })
@@ -922,14 +923,14 @@ class OrderSetting extends Component {
       });
   }
 
-  handleWhatsAppTemplateTextOnChange(index,e){
+  handleWhatsAppTemplateTextOnChange(index, e) {
     const { value } = e.target;
     let orderWhatsAppTemplate = this.state.orderWhatsAppTemplate;
     orderWhatsAppTemplate[index].templateName = value;
 
     this.setState({
-      orderWhatsAppTemplate
-    })
+      orderWhatsAppTemplate,
+    });
   }
 
   handleUpdateWhatsAppTemplateData() {
@@ -940,10 +941,10 @@ class OrderSetting extends Component {
       url: config.apiUrl + "/HSOrder/UpdateWhatsappTemplate",
       headers: authHeader(),
       data: {
-        pHYWhatsAppTemplates: this.state.orderWhatsAppTemplate
+        pHYWhatsAppTemplates: this.state.orderWhatsAppTemplate,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1145,7 +1146,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .integratedsystem
+                                              .integratedsystem
                                           : "Integrated System(Sync Order)"}
                                       </label>
                                       <input
@@ -1237,7 +1238,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .storeasdeliverypartner
+                                              .storeasdeliverypartner
                                           : "Store as Delivery Partner"}
                                       </label>
                                       <input
@@ -1263,7 +1264,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .alertcommunicationviawhatsapp
+                                              .alertcommunicationviawhatsapp
                                           : "Alert Communication via Whatsapp"}
                                       </label>
                                       <input
@@ -1289,7 +1290,7 @@ class OrderSetting extends Component {
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .alertcommunicationviasms
+                                              .alertcommunicationviasms
                                           : "Alert Communication via SMS"}
                                       </label>
                                       <input
@@ -1311,28 +1312,28 @@ class OrderSetting extends Component {
                                     </div>
                                     {this.state.orderConfigData
                                       .alertCommunicationviaSMS ? (
-                                        <div className="ordcusinput">
-                                          <input
-                                            type="text"
-                                            name="alertCommunicationSMSText"
-                                            autoComplete="off"
-                                            placeholder={
-                                              TranslationContext !== undefined
-                                                ? TranslationContext.placeholder
+                                      <div className="ordcusinput">
+                                        <input
+                                          type="text"
+                                          name="alertCommunicationSMSText"
+                                          autoComplete="off"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
                                                   .providername
-                                                : "Provider name"
-                                            }
-                                            maxLength={15}
-                                            value={
-                                              this.state.orderConfigData
-                                                .alertCommunicationSMSText
-                                            }
-                                            onChange={this.OrderSettingOnChange.bind(
-                                              this
-                                            )}
-                                          />
-                                        </div>
-                                      ) : null}
+                                              : "Provider name"
+                                          }
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .alertCommunicationSMSText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
 
                                   <table className="cmpaign-channel-table">
@@ -1340,13 +1341,13 @@ class OrderSetting extends Component {
                                       <td>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.td
-                                            .clickwillbeenabledafter
+                                              .clickwillbeenabledafter
                                           : "Click will be enabled after"}
                                         <span>
                                           (
                                           {TranslationContext !== undefined
                                             ? TranslationContext.span
-                                              .paymentsendlinkbutton
+                                                .paymentsendlinkbutton
                                             : "Payment send link button"}
                                           )
                                         </span>
@@ -1365,17 +1366,7 @@ class OrderSetting extends Component {
                                             this
                                           )}
                                         />
-                                        {/* {this.state.campaignChannelData
-                                        .enableClickAfterValue === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.enabledAfterValidation}
-                                        </p>
-                                      )} */}
+                                       
                                       </td>
                                       <td>
                                         <select
@@ -1508,115 +1499,123 @@ class OrderSetting extends Component {
                                 </h3>
                                 <div className="module-switch-cntr">
                                   {this.state.orderMessageTemplate !== null &&
-                                    this.state.orderMessageTemplate.map((item, i) => (
-                                      // <option
-                                      //   key={i}
-                                      //   value={item.subCategoryID}
-                                      //   className="select-category-placeholder"
-                                      // >
-                                      //   {item.subCategoryName}
-                                      // </option>
-                                      <div className="module-switch ord-m-t20">
-                                        <div className="switch switch-primary">
-                                          <label className="storeRole-name-text m-0 ordSttd-store">
-                                            {(() => {
-                                              switch (item.messageName) {
-                                                case 'Shopping bag Converted to Order':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.shoppingbagconvertedtoorder
-                                                    : item.messageName;
-                                                case 'Awb Assigned':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.awbassigned
-                                                    : item.messageName;
-                                                case 'Pickup Scheduled/Generated':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.pickupscheduledgenerated
-                                                    : item.messageName;
-                                                case 'Shipped':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.shipped
-                                                    : item.messageName;
-                                                case 'Delivered':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.delivered
-                                                    : item.messageName;
-                                                case 'Cancelled':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.cancelled
-                                                    : item.messageName;
-                                                case 'Undelivered':
-                                                  return TranslationContext !== undefined
-                                                    ? TranslationContext.label.undelivered
-                                                    : item.messageName;
-                                              }
-                                            })()}
-                                            {/* {TranslationContext !== undefined
-                                          ? TranslationContext.label
-                                              .shoppingbagconvertedtoorder
-                                          : "Shopping bag Converted to Order"} */}
-                                            {/* {TranslationContext !== undefined
-                                          
-
-                                          } */}
-                                          </label>
-                                          <input
-                                            type="checkbox"
-                                            id={"OrderMessage" + i}
-                                            name="allModules"
-                                            checked={
-                                              item.isActive
-                                            }
-                                            onChange={this.handleSMSWhatsUpOnChange.bind(
-                                              this, i
-                                            )}
-                                          />
-                                          <label
-                                            htmlFor={"OrderMessage" + i}
-                                            className="cr cr-float-auto"
-                                          ></label>
-                                        </div>
-                                        {item.isActive ? (
-                                          <>
-                                            <div className={"ordcusinput"+(i+1)}>
-                                              <input
-                                                type="text"
-                                                name="shoppingBagConvertToOrderText"
-                                                autoComplete="off"
-                                                placeholder="Enter Template"
-                                                maxLength={500}
-                                                value={
-                                                  item.description
+                                    this.state.orderMessageTemplate.map(
+                                      (item, i) => (
+                                        
+                                        <div className="module-switch ord-m-t20">
+                                          <div className="switch switch-primary">
+                                            <label className="storeRole-name-text m-0 ordSttd-store">
+                                              {(() => {
+                                                switch (item.messageName) {
+                                                  case "Shopping bag Converted to Order":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .shoppingbagconvertedtoorder
+                                                      : item.messageName;
+                                                  case "Awb Assigned":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .awbassigned
+                                                      : item.messageName;
+                                                  case "Pickup Scheduled/Generated":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .pickupscheduledgenerated
+                                                      : item.messageName;
+                                                  case "Shipped":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .shipped
+                                                      : item.messageName;
+                                                  case "Delivered":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .delivered
+                                                      : item.messageName;
+                                                  case "Cancelled":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .cancelled
+                                                      : item.messageName;
+                                                  case "Undelivered":
+                                                    return TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.label
+                                                          .undelivered
+                                                      : item.messageName;
                                                 }
-                                                onChange={this.handleSMSWhatsUpTextOnChange.bind(
-                                                  this, i
-                                                )}
-                                              />
-                                            </div>
-                                            {item.storeDeliveryIsActive ? (
-                                              <div className={"ordcusinputStore"+(i+1)}>
+                                              })()}
+                                             
+                                            </label>
+                                            <input
+                                              type="checkbox"
+                                              id={"OrderMessage" + i}
+                                              name="allModules"
+                                              checked={item.isActive}
+                                              onChange={this.handleSMSWhatsUpOnChange.bind(
+                                                this,
+                                                i
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={"OrderMessage" + i}
+                                              className="cr cr-float-auto"
+                                            ></label>
+                                          </div>
+                                          {item.isActive ? (
+                                            <>
+                                              <div
+                                                className={
+                                                  "ordcusinput" + (i + 1)
+                                                }
+                                              >
                                                 <input
                                                   type="text"
                                                   name="shoppingBagConvertToOrderText"
                                                   autoComplete="off"
                                                   placeholder="Enter Template"
                                                   maxLength={500}
-                                                  value={
-                                                    item.storeDeliveryDescription
-                                                  }
-                                                  onChange={this.handleSMSWhatsUpStoreDelTextOnChange.bind(
-                                                    this, i
+                                                  value={item.description}
+                                                  onChange={this.handleSMSWhatsUpTextOnChange.bind(
+                                                    this,
+                                                    i
                                                   )}
                                                 />
                                               </div>
-                                            ) : null}
+                                              {item.storeDeliveryIsActive ? (
+                                                <div
+                                                  className={
+                                                    "ordcusinputStore" + (i + 1)
+                                                  }
+                                                >
+                                                  <input
+                                                    type="text"
+                                                    name="shoppingBagConvertToOrderText"
+                                                    autoComplete="off"
+                                                    placeholder="Enter Template"
+                                                    maxLength={500}
+                                                    value={
+                                                      item.storeDeliveryDescription
+                                                    }
+                                                    onChange={this.handleSMSWhatsUpStoreDelTextOnChange.bind(
+                                                      this,
+                                                      i
+                                                    )}
+                                                  />
+                                                </div>
+                                              ) : null}
                                             </>
-                                            ) : null}
-                                          
-                                      </div>
-
-                                    ))}
-                                 </div>
+                                          ) : null}
+                                        </div>
+                                      )
+                                    )}
+                                </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
@@ -1662,8 +1661,8 @@ class OrderSetting extends Component {
                                       <h3>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard
-                                            .shippingtemplate
+                                              .ticketingDashboard
+                                              .shippingtemplate
                                           : "Shipping Template"}
                                       </h3>
                                       <div className="d-flex align-items-center">
@@ -1671,7 +1670,7 @@ class OrderSetting extends Component {
                                           <p>
                                             {TranslationContext !== undefined
                                               ? TranslationContext.p
-                                                .sampletemplate
+                                                  .sampletemplate
                                               : "Sample Template"}
                                           </p>
                                           <CSVLink
@@ -1707,7 +1706,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                            .templatename
+                                              .templatename
                                           : "Template Name"}
                                       </label>
                                       <input
@@ -1716,8 +1715,8 @@ class OrderSetting extends Component {
                                         placeholder={
                                           TranslationContext !== undefined
                                             ? TranslationContext
-                                              .ticketingDashboard
-                                              .entertemplatename
+                                                .ticketingDashboard
+                                                .entertemplatename
                                             : "Enter Template Name"
                                         }
                                         autoComplete="off"
@@ -1745,7 +1744,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.height
+                                              .ticketingDashboard.height
                                           : "Height"}
                                       </label>
                                       <div className="d-flex">
@@ -1790,7 +1789,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.length
+                                              .ticketingDashboard.length
                                           : "Length"}
                                       </label>
                                       <div className="d-flex">
@@ -1835,7 +1834,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.breadth
+                                              .ticketingDashboard.breadth
                                           : "Breadth"}
                                       </label>
                                       <div className="d-flex">
@@ -1880,7 +1879,7 @@ class OrderSetting extends Component {
                                       <label>
                                         {TranslationContext !== undefined
                                           ? TranslationContext
-                                            .ticketingDashboard.weight
+                                              .ticketingDashboard.weight
                                           : "Weight"}
                                       </label>
                                       <div className="d-flex">
@@ -1962,7 +1961,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .height
+                                            .height
                                         : "Height",
                                     dataIndex: "height",
                                     render: (row, item) => {
@@ -1977,7 +1976,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .length
+                                            .length
                                         : "Length",
                                     dataIndex: "length",
                                     render: (row, item) => {
@@ -1992,7 +1991,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .breadth
+                                            .breadth
                                         : "Breadth",
                                     dataIndex: "breath",
                                     render: (row, item) => {
@@ -2007,7 +2006,7 @@ class OrderSetting extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.ticketingDashboard
-                                          .weight
+                                            .weight
                                         : "Weight",
                                     dataIndex: "weight",
                                     render: (row, item) => {
@@ -2087,9 +2086,7 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab
-                  label={"WhatsApp Template"}
-                >
+                <Tab label={"WhatsApp Template"}>
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -2097,70 +2094,70 @@ class OrderSetting extends Component {
                           <div className="row">
                             <div className="col-md-5">
                               <div className="right-sect-div">
-                                <h3>
-                                  WhatsApp Template
-                                </h3>
+                                <h3>WhatsApp Template</h3>
                                 <div className="module-switch-cntr">
                                   {this.state.orderWhatsAppTemplate !== null &&
-                                    this.state.orderWhatsAppTemplate.map((item, i) => (
-                                      // <option
-                                      //   key={i}
-                                      //   value={item.subCategoryID}
-                                      //   className="select-category-placeholder"
-                                      // >
-                                      //   {item.subCategoryName}
-                                      // </option>
-                                      <div className="module-switch ord-m-t20">
-                                        <div className="switch switch-primary">
-                                          <label className="storeRole-name-text m-0 ordSttd-store">
-                                            {(() => {
-                                              switch (item.messageName) {
-                                                case 'Campaign':
-                                                  return item.messageName;
-                                                case 'Shopping Bab to order':
-                                                  return item.messageName;
-                                                case 'Payment Link':
-                                                  return item.messageName;
-                                                case 'AWB Assigned':
-                                                  return item.messageName;
-                                                case 'Delivered':
-                                                  return item.messageName;
-                                                case 'Cancelled':
-                                                  return item.messageName;
-                                                case 'Out For Delivery':
-                                                  return item.messageName;
-                                                case 'Undelivered':
-                                                  return item.messageName;
-                                              }
-                                            })()}
-                                            {/* {TranslationContext !== undefined
+                                    this.state.orderWhatsAppTemplate.map(
+                                      (item, i) => (
+                                        // <option
+                                        //   key={i}
+                                        //   value={item.subCategoryID}
+                                        //   className="select-category-placeholder"
+                                        // >
+                                        //   {item.subCategoryName}
+                                        // </option>
+                                        <div className="module-switch ord-m-t20">
+                                          <div className="switch switch-primary">
+                                            <label className="storeRole-name-text m-0 ordSttd-store">
+                                              {(() => {
+                                                switch (item.messageName) {
+                                                  case "Campaign":
+                                                    return item.messageName;
+                                                  case "Shopping Bab to order":
+                                                    return item.messageName;
+                                                  case "Payment Link":
+                                                    return item.messageName;
+                                                  case "AWB Assigned":
+                                                    return item.messageName;
+                                                  case "Delivered":
+                                                    return item.messageName;
+                                                  case "Cancelled":
+                                                    return item.messageName;
+                                                  case "Out For Delivery":
+                                                    return item.messageName;
+                                                  case "Undelivered":
+                                                    return item.messageName;
+                                                }
+                                              })()}
+                                              {/* {TranslationContext !== undefined
                                           ? TranslationContext.label
                                               .shoppingbagconvertedtoorder
                                           : "Shopping bag Converted to Order"} */}
-                                            {/* {TranslationContext !== undefined
+                                              {/* {TranslationContext !== undefined
                                           
 
                                           } */}
-                                          </label>
+                                            </label>
+                                          </div>
+                                          <div
+                                            className={"ordcusinput" + (i + 1)}
+                                          >
+                                            <input
+                                              type="text"
+                                              autoComplete="off"
+                                              placeholder="Enter Template"
+                                              maxLength={500}
+                                              value={item.templateName}
+                                              onChange={this.handleWhatsAppTemplateTextOnChange.bind(
+                                                this,
+                                                i
+                                              )}
+                                            />
+                                          </div>
                                         </div>
-                                            <div className={"ordcusinput"+(i+1)}>
-                                              <input
-                                                type="text"
-                                                autoComplete="off"
-                                                placeholder="Enter Template"
-                                                maxLength={500}
-                                                value={
-                                                  item.templateName
-                                                }
-                                                onChange={this.handleWhatsAppTemplateTextOnChange.bind(
-                                                  this, i
-                                                )}
-                                              />
-                                            </div>                                          
-                                      </div>
-
-                                    ))}
-                                 </div>
+                                      )
+                                    )}
+                                </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
@@ -2180,7 +2177,6 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-
               </Tabs>
             </section>
             {/* edit slot starts */}
@@ -2194,7 +2190,7 @@ class OrderSetting extends Component {
                   <label className="popover-header-text">
                     {TranslationContext !== undefined
                       ? TranslationContext.ticketingDashboard
-                        .editshippingtemplate
+                          .editshippingtemplate
                       : "EDIT SHIPPING TEMPLATE"}
                   </label>
                 </div>
@@ -2211,7 +2207,7 @@ class OrderSetting extends Component {
                       placeholder={
                         TranslationContext !== undefined
                           ? TranslationContext.ticketingDashboard
-                            .entertemplatename
+                              .entertemplatename
                           : "Enter Template Name"
                       }
                       autoComplete="off"

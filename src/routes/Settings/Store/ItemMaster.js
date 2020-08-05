@@ -1405,17 +1405,10 @@ class ItemMaster extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
-                    {/* {this.state.sortFilteritemCode.length > 0 &&
-                    this.state.sortFilterbrandName.length > 0 &&
-                    this.state.sortFilteritemName.length > 0 &&
-                    this.state.sortFilterdepartmentName.length > 0 &&
-                    this.state.sortFilteritemCategory.length > 0 &&
-                    this.state.sortFilteritemSubCategory.length > 0 &&
-                    this.state.sortFilteritemGroup.length > 0 ? ( */}
+
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
                     </label>
-                    {/* ) : null} */}
                   </div>
                   {this.state.sortColumn === "itemCode"
                     ? this.state.sortFilteritemCode !== null &&
