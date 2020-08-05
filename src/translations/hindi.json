@@ -12,6 +12,7 @@
     "storePay": "स्टोर पे"
   },
   "label": {
+    "charactersremaining": " शेष वर्ण...",
     "allselected": "सभी चयनित",
     "selected": "चुन लिया",
     "entername": "नाम दर्ज",
@@ -483,7 +484,38 @@
     "purchasefromstoreaddres": "स्टोर के पते से खरीद",
     "orderid": "आदेश आईडी",
     "claimaskedfor%": "दावा किया गया %",
-    "claimpercentage": "दावा प्रतिशत"
+    "claimpercentage": "दावा प्रतिशत",
+    "totalpoints": "कुल अंक",
+    "lifetimevalue": "आजीवन मूल्य",
+    "visitcount": "यात्रा की गिनती",
+    "readytoship": "बेचने के लिए तैयार",
+    "returns": "रिटर्न",
+    "billno": "बिल नहीं",
+    "Amount": "रकम",
+    "productname": "उत्पाद का नाम",
+    "choosestore": "स्टोर चुनें",
+    "operationaldays": "परिचालन के दिन",
+    "selectslottemplete": "स्लॉट टेम्प्लेट चुनें",
+    "slotdaysneedtodisplay": "स्लॉट दिनों को प्रदर्शित करने की आवश्यकता है",
+    "applicablefromdate": "तारीख से लागू",
+    "maxpeopleallowed": "अधिकतम लोगों को एक नियुक्ति में अनुमति दी",
+    "active": "सक्रिय",
+    "inactive": "निष्क्रिय",
+    "storetiming": "स्टोर करने का समय",
+    "storeoperationaldays": "परिचालन दिनों की दुकान",
+    "slottemplate": "स्लॉट टेम्पलेट",
+    "totalslots": "कुल स्लॉट",
+    "slotdays": "स्लॉट दिनों को प्रदर्शित करने की आवश्यकता है",
+    "gapslots": "स्लॉट्स के बीच अंतर",
+    "slotstarttime": "स्लॉट प्रारंभ समय",
+    "slotendtime": "स्लॉट अंत समय",
+    "slotdisplay": "स्लॉट प्रदर्शन कोड",
+    "newchatassigned": "नया चैट सौंपा गया है",
+    "newmessages": "नए संदेश",
+    "notificationtime": "अधिसूचना का समय",
+    "sounds": "आवाज़",
+    "newmessage": "नया संदेश",
+    "soundcontroller": "ध्वनि नियंत्रक"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -797,7 +829,13 @@
     "delivered": "पहुंचा दिया",
     "shipmentassigned": "शिपमेंट सौंपा गया",
     "returns": "रिटर्न",
-    "checkservice": "सेवा की जाँच करें"
+    "checkservice": "सेवा की जाँच करें",
+    "product": "उत्पाद",
+    "profile": "प्रोफ़ाइल",
+    "storeselected": "दुकान चयनित",
+    "createnewtemplate": "नया टेम्पलेट बनाएं",
+    "wishlist": "इच्छा-सूची"
+    
   },
   "span": {
     "status": "स्थिति",
@@ -1020,7 +1058,9 @@
     "Converted": "परिवर्तित",
     "RaiseTicket": "टिकट उठाएं",
     "qty": "मात्रा",
-    "executeddate": "निष्पादित दिनांक"
+    "executeddate": "निष्पादित दिनांक",
+    "tier": "टियर",
+    "proceed": "बढ़ना"
   },
   "div": {
     "viewtickets": "टिकट देखें",
@@ -1139,7 +1179,16 @@
     "pickuppending": "पिकअप लंबित है",
     "sendlink": "लिंक भेजें",
     "sendlinkagain": "फिर लिंक भेजें",
-    "updateandnext": "अपडेट और आगे"
+    "updateandnext": "अपडेट और आगे",
+    "action": "कार्य",
+    "addtowishlist": "इच्छा सूचि में डालें",
+    "directbuy": "प्रत्यक्ष खरीद",
+    "addtoshoppingbag": "शॉपिंग बैग में जोड़ें",
+    "buynow": "अभी खरीदें",
+    "addtobag": "झोले में डालो",
+    "addslot": "स्लॉट जोड़ें",
+    "resetdefault": "बाकी डिफ़ॉल्ट",
+    "savechanges": "परिवर्तनों को सुरक्षित करें"
   },
   "strong": {
     "hierarchy": "अनुक्रम",
@@ -1220,7 +1269,14 @@
     "cardassestsconfiguration": "कार्ड संपत्ति विन्यास",
     "smsandwhatsapp": "एसएमएस एवं व्हाट्सप्प",
     "inr": "मैं एन आर",
-    "yourmessagehasbeensharedsuccessfully": "आपका संदेश सफलतापूर्वक साझा किया गया है"
+    "yourmessagehasbeensharedsuccessfully": "आपका संदेश सफलतापूर्वक साझा किया गया है",
+    "ordraghere": "या यहाँ खींचें",
+    "operationaldays": "परिचालन के दिन",
+    "appointmentdays": "नियुक्ति के दिन",
+    "chooseslottype": "स्लॉट प्रकार चुनें",
+    "storetiming": "स्टोर करने का समय",
+    "nonoperationalhour": "गैर परिचालन समय",
+    "selectedstores": "चयनित स्टोर"
   },
   "h4": {
     "personaldetails": "व्यक्तिगत विवरण",
@@ -1250,7 +1306,9 @@
     "store": "दुकान",
     "ticketing": "टिकिट लेना",
     "articlemapping": "लेख मानचित्रण",
-    "AirwayBillNo": "एयरवेबिल संख्या"
+    "AirwayBillNo": "एयरवेबिल संख्या",
+    "shownotificationsfornewchatassigned": "सौंपे गए नए चैट के लिए सूचनाएं दिखाएं",
+    "shownotificationfornewmessageinongoing": "चल रहे नए संदेश के लिए अधिसूचना दिखाएं"
   },
   "link": {
     "setting": "समायोजन",
@@ -1432,7 +1490,10 @@
     "createdby": "के द्वारा बनाई गई",
     "createddate": "रचना तिथि",
     "status": "स्थिति",
-    "action": "कार्य"
+    "action": "कार्य",
+    "Items": "आइटम",
+    "qty": "मात्रा",
+    "Amount": "रकम"
   },
   "td": {
     "clicktd": "क्लिक",
@@ -1503,7 +1564,7 @@
     "enterbrandname": "ब्रांड नाम दर्ज करें",
     "titleid": "शीर्षक आईडी",
     "claimraisedon": "दावा उठाया गया",
-    "entercustomerdetails":"ग्राहक विवरण दर्ज करें"
+    "entercustomerdetails": "ग्राहक विवरण दर्ज करें"
   },
   "title": {
     "appointmentID": "नियुक्ति आईडी",
@@ -1903,5 +1964,16 @@
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."
+  },
+  "dropdown": {
+    "closechat": "गपशप"
+  },
+  "panel": {
+    "insights": "अंतर्दृष्टि",
+    "orders": "आदेश",
+    "lasttransaction": "अंतिम लेन-देन"
+  },
+  "tab": {
+    "notificationsandsounds": "सूचनाएं और ध्वनियाँ"
   }
 }

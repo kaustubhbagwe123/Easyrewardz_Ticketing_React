@@ -88,7 +88,7 @@ class ChatSettings extends Component {
       url: config.apiUrl + "/CustomerChat/GetChatSession",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -238,7 +238,7 @@ class ChatSettings extends Component {
       url: config.apiUrl + "/CustomerChat/GetCardConfiguration",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -274,7 +274,7 @@ class ChatSettings extends Component {
         DisabledCardItems: disabledCardItems,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -316,14 +316,14 @@ class ChatSettings extends Component {
           IsEnabled: isEnabled,
         },
       })
-        .then(function(response) {
+        .then(function (response) {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage
-                    .carditemconfigurationaddsuccessfully
+                  .carditemconfigurationaddsuccessfully
                 : "Card item configuration add successfully!"
             );
             self.setState({ isLoadingAdd: false });
@@ -706,7 +706,7 @@ class ChatSettings extends Component {
                                 placeholder={
                                   TranslationContext !== undefined
                                     ? TranslationContext.placeholder
-                                        .selectprogramcode
+                                      .selectprogramcode
                                     : "Select program code"
                                 }
                                 value={this.state.programCode}
@@ -776,7 +776,7 @@ class ChatSettings extends Component {
                                     {" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.content
-                                          .howmanydaystoshowchathistory
+                                        .howmanydaystoshowchathistory
                                       : "How many days to show chat history."}
                                   </>
                                 }
@@ -849,7 +849,7 @@ class ChatSettings extends Component {
                                   <>
                                     {TranslationContext !== undefined
                                       ? TranslationContext.content
-                                          .howmanydaystoshowchathistory
+                                        .howmanydaystoshowchathistory
                                       : "How many days to show chat history."}
                                   </>
                                 }
@@ -874,7 +874,7 @@ class ChatSettings extends Component {
                           <div className="col-md-3">
                             {TranslationContext !== undefined
                               ? TranslationContext.div
-                                  .setlimittypeboxofchatwindow
+                                .setlimittypeboxofchatwindow
                               : "Set Limit Type box of Chat Window"}
                           </div>
                           <div className="col-md-3">
@@ -889,7 +889,7 @@ class ChatSettings extends Component {
                               name="limitText"
                               onChange={this.handleOnChange.bind(this)}
                               value={this.state.limitText}
-                              // maxLength={3}
+                            // maxLength={3}
                             />
                           </div>
                           <div className="col-md-3"></div>
@@ -1266,8 +1266,8 @@ class ChatSettings extends Component {
                                     spin
                                   />
                                 ) : (
-                                  ""
-                                )}
+                                    ""
+                                  )}
                               </button>
                             </div>
                           </div>
@@ -1292,39 +1292,39 @@ class ChatSettings extends Component {
                               <h3>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.h3
-                                      .cardassestsconfiguration
+                                    .cardassestsconfiguration
                                   : "CARD ASSETS CONFIGURATION"}
                               </h3>
                               <div className="module-switch crm-margin-div crm-padding-div">
                                 <div className="switch switch-primary d-inline m-r-10">
                                   {this.state.approvalTypeData != null
                                     ? this.state.approvalTypeData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div key={i}>
-                                              <label
-                                                className="storeRole-name-text"
-                                                style={{ width: "70%" }}
-                                              >
-                                                {item.approvalType}
-                                              </label>
-                                              <input
-                                                type="checkbox"
-                                                id={item.approvalType}
-                                                name="allModules"
-                                                checked={item.isEnabled}
-                                                onChange={this.handleTypeChange.bind(
-                                                  this
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={item.approvalType}
-                                                className="cr cr-float-auto"
-                                              ></label>
-                                            </div>
-                                          );
-                                        }
-                                      )
+                                      (item, i) => {
+                                        return (
+                                          <div key={i}>
+                                            <label
+                                              className="storeRole-name-text"
+                                              style={{ width: "70%" }}
+                                            >
+                                              {item.approvalType}
+                                            </label>
+                                            <input
+                                              type="checkbox"
+                                              id={item.approvalType}
+                                              name="allModules"
+                                              checked={item.isEnabled}
+                                              onChange={this.handleTypeChange.bind(
+                                                this
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={item.approvalType}
+                                              className="cr cr-float-auto"
+                                            ></label>
+                                          </div>
+                                        );
+                                      }
+                                    )
                                     : null}
                                 </div>
                               </div>
@@ -1347,8 +1347,8 @@ class ChatSettings extends Component {
                                     spin
                                   />
                                 ) : (
-                                  ""
-                                )}
+                                    ""
+                                  )}
                               </button>
                             </div>
                           </div>
@@ -1357,7 +1357,9 @@ class ChatSettings extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={"Notifications & Sounds"}>
+                <Tab label={TranslationContext !== undefined
+                  ? TranslationContext.tab.notificationsandsounds
+                  : "Notifications & Sounds"}>
                   <div
                     className="row chattab-card"
                     style={{ marginBottom: "15px" }}
@@ -1367,14 +1369,20 @@ class ChatSettings extends Component {
                         className="card sncheck"
                         style={{ padding: "35px", height: "auto" }}
                       >
-                        <label className="snlbl-nlbl">Notification</label>
+                        <label className="snlbl-nlbl">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.notification
+                            : "Notification"}
+                        </label>
                         <hr className="sn-hr" />
                         {/* <p className="sn-p">
                           Set your notification preference for when you are in
                           or away from the system.You will need to configure
                           your browser setting to allow notification
                         </p> */}
-                        <label className="sns-lbl">New Chat Assigned</label>
+                        <label className="sns-lbl">{TranslationContext !== undefined
+                            ? TranslationContext.label.newchatassigned
+                            : "New Chat Assigned"}</label>
                         <Checkbox
                           name="isNotiNewChat"
                           checked={this.state.isNotiNewChat}
@@ -1382,9 +1390,13 @@ class ChatSettings extends Component {
                             this
                           )}
                         >
-                          Show notifications for new chat assigned
+                          {TranslationContext !== undefined
+                            ? TranslationContext.checkbox.shownotificationsfornewchatassigned
+                            : "Show notifications for new chat assigned"}
                         </Checkbox>
-                        <label className="sns-lbl">New Messages</label>
+                        <label className="sns-lbl">{TranslationContext !== undefined
+                            ? TranslationContext.label.newmessages
+                            : "New Messages"}</label>
                         <Checkbox
                           name="isNotiNewMessage"
                           checked={this.state.isNotiNewMessage}
@@ -1392,11 +1404,15 @@ class ChatSettings extends Component {
                             this
                           )}
                         >
-                          Show notification for new message in ongoing
+                          {TranslationContext !== undefined
+                            ? TranslationContext.checkbox.shownotificationfornewmessageinongoing
+                            : "Show notification for new message in ongoing"}                         
                         </Checkbox>
                         <div style={{ display: "inherit" }}>
                           <label className="sns-lbl" style={{ width: "150px" }}>
-                            Notification Time
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.notificationtime
+                            : "Notification Time"}
                           </label>
                           <input
                             type="text"
@@ -1410,7 +1426,9 @@ class ChatSettings extends Component {
                             style={{ marginLeft: "5px", marginTop: "10px" }}
                           >
                             {" "}
-                            / Sec
+                            / {TranslationContext !== undefined
+                            ? TranslationContext.small.sec
+                            : "Sec"}
                           </span>
                         </div>
                       </div>
@@ -1422,11 +1440,17 @@ class ChatSettings extends Component {
                           height: "auto",
                         }}
                       >
-                        <label className="snlbl-nlbl">Sounds</label>
+                        <label className="snlbl-nlbl">
+                        {TranslationContext !== undefined
+                            ? TranslationContext.label.sounds
+                            : "Sounds"}
+                            </label>
                         <hr className="sn-hr" />
                         <div className="row">
                           <div className="col-md-3">
-                            <label className="sns-lbl">New Chat Assigned</label>
+                            <label className="sns-lbl">{TranslationContext !== undefined
+                            ? TranslationContext.label.newchatassigned
+                            : "New Chat Assigned"}</label>
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
@@ -1439,18 +1463,20 @@ class ChatSettings extends Component {
                               <option>Select</option>
                               {this.state.chatSoundData
                                 ? this.state.chatSoundData.map((item, i) => {
-                                    return (
-                                      <option key={i} value={item.soundID}>
-                                        {item.soundFileName}
-                                      </option>
-                                    );
-                                  })
+                                  return (
+                                    <option key={i} value={item.soundID}>
+                                      {item.soundFileName}
+                                    </option>
+                                  );
+                                })
                                 : null}
                             </select>
                           </div>
                           <div className="col-md-4 vlm-ctrl">
                             <label style={{ paddingLeft: "" }}>
-                              Sound Controller
+                            {TranslationContext !== undefined
+                            ? TranslationContext.label.soundcontroller
+                            : "Sound Controller"}
                             </label>
                             <div className="row">
                               <div
@@ -1493,7 +1519,9 @@ class ChatSettings extends Component {
                         </div>
                         <div className="row">
                           <div className="col-md-3">
-                            <label className="sns-lbl">New Message</label>
+                            <label className="sns-lbl">{TranslationContext !== undefined
+                            ? TranslationContext.label.newmessage
+                            : "New Message"}</label>
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
@@ -1506,18 +1534,20 @@ class ChatSettings extends Component {
                               <option>Select</option>
                               {this.state.chatSoundData
                                 ? this.state.chatSoundData.map((item, i) => {
-                                    return (
-                                      <option key={i} value={item.soundID}>
-                                        {item.soundFileName}
-                                      </option>
-                                    );
-                                  })
+                                  return (
+                                    <option key={i} value={item.soundID}>
+                                      {item.soundFileName}
+                                    </option>
+                                  );
+                                })
                                 : null}
                             </select>
                           </div>
                           <div className="col-md-4 vlm-ctrl">
                             <label style={{ paddingLeft: "" }}>
-                              Sound Controller
+                            {TranslationContext !== undefined
+                            ? TranslationContext.label.soundcontroller
+                            : "Sound Controller"}
                             </label>
                             <div className="row">
                               <div
@@ -1577,7 +1607,9 @@ class ChatSettings extends Component {
                             }
                             type="button"
                           >
-                            CANCEL
+                            {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "CANCEL"}
                           </button>
                           <button
                             onClick={this.handleButtonClick.bind(this, 2)}
@@ -1589,7 +1621,9 @@ class ChatSettings extends Component {
                             type="button"
                             disabled={this.state.isloading}
                           >
-                            REST DEFUALT
+                            {TranslationContext !== undefined
+                            ? TranslationContext.button.resetdefault
+                            : "REST DEFAULT"}
                           </button>
                           <button
                             onClick={this.handleButtonClick.bind(this, 3)}
@@ -1601,7 +1635,9 @@ class ChatSettings extends Component {
                             type="button"
                             disabled={this.state.isloading}
                           >
-                            SAVE CHAGNES
+                            {TranslationContext !== undefined
+                            ? TranslationContext.button.savechanges
+                            : "SAVE CHANGES"}
                           </button>
                         </div>
                       </div>

@@ -180,17 +180,17 @@ class StoreDashboard extends Component {
         return 0;
       });
     }
-    if (this.state.sortColumn === "claimStatus") {
+    if (this.state.sortColumn === "status") {
       itemsArray.sort((a, b) => {
-        if (a.claimStatus < b.claimStatus) return 1;
-        if (a.claimStatus > b.claimStatus) return -1;
+        if (a.status < b.status) return 1;
+        if (a.status > b.status) return -1;
         return 0;
       });
     }
-    if (this.state.sortColumn === "createdByName") {
+    if (this.state.sortColumn === "raiseBy") {
       itemsArray.sort((a, b) => {
-        if (a.createdByName < b.createdByName) return 1;
-        if (a.createdByName > b.createdByName) return -1;
+        if (a.raiseBy < b.raiseBy) return 1;
+        if (a.raiseBy > b.raiseBy) return -1;
         return 0;
       });
     }
@@ -274,17 +274,17 @@ class StoreDashboard extends Component {
         return 0;
       });
     }
-    if (this.state.sortColumn === "claimStatus") {
+    if (this.state.sortColumn === "status") {
       itemsArray.sort((a, b) => {
-        if (a.claimStatus < b.claimStatus) return -1;
-        if (a.claimStatus > b.claimStatus) return 1;
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
         return 0;
       });
     }
-    if (this.state.sortColumn === "createdByName") {
+    if (this.state.sortColumn === "raiseBy") {
       itemsArray.sort((a, b) => {
-        if (a.createdByName < b.createdByName) return -1;
-        if (a.createdByName > b.createdByName) return 1;
+        if (a.raiseBy < b.raiseBy) return -1;
+        if (a.raiseBy > b.raiseBy) return 1;
         return 0;
       });
     }
@@ -377,7 +377,7 @@ class StoreDashboard extends Component {
         });
       }
     }
-    if (data === "claimStatus") {
+    if (data === "status") {
       if (
         this.state.scategoryNameFilterCheckbox !== "" ||
         this.state.screatedByNameFilterCheckbox !== "" ||
@@ -402,7 +402,7 @@ class StoreDashboard extends Component {
         });
       }
     }
-    if (data === "createdByName") {
+    if (data === "raiseBy") {
       if (
         this.state.scategoryNameFilterCheckbox !== "" ||
         this.state.sclaimStatusFilterCheckbox !== "" ||
@@ -641,7 +641,7 @@ class StoreDashboard extends Component {
           });
         }
       }
-      if (this.state.sortColumn === "createdByName") {
+      if (this.state.sortColumn === "raiseBy") {
         if (this.state.screatedByNameFilterCheckbox === "") {
         } else {
           this.setState({
@@ -652,7 +652,7 @@ class StoreDashboard extends Component {
           });
         }
       }
-      if (this.state.sortColumn === "claimStatus") {
+      if (this.state.sortColumn === "status") {
         if (this.state.sclaimStatusFilterCheckbox === "") {
         } else {
           this.setState({
@@ -1005,7 +1005,7 @@ class StoreDashboard extends Component {
   handleDropdownOnchange = (e) => {
     let value = e.target.value;
     let name = e.target.name;
-    if (name === "claimStatus") {
+    if (name === "status") {
       this.setState({
         selectDepartment: value,
       });
@@ -1688,21 +1688,18 @@ class StoreDashboard extends Component {
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (
-              !unique[data[i].createdByName] &&
-              data[i].createdByName !== ""
-            ) {
-              distinct.push(data[i].createdByName);
-              unique[data[i].createdByName] = 1;
+            if (!unique[data[i].raiseBy] && data[i].raiseBy !== "") {
+              distinct.push(data[i].raiseBy);
+              unique[data[i].raiseBy] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
               sortcreatedByName.push({
-                createdByName: distinct[i],
+                raiseBy: distinct[i],
               });
               sortFiltercreatedByName.push({
-                createdByName: distinct[i],
+                raiseBy: distinct[i],
               });
             }
           }
@@ -1748,18 +1745,18 @@ class StoreDashboard extends Component {
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].claimStatus] && data[i].claimStatus !== "") {
-              distinct.push(data[i].claimStatus);
-              unique[data[i].claimStatus] = 1;
+            if (!unique[data[i].status] && data[i].status !== "") {
+              distinct.push(data[i].status);
+              unique[data[i].status] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
               sortclaimStatus.push({
-                claimStatus: distinct[i],
+                status: distinct[i],
               });
               sortFilterclaimStatus.push({
-                claimStatus: distinct[i],
+                status: distinct[i],
               });
             }
           }
@@ -1966,7 +1963,7 @@ class StoreDashboard extends Component {
       }
     }
 
-    if (column === "claimStatus" || column === "all") {
+    if (column === "status" || column === "all") {
       if (type === "value" && type !== "All") {
         sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
           "all",
@@ -1996,10 +1993,10 @@ class StoreDashboard extends Component {
         if (sclaimStatusFilterCheckbox.includes("all")) {
           sclaimStatusFilterCheckbox = "";
         } else {
-          if (this.state.sortColumn === "claimStatus") {
+          if (this.state.sortColumn === "status") {
             for (let i = 0; i < this.state.sortclaimStatus.length; i++) {
               sclaimStatusFilterCheckbox +=
-                this.state.sortclaimStatus[i].claimStatus + ",";
+                this.state.sortclaimStatus[i].status + ",";
             }
             sclaimStatusFilterCheckbox += "all";
           }
@@ -2080,7 +2077,7 @@ class StoreDashboard extends Component {
         }
       }
     }
-    if (column === "createdByName" || column === "all") {
+    if (column === "raiseBy" || column === "all") {
       if (type === "value" && type !== "All") {
         screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
           "all",
@@ -2110,10 +2107,10 @@ class StoreDashboard extends Component {
         if (screatedByNameFilterCheckbox.includes("all")) {
           screatedByNameFilterCheckbox = "";
         } else {
-          if (this.state.sortColumn === "createdByName") {
+          if (this.state.sortColumn === "raiseBy") {
             for (let i = 0; i < this.state.sortcreatedBy.length; i++) {
               screatedByNameFilterCheckbox +=
-                this.state.sortcreatedBy[i].createdByName + ",";
+                this.state.sortcreatedBy[i].raiseBy + ",";
             }
             screatedByNameFilterCheckbox += "all";
           }
@@ -2380,14 +2377,12 @@ class StoreDashboard extends Component {
           }
         }
       }
-    } else if (column === "createdByName") {
+    } else if (column === "raiseBy") {
       var sItems = screatedByNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.createdByName === sItems[i]
-            );
+            var tempFilterData = allData.filter((a) => a.raiseBy === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -2396,14 +2391,12 @@ class StoreDashboard extends Component {
           }
         }
       }
-    } else if (column === "claimStatus") {
+    } else if (column === "status") {
       var sItems = sclaimStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(
-              (a) => a.claimStatus === sItems[i]
-            );
+            var tempFilterData = allData.filter((a) => a.status === sItems[i]);
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -2515,11 +2508,11 @@ class StoreDashboard extends Component {
         });
       }
     }
-    if (this.state.sortColumn === "claimStatus") {
+    if (this.state.sortColumn === "status") {
       var sortFilterclaimStatus = matchSorter(
         this.state.sortclaimStatus,
         e.target.value,
-        { keys: ["claimStatus"] }
+        { keys: ["status"] }
       );
       if (sortFilterclaimStatus.length > 0) {
         this.setState({ sortFilterclaimStatus });
@@ -2529,12 +2522,12 @@ class StoreDashboard extends Component {
         });
       }
     }
-    if (this.state.sortColumn === "createdByName") {
+    if (this.state.sortColumn === "raiseBy") {
       var sortFiltercreatedByName = matchSorter(
         this.state.sortcreatedByName,
         e.target.value,
         {
-          keys: ["createdByName"],
+          keys: ["raiseBy"],
         }
       );
       if (sortFiltercreatedByName.length > 0) {
@@ -3044,7 +3037,7 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="claimStatus"
+                                    name="status"
                                     value={this.state.selectDepartment}
                                     onChange={this.handleDropdownOnchange}
                                   >
@@ -3626,31 +3619,35 @@ class StoreDashboard extends Component {
                                         <p>
                                           Created by {row.original.createdBy}
                                         </p>
-                                        <p>2 Hrs ago</p>
+                                        <p>{row.original.createdago}</p>
                                       </li>
                                       <li>
                                         <p>
                                           Assigned to {row.original.assigntoId}
                                         </p>
-                                        <p>1.5 Hrs ago</p>
+                                        <p>{row.original.assignedago}</p>
                                       </li>
                                       <li>
                                         <p>
                                           Updated by {row.original.modifiedBy}
                                         </p>
-                                        <p>1 Hr ago</p>
+                                        <p>{row.original.updatedago}</p>
                                       </li>
                                       <li>
-                                        <p>Response time remaining by</p>
-                                        <p>30 mins</p>
+                                        <p>Resolution time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
                                       </li>
-                                      <li>
+                                      {/* <li>
                                         <p>Response overdue by</p>
                                         <p>1 Hr</p>
-                                      </li>
+                                      </li> */}
                                       <li>
                                         <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
@@ -3723,7 +3720,7 @@ class StoreDashboard extends Component {
                               }
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "claimStatus",
+                                "status",
                                 "Status"
                               )}
                             >
@@ -3739,24 +3736,24 @@ class StoreDashboard extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "claimStatus",
+                          accessor: "status",
                           Cell: (row) => {
-                            if (row.original.claimStatus === "New") {
+                            if (row.original.status === "New") {
                               return (
                                 <span className="table-btn table-yellow-btn">
-                                  <label>{row.original.claimStatus}</label>
+                                  <label>{row.original.status}</label>
                                 </span>
                               );
-                            } else if (row.original.claimStatus === "Open") {
+                            } else if (row.original.status === "Open") {
                               return (
                                 <span className="table-btn table-blue-btn">
-                                  <label>{row.original.claimStatus}</label>
+                                  <label>{row.original.status}</label>
                                 </span>
                               );
                             } else {
                               return (
                                 <span className="table-btn table-green-btn">
-                                  <label>{row.original.claimStatus}</label>
+                                  <label>{row.original.status}</label>
                                 </span>
                               );
                             }
@@ -3848,7 +3845,7 @@ class StoreDashboard extends Component {
                               }
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "createdByName",
+                                "raiseBy",
                                 "Created By"
                               )}
                             >
@@ -3864,7 +3861,7 @@ class StoreDashboard extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "createdByName",
+                          accessor: "raiseBy",
                         },
                         {
                           Header: (
@@ -3906,32 +3903,37 @@ class StoreDashboard extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {"Created by " +
-                                            row.original.createdByName}
+                                          {"Created by " + row.original.raiseBy}
                                         </p>
-                                        <p>2 Hrs ago</p>
+                                        <p>{row.original.creationAgo}</p>
                                       </li>
                                       <li>
                                         <p>
                                           Assigned to {row.original.assignTo}
                                         </p>
-                                        <p>1.5 Hrs ago</p>
+                                        <p>{row.original.assignOn}</p>
                                       </li>
                                       <li>
-                                        <p>Updated by Vikas</p>
-                                        <p>1 Hr ago</p>
+                                        <p>
+                                          Updated by {row.original.modifiedBy}
+                                        </p>
+                                        <p>{row.original.modifyOn}</p>
                                       </li>
                                       <li>
-                                        <p>Response time remaining by</p>
-                                        <p>30 mins</p>
+                                        <p>Resolution time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
                                       </li>
-                                      <li>
+                                      {/* <li>
                                         <p>Response overdue by</p>
                                         <p>1 Hr</p>
-                                      </li>
+                                      </li> */}
                                       <li>
                                         <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
@@ -4103,7 +4105,7 @@ class StoreDashboard extends Component {
                               )
                             : null}
 
-                          {this.state.sortColumn === "claimStatus"
+                          {this.state.sortColumn === "status"
                             ? this.state.sortFilterclaimStatus !== null &&
                               this.state.sortFilterclaimStatus.map(
                                 (item, i) => (
@@ -4111,24 +4113,20 @@ class StoreDashboard extends Component {
                                     <input
                                       type="checkbox"
                                       name="filter-type"
-                                      id={"fil-open" + item.claimStatus}
-                                      value={item.claimStatus}
+                                      id={"fil-open" + item.status}
+                                      value={item.status}
                                       checked={this.state.sclaimStatusFilterCheckbox
                                         .split(",")
-                                        .find(
-                                          (word) => word === item.claimStatus
-                                        )}
+                                        .find((word) => word === item.status)}
                                       onChange={this.setSortCheckStatus.bind(
                                         this,
-                                        "claimStatus",
+                                        "status",
                                         "value"
                                       )}
                                     />
-                                    <label
-                                      htmlFor={"fil-open" + item.claimStatus}
-                                    >
+                                    <label htmlFor={"fil-open" + item.status}>
                                       <span className="table-btn table-blue-btn">
-                                        {item.claimStatus}
+                                        {item.status}
                                       </span>
                                     </label>
                                   </div>
@@ -4136,7 +4134,7 @@ class StoreDashboard extends Component {
                               )
                             : null}
 
-                          {this.state.sortColumn === "createdByName"
+                          {this.state.sortColumn === "raiseBy"
                             ? this.state.sortFiltercreatedByName !== null &&
                               this.state.sortFiltercreatedByName.map(
                                 (item, i) => (
@@ -4144,24 +4142,20 @@ class StoreDashboard extends Component {
                                     <input
                                       type="checkbox"
                                       name="filter-type"
-                                      id={"fil-open" + item.createdByName}
-                                      value={item.createdByName}
+                                      id={"fil-open" + item.raiseBy}
+                                      value={item.raiseBy}
                                       checked={this.state.screatedByNameFilterCheckbox
                                         .split(",")
-                                        .find(
-                                          (word) => word === item.createdByName
-                                        )}
+                                        .find((word) => word === item.raiseBy)}
                                       onChange={this.setSortCheckStatus.bind(
                                         this,
-                                        "createdByName",
+                                        "raiseBy",
                                         "value"
                                       )}
                                     />
-                                    <label
-                                      htmlFor={"fil-open" + item.createdByName}
-                                    >
+                                    <label htmlFor={"fil-open" + item.raiseBy}>
                                       <span className="table-btn table-blue-btn">
-                                        {item.createdByName}
+                                        {item.raiseBy}
                                       </span>
                                     </label>
                                   </div>

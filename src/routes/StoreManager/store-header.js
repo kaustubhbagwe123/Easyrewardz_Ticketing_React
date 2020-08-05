@@ -14,8 +14,6 @@ import Dots from "./../../assets/Images/dotsw.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
-import UserInfo from "./../../assets/Images/user-info.png";
-import EditPen from "./../../assets/Images/pencil.png";
 import Arwdown from "./../../assets/Images/arwdwn.png";
 import BackArw from "./../../assets/Images/left-white.png";
 import Arwup from "./../../assets/Images/arwup.png";
@@ -59,7 +57,6 @@ import DownArw from "./../../assets/Images/down.png";
 import AppointmentLogo from "./../../assets/Images/appointments.svg";
 import ChatBubbleBlue from "./../../assets/Images/chat-bubble-blue.svg";
 import ChatBubbleWhite from "./../../assets/Images/chat-bubble-white.svg";
-import ChatCount from "./../../assets/Images/chat-count.svg";
 import AppointmentLogoBlue from "./../../assets/Images/appointments.svg";
 import BellIcon from "./../../assets/Images/bell-icon.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
@@ -79,7 +76,6 @@ import Dropzone from "react-dropzone";
 import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
 import DatePicker from "react-datepicker";
-
 const { Option } = Select;
 const { Panel } = Collapse;
 const CheckboxGroup = Checkbox.Group;
@@ -250,6 +246,7 @@ class Header extends Component {
       isState: "",
       isCountry: "",
       isPinCodeCheck: "",
+      maxPeopleAllow: 0,
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -347,7 +344,7 @@ class Header extends Component {
     var page = path.split("/").pop();
     var accessdata = [];
     var dashboard = {
-      data: "Dashboards",
+      data: "Dashboard",
       urls: "storedashboard",
       logoBlack: DashboardLogo,
       logoBlue: DashboardLogoBlue,
@@ -1049,9 +1046,6 @@ class Header extends Component {
                   </>
                 ),
               });
-            } else {
-              //self.handleGetNewChat(mobileNo, msgData);
-              // self.handleGetChatNotificationCount();
             }
           }
         } else {
@@ -1207,7 +1201,12 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages(messageStringData, messagewhatsAppContent, imageURL) {
+  handleSaveChatMessages(
+    messageStringData,
+    messagewhatsAppContent,
+    imageURL,
+    isCard
+  ) {
     let self = this;
 
     var messagecontent = "";
@@ -1247,7 +1246,6 @@ class Header extends Component {
               messageSuggestionTagsData: [],
               selectedTags: 0,
               cardModal: false,
-              selectedCard: 0,
               remainingCount: self.state.tempRemainingCount,
               suggestionModal: false,
               suggestionModalMob: false,
@@ -1255,12 +1253,16 @@ class Header extends Component {
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat();
-            self.handleSendMessageToCustomer(
-              messagecontent,
-              0,
-              messagewhatsAppContent,
-              imageURL
-            );
+            if (isCard) {
+              self.handleSendProductsOnChat(true);
+            } else {
+              self.handleSendMessageToCustomer(
+                messagecontent,
+                0,
+                messagewhatsAppContent,
+                imageURL
+              );
+            }
           } else {
             self.setState({ isSendRecomended: false, isMainLoader: false });
           }
@@ -1307,7 +1309,6 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var searchCardData = response.data.responseData;
-
         if (message == "Success" && searchCardData) {
           searchCardData.forEach((element, i) => {
             element["itemID"] = i + 1;
@@ -1331,14 +1332,10 @@ class Header extends Component {
   ////handle get time slot by store id
   handleGetTimeSlot() {
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetTimeSlot",
       headers: authHeader(),
-      params: {
-        storeID: 1,
-      },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -1351,7 +1348,13 @@ class Header extends Component {
               availableSlot += 1;
             }
           }
-          self.setState({ timeSlotData, isSendClick: false, availableSlot });
+          var maxPeopleAllow = timeSlotData[0].maxPeopleAllowed;
+          self.setState({
+            timeSlotData,
+            isSendClick: false,
+            availableSlot,
+            maxPeopleAllow,
+          });
         } else {
           self.setState({ timeSlotData, isSendClick: false });
         }
@@ -1636,7 +1639,6 @@ class Header extends Component {
           activeTab,
           selectedColor,
           chatModal: true,
-          ProfileProductTab: 0,
           productTypeTab: 0,
           selectedWishList: [],
           selectedShoppingBag: [],
@@ -1681,7 +1683,6 @@ class Header extends Component {
           activeTab,
           selectedColor,
           chatModal: true,
-          ProfileProductTab: 0,
           productTypeTab: 0,
           selectedWishList: [],
           selectedShoppingBag: [],
@@ -1720,11 +1721,9 @@ class Header extends Component {
         if (count === 0) {
           this.handleGetChatMessagesList(id);
           this.handleGetAgentRecentChat(customerId);
-          this.handleGetChatCustomerProfile(customerId);
         } else {
           this.handleMakeAsReadOnGoingChat(id);
           this.handleGetAgentRecentChat(customerId);
-          this.handleGetChatCustomerProfile(customerId);
         }
       }
     } else {
@@ -1733,7 +1732,6 @@ class Header extends Component {
         activeTab,
         selectedColor,
         chatModal: true,
-        ProfileProductTab: 0,
         productTypeTab: 0,
         selectedWishList: [],
         selectedShoppingBag: [],
@@ -1772,9 +1770,17 @@ class Header extends Component {
       });
       this.handleGetChatMessagesList(id);
       this.handleGetAgentRecentChat(customerId);
-      this.handleGetChatCustomerProfile(customerId);
     }
     this.setState({ isHistoricalChat: false, isDownbtn: true });
+    if (this.state.isCustomerProfile) {
+      this.setState({ ProfileProductTab: 0 });
+      this.handleGetChatCustomerProfile(customerId);
+    } else {
+      if (this.state.isCustomerProduct) {
+        this.setState({ ProfileProductTab: 1 });
+        this.handleGetChatCustomerProducts();
+      }
+    }
   };
   ////handle close card modal
   onCloseCardModal = () => {
@@ -1800,31 +1806,8 @@ class Header extends Component {
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
     if (Object.keys(this.state.selectedSlot).length !== 0) {
-      // if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-      //   if (Number(e.target.value) === 0) {
-      //     this.setState({
-      //       noOfPeopleMax: "Please enter the no of people greater than 0",
-      //     });
-      //   } else {
-      //     this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
-      //   }
-      // } else {
-      //   if (e.target.value !== "") {
-      //     this.setState({
-      //       noOfPeople: "",
-      //       noOfPeopleMax:
-      //         "Maximum capacity are " + this.state.selectedSlot.remaining,
-      //     });
-      //   } else {
-      //     this.setState({
-      //       noOfPeople: "",
-      //       noOfPeopleMax: "",
-      //     });
-      //   }
-      // }
-
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) <= 3) {
+        if (Number(e.target.value) <= this.state.maxPeopleAllow) {
           this.setState({
             noOfPeople: e.target.value,
             noOfPeopleMax: "",
@@ -1832,7 +1815,7 @@ class Header extends Component {
         } else {
           this.setState({
             noOfPeople: "",
-            noOfPeopleMax: "Maximum capacity are 3",
+            noOfPeopleMax: "Maximum capacity are " + this.state.maxPeopleAllow,
           });
         }
       } else {
@@ -1955,7 +1938,8 @@ class Header extends Component {
       this.handleSaveChatMessages(
         messageStringData,
         messagewhatsAppContent,
-        imageURL
+        imageURL,
+        true
       );
     }
   }
@@ -2498,9 +2482,7 @@ class Header extends Component {
             });
           }
 
-          if (data.customerProfile && data.customerProfile) {
-            self.setState({ ProfileProductTab: 0 });
-          } else if (data.customerProfile) {
+          if (data.customerProfile) {
             self.setState({ ProfileProductTab: 0 });
           } else {
             self.setState({ ProfileProductTab: 1 });
@@ -2656,8 +2638,12 @@ class Header extends Component {
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
         onHoverName: false,
-        ProfileProductTab: 0,
       });
+      if (this.state.isCustomerProfile) {
+        this.setState({ ProfileProductTab: 0 });
+      } else {
+        this.setState({ ProfileProductTab: 1 });
+      }
     }
   };
   ////handle pin click
@@ -2670,8 +2656,12 @@ class Header extends Component {
   handleChangeShutterWindow = (isOpne) => {
     this.setState({
       isShutterOpen: isOpne,
-      ProfileProductTab: 0,
     });
+    if (this.state.isCustomerProfile) {
+      this.setState({ ProfileProductTab: 0 });
+    } else {
+      this.setState({ ProfileProductTab: 1 });
+    }
   };
   ////handle profile product tab change
   handleProfileProductTabChange = (index) => {
@@ -2855,7 +2845,7 @@ class Header extends Component {
     }
   };
   ////handle remove product
-  handleRemoveProduct = (itemCode) => {
+  handleRemoveProduct = (itemCode, fromType) => {
     let self = this;
     axios({
       method: "post",
@@ -2865,6 +2855,7 @@ class Header extends Component {
         CustomerID: this.state.customerId,
         MobileNo: this.state.mobileNo,
         ItemCode: itemCode,
+        RemoveFrom: fromType,
       },
     })
       .then((response) => {
@@ -3011,7 +3002,7 @@ class Header extends Component {
       chatData[0].programCode
     );
   };
-  ////handle buy now button 
+  ////handle buy now button
   handleBuyNowButtonClick = () => {
     this.setState({ buyNowClick: !this.state.buyNowClick });
   };
@@ -3041,7 +3032,7 @@ class Header extends Component {
   ////handle modal text on change
   handleTextOnchage = (e) => {
     const { name, value } = e.target;
-    debugger;
+
     if (name === "shippingAddress") {
       if (value) {
         this.setState({ [name]: value, isAddress: "" });
@@ -3127,9 +3118,6 @@ class Header extends Component {
       addressDetails.city = this.state.shippingCity || "";
       addressDetails.state = this.state.shippingState || "";
       addressDetails.country = this.state.shippingCountry || "";
-      // addressDetails.latitude = this.state.shippingLatitude;
-      // addressDetails.longitude = this.state.shippingLongitude;
-
       var itemCodes = "";
       /////for recommendation
       if (isFromRecommendation) {
@@ -3149,7 +3137,6 @@ class Header extends Component {
           itemCodes += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
         }
       }
-
       var inputParam = {};
       inputParam.CustomerID = this.state.customerId;
       inputParam.CustomerMobile = this.state.mobileNo;
@@ -3193,33 +3180,41 @@ class Header extends Component {
     }
   };
 
-  handleSendProductsOnChat = () => {
-    debugger;
+  handleSendProductsOnChat = (isCard) => {
     var selectedProduct = [];
-    if (this.state.productTypeTab == 0) {
-      this.state.selectedShoppingBag.forEach((element) => {
-        var finleData = this.state.mainProductsData.filter(
-          (x) => x.uniqueItemCode === element.uniqueItemCode
-        )[0];
-        selectedProduct.push(finleData);
+    if (isCard) {
+      selectedProduct = this.state.searchCardData.filter(
+        (x) => x.itemID === this.state.selectedCard
+      );
+      selectedProduct.forEach((element) => {
+        element.IsCard = true;
       });
-    }
+    } else {
+      if (this.state.productTypeTab == 0) {
+        this.state.selectedShoppingBag.forEach((element) => {
+          var finleData = this.state.mainProductsData.filter(
+            (x) => x.uniqueItemCode === element.uniqueItemCode
+          )[0];
+          selectedProduct.push(finleData);
+        });
+      }
 
-    if (this.state.productTypeTab == 1) {
-      this.state.selectedWishList.forEach((element) => {
-        var finleData = this.state.mainProductsData.filter(
-          (x) => x.uniqueItemCode === element.uniqueItemCode
-        )[0];
-        selectedProduct.push(finleData);
-      });
-    }
-    if (this.state.productTypeTab == 2) {
-      this.state.selectedRecommended.forEach((element) => {
-        var finleData = this.state.mainProductsData.filter(
-          (x) => x.uniqueItemCode === element.uniqueItemCode
-        )[0];
-        selectedProduct.push(finleData);
-      });
+      if (this.state.productTypeTab == 1) {
+        this.state.selectedWishList.forEach((element) => {
+          var finleData = this.state.mainProductsData.filter(
+            (x) => x.uniqueItemCode === element.uniqueItemCode
+          )[0];
+          selectedProduct.push(finleData);
+        });
+      }
+      if (this.state.productTypeTab == 2) {
+        this.state.selectedRecommended.forEach((element) => {
+          var finleData = this.state.mainProductsData.filter(
+            (x) => x.uniqueItemCode === element.uniqueItemCode
+          )[0];
+          selectedProduct.push(finleData);
+        });
+      }
     }
 
     let self = this;
@@ -3230,12 +3225,6 @@ class Header extends Component {
       data: {
         ChatID: this.state.chatId,
         Products: selectedProduct,
-        ProductFrom:
-          this.state.productTypeTab === 0
-            ? "shoppingbag"
-            : this.state.productTypeTab === 1
-            ? "wishlist"
-            : "recommended",
         CustomerMobile: this.state.customerMobileNo,
       },
     })
@@ -3244,7 +3233,10 @@ class Header extends Component {
         var responseData = response.data.responseData;
 
         if (message === "Success" && responseData) {
-          self.handleGetChatMessagesList(self.state.chatId);
+          if (!isCard) {
+            self.setState({ selectedCard: 0 });
+            self.handleGetChatMessagesList(self.state.chatId);
+          }
         }
       })
       .catch((response) => {
@@ -3260,7 +3252,7 @@ class Header extends Component {
   /// handle Pin code change
   handlePinCodeCheck(e) {
     var reg = /^[0-9\b]+$/;
-    debugger;
+
     if (!isNaN(e.target.value)) {
       this.setState({
         shippingPinCode: e.target.value,
@@ -3316,7 +3308,7 @@ class Header extends Component {
       .then((response) => {
         var message = response.data.message;
         var responseData = response.data.responseData;
-        debugger;
+
         if (message === "Success" && responseData) {
           var available = responseData.available;
           var statusCode = responseData.statusCode;
@@ -3336,6 +3328,7 @@ class Header extends Component {
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
+
     return (
       <React.Fragment>
         <div
@@ -3343,15 +3336,6 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            {/* {config.isHomeShope ? (
-              <div className="er bell-icon">
-                <img src={BellIcon} alt="bell icon" />
-              </div>
-            ) : (
-              <div className="er">
-                <label className="er-label">ER</label>
-              </div>
-            )} */}
             <div className="er bell-icon">
               <img src={BellIcon} alt="bell icon" />
             </div>
@@ -3366,13 +3350,7 @@ class Header extends Component {
               {this.state.cont.map((item) => {
                 if (item.data === "Store Pay" || item.data === "स्टोर पे") {
                   return (
-                    <a
-                      key={item.data}
-                      // href={this.state.storePayURL}
-                      // disabled={this.state.storePayURL ? false : true}
-                      className="storepay-a single-menu"
-                      // target="_blank"
-                    >
+                    <a key={item.data} className="storepay-a single-menu">
                       {item.logoBlack ? (
                         <div className="header-icons-cntr">
                           <img
@@ -3816,12 +3794,7 @@ class Header extends Component {
                     return (
                       <>
                         <li key={item.data}>
-                          <a
-                            // target="_blank"
-                            // href={this.state.storePayURL}
-                            className="storepay-a single-menu"
-                            // disabled={this.state.storePayURL ? false : true}
-                          >
+                          <a className="storepay-a single-menu">
                             {item.logoBlack ? (
                               <span className="header-icons-cntr mr-0">
                                 <img
@@ -3896,12 +3869,6 @@ class Header extends Component {
           overlayId="chat-popup-overlay"
         >
           <div className="store-chat-header">
-            {/* <img
-              src={BackArrow}
-              className="mobile-arrow"
-              alt="back arrow"
-              onClick={this.handleChatModalClose}
-            /> */}
             {this.state.isMainLoader && this.state.isMobileView ? (
               <div className="loader"></div>
             ) : null}
@@ -3912,7 +3879,7 @@ class Header extends Component {
                   ? "15px"
                   : this.state.isMobileView
                   ? "54%"
-                  : "90%",
+                  : "88%",
               }}
             >
               {TranslationContext !== undefined
@@ -4164,32 +4131,6 @@ class Header extends Component {
                               </div>
                               <div>
                                 <div className="mess-time">
-                                  {/* {!this.state.onHoverName ? (
-                                    <p
-                                      style={{
-                                        fontWeight:
-                                          chat.messageCount > 0
-                                            ? "bold"
-                                            : "400",
-                                      }}
-                                    >
-                                      {chat.messageCount === 0 ? (
-                                        TranslationContext !== undefined ? (
-                                          TranslationContext.p.No
-                                        ) : (
-                                          "No "
-                                        )
-                                      ) : (
-                                        <span className="messagecount">
-                                          {chat.messageCount}
-                                        </span>
-                                      )}
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p.newmessages
-                                        : "New Messages"}
-                                    </p>
-                                  ) : null} */}
-
                                   <p>{chat.timeAgo}</p>
                                   {!this.state.onHoverName ? (
                                     <p
@@ -4229,258 +4170,7 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
-              {/* {this.state.isMobileView?
-              <div className="mobile-chat-tabs">
-                <div className="position-relative">
-                  <ul className="nav nav-tabs" role="tablist">
-                    <li className="nav-item">
-                      <a
-                        className="nav-link active"
-                        id="ongoing-chat-tab"
-                        data-toggle="tab"
-                        href="#ongoing-chat"
-                        role="tab"
-                        aria-controls="ongoing-chat"
-                        aria-selected="true"
-                      >
-                        <div className="chats-count">
-                          <img
-                            src={ChatBubbleBlue}
-                            className="chat-bubble-blue"
-                            alt="chat count"
-                          />
-                          <img
-                            src={ChatBubbleWhite}
-                            className="chat-bubble-white"
-                            alt="chat count"
-                          />
-                          <span>{this.state.ongoingChatsData.length}</span>
-                        </div>
 
-                        {TranslationContext !== undefined
-                          ? TranslationContext.a.ongoingchats
-                          : "Ongoing Chats"}
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        id="new-chat-tab"
-                        data-toggle="tab"
-                        href="#new-chat"
-                        role="tab"
-                        aria-controls="new-chat"
-                        aria-selected="false"
-                      >
-                        <div className="chats-count">
-                          <img
-                            src={ChatBubbleBlue}
-                            className="chat-bubble-blue"
-                            alt="chat count"
-                          />
-                          <img
-                            src={ChatBubbleWhite}
-                            className="chat-bubble-white"
-                            alt="chat count"
-                          />
-                          <span>{this.state.newChatsData.length}</span>
-                        </div>
-
-                        {TranslationContext !== undefined
-                          ? TranslationContext.a.newchats
-                          : "New Chats"}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="tab-content">
-                  <div
-                    className="tab-pane fade show active"
-                    id="ongoing-chat"
-                    role="tabpanel"
-                    aria-labelledby="ongoing-chat-tab"
-                  >
-                    <div className="showArrow">
-                      <p
-                        className="mobile-chat-header"
-                        style={{ display: "inline-block" }}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.p.ongoingchats
-                          : "Ongoing Chats"}
-                      </p>
-                      <Select
-                        className="agentchatdrop-down"
-                        showArrow={true}
-                        value={this.state.sAgentId}
-                        onChange={this.handleChangeAgentDropdown.bind(this)}
-                      >
-                        <Option value={0}>All Store Member</Option>
-                        {this.state.agentData !== null &&
-                          this.state.agentData.map((item, i) => {
-                            return (
-                              <Option
-                                key={i}
-                                value={Number(item.storeManagerID)}
-                              >
-                                {item.agentName}
-                              </Option>
-                            );
-                          })}
-                      </Select>
-                      <div className="chat-detail-outer-cntr">
-                        {this.state.ongoingChatsData &&
-                          this.state.ongoingChatsData.map((chat, i) => (
-                            <div key={i} className="chat-detail-middle-cntr">
-                              <div
-                                className={
-                                  this.state.chatId === chat.chatID
-                                    ? "chat-detail-cntr active"
-                                    : "chat-detail-cntr"
-                                }
-                                onClick={this.handleOngoingChatClick.bind(
-                                  this,
-                                  chat.chatID,
-                                  chat.cumtomerName,
-                                  chat.messageCount,
-                                  chat.mobileNo,
-                                  chat.customerID,
-                                  chat.programCode,
-                                  chat.storeID,
-                                  chat.isCustEndChat,
-                                  chat.storeManagerId
-                                )}
-                              >
-                                <div className="chat-face-cntr">
-                                  <div className="chat-face-inner-cntr">
-                                    <div className="chat-notification-cntr">
-                                      {chat.messageCount > 0 ? (
-                                        <>
-                                          <img
-                                            src={ChatCount}
-                                            alt="notification image"
-                                          />
-                                          <span className="chat-notification-count">
-                                            {chat.messageCount}
-                                          </span>
-                                        </>
-                                      ) : null}
-                                    </div>
-                                    <span className="chat-initial">
-                                      {chat.cumtomerName
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                    </span>
-
-                                    {chat.messageCount > 0 ? (
-                                      <span className="online"></span>
-                                    ) : null}
-                                  </div>
-                                </div>
-                                <span className="face-name">
-                                  {chat.cumtomerName.split(" ")[0]}
-                                </span>
-                                <span className="face-name">
-                                  {chat.mobileNo}
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        {this.state.ongoingChatsData.length === 0 && (
-                          <p className="no-record">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p.norecordsfound
-                              : "No Records Found"}
-                            !
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="tab-pane fade"
-                    id="new-chat"
-                    role="tabpanel"
-                    aria-labelledby="new-chat-tab"
-                  >
-                    <div>
-                      <p className="mobile-chat-header">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.p.newchats
-                          : "New Chats"}
-                      </p>
-                      <div className="chat-detail-outer-cntr">
-                        {this.state.newChatsData &&
-                          this.state.newChatsData.map((chat, i) => (
-                            <div key={i} className="chat-detail-middle-cntr">
-                              <div
-                                className="chat-detail-cntr"
-                                onClick={this.handleUpdateCustomerChatStatus.bind(
-                                  this,
-                                  chat.chatID,
-                                  chat.storeManagerId,
-                                  chat.storeID,
-                                  chat.cumtomerName,
-                                  chat.mobileNo,
-                                  chat.customerID,
-                                  chat.programCode
-                                )}
-                              >
-                                <div
-                                  className={
-                                    this.state.chatId === chat.chatID
-                                      ? "chat-face-cntr active"
-                                      : "chat-face-cntr"
-                                  }
-                                >
-                                  <div className="chat-face-inner-cntr">
-                                    <div className="chat-notification-cntr">
-                                      {chat.messageCount > 0 ? (
-                                        <>
-                                          <img
-                                            src={ChatCount}
-                                            alt="notification image"
-                                          />
-
-                                          <span className="chat-notification-count">
-                                            {chat.messageCount}
-                                          </span>
-                                        </>
-                                      ) : null}
-                                    </div>
-                                    <span className="chat-initial">
-                                      {chat.cumtomerName
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                    </span>
-                                    <span className="online"></span>
-                                  </div>
-                                </div>
-                                <span className="face-name">
-                                  {chat.cumtomerName.split(" ")[0]}
-                                </span>
-                                <span className="face-name">
-                                  {chat.mobileNo}
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        {this.state.newChatsData.length === 0 && (
-                          <p className="no-record">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p.norecordsfound
-                              : "No Records Found"}
-                            !
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-:null} */}
               <div
                 className={
                   this.state.onHoverName
@@ -4502,16 +4192,6 @@ class Header extends Component {
                         className="chatdivtitle"
                         style={{ padding: "5px", height: "" }}
                       >
-                        {/* <button type="button" className="chatupperbtn">
-                          22 Past Chat
-                        </button> */}
-                        {/* <button
-                          type="button"
-                          className="chatupperbtn"
-                          style={{ float: "right" }}
-                        >
-                          Actions
-                        </button> */}
                         <ul
                           className="nav nav-tabs"
                           role="tablist"
@@ -4583,10 +4263,6 @@ class Header extends Component {
                           ) : null}
                         </ul>
                         {this.state.customerName !== "" ? (
-                          // <div
-                          //   class="dropdown"
-                          //   // onBlur={this.handleActionClose.bind(this)}
-                          // >
                           <button
                             type="button"
                             className="chatactionbtn"
@@ -4603,35 +4279,7 @@ class Header extends Component {
                               className="down-white"
                             />
                           </button>
-                        ) : /* { <div
-                              id="myDropdown"
-                              class={
-                                this.state.actionBtn
-                                  ? "dropdown-content show"
-                                  : "dropdown-content"
-                              }
-                            >
-                              <label
-                                className="myticket-submit-solve-button-text"
-                                 
-                                disabled={
-                                  this.state.isCustEndChat === false
-                                    ? true
-                                    : false
-                                }
-                                onClick={this.handleUpdateStoreManagerChatStatus.bind(
-                                  this,
-                                  3
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.closechat
-                                  : "Close Chat"}
-                              </label>
-                            </div>
-                           }*/
-                        // </div>
-                        null}
+                        ) : null}
                       </div>
                       <div
                         className="tab-content chattabtitle"
@@ -4925,8 +4573,17 @@ class Header extends Component {
                                         )}
                                       ></textarea>
                                       <p className="cls-charcount">
-                                        {this.state.remainingCount +
-                                          " characters remaining..."}
+                                        {this.state.remainingCount + ""}
+                                        {/* {TranslationContext !== undefined
+                                          ? TranslationContext.p
+                                              .charactersremaining
+                                          :  
+                                          
+                                           }*/}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .charactersremaining
+                                          : " characters remaining..."}
                                       </p>
                                       {this.state.isMessage !== "" && (
                                         <p
@@ -6078,7 +5735,17 @@ class Header extends Component {
                                       style={{ fontSize: "x-small" }}
                                     >
                                       {this.state.remainingCount +
-                                        " characters remaining..."}
+                                        //   TranslationContext !==
+                                        // undefined
+                                        //   ? TranslationContext.p
+                                        //       .charactersremaining
+                                        //   :
+                                        ""}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .charactersremaining
+                                        : " characters remaining..."}
+                                      {/* // } */}
                                     </p>
                                     {this.state.messageSuggestionTagsData !==
                                     null
@@ -7080,7 +6747,7 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="recent-chat"
                         >
-                          <div className="chathistory-tbl">
+                          <div className="chathistory-tbl histochat">
                             <div
                               className="table-cntr store chat-history chatabcus mg-rm now-rap-tbl-txt"
                               style={{ margin: "10px" }}
@@ -7684,7 +7351,9 @@ class Header extends Component {
                                 0
                               )}
                             >
-                              Profile
+                              {TranslationContext !== undefined
+                                ? TranslationContext.a.profile
+                                : "Profile"}
                             </a>
                           </li>
                         ) : null}
@@ -7713,7 +7382,9 @@ class Header extends Component {
                                 1
                               )}
                             >
-                              Product
+                              {TranslationContext !== undefined
+                                ? TranslationContext.a.product
+                                : "Product"}
                             </a>
                           </li>
                         ) : null}
@@ -7722,7 +7393,6 @@ class Header extends Component {
                       <div className="tab-content">
                         {this.state.isCustomerProfile ? (
                           <div
-                            // className={"tab-pane fade show active"}
                             className={
                               this.state.ProfileProductTab === 0
                                 ? "tab-pane fade active show"
@@ -7765,14 +7435,11 @@ class Header extends Component {
                                     }
                                   >
                                     <h3>{this.state.customerName}</h3>
-                                    {/* <img
-                                src={EditPen}
-                                style={{ marginLeft: "10px" }}
-                                alt="Edit Pen"
-                              />
-                              <img src={UserInfo} alt="User Info" /> */}
                                     <span>
-                                      Tier: <b>{this.state.customerTier}</b>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.tier
+                                        : "Tier"}
+                                      : <b>{this.state.customerTier}</b>
                                     </span>
                                   </li>
                                   <li className="contactbox">
@@ -7798,7 +7465,12 @@ class Header extends Component {
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <label>Total Points</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .totalpoints
+                                            : "Total Points"}
+                                        </label>
                                         <span>
                                           {this.state.totalPoints.toLocaleString(
                                             "en-IN"
@@ -7806,7 +7478,12 @@ class Header extends Component {
                                         </span>
                                       </td>
                                       <td>
-                                        <label>Lifetime Value</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .lifetimevalue
+                                            : "Lifetime Value"}
+                                        </label>
                                         <span>
                                           {this.state.lifetimeValue.toLocaleString(
                                             "en-IN"
@@ -7814,7 +7491,12 @@ class Header extends Component {
                                         </span>
                                       </td>
                                       <td>
-                                        <label>Visit Count</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .visitcount
+                                            : "Visit Count"}
+                                        </label>
                                         <span>
                                           {this.state.visitCount.toLocaleString(
                                             "en-IN"
@@ -7830,7 +7512,14 @@ class Header extends Component {
                                   activeKey={this.state.activeCollpse}
                                   onChange={this.handleCollpseChange.bind(this)}
                                 >
-                                  <Panel header="Insights" key="1">
+                                  <Panel
+                                    header={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.panel.insights
+                                        : "Insights"
+                                    }
+                                    key="1"
+                                  >
                                     <div className="insightsbox">
                                       {this.state.insights
                                         ? this.state.insights.map(
@@ -7851,23 +7540,34 @@ class Header extends Component {
                                       ) : null}
                                     </div>
                                   </Panel>
-                                  <Panel header="Orders" key="2">
+                                  <Panel
+                                    header={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.panel.orders
+                                        : "Orders"
+                                    }
+                                    key="2"
+                                  >
                                     <div className="ordersbox">
-                                      {/* <h3>Orders</h3>
-                                  <img
-                                    src={DownArw}
-                                    className="DownArw"
-                                    alt="DownArw"
-                                  /> */}
                                       <ul>
                                         <li>
-                                          <label>Delivered</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .delivered
+                                              : "Delivered"}
+                                          </label>
                                           <span>
                                             {this.state.orderDelivered}
                                           </span>
                                         </li>
                                         <li>
-                                          <label>Shopping Bag</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .shoppingbag
+                                              : "Shopping Bag"}
+                                          </label>
                                           <span>
                                             {this.state.orderShoppingBag}
                                           </span>
@@ -7875,33 +7575,52 @@ class Header extends Component {
                                       </ul>
                                       <ul>
                                         <li>
-                                          <label>Ready to Ship</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .readytoship
+                                              : "Ready to Ship"}
+                                          </label>
                                           <span>
                                             {this.state.orderReadyToShip}
                                           </span>
                                         </li>
                                         <li>
-                                          <label>Returns</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.returns
+                                              : "Returns"}
+                                          </label>
                                           <span>{this.state.orderReturns}</span>
                                         </li>
                                       </ul>
                                     </div>
                                   </Panel>
-                                  <Panel header="Last Transaction" key="3">
+                                  <Panel
+                                    header={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.panel
+                                            .lasttransaction
+                                        : "Last Transaction"
+                                    }
+                                    key="3"
+                                  >
                                     <div className="lasttransaction">
-                                      {/* <h3>Last Transaction</h3>
-                                  <img
-                                    src={DownArw}
-                                    className="DownArw"
-                                    alt="DownArw"
-                                  /> */}
                                       <ul>
                                         <li>
-                                          <label>Bill No</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.billno
+                                              : "Bill No"}
+                                          </label>
                                           <span>{this.state.billNumber}</span>
                                         </li>
                                         <li>
-                                          <label>Amount</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.Amount
+                                              : "Amount"}
+                                          </label>
                                           <span>
                                             {this.state.billAmount.toLocaleString(
                                               "en-IN"
@@ -7911,11 +7630,19 @@ class Header extends Component {
                                       </ul>
                                       <ul>
                                         <li>
-                                          <label>Store</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.store
+                                              : "Store"}
+                                          </label>
                                           <span>{this.state.storeDetails}</span>
                                         </li>
                                         <li>
-                                          <label>Date</label>
+                                          <label>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.date
+                                              : "Date"}
+                                          </label>
                                           <span>
                                             {this.state.transactionDate}
                                           </span>
@@ -7925,17 +7652,53 @@ class Header extends Component {
                                         <table>
                                           <thead>
                                             <tr>
-                                              <th>Items</th>
-                                              <th>Qty</th>
-                                              <th>Amount</th>
+                                              <th>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.th.Items
+                                                  : "Items"}
+                                              </th>
+                                              <th>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.th.qty
+                                                  : "Qty"}
+                                              </th>
+                                              <th>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.th.Amount
+                                                  : "Amount"}
+                                              </th>
                                             </tr>
                                           </thead>
                                           <tbody>
                                             <tr>
                                               <td>
-                                                <label>Product Name 1</label>
-                                                <label>Product Name 2</label>
-                                                <label>Product Name 3</label>
+                                                <label>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .productname
+                                                    : "Product Name"}{" "}
+                                                  1
+                                                </label>
+                                                <label>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .productname
+                                                    : "Product Name"}{" "}
+                                                  2
+                                                </label>
+                                                <label>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .productname
+                                                    : "Product Name"}{" "}
+                                                  3
+                                                </label>
                                               </td>
                                               <td>
                                                 <label>02</label>
@@ -7973,7 +7736,11 @@ class Header extends Component {
                                       this
                                     )}
                                   >
-                                    <Menu.Item key="1">Close Chat</Menu.Item>
+                                    <Menu.Item key="1">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.dropdown.closechat
+                                        : "Close Chat"}
+                                    </Menu.Item>
                                   </Menu>
                                 }
                               >
@@ -7982,7 +7749,9 @@ class Header extends Component {
                                   type="button"
                                   className="updateprofilelinkbtn pastchatmobbtn"
                                 >
-                                  Action
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.action
+                                    : "Action"}
                                 </button>
                               </Dropdown>
                             </div>
@@ -8000,13 +7769,70 @@ class Header extends Component {
                             aria-labelledby="customer-product"
                           >
                             <div className="productsbox">
+                              {this.state.isCustomerProfile === false ? (
+                                <div>
+                                  <ul className="nameplate">
+                                    <li>
+                                      <label
+                                        onClick={
+                                          this.state.isMobileView
+                                            ? this.handleMainTabChange.bind(
+                                                this,
+                                                1
+                                              )
+                                            : null
+                                        }
+                                        onMouseEnter={this.handleNameHover.bind(
+                                          this
+                                        )}
+                                        className="namelabel"
+                                        style={{
+                                          backgroundColor: this.state
+                                            .selectedColor,
+                                        }}
+                                      >
+                                        {this.state.customerName.charAt(0)}
+                                      </label>
+                                    </li>
+                                    <li
+                                      onClick={
+                                        this.state.isMobileView
+                                          ? this.handleMainTabChange.bind(
+                                              this,
+                                              1
+                                            )
+                                          : null
+                                      }
+                                    >
+                                      <h3>{this.state.customerName}</h3>
+                                    </li>
+                                    <li className="contactbox">
+                                      <div>
+                                        <ul>
+                                          <li>
+                                            <p title="Mobile No">
+                                              {this.state.mobileNo}
+                                            </p>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              ) : null}
                               <Tabs
                                 onSelect={(index, label) => {
                                   this.handleProductTypeTabChange(index);
                                 }}
                                 selected={this.state.productTypeTab}
                               >
-                                <Tab label="Shopping Bag">
+                                <Tab
+                                  label={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.label.shoppingbag
+                                      : "Shopping Bag"
+                                  }
+                                >
                                   <div className="shoppingbag">
                                     {this.state.shoppingBagData.length > 0 ? (
                                       <label
@@ -8016,7 +7842,9 @@ class Header extends Component {
                                           1
                                         )}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     ) : null}
                                     <div className="prodtabl">
@@ -8248,7 +8076,8 @@ class Header extends Component {
                                                     }
                                                     onClick={this.handleRemoveProduct.bind(
                                                       this,
-                                                      item.uniqueItemCode
+                                                      item.uniqueItemCode,
+                                                      "S"
                                                     )}
                                                   />
                                                 </div>
@@ -8270,10 +8099,13 @@ class Header extends Component {
                                           type="button"
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
-                                            this
+                                            this,
+                                            false
                                           )}
                                         >
-                                          SEND
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "SEND"}
                                         </button>
                                         <button
                                           disabled={
@@ -8288,7 +8120,10 @@ class Header extends Component {
                                             false
                                           )}
                                         >
-                                          ADD To WISHLIST
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button
+                                                .addtowishlist
+                                            : "ADD To WISHLIST"}
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
@@ -8310,7 +8145,11 @@ class Header extends Component {
                                                   true
                                                 )}
                                               >
-                                                Direct Buy
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .directbuy
+                                                  : "Direct Buy"}
                                               </button>
                                               <button
                                                 type="button"
@@ -8319,7 +8158,11 @@ class Header extends Component {
                                                   this
                                                 )}
                                               >
-                                                Add to Shopping Bag
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .addtoshoppingbag
+                                                  : "Add to Shopping Bag"}
                                               </button>
                                             </div>
                                           }
@@ -8328,14 +8171,22 @@ class Header extends Component {
                                             type="button"
                                             className="tabsbotbtn"
                                           >
-                                            BUY NOW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.buynow
+                                              : "BUY NOW"}
                                           </button>
                                         </Popover>
                                       </div>
                                     ) : null}
                                   </div>
                                 </Tab>
-                                <Tab label="Wishlist">
+                                <Tab
+                                  label={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.a.wishlist
+                                      : "Wishlist"
+                                  }
+                                >
                                   <div className="shoppingbag">
                                     {this.state.wishListData.length > 0 ? (
                                       <label
@@ -8345,7 +8196,9 @@ class Header extends Component {
                                           2
                                         )}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     ) : null}
                                     <div className="prodtabl">
@@ -8543,7 +8396,6 @@ class Header extends Component {
                                                     >
                                                       <img
                                                         src={item.imageURL}
-                                                        // src={Ladyimg}
                                                         className="ladyimg"
                                                         alt="Lady Img"
                                                       />
@@ -8573,7 +8425,8 @@ class Header extends Component {
                                                     }
                                                     onClick={this.handleRemoveProduct.bind(
                                                       this,
-                                                      item.uniqueItemCode
+                                                      item.uniqueItemCode,
+                                                      "W"
                                                     )}
                                                     src={Cancelico}
                                                     className="cancelico"
@@ -8596,10 +8449,13 @@ class Header extends Component {
                                           type="button"
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
-                                            this
+                                            this,
+                                            false
                                           )}
                                         >
-                                          SEND
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "SEND"}
                                         </button>
                                         <button
                                           type="button"
@@ -8613,7 +8469,9 @@ class Header extends Component {
                                             this
                                           )}
                                         >
-                                          ADD To BAG
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.addtobag
+                                            : "ADD To BAG"}
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
@@ -8635,7 +8493,11 @@ class Header extends Component {
                                                   true
                                                 )}
                                               >
-                                                Direct Buy
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .directbuy
+                                                  : "Direct Buy"}
                                               </button>
                                               <button
                                                 type="button"
@@ -8644,7 +8506,11 @@ class Header extends Component {
                                                   this
                                                 )}
                                               >
-                                                Add to Shopping Bag
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .addtoshoppingbag
+                                                  : "Add to Shopping Bag"}
                                               </button>
                                             </div>
                                           }
@@ -8656,14 +8522,23 @@ class Header extends Component {
                                             type="button"
                                             className="tabsbotbtn"
                                           >
-                                            BUY NOW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.buynow
+                                              : "BUY NOW"}
                                           </button>
                                         </Popover>
                                       </div>
                                     ) : null}
                                   </div>
                                 </Tab>
-                                <Tab label="Recommended">
+                                <Tab
+                                  label="Recommended"
+                                  label={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.a.recommended
+                                      : "Recommended"
+                                  }
+                                >
                                   <div className="shoppingbag">
                                     {this.state.recommendedData.length > 0 ? (
                                       <label
@@ -8673,7 +8548,9 @@ class Header extends Component {
                                           3
                                         )}
                                       >
-                                        Select All
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.selectall
+                                          : "Select All"}
                                       </label>
                                     ) : null}
                                     <div className="prodtabl">
@@ -8902,7 +8779,8 @@ class Header extends Component {
                                                     }
                                                     onClick={this.handleRemoveProduct.bind(
                                                       this,
-                                                      item.uniqueItemCode
+                                                      item.uniqueItemCode,
+                                                      "R"
                                                     )}
                                                     src={Cancelico}
                                                     className="cancelico"
@@ -8927,10 +8805,13 @@ class Header extends Component {
                                           type="button"
                                           className="tabsbotbtn"
                                           onClick={this.handleSendProductsOnChat.bind(
-                                            this
+                                            this,
+                                            false
                                           )}
                                         >
-                                          SEND
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.send
+                                            : "SEND"}
                                         </button>
                                         <button
                                           type="button"
@@ -8945,7 +8826,10 @@ class Header extends Component {
                                             true
                                           )}
                                         >
-                                          ADD To WISHLIST
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button
+                                                .addtowishlist
+                                            : "ADD To WISHLIST"}
                                         </button>
                                         <Popover
                                           overlayClassName="antcustom ant-prodesc"
@@ -8967,7 +8851,11 @@ class Header extends Component {
                                                   true
                                                 )}
                                               >
-                                                Direct Buy
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .directbuy
+                                                  : "Direct Buy"}
                                               </button>
                                               <button
                                                 type="button"
@@ -8976,7 +8864,11 @@ class Header extends Component {
                                                   this
                                                 )}
                                               >
-                                                Add to Shopping Bag
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .addtoshoppingbag
+                                                  : "Add to Shopping Bag"}
                                               </button>
                                             </div>
                                           }
@@ -8988,7 +8880,9 @@ class Header extends Component {
                                             type="button"
                                             className="tabsbotbtn"
                                           >
-                                            BUY NOW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.buynow
+                                              : "BUY NOW"}
                                           </button>
                                         </Popover>
                                       </div>
@@ -9000,19 +8894,6 @@ class Header extends Component {
                           </div>
                         ) : null}
                       </div>
-
-                      {/* <Tabs
-                        onSelect={(index, label) => {
-                          this.handleProfileProductTabChange(index);
-                        }}
-                        selected={this.state.ProfileProductTab}
-                      >
-                        <Tab label="Profile">
-                           </Tab> */}
-                      {/* <Tab label="Products"> */}
-                      {/* <Tab label="Products">
-                           </Tab>
-                      </Tabs> */}
                     </div>
                   </div>
                 ) : null
@@ -9232,13 +9113,17 @@ class Header extends Component {
             </div>
 
             <div className="row">
-              <div class="ant-popover-buttons" style={{ marginLeft: "120px" }}>
+              <div class="ant-popover-buttons" style={{ marginLeft: "80px" }}>
                 <button
                   type="button"
                   class="ant-btn ant-btn-sm"
                   onClick={this.handleAddressModalClose.bind(this)}
                 >
-                  <span>Cancel</span>
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.cancel
+                      : "Cancel"}
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -9253,7 +9138,11 @@ class Header extends Component {
                     false
                   )}
                 >
-                  <span>Proceed</span>
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.proceed
+                      : "Proceed"}
+                  </span>
                 </button>
               </div>
             </div>

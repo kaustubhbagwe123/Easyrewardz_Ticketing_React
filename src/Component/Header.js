@@ -310,7 +310,7 @@ class Header extends Component {
       data:
         TranslationContext !== undefined
           ? TranslationContext.nav.dashboard
-          : "Dashboards",
+          : "Dashboard",
       urls: "dashboard",
       logoBlack: DashboardLogo,
       logoBlue: DashboardLogoBlue,
@@ -554,7 +554,7 @@ class Header extends Component {
                 <img src={Hamb} alt="hamburger icon" data-toggle="dropdown" />
                 <ul className="dropdown-menu">
                   <li>
-                    <Link to="dashboard">Dashboards</Link>
+                    <Link to="dashboard">Dashboard</Link>
                   </li>
                   <li>
                     <Link to="myTicketlist">My Tickets</Link>

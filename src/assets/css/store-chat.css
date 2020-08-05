@@ -1058,6 +1058,9 @@ html {
 .thirdbox-close {
   width: 7% !important;
 }
+.thirdbox-close .shoppingbag{
+  display: none;
+}
 .thirdbox-close .uptabs .nav-tabs {
   display: none;
 }

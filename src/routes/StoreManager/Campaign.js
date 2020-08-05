@@ -50,6 +50,7 @@ class Campaign extends Component {
       customerName: "",
       customerNumber: "",
       useratvdetails: {},
+      searchedCustomerId: 0,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -283,6 +284,9 @@ class Campaign extends Component {
     } else {
       this.setState({ isIssueType: "" });
     }
+
+    let self = this;
+
     // if (
     //   this.state.modalData.tiketTitle !== "" &&
     //   this.state.modalData.tiketDetails.length > 0 &&
@@ -300,66 +304,58 @@ class Campaign extends Component {
         this.state.isSubCategory == "" &&
         this.state.isIssueType == ""
       ) {
-        let self = this;
-
-        const formData = new FormData();
-
-        var mailData = [];
-        var mailFiled = {};
-        mailFiled["ToEmail"] = "";
-        mailFiled["TikcketMailSubject"] = "";
-        mailFiled["TicketMailBody"] = "";
-        mailFiled["PriorityID"] = -9;
-        mailFiled["IsInforToStore"] = false;
-        mailData.push(mailFiled);
-
-        var paramData = {
-          TicketTitle: this.state.modalData.tiketTitle,
-          Ticketdescription: this.state.modalData.tiketDetails,
-          CustomerID: this.state.modalData.customerId,
-          BrandID: this.state.modalData.brandId,
-          CategoryID: this.state.modalData.cateogryId,
-          SubCategoryID: this.state.modalData.subCategoryId,
-          IssueTypeID: this.state.modalData.issueTypeId,
-          PriorityID: -9,
-          ChannelOfPurchaseID: -9,
-          Ticketnotes: "",
-          taskMasters: [],
-          StatusID: 101,
-          TicketActionID: -9,
-          IsInstantEscalateToHighLevel: 0,
-          IsWantToAttachOrder: 1,
-          TicketTemplateID: 0,
-          TicketMailBody: "",
-          IsWantToVisitedStore: 0,
-          IsAlreadyVisitedStore: 0,
-          TicketSourceID: 1,
-          OrderItemID: "",
-          StoreID: "",
-          ticketingMailerQues: mailData,
-        };
-        formData.append("ticketingDetails", JSON.stringify(paramData));
-        formData.append("Filedata", []);
-        formData.append("orderDetails", null);
-        formData.append("orderItemDetails", null);
-        formData.append("storeDetails", null);
-
-        // create ticket
         axios({
           method: "post",
-          url: config.apiUrl + "/Ticketing/createTicket",
+          url: config.apiUrl + "/Customer/searchCustomer",
           headers: authHeader(),
-          data: formData,
+          params: {
+            SearchText: this.state.modalData.mobile.trim(),
+          },
         })
           .then(function(res) {
             debugger;
-            let Msg = res.data.status;
-            let TID = res.data.responseData;
-            if (Msg) {
-              NotificationManager.success(res.data.message);
-              self.setState({ raisedTicketModal: false });
+            let SearchData = res.data.responseData[0];
+            if (SearchData) {
+              let GetCustId = SearchData.customerID;
+              self.setState({
+                searchedCustomerId: GetCustId,
+              });
+              setTimeout(() => {
+                createTicketAfterChecking();
+              }, 10);
             } else {
-              NotificationManager.error(res.data.message);
+              axios({
+                method: "post",
+                url: config.apiUrl + "/Customer/createCustomer",
+                headers: authHeader(),
+                data: {
+                  CustomerName: self.state.modalData.name.trim(),
+                  CustomerPhoneNumber: self.state.modalData.mobile.trim(),
+                  CustomerEmailId: "",
+                  GenderID: 1,
+                  AltNumber: "",
+                  AltEmailID: "",
+                  DateOfBirth: "",
+                  IsActive: 1,
+                  // ModifyBy: 1,
+                  // ModifiedDate: "2019-12-17"
+                },
+              })
+                .then(function(res) {
+                  let responseMessage = res.data.message;
+                  let custId = res.data.responseData;
+                  if (responseMessage === "Success") {
+                    self.setState({
+                      searchedCustomerId: custId,
+                    });
+                    setTimeout(() => {
+                      createTicketAfterChecking();
+                    }, 10);
+                  }
+                })
+                .catch((data) => {
+                  console.log(data);
+                });
             }
           })
           .catch((data) => {
@@ -367,6 +363,76 @@ class Campaign extends Component {
           });
       }
     }, 10);
+
+    const createTicketAfterChecking = () => {
+      let self = this;
+
+      const formData = new FormData();
+
+      var mailData = [];
+      var mailFiled = {};
+      mailFiled["ToEmail"] = "";
+      mailFiled["TikcketMailSubject"] = "";
+      mailFiled["TicketMailBody"] = "";
+      mailFiled["PriorityID"] = -9;
+      mailFiled["IsInforToStore"] = false;
+      mailData.push(mailFiled);
+
+      var paramData = {
+        TicketTitle: this.state.modalData.tiketTitle,
+        Ticketdescription: this.state.modalData.tiketDetails,
+        // CustomerID: this.state.modalData.customerId,
+        CustomerID: this.state.searchedCustomerId,
+        BrandID: this.state.modalData.brandId,
+        CategoryID: this.state.modalData.cateogryId,
+        SubCategoryID: this.state.modalData.subCategoryId,
+        IssueTypeID: this.state.modalData.issueTypeId,
+        PriorityID: -9,
+        ChannelOfPurchaseID: -9,
+        Ticketnotes: "",
+        taskMasters: [],
+        StatusID: 101,
+        TicketActionID: -9,
+        IsInstantEscalateToHighLevel: 0,
+        IsWantToAttachOrder: 1,
+        TicketTemplateID: 0,
+        TicketMailBody: "",
+        IsWantToVisitedStore: 0,
+        IsAlreadyVisitedStore: 0,
+        TicketSourceID: 1,
+        OrderItemID: "",
+        StoreID: "",
+        ticketingMailerQues: mailData,
+        IsGenFromStoreCamPaign: true,
+      };
+      formData.append("ticketingDetails", JSON.stringify(paramData));
+      formData.append("Filedata", []);
+      formData.append("orderDetails", null);
+      formData.append("orderItemDetails", null);
+      formData.append("storeDetails", null);
+
+      // create ticket
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/createTicket",
+        headers: authHeader(),
+        data: formData,
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.status;
+          let TID = res.data.responseData;
+          if (Msg) {
+            NotificationManager.success(res.data.message);
+            self.setState({ raisedTicketModal: false });
+          } else {
+            NotificationManager.error(res.data.message);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    };
 
     // } else {
     //   this.setState({
@@ -416,6 +482,7 @@ class Campaign extends Component {
       isIssueType: "",
       isTiketTitle: "",
       isTiketDetails: "",
+      searchedCustomerId: 0,
     });
   }
 
@@ -934,6 +1001,7 @@ class Campaign extends Component {
                             <>
                               <p
                                 className="cust-name"
+                                style={{ whiteSpace: "normal" }}
                                 onClick={this.handleGetCustomerDataForModal.bind(
                                   this,
                                   item
@@ -1309,7 +1377,7 @@ class Campaign extends Component {
                                     ? ""
                                     : "disabled-input"
                                 }
-                                style={{ display: "none" }}
+                                // style={{ display: "none" }}
                               >
                                 <button
                                   className={

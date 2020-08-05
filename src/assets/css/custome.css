@@ -4364,6 +4364,21 @@ table tr th:last-child {
 .batashoes {
   width: 150px;
 }
+.img-cross {
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+  text-align: center;
+    line-height: 18px;
+  font-size: 20px;
+  color: white;
+  transform: rotate(45deg);
+  position: absolute;
+  right: -7px;
+  top: -7px;
+  cursor: pointer;
+}
 .label-6 {
   color: #4a4a4a;
   font-family: unset;

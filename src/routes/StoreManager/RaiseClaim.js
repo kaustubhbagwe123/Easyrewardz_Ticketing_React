@@ -992,7 +992,9 @@ class RaiseClaim extends Component {
       var fileName = imageFile.name;
       var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
       if (!allowedExtensions.exec(fileName)) {
-        alert("Please upload file having extensions .jpeg/.jpg/.png/.gif only.");
+        alert(
+          "Please upload file having extensions .jpeg/.jpg/.png/.gif only."
+        );
         return false;
       } else {
         this.state.errors["productImg"] = "";
@@ -2324,11 +2326,17 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="col-md-12">
                       {this.state.imageUrl ? (
-                        <img
-                          src={this.state.imageUrl}
-                          alt="Bata"
-                          className="batashoes"
-                        />
+                        <div
+                          className="batashoes position-relative"
+                          onClick={() => this.setState({ imageUrl: "" })}
+                        >
+                          <span className="img-cross">+</span>
+                          <img
+                            src={this.state.imageUrl}
+                            alt="Bata"
+                            className="w-100"
+                          />
+                        </div>
                       ) : null}
                     </div>
                   </div>
