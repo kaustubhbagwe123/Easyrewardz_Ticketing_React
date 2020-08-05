@@ -31,10 +31,10 @@ class StoreProgramCode extends Component {
     if (this.validator.allValid()) {
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
-      // let X_Authorized_Domainname = encryption(
-      //   "https://multitenancyshopsterv2.dcdev.brainvire.net",
-      //   "enc"
-      // );
+      let X_Authorized_Domainname = encryption(
+        "https://multitenancyshopsterv2.dcdev.brainvire.net",
+        "enc"
+      );
       // let X_Authorized_Domainname = encryption(
       //   "https://multitenancyshopster.dcdev.brainvire.net",
       //   "enc"
@@ -47,7 +47,7 @@ class StoreProgramCode extends Component {
       //   "http://erbelltktstore.dcdev.brainvire.net",
       //   "enc"
       // );
-       let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
 
       // validate program code

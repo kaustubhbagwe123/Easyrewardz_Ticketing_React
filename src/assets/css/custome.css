@@ -12816,3 +12816,7 @@ table tr th:last-child {
 .myticlist-expand-sect .tab-content .row.all-row > div {
   margin-bottom: 25px;
 }
+.userBtnDibsl {
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}

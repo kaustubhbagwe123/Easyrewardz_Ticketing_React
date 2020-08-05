@@ -165,6 +165,9 @@ class StoreUsers extends Component {
       isATOZ: true,
       translateLanguage: {},
       bulkuploadLoading: false,
+      personalBtnDisabled: true,
+      profileBtnDisbaled: true,
+      mappedBtnDisabled: true,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -2515,6 +2518,7 @@ class StoreUsers extends Component {
             self.setState({
               user_ID: data,
               StoreReadOnly: true,
+              personalBtnDisabled: false,
             });
           } else {
             NotificationManager.error(
@@ -2623,6 +2627,7 @@ class StoreUsers extends Component {
               self.setState({
                 // user_ID: data,
                 personalReadOnly: true,
+                profileBtnDisbaled: false,
               });
             } else {
               NotificationManager.error(res.data.message);
@@ -2758,6 +2763,7 @@ class StoreUsers extends Component {
             );
             self.setState({
               profileReadOnly: true,
+              mappedBtnDisabled: false,
             });
           } else {
             NotificationManager.error(
@@ -2960,6 +2966,9 @@ class StoreUsers extends Component {
                 claimIssueTypeData: [],
                 CrmRoleData: [],
                 activeData: [],
+                personalBtnDisabled: true,
+                profileBtnDisbaled: true,
+                mappedBtnDisabled: true,
               });
             } else {
               NotificationManager.error(
@@ -4462,12 +4471,17 @@ class StoreUsers extends Component {
                       ) : (
                         <div className="btn-coll">
                           <button
-                            className="butn"
+                            className={
+                              this.state.personalBtnDisabled
+                                ? "butn userBtnDibsl"
+                                : "butn"
+                            }
                             onClick={this.handleSavePersonalDetails.bind(this)}
+                            disabled={this.state.personalBtnDisabled}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.updateandnext
-                              : "Update & Next"}
+                              : "Save & Next"}
                           </button>
                         </div>
                       )}
@@ -4722,8 +4736,13 @@ class StoreUsers extends Component {
                       ) : (
                         <div className="btn-coll">
                           <button
-                            className="butn"
+                            className={
+                              this.state.profileBtnDisbaled
+                                ? "butn userBtnDibsl"
+                                : "butn"
+                            }
                             onClick={this.handleSaveProfileDetails.bind(this)}
+                            disabled={this.state.profileBtnDisbaled}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
@@ -4964,7 +4983,12 @@ class StoreUsers extends Component {
                       </div>
                       <div className="btn-coll">
                         <button
-                          className="butn"
+                          className={
+                            this.state.mappedBtnDisabled
+                              ? "butn userBtnDibsl"
+                              : "butn"
+                          }
+                          disabled={this.state.mappedBtnDisabled}
                           type="button"
                           onClick={this.handleFinalSaveUserData.bind(this)}
                         >
