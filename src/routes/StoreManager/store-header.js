@@ -344,7 +344,7 @@ class Header extends Component {
     var page = path.split("/").pop();
     var accessdata = [];
     var dashboard = {
-      data: "Dashboards",
+      data: "Dashboard",
       urls: "storedashboard",
       logoBlack: DashboardLogo,
       logoBlue: DashboardLogoBlue,
@@ -1776,8 +1776,7 @@ class Header extends Component {
       this.setState({ ProfileProductTab: 0 });
       this.handleGetChatCustomerProfile(customerId);
     } else {
-      if(this.state.isCustomerProduct)
-      {
+      if (this.state.isCustomerProduct) {
         this.setState({ ProfileProductTab: 1 });
         this.handleGetChatCustomerProducts();
       }
