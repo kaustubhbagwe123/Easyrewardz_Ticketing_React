@@ -3804,7 +3804,10 @@ class MyTicket extends Component {
                                   ? TranslationContext.a.email
                                   : "Email"}
                               </label>
-                              <label className="profilemodal-textval">
+                              <label
+                                className="profilemodal-textval"
+                                style={{ wordBreak: "break-word" }}
+                              >
                                 {ticketDetailsData.customerEmailId}
                               </label>
                             </div>
@@ -8140,7 +8143,10 @@ class MyTicket extends Component {
                         ? TranslationContext.a.email
                         : "Email"}
                     </label>
-                    <label className="profilemodal-textval">
+                    <label
+                      className="profilemodal-textval"
+                      style={{ wordBreak: "break-word" }}
+                    >
                       {ticketDetailsData.customerEmailId}
                     </label>
                   </div>
