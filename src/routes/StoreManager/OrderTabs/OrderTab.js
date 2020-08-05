@@ -631,7 +631,7 @@ class OrderTab extends Component {
                               : null
                           }
                         />
-                      </div>
+                      </div> 
                       <Tooltip title={item.invoiceNo} placement="bottom">
                         <p className="order-bill-no">{item.invoiceNo}</p>
                       </Tooltip>

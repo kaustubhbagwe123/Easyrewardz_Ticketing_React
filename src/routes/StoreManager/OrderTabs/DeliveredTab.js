@@ -172,7 +172,7 @@ class DeliveredTab extends Component {
                 key: "invoiceNo",
                 render: (row, item) => {
                   return (
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center overflow-hidden">
                       <Tooltip title={item.invoiceNo} placement="bottom">
                         <p className="order-bill-no">{item.invoiceNo}</p>
                       </Tooltip>
