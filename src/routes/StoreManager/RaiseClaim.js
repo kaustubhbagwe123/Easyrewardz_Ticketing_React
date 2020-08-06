@@ -184,13 +184,6 @@ class RaiseClaim extends Component {
         .catch((data) => {
           console.log(data);
         });
-      // } else {
-      //   NotificationManager.error("Order not added.");
-      //   self.setState({
-      //     validPurchaseStoreName: "Store name not exist",
-      //     saveLoader: false
-      //   });
-      // }
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -199,7 +192,6 @@ class RaiseClaim extends Component {
 
   ////handle select store
   HandleSelectdata(e, field, value, id) {
-    debugger;
     let SearchData = this.state.SearchData;
     SearchData[field] = value;
 
@@ -216,7 +208,6 @@ class RaiseClaim extends Component {
 
   ////handle get purchase store name
   handlePurchaseStoreName(field, e) {
-    debugger;
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
@@ -301,7 +292,6 @@ class RaiseClaim extends Component {
       params: { TicketID: ticketId },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message == "Success" && responseData) {
@@ -377,7 +367,6 @@ class RaiseClaim extends Component {
     }
   };
   handlePercentageOnChange = (e) => {
-    debugger;
     const input = e.target.value;
     let IsNumber = false;
     let RE = /^-?\d*(\.\d+)?$/;
@@ -549,7 +538,7 @@ class RaiseClaim extends Component {
   handleOrderSearchData(e) {
     let self = this;
     var CustID = this.state.customerId;
-    debugger;
+
     if (CustID > 0) {
       if (this.state.ticketId == 0) {
         if (typeof e.preventDefault !== "undefined") {
@@ -613,7 +602,6 @@ class RaiseClaim extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
           if (Msg === "Success") {
@@ -839,7 +827,6 @@ class RaiseClaim extends Component {
   }
 
   checkIndividualItem(articleNumber, rowData) {
-    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
@@ -983,7 +970,6 @@ class RaiseClaim extends Component {
   }
 
   fileUpload(e) {
-    debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     if (selectedFiles.length > 0) {
@@ -1070,7 +1056,6 @@ class RaiseClaim extends Component {
   }
 
   handleAddStoreClaim() {
-    debugger;
     if (this.handleValidation()) {
       const formData = new FormData();
       var selectedRow = "";
@@ -1256,7 +1241,6 @@ class RaiseClaim extends Component {
     this.setState({ selectedTicketSource: value });
   };
   handleManuallyOnchange = (e) => {
-    debugger;
     e.preventDefault();
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
@@ -1447,12 +1431,6 @@ class RaiseClaim extends Component {
                           </b>
                         </label>
                         <div className="claimplus">
-                          {/* <span className="plusline1new"></span>
-                          <img
-                            src={ArrowImg}
-                            alt="Arrow"
-                            className="arrow-img-1"
-                          /> */}
                           <span className="plusline2"></span>
                           <img
                             src={PlusImg}

@@ -1143,7 +1143,6 @@ class EditStoreTask extends Component {
               className="cancalImg"
               onClick={this.onCloseModal.bind(this)}
             />
-            {/* <HistoricalTable /> */}
             <div className="tic-history tic-his varunoverflow">
               <ReactTable
                 data={this.state.historyData}
