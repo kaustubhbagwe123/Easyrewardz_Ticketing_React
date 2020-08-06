@@ -88,7 +88,6 @@ class ItemMaster extends Component {
     }
   }
   fileUpload = (file) => {
-    debugger;
     if (file) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
@@ -116,7 +115,6 @@ class ItemMaster extends Component {
       headers: authHeader(),
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -237,7 +235,7 @@ class ItemMaster extends Component {
 
   handleBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (this.state.fileName) {
       this.setState({
@@ -293,7 +291,7 @@ class ItemMaster extends Component {
   }
   DeleteBulkUploadFile = () => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       file: {},
       fileName: "",
@@ -309,7 +307,6 @@ class ItemMaster extends Component {
   };
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.itemData;
 
@@ -374,7 +371,6 @@ class ItemMaster extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.itemData;
 
@@ -439,8 +435,6 @@ class ItemMaster extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
     if (
       this.state.sortFilterbrandName.length === 0 ||
       this.state.sortFilteritemCode.length === 0 ||
@@ -776,8 +770,6 @@ class ItemMaster extends Component {
     }
   }
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
@@ -1180,7 +1172,6 @@ class ItemMaster extends Component {
     });
   };
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "itemCode") {

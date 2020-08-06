@@ -105,7 +105,6 @@ class StoreCRMRole extends Component {
 
   ////hanlde file uploading
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -129,13 +128,11 @@ class StoreCRMRole extends Component {
   }
   //// Status on change
   handleRoleisActive = (e) => {
-    debugger;
     let RoleisActive = e.currentTarget.value;
     this.setState({ RoleisActive });
   };
   ///handle change Module
   checkModule = async (moduleID) => {
-    debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
       ModulesEnabled = "",
@@ -169,7 +166,6 @@ class StoreCRMRole extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -259,7 +255,6 @@ class StoreCRMRole extends Component {
 
   /// hanlde module default
   handleModulesDefault = async () => {
-    debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
       ModulesEnabled = "",
@@ -279,7 +274,7 @@ class StoreCRMRole extends Component {
   //// delete CRM role
   handleDeleteCrmRole(Id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -290,7 +285,6 @@ class StoreCRMRole extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         if (status === "Record In use") {
           NotificationManager.error(
@@ -315,7 +309,7 @@ class StoreCRMRole extends Component {
   //// hanlde Create and Update function
   hanldeCreateUpdateCrmRole(e, addUpdate, crmRoleId) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     let RoleisActive,
       CRMRoleID,
@@ -386,7 +380,6 @@ class StoreCRMRole extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           if (e === "add") {
@@ -459,7 +452,7 @@ class StoreCRMRole extends Component {
   //// CRM Bulk uploading
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
       this.setState({
@@ -480,7 +473,6 @@ class StoreCRMRole extends Component {
         // },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
@@ -510,7 +502,6 @@ class StoreCRMRole extends Component {
           }
         })
         .catch((data) => {
-          debugger;
           if (data.message) {
             this.setState({
               showProgress: false,
@@ -528,7 +519,6 @@ class StoreCRMRole extends Component {
   }
   //// Store CRM data for edit
   hanldeEditCRM = (rowData) => {
-    debugger;
     this.setState({
       modulesData: rowData.modules,
       modulestatus: rowData.isRoleActive,
@@ -540,10 +530,7 @@ class StoreCRMRole extends Component {
 
   /// set sorting status
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
     var sroleNameFilterCheckbox = this.state.sroleNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var sisRoleActiveFilterCheckbox = this.state.sisRoleActiveFilterCheckbox;
@@ -743,7 +730,6 @@ class StoreCRMRole extends Component {
   }
   //// Modal data change
   handleModaleDataChange(e) {
-    debugger;
     var Name = e.target.name;
     var value = e.target.value;
 
@@ -767,7 +753,6 @@ class StoreCRMRole extends Component {
   }
   //// status open modal
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterRoleName.length === 0 ||
       this.state.sortFilterCreated.length === 0 ||
@@ -883,7 +868,6 @@ class StoreCRMRole extends Component {
 
   /// filter text change
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "roleName") {
@@ -934,7 +918,6 @@ class StoreCRMRole extends Component {
   }
   /// sort status by A to Z
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.crmRoles;
 
@@ -973,7 +956,6 @@ class StoreCRMRole extends Component {
   }
   /// sort status by Z to A
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.crmRoles;
 
@@ -1012,7 +994,6 @@ class StoreCRMRole extends Component {
   }
   /// Edit Module change
   handleModuleChange = (id) => {
-    debugger;
     var index = this.state.modulesData.findIndex((x) => x.moduleID === id);
     var modulesData = this.state.modulesData;
     modulesData[index].modulestatus = !modulesData[index].modulestatus;
@@ -1025,7 +1006,7 @@ class StoreCRMRole extends Component {
   /// Delete file on bulk uploading
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",
@@ -1230,9 +1211,6 @@ class StoreCRMRole extends Component {
                               name={item.createdBy}
                               id={"fil-open" + item.createdBy}
                               value={item.createdBy}
-                              // checked={this.state.screatedByFilterCheckbox.includes(
-                              //   item.createdBy
-                              // )}
                               checked={
                                 this.state.screatedByFilterCheckbox
                                   .split(",")
@@ -1263,9 +1241,6 @@ class StoreCRMRole extends Component {
                               name={item.isRoleActive}
                               id={"fil-open" + item.isRoleActive}
                               value={item.isRoleActive}
-                              // checked={this.state.sisRoleActiveFilterCheckbox.includes(
-                              //   item.isRoleActive
-                              // )}
                               checked={
                                 this.state.sisRoleActiveFilterCheckbox
                                   .split(",")
@@ -1576,44 +1551,6 @@ class StoreCRMRole extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -1825,7 +1762,6 @@ class StoreCRMRole extends Component {
                                     </p>
                                     <div className="del-can">
                                       <a href={Demo.BLANK_LINK}>
-                                        {" "}
                                         {TranslationContext !== undefined
                                           ? TranslationContext.a.cancel
                                           : "CANCEL"}

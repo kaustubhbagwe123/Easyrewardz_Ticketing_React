@@ -61,15 +61,10 @@ class StoreFileUploadLogs extends Component {
   }
 
   downloadDefaultReport = (csvFile) => {
-    debugger;
-    // window.open(
-    //   "https://ertktapi.dcdev.brainvire.net/ReportDownload/DefaultReport_202004061846089363.csv"
-    // );
     window.open(csvFile);
   };
 
   handleGetFileUploadLog() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -77,7 +72,6 @@ class StoreFileUploadLogs extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let fileUploadLog = res.data.responseData;
         if (fileUploadLog !== null) {
           self.state.sortAllData = fileUploadLog;
@@ -274,7 +268,6 @@ class StoreFileUploadLogs extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     if (this.state.tempfileUploadLog.length > 0) {
       this.setState({
         StatusModel: false,
@@ -333,7 +326,6 @@ class StoreFileUploadLogs extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "fileType") {
       var sortFilterFileType = matchSorter(
@@ -397,7 +389,6 @@ class StoreFileUploadLogs extends Component {
     }
   }
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
 
@@ -442,7 +433,6 @@ class StoreFileUploadLogs extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
     if (this.state.sortColumn === "fileType") {
@@ -486,8 +476,6 @@ class StoreFileUploadLogs extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sfileTypeFilterCheckbox = this.state.sfileTypeFilterCheckbox;
@@ -756,230 +744,6 @@ class StoreFileUploadLogs extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
-    const columnsTickFileUpload = [
-      {
-        Header: (
-          <span
-            className={this.state.sortHeader === "Type" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(
-              this,
-              "fileType",
-              TranslationContext !== undefined
-                ? TranslationContext.span.type
-                : "Type"
-            )}
-          >
-            {TranslationContext !== undefined
-              ? TranslationContext.span.type
-              : "Type"}
-
-            <FontAwesomeIcon
-              icon={
-                this.state.isATOZ === false && this.state.sortHeader === "Type"
-                  ? faCaretUp
-                  : faCaretDown
-              }
-            />
-          </span>
-        ),
-        sortable: false,
-        accessor: "fileType",
-      },
-      {
-        Header: (
-          <span
-            className={this.state.sortHeader === "Name" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(
-              this,
-              "fileName",
-              TranslationContext !== undefined
-                ? TranslationContext.span.name
-                : "Name"
-            )}
-          >
-            {TranslationContext !== undefined
-              ? TranslationContext.span.filename
-              : "File Name"}
-
-            <FontAwesomeIcon
-              icon={
-                this.state.isATOZ === false && this.state.sortHeader === "Name"
-                  ? faCaretUp
-                  : faCaretDown
-              }
-            />
-          </span>
-        ),
-        sortable: false,
-        accessor: "fileName",
-      },
-      {
-        Header: (
-          <span
-            className={this.state.sortHeader === "Date" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(
-              this,
-              "createdDate",
-              TranslationContext !== undefined
-                ? TranslationContext.span.date
-                : "Date"
-            )}
-          >
-            {TranslationContext !== undefined
-              ? TranslationContext.span.date
-              : "Date"}
-
-            <FontAwesomeIcon
-              icon={
-                this.state.isATOZ === false && this.state.sortHeader === "Date"
-                  ? faCaretUp
-                  : faCaretDown
-              }
-            />
-          </span>
-        ),
-        sortable: false,
-        accessor: "date",
-        Cell: (row) => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                {row.original.date}
-                <Popover
-                  content={
-                    <>
-                      <div>
-                        <b>
-                          <p className="title">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p.createdby
-                              : "Created By"}
-                            : {row.original.createdBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.createddate
-                            : "Created Date"}
-                          : {row.original.createdDate}
-                        </p>
-                      </div>
-                      <div>
-                        <b>
-                          <p className="title">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p.updatedby
-                              : "Updated By"}
-                            : {row.original.modifiedBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.updateddate
-                            : "Updated Date"}
-                          : {row.original.modifiedDate}
-                        </p>
-                      </div>
-                    </>
-                  }
-                  placement="bottom"
-                >
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        },
-      },
-      {
-        Header: (
-          <span
-            className={this.state.sortHeader === "Status" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(
-              this,
-              "fileUploadStatus",
-              "Status"
-            )}
-          >
-            {TranslationContext !== undefined
-              ? TranslationContext.span.status
-              : "Status"}
-            <FontAwesomeIcon
-              icon={
-                this.state.isATOZ === false &&
-                this.state.sortHeader === "Status"
-                  ? faCaretUp
-                  : faCaretDown
-              }
-            />
-          </span>
-        ),
-        sortable: false,
-        accessor: "fileUploadStatus",
-      },
-      {
-        Header: (
-          <span>
-            {TranslationContext !== undefined
-              ? TranslationContext.span.errorfile
-              : "Error File"}
-          </span>
-        ),
-        accessor: "Erroor",
-        Cell: (row) =>
-          row.original.fileUploadStatus === "Completed" &&
-          row.original.errorFilePath && (
-            <div>
-              <button
-                className="downloadBtn"
-                onClick={this.downloadDefaultReport.bind(
-                  this,
-                  row.original.errorFilePath
-                )}
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.button.download
-                  : "DOWNLOAD"}
-              </button>
-            </div>
-          ),
-      },
-      {
-        Header: (
-          <span>
-            {TranslationContext !== undefined
-              ? TranslationContext.span.successfile
-              : "Success File"}
-          </span>
-        ),
-        accessor: "success",
-        Cell: (row) =>
-          row.original.fileUploadStatus === "Completed" &&
-          row.original.successFilePath && (
-            <div>
-              <button
-                className="downloadBtn"
-                onClick={this.downloadDefaultReport.bind(
-                  this,
-                  row.original.successFilePath
-                )}
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.button.download
-                  : "DOWNLOAD"}
-              </button>
-            </div>
-          ),
-      },
-    ];
-
     return (
       <div className="mainDivPadding">
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -1222,49 +986,243 @@ class StoreFileUploadLogs extends Component {
           <ReactTable
             minRows={2}
             data={this.state.fileUploadLog}
-            columns={columnsTickFileUpload}
+            columns={[
+              {
+                Header: (
+                  <span
+                    className={
+                      this.state.sortHeader === "Type" ? "sort-column" : ""
+                    }
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "fileType",
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.type
+                        : "Type"
+                    )}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.type
+                      : "Type"}
+
+                    <FontAwesomeIcon
+                      icon={
+                        this.state.isATOZ === false &&
+                        this.state.sortHeader === "Type"
+                          ? faCaretUp
+                          : faCaretDown
+                      }
+                    />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "fileType",
+              },
+              {
+                Header: (
+                  <span
+                    className={
+                      this.state.sortHeader === "Name" ? "sort-column" : ""
+                    }
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "fileName",
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.name
+                        : "Name"
+                    )}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.filename
+                      : "File Name"}
+
+                    <FontAwesomeIcon
+                      icon={
+                        this.state.isATOZ === false &&
+                        this.state.sortHeader === "Name"
+                          ? faCaretUp
+                          : faCaretDown
+                      }
+                    />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "fileName",
+              },
+              {
+                Header: (
+                  <span
+                    className={
+                      this.state.sortHeader === "Date" ? "sort-column" : ""
+                    }
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "createdDate",
+                      TranslationContext !== undefined
+                        ? TranslationContext.span.date
+                        : "Date"
+                    )}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.date
+                      : "Date"}
+
+                    <FontAwesomeIcon
+                      icon={
+                        this.state.isATOZ === false &&
+                        this.state.sortHeader === "Date"
+                          ? faCaretUp
+                          : faCaretDown
+                      }
+                    />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "date",
+                Cell: (row) => {
+                  var ids = row.original["id"];
+                  return (
+                    <div>
+                      <span>
+                        {row.original.date}
+                        <Popover
+                          content={
+                            <>
+                              <div>
+                                <b>
+                                  <p className="title">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.createdby
+                                      : "Created By"}
+                                    : {row.original.createdBy}
+                                  </p>
+                                </b>
+                                <p className="sub-title">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.createddate
+                                    : "Created Date"}
+                                  : {row.original.createdDate}
+                                </p>
+                              </div>
+                              <div>
+                                <b>
+                                  <p className="title">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.updatedby
+                                      : "Updated By"}
+                                    : {row.original.modifiedBy}
+                                  </p>
+                                </b>
+                                <p className="sub-title">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.updateddate
+                                    : "Updated Date"}
+                                  : {row.original.modifiedDate}
+                                </p>
+                              </div>
+                            </>
+                          }
+                          placement="bottom"
+                        >
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id={ids}
+                          />
+                        </Popover>
+                      </span>
+                    </div>
+                  );
+                },
+              },
+              {
+                Header: (
+                  <span
+                    className={
+                      this.state.sortHeader === "Status" ? "sort-column" : ""
+                    }
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "fileUploadStatus",
+                      "Status"
+                    )}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.status
+                      : "Status"}
+                    <FontAwesomeIcon
+                      icon={
+                        this.state.isATOZ === false &&
+                        this.state.sortHeader === "Status"
+                          ? faCaretUp
+                          : faCaretDown
+                      }
+                    />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "fileUploadStatus",
+              },
+              {
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.errorfile
+                      : "Error File"}
+                  </span>
+                ),
+                accessor: "Erroor",
+                Cell: (row) =>
+                  row.original.fileUploadStatus === "Completed" &&
+                  row.original.errorFilePath && (
+                    <div>
+                      <button
+                        className="downloadBtn"
+                        onClick={this.downloadDefaultReport.bind(
+                          this,
+                          row.original.errorFilePath
+                        )}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.download
+                          : "DOWNLOAD"}
+                      </button>
+                    </div>
+                  ),
+              },
+              {
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.successfile
+                      : "Success File"}
+                  </span>
+                ),
+                accessor: "success",
+                Cell: (row) =>
+                  row.original.fileUploadStatus === "Completed" &&
+                  row.original.successFilePath && (
+                    <div>
+                      <button
+                        className="downloadBtn"
+                        onClick={this.downloadDefaultReport.bind(
+                          this,
+                          row.original.successFilePath
+                        )}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.download
+                          : "DOWNLOAD"}
+                      </button>
+                    </div>
+                  ),
+              },
+            ]}
             resizable={false}
             defaultPageSize={5}
             showPagination={true}
           />
-          {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
         </div>
       </div>
     );
