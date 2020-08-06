@@ -1124,7 +1124,6 @@ class JunkWords extends Component {
                   </div>
                 </div>
                 <div className="btn-block">
-                  {/* <Link onClick={this.handleAddCustomerSave}> */}
                   <button
                     type="button"
                     className="butn add-cust-butn"
@@ -1138,18 +1137,7 @@ class JunkWords extends Component {
                     {TranslationContext !== undefined
                       ? TranslationContext.label.save
                       : "SAVE"}
-                    {/* {this.state.loading ? (
-                            <FontAwesomeIcon
-                              className="circular-loader"
-                              icon={faCircleNotch}
-                              spin
-                            />
-                          ) : (
-                            ""
-                          )}
-                          {this.state.loading ? "Please Wait ..." : "SAVE"} */}
                   </button>
-                  {/* </Link> */}
                 </div>
               </div>
             </div>
@@ -1379,3 +1367,4 @@ class JunkWords extends Component {
 }
 
 export default JunkWords;
+ 

@@ -36,7 +36,7 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    var isReport = document.getElementById("isReport").value||"none";
+    var isReport = document.getElementById("isReport").value || "none";
 
     if (isReport === "block") {
       this.setState({ showReport: true });
@@ -512,8 +512,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingitemmasterdetails
+                              ? TranslationContext.p.settingitemmasterdetails
                               : "An item master is a record that lists key information about an inventory item. This information may include the description, unit of measure, weight, dimensions, ordering quantity, and so forth for an item"}
                           </p>
                         </div>
@@ -533,8 +532,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingdepartmentdetails
+                              ? TranslationContext.p.settingdepartmentdetails
                               : "In summary, departments are important because they make it easier for the organization to undertake its numerous and complex activities simultaneously and thereby achieve its common objectives and goals."}
                           </p>
                         </div>
@@ -555,8 +553,7 @@ class Settings extends Component {
                             </strong>
                             <p>
                               {TranslationContext !== undefined
-                                ? TranslationContext.p
-                                    .settinghomeshopdetials
+                                ? TranslationContext.p.settinghomeshopdetials
                                 : "Settings which will allow us to choose to which user need to give permission for freely type a message & to whom permission need to give where they can only send canned responses."}
                             </p>
                           </div>
@@ -620,8 +617,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingclaimcategorydetails
+                              ? TranslationContext.p.settingclaimcategorydetails
                               : "Category master where we can setup list of categories where support need to provide in terms of excahnge, refund or in modification of product."}
                           </p>
                         </div>
@@ -639,8 +635,7 @@ class Settings extends Component {
                             </strong>
                             <p>
                               {TranslationContext !== undefined
-                                ? TranslationContext.p
-                                    .settingchatsettingdetails
+                                ? TranslationContext.p.settingchatsettingdetails
                                 : "Configuration related to chat which can be setup or can be changed any time related to Chat session timeout, Card paramters etc…"}
                             </p>
                           </div>
@@ -662,8 +657,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingcrmroledetails
+                              ? TranslationContext.p.settingcrmroledetails
                               : "Setup a CRM Role & then which user has to give permission to the page, all will be controlled from here only."}
                           </p>
                         </div>
@@ -680,8 +674,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingusersdetails
+                              ? TranslationContext.p.settingusersdetails
                               : "Master to manage all users and add new users as well."}
                           </p>
                         </div>
@@ -698,8 +691,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingalertdetails
+                              ? TranslationContext.p.settingalertdetails
                               : "Setup all the alerts against pre-defined business cases & manage them from single point."}
                           </p>
                         </div>
@@ -717,8 +709,7 @@ class Settings extends Component {
                             </strong>
                             <p>
                               {TranslationContext !== undefined
-                                ? TranslationContext.p
-                                    .settingcardassetsdetails
+                                ? TranslationContext.p.settingcardassetsdetails
                                 : "Logs to check & approve moderated image against inventory. Logs to check all moderated images & approval also from single screen."}
                             </p>
                           </div>
@@ -760,8 +751,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingmodulesettingdetails
+                              ? TranslationContext.p.settingmodulesettingdetails
                               : "Own your configuration based on module & ease your business & ease the life of user."}
                           </p>
                         </div>
@@ -781,8 +771,7 @@ class Settings extends Component {
                           </strong>
                           <p>
                             {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .settingfileuploaddetails
+                              ? TranslationContext.p.settingfileuploaddetails
                               : "Single place to analyze what all files we have uploaded from different section."}
                           </p>
                         </div>

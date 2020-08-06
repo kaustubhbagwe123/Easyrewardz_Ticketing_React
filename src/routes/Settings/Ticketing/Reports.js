@@ -17,10 +17,7 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import SlaDue from "./../../SlaDue";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import ClaimStatus from "./../../ClaimStatus";
 import TaskStatus from "./../../TaskStatus";
 import TicketStatus from "./../../TicketStatus";
@@ -33,9 +30,6 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-// const clshide= {
-//  display:"hide"
-// };
 
 class Reports extends Component {
   constructor(props) {
@@ -272,7 +266,6 @@ class Reports extends Component {
     this.validator = new SimpleReactValidator();
   }
   componentDidMount() {
-    debugger;
     this.handleReportList();
     this.handleGetBrandList();
     this.handleGetCategoryList();
@@ -291,7 +284,6 @@ class Reports extends Component {
   }
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.ReportData;
 
@@ -334,8 +326,6 @@ class Reports extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
-
     var itemsArray = [];
     itemsArray = this.state.ReportData;
 
@@ -378,9 +368,6 @@ class Reports extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterName.length === 0 ||
       this.state.sortFilterSchedule.length === 0 ||
@@ -547,8 +534,6 @@ class Reports extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
@@ -779,7 +764,6 @@ class Reports extends Component {
   };
 
   hide(e, id) {
-    debugger;
     // document.getElementById(id).style.display="none";
     document.getElementById(
       id
@@ -787,7 +771,6 @@ class Reports extends Component {
       "none";
   }
   show(e, id) {
-    debugger;
     if (document.getElementById(id))
       // document.getElementById(id).style.display="block";
       document.getElementById(
@@ -796,7 +779,6 @@ class Reports extends Component {
         "block";
   }
   ScheduleOpenModel = () => {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.selectedReportName == "") {
       NotificationManager.error(
@@ -833,12 +815,10 @@ class Reports extends Component {
     this.setState({ AddReportPopup: true, tabIndex: 0 });
   }
   AddScheduler = () => {
-    debugger;
     this.ClearParams();
     this.setState({ AddReportPopup: true, tabIndex: 0 });
   };
   handleEditReport = (rowData) => {
-    debugger;
     let allTab = JSON.parse(rowData.reportSearchParams);
     this.setState({ Schedule_ID: rowData.scheduleID });
     let withClaim = 0;
@@ -887,14 +867,9 @@ class Reports extends Component {
     // }
     this.state.selectedReportName = rowData.reportName;
     var scheduledIds = rowData.scheduleFor;
-    var scheduledIdsArray = scheduledIds.split(",");
-    // this.state.AssignToData.filter(x => x.userID == )
-
-    // this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
     this.state.selectBrand = allTab["BrandID"];
     this.state.selectedIssueType = allTab["IssueType"];
     this.state.selectedTaskPriority = allTab["TaskPriority"];
-    // this.state.selectedCategory=allTab["CategoryId"];
     this.setState(
       {
         selectedCategory: allTab["CategoryId"],
@@ -903,8 +878,6 @@ class Reports extends Component {
         this.handleGetSubCategoryList();
       }
     );
-    //this.handleGetSubCategoryList();
-    // this.state.selectedSubCategory=allTab["SubCategoryId"];
     this.setState(
       {
         selectedSubCategory: allTab["SubCategoryId"],
@@ -931,7 +904,6 @@ class Reports extends Component {
     this.state.selectedVisitStoreAddress = allTab["WantToStoreCodeORAddress"];
 
     this.state.selectedClaimStatus = allTab["ClaimStatusId"];
-    // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
     this.setState(
       {
         selectedClaimCategory: allTab["ClaimCategoryId"],
@@ -940,7 +912,6 @@ class Reports extends Component {
         this.handleGetSubCategoryList();
       }
     );
-    // this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
     this.setState(
       {
         selectedClaimSubCategory: allTab["ClaimSubCategoryId"],
@@ -952,7 +923,6 @@ class Reports extends Component {
     this.state.selectedClaimIssueType = allTab["ClaimIssueTypeId"];
 
     this.state.selectedTaskStatus = allTab["TaskStatusId"];
-    // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
     this.setState(
       {
         selectedDepartment: allTab["TaskDepartment_Id"],
@@ -963,7 +933,6 @@ class Reports extends Component {
     );
     this.state.selectedFunction = allTab["TaskFunction_Id"];
 
-    //////////////////Scheduler/////////////////////////
     this.state.IsDaily = rowData.isDaily;
     this.state.selectScheduleDate = rowData.scheduleType;
     this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
@@ -1075,7 +1044,6 @@ class Reports extends Component {
       selectedNoOfWeekForYear: rowData.noOfWeekForYear,
     });
 
-    ///////////////////////////////////////////////////
     this.handleAddReportOpen();
   };
   handleAddReportClose() {
@@ -1127,9 +1095,7 @@ class Reports extends Component {
     });
   }
   handleGetFunctionList() {
-    debugger;
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
@@ -1139,7 +1105,6 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -1185,19 +1150,15 @@ class Reports extends Component {
     this.setState({ ReportCreateDate: date });
   }
   handleTicketCreateDate(date) {
-    debugger;
     this.setState({ TicketCreatedFromDate: date });
   }
   handleTicketClosedFrom(date) {
-    debugger;
     this.setState({ TicketClosedFrom: date });
   }
   handleTicketClosedTo(date) {
-    debugger;
     this.setState({ TicketClosedTo: date });
   }
   handleTicketCreateToDate(date) {
-    debugger;
     this.setState({ TicketCreatedEndDate: date });
   }
   handleReportLastDate(date) {
@@ -1207,7 +1168,6 @@ class Reports extends Component {
     this.setState({ ChatDate: date });
   }
   setNameOfMonthForDailyYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -1219,7 +1179,6 @@ class Reports extends Component {
     });
   };
   setNameOfDayForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -1231,19 +1190,16 @@ class Reports extends Component {
     });
   };
   handleWeekForYear = (e) => {
-    debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value,
     });
   };
   handleDayForYear = (e) => {
-    debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value,
     });
   };
   setNameOfMonthForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -1255,7 +1211,6 @@ class Reports extends Component {
     });
   };
   setNameOfDayForWeek = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -1267,57 +1222,41 @@ class Reports extends Component {
     });
   };
   handleWeekForWeek = (e) => {
-    debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   };
   handleMonthForWeek = (e) => {
-    debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value,
     });
   };
   handleMonthForMonth = (e) => {
-    debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value,
     });
   };
   handleDaysForMonth = (e) => {
-    debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value,
     });
   };
   handleWeekly = (e) => {
-    debugger;
     this.setState({
       selectedNoOfWeek: e.target.value,
     });
-    // this.setState({
-    //   selectedNoOfWeek: e.currentTarget.value
-    // });
   };
   handleDailyDay = (e) => {
-    debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value,
     });
   };
   handleScheduleTime = (e) => {
-    debugger;
     this.setState({
       selectedScheduleTime: e,
     });
   };
   handleChangeTab(index) {
-    debugger;
-    // this.setState({ NextPopup: true });
-    //   this.setState({
-    //     tabIndex: index
-    //   });
-
     var allTab = {};
     allTab = this.SetSearchParametr();
     this.setState({ ReportParams: allTab });
@@ -1333,7 +1272,6 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         self.setState({ totalResultCount: data });
@@ -1489,7 +1427,6 @@ class Reports extends Component {
     return allTab;
   }
   handleWeeklyDays = async (e) => {
-    debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -1590,7 +1527,6 @@ class Reports extends Component {
     });
   };
   handleScheduleDateChange = (e) => {
-    debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
       this.setState({
@@ -1714,7 +1650,6 @@ class Reports extends Component {
     });
   };
   setTeamMember = (e) => {
-    debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, (s) => s.userID)
@@ -1724,7 +1659,6 @@ class Reports extends Component {
   };
 
   setDefaultTeamMember = (e) => {
-    debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, (s) => s.userID)
@@ -1737,7 +1671,6 @@ class Reports extends Component {
   };
 
   setDefaultMutiStatus = (e) => {
-    debugger;
     if (e !== null) {
       var selectedStatus = Array.prototype.map
         .call(e, (s) => s.ticketStatusID)
@@ -1747,7 +1680,6 @@ class Reports extends Component {
   };
 
   setCreatedTicketSource = (e) => {
-    debugger;
     if (e !== null) {
       var selectedCreatedTicketSource = Array.prototype.map
         .call(e, (s) => s.ticketSourceId)
@@ -1762,8 +1694,6 @@ class Reports extends Component {
     });
   };
   setOnChangeReportData = (e) => {
-    debugger;
-
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -1795,7 +1725,6 @@ class Reports extends Component {
     }, 1);
   };
   handleGetDepartmentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1803,7 +1732,6 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let DepartmentData = res.data.responseData;
         self.setState({ DepartmentData: DepartmentData });
       })
@@ -1813,7 +1741,6 @@ class Reports extends Component {
   }
 
   handleAssignTo() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1821,7 +1748,6 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let AssignData = res.data.responseData;
 
         self.setState({
@@ -1834,7 +1760,6 @@ class Reports extends Component {
   }
 
   handleGetTicketPriorityList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -1842,7 +1767,6 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let TicketPriorityData = res.data.responseData;
         self.setState({ TicketPriorityData: TicketPriorityData });
       })
@@ -1851,8 +1775,6 @@ class Reports extends Component {
       });
   }
   handleGetTicketSourceList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -1860,7 +1782,6 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let TicketSourceData = res.data.responseData;
         self.setState({
           TicketSourceData: TicketSourceData,
@@ -1871,7 +1792,6 @@ class Reports extends Component {
       });
   }
   handleReportList() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -1880,7 +1800,6 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var data = res.data.responseData;
 
@@ -1956,7 +1875,6 @@ class Reports extends Component {
       });
   }
   handleDownload = (id, name) => {
-    debugger;
     this.setState({
       loadingDownload: false,
     });
@@ -2012,7 +1930,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           window.open(res.data.responseData);
           // self.downloadURI(res.data.responseData,name+".csv");
           self.setState({
@@ -2025,7 +1942,6 @@ class Reports extends Component {
     }
   };
   sentMail = () => {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.validator.allValid()) {
@@ -2039,7 +1955,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           NotificationManager.success(
             TranslationContext !== undefined
               ? TranslationContext.alertmessage.emailhasbeensend
@@ -2062,7 +1977,6 @@ class Reports extends Component {
   };
 
   downloadDefaultReport = () => {
-    debugger;
     let self = this;
     let sourceIds = "";
     let assignedIds = "";
@@ -2094,7 +2008,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           self.setState({
             loadingDownload: false,
           });
@@ -2138,7 +2051,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
@@ -2157,7 +2069,6 @@ class Reports extends Component {
           console.log(data);
         });
     } else if (this.state.DefaultPopupName == "Total Closed Ticket") {
-      debugger;
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
@@ -2201,7 +2112,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           //window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
@@ -2220,7 +2130,6 @@ class Reports extends Component {
           console.log(data);
         });
     } else if (this.state.DefaultPopupName == "Ticket Count By Associates") {
-      debugger;
       var totalError = 0;
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
         sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
@@ -2268,7 +2177,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
@@ -2310,8 +2218,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
-          //  window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
           });
@@ -2352,7 +2258,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           //  window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
@@ -2394,7 +2299,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
@@ -2422,15 +2326,12 @@ class Reports extends Component {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    //delete link;
   };
 
   setDefaultEmail = (e) => {
     this.setState({ DefaultEmailID: e.target.value });
-    //delete link;
   };
   handleDeleteReport(id) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
 
@@ -2443,7 +2344,6 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
@@ -2459,7 +2359,6 @@ class Reports extends Component {
       });
   }
   handleGetBrandList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2467,7 +2366,6 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2481,7 +2379,6 @@ class Reports extends Component {
       });
   }
   handleGetCategoryList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2489,9 +2386,7 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let CategoryData = res.data;
-
         self.setState({
           CategoryData: CategoryData,
         });
@@ -2502,11 +2397,8 @@ class Reports extends Component {
   }
 
   handleGetSubCategoryList() {
-    debugger;
     let self = this;
-
     let cateId = this.state.selectedCategory;
-
     if (this.state.selectedCategory !== 0) {
       cateId = this.state.selectedCategory;
     } else {
@@ -2522,7 +2414,6 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var SubCategoryData = res.data.responseData;
         self.setState({
           SubCategoryData: SubCategoryData,
@@ -2533,7 +2424,6 @@ class Reports extends Component {
       });
   }
   handleGetIssueTypeList() {
-    debugger;
     let self = this;
     let subCateId = this.state.selectedSubCategory;
     if (this.state.selectedSubCategory !== 0) {
@@ -2550,7 +2440,6 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let IssueTypeData = res.data.responseData;
         self.setState({ IssueTypeData: IssueTypeData });
       })
@@ -2560,7 +2449,6 @@ class Reports extends Component {
   }
 
   handleSave() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var SearchParams = {};
@@ -2579,7 +2467,6 @@ class Reports extends Component {
       self.setState({ selectScheduleDate: 0 });
     }
     setTimeout(() => {
-      debugger;
       if (this.state.Schedule_ID > 0) {
         axios({
           method: "post",
@@ -2590,7 +2477,6 @@ class Reports extends Component {
           },
         })
           .then(function(res) {
-            // this.handleReportList();
             self.handleReportList();
             self.handleNextPopupClose();
             NotificationManager.success(
@@ -2639,8 +2525,6 @@ class Reports extends Component {
           },
         })
           .then(function(res) {
-            debugger;
-
             let status = res.data.message;
             let scheduleId = res.data.responseData;
             if (status === "Success") {
@@ -2662,9 +2546,6 @@ class Reports extends Component {
               self.setState({
                 ReportParams: {},
                 selectedScheduleTime: "",
-                // selectedTeamMemberCommaSeperated="",
-                // selectScheduleDate="",
-                // selectedScheduleTime="",
                 IsDaily: false,
                 IsDailyForMonth: false,
                 IsWeekly: false,
@@ -2687,10 +2568,6 @@ class Reports extends Component {
           });
       }
     }, 10);
-
-    // else{
-    //   NotificationManager.error("Please create scheduler");
-    // }
   }
 
   handleInsertReport() {
@@ -2717,7 +2594,7 @@ class Reports extends Component {
       var mySQLDate = [date.getFullYear(), month, day].join("-");
       var mySQLTime = [hours, minutes, seconds].join(":");
       this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-      debugger;
+
       self = this;
       axios({
         method: "post",
@@ -2755,8 +2632,6 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          debugger;
-
           let status = res.data.message;
           let scheduleId = res.data.responseData;
           if (status === "Success") {
@@ -2766,7 +2641,6 @@ class Reports extends Component {
             self.state.selectedScheduleTime = "";
 
             self.ScheduleCloseModel();
-            // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
             NotificationManager.success(
@@ -2777,9 +2651,6 @@ class Reports extends Component {
             self.setState({
               ReportParams: {},
               selectedScheduleTime: "",
-              // selectedTeamMemberCommaSeperated="",
-              // selectScheduleDate="",
-              // selectedScheduleTime="",
               IsDaily: false,
               IsDailyForMonth: false,
               IsWeekly: false,
@@ -2842,7 +2713,6 @@ class Reports extends Component {
     }
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "reportName") {
       var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
@@ -3144,7 +3014,6 @@ class Reports extends Component {
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addreport-popup"
-            // overlayId="logout-ovrly"
           >
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
@@ -4163,9 +4032,7 @@ class Reports extends Component {
                           }
                           showMonthDropdown
                           showYearDropdown
-                          // className="form-control"
                         />
-                        {/* <input className="no-bg" type="text" /> */}
                       </div>
                     </div>
                     <div className="col-md-4 ticketreport">
@@ -4318,7 +4185,6 @@ class Reports extends Component {
               modal: "schedule-width",
             }}
             overlayId="logout-ovrly"
-            // overlayId="logout-ovrly"
           >
             <div className="" id="TotalTicketCreated">
               <div className="total-tic-title">
@@ -4343,11 +4209,9 @@ class Reports extends Component {
                           ? TranslationContext.p.teammember
                           : "Team Member"
                       }
-                      // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       onChange={this.setDefaultTeamMember.bind(this)}
                       value={this.state.SelectedDefaultTeamMember}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                   </div>
@@ -4373,11 +4237,9 @@ class Reports extends Component {
                           ? TranslationContext.div.ticketstatus
                           : "Ticket Status"
                       }
-                      // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       onChange={this.setDefaultMutiStatus.bind(this)}
                       value={this.state.SelectedTicketMultiStatus}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                   </div>
@@ -4486,8 +4348,6 @@ class Reports extends Component {
                     showYearDropdown
                     dateFormat="dd/MM/yyyy"
                     value={this.state.TicketCreatedEndDate}
-
-                    // className="form-control"
                   />
                 </div>
                 <span
@@ -4503,20 +4363,16 @@ class Reports extends Component {
                 <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
                   <Select
                     getOptionLabel={(option) => option.ticketSourceName}
-                    getOptionValue={
-                      (option) => option.ticketSourceId //id
-                    }
+                    getOptionValue={(option) => option.ticketSourceId}
                     options={this.state.TicketSourceData}
                     placeholder={
                       TranslationContext !== undefined
                         ? TranslationContext.div.ticketsource
                         : "Ticket Source"
                     }
-                    // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setCreatedTicketSource.bind(this)}
                     value={this.state.SelectedSourceIds}
-                    // showNewOptionAtTop={false}
                     isMulti
                   />
                 </div>
@@ -4603,7 +4459,6 @@ class Reports extends Component {
             onClose={this.handleNextPopupClose}
             closeIconId="sdsg"
             modalId="nextbuttonpopup"
-            // overlayId="logout-ovrly"
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
@@ -4684,20 +4539,16 @@ class Reports extends Component {
                         <div className="normal-dropdown dropdown-setting1 schedule-multi">
                           <Select
                             getOptionLabel={(option) => option.fullName}
-                            getOptionValue={
-                              (option) => option.userID //id
-                            }
+                            getOptionValue={(option) => option.userID}
                             options={this.state.AssignToData}
                             placeholder={
                               TranslationContext !== undefined
                                 ? TranslationContext.p.teammember
                                 : "Team Member"
                             }
-                            // menuIsOpen={true}
                             closeMenuOnSelect={false}
                             onChange={this.setTeamMember.bind(this)}
                             value={this.state.selectedTeamMember}
-                            // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
@@ -4923,13 +4774,11 @@ class Reports extends Component {
                                         ? TranslationContext.option.select
                                         : "Select"
                                     }
-                                    // menuIsOpen={true}
                                     closeMenuOnSelect={false}
                                     onChange={this.setNameOfDayForWeek.bind(
                                       this
                                     )}
                                     value={this.state.selectedNameOfDayForWeek}
-                                    // showNewOptionAtTop={false}
                                     isMulti
                                   />
                                 </div>
@@ -5042,13 +4891,11 @@ class Reports extends Component {
                                         ? TranslationContext.option.select
                                         : "Select"
                                     }
-                                    // menuIsOpen={true}
                                     closeMenuOnSelect={false}
                                     onChange={this.setNameOfDayForYear.bind(
                                       this
                                     )}
                                     value={this.state.selectedNameOfDayForYear}
-                                    // showNewOptionAtTop={false}
                                     isMulti
                                   />
                                 </div>
@@ -5077,7 +4924,6 @@ class Reports extends Component {
                                         ? TranslationContext.option.select
                                         : "Select"
                                     }
-                                    // menuIsOpen={true}
                                     closeMenuOnSelect={false}
                                     onChange={this.setNameOfMonthForDailyYear.bind(
                                       this
@@ -5085,7 +4931,6 @@ class Reports extends Component {
                                     value={
                                       this.state.selectedNameOfMonthForDailyYear
                                     }
-                                    // showNewOptionAtTop={false}
                                     isMulti
                                   />
                                 </div>
@@ -5093,13 +4938,6 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
-
-                        {/* <input
-                                      type="text"
-                                      className="txt-1 txt1Place txt1Time"
-                                      placeholder="11AM"
-                                      onChange={this.handleScheduleTime}
-                                    /> */}
                         <div className="dash-timepicker">
                           <DatePicker
                             selected={this.state.selectedScheduleTime}
@@ -5144,7 +4982,6 @@ class Reports extends Component {
               </div>
             </div>
           </Modal>
-          {/* </div> */}
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr settingtable reactreport">
@@ -5372,7 +5209,6 @@ class Reports extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
-                                    // onClick={() => this.show(this, "samdel" + ids)}
                                   />
                                 </Popover>
                               )}
@@ -5406,44 +5242,6 @@ class Reports extends Component {
                   />
                 </div>
               )}
-              {/* <div className="position-relative">
-                <div className="pagi">
-                  <ul>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>&lt;</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>1</a>
-                    </li>
-                    <li className="active">
-                      <a href={Demo.BLANK_LINK}>2</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>3</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>4</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>5</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>6</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>&gt;</a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="item-selection">
-                  <select>
-                    <option>30</option>
-                    <option>50</option>
-                    <option>100</option>
-                  </select>
-                  <p>Items per page</p>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

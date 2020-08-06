@@ -91,7 +91,6 @@ class Users extends Component {
       test: "",
       usernameCompulsion: "",
       firstnameCompulsion: "",
-      // lastnameCompulsion: "",
       mobilenumberCompulsion: "",
       emailCompulsion: "",
       userdesignCompulsion: "",
@@ -108,7 +107,6 @@ class Users extends Component {
       agentCompulsion: "",
       editusernameCompulsion: "",
       editfirstnameCompulsion: "",
-      // editlastnameCompulsion: "",
       editmobilenumberCompulsion: "",
       editemailCompulsion: "",
       edituserdesignCompulsion: "",
@@ -302,7 +300,6 @@ class Users extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "designation") {
       if (
         this.state.suserNameFilterCheckbox !== "" ||
@@ -332,9 +329,6 @@ class Users extends Component {
         this.state.semailIDFilterCheckbox !== ""
       ) {
         this.setState({
-          // sdesignationFilterCheckbox: "",
-          // smobileNumberFilterCheckbox: "",
-          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -357,9 +351,6 @@ class Users extends Component {
         this.state.semailIDFilterCheckbox !== ""
       ) {
         this.setState({
-          // sdesignationFilterCheckbox: "",
-          // suserNameFilterCheckbox: "",
-          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -608,7 +599,6 @@ class Users extends Component {
       mobileColor: "",
       emailColor: "",
       designationColor: "",
-      // sFilterCheckbox
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -690,7 +680,6 @@ class Users extends Component {
     this.setState({
       tempuserData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   opneEditModal = () => {
@@ -705,7 +694,6 @@ class Users extends Component {
   }
 
   hide(e, id) {
-    // document.getElementById(id).style.display="none";
     document.getElementById(
       id
     ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -713,7 +701,6 @@ class Users extends Component {
   }
   show(e, id) {
     if (document.getElementById(id))
-      // document.getElementById(id).style.display="block";
       document.getElementById(
         id
       ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -1489,7 +1476,6 @@ class Users extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var userdata = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -1515,8 +1501,6 @@ class Users extends Component {
               unique[userdata[i].designation] = 1;
             }
           }
-          // self.state.sortDesignation.push({ designation: "all" });
-          // self.state.sortFilterDesignation.push({ designation: "all" });
 
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({
@@ -1536,8 +1520,6 @@ class Users extends Component {
             }
           }
 
-          // self.state.sortUsername.push({ userName: "all" });
-          // self.state.sortFilterUsername.push({ userName: "all" });
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortUsername.push({
               userName: distinct[i],
@@ -1558,8 +1540,6 @@ class Users extends Component {
               unique[userdata[i].mobileNumber] = 1;
             }
           }
-          // self.state.sortMobile.push({ mobileNumber: "all" });
-          //   self.state.sortFilterMobile.push({ mobileNumber: "all" });
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortMobile.push({
               mobileNumber: distinct[i],
@@ -1577,8 +1557,6 @@ class Users extends Component {
               unique[userdata[i].emailID] = 1;
             }
           }
-          // self.state.sortEmail.push({ emailID: "all" });
-          //   self.state.sortFilterEmail.push({ emailID: "all" });
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortEmail.push({
               emailID: distinct[i],
@@ -1629,7 +1607,6 @@ class Users extends Component {
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
-      // this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0 &&
       this.state.emailFlag === true &&
@@ -1684,7 +1661,6 @@ class Users extends Component {
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseenterfirstname
             : "Please enter first name.",
-        // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.alertmessage.pleaseentermobilenumber
@@ -1703,7 +1679,6 @@ class Users extends Component {
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
-      // this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
     ) {
@@ -1772,11 +1747,9 @@ class Users extends Component {
 
   handleEditPersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-
     if (
       this.state.selectUserName.length > 0 &&
       this.state.selectFirstName.length > 0 &&
-      // this.state.selectLastName.length > 0 &&
       this.state.selectMobile.length > 0 &&
       this.state.selectEmail.length > 0
     ) {
@@ -1830,7 +1803,6 @@ class Users extends Component {
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseenterfirstname
             : "Please enter first name.",
-        // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.alertmessage.pleaseentermobilenumber
@@ -1960,10 +1932,6 @@ class Users extends Component {
       this.state.selectedCRMRoles > 0 &&
       radiob === true &&
       agentb === true
-
-      // this.state.selectedCopyEscalation === true &&
-      // this.state.selectedAssignEscalation === true &&
-      // this.state.selectedAgent > 0
     ) {
       let self = this;
       var finalIssueTypeId = "";
@@ -2113,8 +2081,6 @@ class Users extends Component {
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseselectcrmroles
             : "Please select  crm roles.",
-        // copyescCompulsion: "Please select copy escalation",
-        // assignescCompulsion: "Please select assign escalation",
         RadioCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseselectanyoption
@@ -2217,7 +2183,6 @@ class Users extends Component {
     if (
       this.state.userEditData.selectUserName.length > 0 &&
       this.state.userEditData.first_Name.length > 0 &&
-      // this.state.userEditData.last_Name.length > 0 &&
       this.state.userEditData.mobile_Number.length > 0 &&
       this.state.userEditData.email_ID.length > 0 &&
       this.state.userEditData.designation_ID > 0 &&
@@ -2238,12 +2203,7 @@ class Users extends Component {
       this.state.EditPhoneFlag === true &&
       radiob === true &&
       agentb === true
-      // this.state.userEditData.is_Copy_Escalation === true &&
-      // this.state.userEditData.is_Assign_Escalation === true &&
-      //this.state.userEditData.assign_ID > 0
     ) {
-      debugger;
-      // this.handleGetUserListByID(this.state.userEditData.userId);
       let self = this;
 
       var finalIssueTypeId = "";
@@ -2346,7 +2306,6 @@ class Users extends Component {
         data: json,
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
             self.closeEditModal();
@@ -2431,8 +2390,6 @@ class Users extends Component {
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseselectanyoption
             : "Please select any option.",
-        // editcopyescCompulsion: "Please select copy escalation",
-        // editassignescCompulsion: "Please select assign escalation",
         editagentCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseselectagent
@@ -3197,7 +3154,6 @@ class Users extends Component {
                   </a>
                   <button
                     className="Save-Use"
-                    // onClick={() => this.setState({ selTab: "Mapped Category" })}
                     onClick={this.handleChangeProfileTab}
                     style={{ marginLeft: "30px" }}
                   >
@@ -3265,7 +3221,6 @@ class Users extends Component {
                           ? TranslationContext.button.select
                           : "Select"
                       }
-                      // menuIsOpen={true}
                       name="editCategory"
                       closeMenuOnSelect={false}
                       onChange={this.handleEditCategoryChange.bind(
@@ -3273,7 +3228,6 @@ class Users extends Component {
                         "edit"
                       )}
                       value={this.state.editCategory}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                     {this.state.editCategory.length === 0 && (
@@ -3298,7 +3252,6 @@ class Users extends Component {
                           ? TranslationContext.button.select
                           : "Select"
                       }
-                      // menuIsOpen={true}
                       name="selectedSubCategory"
                       closeMenuOnSelect={false}
                       onChange={this.handleEditSubCategoryChange.bind(
@@ -3306,7 +3259,6 @@ class Users extends Component {
                         "edit"
                       )}
                       value={this.state.editSubCategory}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                     {this.state.editSubCategory.length === 0 && (
@@ -3331,12 +3283,10 @@ class Users extends Component {
                           ? TranslationContext.button.select
                           : "Select"
                       }
-                      // menuIsOpen={true}
                       name="selectedIssueType"
                       closeMenuOnSelect={false}
                       onChange={this.handleEditIssueTypeChange.bind(this)}
                       value={this.state.editIssuetype}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                     {this.state.editIssuetype.length === 0 && (
@@ -3934,7 +3884,6 @@ class Users extends Component {
                                     alt="del-icon"
                                     className="del-btn"
                                     id={ids}
-                                    //onClick={() => this.show(this, "samdel" + ids)}
                                   />
                                 </Popover>
 
@@ -4127,10 +4076,6 @@ class Users extends Component {
                       {this.state.personalReadOnly === true ? (
                         <div className="btn-coll">
                           <button
-                            //data-toggle="collapse"
-                            //href="#personal-details"
-                            //data-target="#profile-details"
-                            //data-toggle="collapse"
                             className="butn"
                             onClick={this.editMethod.bind(this)}
                           >
@@ -4144,8 +4089,6 @@ class Users extends Component {
                           <button
                             data-toggle="collapse"
                             href="#personal-details"
-                            //data-target="#profile-details"
-                            //data-toggle="collapse"
                             className="butn"
                             onClick={this.handleEditPersonalDetails.bind(this)}
                           >
@@ -4157,10 +4100,6 @@ class Users extends Component {
                       ) : (
                         <div className="btn-coll">
                           <button
-                            // data-toggle="collapse"
-                            // href="#personal-details"
-                            //data-target="#profile-details"
-                            //data-toggle="collapse"
                             className="butn"
                             onClick={this.handleValidationEmailIdMob.bind(this)}
                           >
@@ -4196,7 +4135,6 @@ class Users extends Component {
                             : "User Designation"}
                         </label>
                         <select
-                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
                           className={
                             this.state.profileReadOnly
@@ -4232,7 +4170,6 @@ class Users extends Component {
                             : "Reportee Designation"}
                         </label>
                         <select
-                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
                           className={
                             this.state.profileReadOnly
@@ -4280,7 +4217,6 @@ class Users extends Component {
                             : "Report To"}
                         </label>
                         <select
-                          //className="add-select-category"
                           disabled={this.state.profileReadOnly}
                           className={
                             this.state.profileReadOnly
@@ -4320,10 +4256,6 @@ class Users extends Component {
                       {this.state.profileReadOnly === true ? (
                         <div className="btn-coll">
                           <button
-                            //data-toggle="collapse"
-                            //href="#profile-details"
-                            //data-target="#mapped-category"
-                            //data-toggle="collapse"
                             className="butn"
                             onClick={this.editProfileMethod.bind(this)}
                           >
@@ -4337,8 +4269,6 @@ class Users extends Component {
                           <button
                             data-toggle="collapse"
                             href="#profile-details"
-                            //data-target="#mapped-category"
-                            //data-toggle="collapse"
                             className="butn"
                             onClick={this.handleAddProfileDetails.bind(this)}
                           >
@@ -4350,9 +4280,6 @@ class Users extends Component {
                       ) : (
                         <div className="btn-coll">
                           <button
-                            //data-target="#mapped-category"
-                            // data-toggle="collapse"
-                            //href="#profile-details"
                             disabled={this.state.profileBtnDisabled}
                             className={
                               this.state.profileBtnDisabled

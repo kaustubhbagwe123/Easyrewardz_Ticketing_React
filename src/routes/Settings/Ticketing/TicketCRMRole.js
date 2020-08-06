@@ -17,10 +17,7 @@ import { Link } from "react-router-dom";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import DownExcel from "../../../assets/Images/csv.png";
 import SimpleReactValidator from "simple-react-validator";
 import { CSVLink } from "react-csv";
@@ -122,7 +119,6 @@ class TicketCRMRole extends Component {
   }
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.crmRoles;
 
@@ -158,7 +154,6 @@ class TicketCRMRole extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.crmRoles;
 
@@ -194,7 +189,6 @@ class TicketCRMRole extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterRoleName.length === 0 ||
       this.state.sortFilterCreated.length === 0 ||
@@ -315,8 +309,6 @@ class TicketCRMRole extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sroleNameFilterCheckbox = this.state.sroleNameFilterCheckbox;
@@ -486,7 +478,6 @@ class TicketCRMRole extends Component {
   };
 
   handleGetCRMRoles() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -494,7 +485,6 @@ class TicketCRMRole extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         let crmRoles = res.data.responseData;
         if (crmRoles !== null && crmRoles !== undefined) {
@@ -549,7 +539,6 @@ class TicketCRMRole extends Component {
   }
 
   handleModulesDefault = async () => {
-    debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
       ModulesEnabled = "",
@@ -567,7 +556,6 @@ class TicketCRMRole extends Component {
     });
   };
   checkModule = async (moduleId) => {
-    debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
       ModulesEnabled = "",
@@ -592,7 +580,6 @@ class TicketCRMRole extends Component {
     });
   };
   updateCheckModule = async (e, moduleId) => {
-    debugger;
     let updateModulesList = [...this.state.updateModulesList],
       isActive,
       updateModulesEnabled = "",
@@ -617,30 +604,25 @@ class TicketCRMRole extends Component {
     });
   };
   handleRoleName(e) {
-    debugger;
     this.setState({
       RoleName: e.target.value,
     });
   }
   handleUpdateRoleName(e) {
-    debugger;
     this.setState({
       updateRoleName: e.target.value,
     });
   }
   handleRoleisActive = (e) => {
-    debugger;
     let RoleisActive = e.currentTarget.value;
     this.setState({ RoleisActive });
   };
   handleUpdateRoleisActive = (e) => {
-    debugger;
     let updateRoleisActive = e.currentTarget.value;
     this.setState({ updateRoleisActive });
   };
 
   createUpdateCrmRole(e, addUpdate, crmRoleId) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     // if (self.validator.allValid()) {
@@ -712,7 +694,6 @@ class TicketCRMRole extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           if (e === "add") {
@@ -778,7 +759,6 @@ class TicketCRMRole extends Component {
   }
 
   deleteCrmRole(deleteId) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
@@ -790,7 +770,6 @@ class TicketCRMRole extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Record In use") {
           NotificationManager.error(
@@ -813,7 +792,6 @@ class TicketCRMRole extends Component {
   }
 
   updateCrmRole(individualData) {
-    debugger;
     let updateRoleName = individualData.roleName,
       roleisActive = individualData.isRoleActive,
       updateRoleisActive,
@@ -831,7 +809,6 @@ class TicketCRMRole extends Component {
   }
 
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -847,7 +824,6 @@ class TicketCRMRole extends Component {
     }
   };
   showPopOver = (id) => {
-    debugger;
     this.setState({
       activePopOver: id,
       popOverVisible: true,
@@ -855,8 +831,6 @@ class TicketCRMRole extends Component {
   };
 
   callBackEdit = (RoleName, modules, Status, rowData) => {
-    debugger;
-    // this.setState({RoleName,updateRoleisActive:Status})
     this.state.RoleName = RoleName;
     this.state.updateModulesList = modules;
     this.state.updateRoleisActive = Status;
@@ -864,7 +838,6 @@ class TicketCRMRole extends Component {
   };
 
   hanldeEditCRM = (rowData) => {
-    debugger;
     this.setState({
       modulesData: rowData.modules,
       modulestatus: rowData.isRoleActive,
@@ -875,7 +848,6 @@ class TicketCRMRole extends Component {
   };
 
   handleModaleDataChange(e) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     var Name = e.target.name;
     var value = e.target.value;
@@ -903,7 +875,6 @@ class TicketCRMRole extends Component {
   }
 
   handleModuleChange = (id) => {
-    debugger;
     var index = this.state.modulesData.findIndex((x) => x.moduleID === id);
     var modulesData = this.state.modulesData;
     modulesData[index].modulestatus = !modulesData[index].modulestatus;
@@ -918,7 +889,6 @@ class TicketCRMRole extends Component {
     });
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "roleName") {
@@ -965,7 +935,6 @@ class TicketCRMRole extends Component {
     }
   }
   hanldeAddBulkUpload() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
@@ -988,7 +957,6 @@ class TicketCRMRole extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -1019,7 +987,6 @@ class TicketCRMRole extends Component {
             }
           })
           .catch((data) => {
-            debugger;
             if (data.message) {
               this.setState({
                 showProgress: false,
@@ -1045,7 +1012,6 @@ class TicketCRMRole extends Component {
     this.setState({ progressValue: value });
   }
   handleDeleteBulkupload = (e) => {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       fileN: [],
@@ -1497,44 +1463,6 @@ class TicketCRMRole extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -1940,7 +1868,6 @@ class TicketCRMRole extends Component {
             </div>
           </Modal>
         </div>
-        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }

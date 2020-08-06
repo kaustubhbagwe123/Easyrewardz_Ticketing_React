@@ -15,10 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover, Spin } from "antd";
 import DownExcel from "./../../../assets/Images/csv.png";
 import ReactTable from "react-table";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import axios from "axios";
@@ -124,7 +121,6 @@ class CategoryMaster extends Component {
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
-    // this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
     this.handleAddSubCategory = this.handleAddSubCategory.bind(this);
     this.handleAddIssueType = this.handleAddIssueType.bind(this);
@@ -147,7 +143,6 @@ class CategoryMaster extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
     var headerName = "";
@@ -197,7 +192,6 @@ class CategoryMaster extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
     var headerName = "";
@@ -464,8 +458,6 @@ class CategoryMaster extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
@@ -747,7 +739,6 @@ class CategoryMaster extends Component {
     // this.StatusCloseModel();
   };
   handleGetCategoryGridData() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -756,7 +747,6 @@ class CategoryMaster extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var data = res.data.responseData;
 
@@ -854,7 +844,6 @@ class CategoryMaster extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -889,7 +878,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let data = res.data;
         self.setState({ categoryDropData: data });
       })
@@ -899,7 +887,6 @@ class CategoryMaster extends Component {
   };
 
   handleGetSubCategoryList = async (id) => {
-    debugger;
     let self = this;
     var Category_Id = "";
     if (id === "edit") {
@@ -924,7 +911,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         self.setState({ SubCategoryDropData: data });
       })
@@ -934,7 +920,6 @@ class CategoryMaster extends Component {
   };
 
   handleGetIssueTypeList(id) {
-    debugger;
     let self = this;
     var SubCat_Id = 0;
     if (id === "edit") {
@@ -960,7 +945,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1004,7 +988,6 @@ class CategoryMaster extends Component {
   }
 
   handleAddCategory(value, check) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     var brand_Id = "";
     if (check === "edit") {
@@ -1023,7 +1006,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1071,7 +1053,6 @@ class CategoryMaster extends Component {
       });
   }
   handleAddSubCategory(value, check) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var finalId = 0;
@@ -1081,11 +1062,6 @@ class CategoryMaster extends Component {
       finalId = this.state.categoryDropData.filter(
         (x) => x.categoryName === this.state.list1Value
       )[0].categoryID;
-      // if (this.state.category_Id === 1) {
-      //   finalId = this.state.list1Value;
-      // } else {
-      //   finalId = this.state.category_Id;
-      // }
     }
 
     axios({
@@ -1098,7 +1074,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1145,15 +1120,10 @@ class CategoryMaster extends Component {
   }
 
   handleAddIssueType(value, type) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var finalId = 0;
     if (this.state.subCategory_Id === 0 && type !== "edit") {
-      // finalId = this.state.SubCategoryDropData.filter(
-      //   (x) => x.subCategoryName === this.state.ListOfSubCate
-      // )[0].subCategoryID;
-
       finalId = this.state.SubCatID;
     } else if (type === "edit") {
       finalId = this.state.editCategory.subCategoryID;
@@ -1170,7 +1140,6 @@ class CategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -1208,7 +1177,6 @@ class CategoryMaster extends Component {
   }
 
   handleSubmitData() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.selectBrand.length > 0 &&
@@ -1278,7 +1246,6 @@ class CategoryMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
@@ -1343,7 +1310,6 @@ class CategoryMaster extends Component {
 
   // Update category
   handleUpdateCategory() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (
@@ -1402,7 +1368,6 @@ class CategoryMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
@@ -1474,7 +1439,6 @@ class CategoryMaster extends Component {
     this.setState({ catmulti: true });
   }
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -1490,7 +1454,6 @@ class CategoryMaster extends Component {
     }
   };
   handleCategoryChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       this.setState({ list1Value: value, SubCategoryDropData: [] });
       setTimeout(() => {
@@ -1506,7 +1469,6 @@ class CategoryMaster extends Component {
     this.setState({ showList1: true });
   }
   handleSubCatOnChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       this.setState({ ListOfSubCate: value });
       setTimeout(() => {
@@ -1522,7 +1484,6 @@ class CategoryMaster extends Component {
     this.setState({ ShowSubCate: true });
   }
   handleIssueOnChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       this.setState({ ListOfIssue: value });
     } else {
@@ -1533,7 +1494,6 @@ class CategoryMaster extends Component {
     this.setState({ ShowIssuetype: true });
   }
   handleBrandChange = (e) => {
-    debugger;
     let value = e.target.value;
     this.setState({
       selectBrand: value,
@@ -1548,7 +1508,6 @@ class CategoryMaster extends Component {
     }, 1);
   };
   handleEditDropDownChange = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({ name: value });
@@ -1561,7 +1520,6 @@ class CategoryMaster extends Component {
 
   ////handle table row edit button click to set value in modal
   hanldeEditCategory = async (rowData) => {
-    debugger;
     var editCategory = {};
     editCategory.brandID = rowData.braindID;
     editCategory.brandName = rowData.brandName;
@@ -1596,7 +1554,6 @@ class CategoryMaster extends Component {
   }
   ////handle modal pop brand change
   handleModalBrandChange = (e) => {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let value = e.target.value;
     var editCategory = {};
@@ -1636,7 +1593,6 @@ class CategoryMaster extends Component {
   };
   ////handle edit modal pop category change
   handleModalCategoryChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       var name = this.state.categoryDropData.filter(
@@ -1670,7 +1626,6 @@ class CategoryMaster extends Component {
   }
   ////handle edit modal pop sub category change
   handleModalSubCatOnChange = async (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["subCategoryName"] = value;
@@ -1698,7 +1653,6 @@ class CategoryMaster extends Component {
   }
   ////handle modal issue type change
   handleModalIssueOnChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["issueTypeName"] = value;
@@ -1712,7 +1666,6 @@ class CategoryMaster extends Component {
   }
   ////handle model status change
   handleModalStatusChange = (e) => {
-    debugger;
     const { name, value } = e.target;
     var editCategory = this.state.editCategory;
     editCategory[name] = value;
@@ -1721,7 +1674,6 @@ class CategoryMaster extends Component {
 
   ////handle filter modal pop in filter text box change value
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "brandName") {
@@ -1800,12 +1752,10 @@ class CategoryMaster extends Component {
     }
   }
   handleSearchEditCategoryData(data) {
-    debugger;
     this.handleSearchCategoryData(data, "edit");
   }
   ////handle delete selected file of bulk upload
   handleDeleteBulkupload = (e) => {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       fileN: [],
@@ -1818,7 +1768,6 @@ class CategoryMaster extends Component {
     );
   };
   handleSearchCategoryData(data, check) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.selectBrand > 0 || this.state.editCategory.brandID) {
       let self = this;
@@ -1839,7 +1788,6 @@ class CategoryMaster extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -1873,12 +1821,10 @@ class CategoryMaster extends Component {
     }
   }
   handleSearchEditSubCategoryData(data) {
-    debugger;
     this.handleSearchSubCategoryData(data, "edit");
   }
   ///handle Search Sub category data
   handleSearchSubCategoryData(data, check) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.categoryDropData.length > 0) {
@@ -1904,7 +1850,6 @@ class CategoryMaster extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -1942,7 +1887,6 @@ class CategoryMaster extends Component {
   }
   //// handle Search Issue type data
   handleSearchIssueType(data, check) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.SubCategoryDropData.length > 0) {
@@ -1968,7 +1912,6 @@ class CategoryMaster extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -2005,7 +1948,6 @@ class CategoryMaster extends Component {
   }
   ////handle bulk upload
   hanldeAddBulkUpload() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
@@ -2024,9 +1966,7 @@ class CategoryMaster extends Component {
           data: formData,
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
-            let data = res.data.responseData;
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
@@ -2055,7 +1995,6 @@ class CategoryMaster extends Component {
             }
           })
           .catch((data) => {
-            debugger;
             if (data.message) {
               this.setState({
                 showProgress: false,
@@ -2086,21 +2025,7 @@ class CategoryMaster extends Component {
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const { categoryGridData } = this.state;
-    // const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
-    //   <Option key={o} value={item.categoryID}>
-    //     {item.categoryName}
-    //   </Option>
-    // ));
-    // const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
-    //   <Option key={o} value={item.subCategoryID}>
-    //     {item.subCategoryName}
-    //   </Option>
-    // ));
-    // const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
-    //   <Option key={i} value={item.issueTypeID}>
-    //     {item.issueTypeName}
-    //   </Option>
-    // ));
+
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -2561,44 +2486,6 @@ class CategoryMaster extends Component {
                       defaultPageSize={10}
                       showPagination={true}
                     />
-                    {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                   </div>
                 )}
               </div>
@@ -2670,7 +2557,7 @@ class CategoryMaster extends Component {
 
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              +{" "}
+                              +
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
@@ -2683,7 +2570,7 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleTogglecategoryAdd.bind(this)}
                           >
-                            +{" "}
+                            +
                             {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
@@ -2706,7 +2593,6 @@ class CategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={(inputValue) => {
-                            debugger;
                             inputValue = inputValue.trim();
                             if (
                               inputValue.length >= 0 &&
@@ -2762,7 +2648,7 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              +{" "}
+                              +
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
@@ -2775,7 +2661,7 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleSubcategoryAdd.bind(this)}
                           >
-                            +{" "}
+                            +
                             {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
@@ -2848,7 +2734,7 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              +{" "}
+                              +
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
@@ -2861,7 +2747,7 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleIssueAdd.bind(this)}
                           >
-                            +{" "}
+                            +
                             {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
@@ -2997,7 +2883,7 @@ class CategoryMaster extends Component {
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.addfile
                                   : "Add File"}
-                              </span>{" "}
+                              </span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.div.ordropfilehere
                                 : "or Drop File here"}
@@ -3202,7 +3088,7 @@ class CategoryMaster extends Component {
 
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          +{" "}
+                          +
                           {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
@@ -3215,7 +3101,7 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditcategoryAdd.bind(this)}
                       >
-                        +{" "}
+                        +
                         {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
@@ -3238,7 +3124,6 @@ class CategoryMaster extends Component {
                       animation="slide-from-top"
                       validationMsg="Please enter a category!"
                       onConfirm={(inputValue) => {
-                        debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.state.editCategory["categoryName"] = inputValue;
@@ -3292,7 +3177,7 @@ class CategoryMaster extends Component {
                         ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          +{" "}
+                          +
                           {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
@@ -3305,7 +3190,7 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditSubcategoryAdd.bind(this)}
                       >
-                        +{" "}
+                        +
                         {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
@@ -3387,7 +3272,7 @@ class CategoryMaster extends Component {
                         ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          +{" "}
+                          +
                           {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
@@ -3400,7 +3285,7 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditIssueAdd.bind(this)}
                       >
-                        +{" "}
+                        +
                         {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}

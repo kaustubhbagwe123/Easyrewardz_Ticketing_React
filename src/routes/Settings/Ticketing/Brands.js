@@ -11,10 +11,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import config from "../../../helpers/config";
 import axios from "axios";
 import { authHeader } from "../../../helpers/authHeader";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import ActiveStatus from "../../activeStatus";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -35,7 +32,6 @@ const MyButton = (props) => {
 };
 
 const Content = (props) => {
-  debugger;
   const { rowData } = props;
   const [brandCode, setbrandCodeValue] = useState(rowData.brandCode);
   const [brandName, setbrandNameValue] = useState(rowData.brandName);
@@ -231,15 +227,12 @@ class Brands extends Component {
   }
 
   callBackEdit = (brandCode, brandName, status, rowData) => {
-    debugger;
-    // this.setState({RoleName,updateRoleisActive:Status})
     this.state.updateBrandCode = brandCode;
     this.state.updateBrandName = brandName;
     this.state.updateStatus = status;
     this.state.rowData = rowData;
   };
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.brandData;
 
@@ -282,7 +275,6 @@ class Brands extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.brandData;
 
@@ -325,10 +317,6 @@ class Brands extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
-
     if (
       this.state.sortFilterBrandCode.length === 0 ||
       this.state.sortFilterBrandName.length === 0 ||
@@ -495,8 +483,6 @@ class Brands extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sbrandCodeFilterCheckbox = this.state.sbrandCodeFilterCheckbox;
@@ -718,7 +704,6 @@ class Brands extends Component {
   };
   /// handle check validation code
   handleCheckValidationCode = (e) => {
-    debugger;
     var regex = new RegExp("^[a-zA-Z0-9-]+$");
     if (regex.test(e.target.value)) {
       this.setState({
@@ -735,7 +720,6 @@ class Brands extends Component {
     this.setState({ selectedStatus: value });
   };
   handleOnChangeData = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
@@ -748,7 +732,6 @@ class Brands extends Component {
   };
 
   handleGetBrandList() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -757,7 +740,6 @@ class Brands extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -833,7 +815,6 @@ class Brands extends Component {
       });
   }
   handleSubmitData() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.brand_Code.length > 0 &&
@@ -860,7 +841,6 @@ class Brands extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetBrandList();
@@ -916,7 +896,6 @@ class Brands extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetBrandList();
@@ -934,7 +913,6 @@ class Brands extends Component {
       });
   }
   handleUpdateData(e, brandID) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.updateBrandCode.length > 0 &&
@@ -961,7 +939,6 @@ class Brands extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetBrandList();
@@ -998,7 +975,6 @@ class Brands extends Component {
     }
   }
   handleGetDataForEdit(e) {
-    debugger;
     var brandEditData = e;
     brandEditData.brand_Code = brandEditData.brandCode;
     brandEditData.brand_name = brandEditData.brandName;
@@ -1010,7 +986,6 @@ class Brands extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "brandCode") {

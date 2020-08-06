@@ -202,7 +202,6 @@ class StoreMaster extends Component {
           // }
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
@@ -433,8 +432,6 @@ class StoreMaster extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
-
     if (
       this.state.sortFilterStoreName.length === 0 ||
       this.state.sortFilterStoreCode.length === 0 ||
@@ -450,7 +447,6 @@ class StoreMaster extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "storeName") {
       if (
         this.state.sstoreCodeFilterCheckbox !== "" ||
@@ -1612,31 +1608,9 @@ class StoreMaster extends Component {
         }
       }
     }
-    // else if (column === "brandNames") {
-    //   var sItems = sFilterCheckbox.split(",");
-    //   if (sItems.length > 0) {
-    //     for (let i = 0; i < sItems.length; i++) {
-    //       if (sItems[i] !== "") {
-    //         var tempFilterData = allData.filter(
-    //           a => a.brandNames === sItems[i]
-    //         );
-    //         if (tempFilterData.length > 0) {
-    //           for (let j = 0; j < tempFilterData.length; j++) {
-    //             itemsArray.push(tempFilterData[j]);
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    //   this.setState({
-    //     brandnameColor: "sort-column"
-    //   });
-    // }
-
     this.setState({
       tempstoreData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   handleGetStoreMasterData() {
@@ -1647,7 +1621,6 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Store/StoreList",
       headers: authHeader(),
     }).then(function(res) {
-      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
 
@@ -2096,7 +2069,6 @@ class StoreMaster extends Component {
       this.state.userEditData.state_ID !== "0" &&
       this.state.userEditData.city_ID !== "0" &&
       this.state.userEditData.strPin_Code.length > 0 &&
-      // this.state.userEditData.status_ID === "0" &&
       this.state.userEditData.region_ID !== "0" &&
       this.state.userEditData.zone_ID !== "0" &&
       this.state.userEditData.storeType_ID !== "0" &&
@@ -2178,7 +2150,6 @@ class StoreMaster extends Component {
               editStoreTypeValidation: "",
               editContactEmailValidation: "",
               editContactPhoneValidation: "",
-              // editStatusValidation: ""
             });
           }
         })
@@ -2199,7 +2170,6 @@ class StoreMaster extends Component {
         editStoreTypeValidation: "Please Select Store Type.",
         editContactEmailValidation: "Please Enter EmailID.",
         editContactPhoneValidation: "Please Enter Phone Number.",
-        // editStatusValidation: "Please Select Status."
       });
     }
   }
@@ -2226,7 +2196,6 @@ class StoreMaster extends Component {
       fileN: allFiles,
       fileName: allFiles[0].name,
     });
-    // this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
   fileDragOver = (e) => {
@@ -2425,13 +2394,6 @@ class StoreMaster extends Component {
     this.setState({ editmodel: false });
   }
 
-  callBackEdit = (RoleName, Status, rowData) => {
-    // this.setState({RoleName,updateRoleisActive:Status})
-    // this.state.RoleName = RoleName;
-    // this.state.updateRoleisActive = Status;
-    // this.state.rowData = rowData;
-  };
-
   handleModalEditData = (e) => {
     var name = e.target.name;
     var value = e.target.value;
@@ -2442,7 +2404,6 @@ class StoreMaster extends Component {
     if ((name = "state_ID")) {
       this.handleGetCityList(value);
     }
-    // Email validation
     if (name === "email_") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value == "") {
@@ -2624,22 +2585,6 @@ class StoreMaster extends Component {
         });
       }
     }
-    // if (this.state.sortColumn === "brandNames") {
-    //   var sortFilterBrandName = matchSorter(
-    //     this.state.sortBrandName,
-    //     e.target.value,
-    //     {
-    //       keys: ["brandNames"],
-    //     }
-    //   );
-    //   if (sortFilterBrandName.length > 0) {
-    //     this.setState({ sortFilterBrandName });
-    //   } else {
-    //     this.setState({
-    //       sortFilterBrandName: this.state.sortBrandName,
-    //     });
-    //   }
-    // }
   }
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
@@ -3042,29 +2987,6 @@ class StoreMaster extends Component {
                         </div>
                       ))
                     : null}
-                  {/* {this.state.sortColumn === "brandNames"
-                    ? this.state.sortFilterBrandName !== null &&
-                      this.state.sortFilterBrandName.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.brandNames}
-                            value={item.brandNames}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "brandNames",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.brandNames}>
-                            <span className="table-btn table-blue-btn">
-                              {item.brandNames}
-                            </span>
-                          </label>
-                        </div>
-                      ))
-                    : null} */}
                 </div>
               </div>
             </div>
@@ -3147,19 +3069,10 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
-                              className={this.state.brandnameColor}
-                              // onClick={this.StatusOpenModel.bind(
-                              //   this,
-                              //   "brandNames",
-                              //   "Brand Names"
-                              // )}
-                            >
+                            <span className={this.state.brandnameColor}>
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.brandname
                                 : "Brand Name"}
-
-                              {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                             </span>
                           ),
                           accessor: "brand_Names",
@@ -3270,14 +3183,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span
-                            // className={this.state.pincodeColor}
-                            // onClick={this.StatusOpenModel.bind(
-                            //   this,
-                            //   "strPinCode",
-                            //   "Pin Code"
-                            // )}
-                            >
+                            <span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.address
                                 : "Address"}
@@ -3291,7 +3197,6 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                              // className={this.state.pincodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "regionName",
@@ -3313,7 +3218,6 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                              // className={this.state.pincodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "zone",
@@ -3334,7 +3238,6 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                              // className={this.state.pincodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeTypeName",
@@ -3356,7 +3259,6 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                              // className={this.state.pincodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "email",
@@ -3379,7 +3281,6 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                              // className={this.state.pincodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "phoneNumber",
@@ -3401,7 +3302,6 @@ class StoreMaster extends Component {
                         {
                           Header: (
                             <span
-                              // className={this.state.pincodeColor}
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "status",
@@ -3419,15 +3319,6 @@ class StoreMaster extends Component {
                           sortable: false,
                           accessor: "status",
                         },
-                        // {
-                        //   Header: (
-                        //     <span>
-                        //       Status
-                        //       <FontAwesomeIcon icon={faCaretDown} />
-                        //     </span>
-                        //   ),
-                        //   accessor: "status"
-                        // },
                         {
                           Header: (
                             <span>
@@ -3525,44 +3416,6 @@ class StoreMaster extends Component {
                       defaultPageSize={10}
                       showPagination={true}
                     />
-                    {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                   </div>
                 )}
               </div>
@@ -3590,11 +3443,9 @@ class StoreMaster extends Component {
                             ? TranslationContext.placeholder.select
                             : "Select"
                         }
-                        // menuIsOpen={true}
                         closeMenuOnSelect={false}
                         onChange={this.handleBrandChange}
                         value={this.state.selectedBrand}
-                        // showNewOptionAtTop={false}
                         isMulti
                       />
                       {this.state.selectedBrand.length === 0 && (
@@ -4215,7 +4066,6 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.label.storename
                         : "Store Name"}
@@ -4529,7 +4379,6 @@ class StoreMaster extends Component {
                       name="phoneNumber_"
                       maxLength={10}
                       value={this.state.userEditData.phoneNumber_}
-                      // onChange={this.handleModalEditData}
                       onChange={this.hanldeOnPhoneChange}
                     />
                     {this.state.EditPhoneFlag === false && (
@@ -4547,7 +4396,6 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.label.address
                         : "Address"}

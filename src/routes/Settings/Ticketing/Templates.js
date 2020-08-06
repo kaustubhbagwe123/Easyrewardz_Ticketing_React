@@ -3,14 +3,11 @@ import ReactTable from "react-table";
 import Demo from "../../../store/Hashtag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InfoImg from "./../../../assets/Images/icons8-info.svg";
-// import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import Cancel from "./../../../assets/Images/cancel.png";
 import Correct from "./../../../assets/Images/correct.png";
-// import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Popover } from "antd";
 import { Link } from "react-router-dom";
-// import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
@@ -19,10 +16,7 @@ import Modal from "react-bootstrap/Modal";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import Select from "react-select";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -42,16 +36,12 @@ class Templates extends Component {
       TemplateSubject: "",
       editorContent: "",
       slaIssueType: [],
-      // selectedSlaIssueType: [],
-      // selectedIssueTypeCommaSeperated: "",
       editStatus: "",
       editIssueType: [],
       templateEdit: {},
       templatenamecopulsion: "",
       issurtupeCompulsory: "",
       statusCompulsion: "",
-      // templatesubjectCompulsion: "",
-      // templatebodyCompulsion: "",
       StatusModel: false,
       sortColumn: "",
       sortAllData: [],
@@ -124,8 +114,6 @@ class Templates extends Component {
     }
   }
   callBackEdit = (templateName, arraydata, templateStatus, rowData) => {
-    debugger;
-    // this.setState({RoleName,updateRoleisActive:Status})
     this.state.updatedTemplatename = templateName;
     this.state.updatedArray = arraydata;
     this.state.updatedStatus = templateStatus;
@@ -133,7 +121,6 @@ class Templates extends Component {
   };
 
   onCkBlur = (evt) => {
-    debugger;
     var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
       .wholeText;
@@ -157,7 +144,6 @@ class Templates extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -176,7 +162,6 @@ class Templates extends Component {
   }
 
   setPlaceholderValue(e) {
-    debugger;
     let ckData = this.state.editorContent;
     let ckDataArr = ckData.split("\n\n");
     let ckDataArrNew = [];
@@ -206,14 +191,10 @@ class Templates extends Component {
       this.state.ckCusrsorPosition,
       ckDataArrLast.length
     );
-    // let ckDataArrLast = ckDataArr.pop();
-    // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-    // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
       (x) => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
-    // ck += placeholderName;
     ckDataArrLast = textBefore + " " + placeholderName + textAfter;
     let newCkCusrsorPosition =
       this.state.ckCusrsorPosition + placeholderName.length + 1;
@@ -222,9 +203,7 @@ class Templates extends Component {
       ckCusrsorData: ckDataArrLast,
     });
     if (ckTags) {
-      // let ckFinal = ckTags[0] + ck + ckTags[1];
       let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-      // ckDataArr.push(ckFinal);
       ckDataArr.splice(selectedArr, 1, ckFinal);
       ckData = ckDataArr.join(" ");
     }
@@ -237,8 +216,6 @@ class Templates extends Component {
 
   handleUpdateTemplate() {
     const TranslationContext = this.state.translateLanguage.default;
-
-    debugger;
     let self = this;
     var activeStatus = false;
     var issuetype = "";
@@ -270,7 +247,6 @@ class Templates extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -314,7 +290,6 @@ class Templates extends Component {
   }
 
   handleGetAgentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -322,7 +297,6 @@ class Templates extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -341,7 +315,6 @@ class Templates extends Component {
       });
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.template;
 
@@ -377,7 +350,6 @@ class Templates extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.template;
 
@@ -412,7 +384,6 @@ class Templates extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterName.length === 0 ||
       this.state.sortFilterCreatedBy.length === 0 ||
@@ -534,8 +505,6 @@ class Templates extends Component {
     }
   }
   setAssignedToValue(e) {
-    debugger;
-    // let assign = e.currentTarget.value;
     let ckData = this.state.editorContent;
     let matchedArr = this.state.AssignToData.filter(
       (x) => x.userID == e.currentTarget.value
@@ -545,8 +514,6 @@ class Templates extends Component {
     this.setState({ editorContent: ckData });
   }
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var stemplateNameFilterCheckbox = this.state.stemplateNameFilterCheckbox;
@@ -725,7 +692,6 @@ class Templates extends Component {
   };
 
   setTemplateEditData(editdata) {
-    debugger;
     var templateEdit = {};
     templateEdit = editdata;
     templateEdit.template_ID = editdata.templateID;
@@ -746,12 +712,6 @@ class Templates extends Component {
       iSelect.push(idata[0]);
     }
 
-    // if (editdata.template_Status === "Active") {
-    //   templateEdit.template_Status = "true";
-    // } else {
-    //   templateEdit.template_Status = "false";
-    // }
-
     this.setState({
       TemplateSubject,
       editorContent,
@@ -764,7 +724,6 @@ class Templates extends Component {
   handleOnChangeEditData = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
 
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var data = this.state.templateEdit;
@@ -786,32 +745,14 @@ class Templates extends Component {
       templateEdit: data,
     });
   };
-  // setIssueType = e => {
-  //   debugger;
-  //   if (e === null) {
-  //     e = [];
-  //     this.setState({ selectedSlaIssueType: e });
-  //   } else {
-  //     if (e !== null) {
-  //       var selectedIssueTypeCommaSeperated = Array.prototype.map
-  //         .call(e, s => s.issueTypeID)
-  //         .toString();
-  //     }
-  //     this.setState({
-  //       selectedSlaIssueType: e,
-  //       selectedIssueTypeCommaSeperated
-  //     });
-  //   }
-  // };
+
   selectIndividualSLA = async (issueId, event) => {
     const TranslationContext = this.state.translateLanguage.default;
 
-    debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
     if (event.target.checked) {
-      // indiSla += issueId + ",";
       var flag = values.includes(issueId.toString());
       if (!flag) {
         values.unshift(issueId);
@@ -828,9 +769,6 @@ class Templates extends Component {
           ? TranslationContext.label.selected
           : "selected");
     } else {
-      // var indiSla = this.state.indiSla;
-      // var separator = ",";
-      // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
         if (values[i] == issueId) {
           values.splice(i, 1);
@@ -858,8 +796,6 @@ class Templates extends Component {
   };
   selectAboveIndividualSLA = async (issueId, event) => {
     const TranslationContext = this.state.translateLanguage.default;
-
-    debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
@@ -880,9 +816,6 @@ class Templates extends Component {
           ? TranslationContext.label.selected
           : "selected");
     } else {
-      // var indiSla = this.state.indiSla;
-      // var separator = ",";
-      // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
         if (values[i] === issueId) {
           values.splice(i, 1);
@@ -909,7 +842,6 @@ class Templates extends Component {
     }
   };
   handleSearchSla = async (e) => {
-    debugger;
     if (e.target.value.length > 3) {
       await this.setState({
         SearchText: e.target.value,
@@ -923,7 +855,6 @@ class Templates extends Component {
     }
   };
   handleClearSearchSla = async (e) => {
-    debugger;
     await this.setState({
       SearchText: "",
     });
@@ -933,7 +864,6 @@ class Templates extends Component {
   selectAllSLA = async (event) => {
     const TranslationContext = this.state.translateLanguage.default;
 
-    debugger;
     var indiSla = "";
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent =
@@ -958,8 +888,6 @@ class Templates extends Component {
 
   selectNoSLA = async (event) => {
     const TranslationContext = this.state.translateLanguage.default;
-
-    debugger;
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent =
       TranslationContext !== undefined
@@ -976,7 +904,6 @@ class Templates extends Component {
   };
 
   handleSlaButton() {
-    debugger;
     let slaShowOriginal = this.state.slaShow;
     let slaShow = !slaShowOriginal;
     let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
@@ -1003,7 +930,6 @@ class Templates extends Component {
   setEditIssueType = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
 
-    debugger;
     if (e) {
       if (e.length === 0) {
         this.setState({
@@ -1031,32 +957,27 @@ class Templates extends Component {
   };
 
   handleTemplateName(e) {
-    debugger;
     this.setState({
       TemplateName: e.target.value,
     });
   }
   onEditorChange = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       editorContent: newContent,
     });
   };
   handleTemplateSubject(e) {
-    debugger;
     this.setState({
       TemplateSubject: e.target.value,
     });
   }
   handleTemplateIsActive = (e) => {
-    debugger;
     let TemplateIsActive = e.currentTarget.value;
     this.setState({ TemplateIsActive });
   };
 
   handleGetSLAIssueType() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1067,11 +988,9 @@ class Templates extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
-          // self.setState({ slaIssueType, selectedSlaIssueType });
           var checkboxes = document.getElementsByName("allSla");
           for (var i in checkboxes) {
             if (checkboxes[i].checked === true) {
@@ -1087,8 +1006,6 @@ class Templates extends Component {
 
   deleteTemplate(deleteId) {
     const TranslationContext = this.state.translateLanguage.default;
-
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1099,7 +1016,6 @@ class Templates extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1123,13 +1039,6 @@ class Templates extends Component {
 
   createTemplate() {
     const TranslationContext = this.state.translateLanguage.default;
-
-    debugger;
-    // if (
-    //   this.state.editorContent.length > 0 &&
-    //   this.state.editorContent.length <= 499
-    // ) {
-    // if (this.state.editorContent.length > 0) {
     let self = this;
 
     var TemplateIsActive;
@@ -1152,7 +1061,6 @@ class Templates extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1198,7 +1106,6 @@ class Templates extends Component {
   }
 
   handleGetTemplate() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1206,7 +1113,6 @@ class Templates extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let template = res.data.responseData;
 
         if (template !== null) {
@@ -1219,7 +1125,7 @@ class Templates extends Component {
               unique[template[i].issueTypeName] = 1;
             }
           }
-          debugger;
+
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortIssueType.push({ issueTypeName: distinct[i] });
             self.state.sortFilterIssueType.push({ issueTypeName: distinct[i] });
@@ -1264,7 +1170,7 @@ class Templates extends Component {
             self.state.sortFilterStatus.push({ templateStatus: distinct[i] });
           }
         }
-        debugger;
+
         if (template !== null && template !== undefined) {
           self.setState({ template });
         }
@@ -1276,12 +1182,8 @@ class Templates extends Component {
 
   handleConfigureTabsOpen() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
-    if (
-      this.state.TemplateName.length > 0 &&
-      this.state.indiSla !== ""
-      // this.state.selectedSlaIssueType !== null
-    ) {
+
+    if (this.state.TemplateName.length > 0 && this.state.indiSla !== "") {
       this.setState({ ConfigTabsModal: true });
       this.handleGetAgentList();
     } else {
@@ -1298,7 +1200,6 @@ class Templates extends Component {
     }
   }
   handleConfigureTabsClose() {
-    debugger;
     this.setState({
       ConfigTabsModal: false,
       editorContent: "",
@@ -1324,7 +1225,6 @@ class Templates extends Component {
     this.setState({ ConfigTabsModal: true, editmodel: false });
   };
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "issueTypeName") {
       var sortFilterIssueType = matchSorter(
@@ -1392,8 +1292,6 @@ class Templates extends Component {
           <Modal
             show={this.state.StatusModel}
             onHide={this.StatusCloseModel.bind(this)}
-            //onClose={this.StatusCloseModel}
-            //open={this.state.StatusModel}
             modalId="Status-popup"
             overlayId="logout-ovrly"
           >
@@ -1605,7 +1503,6 @@ class Templates extends Component {
           <div className="store-settings-cntr settingtable">
             <div className="row">
               <div className="col-md-8">
-                {/* <div className="table-cntr table-height template-table settings-align"> */}
                 <div className="table-cntr table-height settings-align">
                   <ReactTable
                     minRows={2}
@@ -1634,23 +1531,14 @@ class Templates extends Component {
                       },
                       {
                         Header: (
-                          <span
-                            className={this.state.issueColor}
-                            // onClick={this.StatusOpenModel.bind(
-                            //   this,
-                            //   "issueTypeName",
-                            //   "IssueType"
-                            // )}
-                          >
+                          <span className={this.state.issueColor}>
                             {TranslationContext !== undefined
                               ? TranslationContext.label.issuetype
                               : "Issue Type"}
-                            {/* <FontAwesomeIcon icon={faCaretDown} /> */}
                           </span>
                         ),
                         sortable: false,
                         accessor: "issueTypeCount",
-                        // Cell: props => <span className="number">{props.value}</span>
                         Cell: (row) => {
                           if (row.original.issueTypeCount === 1) {
                             return (
@@ -2023,31 +1911,6 @@ class Templates extends Component {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="dropDrownSpace">
-                        <label className="reports-to">Issue Type</label>
-
-                        <div className="normal-dropdown mt-0 dropdown-setting temp-multi schedule-multi">
-                          <Select
-                            getOptionLabel={option => option.issueTypeName}
-                            getOptionValue={
-                              option => option.issueTypeID //id
-                            }
-                            options={this.state.slaIssueType}
-                            placeholder="Select"
-                            // menuIsOpen={true}
-                            closeMenuOnSelect={false}
-                            onChange={this.setIssueType.bind(this)}
-                            value={this.state.selectedSlaIssueType}
-                            // showNewOptionAtTop={false}
-                            isMulti
-                          />
-                        </div>
-                        {this.state.selectedSlaIssueType.length === 0 && (
-                          <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.issurtupeCompulsion}
-                          </p>
-                        )}
-                      </div> */}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
@@ -2115,40 +1978,8 @@ class Templates extends Component {
                             </div>
                           </div>
                         </Modal.Header>
-                        {/* <div className="temp-sub">
-                          <label className="designation-name">
-                            Template Subject
-                          </label>
-                          <input
-                            type="text"
-                            className="txt-1"
-                            placeholder="Enter Template Subject"
-                            maxLength={50}
-                            onChange={this.handleTemplateSubject}
-                            value={this.state.TemplateSubject}
-                          /> */}
-                        {/* {this.state.TemplateSubject && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.templatesubjectCompulsion}
-                            </p>
-                          )} */}
-                        {/* </div> */}
+
                         <Modal.Body>
-                          {/* <div className="tic-det-ck-user template-user myticlist-expand-sect">
-                            <select
-                              className="add-select-category"
-                              value="0"
-                              onChange={this.setAssignedToValue.bind(this)}
-                            >
-                              <option value="0">Users</option>
-                              {this.state.AssignToData !== null &&
-                                this.state.AssignToData.map((item, i) => (
-                                  <option key={i} value={item.userID}>
-                                    {item.fullName}
-                                  </option>
-                                ))}
-                            </select>
-                          </div> */}
                           <div className="tic-det-ck-user template-user myticlist-expand-sect placeholder-alert">
                             <select
                               className="add-select-category"
@@ -2173,16 +2004,10 @@ class Templates extends Component {
                               content={this.state.editorContent}
                               events={{
                                 blur: this.onCkBlur,
-                                // "afterPaste": this.afterPaste,
                                 change: this.onEditorChange,
                                 items: this.fileUpload,
                               }}
                             />
-                            {/* {this.state.editorContent && (
-                              <p style={{ color: "red", marginBottom: "0px" }}>
-                                {this.state.templatebodyCompulsion}
-                              </p>
-                            )} */}
                           </div>
                           <div className="config-button">
                             <button
@@ -2331,7 +2156,6 @@ class Templates extends Component {
             </Modal>
           </div>
         </div>
-        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }

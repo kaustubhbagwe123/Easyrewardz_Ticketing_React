@@ -19,10 +19,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { CSVLink } from "react-csv";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -50,7 +47,6 @@ class CreateSLA extends Component {
       finalData: [],
       finalEditData: [],
       indiSla: "",
-      // searchSla: '',
       searchedSla: [],
       slaShow: false,
       slaOvrlayShow: false,
@@ -119,7 +115,6 @@ class CreateSLA extends Component {
   }
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.sla;
 
@@ -155,7 +150,6 @@ class CreateSLA extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.sla;
 
@@ -191,10 +185,6 @@ class CreateSLA extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
-
     if (
       this.state.sortFilterIssueType.length === 0 ||
       this.state.sortFilterCreatedBy.length === 0 ||
@@ -315,10 +305,7 @@ class CreateSLA extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
     var sissueTpeNameFilterCheckbox = this.state.sissueTpeNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var sisSLAActiveFilterCheckbox = this.state.sisSLAActiveFilterCheckbox;
@@ -492,12 +479,10 @@ class CreateSLA extends Component {
   };
 
   selectIndividualSLA = async (issueId, event) => {
-    debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
     if (event.target.checked) {
-      // indiSla += issueId + ",";
       var flag = values.includes(issueId.toString());
       if (!flag) {
         values.unshift(issueId);
@@ -509,9 +494,6 @@ class CreateSLA extends Component {
       document.getElementById("issueTypeValue").textContent =
         this.state.indiSla.split(",").length - 1 + " selected";
     } else {
-      // var indiSla = this.state.indiSla;
-      // var separator = ",";
-      // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
         if (values[i] === issueId) {
           values.splice(i, 1);
@@ -531,7 +513,6 @@ class CreateSLA extends Component {
   };
 
   selectAboveIndividualSLA = async (issueId, event) => {
-    debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
@@ -547,9 +528,6 @@ class CreateSLA extends Component {
       document.getElementById("issueTypeValue").textContent =
         this.state.indiSla.split(",").length - 1 + " selected";
     } else {
-      // var indiSla = this.state.indiSla;
-      // var separator = ",";
-      // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
         if (values[i] === issueId) {
           values.splice(i, 1);
@@ -569,7 +547,6 @@ class CreateSLA extends Component {
   };
 
   selectAllSLA = async (event) => {
-    debugger;
     var indiSla = "";
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent = "All Selected";
@@ -590,7 +567,6 @@ class CreateSLA extends Component {
   };
 
   selectNoSLA = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -603,7 +579,6 @@ class CreateSLA extends Component {
     });
   };
   selectNoAboveSLA = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("searchedSla");
     for (var i in checkboxes) {
       if (checkboxes[i].checked === true) {
@@ -614,7 +589,6 @@ class CreateSLA extends Component {
 
   ///handle edit sla targets
   handleEditSlaTargets = (i, e) => {
-    debugger;
     const { name, value } = e.target;
     let finalEditData = [...this.state.finalEditData];
     if (
@@ -622,14 +596,8 @@ class CreateSLA extends Component {
       name === "Rerspondtime" ||
       name === "ResolveTime"
     ) {
-      // finalEditData[i] = {
-      //   ...finalEditData[i],
-      //   [name]: parseFloat(value),
-      // };
       var reg = /^[0-9\b]+$/;
       if (value === "" || reg.test(value)) {
-        // const { name, value } = e.target;
-        // let finalData = [...this.state.finalData];
         finalEditData[i] = {
           ...finalEditData[i],
           [name]: value,
@@ -645,12 +613,9 @@ class CreateSLA extends Component {
       };
       this.setState({ finalEditData });
     }
-
-    // this.setState({ finalEditData });
   };
 
   handleSlaTargets = (i, e) => {
-    debugger;
     if (
       e.target.name === "SlaBreach" ||
       e.target.name === "Rerspondtime" ||
@@ -679,15 +644,12 @@ class CreateSLA extends Component {
     }
   };
   handleSlaTargetsDropdowns(e) {
-    debugger;
-
     this.setState({
       [e.target.name]: e.target.value,
     });
   }
 
   handleGetSLAIssueType() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -698,11 +660,9 @@ class CreateSLA extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
-          // self.setState({ slaIssueType, selectedSlaIssueType });
           var checkboxes = document.getElementsByName("allSla");
           for (var i in checkboxes) {
             if (checkboxes[i].checked === true) {
@@ -730,7 +690,6 @@ class CreateSLA extends Component {
     });
   }
   handleGetSLA() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -741,10 +700,8 @@ class CreateSLA extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
-
         if (data !== null) {
           self.state.sortAllData = data;
           var unique = [];
@@ -798,7 +755,6 @@ class CreateSLA extends Component {
       });
   }
   handleGetPriorityList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -806,7 +762,6 @@ class CreateSLA extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let temp = [];
@@ -856,7 +811,6 @@ class CreateSLA extends Component {
 
   ////get SLA data by SLA ID
   handleEditSLAById(idSLA) {
-    debugger;
     var SLAId = idSLA || 0;
     let self = this;
     axios({
@@ -868,7 +822,6 @@ class CreateSLA extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
@@ -912,7 +865,6 @@ class CreateSLA extends Component {
       });
   }
   createSla() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     var array = this.state.finalData;
     var valid = false;
@@ -966,7 +918,6 @@ class CreateSLA extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1007,7 +958,6 @@ class CreateSLA extends Component {
   }
 
   deleteSLA(deleteId) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
@@ -1019,7 +969,6 @@ class CreateSLA extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
           NotificationManager.success(
@@ -1042,7 +991,6 @@ class CreateSLA extends Component {
   }
 
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -1058,7 +1006,6 @@ class CreateSLA extends Component {
     }
   };
   handleSearchSla = async (e) => {
-    debugger;
     if (e.target.value.length > 3) {
       await this.setState({
         SearchText: e.target.value,
@@ -1072,7 +1019,6 @@ class CreateSLA extends Component {
     }
   };
   handleClearSearchSla = async (e) => {
-    debugger;
     await this.setState({
       SearchText: "",
     });
@@ -1095,26 +1041,8 @@ class CreateSLA extends Component {
   }
   ////handle update sla details by id
   handleUpdareSLADetails() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
-    var EditData = this.state.finalEditData;
-    var valid = false;
-    // if (EditData.length > 0) {
-    //   for (var i = 0; i < EditData.length; i++) {
-    //     if (
-    //       EditData[i].SlaBreach !== "0" &&
-    //       EditData[i].SlaBreach !== 0 &&
-    //       EditData[i].Rerspondtime !== "0" &&
-    //       EditData[i].Rerspondtime !== 0 &&
-    //       EditData[i].ResolveTime !== "0" &&
-    //       EditData[i].ResolveTime !== 0
-    //     ) {
-    //       valid = true;
-    //     } else {
-    //       valid = false;
-    //     }
-    //   }
-    // }
+
     let self = this;
     // if (valid === true) {
     var inputParamter = {};
@@ -1148,7 +1076,6 @@ class CreateSLA extends Component {
       data: inputParamter,
     })
       .then(function(res) {
-        debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
@@ -1177,13 +1104,9 @@ class CreateSLA extends Component {
         );
         console.log(response);
       });
-    // } else {
-    //   self.setState({ slaTargetCompulsionEdit: "Required." });
-    // }
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "issueTpeName") {
@@ -1231,7 +1154,6 @@ class CreateSLA extends Component {
   }
 
   hanldeAddBulkUpload() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
@@ -1254,7 +1176,6 @@ class CreateSLA extends Component {
           // }
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
@@ -1285,7 +1206,6 @@ class CreateSLA extends Component {
             }
           })
           .catch((data) => {
-            debugger;
             if (data.message) {
               this.setState({
                 showProgress: false,
@@ -1312,7 +1232,6 @@ class CreateSLA extends Component {
     this.setState({ progressValue: value });
   }
   handleDeleteBulkupload = (e) => {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       fileN: [],
@@ -1560,11 +1479,10 @@ class CreateSLA extends Component {
                                       <div>
                                         <p className="title">
                                           <b>
-                                            {" "}
                                             {TranslationContext !== undefined
                                               ? TranslationContext.b.brand
                                               : "Brand"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.brandName}
                                         </p>
@@ -1575,7 +1493,7 @@ class CreateSLA extends Component {
                                               ? TranslationContext.label
                                                   .category
                                               : "Category"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.categoryName}
                                         </p>
@@ -1587,7 +1505,7 @@ class CreateSLA extends Component {
                                               ? TranslationContext.label
                                                   .subcategory
                                               : "Sub Category"}
-                                            :{" "}
+                                            :
                                           </b>
                                           {row.original.subCategoryName}
                                         </p>
@@ -1997,7 +1915,7 @@ class CreateSLA extends Component {
                                           )}
                                         />
                                         <label htmlFor={"i" + item.issueTypeID}>
-                                          {item.issueTypeName}{" "}
+                                          {item.issueTypeName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
                                           </div>
@@ -2055,8 +1973,8 @@ class CreateSLA extends Component {
                         %
                         {TranslationContext !== undefined
                           ? TranslationContext.label.sla
-                          : "SLA"}{" "}
-                        <br />{" "}
+                          : "SLA"}
+                        <br />
                         {TranslationContext !== undefined
                           ? TranslationContext.label.breach
                           : "Breach"}
@@ -2249,7 +2167,7 @@ class CreateSLA extends Component {
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.addfile
                                   : "Add File"}
-                              </span>{" "}
+                              </span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.div.ordropfilehere
                                 : "or Drop File here"}
@@ -2408,7 +2326,7 @@ class CreateSLA extends Component {
                   {TranslationContext !== undefined
                     ? TranslationContext.label.brandname
                     : "Brand Name"}
-                  :{" "}
+                  :
                 </label>
                 <label className="createhead-text-1">
                   {this.state.brandName}
@@ -2419,7 +2337,7 @@ class CreateSLA extends Component {
                   {TranslationContext !== undefined
                     ? TranslationContext.label.categoryname
                     : "Category Name"}
-                  :{" "}
+                  :
                 </label>
                 <label className="createhead-text-1">
                   {this.state.categoryName}
@@ -2432,7 +2350,7 @@ class CreateSLA extends Component {
                   {TranslationContext !== undefined
                     ? TranslationContext.label.subcategoryname
                     : "Sub Category Name"}
-                  :{" "}
+                  :
                 </label>
                 <label className="createhead-text-1">
                   {this.state.subCategoryName}
@@ -2468,8 +2386,8 @@ class CreateSLA extends Component {
                 %
                 {TranslationContext !== undefined
                   ? TranslationContext.label.sla
-                  : "SLA"}{" "}
-                <br />{" "}
+                  : "SLA"}
+                <br />
                 {TranslationContext !== undefined
                   ? TranslationContext.label.breach
                   : "Breach"}
