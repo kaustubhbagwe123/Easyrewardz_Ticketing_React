@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { Collapse, CardBody, Card } from "reactstrap";
-// import TableDemo from "../TableDemo";
 import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
 import DownImg from "./../../assets/Images/down.png";

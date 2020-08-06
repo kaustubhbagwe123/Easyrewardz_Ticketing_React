@@ -9,13 +9,9 @@ import NoEditImg from "./../../assets/Images/NoEdit.png";
 import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
-import DownImg from "./../../assets/Images/down.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { Progress } from "antd";
 class StoreTaskByTicket extends Component {
   constructor(props) {
@@ -160,7 +156,6 @@ class StoreTaskByTicket extends Component {
         var taskStatusName = "";
 
         if (message === "Success" && responseData) {
-          debugger;
           var taskDetailsData = responseData.storeTaskMasterDetails;
           var ticketDetails = responseData.taskTicketDetails;
           departmentID = taskDetailsData.departmentId;
@@ -180,7 +175,6 @@ class StoreTaskByTicket extends Component {
           var oldassignToID = taskDetailsData.assignToID;
           var agentId = taskDetailsData.assignToID;
 
-          debugger;
           self.setState({
             agentId,
             oldassignToID,
@@ -213,7 +207,6 @@ class StoreTaskByTicket extends Component {
   }
   ////handle get department list
   handleGetDepartement() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -266,7 +259,6 @@ class StoreTaskByTicket extends Component {
       params: { TaskID: taskId, taskFor: 2 },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var commentData = response.data.responseData;
         var commentCount = commentData.length;
@@ -282,7 +274,6 @@ class StoreTaskByTicket extends Component {
   }
   ////handle add comment by task id
   handleAddCommentByTaskId() {
-    debugger;
     let self = this;
     if (this.state.comment == "") {
       this.setState({ iscomment: "Please Enter Comment." });
@@ -336,7 +327,6 @@ class StoreTaskByTicket extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && responseData) {
@@ -383,7 +373,7 @@ class StoreTaskByTicket extends Component {
 
   handleSubmitTaks(statusId) {
     let self = this;
-    debugger;
+
     if (this.state.departmentID == 0) {
       this.setState({ isdepartment: "Please Select Department." });
     } else {
@@ -458,7 +448,6 @@ class StoreTaskByTicket extends Component {
 
   ////handle input filed change
   handleOnchange = (e) => {
-    debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
       if (value !== "") {
@@ -552,7 +541,6 @@ class StoreTaskByTicket extends Component {
   }
   //// handle redirect to create claim page
   handleRedirectToCreateClaim() {
-    debugger;
     this.props.history.push({
       pathname: "/store/raiseClaim",
       state: {
@@ -805,7 +793,6 @@ class StoreTaskByTicket extends Component {
                         name="funcation"
                         onChange={this.handleOnchange.bind(this)}
                       >
-                        {" "}
                         <option value={0}>Select</option>
                         {this.state.funcationData !== null &&
                           this.state.funcationData.map((item, i) => (
@@ -1238,20 +1225,14 @@ class StoreTaskByTicket extends Component {
                   Header: <span>Name</span>,
                   accessor: "userName",
                 },
-                // {
-                //   Header: <span>Designation</span>,
-                //   accessor: "designation"
-                // }
               ]}
               minRows={2}
               showPagination={false}
               resizable={false}
               getTrProps={(rowInfo, column) => {
-                // ////
                 const index = column ? column.index : -1;
                 return {
                   onClick: (e) => {
-                    ////
                     this.selectedRow = index;
                     var agentId = column.original["user_ID"];
                     this.setState({ agentId });
