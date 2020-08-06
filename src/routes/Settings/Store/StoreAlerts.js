@@ -182,10 +182,10 @@ class Alerts extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Template/GetMailParameter",
+      url: config.apiUrl + "/Alert/GetMailParameter",
       headers: authHeader(),
       params: {
-        AlertID: alertId,
+        alertID: alertId,
       },
     })
       .then(function(res) {
@@ -2946,7 +2946,36 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Customer"
+                                      )}
+                                    >
+                                      <option value="0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .placeholders
+                                          : "Placeholders"}
+                                      </option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -3014,6 +3043,36 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Internal"
+                                      )}
+                                    >
+                                      <option value="0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .placeholders
+                                          : "Placeholders"}
+                                      </option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
@@ -3079,7 +3138,36 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Store"
+                                      )}
+                                    >
+                                      <option value="0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .placeholders
+                                          : "Placeholders"}
+                                      </option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
