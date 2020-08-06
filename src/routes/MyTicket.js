@@ -1113,15 +1113,6 @@ class MyTicket extends Component {
     } else {
       NotificationManager.error("Only numeric value allow.");
     }
-
-    // var index = this.state.OrderSubItem.findIndex(
-    //   x => x.articleNumber === rowData.original.articleNumber
-    // );
-
-    // var OrderSubItem = this.state.OrderSubItem;
-    // OrderSubItem[index].requireSize = value;
-
-    // this.setState({ OrderSubItem });
   }
   handleOrderSearchData() {
     let self = this;
@@ -1471,10 +1462,7 @@ class MyTicket extends Component {
     this.setState({ KbLink: true });
   }
 
-  HandleClaimPageView() {
-    this.props.history.push("claimTabTicketView");
-  }
-  HandleStoreProductSearchModalOpen() {
+   HandleStoreProductSearchModalOpen() {
     this.setState({ storeproductsearch: true });
   }
   HandleStoreProductSearchModalClose() {

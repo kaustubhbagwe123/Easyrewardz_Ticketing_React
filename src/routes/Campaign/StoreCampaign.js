@@ -117,7 +117,7 @@ class StoreCampaign extends Component {
 
   componentDidMount() {
     this.handleGetCampaignGridData();
-    this.handleGetBrand();
+    // this.handleGetBrand();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {

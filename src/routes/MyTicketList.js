@@ -10,10 +10,8 @@ import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Twitter from "./../assets/Images/twitter.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
-
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import moment from "moment";
@@ -28,7 +26,6 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
-
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -47,7 +44,6 @@ import { withRouter } from "react-router";
 import matchSorter from "match-sorter";
 import * as translationHI from "../translations/hindi";
 import * as translationMA from "../translations/marathi";
-
 class MyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -1154,7 +1150,7 @@ class MyTicketList extends Component {
         },
       })
         .then(function(res) {
-          //debugger;
+          //
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
@@ -1514,7 +1510,7 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
+        //
         let data = res.data.responseData;
         self.setState({
           ClaimSubCategoryData: data,
@@ -1525,18 +1521,8 @@ class MyTicketList extends Component {
       });
   }
   handleGetSubCategoryList(param) {
-    //debugger;
+    //
     let self = this;
-    // self.setState({
-    //   SubCategoryData: [],
-    //   SubCategoryAllData: [],
-    //   selectedSubCategory: 0,
-    //   selectedSubCategoryAll: 0,
-    //   IssueTypeData: [],
-    //   IssueTypeAllData: [],
-    //   selectedIssueType: 0,
-    //   selectedIssueTypeAll: 0
-    // });
     if (param === "categoryTab") {
       this.setState({
         SubCategoryData: [],
@@ -1559,10 +1545,6 @@ class MyTicketList extends Component {
         selectedClaimIssueType: 0,
       });
     }
-    // let cateId =
-    //   this.state.byCategoryFlag === 4
-    //     ? this.state.selectedCategory
-    //     : this.state.selectedCategoryAll;
     let cateId;
     if (param == "categoryTab") {
       cateId = this.state.selectedCategory;
@@ -1581,17 +1563,8 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
         var data = res.data.responseData;
-        // if (self.state.byCategoryFlag === 4) {
-        //   self.setState({
-        //     SubCategoryData: data
-        //   });
-        // } else if (self.state.allFlag === 5) {
-        //   self.setState({
-        //     SubCategoryAllData: data
-        //   });
-        // }
+
         if (param === "categoryTab") {
           self.setState({
             SubCategoryData: data,
@@ -1626,7 +1599,7 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
+        //
         let ClaimIssueTypeData = res.data.responseData;
         self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
       })
@@ -1636,12 +1609,6 @@ class MyTicketList extends Component {
   }
   handleGetIssueTypeList(param) {
     let self = this;
-    // self.setState({
-    //   IssueTypeData: [],
-    //   IssueTypeAllData: [],
-    //   selectedIssueType: 0,
-    //   selectedIssueTypeAll: 0
-    // });
     if (param === "categoryTab") {
       self.setState({
         IssueTypeData: [],
@@ -1658,10 +1625,6 @@ class MyTicketList extends Component {
         selectedClaimIssueType: 0,
       });
     }
-    // let subCateId =
-    //   this.state.byCategoryFlag === 4
-    //     ? this.state.selectedSubCategory
-    //     : this.state.selectedSubCategoryAll;
     let subCateId;
     if (param === "categoryTab") {
       subCateId = this.state.selectedSubCategory;
@@ -1680,18 +1643,6 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
-        // if (self.state.byCategoryFlag === 4) {
-        //   var IssueTypeData = res.data.responseData;
-        //   self.setState({
-        //     IssueTypeData: IssueTypeData
-        //   });
-        // } else if (self.state.allFlag === 5) {
-        //   var IssueTypeAllData = res.data.responseData;
-        //   self.setState({
-        //     IssueTypeAllData: IssueTypeAllData
-        //   });
-        // }
         if (param === "categoryTab") {
           var IssueTypeData = res.data.responseData;
           self.setState({
@@ -1714,7 +1665,6 @@ class MyTicketList extends Component {
       });
   }
   handleAssignSearchData() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1728,14 +1678,12 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
         let SearchAssignData = res.data.responseData;
         self.setState({
           SearchAssignData: SearchAssignData,
           assignFirstName: "",
           assignLastName: "",
           assignEmail: "",
-          // selectedDesignation: 0
         });
       })
       .catch((data) => {
@@ -1743,7 +1691,6 @@ class MyTicketList extends Component {
       });
   }
   handleAssignClearData() {
-    //debugger;
     this.setState({
       assignFirstName: "",
       assignLastName: "",
@@ -1754,7 +1701,7 @@ class MyTicketList extends Component {
 
   SaveSearchData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
 
     // ---------------By Date tab---------------------
@@ -1952,7 +1899,6 @@ class MyTicketList extends Component {
             },
           })
             .then(function(res) {
-              debugger;
               let Msg = res.data.message;
               if (Msg === "Success") {
                 NotificationManager.success(
@@ -1979,7 +1925,6 @@ class MyTicketList extends Component {
     }, 100);
   }
   handleGetSaveSearchList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -1987,7 +1932,6 @@ class MyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
         let data = res.data.responseData;
         self.setState({ SearchListData: data });
       })
@@ -1997,7 +1941,7 @@ class MyTicketList extends Component {
   }
   hadleSearchDeleteData(searchDeletId) {
     const TranslationContext = this.state.translateLanguage.default;
-    //debugger;
+
     let self = this;
 
     axios({
@@ -2009,7 +1953,6 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
@@ -2026,7 +1969,6 @@ class MyTicketList extends Component {
       });
   }
   ViewSearchData(clrSrch) {
-    //debugger;
     this.state.sortTicketData = [];
     this.state.sortCategoryData = [];
     this.state.sortPriorityData = [];
@@ -2222,7 +2164,6 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let CVData = res.data.responseData;
@@ -2385,11 +2326,9 @@ class MyTicketList extends Component {
   };
 
   setChannelOfPurchaseValue = (e) => {
-    //debugger;
     this.setState({ selectedChannelOfPurchase: e });
   };
   setTeamMember = (e) => {
-    //debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, (s) => s.fullName)
@@ -2398,7 +2337,6 @@ class MyTicketList extends Component {
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
   };
   setNameOfDayForWeek = (e) => {
-    //debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -2410,7 +2348,6 @@ class MyTicketList extends Component {
     });
   };
   setNameOfMonthForYear = (e) => {
-    //debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -2422,7 +2359,6 @@ class MyTicketList extends Component {
     });
   };
   setNameOfMonthForDailyYear = (e) => {
-    //debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -2434,7 +2370,6 @@ class MyTicketList extends Component {
     });
   };
   setNameOfDayForYear = (e) => {
-    //debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -2457,7 +2392,6 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
   handleClaimStatus = (e) => {
-    //debugger;
     let claimStatusValue = e.currentTarget.value;
     this.setState({ selectedClaimStatus: claimStatusValue });
   };
@@ -2518,7 +2452,6 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaStatus: slaStatusValue });
   };
   setCategoryValue = (e) => {
-    //debugger;
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -2589,7 +2522,6 @@ class MyTicketList extends Component {
   };
 
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterTicketData.length === 0 ||
       this.state.sortFilterCategoryData.length === 0 ||
@@ -2722,7 +2654,6 @@ class MyTicketList extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     var tempFinalSearchTicketData = [];
     if (this.state.tempSearchTicketData.length > 0) {
       var tempSearchTicketData = this.state.tempSearchTicketData;
@@ -2840,7 +2771,7 @@ class MyTicketList extends Component {
       });
     } else {
       var tempSearchTicketData = [];
-      debugger;
+
       this.setState({
         sortFilterTicketData: this.state.sortTicketData,
         sortFilterCategoryData: this.state.sortCategoryData,
@@ -2915,7 +2846,6 @@ class MyTicketList extends Component {
     });
   }
   toggleSearch() {
-    debugger;
     this.handleGetSaveSearchList();
     this.setState((state) => ({ collapseSearch: !state.collapseSearch }));
     if (this.state.collapseSearch) {
@@ -2943,7 +2873,7 @@ class MyTicketList extends Component {
     }
   }
   handleByDateCreate(date) {
-    //debugger;
+    //
     this.setState({ ByDateCreatDate: date });
   }
   handleChangeSelectDate(date) {
@@ -2971,9 +2901,7 @@ class MyTicketList extends Component {
   hanleChange = () => {
     this.props.history.push("/admin/addSearchMyTicket");
   };
-  // hanleChange_MyTicket = () => {
-  //   this.props.history.push("/admin/myticket");
-  // };
+
   handleAssignModalOpen() {
     this.setState({ AssignModal: true });
   }
@@ -2985,8 +2913,6 @@ class MyTicketList extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -2996,7 +2922,6 @@ class MyTicketList extends Component {
     var sassignedToFilterCheckbox = this.state.sassignedToFilterCheckbox;
 
     if (column === "status" || column === "all") {
-      debugger;
       if (type === "value" && type !== "All") {
         sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
           "all",
@@ -3015,7 +2940,6 @@ class MyTicketList extends Component {
           sticketStatusFilterCheckbox += e.currentTarget.value + ",";
         }
       } else {
-        debugger;
         if (sticketStatusFilterCheckbox.includes("all")) {
           sticketStatusFilterCheckbox = "";
         } else {
@@ -3265,7 +3189,6 @@ class MyTicketList extends Component {
     this.setState({ [name]: e.target.checked });
   };
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
     var headerName = "";
@@ -3319,7 +3242,6 @@ class MyTicketList extends Component {
     }, 10);
   }
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
     var headerName = "";
@@ -3370,7 +3292,7 @@ class MyTicketList extends Component {
   }
 
   handleGetAssignTo() {
-    //debugger;
+    //
     let self = this;
     axios({
       method: "post",
@@ -3378,7 +3300,7 @@ class MyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -3399,7 +3321,6 @@ class MyTicketList extends Component {
   }
 
   handelCheckBoxCheckedChange = async (ticketID) => {
-    //debugger;
     var checkboxes = document.getElementsByName("ListCheckbox");
     var strIds = "";
     for (var i in checkboxes) {
@@ -3410,9 +3331,7 @@ class MyTicketList extends Component {
         }
       }
     }
-    // await this.setState({
-    //   ticketIds: strIds
-    // });
+
     const newSelected = Object.assign({}, this.state.cSelectedRow);
     newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
 
@@ -3423,7 +3342,6 @@ class MyTicketList extends Component {
   };
 
   checkAllCheckbox = async (event) => {
-    //debugger;
     var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -3471,7 +3389,7 @@ class MyTicketList extends Component {
     if ((rowInfo, column)) {
       return {
         onClick: (e) => {
-          //debugger;
+          //
           let Id = column.original["ticketID"];
           let self = this;
           self.setState({
@@ -3500,7 +3418,6 @@ class MyTicketList extends Component {
   };
 
   handleScheduleDateChange = (e) => {
-    //debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
       this.setState({
@@ -3625,7 +3542,6 @@ class MyTicketList extends Component {
   };
 
   handleApplySearch(paramsID) {
-    //debugger;
     let self = this;
     this.setState({ loading: true });
     self.onCloseModal();
@@ -3639,7 +3555,6 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //debugger;
         let status = res.data.message;
         let data = res.data.responseData.ticketList;
         let count = 0;
@@ -3709,7 +3624,6 @@ class MyTicketList extends Component {
               selectedTicketStatusByDate: 0,
             });
           } else {
-            //debugger;
             if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
               let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
               let createdDateArray = createdDate.split("-");
@@ -3824,12 +3738,6 @@ class MyTicketList extends Component {
               selectedTicketStatusByCategory: 0,
             });
           } else {
-            // self.setState({
-            //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-            //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
-            //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
-            //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
-            // });
             self.setState(
               {
                 selectedCategory:
@@ -3921,17 +3829,15 @@ class MyTicketList extends Component {
               InvoiceSubOrderByAll:
                 dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
               MobileByAll: dataSearch.SearchDataByAll.CustomerMobileNo,
-              // selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
               selectedPriorityAll: dataSearch.SearchDataByAll.PriorityId,
               ItemIdByAll: dataSearch.SearchDataByAll.OrderItemId,
               selectedAssignedTo: dataSearch.SearchDataByAll.AssignTo,
-              // selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
               selectedTicketStatusAll:
                 dataSearch.SearchDataByAll.TicketSatutsID,
               selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
               selectedPurchaseStoreCodeAddressAll:
                 dataSearch.SearchDataByAll.StoreCodeORAddress,
-              // selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
+
               selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
               selectedWantToVisitStoreAll:
                 dataSearch.SearchDataByAll.IsWantVistingStore,
@@ -3940,15 +3846,9 @@ class MyTicketList extends Component {
               selectedWithClaimAll:
                 dataSearch.SearchDataByAll.HaveClaim === 0 ? "no" : "yes",
               selectedClaimStatus: dataSearch.SearchDataByAll.ClaimStatusId,
-              // selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
-              // selectedClaimSubCategory:
-              //   dataSearch.SearchDataByAll.ClaimSubCategoryId,
-              // selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
               selectedWithTaskAll:
                 dataSearch.SearchDataByAll.HaveTask === 0 ? "no" : "yes",
               selectedTaskStatus: dataSearch.SearchDataByAll.TaskStatusId,
-              // selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
-              // selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
             });
             self.setState(
               {
@@ -4016,9 +3916,7 @@ class MyTicketList extends Component {
       });
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
-    // if (e.target.value !== "") {
     if (this.state.sortColumnName === "status") {
       var sortFilterTicketData = matchSorter(
         this.state.sortTicketData,
@@ -4088,7 +3986,6 @@ class MyTicketList extends Component {
         });
       }
     }
-    // }
   }
 
   render() {
@@ -4332,7 +4229,6 @@ class MyTicketList extends Component {
                     type="checkbox"
                     id="fil-red"
                     name="isRed"
-                    // value="isEscalation"
                     value={this.state.isRed}
                     onChange={this.setColorSortCheckStatus.bind(this)}
                   />
@@ -4346,7 +4242,6 @@ class MyTicketList extends Component {
                     type="checkbox"
                     id="fil-orange"
                     name="isYellow"
-                    // value="isSLANearBreach"
                     value={this.state.isYellow}
                     onChange={this.setColorSortCheckStatus.bind(this)}
                   />
@@ -4359,7 +4254,6 @@ class MyTicketList extends Component {
                     type="checkbox"
                     id="fil-white"
                     name="isWhite"
-                    // value="white"
                     value={this.state.isWhite}
                     onChange={this.setColorSortCheckStatus.bind(this)}
                   />
@@ -4494,7 +4388,6 @@ class MyTicketList extends Component {
                 style={{ display: this.state.ReassignedByMe }}
               >
                 <a
-                  // style={{ display: this.state.ReassignedByMe }}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -4900,18 +4793,12 @@ class MyTicketList extends Component {
                                                   src={DelSearch}
                                                   alt="del-search"
                                                   className="cr-pnt"
-                                                  // onClick={this.hadleSearchDeleteData.bind(
-                                                  //   this,
-                                                  //   item.searchParamID
-                                                  // )}
                                                 />
                                               </a>
                                             </div>
                                           </li>
                                         )
                                       )}
-
-                                    {/* </li> */}
                                   </ul>
                                 </div>
                               </Modal>
@@ -4941,7 +4828,6 @@ class MyTicketList extends Component {
                                           dateFormat="dd/MM/yyyy"
                                           autoComplete="off"
                                           value={this.state.ByDateCreatDate}
-                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -4962,7 +4848,6 @@ class MyTicketList extends Component {
                                           value={this.state.ByDateSelectDate}
                                           name="ByDateSelectDate"
                                           autoComplete="off"
-                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -5196,7 +5081,6 @@ class MyTicketList extends Component {
                                                     .channelofpurchase
                                                 : "Channel Of Purchase"
                                             }
-                                            // menuIsOpen={true}
                                             closeMenuOnSelect={false}
                                             onChange={this.setChannelOfPurchaseValue.bind(
                                               this
@@ -5205,7 +5089,6 @@ class MyTicketList extends Component {
                                               this.state
                                                 .selectedChannelOfPurchase
                                             }
-                                            // showNewOptionAtTop={false}
                                             isMulti
                                           />
                                         </div>
@@ -5228,7 +5111,6 @@ class MyTicketList extends Component {
                                                     .ticketactiontype
                                                 : "Ticket Action Type"
                                             }
-                                            // menuIsOpen={true}
                                             closeMenuOnSelect={false}
                                             onChange={this.setTicketActionTypeValue.bind(
                                               this
@@ -5237,7 +5119,6 @@ class MyTicketList extends Component {
                                               this.state
                                                 .selectedTicketActionType
                                             }
-                                            // showNewOptionAtTop={false}
                                             isMulti
                                           />
                                         </div>
@@ -5382,7 +5263,6 @@ class MyTicketList extends Component {
                                           onChange={this.handleAllCreateDate.bind(
                                             this
                                           )}
-                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -5458,7 +5338,6 @@ class MyTicketList extends Component {
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
                                           value={this.state.ByAllLastDate}
-                                          // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -6203,17 +6082,7 @@ class MyTicketList extends Component {
                                             .csv
                                         : "CSV"}
                                     </CSVLink>
-                                    {/* <button
-                                      type="button"
-                                      onClick={this.ScheduleOpenModel}
-                                    >
-                                      <img
-                                        className="sch-icon"
-                                        src={Schedule}
-                                        alt="schedule-icon"
-                                      />
-                                      Schedule
-                                    </button> */}
+
                                     <Modal
                                       onClose={this.ScheduleCloseModel}
                                       open={this.state.Schedule}
@@ -6238,8 +6107,8 @@ class MyTicketList extends Component {
                                               getOptionLabel={(option) =>
                                                 option.fullName
                                               }
-                                              getOptionValue={
-                                                (option) => option.userID //id
+                                              getOptionValue={(option) =>
+                                                option.userID
                                               }
                                               options={
                                                 this.state.TeamMemberData
@@ -6250,7 +6119,6 @@ class MyTicketList extends Component {
                                                       .teammember
                                                   : "Team Member"
                                               }
-                                              // menuIsOpen={true}
                                               closeMenuOnSelect={false}
                                               onChange={this.setTeamMember.bind(
                                                 this
@@ -6258,7 +6126,6 @@ class MyTicketList extends Component {
                                               value={
                                                 this.state.selectedTeamMember
                                               }
-                                              // showNewOptionAtTop={false}
                                               isMulti
                                             />
                                           </div>
@@ -6556,7 +6423,6 @@ class MyTicketList extends Component {
                                                               .button.select
                                                           : "Select"
                                                       }
-                                                      // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfDayForWeek.bind(
                                                         this
@@ -6565,7 +6431,6 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .selectedNameOfDayForWeek
                                                       }
-                                                      // showNewOptionAtTop={false}
                                                       isMulti
                                                     />
                                                   </div>
@@ -6595,9 +6460,9 @@ class MyTicketList extends Component {
                                                       getOptionLabel={(
                                                         option
                                                       ) => option.month}
-                                                      getOptionValue={
-                                                        (option) => option.month //id
-                                                      }
+                                                      getOptionValue={(
+                                                        option
+                                                      ) => option.month}
                                                       options={
                                                         this.state
                                                           .NameOfMonthForYear
@@ -6609,7 +6474,6 @@ class MyTicketList extends Component {
                                                               .button.select
                                                           : "Select"
                                                       }
-                                                      // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfMonthForYear.bind(
                                                         this
@@ -6618,7 +6482,6 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .selectedNameOfMonthForYear
                                                       }
-                                                      // showNewOptionAtTop={false}
                                                       isMulti
                                                     />
                                                   </div>
@@ -6712,7 +6575,6 @@ class MyTicketList extends Component {
                                                               .button.select
                                                           : "Select"
                                                       }
-                                                      // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfDayForYear.bind(
                                                         this
@@ -6721,7 +6583,6 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .selectedNameOfDayForYear
                                                       }
-                                                      // showNewOptionAtTop={false}
                                                       isMulti
                                                     />
                                                   </div>
@@ -6758,7 +6619,6 @@ class MyTicketList extends Component {
                                                               .button.select
                                                           : "Select"
                                                       }
-                                                      // menuIsOpen={true}
                                                       closeMenuOnSelect={false}
                                                       onChange={this.setNameOfMonthForDailyYear.bind(
                                                         this
@@ -6767,7 +6627,6 @@ class MyTicketList extends Component {
                                                         this.state
                                                           .selectedNameOfMonthForDailyYear
                                                       }
-                                                      // showNewOptionAtTop={false}
                                                       isMulti
                                                     />
                                                   </div>
@@ -7004,7 +6863,6 @@ class MyTicketList extends Component {
                                                 </span>
                                               ),
                                               accessor: "designation",
-                                              // width: 130,
                                             },
                                             {
                                               Header: (
@@ -7021,11 +6879,9 @@ class MyTicketList extends Component {
                                               maxWidth: "auto",
                                             },
                                           ]}
-                                          // resizable={false}
                                           className="assign-ticket-table"
                                           defaultPageSize={5}
                                           minRows={3}
-                                          // showPagination={false}
                                           getTrProps={(rowInfo, column) => {
                                             const index = column
                                               ? column.index
@@ -7111,7 +6967,6 @@ class MyTicketList extends Component {
                                           type="checkbox"
                                           id="fil-aball"
                                           name="ListCheckbox"
-                                          // checked={this.state.CheckBoxChecked}
                                           onChange={this.checkAllCheckbox.bind(
                                             this
                                           )}
