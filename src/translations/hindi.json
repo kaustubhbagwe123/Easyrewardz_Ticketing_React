@@ -1960,7 +1960,8 @@
     "pleaseselectpickupdate": "कृपया पिक तिथि चुनें।",
     "pleaseselectpickuptime": "कृपया पिकअप समय चुनें।",
     "pincodeisnotmapped": "पिनकोड को मैप नहीं किया गया है।",
-    "expecteddeliverydate": "अपेक्षित वितरण की तारीख"
+    "expecteddeliverydate": "अपेक्षित वितरण की तारीख",
+    "uploadtemplates":"टेम्प्लेट अपलोड करें"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."

@@ -139,7 +139,6 @@ class OrderSetting extends Component {
       },
     })
       .then(function(res) {
-        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -163,7 +162,7 @@ class OrderSetting extends Component {
 
   handleUpdateModConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateModuleConfiguration",
@@ -214,7 +213,6 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -236,7 +234,7 @@ class OrderSetting extends Component {
 
   handleUpdateOrderConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateOrderConfiguration",
@@ -306,7 +304,7 @@ class OrderSetting extends Component {
 
   handleUpdateOrderConfigMessageTempData() {
     const TranslationContext = this.state.translateLanguage.default;
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateOrderConfigurationMessageTemplate",
@@ -379,7 +377,6 @@ class OrderSetting extends Component {
   };
   /// Handle Communication change
   handleCommunicationChange(id) {
-    
     var OrderConfig = id.target.id;
     if (OrderConfig === "ckOrdconfigAltConmWhts") {
       if (this.state.orderConfigData.alertCommunicationviaWhtsup) {
@@ -713,7 +710,6 @@ class OrderSetting extends Component {
   }
   /// handle Order template file upload
   handleBulkOrderTempUpload() {
-    
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     this.setState({
@@ -754,6 +750,27 @@ class OrderSetting extends Component {
         self.setState({ ordSettingBtnDisabled: false });
         console.log(response);
       });
+  }
+  /// clear all data
+  handleOrdClearData() {
+    this.setState({
+      fileName: "",
+      file: {},
+      OrdTemplatename: "",
+      OrdTempHeight: "",
+      OrdTempLength: "",
+      OrdTempBreadth: "",
+      OrdTempWeight: "",
+      selectedOrdHeight: "cm",
+      selectedOrdLength: "cm",
+      selectedOrdBreadth: "cm",
+      selectedOrdWeight: "Kg",
+      OrdTemplateNameValidation: "",
+      OrdTempHeightValidation: "",
+      OrdTempLengthValidation: "",
+      OrdTempBreadthValidation: "",
+      OrdTempWeightValidation: "",
+    });
   }
   /// update Shipping template data
   handleUpdateShippingTemplate() {
@@ -905,7 +922,6 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -935,7 +951,7 @@ class OrderSetting extends Component {
 
   handleUpdateWhatsAppTemplateData() {
     const TranslationContext = this.state.translateLanguage.default;
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateWhatsappTemplate",
@@ -1366,7 +1382,6 @@ class OrderSetting extends Component {
                                             this
                                           )}
                                         />
-                                       
                                       </td>
                                       <td>
                                         <select
@@ -1501,7 +1516,6 @@ class OrderSetting extends Component {
                                   {this.state.orderMessageTemplate !== null &&
                                     this.state.orderMessageTemplate.map(
                                       (item, i) => (
-                                        
                                         <div className="module-switch ord-m-t20">
                                           <div className="switch switch-primary">
                                             <label className="storeRole-name-text m-0 ordSttd-store">
@@ -1551,7 +1565,6 @@ class OrderSetting extends Component {
                                                       : item.messageName;
                                                 }
                                               })()}
-                                             
                                             </label>
                                             <input
                                               type="checkbox"
@@ -1688,7 +1701,11 @@ class OrderSetting extends Component {
                                           onClick={this.handleFileUploadData}
                                           className="curshar-pointer"
                                         >
-                                          Upload Templates
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext
+                                                .ticketingDashboard
+                                                .uploadtemplates
+                                            : "Upload Templates"}
                                         </button>
                                         <input
                                           type="file"
@@ -1919,28 +1936,46 @@ class OrderSetting extends Component {
                                       )}
                                     </div>
                                   </div>
-                                  <div className="col-md-12 my-3 text-center">
-                                    <button
-                                      className="Schedulenext1 mb-0"
-                                      type="button"
-                                      onClick={this.handleCheckMethod.bind(
-                                        this
-                                      )}
-                                      disabled={
-                                        this.state.ordSettingBtnDisabled
-                                      }
+
+                                  <div style={{ display: "flex" }}>
+                                    <div className="col-md-12 my-3 text-center">
+                                      <button
+                                        className="Schedulenext1 mb-0"
+                                        type="button"
+                                        onClick={this.handleCheckMethod.bind(
+                                          this
+                                        )}
+                                        disabled={
+                                          this.state.ordSettingBtnDisabled
+                                        }
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.submit
+                                          : "SUBMIT"}
+                                      </button>
+                                    </div>
+                                    <div
+                                      className="col-md-3 my-3 text-center"
+                                      style={{ marginRight: "5rem" }}
                                     >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.submit
-                                        : "SUBMIT"}
-                                    </button>
+                                      <a
+                                        className="ordTempClear"
+                                        onClick={this.handleOrdClearData.bind(
+                                          this
+                                        )}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.clear
+                                          : "CLEAR"}
+                                      </a>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div className="row">
-                            <div className="col-md-12 table-cntr store dv-table-paging">
+                            <div className="col-md-12 store dv-table-paging">
                               <Table
                                 loading={this.state.ShipTemploading}
                                 noDataContent={
@@ -2099,13 +2134,6 @@ class OrderSetting extends Component {
                                   {this.state.orderWhatsAppTemplate !== null &&
                                     this.state.orderWhatsAppTemplate.map(
                                       (item, i) => (
-                                        // <option
-                                        //   key={i}
-                                        //   value={item.subCategoryID}
-                                        //   className="select-category-placeholder"
-                                        // >
-                                        //   {item.subCategoryName}
-                                        // </option>
                                         <div className="module-switch ord-m-t20">
                                           <div className="switch switch-primary">
                                             <label className="storeRole-name-text m-0 ordSttd-store">
@@ -2129,14 +2157,6 @@ class OrderSetting extends Component {
                                                     return item.messageName;
                                                 }
                                               })()}
-                                              {/* {TranslationContext !== undefined
-                                          ? TranslationContext.label
-                                              .shoppingbagconvertedtoorder
-                                          : "Shopping bag Converted to Order"} */}
-                                              {/* {TranslationContext !== undefined
-                                          
-
-                                          } */}
                                             </label>
                                           </div>
                                           <div

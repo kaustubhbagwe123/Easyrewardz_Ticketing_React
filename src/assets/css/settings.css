@@ -4248,7 +4248,10 @@
 .slotFrm .react-datepicker__time-container {
   width: 120px;
 }
-.slotFrm .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+.slotFrm
+  .react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box {
   width: 120px;
 }
 .appointmentDiv {
@@ -4256,21 +4259,29 @@
   display: inline-flex;
   overflow: hidden;
 }
-.applicateDiv.react-datepicker-wrapper{
+.applicateDiv.react-datepicker-wrapper {
   display: block;
-  
 }
-.react-datepicker-wrapper{
+.react-datepicker-wrapper {
   width: 100%;
 }
-.nextbox .ant-spin-nested-loading > div > .ant-spin .ant-spin-dot{
-  top:90%
+.nextbox .ant-spin-nested-loading > div > .ant-spin .ant-spin-dot {
+  top: 90%;
 }
-.slot-down-excel{
+.slot-down-excel {
   margin-left: 26rem;
-    margin-top: 10px;
-    display: flex;
+  margin-top: 10px;
+  display: flex;
 }
-.appoint-txtarea{
+.appoint-txtarea {
   width: 100% !important;
+}
+.ordTempClear {
+  color: #2561a8 !important;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 31px;
+  cursor: pointer;
+  display: inline;
 }

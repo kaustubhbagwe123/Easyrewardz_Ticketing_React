@@ -438,11 +438,16 @@ class OrderTab extends Component {
 
   /// handle Submit Order adddress data
   handleSubmitOrderAddress(orderId) {
-    if (this.state.ordSelfPickup) {
-      this.handleSubmitSelfPickupData();
+    if (this.state.ordMoveReturn) {
+      this.handleSetOrderHasBeenReturn()
     } else {
-      this.handleAddressPending();
+      if (this.state.ordSelfPickup) {
+        this.handleSubmitSelfPickupData();
+      } else {
+        this.handleAddressPending();
+      }
     }
+
     this.setState({
       orderId: orderId,
     });
@@ -555,9 +560,9 @@ class OrderTab extends Component {
         ordMoveReturn: true,
         ordSelfPickup: false,
       });
-      setTimeout(() => {
-        this.handleSetOrderHasBeenReturn();
-      }, 5);
+      // setTimeout(() => {
+      //   this.handleSetOrderHasBeenReturn();
+      // }, 5);
     }
   };
   /// handle order date change
@@ -631,7 +636,7 @@ class OrderTab extends Component {
                               : null
                           }
                         />
-                      </div> 
+                      </div>
                       <Tooltip title={item.invoiceNo} placement="bottom">
                         <p className="order-bill-no">{item.invoiceNo}</p>
                       </Tooltip>

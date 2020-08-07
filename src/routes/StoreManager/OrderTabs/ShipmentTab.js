@@ -378,7 +378,6 @@ class ShipmentTab extends Component {
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
     let self = this;
     if (this.state.selectedTemplate !== "0") {
       var itemIds = "";
@@ -402,6 +401,7 @@ class ShipmentTab extends Component {
         },
       })
         .then(function(res) {
+          debugger
           let CheckStatus = res.data.status;
           let data = res.data.responseData;
           if (CheckStatus) {
@@ -412,6 +412,7 @@ class ShipmentTab extends Component {
                 createdShoppingTabs: true,
                 createShipmentBtnDisbaled: false,
                 createShipmetLoader: false,
+                ShipmentMdlbtn:false
               });
               if (data.isStoreDelivery) {
                 self.setState({
@@ -419,15 +420,16 @@ class ShipmentTab extends Component {
                 });
               }
             } else {
-              NotificationManager.error(data.statusMessge);
+              NotificationManager.error(data.message);
             }
             self.handleGetShipmentTabGridData();
           } else {
-            NotificationManager.error(CheckStatus);
+            NotificationManager.error(res.data.message);
             self.setState({
               createdShoppingTabs: false,
               createShipmentBtnDisbaled: false,
               createShipmetLoader: false,
+              ShipmentMdlbtn:false
             });
           }
         })
@@ -754,7 +756,7 @@ class ShipmentTab extends Component {
                                 :
                               </p>
                               <p className="username-mar">
-                                {item.estimatedDeliveryDate}
+                                {item.pickupScheduledDate}
                               </p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
@@ -766,7 +768,7 @@ class ShipmentTab extends Component {
                                 :
                               </p>
                               <p className="username-mar">
-                                {item.pickupScheduledDate}
+                                {item.estimatedDeliveryDate}
                               </p>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
@@ -779,7 +781,6 @@ class ShipmentTab extends Component {
                               </p>
                               <p className="username-mar">
                                 {item.shippingCharges}
-                                {/* &#8377; */}
                               </p>
                             </div>
                           </div>
