@@ -67,7 +67,7 @@ class BlockEmail extends Component {
   }
 
   AddNewEmailID = () => {
-    debugger;
+    
     this.setState({
       AddBlockEmailPopup: true,
       errors: {},
@@ -125,7 +125,7 @@ class BlockEmail extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        
         var status = res.data.message;
         var data = res.data.responseData;
         if (status === "Success") {
@@ -285,7 +285,7 @@ class BlockEmail extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        
         if (res.data.message === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -302,7 +302,7 @@ class BlockEmail extends Component {
       });
   }
   sortStatusZtoA() {
-    debugger;
+    
     var itemsArray = [];
     itemsArray = this.state.BlockEmailData;
 
@@ -345,7 +345,7 @@ class BlockEmail extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
+    
 
     var itemsArray = [];
     itemsArray = this.state.BlockEmailData;
@@ -389,7 +389,7 @@ class BlockEmail extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
+    
 
     var itemsArray = [];
 
@@ -599,7 +599,7 @@ class BlockEmail extends Component {
   };
 
   StatusCloseModel() {
-    debugger;
+    
     if (this.state.tempdatablockemail.length > 0) {
       this.setState({
         StatusModel: false,
@@ -659,7 +659,7 @@ class BlockEmail extends Component {
     }
   }
   StatusOpenModel(data, header) {
-    debugger;
+    
     if (
       this.state.sortFilteremailID.length === 0 ||
       this.state.sortFilterreason.length === 0 ||
@@ -761,7 +761,7 @@ class BlockEmail extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
+    
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "emailID") {
       var sortFilteremailID = matchSorter(
@@ -834,8 +834,6 @@ class BlockEmail extends Component {
         <div className="container-fluid setting-title setting-breadcrumb">
           <div className="position-relative d-inline-block">
             <Modal
-              // show={this.state.StatusModel}
-              // onHide={this.StatusCloseModel.bind(this)}
               modalId="Status-popup"
               overlayId="logout-ovrly"
               onClose={this.StatusCloseModel.bind(this)}
@@ -1131,18 +1129,8 @@ class BlockEmail extends Component {
                     {TranslationContext !== undefined
                       ? TranslationContext.label.save
                       : "SAVE"}
-                    {/* {this.state.loading ? (
-                            <FontAwesomeIcon
-                              className="circular-loader"
-                              icon={faCircleNotch}
-                              spin
-                            />
-                          ) : (
-                            ""
-                          )}
-                          {this.state.loading ? "Please Wait ..." : "SAVE"} */}
+                   
                   </button>
-                  {/* </Link> */}
                 </div>
               </div>
             </div>
@@ -1290,7 +1278,6 @@ class BlockEmail extends Component {
                         accessor: "actionReport",
                         sortable: false,
                         Cell: (row) => (
-                          // <div className="report-action">
                           <div className="settings-align-actions">
                             <Popover
                               content={

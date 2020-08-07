@@ -116,7 +116,6 @@ class SlaTemplateDepartment extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
 
@@ -150,7 +149,6 @@ class SlaTemplateDepartment extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
 
@@ -184,7 +182,6 @@ class SlaTemplateDepartment extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterIssueType.length === 0 ||
       this.state.sortFilterCreatedBy.length === 0 ||
@@ -300,8 +297,6 @@ class SlaTemplateDepartment extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sissueTpeNameFilterCheckbox = this.state.sissueTpeNameFilterCheckbox;
@@ -488,7 +483,6 @@ class SlaTemplateDepartment extends Component {
   };
 
   selectIndividualSLA = async (issueId, event) => {
-    debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
@@ -524,7 +518,6 @@ class SlaTemplateDepartment extends Component {
   };
 
   selectAboveIndividualSLA = async (issueId, event) => {
-    debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
@@ -559,7 +552,6 @@ class SlaTemplateDepartment extends Component {
   };
 
   selectAllSLA = async (event) => {
-    debugger;
     var indiSla = "";
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent = "All Selected";
@@ -580,7 +572,6 @@ class SlaTemplateDepartment extends Component {
   };
 
   selectNoSLA = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -593,7 +584,6 @@ class SlaTemplateDepartment extends Component {
     });
   };
   selectNoAboveSLA = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("searchedSla");
     for (var i in checkboxes) {
       if (checkboxes[i].checked === true) {
@@ -604,7 +594,6 @@ class SlaTemplateDepartment extends Component {
 
   ///handle edit sla targets
   handleEditSlaTargets = (i, e) => {
-    debugger;
     const { name, value } = e.target;
     let finalEditData = [...this.state.finalEditData];
     if (name === "SlaBreach" && name === "ResolveTime") {
@@ -623,7 +612,6 @@ class SlaTemplateDepartment extends Component {
   };
 
   handleSlaTargets = (i, e) => {
-    debugger;
     const { name, value } = e.target;
     if (value === "" || this.state.regexp.test(value)) {
       let finalData = [...this.state.finalData];
@@ -643,14 +631,12 @@ class SlaTemplateDepartment extends Component {
     }
   };
   handleSlaTargetsDropdowns(e) {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
   }
 
   handleGetSLAFunctionName() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -661,7 +647,6 @@ class SlaTemplateDepartment extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let slaFunctionName = res.data.responseData;
         if (slaFunctionName !== null && slaFunctionName !== undefined) {
           self.setState({ slaFunctionName });
@@ -694,7 +679,6 @@ class SlaTemplateDepartment extends Component {
 
   ////handle get SLA temlpate data for gir
   handleGetSLATemplateGrid() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -702,7 +686,6 @@ class SlaTemplateDepartment extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -785,7 +768,6 @@ class SlaTemplateDepartment extends Component {
       });
   }
   handleGetPriorityList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -793,7 +775,6 @@ class SlaTemplateDepartment extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let temp = [];
@@ -841,7 +822,6 @@ class SlaTemplateDepartment extends Component {
 
   ////get SLA data by SLA ID
   handleGetDataForEditSLAById(idSLA) {
-    debugger;
     var SLAId = idSLA || 0;
     let self = this;
     axios({
@@ -853,7 +833,6 @@ class SlaTemplateDepartment extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
@@ -897,7 +876,7 @@ class SlaTemplateDepartment extends Component {
   }
   handleCreateSlaTemplate() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     var array = this.state.finalData;
     var valid = false;
     if (array.length > 0) {
@@ -947,7 +926,6 @@ class SlaTemplateDepartment extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -986,7 +964,6 @@ class SlaTemplateDepartment extends Component {
 
   handleDeleteSLA(deleteId) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -997,7 +974,6 @@ class SlaTemplateDepartment extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
           NotificationManager.success(
@@ -1018,23 +994,6 @@ class SlaTemplateDepartment extends Component {
         console.log(data);
       });
   }
-
-  // fileUpload = (e) => {
-  //   debugger;
-  //   var allFiles = [];
-  //   var selectedFiles = e.target.files;
-  //   if (selectedFiles) {
-  //     allFiles.push(selectedFiles[0]);
-
-  //     var fileSize = formatSizeUnits(selectedFiles[0].size);
-  //     this.setState({
-  //       fileSize,
-  //       fileN: allFiles,
-  //       fileName: allFiles[0].name,
-  //       bulkuploadCompulsion: "",
-  //     });
-  //   }
-  // };
   fileUpload = (file) => {
     if (file) {
       var fileName = file[0].name;
@@ -1048,7 +1007,6 @@ class SlaTemplateDepartment extends Component {
     }
   };
   handleSearchSla = async (e) => {
-    debugger;
     if (e.target.value.length > 3) {
       await this.setState({
         SearchText: e.target.value,
@@ -1062,7 +1020,6 @@ class SlaTemplateDepartment extends Component {
     }
   };
   handleClearSearchSla = async (e) => {
-    debugger;
     await this.setState({
       SearchText: "",
     });
@@ -1086,7 +1043,7 @@ class SlaTemplateDepartment extends Component {
   ////handle update slaTemplateGrid details by id
   handleUpdareSLADetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     var inputParamter = {};
     var isActiveStatus = 0;
@@ -1121,7 +1078,6 @@ class SlaTemplateDepartment extends Component {
       data: inputParamter,
     })
       .then(function(res) {
-        debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
@@ -1153,7 +1109,6 @@ class SlaTemplateDepartment extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "functionName") {
@@ -1202,7 +1157,7 @@ class SlaTemplateDepartment extends Component {
 
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.fileN) {
       let self = this;
       this.setState({
@@ -1223,7 +1178,6 @@ class SlaTemplateDepartment extends Component {
         // },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
@@ -1254,7 +1208,6 @@ class SlaTemplateDepartment extends Component {
           }
         })
         .catch((data) => {
-          debugger;
           if (data.message) {
             this.setState({
               showProgress: false,
@@ -1276,7 +1229,7 @@ class SlaTemplateDepartment extends Component {
   }
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",

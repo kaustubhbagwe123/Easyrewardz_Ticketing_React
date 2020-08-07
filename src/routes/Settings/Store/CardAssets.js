@@ -14,7 +14,6 @@ import CancelImg from "./../../../assets/Images/cancel.png";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
 var uid = 0;
-// import InfoIcon from "../../assets/Images/info-icon.png";
 class CardAssets extends Component {
   constructor(props) {
     super(props);
@@ -56,7 +55,6 @@ class CardAssets extends Component {
       params: { ListingFor: listFor }, //// asset approve for 1 and upload log  for 2
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (listFor == 1) {
@@ -87,7 +85,7 @@ class CardAssets extends Component {
   handleApproveRejectCardImage(imageUploadLogID, itemID, status) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-    debugger;
+
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/ApproveRejectCardImage",
@@ -100,7 +98,6 @@ class CardAssets extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -148,7 +145,6 @@ class CardAssets extends Component {
       headers: authHeader(),
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {

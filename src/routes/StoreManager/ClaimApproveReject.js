@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { Collapse, CardBody, Card } from "reactstrap";
-// import TableDemo from "../TableDemo";
 import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
 import DownImg from "./../../assets/Images/down.png";
@@ -130,7 +129,6 @@ class ClaimApproveReject extends Component {
 
   ////handle assign task
   handleAssignClaim() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -142,7 +140,6 @@ class ClaimApproveReject extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success") {
@@ -212,7 +209,6 @@ class ClaimApproveReject extends Component {
       params: { ClaimID: claimId },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message == "Success" && responseData) {
@@ -280,7 +276,6 @@ class ClaimApproveReject extends Component {
   }
   ////handle add comment on claim
   handleAddStoreClaimCommentsApproveReject(isRejectComment) {
-    debugger;
     let self = this;
     if (this.state.claimComments !== "" || this.state.rejectComment !== "") {
       var comment = "";
@@ -324,7 +319,6 @@ class ClaimApproveReject extends Component {
   }
 
   handleOnChange(e) {
-    debugger;
     if (e.currentTarget.name === "finalClaimPercentage") {
       if (isNaN(e.currentTarget.value)) {
         return false;
@@ -674,7 +668,6 @@ class ClaimApproveReject extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message == "Success") {
@@ -704,7 +697,6 @@ class ClaimApproveReject extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var storeCommetData = response.data.responseData;
         if (message === "Success" && storeCommetData) {
@@ -998,12 +990,7 @@ class ClaimApproveReject extends Component {
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Category</label>
-                      {/* <input
-                        id="inputState"
-                        className="form-control dropdown-label"
-                        value={this.state.list1Value}
-                        disabled={true}
-                      /> */}
+
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -1030,12 +1017,7 @@ class ClaimApproveReject extends Component {
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Sub Category</label>
-                      {/* <input
-                        id="inputState"
-                        className="form-control dropdown-label"
-                        value={this.state.ListOfSubCate}
-                        disabled={true}
-                      /> */}
+
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -1058,12 +1040,7 @@ class ClaimApproveReject extends Component {
                     </div>
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Type</label>
-                      {/* <input
-                        id="inputState"
-                        className="form-control dropdown-label"
-                        value={this.state.ListOfIssue}
-                        disabled={true}
-                      /> */}
+
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -1374,20 +1351,14 @@ class ClaimApproveReject extends Component {
                   Header: <span>Name</span>,
                   accessor: "userName",
                 },
-                // {
-                //   Header: <span>Designation</span>,
-                //   accessor: "designation"
-                // }
               ]}
               minRows={2}
               showPagination={false}
               resizable={false}
               getTrProps={(rowInfo, column) => {
-                // ////
                 const index = column ? column.index : -1;
                 return {
                   onClick: (e) => {
-                    ////
                     this.selectedRow = index;
                     var agentId = column.original["user_ID"];
                     this.setState({ agentId });

@@ -267,7 +267,6 @@ class Module extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             {TranslationContext !== undefined
@@ -295,7 +294,6 @@ class Module extends Component {
                 <Tabs
                   onSelect={(index, label) => this.onModulesChange(label)}
                   selected={this.state.selTab}
-                  // onSelect={(index, label) => console.log(label + " selected")}
                 >
                   {this.state.modulesNames !== null &&
                     this.state.modulesNames.map((name, i) => (
@@ -346,32 +344,6 @@ class Module extends Component {
                           ))
                         )}
 
-                        {/* {this.state.modulesItemsMyticket !== null &&
-                          name.moduleID === 9 &&
-                          this.state.modulesItemsMyticket.map((item, i) => (
-                            <div className="module-switch" key={i}>
-                              <div className="switch switch-primary">
-                                <label className="moduleswitchtext">
-                                  {item.moduleItemName}
-                                </label>
-                                <input
-                                  name="moduleItems"
-                                  checked={item.moduleItemisActive}
-                                  type="checkbox"
-                                  id={"i" + item.moduleItemID}
-                                  onChange={this.checkModuleMyTicket.bind(
-                                    this,
-                                    item.moduleItemID,
-                                    name.moduleID
-                                  )}
-                                />
-                                <label
-                                  htmlFor={"i" + item.moduleItemID}
-                                  className="cr"
-                                ></label>
-                              </div>
-                            </div>
-                          ))} */}
                       </Tab>
                     ))}
                 </Tabs>

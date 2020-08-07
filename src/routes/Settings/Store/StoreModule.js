@@ -224,7 +224,7 @@ class StoreModule extends Component {
       SlotFileName: "",
       isSlotSaveClick: false,
       bulkuploadLoading: false,
-      isSlotDaysDisplay: ""
+      isSlotDaysDisplay: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -372,7 +372,7 @@ class StoreModule extends Component {
         CampaignID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -487,8 +487,6 @@ class StoreModule extends Component {
   };
 
   handleSlotInputOnchange = (e) => {
-    debugger;
-
     var reg = /^[0-9\b]+$/;
     if (e.target.value === "" || reg.test(e.target.value)) {
       if (Number(e.target.value) <= 30 && Number(e.target.value) >= 1) {
@@ -521,7 +519,6 @@ class StoreModule extends Component {
   };
 
   handleDrop_downOnchange = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     if (name === "selectStore") {
@@ -578,7 +575,7 @@ class StoreModule extends Component {
   handleEditDrop_downOnchange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    debugger;
+
     var timeSlotEdit = this.state.timeSlotEdit;
     if (name === "editSelectTimeSlot1") {
       this.setState({
@@ -634,7 +631,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetStoreAttachmentSettings",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -661,9 +658,6 @@ class StoreModule extends Component {
   EditCampaignChannel(individualData) {
     this.setState({
       editCampChannelModal: true,
-      // updateIndiCampaignId: individualData.campaignNameID,
-      // updateScriptDetails: individualData.campaignScript,
-      // updateCampaignId: individualData.campaignID,
     });
   }
 
@@ -674,7 +668,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetCampaignName",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -696,7 +690,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -791,7 +785,7 @@ class StoreModule extends Component {
         SlotID: slotId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -815,7 +809,7 @@ class StoreModule extends Component {
   /// handle Delete Language record
   handleDeleteLanguage = (row, type) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let languageGridData = [...this.state.languageGridData],
       isActive;
 
@@ -840,7 +834,7 @@ class StoreModule extends Component {
         isActive: row.isActive,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -871,8 +865,7 @@ class StoreModule extends Component {
       headers: authHeader(),
       params: { SlotID: slotID ? slotID : 0, StoreID: storeId ? storeId : 0 },
     })
-      .then(function (res) {
-        debugger;
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -899,7 +892,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetAppointmentConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -925,7 +918,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetBroadcastConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -950,7 +943,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetCampaignScript",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -1033,7 +1026,7 @@ class StoreModule extends Component {
           FileFomatID: this.state.selectedFileFormat,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1086,7 +1079,7 @@ class StoreModule extends Component {
           Status: true,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -1145,7 +1138,7 @@ class StoreModule extends Component {
           Status: true,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -1761,7 +1754,7 @@ class StoreModule extends Component {
               : "",
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1798,10 +1791,10 @@ class StoreModule extends Component {
         ViaSMS: this.state.AppointConfigData.viaSMS,
         IsMsgWithin24Hrs: this.state.AppointConfigData.isMsgWithin24Hrs,
         MessageViaWhatsApp: this.state.AppointConfigData.messageViaWhatsApp,
-        MessageViaSMS: this.state.AppointConfigData.messageViaSMS
+        MessageViaSMS: this.state.AppointConfigData.messageViaSMS,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1852,7 +1845,7 @@ class StoreModule extends Component {
           ProviderName: this.state.BroadCastConfigData.providerName,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -1875,8 +1868,8 @@ class StoreModule extends Component {
 
   /// handle insert and update slot setting
   handleInsertUpdateTimeSlotSetting(isInsert, e) {
-    debugger
-    e.preventDefault()
+    debugger;
+    e.preventDefault();
 
     const TranslationContext = this.state.translateLanguage.default;
     var self = this;
@@ -1972,9 +1965,9 @@ class StoreModule extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
-          debugger;
+
           if (status === "Success") {
             if (isInsert) {
               self.state.storeCodeData.forEach((element) => {
@@ -2027,9 +2020,9 @@ class StoreModule extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
-          debugger;
+
           if (status === "Success") {
             if (isInsert) {
               self.state.storeCodeData.forEach((element) => {
@@ -2089,7 +2082,7 @@ class StoreModule extends Component {
           languageID: parseInt(this.state.selectLanguage),
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -2136,8 +2129,7 @@ class StoreModule extends Component {
       headers: authHeader(),
       params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
     })
-      .then(function (res) {
-        debugger;
+      .then(function(res) {
         var message = res.data.message;
         var data = res.data.responseData;
         if (message === "Success") {
@@ -2184,7 +2176,7 @@ class StoreModule extends Component {
   }
   handleStoreChangeChange = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.TimeSlotGridData.length > 0) {
       var isExits = this.state.TimeSlotGridData.filter(
         (x) => x.storeId === e[e.length - 1]
@@ -2294,7 +2286,6 @@ class StoreModule extends Component {
   };
   /// handle Select Store Individual
   handleSelectStoresIndividual = async (data, event) => {
-    debugger;
     var storeCount = 0;
     var finalValue = "";
     var values = "";
@@ -2397,7 +2388,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2412,7 +2402,6 @@ class StoreModule extends Component {
   }
   //// handle Remove store from selected store
   handleRemoveSelectedStore(store_id) {
-    debugger;
     var storeCount = 0;
     var finalValue = "";
     var values = "";
@@ -2444,7 +2433,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2486,7 +2474,6 @@ class StoreModule extends Component {
         },
       })
         .then((res) => {
-          debugger;
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -2523,7 +2510,6 @@ class StoreModule extends Component {
   }
   //// handle finale automatic save data
   handleFinalSaveTemplateData(check) {
-    debugger;
     let self = this;
     var inputParam = {};
     var slot_Id = 0;
@@ -2547,18 +2533,18 @@ class StoreModule extends Component {
         manualSlotDuration === 15
           ? 0.25
           : manualSlotDuration === 30
-            ? 0.5
-            : manualSlotDuration === 45
-              ? 0.5
-              : manualSlotDuration === 60
-                ? 0.75
-                : manualSlotDuration === 1
-                  ? 1
-                  : manualSlotDuration === 1.5
-                    ? 1.5
-                    : manualSlotDuration === 2
-                      ? 2
-                      : 0;
+          ? 0.5
+          : manualSlotDuration === 45
+          ? 0.5
+          : manualSlotDuration === 60
+          ? 0.75
+          : manualSlotDuration === 1
+          ? 1
+          : manualSlotDuration === 1.5
+          ? 1.5
+          : manualSlotDuration === 2
+          ? 2
+          : 0;
 
       inputParam.SlotTemplateName = this.state.manualTempName.trim();
       inputParam.SlotTemplateType = "M";
@@ -2588,7 +2574,6 @@ class StoreModule extends Component {
       data: inputParam,
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2628,7 +2613,6 @@ class StoreModule extends Component {
 
   /// handle manual time onchange
   handleManualTimeOnchange = (time, check) => {
-    debugger;
     var manualStoreData = this.state.manualStoreData;
     if (check === "slotStartTime") {
       manualStoreData["slotStartTime"] = time;
@@ -2693,7 +2677,6 @@ class StoreModule extends Component {
   };
   /// handle Create Manualy create slot
   handleAddManualySlot() {
-    debugger;
     if (
       this.state.manualTempName !== "" &&
       this.state.manualStoreFrom !== "" &&
@@ -2845,7 +2828,6 @@ class StoreModule extends Component {
   };
 
   handleEnableDisableOnChange(i, e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     if (name === "isSlotEnabled") {
@@ -2928,7 +2910,6 @@ class StoreModule extends Component {
       params: { SlotSettingID: slotId },
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -2939,7 +2920,7 @@ class StoreModule extends Component {
             onOk() {
               self.handleDeleteTimeSlot(slotId);
             },
-            onCancel() { },
+            onCancel() {},
           });
         } else {
           self.handleDeleteTimeSlot(slotId);
@@ -2951,23 +2932,22 @@ class StoreModule extends Component {
   };
 
   handleRadioOnChange = (e) => {
-    this.state.AppointConfigData.isMsgWithin24Hrs = !this.state.AppointConfigData
-      .isMsgWithin24Hrs;
+    this.state.AppointConfigData.isMsgWithin24Hrs = !this.state
+      .AppointConfigData.isMsgWithin24Hrs;
 
     this.setState({
-      AppointConfigData: this.state.AppointConfigData
-    })
-  }
+      AppointConfigData: this.state.AppointConfigData,
+    });
+  };
 
   AppoinmentConfigTextChange(e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
 
     this.state.AppointConfigData[name] = value;
     this.setState({
-      AppointConfigData: this.state.AppointConfigData
-    })
+      AppointConfigData: this.state.AppointConfigData,
+    });
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -3082,83 +3062,83 @@ class StoreModule extends Component {
                   </div>
                   {this.state.sortColumn === "campaignName"
                     ? this.state.sortFiltercampaignName !== null &&
-                    this.state.sortFiltercampaignName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.campaignName}
-                          value={item.campaignName}
-                          checked={this.state.scampaignNameFilterCheckbox.includes(
-                            item.campaignName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "campaignName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.campaignName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.campaignName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFiltercampaignName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.campaignName}
+                            value={item.campaignName}
+                            checked={this.state.scampaignNameFilterCheckbox.includes(
+                              item.campaignName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "campaignName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.campaignName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.campaignName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFiltercreatedBy !== null &&
-                    this.state.sortFiltercreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFiltercreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "status"
                     ? this.state.sortFilteristatus !== null &&
-                    this.state.sortFilteristatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.status}
-                          value={item.status}
-                          checked={this.state.sstatusFilterCheckbox.includes(
-                            item.status
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.status}>
-                          <span className="table-btn table-blue-btn">
-                            {item.status}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilteristatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -3380,8 +3360,8 @@ class StoreModule extends Component {
                                 spin
                               />
                             ) : (
-                                ""
-                              )}
+                              ""
+                            )}
                             {TranslationContext !== undefined
                               ? TranslationContext.button.save
                               : "SAVE"}
@@ -3427,7 +3407,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
-                                          this.state.sortHeader ===
+                                        this.state.sortHeader ===
                                           "Campaign Name"
                                           ? faCaretUp
                                           : faCaretDown
@@ -3494,7 +3474,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
-                                          this.state.sortHeader === "Created by"
+                                        this.state.sortHeader === "Created by"
                                           ? faCaretUp
                                           : faCaretDown
                                       }
@@ -3569,7 +3549,7 @@ class StoreModule extends Component {
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
-                                          this.state.sortHeader === "Status"
+                                        this.state.sortHeader === "Status"
                                           ? faCaretUp
                                           : faCaretDown
                                       }
@@ -3811,8 +3791,8 @@ class StoreModule extends Component {
                                 spin
                               />
                             ) : (
-                                ""
-                              )}
+                              ""
+                            )}
                             ADD
                           </button>
                         </div>
@@ -4020,15 +4000,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .providerName === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.campProviderValidation}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.campProviderValidation}
+                                        </p>
+                                      )}
                                     </div>
                                   ) : null}
 
@@ -4112,7 +4092,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                          .maxclickallowesonanychannelcta
+                                            .maxclickallowesonanychannelcta
                                         : "Max. click allowed on any channel CTA"}
                                     </td>
                                     <td>
@@ -4131,15 +4111,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .maxClickAllowed === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.maxClickValidation}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.maxClickValidation}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       {TranslationContext !== undefined
@@ -4151,7 +4131,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                          .clickwillbeenabledafter
+                                            .clickwillbeenabledafter
                                         : "Click will be enabled after"}
                                     </td>
                                     <td>
@@ -4170,15 +4150,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .enableClickAfterValue === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.enabledAfterValidation}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       <select
@@ -4240,15 +4220,13 @@ class StoreModule extends Component {
                                 <h3>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.h3
-                                      .appointmentconfiguration
+                                        .appointmentconfiguration
                                     : "APPOINTMENT CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
-
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-
                                         Appointment Cancellation
                                       </label>
                                     </div>
@@ -4276,17 +4254,26 @@ class StoreModule extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  {this.state.AppointConfigData
-                                    .viaWhatsApp ?
-                                    (<div>
+                                  {this.state.AppointConfigData.viaWhatsApp ? (
+                                    <div>
                                       <div className="module-switch ord-m-t20">
                                         <div className="switch switch-primary">
                                           <Radio.Group
                                             onChange={this.handleRadioOnChange}
-                                            value={this.state.AppointConfigData.isMsgWithin24Hrs === true ? 1 : 2}
+                                            value={
+                                              this.state.AppointConfigData
+                                                .isMsgWithin24Hrs === true
+                                                ? 1
+                                                : 2
+                                            }
                                           >
-                                            <Radio value={1}>Check customer last received message with in 24 Hrs</Radio>
-                                            <Radio value={2}>Do not check for any time</Radio>
+                                            <Radio value={1}>
+                                              Check customer last received
+                                              message with in 24 Hrs
+                                            </Radio>
+                                            <Radio value={2}>
+                                              Do not check for any time
+                                            </Radio>
                                           </Radio.Group>
                                         </div>
                                       </div>
@@ -4294,19 +4281,22 @@ class StoreModule extends Component {
                                         <div className="switch switch-primary">
                                           <label className="storeRole-name-text m-0 ordSttd-store">
                                             Message via Whatsapp
-                                      </label>
+                                          </label>
                                           <textarea
                                             className="appoint-txtarea"
                                             name="messageViaWhatsApp"
-                                            value={this.state.AppointConfigData.messageViaWhatsApp}
+                                            value={
+                                              this.state.AppointConfigData
+                                                .messageViaWhatsApp
+                                            }
                                             onChange={this.AppoinmentConfigTextChange.bind(
                                               this
                                             )}
-                                          >
-                                          </textarea>
+                                          ></textarea>
                                         </div>
                                       </div>
-                                    </div>) : null}
+                                    </div>
+                                  ) : null}
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
@@ -4334,16 +4324,18 @@ class StoreModule extends Component {
                                       <div className="switch switch-primary">
                                         <label className="storeRole-name-text m-0 ordSttd-store">
                                           Message via SMS
-                                      </label>
+                                        </label>
                                         <textarea
                                           className="appoint-txtarea"
                                           name="messageViaSMS"
-                                          value={this.state.AppointConfigData.messageViaSMS}
+                                          value={
+                                            this.state.AppointConfigData
+                                              .messageViaSMS
+                                          }
                                           onChange={this.AppoinmentConfigTextChange.bind(
                                             this
                                           )}
-                                        >
-                                        </textarea>
+                                        ></textarea>
                                       </div>
                                     </div>
                                   ) : null}
@@ -4383,7 +4375,7 @@ class StoreModule extends Component {
                                 <h3>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.h3
-                                      .broadcastconfiguration
+                                        .broadcastconfiguration
                                     : "BROADCAST CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
@@ -4419,7 +4411,7 @@ class StoreModule extends Component {
                                           placeholder={
                                             TranslationContext !== undefined
                                               ? TranslationContext.placeholder
-                                                .providername
+                                                  .providername
                                               : "Provider name"
                                           }
                                           maxLength={15}
@@ -4433,15 +4425,15 @@ class StoreModule extends Component {
                                         />
                                         {this.state.BroadCastConfigData
                                           .providerName === "" && (
-                                            <p
-                                              style={{
-                                                color: "red",
-                                                marginBottom: "0px",
-                                              }}
-                                            >
-                                              {this.state.broadProviderValidation}
-                                            </p>
-                                          )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.broadProviderValidation}
+                                          </p>
+                                        )}
                                       </div>
                                     ) : null}
                                   </div>
@@ -4501,7 +4493,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                          .maxclickallowesonanychannelcta
+                                            .maxclickallowesonanychannelcta
                                         : "Max. click allowed on any channel CTA"}
                                     </td>
                                     <td>
@@ -4520,15 +4512,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.BroadCastConfigData
                                         .maxClickAllowed === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.braodCastMaxClickValid}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.braodCastMaxClickValid}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       {TranslationContext !== undefined
@@ -4540,7 +4532,7 @@ class StoreModule extends Component {
                                     <td>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.td
-                                          .clickwillbeenabledafter
+                                            .clickwillbeenabledafter
                                         : "Click will be enabled after"}
                                     </td>
                                     <td>
@@ -4559,18 +4551,18 @@ class StoreModule extends Component {
                                       />
                                       {this.state.BroadCastConfigData
                                         .enableClickAfterValue === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {
-                                              this.state
-                                                .broadCastEnabledAfterValid
-                                            }
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {
+                                            this.state
+                                              .broadCastEnabledAfterValid
+                                          }
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       <select
@@ -4675,7 +4667,7 @@ class StoreModule extends Component {
                                             <label>
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.label
-                                                  .choosestore
+                                                    .choosestore
                                                 : "Choose Store"}
                                             </label>
                                             <div
@@ -4691,7 +4683,7 @@ class StoreModule extends Component {
                                                 value={
                                                   this.state.showApplyStoreData
                                                     ? this.state
-                                                      .selectedStoreValues
+                                                        .selectedStoreValues
                                                     : ""
                                                 }
                                               />
@@ -4713,9 +4705,9 @@ class StoreModule extends Component {
                                                 {this.state.shoreSelectedCount}
                                                 &nbsp;{" "}
                                                 {TranslationContext !==
-                                                  undefined
+                                                undefined
                                                   ? TranslationContext.a
-                                                    .storeselected
+                                                      .storeselected
                                                   : "Store Selected"}{" "}
                                                 {">"}
                                               </a>
@@ -4736,7 +4728,7 @@ class StoreModule extends Component {
                                             <label>
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.label
-                                                  .operationaldays
+                                                    .operationaldays
                                                 : "Operational Days"}
                                             </label>
 
@@ -4775,7 +4767,7 @@ class StoreModule extends Component {
                                             <label>
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.label
-                                                  .selectslottemplete
+                                                    .selectslottemplete
                                                 : "Select Slot Template"}
                                             </label>
                                             <select
@@ -4812,7 +4804,7 @@ class StoreModule extends Component {
                                               +
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.a
-                                                  .createnewtemplate
+                                                    .createnewtemplate
                                                 : "Create New Template"}
                                             </a>
                                             {this.state.isSlotTemplete ? (
@@ -4871,7 +4863,6 @@ class StoreModule extends Component {
                                                   title: "Slot Occupancy",
                                                   dataIndex: "slotOccupancy",
                                                   render: (row, rowData) => {
-                                                    debugger;
                                                     return (
                                                       <>
                                                         <input
@@ -4934,9 +4925,9 @@ class StoreModule extends Component {
                                             <li>
                                               <label>
                                                 {TranslationContext !==
-                                                  undefined
+                                                undefined
                                                   ? TranslationContext.label
-                                                    .slotdaysneedtodisplay
+                                                      .slotdaysneedtodisplay
                                                   : "Slot days need to display"}
                                               </label>
                                               <select
@@ -4984,9 +4975,9 @@ class StoreModule extends Component {
                                             <li>
                                               <label>
                                                 {TranslationContext !==
-                                                  undefined
+                                                undefined
                                                   ? TranslationContext.label
-                                                    .applicablefromdate
+                                                      .applicablefromdate
                                                   : "Applicable From (Date)"}
                                               </label>
                                               <div className="applicateDiv">
@@ -5008,9 +4999,9 @@ class StoreModule extends Component {
                                             <li>
                                               <label>
                                                 {TranslationContext !==
-                                                  undefined
+                                                undefined
                                                   ? TranslationContext.label
-                                                    .maxpeopleallowed
+                                                      .maxpeopleallowed
                                                   : "Max People allowed in one Appointment"}
                                               </label>
                                               <select
@@ -5114,9 +5105,9 @@ class StoreModule extends Component {
                                                   }}
                                                 >
                                                   {TranslationContext !==
-                                                    undefined
+                                                  undefined
                                                     ? TranslationContext.label
-                                                      .status
+                                                        .status
                                                     : "Status"}
                                                 </label>
 
@@ -5163,7 +5154,7 @@ class StoreModule extends Component {
                                             >
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.button
-                                                  .delete
+                                                    .delete
                                                 : "Save"}
                                             </button>
                                           </div>
@@ -5193,44 +5184,44 @@ class StoreModule extends Component {
                                               getRootProps,
                                               getInputProps,
                                             }) => (
-                                                <>
-                                                  <div {...getRootProps()}>
-                                                    <input
-                                                      {...getInputProps()}
-                                                      className="file-upload d-none"
-                                                    />
-                                                    <img
-                                                      src={FileUpload}
-                                                      alt="file-upload"
-                                                    />
-                                                    <span
-                                                      className={
-                                                        "fileupload-span"
-                                                      }
-                                                    >
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
+                                              <>
+                                                <div {...getRootProps()}>
+                                                  <input
+                                                    {...getInputProps()}
+                                                    className="file-upload d-none"
+                                                  />
+                                                  <img
+                                                    src={FileUpload}
+                                                    alt="file-upload"
+                                                  />
+                                                  <span
+                                                    className={
+                                                      "fileupload-span"
+                                                    }
+                                                  >
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
                                                           .addfile
-                                                        : "Add File"}
-                                                    </span>
-                                                    {TranslationContext !==
-                                                      undefined
-                                                      ? TranslationContext.div.or
-                                                      : "or"}
-                                                    {TranslationContext !==
-                                                      undefined
-                                                      ? TranslationContext.div
+                                                      : "Add File"}
+                                                  </span>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.div.or
+                                                    : "or"}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.div
                                                         .dropfilehere
-                                                      : "Drop File here"}
-                                                  </div>
-                                                  <div>
-                                                    <p>
-                                                      {this.state.SlotFileName}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              )}
+                                                    : "Drop File here"}
+                                                </div>
+                                                <div>
+                                                  <p>
+                                                    {this.state.SlotFileName}
+                                                  </p>
+                                                </div>
+                                              </>
+                                            )}
                                           </Dropzone>
                                         </div>
                                       </Spin>
@@ -5238,7 +5229,7 @@ class StoreModule extends Component {
                                         <p>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.p
-                                              .sampletemplate
+                                                .sampletemplate
                                             : "Sample Template"}
                                         </p>
                                         <CSVLink
@@ -5298,9 +5289,9 @@ class StoreModule extends Component {
                                                   <div className="col-12">
                                                     <h3>
                                                       {TranslationContext !==
-                                                        undefined
+                                                      undefined
                                                         ? TranslationContext.h3
-                                                          .operationaldays
+                                                            .operationaldays
                                                         : "Operational Days"}
                                                     </h3>
                                                     <ul>
@@ -5360,9 +5351,9 @@ class StoreModule extends Component {
                                                   <div className="col-12">
                                                     <h3>
                                                       {TranslationContext !==
-                                                        undefined
+                                                      undefined
                                                         ? TranslationContext.h3
-                                                          .appointmentdays
+                                                            .appointmentdays
                                                         : "Appointment Days"}
                                                     </h3>
                                                     <div className="">
@@ -5414,7 +5405,7 @@ class StoreModule extends Component {
                                                               return (
                                                                 <>
                                                                   {rowData.isSlotEnabled ===
-                                                                    true
+                                                                  true
                                                                     ? "Unable"
                                                                     : "Disable"}
                                                                 </>
@@ -5448,7 +5439,7 @@ class StoreModule extends Component {
                                     title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.header
-                                          .appointmentdays
+                                            .appointmentdays
                                         : "Appointment Days",
                                     dataIndex: "appointmentDays",
                                   },
@@ -5496,26 +5487,26 @@ class StoreModule extends Component {
                                                   <div>
                                                     <p className="font-weight-bold blak-clr">
                                                       {TranslationContext !==
-                                                        undefined
+                                                      undefined
                                                         ? TranslationContext.p
-                                                          .deletefile
+                                                            .deletefile
                                                         : "Delete file"}
                                                       ?
                                                     </p>
                                                     <p className="mt-1 fs-12">
                                                       {TranslationContext !==
-                                                        undefined
+                                                      undefined
                                                         ? TranslationContext.p
-                                                          .areyousureyouwanttodeletethisfile
+                                                            .areyousureyouwanttodeletethisfile
                                                         : "Are you sure you want to delete this file"}
                                                       ?
                                                     </p>
                                                     <div className="del-can">
                                                       <a href={Demo.BLANK_LINK}>
                                                         {TranslationContext !==
-                                                          undefined
+                                                        undefined
                                                           ? TranslationContext.a
-                                                            .cancel
+                                                              .cancel
                                                           : "CANCEL"}
                                                       </a>
                                                       <button
@@ -5526,9 +5517,9 @@ class StoreModule extends Component {
                                                         )}
                                                       >
                                                         {TranslationContext !==
-                                                          undefined
+                                                        undefined
                                                           ? TranslationContext
-                                                            .button.delete
+                                                              .button.delete
                                                           : "Delete"}
                                                       </button>
                                                     </div>
@@ -5598,7 +5589,7 @@ class StoreModule extends Component {
                                       <option value={0}>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.option
-                                            .selectlanguage
+                                              .selectlanguage
                                           : "Select Language"}
                                       </option>
                                       {this.state.languageData !== null &&
@@ -5616,15 +5607,15 @@ class StoreModule extends Component {
                                     </select>
                                     {parseInt(this.state.selectLanguage) ===
                                       0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.languageValidation}
-                                        </p>
-                                      )}
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.languageValidation}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <button
@@ -5995,7 +5986,7 @@ class StoreModule extends Component {
                     // name="selectedMaxAttachSize"
                     value={this.state.updateIndiCampaignId}
                     disabled
-                  // onChange={this.setClaimTabData}
+                    // onChange={this.setClaimTabData}
                   >
                     <option value={0}>Select</option>
                     {this.state.campaignName !== null &&
@@ -6048,8 +6039,8 @@ class StoreModule extends Component {
                         spin
                       />
                     ) : (
-                        ""
-                      )}
+                      ""
+                    )}
                     {TranslationContext !== undefined
                       ? TranslationContext.button.save
                       : "SAVE"}
@@ -6506,11 +6497,11 @@ class StoreModule extends Component {
                         onChange={(time) =>
                           this.handleSelectAutomaticStoreToDate(time)
                         }
-                      // onChange={(time) =>
-                      //   this.setState({
-                      //     autoStoreTo: time,
-                      //   })
-                      // }
+                        // onChange={(time) =>
+                        //   this.setState({
+                        //     autoStoreTo: time,
+                        //   })
+                        // }
                       />
                       {this.state.autoStoreTo === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>

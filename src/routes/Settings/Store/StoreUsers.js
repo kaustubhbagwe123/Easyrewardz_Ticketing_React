@@ -218,23 +218,7 @@ class StoreUsers extends Component {
       this.state.translateLanguage = {};
     }
   }
-
-  // fileUpload = e => {
-  //   this.setState({ fileName: e.target.files[0].name });
-  // };
-  // fileDrop = e => {
-  //   this.setState({ fileName: e.dataTransfer.files[0].name });
-  //   e.preventDefault();
-  // };
-  // fileDragOver = e => {
-  //   e.preventDefault();
-  // };
-  // fileDragEnter = e => {
-  //   e.preventDefault();
-  // };
-
   fileUpload = (file) => {
-    debugger;
     if (file) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
@@ -249,7 +233,7 @@ class StoreUsers extends Component {
 
   DeleteBulkUploadFile = () => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       file: {},
       fileName: "",
@@ -346,7 +330,6 @@ class StoreUsers extends Component {
 
   /// drop down on change
   handleBrandAndStoreChange = (e) => {
-    debugger;
     let value = e.target.value;
     let name = e.target.name;
     if (name === "brandName") {
@@ -388,7 +371,6 @@ class StoreUsers extends Component {
   };
   /// handle onchange for drop down
   handleDropDownOnChange = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     if (name === "selectDesignation") {
@@ -428,7 +410,6 @@ class StoreUsers extends Component {
   };
   /// Onchange for Mobile no
   hanldeMobileNoChange = (e) => {
-    debugger;
     var name = e.target.name;
     var reg = /^[0-9\b]+$/;
     if (name === "mobile_no") {
@@ -450,7 +431,6 @@ class StoreUsers extends Component {
   };
   /// Onchange function
   handleOnChangeUserData = (e) => {
-    debugger;
     var name = e.target.name;
     this.setState({
       [e.target.name]: e.target.value,
@@ -474,7 +454,6 @@ class StoreUsers extends Component {
   };
   /// handle Function Onchange for drop down
   handleFunctionOnChange(e) {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectedFunction: e });
@@ -559,7 +538,6 @@ class StoreUsers extends Component {
   }
 
   handleEditOnchange = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var userEdit = this.state.userEdit;
@@ -627,7 +605,6 @@ class StoreUsers extends Component {
   };
   ////handle edit department dropdown onchange
   handleEditDepartmentOnchange(data, e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var userEdit = this.state.userEdit;
@@ -646,7 +623,6 @@ class StoreUsers extends Component {
   }
   ///handle edit User desiagnation onchage
   handleEditUserDesignationChange(data, e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var userEdit = this.state.userEdit;
@@ -668,7 +644,6 @@ class StoreUsers extends Component {
   }
   ///hanlde edit Report designation onchange
   handleEditReporteeDesigOnChange(data, e) {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var userEdit = this.state.userEdit;
@@ -698,7 +673,6 @@ class StoreUsers extends Component {
   };
   /// hanlde edit Multi select Brand onchange
   handleMultiEditBrandonChange(e) {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({
@@ -731,7 +705,6 @@ class StoreUsers extends Component {
   }
   /// hanlde edit Multi select Category onchange
   handleMultiEditCategoryonChange(e) {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({
@@ -761,7 +734,6 @@ class StoreUsers extends Component {
 
   /// hanlde edit Multi select sub Category onchange
   handleMultiEditSubCategoryonChange(e) {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({
@@ -785,7 +757,6 @@ class StoreUsers extends Component {
 
   /// hanlde edit Multi select issuetype onchange
   handleMultiEditIssueTypeonChange(e) {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({
@@ -799,7 +770,6 @@ class StoreUsers extends Component {
 
   ////handle edit Function on change
   handleEditFunctionOnChange(e) {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ editFuncation: e });
@@ -808,7 +778,6 @@ class StoreUsers extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.StoreUserData;
 
@@ -873,7 +842,6 @@ class StoreUsers extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.StoreUserData;
 
@@ -938,8 +906,6 @@ class StoreUsers extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
     if (
       this.state.sortFilterbrandName.length === 0 ||
       this.state.sortFilteritemCode.length === 0 ||
@@ -1259,10 +1225,7 @@ class StoreUsers extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var sitemCodeFilterCheckbox = this.state.sitemCodeFilterCheckbox;
     var suserNameFilterCheckbox = this.state.suserNameFilterCheckbox;
@@ -1670,7 +1633,6 @@ class StoreUsers extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "storeCode") {
@@ -1783,7 +1745,6 @@ class StoreUsers extends Component {
     }
   }
   EditStoreUserData = (data) => {
-    debugger;
     var userEdit = {};
     var funcation = [];
     var brand = [];
@@ -1909,7 +1870,6 @@ class StoreUsers extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2104,7 +2064,6 @@ class StoreUsers extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2126,7 +2085,6 @@ class StoreUsers extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2142,7 +2100,6 @@ class StoreUsers extends Component {
 
   /// handle Get Department Data by Brand and store id  for dropdown list
   handleGetDepartmentData(brand_id, store_id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2154,7 +2111,6 @@ class StoreUsers extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2169,7 +2125,6 @@ class StoreUsers extends Component {
   }
   /// handle Get Function data by department id for drop down list
   handleGetFunctionData(check) {
-    debugger;
     var department_id = 0;
     if (check === "edit") {
       department_id = this.state.userEdit.departmentID;
@@ -2186,7 +2141,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2209,7 +2163,6 @@ class StoreUsers extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2224,7 +2177,6 @@ class StoreUsers extends Component {
   }
   /// handle get Repotee designation by Designation id for dropdown
   handleGetRepoteeDesignationData(check) {
-    debugger;
     var designation_id = 0;
     if (check === "edit") {
       designation_id = this.state.userEdit.designationID;
@@ -2241,7 +2193,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2256,7 +2207,6 @@ class StoreUsers extends Component {
   }
   /// handle get Report to data by designation id and isStoreUser for dropdown list
   handleGetReportToData(check) {
-    debugger;
     let self = this;
     var designation_id = 0;
     if (check === "edit") {
@@ -2274,7 +2224,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2289,7 +2238,6 @@ class StoreUsers extends Component {
   }
   //// handle get Claim category data by BrandIds for dropdown
   handleGetClaimCategoryData(check) {
-    debugger;
     let self = this;
     let finalBrandIds = "";
     if (check === "edit") {
@@ -2315,7 +2263,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2330,7 +2277,6 @@ class StoreUsers extends Component {
   }
   //// handle get claim Sub category data for dropdown
   handleGetClaimSubCategoryData(check) {
-    debugger;
     let self = this;
     let finalCategoryIds = "";
     if (check == "edit") {
@@ -2357,7 +2303,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2372,7 +2317,6 @@ class StoreUsers extends Component {
   }
   /// handle get claim Issue Type data for dropdown
   handleGetClaimIssueType(check) {
-    debugger;
     let self = this;
     let finalSubCategoryIds = "";
     if (check == "edit") {
@@ -2400,7 +2344,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2422,7 +2365,6 @@ class StoreUsers extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2449,7 +2391,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreUserGridData();
@@ -2476,7 +2417,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2493,7 +2433,7 @@ class StoreUsers extends Component {
   //// handle Save Store Details
   handleSaveStoreDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
       let self = this;
       axios({
@@ -2506,7 +2446,6 @@ class StoreUsers extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -2542,7 +2481,7 @@ class StoreUsers extends Component {
   //// handle Update Store details
   handleUpdateStoreDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
       let self = this;
       axios({
@@ -2556,7 +2495,6 @@ class StoreUsers extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
@@ -2590,7 +2528,7 @@ class StoreUsers extends Component {
   //// handle Save Personal Details
   handleSavePersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.userName.length > 0 &&
@@ -2615,7 +2553,6 @@ class StoreUsers extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
@@ -2655,7 +2592,7 @@ class StoreUsers extends Component {
   //// update Personal details
   handleUpdatePersonalDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.userName.length > 0 &&
@@ -2680,7 +2617,6 @@ class StoreUsers extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
@@ -2718,7 +2654,7 @@ class StoreUsers extends Component {
   //// handle save profile details
   handleSaveProfileDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.selectDepartment > 0 &&
@@ -2752,7 +2688,6 @@ class StoreUsers extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
@@ -2789,7 +2724,7 @@ class StoreUsers extends Component {
   /// handle update Profile details
   handleUpdateProfileDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.selectDepartment > 0 &&
@@ -2819,7 +2754,6 @@ class StoreUsers extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success(
@@ -2854,7 +2788,7 @@ class StoreUsers extends Component {
   //// final save User data
   handleFinalSaveUserData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectedClaimBrand.length > 0 &&
       this.state.selectedClaimCategory.length > 0 &&
@@ -2925,7 +2859,6 @@ class StoreUsers extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
@@ -3002,7 +2935,7 @@ class StoreUsers extends Component {
   }
   handleSendMail(user_Id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
     var _token = window.localStorage.getItem("token");
     axios({
@@ -3020,7 +2953,6 @@ class StoreUsers extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
           NotificationManager.success(
@@ -3042,7 +2974,6 @@ class StoreUsers extends Component {
   }
   //// hanlde check Edit Store details
   HandlecheckStoreDetails() {
-    debugger;
     if (this.state.userEdit.brandID > 0 && this.state.userEdit.storeID > 0) {
       this.setState({
         selTab: "Personal Details",
@@ -3056,7 +2987,6 @@ class StoreUsers extends Component {
   }
   /// handle Check edit personal details
   handleCheckPersonalDetails() {
-    debugger;
     if (
       this.state.userEdit.userName.length > 0 &&
       this.state.userEdit.mobileNo.length > 0 &&
@@ -3076,7 +3006,7 @@ class StoreUsers extends Component {
   ////handle update user
   handleUpdateUser() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     var inputParam = {};
     if (
       /// -----------Store Detail Validation-------------------
@@ -3220,7 +3150,6 @@ class StoreUsers extends Component {
   }
 
   handleChangeProfileTab() {
-    debugger;
     if (this.state.userEdit.departmentID > 0) {
       this.setState({ EditDepartmentCompulsory: "" });
     } else {

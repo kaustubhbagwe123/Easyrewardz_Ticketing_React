@@ -14,10 +14,7 @@ import { authHeader } from "./../../../helpers/authHeader";
 import activeStatus from "./../../activeStatus";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import Modal from "react-bootstrap/Modal";
 import { DndProvider, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -71,19 +68,10 @@ const rowTarget = {
   drop(props, monitor) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
-
-    // Don't replace items with themselves
     if (dragIndex === hoverIndex) {
       return;
     }
-
-    // Time to actually perform the action
     props.moveRow(dragIndex, hoverIndex);
-
-    // Note: we're mutating the monitor item here!
-    // Generally it's better to avoid mutations,
-    // but it's good here for the sake of performance
-    // to avoid expensive index searches.
     monitor.getItem().index = hoverIndex;
   },
 };
@@ -1477,14 +1465,10 @@ class CreatePriority extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
-                    {/* {this.state.sortFilterName.length > 0 &&
-                    this.state.sortFilterCreatedBy.length > 0 &&
-                    this.state.sortFilterCreatedDate.length > 0 &&
-                    this.state.sortFilterStatus.length > 0 ? ( */}
+
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
                     </label>
-                    {/* ) : null} */}
                   </div>
                   {this.state.sortColumn === "priortyName"
                     ? this.state.sortFilterName !== null &&
@@ -1614,9 +1598,6 @@ class CreatePriority extends Component {
           <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
-                {/* {this.state.loading === true ? (
-                  <div className="loader-icon"></div>
-                ) : ( */}
                 <div className="table-cntr table-height table-priority setting-table-des-antd settings-align">
                   <DndProvider backend={HTML5Backend}>
                     <Table
@@ -1624,7 +1605,6 @@ class CreatePriority extends Component {
                         (this.state.dragIndex >= 0 && "dragging-container") ||
                         ""
                       }
-                      // columns={this.state.columns}
                       columns={[
                         {
                           key: "data",

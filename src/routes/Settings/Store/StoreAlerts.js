@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { Popover } from "antd";
-// import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
-// import "react-table/react-table.css";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
@@ -163,7 +161,6 @@ class Alerts extends Component {
     this.handleAlertData = this.handleAlertData.bind(this);
     this.handleUpdateAlert = this.handleUpdateAlert.bind(this);
     this.handleEditModal = this.handleEditModal.bind(this);
-    // this.handleAlertTabs = this.handleAlertTabs.bind(this);
     this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
   }
 
@@ -185,14 +182,13 @@ class Alerts extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Template/GetMailParameter",
+      url: config.apiUrl + "/Alert/GetMailParameter",
       headers: authHeader(),
       params: {
-        AlertID: alertId,
+        alertID: alertId,
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -212,7 +208,6 @@ class Alerts extends Component {
       });
   }
   setPlaceholderValue(type, e) {
-    debugger;
     let matchedArr = this.state.placeholderData.filter(
       (x) => x.mailParameterID == e.currentTarget.value
     );
@@ -252,10 +247,6 @@ class Alerts extends Component {
         this.state.ckCusrsorPositionCustomer,
         ckDataArrLast.length
       );
-      // let ckDataArrLast = ckDataArr.pop();
-      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      // ck += placeholderName;
       ckDataArrLast = textBefore + " " + placeholderName + textAfter;
       let newCkCusrsorPosition =
         this.state.ckCusrsorPositionCustomer + placeholderName.length + 1;
@@ -264,9 +255,7 @@ class Alerts extends Component {
         ckCusrsorDataCustomer: ckDataArrLast,
       });
       if (ckTags) {
-        // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-        // ckDataArr.push(ckFinal);
         ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
@@ -310,10 +299,6 @@ class Alerts extends Component {
         this.state.ckCusrsorPositionInternal,
         ckDataArrLast.length
       );
-      // let ckDataArrLast = ckDataArr.pop();
-      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      // ck += placeholderName;
       ckDataArrLast = textBefore + " " + placeholderName + textAfter;
       let newCkCusrsorPosition =
         this.state.ckCusrsorPositionInternal + placeholderName.length + 1;
@@ -322,9 +307,7 @@ class Alerts extends Component {
         ckCusrsorDataInternal: ckDataArrLast,
       });
       if (ckTags) {
-        // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-        // ckDataArr.push(ckFinal);
         ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
@@ -366,10 +349,6 @@ class Alerts extends Component {
         this.state.ckCusrsorPositionStore,
         ckDataArrLast.length
       );
-      // let ckDataArrLast = ckDataArr.pop();
-      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      // ck += placeholderName;
       ckDataArrLast = textBefore + " " + placeholderName + textAfter;
       let newCkCusrsorPosition =
         this.state.ckCusrsorPositionStore + placeholderName.length + 1;
@@ -378,9 +357,7 @@ class Alerts extends Component {
         ckCusrsorDataStore: ckDataArrLast,
       });
       if (ckTags) {
-        // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-        // ckDataArr.push(ckFinal);
         ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
@@ -390,8 +367,6 @@ class Alerts extends Component {
         this.setState({ selectedCKStore: ckDataArrLast });
       }
     } else if (type == "Notification") {
-      // let startPoint = document.getElementById("notifiPlaceholder").selectionStart;
-      // let textLength = document.getElementById("notifiPlaceholder").value.length;
       let textBefore = this.state.selectedNotifContent.substring(
         0,
         this.state.notiCurPosi
@@ -400,19 +375,15 @@ class Alerts extends Component {
         this.state.notiCurPosi,
         this.state.notiCount
       );
-      // let ckData = this.state.selectedNotifContent;
-      // ckData += placeholderName;
       let ckData = textBefore + " " + placeholderName + textAfter;
       let notiCurPosi = textBefore.length + placeholderName.length + 1;
       let notiCount =
         textBefore.length + placeholderName.length + 1 + textAfter.length;
-      // document.getElementById("notifiPlaceholder").setSelectionRange(abc,abc);
       this.setState({ selectedNotifContent: ckData, notiCurPosi, notiCount });
     }
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.alert;
 
@@ -448,7 +419,6 @@ class Alerts extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.alert;
 
@@ -486,9 +456,6 @@ class Alerts extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterAlertType.length === 0 ||
       this.state.sortFilterCreatedBy.length === 0 ||
@@ -558,7 +525,6 @@ class Alerts extends Component {
     }
   }
   onCkBlurCustomer = (evt) => {
-    debugger;
     var ckCusrsorPositionCustomer = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataCustomer = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -571,7 +537,6 @@ class Alerts extends Component {
     });
   };
   onCkBlurInternal = (evt) => {
-    debugger;
     var ckCusrsorPositionInternal = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataInternal = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -584,7 +549,6 @@ class Alerts extends Component {
     });
   };
   onCkBlurStore = (evt) => {
-    debugger;
     var ckCusrsorPositionStore = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataStore = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -641,10 +605,7 @@ class Alerts extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
     var salertTypeNameFilterCheckbox = this.state.salertTypeNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var sisAlertActiveFilterCheckbox = this.state.sisAlertActiveFilterCheckbox;
@@ -842,20 +803,16 @@ class Alerts extends Component {
   };
 
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
-    debugger;
-
     this.state.updateAlertTypeName = alertTypeName;
     this.state.updateAlertisActive = isAlertActive;
     this.state.rowData = rowData;
   };
   setNotiCurPosi = (e) => {
-    debugger;
     this.setState({
       notiCurPosi: e.target.selectionStart,
     });
   };
   setDataOnChangeAlert = (e) => {
-    debugger;
     if (e.target.name == "selectedAlertType") {
       if (e.target.value !== "0") {
         this.setState({
@@ -864,8 +821,6 @@ class Alerts extends Component {
         });
         this.handlePlaceholderList(e.target.value);
         let self = this;
-
-        // validate whether alert exists or not
         axios({
           method: "post",
           url: config.apiUrl + "/Alert/ValidateStoreAlertNameExist",
@@ -910,21 +865,18 @@ class Alerts extends Component {
   };
 
   setCKEditorCustomer = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKCustomer: newContent,
     });
   };
   setCKEditorInternal = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKInternal: newContent,
     });
   };
   setCKEditorStore = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKStore: newContent,
@@ -933,16 +885,13 @@ class Alerts extends Component {
 
   // alert type dropdown list
   handleAlertData() {
-    debugger;
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/BindStoreAlerts",
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         var msg = res.data.message;
         if (msg === "Success") {
@@ -961,7 +910,6 @@ class Alerts extends Component {
   }
 
   handleAlertTabs(createVal, e) {
-    debugger;
     let check = e.target.checked;
     let val = e.target.value;
     if (check === true) {
@@ -1083,7 +1031,6 @@ class Alerts extends Component {
   }
 
   handleGetAlert(id) {
-    debugger;
     var alertId = 0;
     if (id) {
       alertId = id;
@@ -1091,10 +1038,8 @@ class Alerts extends Component {
       alertId = 0;
     }
     this.handlePlaceholderList(alertId);
-    debugger;
-    let self = this;
 
-    // alert grid data
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/GetStoreAlertList",
@@ -1102,7 +1047,6 @@ class Alerts extends Component {
       params: { alertId: alertId },
     })
       .then(function(res) {
-        debugger;
         let alert = res.data.responseData;
         var data = res.data.responseData;
         if (id) {
@@ -1253,7 +1197,7 @@ class Alerts extends Component {
   // delete alert
   deleteAlert(deleteId) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -1264,7 +1208,6 @@ class Alerts extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1287,7 +1230,7 @@ class Alerts extends Component {
   }
   handleUpdateAlert() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.alertEdit.selectedAlertType) {
       let AlertisActive;
       if (this.state.alertEdit.alertIsActive === "Active") {
@@ -1462,7 +1405,6 @@ class Alerts extends Component {
             },
           })
             .then((res) => {
-              debugger;
               let status = res.data.message;
               if (status === "Success") {
                 NotificationManager.success(
@@ -1524,12 +1466,10 @@ class Alerts extends Component {
   }
 
   updateAlert(individualData) {
-    debugger;
     this.handleGetAlert(individualData.alertID || 0);
   }
 
   handleUpdateAlertTypeName(e) {
-    debugger;
     this.setState({
       updateAlertTypeName: e.target.value,
     });
@@ -1552,7 +1492,6 @@ class Alerts extends Component {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
-    debugger;
     if (
       this.state.selectedAlertType > 0 &&
       this.state.selectedStatus !== "" &&
@@ -1574,7 +1513,6 @@ class Alerts extends Component {
     }
   }
   handleAddAlertTabsClose() {
-    debugger;
     this.setState({
       AddAlertTabsPopup: false,
       subjectCustomerCompulsion: "",
@@ -1624,13 +1562,11 @@ class Alerts extends Component {
     });
   }
   handleTabChange(index) {
-    debugger;
     this.setState({
       tabIndex: index,
     });
   }
   validationInsertAlert() {
-    debugger;
     var checkboxvalue = [];
     var validation = [];
     if (this.state.selectedEmailCustomer === true) {
@@ -1704,7 +1640,6 @@ class Alerts extends Component {
   }
   handleInsertAlert() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
 
     let self = this;
     var setstatus = false;
@@ -1794,7 +1729,6 @@ class Alerts extends Component {
       data: json,
     })
       .then(function(res) {
-        debugger;
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -1859,12 +1793,10 @@ class Alerts extends Component {
       });
   }
   handleEditModal() {
-    debugger;
     this.setState({ editModal: false, isEdit: false });
   }
 
   editAlertModalData(e) {
-    debugger;
     const { name, value } = e.target;
 
     var data = this.state.alertEdit;
@@ -1889,7 +1821,6 @@ class Alerts extends Component {
     }
   }
   handleOpenAdd() {
-    debugger;
     if (this.state.alertEdit.AlertTypeName == "Select Alert") {
       this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
     } else if (
@@ -1947,7 +1878,6 @@ class Alerts extends Component {
 
   ///handle get agent list
   handleGetAgentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1955,7 +1885,6 @@ class Alerts extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1976,7 +1905,6 @@ class Alerts extends Component {
 
   ///handle on change
   setAssignedToValue(type, e) {
-    debugger;
     if (type === "Customer") {
       let ckData = this.state.selectedCKCustomer;
       let matchedArr = this.state.AssignToData.filter(
@@ -2006,7 +1934,6 @@ class Alerts extends Component {
     }
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "alertTypeName") {
@@ -2054,7 +1981,7 @@ class Alerts extends Component {
   }
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
 
@@ -2073,7 +2000,6 @@ class Alerts extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -2098,7 +2024,6 @@ class Alerts extends Component {
           }
         })
         .catch((data) => {
-          debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
           }
@@ -2115,7 +2040,7 @@ class Alerts extends Component {
   }
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",
@@ -2637,45 +2562,6 @@ class Alerts extends Component {
                     showPagination={true}
                     minRows={1}
                   />
-                  {/* 
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -3060,7 +2946,36 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Customer"
+                                      )}
+                                    >
+                                      <option value="0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .placeholders
+                                          : "Placeholders"}
+                                      </option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -3128,6 +3043,36 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Internal"
+                                      )}
+                                    >
+                                      <option value="0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .placeholders
+                                          : "Placeholders"}
+                                      </option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
@@ -3193,7 +3138,36 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-
+                                {this.state.placeholderShown && (
+                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
+                                    <select
+                                      className="add-select-category"
+                                      value="0"
+                                      onChange={this.setPlaceholderValue.bind(
+                                        this,
+                                        "Store"
+                                      )}
+                                    >
+                                      <option value="0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .placeholders
+                                          : "Placeholders"}
+                                      </option>
+                                      {this.state.placeholderData !== null &&
+                                        this.state.placeholderData.map(
+                                          (item, i) => (
+                                            <option
+                                              key={i}
+                                              value={item.mailParameterID}
+                                            >
+                                              {item.description}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                  </div>
+                                )}
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
@@ -3431,14 +3405,8 @@ class Alerts extends Component {
                     id="file-upload"
                     className="file-upload d-none"
                     type="file"
-                    // onChange={this.fileUpload}
                   />
-                  <label
-                    htmlFor="file-upload"
-                    // onDrop={this.fileDrop}
-                    // onDragOver={this.fileDragOver}
-                    // onDragEnter={this.fileDragEnter}
-                  >
+                  <label htmlFor="file-upload">
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
                     </div>
@@ -3522,10 +3490,7 @@ class Alerts extends Component {
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a
-                              className="file-retry"
-                              // onClick={this.hanldeAddBulkUpload.bind(this)}
-                            >
+                            <a className="file-retry">
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.retry
                                 : "Retry"}
@@ -3533,7 +3498,6 @@ class Alerts extends Component {
                           </div>
                           <div>
                             <span className="file-failed">
-                              {" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.failed
                                 : "Failed"}
@@ -3563,14 +3527,7 @@ class Alerts extends Component {
                       ) : null}
                     </div>
                   )}
-                  {/* <button
-                    className="butn"
-                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                  >
-                    ADD
-                  </button> */}
                   <button className="butn">
-                    {" "}
                     {TranslationContext !== undefined
                       ? TranslationContext.button.add
                       : "ADD"}
@@ -3731,7 +3688,6 @@ class Alerts extends Component {
                 value={this.state.alertEdit.alertIsActive}
                 onChange={this.editAlertModalData.bind(this)}
               >
-                {/* <option value="">Select</option> */}
                 <option value={"Active"}>
                   {TranslationContext !== undefined
                     ? TranslationContext.option.active
@@ -3768,7 +3724,6 @@ class Alerts extends Component {
             </div>
           </div>
         </Modal>
-        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }

@@ -205,7 +205,6 @@ class DepartmentMaster extends Component {
   ///Get data for department update
   hanldeEditDepartment(rowData) {
     var editDepartment = {};
-    debugger;
 
     editDepartment.brandID = rowData.brandID;
     editDepartment.brandName = rowData.brandName;
@@ -232,7 +231,6 @@ class DepartmentMaster extends Component {
   }
   //// handle Edit change data
   handleModalEditData = (e) => {
-    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var editDepartment = this.state.editDepartment;
@@ -518,7 +516,6 @@ class DepartmentMaster extends Component {
   /// set sorting status
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-    debugger;
 
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var sStoreCodeFilterCheckbox = this.state.sStoreCodeFilterCheckbox;
@@ -1070,7 +1067,6 @@ class DepartmentMaster extends Component {
           self.setState({ departmentGrid: [] });
         }
         if (data !== null) {
-          debugger;
           var unique = [];
           var distinct = [];
           var sortBrandName = [];
@@ -1224,7 +1220,6 @@ class DepartmentMaster extends Component {
   }
   ////get Brand data for dropdown
   handleGetStoreCodeData(data) {
-    debugger;
     let self = this;
     var finalBrandId = "";
     var brand_Ids = "";
@@ -1261,7 +1256,6 @@ class DepartmentMaster extends Component {
   }
   ////get Department data for dropdown
   handleGetDepartmentList(value, type) {
-    debugger;
     if (value.length >= 3) {
       this.setState({
         departmentData: [],
@@ -1276,7 +1270,6 @@ class DepartmentMaster extends Component {
         },
       })
         .then((res) => {
-          debugger;
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -1425,7 +1418,7 @@ class DepartmentMaster extends Component {
   /// handle create Department
   handleCreateDepartment() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.selectedBrand !== null &&
@@ -1533,7 +1526,7 @@ class DepartmentMaster extends Component {
   //// handle update department
   handleUpdateDepartment() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.editDepartment.brandID !== "0" &&
@@ -1591,7 +1584,7 @@ class DepartmentMaster extends Component {
   //// delete Department by DepartmentId
   handleDeleteDepartmentData(department_Id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -1602,7 +1595,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetDepartmentGridData();
@@ -1804,7 +1796,6 @@ class DepartmentMaster extends Component {
   }
 
   handleSearchFuncation(value) {
-    debugger;
     if (value.length >= 3) {
       let self = this;
       axios({
@@ -1834,16 +1825,6 @@ class DepartmentMaster extends Component {
   }
 
   render() {
-    // const departmentList = this.state.departmentData.map((item, i) => (
-    //   <Option key={i} value={item.departmentID}>
-    //     {item.departmentName}
-    //   </Option>
-    // ));
-    // const functionList = this.state.functionData.map((item, j) => (
-    //   <Option key={j} value={item.functionID}>
-    //     {item.funcationName}
-    //   </Option>
-    // ));
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
@@ -2189,7 +2170,6 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            // className={this.state.storeCodeColor}
                             className={
                               this.state.sortHeader === "Store Code"
                                 ? "sort-column"
@@ -2223,7 +2203,6 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            // className={this.state.DepartNameColor}
                             className={
                               this.state.sortHeader === "Department Name"
                                 ? "sort-column"
@@ -2257,7 +2236,6 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            // className={this.state.FunctionColor}
                             className={
                               this.state.sortHeader === "Function"
                                 ? "sort-column"
@@ -2291,7 +2269,6 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            // className={this.state.createdColor}
                             className={
                               this.state.sortHeader === "Created By"
                                 ? "sort-column"
@@ -2325,7 +2302,6 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            // className={this.state.statusColor}
                             className={
                               this.state.sortHeader === "Status"
                                 ? "sort-column"
@@ -2441,44 +2417,6 @@ class DepartmentMaster extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -2508,7 +2446,6 @@ class DepartmentMaster extends Component {
                       name="selectedBrand"
                       onChange={this.handleBrandChange.bind(this, "add")}
                       value={this.state.selectedBrand}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                     {this.state.selectedBrand.length === 0 && (
@@ -2532,12 +2469,10 @@ class DepartmentMaster extends Component {
                           ? TranslationContext.option.select
                           : "Select"
                       }
-                      // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       name="selectedStoreCode"
                       onChange={this.handleStoreCodeChange.bind(this)}
                       value={this.state.selectedStoreCode}
-                      // showNewOptionAtTop={false}
                       isMulti
                     />
                     {this.state.selectedStoreCode.length === 0 && (
@@ -2568,9 +2503,6 @@ class DepartmentMaster extends Component {
                             </Option>
                           ))
                         : null}
-                      {/* <Option value={NEW_ITEM}>
-                        <span className="sweetAlert-inCategory">+ ADD NEW</span>
-                      </Option> */}
                     </Aselect>
                     {this.state.showDepartment ? (
                       <span
@@ -3044,34 +2976,7 @@ class DepartmentMaster extends Component {
                           </option>
                         ))}
                     </select>
-                    {/* <Aselect
-                      showSearch={true}
-                      value={this.state.editDepartment.departmentName}
-                      style={{ width: "100%" }}
-                      className="depatselect"
-                      onChange={this.handleDepartmentChange}
-                      onSearch={this.handleGetDepartmentList.bind(this)}
-                      notFoundContent="No Data Found"
-                      onChange={this.handleModalEditData}
-                    >
-                      {this.state.departmentData !== null
-                        ? this.state.departmentData.map((item, i) => (
-                            <Option key={i} value={item.departmentName}>
-                              {item.departmentName}
-                            </Option>
-                          ))
-                        : null}
-                      
-                    </Aselect>
-                    {this.state.showDepartment ? (
-                      <span
-                        className="sweetAlert-inCategory"
-                        style={{ marginTop: "-55px" }}
-                        onClick={this.handleToggleDepartmentAdd.bind(this)}
-                      >
-                        + ADD NEW
-                      </span>
-                    ) : null} */}
+
                     {this.state.editDepartment.departmentID === "0" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editDepartmentCompulsory}

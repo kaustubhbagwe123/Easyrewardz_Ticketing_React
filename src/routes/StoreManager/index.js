@@ -30,8 +30,6 @@ import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 import ChatSettings from "./../Settings/Store/ChatSettings";
 import CardAssets from "./../Settings/Store/CardAssets";
 import OrderSetting from "./../Settings/Store/OrderSetting";
-// import LanguageSelection from "./Component/Store/LanguageSelection";
-// import LanguageSelection from "./../../Component/Store/LanguageSelection";
 import storeMyTicket from "./storeMyTicket";
 import storeMyTicketList from "./storeMyTicketList";
 import Orders from "./Orders";

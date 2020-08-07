@@ -28,8 +28,6 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
-// const CancelToken = axios.CancelToken;
-// const source = CancelToken.source();
 
 const MyButton = (props) => {
   const { children } = props;
@@ -94,7 +92,6 @@ const Content = (props) => {
           className="edit-dropDwon dropdown-setting"
           name="report_To"
           value={reportTo}
-          //onChange={this.handleOnChangeData}
           onChange={(e) => setreportToValue(e.target.value)}
         >
           <option>
@@ -249,10 +246,8 @@ class TicketHierarchy extends Component {
     );
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
-    // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
   callBackEdit = (designationName, reportTo, status, rowData) => {
-    // this.setState({RoleName,updateRoleisActive:Status})
     this.state.updateDesignation = designationName;
     this.state.updateReprtTo = reportTo;
     this.state.updateStatus = status;
@@ -264,7 +259,6 @@ class TicketHierarchy extends Component {
   }
 
   hide(e, id) {
-    // document.getElementById(id).style.display="none";
     document.getElementById(
       id
     ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -272,7 +266,6 @@ class TicketHierarchy extends Component {
   }
   show(e, id) {
     if (document.getElementById(id))
-      // document.getElementById(id).style.display="block";
       document.getElementById(
         id
       ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -376,7 +369,6 @@ class TicketHierarchy extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterDesignation.length === 0 ||
       this.state.sortFilterReportTo.length === 0 ||
@@ -385,7 +377,6 @@ class TicketHierarchy extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "designationName") {
       if (
         this.state.sreportToFilterCheckbox !== "" ||
@@ -415,9 +406,6 @@ class TicketHierarchy extends Component {
         this.state.sdesignationNameFilterCheckbox !== ""
       ) {
         this.setState({
-          // sdesignationFilterCheckbox: "",
-          // smobileNumberFilterCheckbox: "",
-          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -440,9 +428,6 @@ class TicketHierarchy extends Component {
         this.state.sdesignationNameFilterCheckbox !== ""
       ) {
         this.setState({
-          // sdesignationFilterCheckbox: "",
-          // suserNameFilterCheckbox: "",
-          // semailIDFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -822,7 +807,6 @@ class TicketHierarchy extends Component {
     this.setState({ progressValue: value });
   }
   hanldeAddBulkUpload() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       if (this.state.fileN[0].path.split(".")[1] === "csv") {
@@ -1762,19 +1746,8 @@ class TicketHierarchy extends Component {
                                   placement="bottom"
                                   trigger="click"
                                 >
-                                  {/* <button
-                                    className="react-tabel-button"
-                                    type="button"
-                                    // onClick={() => this.handleGetEditData.bind(
-                                    //   this,
-                                    //   row.original
-                                    // )}
-                                  >
-                                    EDIT
-                                  </button> */}
                                   <label className="Table-action-edit-button-text">
                                     <MyButton>
-                                      {" "}
                                       {TranslationContext !== undefined
                                         ? TranslationContext.mybutton.edit
                                         : "EDIT"}
@@ -1787,7 +1760,6 @@ class TicketHierarchy extends Component {
                         },
                       },
                     ]}
-                    // resizable={false}
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
@@ -1848,7 +1820,6 @@ class TicketHierarchy extends Component {
                               : "Select"}
                           </option>
                           <option value={1}>
-                            {" "}
                             {TranslationContext !== undefined
                               ? TranslationContext.option.root
                               : "Root"}
@@ -1930,7 +1901,6 @@ class TicketHierarchy extends Component {
                     </h3>
                     <div className="down-excel">
                       <p>
-                        {" "}
                         {TranslationContext !== undefined
                           ? TranslationContext.p.template
                           : "Template"}
@@ -1963,11 +1933,10 @@ class TicketHierarchy extends Component {
                               <img src={FileUpload} alt="file-upload" />
                             </div>
                             <span className={"fileupload-span"}>
-                              {" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addfile
                                 : "Add File"}
-                            </span>{" "}
+                            </span>
                             {TranslationContext !== undefined
                               ? TranslationContext.div.or
                               : "or"}

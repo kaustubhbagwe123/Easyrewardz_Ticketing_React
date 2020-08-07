@@ -139,7 +139,7 @@ class OrderSetting extends Component {
       },
     })
       .then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -163,7 +163,7 @@ class OrderSetting extends Component {
 
   handleUpdateModConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+    
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateModuleConfiguration",
@@ -214,7 +214,7 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -236,7 +236,7 @@ class OrderSetting extends Component {
 
   handleUpdateOrderConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+    
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateOrderConfiguration",
@@ -306,7 +306,7 @@ class OrderSetting extends Component {
 
   handleUpdateOrderConfigMessageTempData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+    
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateOrderConfigurationMessageTemplate",
@@ -379,7 +379,7 @@ class OrderSetting extends Component {
   };
   /// Handle Communication change
   handleCommunicationChange(id) {
-    debugger;
+    
     var OrderConfig = id.target.id;
     if (OrderConfig === "ckOrdconfigAltConmWhts") {
       if (this.state.orderConfigData.alertCommunicationviaWhtsup) {
@@ -713,7 +713,7 @@ class OrderSetting extends Component {
   }
   /// handle Order template file upload
   handleBulkOrderTempUpload() {
-    debugger;
+    
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     this.setState({
@@ -905,7 +905,7 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -935,7 +935,7 @@ class OrderSetting extends Component {
 
   handleUpdateWhatsAppTemplateData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+    
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateWhatsappTemplate",

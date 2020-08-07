@@ -16,10 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import DownExcel from "./../../../assets/Images/csv.png";
 import ReactTable from "react-table";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import axios from "axios";
@@ -146,7 +143,6 @@ class ClaimCategoryMaster extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
     var headerName = "";
@@ -197,7 +193,6 @@ class ClaimCategoryMaster extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
 
@@ -460,10 +455,7 @@ class ClaimCategoryMaster extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
     var ssubCategoryNameFilterCheckbox = this.state
@@ -763,7 +755,6 @@ class ClaimCategoryMaster extends Component {
     // this.StatusCloseModel();
   };
   handleGetCategoryGridData() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -772,10 +763,7 @@ class ClaimCategoryMaster extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
-
         var data = res.data;
-
         if (data !== null) {
           var unique = [];
           var distinct = [];
@@ -793,7 +781,6 @@ class ClaimCategoryMaster extends Component {
               sortFilterBrandName.push({ brandName: distinct[i] });
             }
           }
-
           var unique = [];
           var distinct = [];
           var sortCategory = [];
@@ -906,7 +893,6 @@ class ClaimCategoryMaster extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -921,7 +907,6 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleGetCategoryList(data, check) {
-    debugger;
     if (data.length > 2) {
       let self = this;
       var categoryText = "";
@@ -940,7 +925,6 @@ class ClaimCategoryMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let msg = res.data.message;
           let data = res.data.responseData;
           if (msg === "Success") {
@@ -966,7 +950,7 @@ class ClaimCategoryMaster extends Component {
 
   handleSearchSubCategoryList(data, check) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.categoryDropData.length > 0) {
       if (data.length > 2) {
         let self = this;
@@ -992,7 +976,6 @@ class ClaimCategoryMaster extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let msg = res.data.message;
             let data = res.data.responseData;
             if (msg === "Success") {
@@ -1026,7 +1009,7 @@ class ClaimCategoryMaster extends Component {
 
   handleSearchIssueTypeList(data, check) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.SubCategoryDropData.length > 0) {
       if (data.length > 2) {
         let self = this;
@@ -1051,7 +1034,6 @@ class ClaimCategoryMaster extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let msg = res.data.message;
             let data = res.data.responseData;
             if (msg === "Success") {
@@ -1082,7 +1064,6 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleGetSubCategoryList = async (id) => {
-    debugger;
     let self = this;
     var Category_Id = "";
     if (id === "edit") {
@@ -1107,7 +1088,6 @@ class ClaimCategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         self.setState({ SubCategoryDropData: data });
       })
@@ -1117,7 +1097,6 @@ class ClaimCategoryMaster extends Component {
   };
 
   handleGetIssueTypeList(id) {
-    debugger;
     let self = this;
     var SubCat_Id = 0;
     if (id === "edit") {
@@ -1142,7 +1121,6 @@ class ClaimCategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1158,7 +1136,7 @@ class ClaimCategoryMaster extends Component {
 
   handleDeleteCategoryData(category_Id) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     axios({
       method: "post",
@@ -1169,7 +1147,6 @@ class ClaimCategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetCategoryGridData();
@@ -1186,7 +1163,6 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleAddCategory(value, check) {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
@@ -1199,7 +1175,6 @@ class ClaimCategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1249,7 +1224,7 @@ class ClaimCategoryMaster extends Component {
   }
   handleAddSubCategory(value, check) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     var finalId = 0;
     if (check === "edit") {
@@ -1272,7 +1247,6 @@ class ClaimCategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1320,7 +1294,7 @@ class ClaimCategoryMaster extends Component {
 
   handleAddIssueType(value, type) {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     var finalId = 0;
 
@@ -1347,7 +1321,6 @@ class ClaimCategoryMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1387,7 +1360,7 @@ class ClaimCategoryMaster extends Component {
 
   handleSubmitData() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (
       this.state.selectBrandMulti.length > 0 &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
@@ -1395,7 +1368,6 @@ class ClaimCategoryMaster extends Component {
       (this.state.ListOfIssue > 0 || this.state.ListOfIssue !== "") &&
       (this.state.selectStatus !== "0" && this.state.selectStatus !== 0)
     ) {
-      debugger;
       let self = this;
       var activeStatus = 0;
       var categorydata = 0;
@@ -1440,7 +1412,6 @@ class ClaimCategoryMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
@@ -1494,7 +1465,7 @@ class ClaimCategoryMaster extends Component {
   // Update category
   handleUpdateCategory() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     let self = this;
     if (
       this.state.editCategory.brandID !== "0" &&
@@ -1569,7 +1540,6 @@ class ClaimCategoryMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
@@ -1653,7 +1623,6 @@ class ClaimCategoryMaster extends Component {
     this.setState({ catmulti: true });
   }
   fileUpload = (e) => {
-    debugger;
     var allFiles = [];
     var selectedFiles = e;
     if (selectedFiles) {
@@ -1669,7 +1638,6 @@ class ClaimCategoryMaster extends Component {
     }
   };
   handleCategoryChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       this.setState({
         list1Value: value,
@@ -1689,7 +1657,6 @@ class ClaimCategoryMaster extends Component {
   };
 
   handleSubCatOnChange = (value) => {
-    debugger;
     if (this.state.list1Value > 0 || this.state.list1Value !== "") {
       if (value !== NEW_ITEM) {
         this.setState({
@@ -1713,7 +1680,6 @@ class ClaimCategoryMaster extends Component {
   };
 
   handleIssueOnChange = (value) => {
-    debugger;
     if (
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== "")
@@ -1731,7 +1697,6 @@ class ClaimCategoryMaster extends Component {
     }
   };
   handleBrandChange = (e) => {
-    debugger;
     if (e === null) {
       e = [];
       this.setState({ selectBrandMulti: e });
@@ -1740,7 +1705,6 @@ class ClaimCategoryMaster extends Component {
     }
   };
   handleEditDropDownChange = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({ name: value });
@@ -1753,7 +1717,6 @@ class ClaimCategoryMaster extends Component {
 
   ////handle table row edit button click to set value in modal
   hanldeEditCategory(rowData) {
-    debugger;
     var editCategory = {};
     editCategory.brandCategoryMappingID = rowData.brandCategoryMappingID;
     editCategory.brandID = rowData.braindID;
@@ -1803,7 +1766,6 @@ class ClaimCategoryMaster extends Component {
   }
   ////handle modal pop brand change
   handleModalBrandChange = (e) => {
-    debugger;
     let value = e.target.value;
     var editCategory = this.state.editCategory;
     if (value === "0") {
@@ -1822,7 +1784,6 @@ class ClaimCategoryMaster extends Component {
   };
   ////handle edit modal pop category change
   handleModalCategoryChange = (value, categoryName) => {
-    debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       if (this.state.categoryDropData.length > 0) {
@@ -1855,7 +1816,6 @@ class ClaimCategoryMaster extends Component {
   };
   ////handle edit modal pop sub category change
   handleModalSubCatOnChange = async (value, subCatName) => {
-    debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       if (this.state.SubCategoryDropData.length > 0) {
@@ -1886,7 +1846,6 @@ class ClaimCategoryMaster extends Component {
   };
   ////handle modal issue type change
   handleModalIssueOnChange = (value, issueTypeName) => {
-    debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       if (this.state.ListOfIssueData.length > 0) {
@@ -1903,7 +1862,6 @@ class ClaimCategoryMaster extends Component {
   };
   ////handle model status change
   handleModalStatusChange = (e) => {
-    debugger;
     const { name, value } = e.target;
     var editCategory = this.state.editCategory;
     editCategory[name] = value;
@@ -1912,7 +1870,6 @@ class ClaimCategoryMaster extends Component {
 
   ////handle filter modal pop in filter text box change value
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "brandName") {
@@ -1994,7 +1951,7 @@ class ClaimCategoryMaster extends Component {
   ////handle delete selected file of bulk upload
   handleDeleteBulkupload = (e) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     this.setState({
       fileN: [],
       fileName: "",
@@ -2012,7 +1969,7 @@ class ClaimCategoryMaster extends Component {
   ////handle bulk upload
   hanldeAddBulkUpload() {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
+
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
       this.setState({
@@ -2033,7 +1990,6 @@ class ClaimCategoryMaster extends Component {
         // }
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -2066,7 +2022,6 @@ class ClaimCategoryMaster extends Component {
           }
         })
         .catch((data) => {
-          debugger;
           if (data.message) {
             this.setState({
               showProgress: false,
@@ -2777,7 +2732,6 @@ class ClaimCategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={(inputValue) => {
-                            debugger;
                             inputValue = inputValue.trim();
                             if (
                               inputValue.length >= 0 &&
@@ -2861,7 +2815,6 @@ class ClaimCategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={(inputValue) => {
-                            debugger;
                             inputValue = inputValue.trim();
                             if (inputValue !== "") {
                               this.setState({
@@ -3279,7 +3232,6 @@ class ClaimCategoryMaster extends Component {
                       animation="slide-from-top"
                       validationMsg="Please enter a category!"
                       onConfirm={(inputValue) => {
-                        debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.state.editCategory["categoryName"] = inputValue;
@@ -3360,7 +3312,6 @@ class ClaimCategoryMaster extends Component {
                       animation="slide-from-top"
                       validationMsg="Please enter a category!"
                       onConfirm={(inputValue) => {
-                        debugger;
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
                           this.state.editCategory[

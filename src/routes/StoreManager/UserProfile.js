@@ -27,11 +27,7 @@ class UserProfile extends Component {
       DesignationData: [],
       ProfileData: [],
       fileNameCompulsion: "",
-      FirstNameCompulsion: "",
-      LastNameCompulsion: "",
       MobileCompulsion: "",
-      EmailIDCompulsion: "",
-      DesignationCompulsion: "",
       imgFlag: "",
       loading: true,
     };
@@ -110,8 +106,6 @@ class UserProfile extends Component {
     this.state.selectedProfilePicture = userData.profilePicture;
     var image = this.state.selectedProfilePicture.split("/");
     var imgFlag = image[image.length - 1];
-    // var array=[];
-    // array.push({name:img})
 
     self.setState({
       selectedUserID: userData.userId,
@@ -186,14 +180,7 @@ class UserProfile extends Component {
   }
 
   handleEditUserProfile() {
-    if (
-      // this.state.fileName.length > 0 &&
-      // this.state.selectedFirstName.length > 0 &&
-      // this.state.selectedLastName.length > 0 &&
-      this.state.selectedMobile.length > 0
-      // this.state.selectedEmailID.length > 0 &&
-      // this.state.selectedDesignation > 0
-    ) {
+    if (this.state.selectedMobile.length > 0) {
       let self = this;
       var json = {
         UserId: this.state.selectedUserID,
@@ -207,8 +194,6 @@ class UserProfile extends Component {
 
       formData.append("UpdateUserProfiledetailsModel", JSON.stringify(json));
       formData.append("file", this.state.fileName[0]);
-
-      // update user profile
       axios({
         method: "post",
         url: config.apiUrl + "/StoreUser/UpdateStoreUserProfileDetails",
@@ -222,9 +207,6 @@ class UserProfile extends Component {
             NotificationManager.success("Profile updated successfully.");
             transferData.sendProfilePic(data.profilePath);
             self.handleCRMRole();
-            // setTimeout(function() {
-            //   self.props.history.push("/store/campaign");
-            // }, 1000);
           }
         })
         .catch((data) => {
@@ -232,12 +214,7 @@ class UserProfile extends Component {
         });
     } else {
       this.setState({
-        // fileNameCompulsion: "Please select profile picture.",
-        // FirstNameCompulsion: "Please enter first name.",
-        // LastNameCompulsion: "Please enter last name.",
         MobileCompulsion: "Please enter mobile number.",
-        // EmailIDCompulsion: "Please enter emailID.",
-        // DesignationCompulsion: "Please select designation."
       });
     }
   }
@@ -331,7 +308,6 @@ class UserProfile extends Component {
   render() {
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="container-fluid">
           {this.state.loading && (
             <div className="loader-icon-cntr-ovrlay">
@@ -353,18 +329,7 @@ class UserProfile extends Component {
                         alt=""
                         className="profimg"
                       />
-                      {/* <img
-                            src={
-                              item.Type === "docx"
-                                ? require("./../assets/Images/word.png")
-                                : item.Type === "xlsx"
-                                ? require("./../assets/Images/TxtIcon.png")
-                                : require("./../assets/Images/thumbticket.png")
-                            }
-                            title={item.name}
-                            alt="thumb"
-                            className="thumbtick"
-                          /> */}
+
                       <div className="uploadtextprofile">
                         <br></br>
                         <input
@@ -381,22 +346,10 @@ class UserProfile extends Component {
                           onDragEnter={this.fileDragEnter}
                           onChange={this.fileUpload.bind(this)}
                         >
-                          {/* <div className="file-icon">
-                        <img src="{FileUpload}" alt="file-upload" />
-                      </div> */}
                           {this.state.imgFlag === "" ? "Upload" : "Change"}{" "}
                           Photo
                         </label>
-                        {/* <label
-                          htmlFor="file-upload"
-                          onDrop={this.fileDrop}
-                          onDragOver={this.fileDragOver}
-                          onDragEnter={this.fileDragEnter}
-                          
-                        >
-                         
-                          <span className="uploadtextprofile1"  >Upload</span>
-                        </label> */}
+
                         {this.state.fileName[0] && (
                           <div className="file-info pb-0">
                             <div className="">
@@ -413,7 +366,6 @@ class UserProfile extends Component {
                         <label
                           onClick={this.handleDeleteProfilePic}
                           className="uploadtextprofile1"
-                          // onChange={this.fileUpload.bind(this)}
                         >
                           Delete Photo
                         </label>
@@ -458,11 +410,6 @@ class UserProfile extends Component {
                           onChange={this.setUserData.bind(this)}
                           disabled
                         />
-                        {this.state.selectedLastName.length === 0 && (
-                          <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.LastNameCompulsion}
-                          </p>
-                        )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -496,11 +443,6 @@ class UserProfile extends Component {
                           onChange={this.setUserData.bind(this)}
                           disabled
                         />
-                        {this.state.selectedEmailID.length === 0 && (
-                          <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.EmailIDCompulsion}
-                          </p>
-                        )}
                       </div>
                     </div>
 
@@ -522,11 +464,6 @@ class UserProfile extends Component {
                               </option>
                             ))}
                         </select>
-                        {this.state.selectedDesignation === "" && (
-                          <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.DesignationCompulsion}
-                          </p>
-                        )}
                       </div>
                     </div>
 
@@ -539,23 +476,10 @@ class UserProfile extends Component {
                       </button>
                     </div>
                   </div>
-                  <div
-                    className="userChangePW"
-                    //onClick={this.redirectToChangePassword}
-                  >
+                  <div className="userChangePW">
                     <Link to="/storeChangePassword">Change Password</Link>
                   </div>
 
-                  {/* <div className="row">
-                    <div className="col-md-12" style={{ textAlign: "center" }}>
-                      <label
-                        className="forwardpasstext"
-                        onClick={this.onOpenModal.bind(this)}
-                      >
-                        Change Password
-                      </label>
-                    </div>
-                  </div> */}
                   <Modal
                     open={this.state.open}
                     onClose={this.onCloseModal.bind(this)}
@@ -609,13 +533,6 @@ class UserProfile extends Component {
                         </button>
                       </div>
                     </div>
-
-                    {/* <img
-                    src={CancelImg}
-                    alt="cancelImg"
-                    className="cancalImg"
-                    onClick={this.onCloseModal.bind(this)}
-                  /> */}
                   </Modal>
                 </div>
               </div>

@@ -61,15 +61,10 @@ class FileUploadLogs extends Component {
   }
 
   downloadDefaultReport = (csvFile) => {
-    debugger;
-    // window.open(
-    //   "https://ertktapi.dcdev.brainvire.net/ReportDownload/DefaultReport_202004061846089363.csv"
-    // );
     window.open(csvFile);
   };
 
   handleGetFileUploadLog() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -77,7 +72,6 @@ class FileUploadLogs extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let fileUploadLog = res.data.responseData;
         if (fileUploadLog !== null) {
           self.state.sortAllData = fileUploadLog;
@@ -243,7 +237,6 @@ class FileUploadLogs extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     if (this.state.tempfileUploadLog.length > 0) {
       this.setState({
         StatusModel: false,
@@ -310,7 +303,6 @@ class FileUploadLogs extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "fileType") {
       var sortFilterFileType = matchSorter(
@@ -374,7 +366,6 @@ class FileUploadLogs extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
 
@@ -417,8 +408,6 @@ class FileUploadLogs extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
-
     var itemsArray = [];
     itemsArray = this.state.fileUploadLog;
 
@@ -461,8 +450,6 @@ class FileUploadLogs extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sfileTypeFilterCheckbox = this.state.sfileTypeFilterCheckbox;
@@ -1107,44 +1094,6 @@ class FileUploadLogs extends Component {
             defaultPageSize={5}
             showPagination={true}
           />
-          {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
         </div>
       </div>
     );
