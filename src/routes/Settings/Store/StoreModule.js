@@ -1589,6 +1589,9 @@ class StoreModule extends Component {
     } else if (CampId === "ckEmailCamp4") {
       this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
         .emailFlag;
+    } else if(CampId === "ckCmpAutoAssignedCamp5"){
+      this.state.campaignChannelData.campaignAutoAssigned = !this.state.campaignChannelData
+      .campaignAutoAssigned;
     }
 
     this.setState({ campaignChannelData: this.state.campaignChannelData });
@@ -1746,6 +1749,7 @@ class StoreModule extends Component {
             .enableClickAfterDuration,
           SmsFlag: this.state.campaignChannelData.smsFlag,
           EmailFlag: this.state.campaignChannelData.emailFlag,
+          CampaignAutoAssigned: this.state.campaignChannelData.campaignAutoAssigned,
           MessengerFlag: this.state.campaignChannelData.messengerFlag,
           BotFlag: this.state.campaignChannelData.botFlag,
           ProviderName:
@@ -4082,6 +4086,31 @@ class StoreModule extends Component {
                                       />
                                       <label
                                         htmlFor="ckEmailCamp4"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.ticketingDashboard.campaignautoassigned
+                                          : "Campaign Auto Assigned"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckCmpAutoAssignedCamp5"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .campaignAutoAssigned
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckCmpAutoAssignedCamp5"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>

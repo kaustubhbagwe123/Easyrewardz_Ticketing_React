@@ -1762,7 +1762,7 @@
   font-size: 15px;
   font-weight: 500;
   line-height: 1.6;
-  width: 135px;
+  /* width: 135px; */
   display: inline-block;
   margin-left: 32px;
 }

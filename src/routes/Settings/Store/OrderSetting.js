@@ -1938,7 +1938,7 @@ class OrderSetting extends Component {
                                   </div>
 
                                   <div style={{ display: "flex" }}>
-                                    <div className="col-md-12 my-3 text-center">
+                                    <div className="col-md-10 my-3 text-center">
                                       <button
                                         className="Schedulenext1 mb-0"
                                         type="button"
@@ -1955,11 +1955,11 @@ class OrderSetting extends Component {
                                       </button>
                                     </div>
                                     <div
-                                      className="col-md-3 my-3 text-center"
-                                      style={{ marginRight: "5rem" }}
+                                      className="my-3 text-center"
                                     >
-                                      <a
-                                        className="ordTempClear"
+                                      <button
+                                        className="Schedulenext1 mb-0"
+                                        type="button"
                                         onClick={this.handleOrdClearData.bind(
                                           this
                                         )}
@@ -1967,7 +1967,7 @@ class OrderSetting extends Component {
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label.clear
                                           : "CLEAR"}
-                                      </a>
+                                      </button>
                                     </div>
                                   </div>
                                 </div>
