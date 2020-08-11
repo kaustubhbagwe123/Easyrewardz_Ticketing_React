@@ -3566,7 +3566,6 @@ class MyTicket extends Component {
                     onClose={this.HandlelabelModalClose.bind(this)}
                     closeIconId="close"
                     modalId="labelmodel-popup"
-                    classNames={{ modal: "ticket-big-modal" }}
                     overlayId="logout-ovrly"
                   >
                     <div
@@ -3614,8 +3613,8 @@ class MyTicket extends Component {
                           },
                         ]}
                         minRows={2}
-                        // defaultPageSize={5}
-                        showPagination={true}
+                        defaultPageSize={-1}
+                        showPagination={false}
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
                           const index = column ? column.index : -1;
