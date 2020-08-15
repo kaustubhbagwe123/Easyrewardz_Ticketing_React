@@ -1706,7 +1706,7 @@ class CreatePriority extends Component {
                               <span className="settings-align-actions">
                                 <Popover
                                   content={
-                                    <div>
+                                    <div className="d-flex general-popover popover-body">
                                       <div className="del-big-icon">
                                         <img
                                           src={BlackDeleteIcon}
