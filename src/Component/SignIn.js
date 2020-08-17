@@ -38,7 +38,6 @@ class SingIn extends Component {
   }
 
   componentDidMount() {
-    debugger;
     if (this.props.location.encProgramCode) {
       var finalEncProgramCode = this.props.location.encProgramCode;
       if (finalEncProgramCode) {
@@ -54,7 +53,6 @@ class SingIn extends Component {
   }
 
   handleCRMRole() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -62,7 +60,6 @@ class SingIn extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -121,7 +118,7 @@ class SingIn extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    debugger;
+
     let self = this;
     if (this.validator.allValid()) {
       self.setState({
@@ -135,7 +132,7 @@ class SingIn extends Component {
       // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
       let X_Authorized_Domainname = encryption(
-        "https://multitenancyshopster.dcdev.brainvire.net",
+        "https://multitenancyshopsterv2.dcdev.brainvire.net",
         "enc"
       );
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
@@ -158,13 +155,11 @@ class SingIn extends Component {
             "X-Authorized-Domainname": X_Authorized_Domainname,
           },
         }).then(function(res) {
-          debugger;
           let resValid = res.data.message;
           self.setState({
             loading: true,
           });
           if (resValid === "Valid Login") {
-            debugger;
             //NotificationManager.success("Login Successfull.");
             window.localStorage.setItem("token", res.data.responseData.token);
             window.localStorage.setItem("ERT", true);

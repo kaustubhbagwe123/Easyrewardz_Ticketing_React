@@ -17,25 +17,27 @@ class ProgramCodeSignIn extends Component {
       encProgramCode: {
         programCode: "",
       },
-      btnDisabled:false
+      btnDisabled: false,
     };
     this.validator = new SimpleReactValidator();
   }
 
   hanleChange(e) {
     e.preventDefault();
-    // debugger
-    let self = this;
+   let self = this;
     if (this.validator.allValid()) {
       this.setState({
-        btnDisabled:true
-      })
+        btnDisabled: true,
+      });
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
-      // let X_Authorized_Domainname = encryption('https://multitenancyshopster.dcdev.brainvire.net', "enc");
-      // let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
+      let X_Authorized_Domainname = encryption(
+        "https://multitenancyshopsterv2.dcdev.brainvire.net",
+        "enc"
+      );
+      // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
 
       axios({
@@ -48,7 +50,6 @@ class ProgramCodeSignIn extends Component {
           "X-Authorized-Domainname": X_Authorized_Domainname,
         },
       }).then(function(res) {
-        debugger;
         let Msg = res.data.statusCode;
         if (Msg === 200) {
           setTimeout(function() {
@@ -59,7 +60,7 @@ class ProgramCodeSignIn extends Component {
           }, 500);
           self.setState({
             encProgramCode: { programCode: encProgramCode },
-            btnDisabled:false
+            btnDisabled: false,
           });
         } else {
           NotificationManager.error(
@@ -68,10 +69,9 @@ class ProgramCodeSignIn extends Component {
             1500
           );
           self.setState({
-            btnDisabled:false
-          })
+            btnDisabled: false,
+          });
         }
-       
       });
       // this.props.history.push("SignIn");
     } else {
@@ -108,6 +108,7 @@ class ProgramCodeSignIn extends Component {
                     style={{ border: 0 }}
                     name="programCode"
                     maxLength={100}
+                    autoComplete="off"
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
                   />
