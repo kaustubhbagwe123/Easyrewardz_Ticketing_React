@@ -3195,7 +3195,7 @@ class StoreUsers extends Component {
         this.state.EditDesignationCompulsory == ""
       ) {
         this.setState({
-          selTab: "Mapped Cliam Category",
+          selTab: "Mapped Claim Category",
         });
       }
     }, 10);
@@ -4409,7 +4409,7 @@ class StoreUsers extends Component {
                             disabled={this.state.personalBtnDisabled}
                           >
                             {TranslationContext !== undefined
-                              ? TranslationContext.button.updateandnext
+                              ? TranslationContext.button.saveandnext
                               : "Save & Next"}
                           </button>
                         </div>
