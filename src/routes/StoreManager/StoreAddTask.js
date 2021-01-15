@@ -5,7 +5,6 @@ import config from "./../../helpers/config";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  // NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import * as translationHI from "./../../translations/hindi";
@@ -50,7 +49,6 @@ class StoreAddTask extends Component {
   }
   ////handle create task
   handleCreateTask() {
-    debugger;
     let self = this;
     if (this.state.taskTitle == "") {
       this.setState({ istaskTitle: "Please Enter Task Title." });
@@ -108,7 +106,6 @@ class StoreAddTask extends Component {
           data: inputParams,
         })
           .then(function(response) {
-            debugger;
             var message = response.data.message;
             var responseData = response.data.responseData;
             if (responseData === 1 && message === "Success") {
@@ -135,7 +132,6 @@ class StoreAddTask extends Component {
   }
   ////handle get department list
   handleGetDepartement() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -229,7 +225,6 @@ class StoreAddTask extends Component {
 
   ///handle input change
   handleOnchange = (e) => {
-    debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
       if (value !== "") {
@@ -291,7 +286,6 @@ class StoreAddTask extends Component {
       }
     }
     if (name == "assignto") {
-      debugger;
       if (value !== 0) {
         this.setState({
           assignToID: value,
@@ -339,7 +333,6 @@ class StoreAddTask extends Component {
               <input
                 type="text"
                 className="store-edit-txt"
-                // placeholder="Wifi is not working from 5hrs"
                 name="tasktitle"
                 value={this.state.taskTitle}
                 onChange={this.handleOnchange}
@@ -507,7 +500,6 @@ class StoreAddTask extends Component {
                     className="textarea-store"
                     autoComplete="off"
                     maxLength={245}
-                    // placeholder="Customer History/Security Check when.."
                   ></textarea>
                   {this.state.istaskDetails !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>

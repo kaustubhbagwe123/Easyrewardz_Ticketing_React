@@ -26,26 +26,25 @@ class TaskDepartment extends Component {
     this.handleGetDashboardGraphData();
   }
   handleGetDashboardGraphData() {
-    debugger;
     var taskData = this.props.data;
-    var category=[];
-    var data=[];
+    var category = [];
+    var data = [];
     if (taskData !== null) {
       for (let i = 0; i < taskData.length; i++) {
         let categoryName = taskData[i].name;
         category.push(categoryName);
         let dataCount = taskData[i].value;
-        data.push(dataCount)
+        data.push(dataCount);
       }
       this.setState({
         options: {
           xaxis: {
-            categories:category
+            categories: category,
           },
         },
         series: [
           {
-            data
+            data,
           },
         ],
       });
@@ -65,4 +64,3 @@ class TaskDepartment extends Component {
 }
 
 export default TaskDepartment;
-

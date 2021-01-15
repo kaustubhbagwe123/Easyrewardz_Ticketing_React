@@ -66,7 +66,6 @@ class TicketSystemStore extends Component {
 
   ////handle Get Store Details
   handleGetStoreData(ID) {
-    debugger;
     this.props.parentCallBackFuncation("store");
     let self = this;
 
@@ -120,7 +119,6 @@ class TicketSystemStore extends Component {
     this.setState({ OrderStoreTable: false });
   }
   handleByvisitDate(e, rowData) {
-    debugger;
     var id = 0;
     if (e.lpassStoreID > 0) {
       id = e.lpassStoreID;
@@ -174,7 +172,6 @@ class TicketSystemStore extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let data = res.data.responseData;
             let Msg = res.data.message;
             if (Msg === "Success") {
@@ -183,7 +180,7 @@ class TicketSystemStore extends Component {
             } else {
               self.setState({
                 // message: res.data.message,
-                message:"Record Not Found",
+                message: "Record Not Found",
                 SearchData: [],
               });
             }
@@ -229,8 +226,6 @@ class TicketSystemStore extends Component {
   };
 
   handleCheckStoreID = (storeMasterID, rowData) => {
-    debugger;
-
     const newSelected = Object.assign({}, this.state.CheckStoreID);
     newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
     this.setState({
@@ -649,9 +644,10 @@ class TicketSystemStore extends Component {
                           },
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.span.purpose
-                          : "Purpose",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.purpose
+                              : "Purpose",
                           // dataIndex: "lpassStoreID",
                           render: (row, data) => {
                             return (
@@ -669,39 +665,45 @@ class TicketSystemStore extends Component {
                           },
                         },
                         {
-                          title:TranslationContext !== undefined
-                          ? TranslationContext.label.storecode
-                          : "Store Code",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storecode
+                              : "Store Code",
                           dataIndex: "storeCode",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.label.storename
-                          : "Store Name",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storename
+                              : "Store Name",
                           dataIndex: "storeName",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.label.storepincode
-                          : "Store Pin Code",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storepincode
+                              : "Store Pin Code",
                           dataIndex: "pincode",
                         },
                         {
-                          title:  TranslationContext !== undefined
-                          ? TranslationContext.span.storeemailid
-                          : "Store Email ID",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.storeemailid
+                              : "Store Email ID",
                           dataIndex: "storeEmailID",
                         },
                         {
-                          title: TranslationContext !== undefined
-                          ? TranslationContext.label.storeaddress
-                          : "Store Address",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.label.storeaddress
+                              : "Store Address",
                           dataIndex: "address",
                         },
                         {
-                          title:  TranslationContext !== undefined
-                          ? TranslationContext.span.visitdate
-                          : "Visit Date",
+                          title:
+                            TranslationContext !== undefined
+                              ? TranslationContext.span.visitdate
+                              : "Visit Date",
                           dataIndex: "storeVisitDate",
                           render: (row, data) => {
                             var storeId = 0;
@@ -900,33 +902,38 @@ class TicketSystemStore extends Component {
                             },
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.label.storecode
-                            : "Store Code",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storecode
+                                : "Store Code",
                             dataIndex: "storeCode",
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.label.storename
-                            : "Store Name",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storename
+                                : "Store Name",
                             dataIndex: "storeName",
                           },
                           {
-                            title:  TranslationContext !== undefined
-                            ? TranslationContext.label.storepincode
-                            : "Store Pin Code",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storepincode
+                                : "Store Pin Code",
                             dataIndex: "pincode",
                           },
                           {
-                            title:  TranslationContext !== undefined
-                            ? TranslationContext.span.storeemailid
-                            : "Store Email ID",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.storeemailid
+                                : "Store Email ID",
                             dataIndex: "storeEmailID",
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.label.storeaddress
-                            : "Store Address",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storeaddress
+                                : "Store Address",
                             dataIndex: "address",
                           },
                         ]}
@@ -992,9 +999,10 @@ class TicketSystemStore extends Component {
                             },
                           },
                           {
-                            title:  TranslationContext !== undefined
-                            ? TranslationContext.span.purpose
-                            : "Purpose",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.purpose
+                                : "Purpose",
                             dataIndex: "storeID2",
                             render: (row, data) => {
                               return (
@@ -1014,39 +1022,45 @@ class TicketSystemStore extends Component {
                             },
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.label.storecode
-                            : "Store Code",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storecode
+                                : "Store Code",
                             dataIndex: "storeCode",
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.label.storename
-                            : "Store Name",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storename
+                                : "Store Name",
                             dataIndex: "storeName",
                           },
                           {
-                            title:  TranslationContext !== undefined
-                            ? TranslationContext.label.storepincode
-                            : "Store Pin Code",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storepincode
+                                : "Store Pin Code",
                             dataIndex: "pincode",
                           },
                           {
-                            title:  TranslationContext !== undefined
-                            ? TranslationContext.span.storeemailid
-                            : "Store Email ID",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.storeemailid
+                                : "Store Email ID",
                             dataIndex: "storeEmailID",
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.label.storeaddress
-                            : "Store Address",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.storeaddress
+                                : "Store Address",
                             dataIndex: "address",
                           },
                           {
-                            title: TranslationContext !== undefined
-                            ? TranslationContext.span.visitdate
-                            : "Visit Date",
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.visitdate
+                                : "Visit Date",
                             dataIndex: "storeVisitDate",
                             render: (row, data) => {
                               var storeId = 0;

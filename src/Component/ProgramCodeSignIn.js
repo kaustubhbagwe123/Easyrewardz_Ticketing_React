@@ -8,6 +8,7 @@ import {
 } from "react-notifications";
 import axios from "axios";
 import config from "../helpers/config";
+import { authHeader } from "../helpers/authHeader";
 
 class ProgramCodeSignIn extends Component {
   constructor(props) {
@@ -22,22 +23,31 @@ class ProgramCodeSignIn extends Component {
     this.validator = new SimpleReactValidator();
   }
 
+  componentDidMount() {
+    // localStorage.clear();
+    var _token = window.localStorage.getItem("token");
+    if (_token !== null) {
+      this.handleCRMRole();
+    } else {
+      return false;
+    }
+  }
+
   hanleChange(e) {
     e.preventDefault();
-   let self = this;
+    let self = this;
     if (this.validator.allValid()) {
       this.setState({
         btnDisabled: true,
       });
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
-      let X_Authorized_Domainname = encryption(
-        "https://multitenancyshopsterv2.dcdev.brainvire.net",
-        "enc"
-      );
-      // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
-      // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "https://qa-ui-belltktqa.shopster.live",
+      //   "enc"
+      // );
+      // let X_Authorized_Domainname = encryption('https://bell.ercx.co', "enc");
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
 
       axios({
@@ -79,6 +89,71 @@ class ProgramCodeSignIn extends Component {
       this.forceUpdate();
     }
   }
+
+  handleCRMRole() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetRolesByUserID",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let msg = res.data.message;
+        let data = res.data.responseData.modules;
+        if (msg === "Success") {
+          if (data !== null) {
+            for (var i = 0; i <= data.length; i++) {
+              if (i === data.length) {
+                NotificationManager.error(
+                  "You don't have any sufficient page access. Please contact administrator for access.",
+                  "",
+                  2000
+                );
+                self.setState({
+                  loading: false,
+                });
+              } else if (
+                data[i].moduleName === "Dashboard" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/admin/dashboard");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Tickets" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/admin/myTicketlist");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Knowledge Base" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/admin/knowledgebase");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Settings" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/admin/settings");
+                }, 400);
+                return;
+              }
+            }
+          }
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   handleProgramCode = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -96,7 +171,7 @@ class ProgramCodeSignIn extends Component {
           <div className="card programcode-card-new">
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <h3 className="sign-in">SIGN IN</h3>
               <form name="form" onSubmit={this.hanleChange.bind(this)}>
@@ -108,9 +183,9 @@ class ProgramCodeSignIn extends Component {
                     style={{ border: 0 }}
                     name="programCode"
                     maxLength={100}
-                    autoComplete="off"
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "Program Code",
@@ -123,7 +198,6 @@ class ProgramCodeSignIn extends Component {
                   type="submit"
                   className="program-code-button"
                   disabled={this.state.btnDisabled}
-                  // onClick={this.hanleChange}
                 >
                   SUBMIT
                 </button>

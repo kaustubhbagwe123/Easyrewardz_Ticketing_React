@@ -8,6 +8,7 @@ import { Drawer } from "antd";
 import CancelImg from "./../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
 
+
 class Chatbot extends Component {
   constructor(props) {
     super(props);

@@ -4,10 +4,6 @@ import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-import MailImg from "./../assets/Images/msg.png";
-import FacebookImg from "./../assets/Images/facebook.png";
-import Chat from "./../assets/Images/chat.png";
-import Twitter from "./../assets/Images/twitter.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
 import Cancel from "./../assets/Images/CancelBlue.png";
 import DownImg from "./../assets/Images/down.png";
@@ -340,7 +336,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -368,7 +364,7 @@ class MyTicket extends Component {
         AlertID: 8,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -401,7 +397,7 @@ class MyTicket extends Component {
         FollowUPUserID: followUpIds,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.status;
         if (status) {
           self.setState({
@@ -425,7 +421,7 @@ class MyTicket extends Component {
         ticketID: ID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -525,7 +521,7 @@ class MyTicket extends Component {
         TicketID: this.state.ticket_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let data = res.data.responseData;
         self.setState({
           SearchAssignData: data,
@@ -558,7 +554,7 @@ class MyTicket extends Component {
         status: ticStaId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.status;
         if (status === true) {
           if (ticStaId === 103) {
@@ -592,7 +588,7 @@ class MyTicket extends Component {
         ticketID: ticketId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -661,7 +657,7 @@ class MyTicket extends Component {
         CustomerID: this.state.custID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -686,7 +682,7 @@ class MyTicket extends Component {
         TicketID: this.state.ticket_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -746,7 +742,6 @@ class MyTicket extends Component {
   }
   // onchange on User Drop down list
   setAssignedToValue(check, e) {
-    debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -996,7 +991,7 @@ class MyTicket extends Component {
         SearchText: this.state.SearchStore,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let data = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -1021,7 +1016,7 @@ class MyTicket extends Component {
         ticketID: ID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1036,7 +1031,6 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketDetails() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
 
     if (this.state.statusValidate) {
@@ -1060,7 +1054,7 @@ class MyTicket extends Component {
             TicketActionID: this.state.selectetedParameters.ticketActionTypeID,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
               if (self.state.isaddKnowledge) {
@@ -1117,6 +1111,15 @@ class MyTicket extends Component {
     } else {
       NotificationManager.error("Only numeric value allow.");
     }
+
+    // var index = this.state.OrderSubItem.findIndex(
+    //   x => x.articleNumber === rowData.original.articleNumber
+    // );
+
+    // var OrderSubItem = this.state.OrderSubItem;
+    // OrderSubItem[index].requireSize = value;
+
+    // this.setState({ OrderSubItem });
   }
   handleOrderSearchData() {
     let self = this;
@@ -1129,7 +1132,7 @@ class MyTicket extends Component {
         CustomerID: this.state.custID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let Msg = res.data.message;
         let mainData = res.data.responseData;
         var OrderSubItem = [];
@@ -1279,7 +1282,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1302,7 +1305,7 @@ class MyTicket extends Component {
         BrandID: this.state.selectetedParameters.brandID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let data = res.data;
         let CategoryData = res.data;
         if (data.length > 0) {
@@ -1331,8 +1334,7 @@ class MyTicket extends Component {
         ticketID: ticketid,
       },
     })
-      .then(function (res) {
-        debugger;
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1358,7 +1360,7 @@ class MyTicket extends Component {
         CategoryID: this.state.selectetedParameters.categoryID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1381,7 +1383,7 @@ class MyTicket extends Component {
         SubCategoryID: this.state.selectetedParameters.subCategoryID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1401,7 +1403,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1427,7 +1429,7 @@ class MyTicket extends Component {
         Remark: "",
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let messageData = res.data.message;
         if (messageData === "Success") {
           NotificationManager.success(
@@ -1437,7 +1439,7 @@ class MyTicket extends Component {
           );
           self.HandlelabelModalClose();
           // self.handleReAssignCommentOpen();
-          setTimeout(function () {
+          setTimeout(function() {
             // self.componentDidMount();
             self.handleGetTicketDetails(self.state.ticket_Id);
           }, 1500);
@@ -1589,9 +1591,6 @@ class MyTicket extends Component {
   }
   handleHasAttachmetModalOpen(msgID) {
     var filedata = this.state.FileAttachment.filter((x) => x.id === msgID);
-    // for (let i = 0; i < filedata.length; i++) {
-
-    // }
     this.setState({ hasAttachmentModal: true, FinalAttachmentData: filedata });
   }
   handleHasAttachmetModalClose() {
@@ -1632,7 +1631,7 @@ class MyTicket extends Component {
         ClaimTab: 2,
       });
     }
-    setTimeout(function () {
+    setTimeout(function() {
       self.props.history.push({
         state: self.state,
       });
@@ -1654,7 +1653,7 @@ class MyTicket extends Component {
           Id: this.state.ticket_Id,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.status;
           if (status === true) {
             var id = self.state.ticket_Id;
@@ -1698,7 +1697,7 @@ class MyTicket extends Component {
         TicketId: this.state.ticket_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.status;
         let details = res.data.responseData;
         self.onOpenModal();
@@ -1713,7 +1712,6 @@ class MyTicket extends Component {
 
   hanldeGetSelectedStoreData() {
     let self = this;
-    // this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Store/getSelectedStores",
@@ -1722,10 +1720,9 @@ class MyTicket extends Component {
         TicketID: this.state.ticket_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
-
         if (status === "Success") {
           const newSelected = Object.assign({}, self.state.CheckStoreID);
           var selectedRow = [];
@@ -1858,7 +1855,7 @@ class MyTicket extends Component {
       headers: authHeader(),
       data: formData,
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success(
@@ -1947,7 +1944,7 @@ class MyTicket extends Component {
           }
         }
       }
-      //
+
       const formData = new FormData();
 
       /// For Attached order
@@ -2010,14 +2007,14 @@ class MyTicket extends Component {
         headers: authHeader(),
         data: formData,
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
-          // let details = res.data.responseData;
+
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.ticketingDashboard
-                  .productattachedsuccessfully
+                    .productattachedsuccessfully
                 : "Product attached successfully."
             );
             self.handleOrderTableClose();
@@ -2047,7 +2044,7 @@ class MyTicket extends Component {
   }
   handleGetNotesTabDetails(ticket_Id) {
     let self = this;
-    // this.setState({ loading: true });
+
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getNotesByTicketId",
@@ -2056,7 +2053,7 @@ class MyTicket extends Component {
         TicketId: ticket_Id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let details = res.data.responseData;
         if (status === "Success") {
@@ -2143,7 +2140,7 @@ class MyTicket extends Component {
         SubCategor_ID: self.state.selectedSubCategoryKB,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
           NotificationManager.error(
@@ -2209,7 +2206,7 @@ class MyTicket extends Component {
         IssueTypeID: this.state.selectetedParameters.issueTypeID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let data = res.data.responseData;
         self.setState({
           CkEditorTemplateData: data,
@@ -2233,7 +2230,7 @@ class MyTicket extends Component {
           TemplateId: tempId,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -2255,7 +2252,7 @@ class MyTicket extends Component {
           TemplateId: tempId,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -2273,16 +2270,8 @@ class MyTicket extends Component {
   handleSendMailData(isSend) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-    // var str = this.state.mailBodyData;
-    // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
-    // var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
-
     if (isSend === 1) {
       if (this.state.replymailBodyData.length > 0) {
-        // var str = this.state.replymailBodyData;
-        // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
-        // var ReplyText = stringBody.replace(/[&]nbsp[;]/g, " ");
-
         if (this.state.InformStore === true) {
           var selectedStore = "";
 
@@ -2319,7 +2308,7 @@ class MyTicket extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
               self.handleTicketAssignFollowUp();
@@ -2379,7 +2368,7 @@ class MyTicket extends Component {
             TicketSource: this.state.ticketSourceId, // Send ticket source id
             IsSent: 0,
             IsCustomerComment: 0,
-            // IsCustomerComment: 1,
+
             IsResponseToCustomer: 1,
             MailID: 0,
             StoreID: store_Id.substring(",", store_Id.length - 1),
@@ -2395,7 +2384,7 @@ class MyTicket extends Component {
             headers: authHeader(),
             data: formData,
           })
-            .then(function (res) {
+            .then(function(res) {
               let status = res.data.message;
               if (status === "Success") {
                 self.handleGetMessageDetails(self.state.ticket_Id);
@@ -2411,7 +2400,7 @@ class MyTicket extends Component {
                 );
                 self.setState({
                   mailFiled: {},
-                  // mailSubject: "",
+
                   mailBodyData: "",
                 });
               } else {
@@ -2432,7 +2421,7 @@ class MyTicket extends Component {
         NotificationManager.error(
           TranslationContext !== undefined
             ? TranslationContext.ticketingDashboard
-              .onlycharaterallowinbodysection
+                .onlycharaterallowinbodysection
             : "Only 2000 Charater Allow In Body Section."
         );
       }
@@ -2456,7 +2445,7 @@ class MyTicket extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
@@ -2512,12 +2501,9 @@ class MyTicket extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
-              // NotificationManager.success(
-              //   "Comment Added successfully."
-              // );
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
               self.handleReAssignCommentOpen();
@@ -2562,7 +2548,7 @@ class MyTicket extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success(
@@ -2620,7 +2606,7 @@ class MyTicket extends Component {
         TicketID: id,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2654,18 +2640,6 @@ class MyTicket extends Component {
       allFiles.push(selectedFiles[i]);
     }
     // -------------------------Image View code start-----------------------
-    // if (e.target.files && e.target.files[0]) {
-    //   const filesAmount = e.target.files.length;
-    //   for (let i = 0; i < filesAmount; i++) {
-    //     const reader = new FileReader();
-    //     reader.onload = file => {
-    //       this.setState({
-    //         imageView: file.target.result
-    //       });
-    //     };
-    //     reader.readAsDataURL(e.target.files[i]);
-    //   }
-    // }
     for (let i = 0; i < e.target.files.length; i++) {
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -2723,10 +2697,6 @@ class MyTicket extends Component {
   }
 
   handleByvisitDate(e, rowData) {
-    // var id = e.original.lpassStoreID;
-    // var index = this.state.selectedStoreData.findIndex(
-    //   x => x.lpassStoreID === id
-    // );
     if (e.original.lpassStoreID > 0) {
       var id = e.original.lpassStoreID;
     } else {
@@ -2744,7 +2714,6 @@ class MyTicket extends Component {
         (x) => x.storeID === id
       );
     }
-    // this.state.selectedStoreData["VisitedDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
     selectedStoreData[index].storeVisitDate = rowData;
 
@@ -2854,7 +2823,6 @@ class MyTicket extends Component {
   };
   /// Handle get Order Item data
   handleGetOderItemData(invoiceNumber, rowData, e) {
-    debugger;
     if (e.target.checked) {
       this.setState({
         SelectedAllOrder: [],
@@ -2875,7 +2843,7 @@ class MyTicket extends Component {
           InvoiceDate: rowData.invoiceDate,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let Msg = res.data.message;
           let data = res.data.responseData;
           if (Msg === "Success") {
@@ -3226,7 +3194,7 @@ class MyTicket extends Component {
       headers: authHeader(),
       data: formData,
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
@@ -3255,7 +3223,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Master/GetLogedInEmail",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         var status = res.data.status;
 
         var data = res.data.responseData;
@@ -3329,7 +3297,7 @@ class MyTicket extends Component {
       headers: authHeader(),
       data: inputParam,
     })
-      .then(function (res) {
+      .then(function(res) {
         var status = res.data.status;
         if (status) {
           NotificationManager.success(
@@ -3394,2711 +3362,2141 @@ class MyTicket extends Component {
         <img src={MinusImg} alt="Minus" className="minus-img" />
       </a>
     ) : (
-        <a
-          href="#!"
-          style={{ height: "30px", cursor: "pointer" }}
-          onClick={this.HandleEmailCollapseOpen.bind(this)}
-        >
-          <img src={PlusImg} alt="Plush" className="plush-img" />
-        </a>
-      );
+      <a
+        href="#!"
+        style={{ height: "30px", cursor: "pointer" }}
+        onClick={this.HandleEmailCollapseOpen.bind(this)}
+      >
+        <img src={PlusImg} alt="Plush" className="plush-img" />
+      </a>
+    );
 
     return (
       <Fragment>
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
-            <div>
-              <div className="head-header">
-                <div className="head-header-1">
-                  <div className="row">
-                    <div className="col-12 col-xs-4 col-sm-4 col-md-3">
-                      {/* <img
+          <div>
+            <div className="head-header">
+              <div className="head-header-1">
+                <div className="row">
+                  <div className="col-12 col-xs-4 col-sm-4 col-md-3">
+                    <img
                       src={HeadphoneImg}
                       alt="headphone"
                       className="headphone"
-                    /> */}
-                      {ticketDetailsData.ticketSourceType ===
-                        "Calls" ? (
-                          <img
-                            src={HeadphoneImg}
-                            alt="HeadPhone"
-                            className="headphone"
-                            title="Calls"
-                          />
-                        ) : ticketDetailsData.ticketSourceType ===
-                          "Mails" ? (
-                            <img
-                              src={MailImg}
-                              alt="HeadPhone"
-                              className="headphone"
-                              title="Mails"
-                            />
-                          ) : ticketDetailsData.ticketSourceType ===
-                            "Facebook" ? (
-                              <img
-                                src={FacebookImg}
-                                alt="HeadPhone"
-                                className="headphone"
-                                title="Facebook"
-                              />
-                            ) : ticketDetailsData.ticketSourceType ===
-                              "ChatBot" ? (
-                                <img
-                                  src={Chat}
-                                  alt="HeadPhone"
-                                  className="headphone"
-                                  title="ChatBot"
-                                />
-                              ) : ticketDetailsData.ticketSourceType ===
-                                "Twitter" ? (
-                                  <img
-                                    src={Twitter}
-                                    alt="HeadPhone"
-                                    className="headphone black-twitter"
-                                    title="Twitter"
-                                  />
-                                ) : null}
-                      <label className="id-abc-1234">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.id
-                          : "ID"}
+                    />
+                    <label className="id-abc-1234">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.id
+                        : "ID"}
                       - {ticketDetailsData.ticketID}
-                        <span className="updated-2-d-ago">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.updated
-                            : "Updated "}
-                          {ticketDetailsData.updateDate}
-                        </span>
-                      </label>
-                      <a
-                        href="#!"
-                        className="loading-rectangle-cntr"
-                        onClick={this.handleGetHistoricalData.bind(this)}
-                      >
-                        <img
-                          src={LoadingImg}
-                          alt="Loading"
-                          className="loading-rectangle m-0"
-                          title="Ticket Historical"
+                      <span className="updated-2-d-ago">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.updated
+                          : "Updated "}
+                        {ticketDetailsData.updateDate}
+                      </span>
+                    </label>
+                    <a
+                      href="#!"
+                      className="loading-rectangle-cntr"
+                      onClick={this.handleGetHistoricalData.bind(this)}
+                    >
+                      <img
+                        src={LoadingImg}
+                        alt="Loading"
+                        className="loading-rectangle m-0"
+                        title="Ticket Historical"
                         // onClick={this.handleGetHistoricalData.bind(this)}
-                        />
-                      </a>
-                    </div>
+                      />
+                    </a>
+                  </div>
 
-                    <div className="historical-model">
-                      <Modal
-                        open={open}
-                        onClose={this.onCloseModal.bind(this)}
-                        closeIconId="sdsg"
-                        modalId="Historical-popup"
-                        overlayId="logout-ovrly"
-                        classNames={{ modal: "historical-popup" }}
-                      >
-                        <label className="lblHistorical">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.tickethistorical
-                            : "Ticket Historical"}
-                        </label>
-                        <img
-                          src={CancelImg}
-                          alt="cancelImg"
-                          className="cancalImg"
-                          onClick={this.onCloseModal.bind(this)}
-                        />
-                        <div className="tic-history tic-his varunoverflow">
-                          <ReactTable
-                            data={historicalDetails}
-                            columns={[
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.name
-                                      : "Name"}
-                                  </span>
-                                ),
-                                accessor: "name",
-                                width: 150,
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.action
-                                      : "Action"}
-                                  </span>
-                                ),
-                                accessor: "action",
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                        .timedate
-                                      : "Time & Date"}
-                                  </span>
-                                ),
-                                accessor: "dateandTime",
-                                width: 200,
-                                Cell: (row) => {
-                                  var date = row.original["dateandTime"];
-                                  return (
-                                    <span>
-                                      {moment(date).format("M/D/YYYY")} &nbsp;
-                                      {moment(date).format("HH:mm")}
-                                    </span>
-                                  );
-                                },
-                              },
-                            ]}
-                            resizable={false}
-                            defaultPageSize={5}
-                            showPagination={false}
-                          />
-                        </div>
-                      </Modal>
-                    </div>
-
-                    <div
-                      className={
-                        this.state.isKB
-                          ? "col-12 col-xs-8 col-sm-8 col-md-9 iskbticket"
-                          : "col-12 col-xs-8 col-sm-8 col-md-9"
-                      }
-                    >
-                      <div
-                        style={{ float: "right", marginTop: "0px" }}
-                        className={this.state.isKB ? "iskbticket" : ""}
-                      >
-                        <a
-                          href="#!"
-                          className="d-inline-block"
-                          onClick={this.HandlelabelModalOpen.bind(this)}
-                        >
-                          <img
-                            src={Headphone2Img}
-                            alt="headphone"
-                            className="oval-55"
-                            title="Agent List"
-                          />
-                          <label
-                            className="naman-r"
-                          // onClick={this.HandlelabelModalOpen.bind(this)}
-                          >
-                            {ticketDetailsData.username}
-                          </label>
-                          <img src={DownImg} alt="down" className="down-header" />
-                        </a>
-                        <button
-                          type="button"
-                          className={
-                            this.state.isKB
-                              ? "myticket-submit-solve-button iskbticket"
-                              : "myticket-submit-solve-button"
-                          }
-                          onClick={this.handleSubmitTicket.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.submit
-                            : "SUBMIT"}
-                        </button>
-                      </div>
-                    </div>
+                  <div className="historical-model">
                     <Modal
-                      open={this.state.labelModal}
-                      onClose={this.HandlelabelModalClose.bind(this)}
-                      closeIconId="close"
-                      modalId="labelmodel-popup"
+                      open={open}
+                      onClose={this.onCloseModal.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
                       overlayId="logout-ovrly"
+                      classNames={{ modal: "historical-popup" }}
                     >
-                      <div
-                        className={
-                          this.state.isKB
-                            ? "myTicket-table remov agentlist iskbticket"
-                            : "myTicket-table remov agentlist"
-                        }
-                        id="tic-det-assign"
-                      >
+                      <label className="lblHistorical">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.tickethistorical
+                          : "Ticket Historical"}
+                      </label>
+                      <img
+                        src={CancelImg}
+                        alt="cancelImg"
+                        className="cancalImg"
+                        onClick={this.onCloseModal.bind(this)}
+                      />
+                      <div className="tic-history tic-his varunoverflow">
                         <ReactTable
-                          className="limit-react-table-body"
-                          data={SearchAssignData}
+                          data={historicalDetails}
                           columns={[
                             {
                               Header: (
                                 <span>
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.span.empid
-                                    : "Emp Id"}
-                                </span>
-                              ),
-                              accessor: "user_ID",
-                              width: 80,
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
                                     ? TranslationContext.span.name
                                     : "Name"}
                                 </span>
                               ),
-                              accessor: "agentName",
+                              accessor: "name",
+                              width: 150,
                             },
                             {
                               Header: (
                                 <span>
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.label.designation
-                                    : "Designation"}
+                                    ? TranslationContext.span.action
+                                    : "Action"}
                                 </span>
                               ),
-                              accessor: "designation",
+                              accessor: "action",
+                            },
+                            {
+                              Header: (
+                                <span>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .timedate
+                                    : "Time & Date"}
+                                </span>
+                              ),
+                              accessor: "dateandTime",
+                              width: 200,
+                              Cell: (row) => {
+                                var date = row.original["dateandTime"];
+                                return (
+                                  <span>
+                                    {moment(date).format("M/D/YYYY")} &nbsp;
+                                    {moment(date).format("HH:mm")}
+                                  </span>
+                                );
+                              },
                             },
                           ]}
-                          minRows={2}
-                          defaultPageSize={-1}
-                          showPagination={false}
                           resizable={false}
-                          getTrProps={(rowInfo, column) => {
-                            const index = column ? column.index : -1;
-                            return {
-                              onClick: (e) => {
-                                this.selectedRow = index;
-                                var agentId = column.original["user_ID"];
-                                this.setState({ agentId });
-                              },
-                              style: {
-                                background:
-                                  this.selectedRow === index ? "#ECF2F4" : null,
-                              },
-                            };
-                          }}
+                          defaultPageSize={5}
+                          showPagination={false}
                         />
-                        <div className="button-margin">
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={this.handleReAssignCommentOpen.bind(
-                              this,
-                              "assignCmd"
-                            )}
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.placeholder.select
-                              : "SELECT"}
-                          </button>
-                        </div>
-                        <div
-                          className="cancel-assign"
-                          onClick={this.HandlelabelModalClose.bind(this)}
-                        >
-                          <img src={Cancel} alt="cancel" />
-                        </div>
                       </div>
                     </Modal>
                   </div>
+
+                  <div
+                    className={
+                      this.state.isKB
+                        ? "col-12 col-xs-8 col-sm-8 col-md-9 iskbticket"
+                        : "col-12 col-xs-8 col-sm-8 col-md-9"
+                    }
+                  >
+                    <div
+                      style={{ float: "right", marginTop: "0px" }}
+                      className={this.state.isKB ? "iskbticket" : ""}
+                    >
+                      <a
+                        href="#!"
+                        className="d-inline-block"
+                        onClick={this.HandlelabelModalOpen.bind(this)}
+                      >
+                        <img
+                          src={Headphone2Img}
+                          alt="headphone"
+                          className="oval-55"
+                          title="Agent List"
+                        />
+                        <label
+                          className="naman-r"
+                          // onClick={this.HandlelabelModalOpen.bind(this)}
+                        >
+                          {ticketDetailsData.username}
+                        </label>
+                        <img src={DownImg} alt="down" className="down-header" />
+                      </a>
+                      <button
+                        type="button"
+                        className={
+                          this.state.isKB
+                            ? "myticket-submit-solve-button iskbticket"
+                            : "myticket-submit-solve-button"
+                        }
+                        onClick={this.handleSubmitTicket.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.submit
+                          : "SUBMIT"}
+                      </button>
+                    </div>
+                  </div>
+                  <Modal
+                    open={this.state.labelModal}
+                    onClose={this.HandlelabelModalClose.bind(this)}
+                    closeIconId="close"
+                    modalId="labelmodel-popup"
+                    overlayId="logout-ovrly"
+                  >
+                    <div
+                      className={
+                        this.state.isKB
+                          ? "myTicket-table remov agentlist iskbticket"
+                          : "myTicket-table remov agentlist"
+                      }
+                      id="tic-det-assign"
+                    >
+                      <ReactTable
+                        className="limit-react-table-body"
+                        data={SearchAssignData}
+                        columns={[
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.empid
+                                  : "Emp Id"}
+                              </span>
+                            ),
+                            accessor: "user_ID",
+                            width: 80,
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.name
+                                  : "Name"}
+                              </span>
+                            ),
+                            accessor: "agentName",
+                          },
+                          {
+                            Header: (
+                              <span>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.designation
+                                  : "Designation"}
+                              </span>
+                            ),
+                            accessor: "designation",
+                          },
+                        ]}
+                        minRows={2}
+                        defaultPageSize={-1}
+                        showPagination={false}
+                        resizable={false}
+                        getTrProps={(rowInfo, column) => {
+                          const index = column ? column.index : -1;
+                          return {
+                            onClick: (e) => {
+                              this.selectedRow = index;
+                              var agentId = column.original["user_ID"];
+                              this.setState({ agentId });
+                            },
+                            style: {
+                              background:
+                                this.selectedRow === index ? "#ECF2F4" : null,
+                            },
+                          };
+                        }}
+                      />
+                      <div className="button-margin">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={this.handleReAssignCommentOpen.bind(
+                            this,
+                            "assignCmd"
+                          )}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.placeholder.select
+                            : "SELECT"}
+                        </button>
+                      </div>
+                      <div
+                        className="cancel-assign"
+                        onClick={this.HandlelabelModalClose.bind(this)}
+                      >
+                        <img src={Cancel} alt="cancel" />
+                      </div>
+                    </div>
+                  </Modal>
                 </div>
               </div>
-              <Modal
-                open={this.state.ReAssignComment}
-                onClose={this.handleReAssignCommentOpen.bind(this)}
-                closeIconId="sdsg"
-                modalId="Historical-popup"
-                overlayId="logout-ovrly"
-                classNames={{
-                  modal: "historical-popup",
-                }}
-              >
-                <div className="commenttextborder">
-                  <div className="comment-disp">
-                    <div className="Commentlabel">
-                      <label className="Commentlabel1">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.button.addcomment
-                          : "Add Comment"}
-                      </label>
-                    </div>
-                    <div>
-                      <img
-                        src={CrossIcon}
-                        alt="Minus"
-                        className="pro-cross-icn m-0"
-                        onClick={this.handleReAssignCommentOpen.bind(this)}
-                      />
-                    </div>
-                  </div>
-                  <div className="commenttextmessage">
-                    <textarea
-                      cols="31"
-                      rows="3"
-                      className="ticketMSGCmt-textarea"
-                      name="addReassignCmmt"
-                      maxLength={300}
-                      value={this.state.addReassignCmmt}
-                      onChange={this.handleNoteOnChange}
-                    ></textarea>
-                  </div>
-                  {this.state.addReassignCmmt.length === 0 && (
-                    <p style={{ color: "red", marginTop: "0px" }}>
-                      {this.state.AssignCommentCompulsory}
-                    </p>
-                  )}
-                  <div className="SendCommentBtn" style={{ float: "left" }}>
-                    <button
-                      className="SendCommentBtn1"
-                      onClick={this.handleSkipComment.bind(this)}
-                    >
+            </div>
+            <Modal
+              open={this.state.ReAssignComment}
+              onClose={this.handleReAssignCommentOpen.bind(this)}
+              closeIconId="sdsg"
+              modalId="Historical-popup"
+              overlayId="logout-ovrly"
+              classNames={{
+                modal: "historical-popup",
+              }}
+            >
+              <div className="commenttextborder">
+                <div className="comment-disp">
+                  <div className="Commentlabel">
+                    <label className="Commentlabel1">
                       {TranslationContext !== undefined
-                        ? TranslationContext.button.skip
-                        : "SKIP"}
-                    </button>
+                        ? TranslationContext.button.addcomment
+                        : "Add Comment"}
+                    </label>
                   </div>
-                  <div className="SendCommentBtn">
-                    <button
-                      className="SendCommentBtn1"
-                      onClick={this.handleSendMailData.bind(this, 4)}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.add
-                        : "ADD"}
-                    </button>
+                  <div>
+                    <img
+                      src={CrossIcon}
+                      alt="Minus"
+                      className="pro-cross-icn m-0"
+                      onClick={this.handleReAssignCommentOpen.bind(this)}
+                    />
                   </div>
                 </div>
-              </Modal>
-              <div className="card-rectangle">
-                <div className="rectangle-box">
-                  <div className="row">
-                    <div className="col-md-3">
-                      <div style={{ padding: "15px" }}>
-                        <label className="mobile-number">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.mobilenumber
-                            : "Mobile Number"}
-                        </label>
-                        <br />
-                        <label className="mobile-no">
-                          {ticketDetailsData.customerPhoneNumber}
-                        </label>
-                        <a
-                          href="#!"
-                          onClick={this.HandleProfileModalOpen.bind(this)}
-                        >
-                          <img
-                            src={EyeImg}
-                            alt="eye"
-                            className="eyeImg1"
-                            title="Customer Profile"
-                          // onClick={this.HandleProfileModalOpen.bind(this)}
-                          />
-                        </a>
-                        <Modal
-                          open={this.state.profilemodal}
-                          onClose={this.HandleProfileModalClose.bind(this)}
-                          modalId="profile-popup"
-                          overlayId="logout-ovrly"
-                        >
-                          <div className="profilemodalmaindiv">
-                            <div style={{ float: "right" }}>
-                              <img
-                                src={CrossIcon}
-                                alt="cross-icon"
-                                className="pro-cross-icn"
-                                onClick={this.HandleProfileModalClose.bind(this)}
-                              />
+                <div className="commenttextmessage">
+                  <textarea
+                    cols="31"
+                    rows="3"
+                    className="ticketMSGCmt-textarea"
+                    name="addReassignCmmt"
+                    maxLength={300}
+                    value={this.state.addReassignCmmt}
+                    onChange={this.handleNoteOnChange}
+                  ></textarea>
+                </div>
+                {this.state.addReassignCmmt.length === 0 && (
+                  <p style={{ color: "red", marginTop: "0px" }}>
+                    {this.state.AssignCommentCompulsory}
+                  </p>
+                )}
+                <div className="SendCommentBtn" style={{ float: "left" }}>
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleSkipComment.bind(this)}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.skip
+                      : "SKIP"}
+                  </button>
+                </div>
+                <div className="SendCommentBtn">
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleSendMailData.bind(this, 4)}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.add
+                      : "ADD"}
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            <div className="card-rectangle">
+              <div className="rectangle-box">
+                <div className="row">
+                  <div className="col-md-3">
+                    <div style={{ padding: "15px" }}>
+                      <label className="mobile-number">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.mobilenumber
+                          : "Mobile Number"}
+                      </label>
+                      <br />
+                      <label className="mobile-no">
+                        {ticketDetailsData.customerPhoneNumber}
+                      </label>
+                      <a
+                        href="#!"
+                        onClick={this.HandleProfileModalOpen.bind(this)}
+                      >
+                        <img
+                          src={EyeImg}
+                          alt="eye"
+                          className="eyeImg1"
+                          title="Customer Profile"
+                        />
+                      </a>
+                      <Modal
+                        open={this.state.profilemodal}
+                        onClose={this.HandleProfileModalClose.bind(this)}
+                        modalId="profile-popup"
+                        overlayId="logout-ovrly"
+                      >
+                        <div className="profilemodalmaindiv">
+                          <div style={{ float: "right" }}>
+                            <img
+                              src={CrossIcon}
+                              alt="cross-icon"
+                              className="pro-cross-icn"
+                              onClick={this.HandleProfileModalClose.bind(this)}
+                            />
+                          </div>
+                          <div className="row profilemodalrow">
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.name
+                                  : "Name"}
+                              </label>
+                              <label className="profilemodal-textval">
+                                {ticketDetailsData.customerName}
+                              </label>
                             </div>
-                            <div className="row profilemodalrow">
-                              <div className="col-md-6">
-                                <label className="profilemodal-text">
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.mobile
+                                  : "Mobile"}
+                              </label>
+                              <label className="profilemodal-textval">
+                                {ticketDetailsData.customerPhoneNumber}
+                              </label>
+                            </div>
+                          </div>
+                          <div className="row profilemodalrow-1">
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.email
+                                  : "Email"}
+                              </label>
+                              <label className="profilemodal-textval">
+                                {ticketDetailsData.customerEmailId}
+                              </label>
+                            </div>
+
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.alternatenumber
+                                  : "Alternate Number"}
+                              </label>
+                              <label className="profilemodal-textval">
+                                {ticketDetailsData.altNumber}
+                              </label>
+                            </div>
+                          </div>
+                          <div className="row" style={{ marginLeft: "15px" }}>
+                            <div className="openticketbox profilemodalrow-1">
+                              <label className="open-tickets-box-text">
+                                {ticketDetailsData.openTicket}
+                                <small className="open-tickets-box-textval">
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.span.name
-                                    : "Name"}
+                                    ? TranslationContext.ticketingDashboard
+                                        .opentickets
+                                    : "Open Tickets"}
+                                </small>
+                              </label>
+                            </div>
+                            <div className="openticketbox-2 profilemodalrow-1">
+                              <label className="open-tickets-box-text">
+                                {ticketDetailsData.totalticket}
+                                <small className="open-tickets-box-textval">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .totaltickets
+                                    : "Total Tickets"}
+                                </small>
+                              </label>
+                            </div>
+                          </div>
+                          <div className="row profilemodal-row-3">
+                            <img src={CustomerIcon} alt="customer-icon" />
+                            <label className="full-profile-view-text">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.fullprofileview
+                                : "FULL PROFILE VIEW"}
+                            </label>
+                          </div>
+                        </div>
+                      </Modal>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        onClick={this.handleBillImgModalOpen.bind(this)}
+                        className=""
+                        style={{
+                          display: "inline",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        <img
+                          src={BillInvoiceImg}
+                          alt="eye"
+                          className="billImg"
+                          title="Historical Order"
+                        />
+                      </a>
+                      <Modal
+                        open={this.state.BillInvoiceModal}
+                        onClose={this.handleBillImgModalClose.bind(this)}
+                        modalId="BillInvoice-popup"
+                        overlayId="logout-ovrly"
+                      >
+                        <div className="row">
+                          <div className="col-md-5">
+                            <div className="customerBill">
+                              <img
+                                src={UserIcon}
+                                alt="customer-icon"
+                                className="usericon"
+                              />
+                              <label className="customer-text">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.customer
+                                  : "CUSTOMER"}
+                              </label>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6 namepad">
+                                <label className="fullna">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.fullname
+                                    : "Full Name"}
                                 </label>
-                                <label className="profilemodal-textval">
+                                <label className="namedi">
                                   {ticketDetailsData.customerName}
                                 </label>
                               </div>
-                              <div className="col-md-6">
-                                <label className="profilemodal-text">
+                              <div className="col-md-6 namepad">
+                                <label className="fullna">
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.label.mobile
-                                    : "Mobile"}
+                                    ? TranslationContext.label.mobilenumber
+                                    : "Mobile Number"}
                                 </label>
-                                <label className="profilemodal-textval">
+                                <label className="namedi">
                                   {ticketDetailsData.customerPhoneNumber}
                                 </label>
                               </div>
                             </div>
-                            <div className="row profilemodalrow-1">
-                              <div className="col-md-6">
-                                <label className="profilemodal-text">
+                            <div className="row">
+                              <div className="col-md-12 namepad">
+                                <label className="fullna">
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.a.email
-                                    : "Email"}
+                                    ? TranslationContext.label.emailid
+                                    : "Email ID"}
                                 </label>
-                                <label
-                                  className="profilemodal-textval"
-                                  style={{ wordBreak: "break-word" }}
-                                >
+                                <label className="namedi">
                                   {ticketDetailsData.customerEmailId}
                                 </label>
                               </div>
-
-                              <div className="col-md-6">
-                                <label className="profilemodal-text">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.alternatenumber
-                                    : "Alternate Number"}
-                                </label>
-                                <label className="profilemodal-textval">
-                                  {ticketDetailsData.altNumber}
-                                </label>
-                              </div>
-                            </div>
-                            <div className="row" style={{ marginLeft: "15px" }}>
-                              <div className="openticketbox profilemodalrow-1">
-                                <label className="open-tickets-box-text">
-                                  {ticketDetailsData.openTicket}
-                                  <small className="open-tickets-box-textval">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                        .opentickets
-                                      : "Open Tickets"}
-                                  </small>
-                                </label>
-                              </div>
-                              <div className="openticketbox-2 profilemodalrow-1">
-                                <label className="open-tickets-box-text">
-                                  {ticketDetailsData.totalticket}
-                                  <small className="open-tickets-box-textval">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                        .totaltickets
-                                      : "Total Tickets"}
-                                  </small>
-                                </label>
-                              </div>
-                            </div>
-                            <div className="row profilemodal-row-3">
-                              <img src={CustomerIcon} alt="customer-icon" />
-                              <label className="full-profile-view-text">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.fullprofileview
-                                  : "FULL PROFILE VIEW"}
-                              </label>
                             </div>
                           </div>
-                        </Modal>
-                        <a
-                          href={Demo.BLANK_LINK}
-                          onClick={this.handleBillImgModalOpen.bind(this)}
-                          className=""
-                          style={{
-                            display: "inline",
-                            marginLeft: "5px",
-                          }}
-                        >
-                          <img
-                            src={BillInvoiceImg}
-                            alt="eye"
-                            className="billImg"
-                            title="Historical Order"
-                          // onClick={this.handleBillImgModalOpen.bind(this)}
-                          />
-                        </a>
-                        <Modal
-                          open={this.state.BillInvoiceModal}
-                          onClose={this.handleBillImgModalClose.bind(this)}
-                          modalId="BillInvoice-popup"
-                          overlayId="logout-ovrly"
-                        >
-                          <div className="row">
-                            <div className="col-md-5">
-                              <div className="customerBill">
+
+                          <div className="col-md-7 xyz">
+                            <img
+                              src={CrossIcon}
+                              alt="cross-icon"
+                              className="cross"
+                              onClick={this.handleBillImgModalClose.bind(this)}
+                            />
+                            <div>
+                              <div className="histo">
                                 <img
-                                  src={UserIcon}
+                                  src={Order}
                                   alt="customer-icon"
-                                  className="usericon"
+                                  style={{ marginTop: "-10px" }}
                                 />
                                 <label className="customer-text">
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.span.customer
-                                    : "CUSTOMER"}
+                                    ? TranslationContext.label.historicalorder
+                                    : "HISTORICAL ORDER"}
                                 </label>
                               </div>
-                              <div className="row">
-                                <div className="col-md-6 namepad">
-                                  <label className="fullna">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.fullname
-                                      : "Full Name"}
-                                  </label>
-                                  <label className="namedi">
-                                    {ticketDetailsData.customerName}
-                                  </label>
-                                </div>
-                                <div className="col-md-6 namepad">
-                                  <label className="fullna">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.mobilenumber
-                                      : "Mobile Number"}
-                                  </label>
-                                  <label className="namedi">
-                                    {ticketDetailsData.customerPhoneNumber}
-                                  </label>
-                                </div>
+
+                              <div className="tablehistrical">
+                                <ReactTable
+                                  data={orderDetails}
+                                  columns={[
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .ordernumber
+                                            : "Order Number"}
+                                        </span>
+                                      ),
+                                      accessor: "orderNumber",
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .mobilenumber
+                                            : "Mobile Number"}
+                                        </span>
+                                      ),
+                                      accessor: "mobileNumber",
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.amount
+                                            : "Amount"}
+                                        </span>
+                                      ),
+                                      accessor: "itemPrice",
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .purchasedate
+                                            : "Purchase Date"}
+                                        </span>
+                                      ),
+                                      accessor: "dateFormat",
+                                    },
+                                  ]}
+                                  defaultPageSize={5}
+                                  showPagination={false}
+                                />
                               </div>
-                              <div className="row">
-                                <div className="col-md-12 namepad">
-                                  <label className="fullna">
+                            </div>
+                          </div>
+                        </div>
+                      </Modal>
+
+                      <div className="card-space-1">
+                        <label className="target-closure-date">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard
+                                .targetclosuredate
+                            : "Target Closure Date"}
+                          &nbsp;
+                        </label>
+                        <label className="Date-target">
+                          {ticketDetailsData.targetClosuredate}
+                        </label>
+                      </div>
+                      <div className="mobilenumber-resp">
+                        <span className="line-respo"></span>
+                        <label className="respo">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.response
+                            : "Response"}
+                        </label>
+                        <label className="resol">
+                          <span className="line-resol"></span>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.resolution
+                            : "Resolution"}
+                        </label>
+                      </div>
+
+                      <div className="tic-det-progress">
+                        <Progress multi>
+                          {this.state.progressDataWithcColor.map(function(
+                            item
+                          ) {
+                            if (item.color === "No Color") {
+                              return <Progress bar></Progress>;
+                            }
+                            if (item.color === "Orange") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="warning"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
+
+                            if (item.color === "Red") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="danger"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
+
+                            if (item.color === "Green") {
+                              return (
+                                <Progress
+                                  bar
+                                  color="success"
+                                  value={item.value}
+                                ></Progress>
+                              );
+                            }
+                          })}
+                        </Progress>
+                      </div>
+                      <p className="logout-label font-weight-bold prog-indi-1">
+                        {ticketDetailsData.durationRemaining}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mid-sec mid-secnew">
+                      <div className="row mob-pad">
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div
+                            className={
+                              statusValidate
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={
+                                this.state.selectetedParameters.ticketStatusID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="ticketStatusID"
+                            >
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.div.ticketstatus
+                                  : "Ticket Status"}
+                              </option>
+                              {this.state.TicketStatusData !== null &&
+                                this.state.TicketStatusData.map((item, i) => (
+                                  <option key={i} value={item.ticketStatusID}>
+                                    {item.ticketStatusName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.brand
+                                : "Brand"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={this.state.selectetedParameters.brandID}
+                              onChange={this.handleDropDownChange}
+                              name="brandID"
+                            >
+                              <option className="select-category-placeholder">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .selectbrand
+                                  : "Select Brand"}
+                              </option>
+                              {this.state.BrandData !== null &&
+                                this.state.BrandData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.brandID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.brandName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.category
+                                : "Category"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={this.state.selectetedParameters.categoryID}
+                              onChange={this.handleDropDownChange}
+                              name="categoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectcategory
+                                  : "Select Category"}
+                              </option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.categoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.subcategory
+                                : "Sub Category"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={
+                                this.state.selectetedParameters.subCategoryID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="subCategoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectsubcategory
+                                  : "Select Sub Category"}
+                              </option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.subCategoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.issuetype
+                                : "Issue Type"}
+                            </label>
+
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={
+                                this.state.selectetedParameters.issueTypeID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="issueTypeID"
+                            >
+                              <option className="select-sub-category-placeholder">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectissuetype
+                                  : "Select Issue Type"}
+                              </option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.issueTypeID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.priority
+                                : "Priority"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={this.state.selectetedParameters.priorityID}
+                              onChange={this.handleDropDownChange}
+                              name="priorityID"
+                            >
+                              {this.state.TicketPriorityData !== null &&
+                                this.state.TicketPriorityData.map((item, i) => {
+                                  if (
+                                    this.state.isSystemGenerated == false &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return null;
+                                  } else if (
+                                    this.state.isSystemGenerated == true &&
+                                    item.priortyName === "Auto"
+                                  ) {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={i} value={item.priorityID}>
+                                        {item.priortyName}
+                                      </option>
+                                    );
+                                  }
+                                })}
+                            </select>
+                            {this.state.checkPriorityDetails && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .slahasnotbeencreated
+                                  : "SLA has not been created"}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.channelofpurchase
+                                : "Channel Of Purchase"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={
+                                this.state.selectetedParameters
+                                  .channelOfPurchaseID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="channelOfPurchaseID"
+                            >
+                              <option className="select-category-placeholder">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option
+                                      .selectchannelofpurchase
+                                  : "Select Channel Of Purchase"}
+                              </option>
+                              {this.state.ChannelOfPurchaseData !== null &&
+                                this.state.ChannelOfPurchaseData.map(
+                                  (item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.channelOfPurchaseID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.nameOfChannel}
+                                    </option>
+                                  )
+                                )}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div
+                            className={
+                              this.state.role_Name === "Supervisor"
+                                ? "form-group"
+                                : "form-group disabled-link" &&
+                                  this.state.role_Name === "Admin"
+                                ? "form-group"
+                                : "form-group disabled-link"
+                            }
+                          >
+                            <label className="label-4">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.ticketactiontype
+                                : "Ticket Action Type"}
+                            </label>
+                            <select
+                              className={
+                                this.state.isKB
+                                  ? "rectangle-9 select-category-placeholder iskbticket"
+                                  : "rectangle-9 select-category-placeholder"
+                              }
+                              value={
+                                this.state.selectetedParameters
+                                  .ticketActionTypeID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="ticketActionTypeID"
+                            >
+                              <option className="select-category-placeholder">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .selectticketactiontype
+                                  : "Select Ticket Action Type"}
+                              </option>
+                              {this.state.TicketActionTypeData !== null &&
+                                this.state.TicketActionTypeData.map(
+                                  (item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.ticketActionTypeID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.ticketActionTypeName}
+                                    </option>
+                                  )
+                                )}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div style={{ padding: "15px 0" }}>
+                      <div className="storebox">
+                        <div className="form-group">
+                          <label className="label-4 storeSpacing">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.store
+                              : "Store"}
+                          </label>
+                          <a
+                            href="#!"
+                            className="bata-rajouri-garden d-inline-block"
+                            onClick={this.HandleStoreModalOpen.bind(this)}
+                          >
+                            {this.state.StoreName === "" ? (
+                              <label className="label-4 storeSpacing">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .nostorattached
+                                  : "No Store Attached"}
+                              </label>
+                            ) : (
+                              this.state.StoreName
+                            )}
+                            &nbsp;
+                            <img
+                              src={PencilImg}
+                              alt="Pencile"
+                              className="pencilImg"
+                              title="Attach Store"
+                            />
+                          </a>
+                          <Modal
+                            open={this.state.storemodal}
+                            onClose={this.HandleStoreModalClose.bind(this)}
+                            modalId="addStoreTableModal"
+                            overlayId="logout-ovrly"
+                          >
+                            <div className="row storemainrow">
+                              <div className={"col-md-12"}>
+                                <select
+                                  className={
+                                    this.state.isKB
+                                      ? "systemstoredropdown1 iskbticket"
+                                      : "systemstoredropdown1"
+                                  }
+                                  value={this.state.CustStoreStatusDrop}
+                                  onChange={this.hanldeStatusChange.bind(this)}
+                                >
+                                  <option value="1">
                                     {TranslationContext !== undefined
-                                      ? TranslationContext.label.emailid
-                                      : "Email ID"}
+                                      ? TranslationContext.ticketingDashboard
+                                          .customerwanttovisitstore
+                                      : "Customer Want to visit store"}
+                                  </option>
+                                  <option value="2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.ticketingDashboard
+                                          .customeralreadyvisitedstore
+                                      : "Customer Already visited store"}
+                                  </option>
+                                </select>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    marginTop: "7px",
+                                    float: "right",
+                                  }}
+                                >
+                                  <label className="orderdetailpopup">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.yes
+                                      : "Yes"}
                                   </label>
-                                  <label className="namedi">
-                                    {ticketDetailsData.customerEmailId}
+                                  <div
+                                    className={
+                                      this.state.isKB
+                                        ? "switchmargin iskbticket"
+                                        : "switchmargin"
+                                    }
+                                  >
+                                    <div className="switch switch-primary d-inline m-r-10">
+                                      <input
+                                        type="checkbox"
+                                        id="editDashboard-p-12"
+                                      />
+                                      <label
+                                        htmlFor="editDashboard-p-12"
+                                        className="cr"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <label className="orderdetailpopup">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.option.no
+                                      : "No"}
                                   </label>
+                                  <div
+                                    className="storeplusline13"
+                                    onClick={this.HandleStoreModalClose.bind(
+                                      this
+                                    )}
+                                  >
+                                    <span
+                                      className="plusline13"
+                                      style={{ marginLeft: "10px" }}
+                                    ></span>
+                                    <img
+                                      src={MinusImg}
+                                      alt="Minus"
+                                      className="minus-imgorder"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="col-md-7 xyz">
-                              <img
-                                src={CrossIcon}
-                                alt="cross-icon"
-                                className="cross"
-                                onClick={this.handleBillImgModalClose.bind(this)}
-                              />
-                              <div>
-                                <div className="histo">
-                                  <img
-                                    src={Order}
-                                    alt="customer-icon"
-                                    style={{ marginTop: "-10px" }}
-                                  />
-                                  <label className="customer-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.historicalorder
-                                      : "HISTORICAL ORDER"}
-                                  </label>
+                            <div className="row m-0">
+                              <div
+                                className={
+                                  this.state.isKB
+                                    ? "col-md-6 m-b-10 m-t-10 iskbticket"
+                                    : "col-md-6 m-b-10 m-t-10"
+                                }
+                              >
+                                <input
+                                  type="text"
+                                  className="systemordersearch"
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .searchbynamepincodecode
+                                      : "Search By Store Name, Pin Code, Store Code"
+                                  }
+                                  value={this.state.SearchStore}
+                                  name="SearchStore"
+                                  autoComplete="off"
+                                  onChange={this.handleNoteOnChange}
+                                />
+                                <img
+                                  src={SearchBlackImg}
+                                  alt="Search"
+                                  className="systemorder-imgsearch"
+                                  onClick={this.handleGetStoreDetails.bind(
+                                    this
+                                  )}
+                                />
+                              </div>
+                              <div className="col-md-6 m-b-10 m-t-10 text-right">
+                                <button
+                                  type="button"
+                                  className={
+                                    this.state.isKB
+                                      ? "myticket-submit-solve-button m-0 iskbticket"
+                                      : "myticket-submit-solve-button m-0"
+                                  }
+                                  onClick={this.handleAttachStoreData.bind(
+                                    this
+                                  )}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.attachstore
+                                    : "Attach Store"}
+                                </button>
+                              </div>
+                            </div>
+                            <span className="linestore1"></span>
+                            <div className="newtabstore">
+                              <div className="tab-content tabcontentstore">
+                                <div className="">
+                                  <ul
+                                    className="nav alert-nav-tabs3 store-nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <li className="nav-item fo">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#storedetail-tab"
+                                        role="tab"
+                                        aria-controls="storedetail-tab"
+                                        aria-selected="true"
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.storedetails
+                                          : "Store Details"}
+                                      </a>
+                                    </li>
+                                    {this.state.selectedStoreData.length > 0 ||
+                                    selectedStore.length > 0 ? (
+                                      <li className="nav-item fo">
+                                        <a
+                                          className="nav-link"
+                                          data-toggle="tab"
+                                          href="#selectedstore-tab"
+                                          role="tab"
+                                          aria-controls="selectedstore-tab"
+                                          aria-selected="false"
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.a.selectedstore
+                                            : "Selected Store"}
+                                        </a>
+                                      </li>
+                                    ) : null}
+                                  </ul>
                                 </div>
-
-                                <div className="tablehistrical">
+                              </div>
+                            </div>
+                            <span className="linestore2"></span>
+                            <div className="tab-content p-0">
+                              <div
+                                className="tab-pane fade show active"
+                                id="storedetail-tab"
+                                role="tabpanel"
+                                aria-labelledby="storedetail-tab"
+                              >
+                                <div className="reactstoreselect custom-react-table datePickertable">
                                   <ReactTable
-                                    data={orderDetails}
+                                    data={this.state.storeDetails}
                                     columns={[
                                       {
-                                        Header: (
-                                          <span className="historyTable-header">
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.span
-                                                .ordernumber
-                                              : "Order Number"}
-                                          </span>
-                                        ),
-                                        accessor: "orderNumber",
+                                        Header: <span></span>,
+                                        accessor: "purpose",
+                                        Cell: (row) => {
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
+                                          return (
+                                            <div className="filter-checkbox">
+                                              <input
+                                                type="checkbox"
+                                                id={"i" + storeId}
+                                                style={{
+                                                  display: "none",
+                                                }}
+                                                name="ticket-store"
+                                                checked={
+                                                  this.state.CheckStoreID[
+                                                    storeId
+                                                  ] === true
+                                                }
+                                                onChange={this.handleCheckStoreID.bind(
+                                                  this,
+                                                  storeId,
+                                                  row.original
+                                                )}
+                                                defaultChecked={true}
+                                              />
+                                              <label
+                                                htmlFor={"i" + storeId}
+                                              ></label>
+                                            </div>
+                                          );
+                                        },
+                                        width: 20,
                                       },
                                       {
                                         Header: (
-                                          <span className="historyTable-header">
+                                          <span>
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label
-                                                .mobilenumber
-                                              : "Mobile Number"}
+                                                  .storecode
+                                              : "Store Code"}
                                           </span>
                                         ),
-                                        accessor: "mobileNumber",
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: (
-                                          <span className="historyTable-header">
+                                          <span>
                                             {TranslationContext !== undefined
-                                              ? TranslationContext.p.amount
-                                              : "Amount"}
+                                              ? TranslationContext.label
+                                                  .storename
+                                              : "Store Name"}
                                           </span>
                                         ),
-                                        // accessor: "itemPrice",
-                                        accessor: "itemPrice",
+                                        accessor: "storeName",
                                       },
                                       {
                                         Header: (
-                                          <span className="historyTable-header">
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storepincode
+                                              : "Store Pin Code"}
+                                          </span>
+                                        ),
+                                        accessor: "storeCode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
                                             {TranslationContext !== undefined
                                               ? TranslationContext.span
-                                                .purchasedate
-                                              : "Purchase Date"}
+                                                  .storeemailid
+                                              : "Store Email ID"}
                                           </span>
                                         ),
-                                        accessor: "dateFormat",
+                                        accessor: "storeEmailID",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
+                                        accessor: "address",
                                       },
                                     ]}
                                     defaultPageSize={5}
                                     showPagination={false}
-                                  // minRows={2}
+                                    minRows={2}
                                   />
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        </Modal>
-
-                        <div className="card-space-1">
-                          <label className="target-closure-date">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.ticketingDashboard
-                                .targetclosuredate
-                              : "Target Closure Date"}
-                          &nbsp;
-                        </label>
-                          <label className="Date-target">
-                            {ticketDetailsData.targetClosuredate}
-                          </label>
-                        </div>
-                        <div className="mobilenumber-resp">
-                          <span className="line-respo"></span>
-                          <label className="respo">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.response
-                              : "Response"}
-                          </label>
-                          <label className="resol">
-                            <span className="line-resol"></span>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.resolution
-                              : "Resolution"}
-                          </label>
-                        </div>
-
-                        <div className="tic-det-progress">
-                          <Progress multi>
-                            {this.state.progressDataWithcColor.map(function (
-                              item
-                            ) {
-                              if (item.color === "No Color") {
-                                return <Progress bar></Progress>;
-                              }
-                              if (item.color === "Orange") {
-                                return (
-                                  <Progress
-                                    bar
-                                    color="warning"
-                                    value={item.value}
-                                  ></Progress>
-                                );
-                              }
-
-                              if (item.color === "Red") {
-                                return (
-                                  <Progress
-                                    bar
-                                    color="danger"
-                                    value={item.value}
-                                  ></Progress>
-                                );
-                              }
-
-                              if (item.color === "Green") {
-                                return (
-                                  <Progress
-                                    bar
-                                    color="success"
-                                    value={item.value}
-                                  ></Progress>
-                                );
-                              }
-                            })}
-                          </Progress>
-                        </div>
-                        <p className="logout-label font-weight-bold prog-indi-1">
-                          {ticketDetailsData.durationRemaining}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      {/* <div
-                    className={
-                      this.state.role_Name === "Supervisor"
-                        ? "col-md-6"
-                        : "col-md-6 disabled-link" &&
-                          this.state.role_Name === "Admin"
-                        ? "col-md-6"
-                        : "col-md-6 disabled-link"
-                    }
-                  > */}
-                      <div className="mid-sec mid-secnew">
-                        <div className="row mob-pad">
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <div
-                              className={
-                                statusValidate
-                                  ? "form-group"
-                                  : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.status
-                                  : "Status"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={
-                                  this.state.selectetedParameters.ticketStatusID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="ticketStatusID"
+                              <div
+                                className="tab-pane fade"
+                                id="selectedstore-tab"
+                                role="tabpanel"
+                                aria-labelledby="selectedstore-tab"
                               >
-                                <option>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.div.ticketstatus
-                                    : "Ticket Status"}
-                                </option>
-                                {this.state.TicketStatusData !== null &&
-                                  this.state.TicketStatusData.map((item, i) => (
-                                    <option key={i} value={item.ticketStatusID}>
-                                      {item.ticketStatusName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.brand
-                                  : "Brand"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={this.state.selectetedParameters.brandID}
-                                onChange={this.handleDropDownChange}
-                                name="brandID"
-                              >
-                                <option className="select-category-placeholder">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.ticketingDashboard
-                                      .selectbrand
-                                    : "Select Brand"}
-                                </option>
-                                {this.state.BrandData !== null &&
-                                  this.state.BrandData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.brandID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.brandName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.category
-                                  : "Category"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={this.state.selectetedParameters.categoryID}
-                                onChange={this.handleDropDownChange}
-                                name="categoryID"
-                              >
-                                <option className="select-category-placeholder">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.option.selectcategory
-                                    : "Select Category"}
-                                </option>
-                                {this.state.CategoryData !== null &&
-                                  this.state.CategoryData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.categoryID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.categoryName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.subcategory
-                                  : "Sub Category"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={
-                                  this.state.selectetedParameters.subCategoryID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="subCategoryID"
-                              >
-                                <option className="select-category-placeholder">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.option.selectsubcategory
-                                    : "Select Sub Category"}
-                                </option>
-                                {this.state.SubCategoryData !== null &&
-                                  this.state.SubCategoryData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.subCategoryID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.subCategoryName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.issuetype
-                                  : "Issue Type"}
-                              </label>
-
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={
-                                  this.state.selectetedParameters.issueTypeID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="issueTypeID"
-                              >
-                                <option className="select-sub-category-placeholder">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.option.selectissuetype
-                                    : "Select Issue Type"}
-                                </option>
-                                {this.state.IssueTypeData !== null &&
-                                  this.state.IssueTypeData.map((item, i) => (
-                                    <option
-                                      key={i}
-                                      value={item.issueTypeID}
-                                      className="select-category-placeholder"
-                                    >
-                                      {item.issueTypeName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.priority
-                                  : "Priority"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={this.state.selectetedParameters.priorityID}
-                                onChange={this.handleDropDownChange}
-                                name="priorityID"
-                              >
-                                {/* <option>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.priority
-                                    : "Priority"}
-                                </option> */}
-                                {this.state.TicketPriorityData !== null &&
-                                  this.state.TicketPriorityData.map((item, i) => {
-                                    if (
-                                      this.state.isSystemGenerated == false &&
-                                      item.priortyName === "Auto"
-                                    ) {
-                                      return null;
-                                    } else if (
-                                      this.state.isSystemGenerated == true &&
-                                      item.priortyName === "Auto"
-                                    ) {
-                                      return (
-                                        <option key={i} value={item.priorityID}>
-                                          {item.priortyName}
-                                        </option>
-                                      );
-                                    } else {
-                                      return (
-                                        <option key={i} value={item.priorityID}>
-                                          {item.priortyName}
-                                        </option>
-                                      );
-                                    }
-                                  })}
-                              </select>
-                              {this.state.checkPriorityDetails && (
-                                <p style={{ color: "red", marginBottom: "0px" }}>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.ticketingDashboard
-                                      .slahasnotbeencreated
-                                    : "SLA has not been created"}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.channelofpurchase
-                                  : "Channel Of Purchase"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={
-                                  this.state.selectetedParameters
-                                    .channelOfPurchaseID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="channelOfPurchaseID"
-                              // onChange={this.setChannelOfPurchaseValue}
-                              >
-                                <option className="select-category-placeholder">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.option
-                                      .selectchannelofpurchase
-                                    : "Select Channel Of Purchase"}
-                                </option>
-                                {this.state.ChannelOfPurchaseData !== null &&
-                                  this.state.ChannelOfPurchaseData.map(
-                                    (item, i) => (
-                                      <option
-                                        key={i}
-                                        value={item.channelOfPurchaseID}
-                                        className="select-category-placeholder"
-                                      >
-                                        {item.nameOfChannel}
-                                      </option>
-                                    )
-                                  )}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                            {/* <div className="form-group"> */}
-                            <div
-                              className={
-                                this.state.role_Name === "Supervisor"
-                                  ? "form-group"
-                                  : "form-group disabled-link" &&
-                                    this.state.role_Name === "Admin"
-                                    ? "form-group"
-                                    : "form-group disabled-link"
-                              }
-                            >
-                              <label className="label-4">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.ticketactiontype
-                                  : "Ticket Action Type"}
-                              </label>
-                              <select
-                                className={
-                                  this.state.isKB
-                                    ? "rectangle-9 select-category-placeholder iskbticket"
-                                    : "rectangle-9 select-category-placeholder"
-                                }
-                                value={
-                                  this.state.selectetedParameters
-                                    .ticketActionTypeID
-                                }
-                                onChange={this.handleDropDownChange}
-                                name="ticketActionTypeID"
-                              >
-                                <option className="select-category-placeholder">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.ticketingDashboard
-                                      .selectticketactiontype
-                                    : "Select Ticket Action Type"}
-                                </option>
-                                {this.state.TicketActionTypeData !== null &&
-                                  this.state.TicketActionTypeData.map(
-                                    (item, i) => (
-                                      <option
-                                        key={i}
-                                        value={item.ticketActionTypeID}
-                                        className="select-category-placeholder"
-                                      >
-                                        {item.ticketActionTypeName}
-                                      </option>
-                                    )
-                                  )}
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-3">
-                      <div style={{ padding: "15px 0" }}>
-                        <div className="storebox">
-                          <div className="form-group">
-                            <label className="label-4 storeSpacing">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.a.store
-                                : "Store"}
-                            </label>
-                            <a
-                              href="#!"
-                              className="bata-rajouri-garden d-inline-block"
-                              onClick={this.HandleStoreModalOpen.bind(this)}
-                            >
-                              {this.state.StoreName === "" ? (
-                                <label className="label-4 storeSpacing">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.ticketingDashboard
-                                      .nostorattached
-                                    : "No Store Attached"}
-                                </label>
-                              ) : (
-                                  this.state.StoreName
-                                )}
-                            &nbsp;
-                            <img
-                                src={PencilImg}
-                                alt="Pencile"
-                                className="pencilImg"
-                                title="Attach Store"
-                              />
-                            </a>
-                            <Modal
-                              open={this.state.storemodal}
-                              onClose={this.HandleStoreModalClose.bind(this)}
-                              modalId="addStoreTableModal"
-                              overlayId="logout-ovrly"
-                            >
-                              <div className="row storemainrow">
-                                <div className={"col-md-12"}>
-                                  <select
-                                    className={
-                                      this.state.isKB
-                                        ? "systemstoredropdown1 iskbticket"
-                                        : "systemstoredropdown1"
-                                    }
-                                    value={this.state.CustStoreStatusDrop}
-                                    onChange={this.hanldeStatusChange.bind(this)}
-                                  >
-                                    <option value="1">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                          .customerwanttovisitstore
-                                        : "Customer Want to visit store"}
-                                    </option>
-                                    <option value="2">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.ticketingDashboard
-                                          .customeralreadyvisitedstore
-                                        : "Customer Already visited store"}
-                                    </option>
-                                  </select>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      marginTop: "7px",
-                                      float: "right",
-                                    }}
-                                  >
-                                    <label className="orderdetailpopup">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.option.yes
-                                        : "Yes"}
-                                    </label>
-                                    <div
-                                      className={
-                                        this.state.isKB
-                                          ? "switchmargin iskbticket"
-                                          : "switchmargin"
-                                      }
-                                    >
-                                      <div className="switch switch-primary d-inline m-r-10">
-                                        <input
-                                          type="checkbox"
-                                          id="editDashboard-p-12"
-                                        />
-                                        <label
-                                          htmlFor="editDashboard-p-12"
-                                          className="cr"
-                                        ></label>
-                                      </div>
-                                    </div>
-                                    <label className="orderdetailpopup">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.option.no
-                                        : "No"}
-                                    </label>
-                                    <div
-                                      className="storeplusline13"
-                                      onClick={this.HandleStoreModalClose.bind(
-                                        this
-                                      )}
-                                    >
-                                      <span
-                                        className="plusline13"
-                                        style={{ marginLeft: "10px" }}
-                                      ></span>
-                                      <img
-                                        src={MinusImg}
-                                        alt="Minus"
-                                        className="minus-imgorder"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="row m-0">
-                                <div
-                                  className={
-                                    this.state.isKB
-                                      ? "col-md-6 m-b-10 m-t-10 iskbticket"
-                                      : "col-md-6 m-b-10 m-t-10"
-                                  }
-                                // style={{ marginLeft: "25px" }}
-                                >
-                                  <input
-                                    type="text"
-                                    className="systemordersearch"
-                                    placeholder={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.label
-                                          .searchbynamepincodecode
-                                        : "Search By Store Name, Pin Code, Store Code"
-                                    }
-                                    value={this.state.SearchStore}
-                                    name="SearchStore"
-                                    autoComplete="off"
-                                    onChange={this.handleNoteOnChange}
-                                  />
-                                  <img
-                                    src={SearchBlackImg}
-                                    alt="Search"
-                                    className="systemorder-imgsearch"
-                                    onClick={this.handleGetStoreDetails.bind(
-                                      this
-                                    )}
-                                  />
-                                </div>
-                                <div className="col-md-6 m-b-10 m-t-10 text-right">
-                                  <button
-                                    type="button"
-                                    className={
-                                      this.state.isKB
-                                        ? "myticket-submit-solve-button m-0 iskbticket"
-                                        : "myticket-submit-solve-button m-0"
-                                    }
-                                    onClick={this.handleAttachStoreData.bind(
-                                      this
-                                    )}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.button.attachstore
-                                      : "Attach Store"}
-                                  </button>
-                                </div>
-                              </div>
-                              <span className="linestore1"></span>
-                              <div className="newtabstore">
-                                <div className="tab-content tabcontentstore">
-                                  <div className="">
-                                    <ul
-                                      className="nav alert-nav-tabs3 store-nav-tabs"
-                                      role="tablist"
-                                    >
-                                      <li className="nav-item fo">
-                                        <a
-                                          className="nav-link active"
-                                          data-toggle="tab"
-                                          href="#storedetail-tab"
-                                          role="tab"
-                                          aria-controls="storedetail-tab"
-                                          aria-selected="true"
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.a.storedetails
-                                            : "Store Details"}
-                                        </a>
-                                      </li>
-                                      {this.state.selectedStoreData.length > 0 ||
-                                        selectedStore.length > 0 ? (
-                                          <li className="nav-item fo">
-                                            <a
-                                              className="nav-link"
-                                              data-toggle="tab"
-                                              href="#selectedstore-tab"
-                                              role="tab"
-                                              aria-controls="selectedstore-tab"
-                                              aria-selected="false"
-                                            >
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.a.selectedstore
-                                                : "Selected Store"}
-                                            </a>
-                                          </li>
-                                        ) : null}
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                              <span className="linestore2"></span>
-                              <div className="tab-content p-0">
-                                <div
-                                  className="tab-pane fade show active"
-                                  id="storedetail-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="storedetail-tab"
-                                >
-                                  <div className="reactstoreselect custom-react-table datePickertable">
-                                    <ReactTable
-                                      data={this.state.storeDetails}
-                                      columns={[
-                                        {
-                                          Header: <span></span>,
-                                          accessor: "purpose",
-                                          Cell: (row) => {
-                                            var storeId = 0;
-                                            if (row.original.lpassStoreID > 0) {
-                                              storeId = row.original.lpassStoreID;
-                                            } else {
-                                              storeId = row.original.storeID;
-                                            }
-                                            return (
-                                              <div className="filter-checkbox">
-                                                <input
-                                                  type="checkbox"
-                                                  id={"i" + storeId}
-                                                  style={{
-                                                    display: "none",
-                                                  }}
-                                                  name="ticket-store"
-                                                  checked={
-                                                    this.state.CheckStoreID[
-                                                    storeId
-                                                    ] === true
-                                                  }
-                                                  onChange={this.handleCheckStoreID.bind(
-                                                    this,
-                                                    storeId,
-                                                    row.original
-                                                  )}
-                                                  defaultChecked={true}
-                                                />
-                                                <label
-                                                  htmlFor={"i" + storeId}
-                                                ></label>
-                                              </div>
-                                            );
-                                          },
-                                          width: 20,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                  .storecode
-                                                : "Store Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                  .storename
-                                                : "Store Name"}
-                                            </span>
-                                          ),
-                                          accessor: "storeName",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                  .storepincode
-                                                : "Store Pin Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storeemailid
-                                                : "Store Email ID"}
-                                            </span>
-                                          ),
-                                          accessor: "storeEmailID",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
-                                                  .storeaddress
-                                                : "Store Address"}
-                                            </span>
-                                          ),
-                                          accessor: "address",
-                                        },
-                                      ]}
-                                      // resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                      minRows={2}
-                                    />
-                                  </div>
-                                </div>
-                                <div
-                                  className="tab-pane fade"
-                                  id="selectedstore-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="selectedstore-tab"
-                                >
-                                  <div className="reactstoreselect custom-react-table datePickertable storeTdetail">
-                                    <ReactTable
-                                      data={this.state.selectedStoreData}
-                                      columns={[
-                                        {
-                                          Header: "",
-                                          accessor: "storeID",
-                                          width: 20,
-                                          Cell: (row) => {
-                                            var storeId = 0;
-                                            if (row.original.lpassStoreID > 0) {
-                                              storeId = row.original.lpassStoreID;
-                                            } else {
-                                              storeId = row.original.storeID;
-                                            }
-                                            return (
-                                              <div
-                                                className="filter-checkbox"
-                                                style={{
-                                                  marginLeft: "15px",
-                                                }}
-                                              >
-                                                <input
-                                                  type="checkbox"
-                                                  id={"i" + storeId}
-                                                  style={{
-                                                    display: "none",
-                                                  }}
-                                                  name="ticket-store"
-                                                  checked={
-                                                    this.state.CheckStoreID[
-                                                    storeId
-                                                    ] === true
-                                                  }
-                                                  onChange={this.handleCheckStoreID.bind(
-                                                    this,
-                                                    storeId,
-                                                    row.original
-                                                  )}
-                                                  defaultChecked={true}
-                                                />
-                                                <label
-                                                  htmlFor={"i" + storeId}
-                                                ></label>
-                                              </div>
-                                            );
-                                          },
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span.purpose
-                                                : "Purpose"}
-                                            </span>
-                                          ),
-                                          accessor: "invoiceNumber",
-                                          minWidth: 160,
-                                          Cell: (row) => (
+                                <div className="reactstoreselect custom-react-table datePickertable storeTdetail">
+                                  <ReactTable
+                                    data={this.state.selectedStoreData}
+                                    columns={[
+                                      {
+                                        Header: "",
+                                        accessor: "storeID",
+                                        width: 20,
+                                        Cell: (row) => {
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
+                                          return (
                                             <div
                                               className="filter-checkbox"
                                               style={{
                                                 marginLeft: "15px",
                                               }}
                                             >
-                                              <label
-                                                htmlFor={
-                                                  "i" + row.original.storeID
+                                              <input
+                                                type="checkbox"
+                                                id={"i" + storeId}
+                                                style={{
+                                                  display: "none",
+                                                }}
+                                                name="ticket-store"
+                                                checked={
+                                                  this.state.CheckStoreID[
+                                                    storeId
+                                                  ] === true
                                                 }
-                                              >
-                                                {row.original.Purpose_Id === 1
-                                                  ? "Customer Want to visit store"
-                                                  : "Customer Already visited store"}
-                                              </label>
+                                                onChange={this.handleCheckStoreID.bind(
+                                                  this,
+                                                  storeId,
+                                                  row.original
+                                                )}
+                                                defaultChecked={true}
+                                              />
+                                              <label
+                                                htmlFor={"i" + storeId}
+                                              ></label>
                                             </div>
-                                          ),
+                                          );
                                         },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.purpose
+                                              : "Purpose"}
+                                          </span>
+                                        ),
+                                        accessor: "invoiceNumber",
+                                        minWidth: 160,
+                                        Cell: (row) => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{
+                                              marginLeft: "15px",
+                                            }}
+                                          >
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.storeID
+                                              }
+                                            >
+                                              {row.original.Purpose_Id === 1
+                                                ? "Customer Want to visit store"
+                                                : "Customer Already visited store"}
+                                            </label>
+                                          </div>
+                                        ),
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
                                                   .storecode
-                                                : "Store Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
+                                              : "Store Code"}
+                                          </span>
+                                        ),
+                                        accessor: "storeCode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
                                                   .storename
-                                                : "Store Name"}
-                                            </span>
-                                          ),
-                                          accessor: "storeName",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
+                                              : "Store Name"}
+                                          </span>
+                                        ),
+                                        accessor: "storeName",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
                                                   .storepincode
-                                                : "Store Pin Code"}
-                                            </span>
-                                          ),
-                                          accessor: "pincode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
+                                              : "Store Pin Code"}
+                                          </span>
+                                        ),
+                                        accessor: "pincode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
                                                   .storeemailid
-                                                : "Store Email ID"}
-                                            </span>
-                                          ),
-                                          accessor: "storeEmailID",
-                                          minWidth: 190,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.label
+                                              : "Store Email ID"}
+                                          </span>
+                                        ),
+                                        accessor: "storeEmailID",
+                                        minWidth: 190,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
                                                   .storeaddress
-                                                : "Store Address"}
-                                            </span>
-                                          ),
-                                          accessor: "address",
-                                          minWidth: 140,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
+                                              : "Store Address"}
+                                          </span>
+                                        ),
+                                        accessor: "address",
+                                        minWidth: 140,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
                                                   .visitdate
-                                                : "Visit Date"}
-                                            </span>
-                                          ),
-                                          accessor: "storeVisitDate",
-                                          minWidth: 150,
-                                          Cell: (row) => {
-                                            var storeId = 0;
-                                            if (row.original.lpassStoreID > 0) {
-                                              storeId = row.original.lpassStoreID;
-                                            } else {
-                                              storeId = row.original.storeID;
-                                            }
-                                            return (
-                                              <div className="col-sm-12 p-0">
-                                                <DatePicker
-                                                  selected={
-                                                    row.original
-                                                      .storeVisitDate !== null
-                                                      ? new Date(
+                                              : "Visit Date"}
+                                          </span>
+                                        ),
+                                        accessor: "storeVisitDate",
+                                        minWidth: 150,
+                                        Cell: (row) => {
+                                          var storeId = 0;
+                                          if (row.original.lpassStoreID > 0) {
+                                            storeId = row.original.lpassStoreID;
+                                          } else {
+                                            storeId = row.original.storeID;
+                                          }
+                                          return (
+                                            <div className="col-sm-12 p-0">
+                                              <DatePicker
+                                                selected={
+                                                  row.original
+                                                    .storeVisitDate !== null
+                                                    ? new Date(
                                                         row.original.storeVisitDate
                                                       )
-                                                      : new Date()
-                                                  }
-                                                  placeholderText="MM/DD/YYYY"
-                                                  showMonthDropdown
-                                                  showYearDropdown
-                                                  dateFormat="MM/DD/YYYY"
-                                                  id={"visitDate" + storeId}
-                                                  value={
-                                                    row.original
-                                                      .storeVisitDate !== null
-                                                      ? moment(
+                                                    : new Date()
+                                                }
+                                                placeholderText="MM/DD/YYYY"
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dateFormat="MM/DD/YYYY"
+                                                id={"visitDate" + storeId}
+                                                value={
+                                                  row.original
+                                                    .storeVisitDate !== null
+                                                    ? moment(
                                                         row.original
                                                           .storeVisitDate
                                                       ).format("MM/DD/YYYY")
-                                                      : ""
-                                                  }
-                                                  // name="visitDate"
-                                                  onChange={this.handleByvisitDate.bind(
-                                                    this,
-                                                    row
-                                                  )}
-                                                />
-                                              </div>
-                                            );
-                                          },
+                                                    : ""
+                                                }
+                                                onChange={this.handleByvisitDate.bind(
+                                                  this,
+                                                  row
+                                                )}
+                                              />
+                                            </div>
+                                          );
                                         },
-                                      ]}
-                                      resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                      minRows={2}
-                                    />
-                                  </div>
+                                      },
+                                    ]}
+                                    resizable={false}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                    minRows={2}
+                                  />
                                 </div>
                               </div>
-                            </Modal>
-                          </div>
-                          <div className="">
-                            <label className="label-4">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.product
-                                : "Product"}
-                            </label>
-                            <a
-                              href="#!"
-                              className="bata-rajouri-garden d-inline-block"
-                              onClick={this.handleOrderTableOpen.bind(this)}
-                            >
-                              {this.state.ProductName === "" ? (
-                                <label className="label-4">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.noproductattached
-                                    : "No Product Attached"}
-                                </label>
-                              ) : (
-                                  this.state.ProductName
-                                )}
+                            </div>
+                          </Modal>
+                        </div>
+                        <div className="">
+                          <label className="label-4">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.product
+                              : "Product"}
+                          </label>
+                          <a
+                            href="#!"
+                            className="bata-rajouri-garden d-inline-block"
+                            onClick={this.handleOrderTableOpen.bind(this)}
+                          >
+                            {this.state.ProductName === "" ? (
+                              <label className="label-4">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.noproductattached
+                                  : "No Product Attached"}
+                              </label>
+                            ) : (
+                              this.state.ProductName
+                            )}
                             &nbsp;
                             <img
-                                src={PencilImg}
-                                alt="Pencile"
-                                className="pencilImg"
-                                title="Attach Product"
-                              />
-                            </a>
-                            <Modal
-                              onClose={this.handleOrderTableClose.bind(this)}
-                              open={this.state.OrderTable}
-                              modalId="addOrderTableModal"
-                              overlayId="logout-ovrly"
+                              src={PencilImg}
+                              alt="Pencile"
+                              className="pencilImg"
+                              title="Attach Product"
+                            />
+                          </a>
+                          <Modal
+                            onClose={this.handleOrderTableClose.bind(this)}
+                            open={this.state.OrderTable}
+                            modalId="addOrderTableModal"
+                            overlayId="logout-ovrly"
+                          >
+                            <div
+                              className="row"
+                              style={{
+                                marginLeft: "0px",
+                                marginRight: "0px",
+                              }}
                             >
                               <div
-                                className="row"
-                                style={{
-                                  marginLeft: "0px",
-                                  marginRight: "0px",
-                                }}
+                                className="col-md-12 claim-status-card"
+                                style={{ height: "54px" }}
                               >
-                                <div
-                                  className="col-md-12 claim-status-card"
-                                  style={{ height: "54px" }}
-                                >
-                                  <label style={{ marginTop: "7px" }}>
-                                    <b>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label
+                                <label style={{ marginTop: "7px" }}>
+                                  <b>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label
                                           .customerwanttoattachorder
-                                        : "Customer Want to attach order"}
-                                    </b>
+                                      : "Customer Want to attach order"}
+                                  </b>
+                                </label>
+                                <div
+                                  className="claimplus"
+                                  onClick={this.handleOrderTableClose.bind(
+                                    this
+                                  )}
+                                >
+                                  <span className="plusline12"></span>
+                                  <span>
+                                    <img
+                                      src={MinusImg}
+                                      alt="Minus"
+                                      className="minus-imgorder"
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className="row m-t-10 m-b-10"
+                              style={{
+                                marginLeft: "0",
+                                marginRight: "0",
+                              }}
+                            >
+                              <div className="col-md-6">
+                                <label className="orderdetailpopup">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.orderdetails
+                                    : "Order Details"}
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <div
+                                  style={{
+                                    float: "right",
+                                    display: "flex",
+                                  }}
+                                >
+                                  <label className="orderdetailpopup">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.order
+                                      : "Order"}
                                   </label>
                                   <div
-                                    className="claimplus"
-                                    onClick={this.handleOrderTableClose.bind(
-                                      this
-                                    )}
+                                    className={
+                                      this.state.isKB
+                                        ? "orderswitch orderswitchitem iskbticket"
+                                        : "orderswitch orderswitchitem"
+                                    }
                                   >
-                                    <span className="plusline12"></span>
-                                    <span>
-                                      <img
-                                        src={MinusImg}
-                                        alt="Minus"
-                                        className="minus-imgorder"
+                                    <div className="switch switch-primary d-inline">
+                                      <input
+                                        type="checkbox"
+                                        id="editTasks-p-2"
+                                        checked={this.state.OrdItmBtnStatus}
+                                        onChange={this.handleChangeOrderItem}
                                       />
-                                    </span>
+                                      <label
+                                        htmlFor="editTasks-p-2"
+                                        className="cr ord"
+                                      ></label>
+                                    </div>
                                   </div>
+                                  <label className="orderdetailpopup">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.item
+                                      : "Item"}
+                                  </label>
                                 </div>
                               </div>
                               <div
-                                className="row m-t-10 m-b-10"
-                                style={{
-                                  marginLeft: "0",
-                                  marginRight: "0",
-                                }}
+                                className={
+                                  this.state.isKB
+                                    ? "col-md-3 iskbticket"
+                                    : "col-md-3"
+                                }
                               >
-                                <div className="col-md-6">
-                                  <label className="orderdetailpopup">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.orderdetails
-                                      : "Order Details"}
-                                  </label>
-                                </div>
-                                <div className="col-md-3">
-                                  <div
-                                    style={{
-                                      float: "right",
-                                      display: "flex",
-                                    }}
-                                  >
-                                    <label className="orderdetailpopup">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.order
-                                        : "Order"}
-                                    </label>
-                                    <div
-                                      className={
-                                        this.state.isKB
-                                          ? "orderswitch orderswitchitem iskbticket"
-                                          : "orderswitch orderswitchitem"
-                                      }
-                                    >
-                                      <div className="switch switch-primary d-inline">
-                                        <input
-                                          type="checkbox"
-                                          id="editTasks-p-2"
-                                          checked={this.state.OrdItmBtnStatus}
-                                          onChange={this.handleChangeOrderItem}
-                                        />
-                                        <label
-                                          htmlFor="editTasks-p-2"
-                                          className="cr ord"
-                                        ></label>
-                                      </div>
-                                    </div>
-                                    <label className="orderdetailpopup">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.item
-                                        : "Item"}
-                                    </label>
-                                  </div>
-                                </div>
-                                <div
-                                  className={
-                                    this.state.isKB
-                                      ? "col-md-3 iskbticket"
-                                      : "col-md-3"
-                                  }
-                                >
-                                  <input
-                                    type="text"
-                                    className="searchtextpopup"
-                                    placeholder={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.label
+                                <input
+                                  type="text"
+                                  className="searchtextpopup"
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.label
                                           .searchorderbyordernumber
-                                        : "Search Order By Order Number"
-                                    }
-                                    name="orderNumber"
-                                    value={this.state.orderNumber}
-                                    onChange={this.handleNoteOnChange}
-                                    autoComplete="off"
-                                  />
-                                  <img
-                                    src={SearchBlackImg}
-                                    alt="Search"
-                                    className="searchtextimgpopup"
-                                    onClick={this.handleOrderSearchData.bind(
-                                      this
-                                    )}
-                                  />
-                                </div>
+                                      : "Search Order By Order Number"
+                                  }
+                                  name="orderNumber"
+                                  value={this.state.orderNumber}
+                                  onChange={this.handleNoteOnChange}
+                                  autoComplete="off"
+                                />
+                                <img
+                                  src={SearchBlackImg}
+                                  alt="Search"
+                                  className="searchtextimgpopup"
+                                  onClick={this.handleOrderSearchData.bind(
+                                    this
+                                  )}
+                                />
                               </div>
+                            </div>
 
-                              <span className="linestore1"></span>
-                              <div className="newtabstore">
-                                <div className="tab-content tabcontentstore">
-                                  <div className="row align-items-center mr-0">
-                                    <ul
-                                      className="nav alert-nav-tabs3 store-nav-tabs col-md-6"
-                                      role="tablist"
-                                    >
+                            <span className="linestore1"></span>
+                            <div className="newtabstore">
+                              <div className="tab-content tabcontentstore">
+                                <div className="row align-items-center mr-0">
+                                  <ul
+                                    className="nav alert-nav-tabs3 store-nav-tabs col-md-6"
+                                    role="tablist"
+                                  >
+                                    <li className="nav-item fo">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#productdetail-tab"
+                                        role="tab"
+                                        aria-controls="productdetail-tab"
+                                        aria-selected="true"
+                                        onClick={this.handleSetDataTab}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.productdetails
+                                          : "Product Details"}
+                                      </a>
+                                    </li>
+                                    {this.state.SelectedAllOrder.length > 0 ? (
                                       <li className="nav-item fo">
                                         <a
-                                          className="nav-link active"
+                                          className="nav-link"
                                           data-toggle="tab"
-                                          href="#productdetail-tab"
+                                          href="#selectedproduct-tab"
                                           role="tab"
-                                          aria-controls="productdetail-tab"
-                                          aria-selected="true"
+                                          aria-controls="selectedproduct-tab"
+                                          aria-selected="false"
                                           onClick={this.handleSetDataTab}
                                         >
                                           {TranslationContext !== undefined
-                                            ? TranslationContext.a.productdetails
-                                            : "Product Details"}
+                                            ? TranslationContext.a
+                                                .selectedproduct
+                                            : "Selected Product"}
                                         </a>
                                       </li>
-                                      {this.state.SelectedAllOrder.length > 0 ? (
-                                        <li className="nav-item fo">
-                                          <a
-                                            className="nav-link"
-                                            data-toggle="tab"
-                                            href="#selectedproduct-tab"
-                                            role="tab"
-                                            aria-controls="selectedproduct-tab"
-                                            aria-selected="false"
-                                            onClick={this.handleSetDataTab}
-                                          >
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.a
-                                                .selectedproduct
-                                              : "Selected Product"}
-                                          </a>
-                                        </li>
-                                      ) : null}
-                                    </ul>
-                                    {/* {this.state.SelectedAllOrder.length > 0 ? ( */}
-                                    <div className="col-md-6 m-b-10 m-t-10 text-right">
-                                      <button
-                                        type="button"
-                                        className={
-                                          this.state.isKB
-                                            ? "myticket-submit-solve-button m-0 iskbticket"
-                                            : "myticket-submit-solve-button m-0"
-                                        }
-                                        onClick={this.handleAttachProductData.bind(
-                                          this
-                                        )}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.button
+                                    ) : null}
+                                  </ul>
+                                  <div className="col-md-6 m-b-10 m-t-10 text-right">
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.state.isKB
+                                          ? "myticket-submit-solve-button m-0 iskbticket"
+                                          : "myticket-submit-solve-button m-0"
+                                      }
+                                      onClick={this.handleAttachProductData.bind(
+                                        this
+                                      )}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
                                             .attachproduct
-                                          : "Attach Product"}
-                                      </button>
-                                    </div>
-                                    {/* ) : null} */}
+                                        : "Attach Product"}
+                                    </button>
                                   </div>
                                 </div>
                               </div>
-                              <span className="linestore2"></span>
-                              <div className="tab-content p-0">
+                            </div>
+                            <span className="linestore2"></span>
+                            <div className="tab-content p-0">
+                              <div
+                                className="tab-pane fade show active"
+                                id="productdetail-tab"
+                                role="tabpanel"
+                                aria-labelledby="productdetail-tab"
+                              >
                                 <div
-                                  className="tab-pane fade show active"
-                                  id="productdetail-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="productdetail-tab"
+                                  className="reactstoreselect custom-react-table"
+                                  id="ordertbls"
+                                  style={{ display: "block" }}
                                 >
-                                  <div
-                                    className="reactstoreselect custom-react-table"
-                                    id="ordertbls"
-                                    style={{ display: "block" }}
-                                  >
-                                    <ReactTable
-                                      data={this.state.orderDetailsData}
-                                      columns={[
-                                        {
-                                          Header: <span></span>,
-                                          accessor: "invoiceNumber",
-                                          width: 20,
-                                          Cell: (row) => (
-                                            <div className="filter-checkbox">
-                                              <input
-                                                type="checkbox"
-                                                id={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                                style={{
-                                                  display: "none",
-                                                }}
-                                                name="AllOrder"
-                                                checked={this.state.selectedInvoiceNo.includes(
-                                                  row.original.invoiceNumber
-                                                )}
-                                                onChange={this.handleGetOderItemData.bind(
-                                                  this,
-                                                  row.original.invoiceNumber,
-                                                  row.original
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                              ></label>
-                                            </div>
-                                          ),
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicenumber
-                                                : "Invoice Number"}
-                                            </span>
-                                          ),
-                                          accessor: "invoiceNumber",
-                                          minWidth: 150,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicedate
-                                                : "Invoice Date"}
-                                            </span>
-                                          ),
-                                          accessor: "dateFormat",
-                                          minWidth: 120,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemcount
-                                                : "Item Count"}
-                                            </span>
-                                          ),
-                                          accessor: "itemCount",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemprice
-                                                : "Item Price"}
-                                            </span>
-                                          ),
-                                          accessor: "ordeItemPrice",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .pricepaid
-                                                : "Price Paid"}
-                                            </span>
-                                          ),
-                                          accessor: "orderPricePaid",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storecode
-                                                : "Store Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storeaddress
-                                                : "Store Address"}
-                                            </span>
-                                          ),
-                                          accessor: "storeAddress",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span.discount
-                                                : "Discount"}
-                                            </span>
-                                          ),
-                                          accessor: "discount",
-                                        },
-                                      ]}
-                                      resizable={false}
-                                      minRows={2}
-                                      defaultPageSize={5}
-                                      showPagination={true}
-                                    />
-                                  </div>
-                                  <div
-                                    className="reactstoreselect custom-react-table"
-                                    id="orderitemtbl"
-                                    style={{ display: "none" }}
-                                  >
-                                    <ReactTable
-                                      data={this.state.orderDetailsData}
-                                      expanded={this.state.expanded}
-                                      onExpandedChange={(
-                                        newExpanded,
-                                        index,
-                                        event
-                                      ) => {
-                                        if (newExpanded[index[0]] === false) {
-                                          newExpanded = {};
-                                        } else {
-                                          Object.keys(newExpanded).map((k) => {
-                                            newExpanded[k] =
-                                              parseInt(k) === index[0]
-                                                ? {}
-                                                : false;
-                                          });
-                                        }
-                                        this.setState({
-                                          ...this.state,
-                                          expanded: newExpanded,
-                                        });
-                                      }}
-                                      columns={[
-                                        {
-                                          Header: <span></span>,
-                                          accessor: "invoiceNumber",
-                                          width: 20,
-                                          Cell: (row) => (
-                                            <div className="filter-checkbox">
-                                              <input
-                                                type="checkbox"
-                                                id={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                                style={{
-                                                  display: "none",
-                                                }}
-                                                name="AllOrder"
-                                                checked={this.state.selectedInvoiceNo.includes(
-                                                  row.original.invoiceNumber
-                                                )}
-                                                onChange={this.handleGetOderItemData.bind(
-                                                  this,
-                                                  row.original.invoiceNumber,
-                                                  row.original
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                              ></label>
-                                            </div>
-                                          ),
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicenumber
-                                                : "Invoice Number"}
-                                            </span>
-                                          ),
-                                          accessor: "invoiceNumber",
-                                          minWidth: 150,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicedate
-                                                : "Invoice Date"}
-                                            </span>
-                                          ),
-                                          accessor: "dateFormat",
-                                          minWidth: 120,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemcount
-                                                : "Item Count"}
-                                            </span>
-                                          ),
-                                          accessor: "itemCount",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemprice
-                                                : "Item Price"}
-                                            </span>
-                                          ),
-                                          accessor: "ordeItemPrice",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .pricepaid
-                                                : "Price Paid"}
-                                            </span>
-                                          ),
-                                          accessor: "orderPricePaid",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storecode
-                                                : "Store Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storeaddress
-                                                : "Store Address"}
-                                            </span>
-                                          ),
-                                          accessor: "storeAddress",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span.discount
-                                                : "Discount"}
-                                            </span>
-                                          ),
-                                          accessor: "discount",
-                                        },
-                                      ]}
-                                      resizable={false}
-                                      minRows={2}
-                                      defaultPageSize={5}
-                                      showPagination={true}
-                                      SubComponent={(row) => {
-                                        return (
-                                          <div
-                                            className="inner-custom-react-table"
-                                            id="inner-custom-react-table"
-                                          >
-                                            <ReactTable
-                                              // data={row.original.orderItems}
-                                              data={this.state.OrderSubItem.filter(
-                                                (x) =>
-                                                  x.invoiceNumber ===
-                                                  row.original.invoiceNumber
+                                  <ReactTable
+                                    data={this.state.orderDetailsData}
+                                    columns={[
+                                      {
+                                        Header: <span></span>,
+                                        accessor: "invoiceNumber",
+                                        width: 20,
+                                        Cell: (row) => (
+                                          <div className="filter-checkbox">
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                              style={{
+                                                display: "none",
+                                              }}
+                                              name="AllOrder"
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
                                               )}
-                                              columns={[
-                                                {
-                                                  Header: <span> </span>,
-                                                  accessor: "invoiceNo",
-                                                  width: 20,
-                                                  Cell: (row) => {
-                                                    return (
-                                                      <div className="filter-checkbox">
-                                                        <input
-                                                          type="checkbox"
-                                                          id={
-                                                            "item" +
-                                                            row.original
-                                                              .invoiceNumber
-                                                          }
-                                                          style={{
-                                                            display: "none",
-                                                          }}
-                                                          name="AllItem"
-                                                          checked={
-                                                            this.state
-                                                              .CheckBoxAllItem[
-                                                            row.original
-                                                              .articleNumber
-                                                            ] === true
-                                                          }
-                                                          onChange={this.checkIndividualItem.bind(
-                                                            this,
-                                                            row.original
-                                                              .articleNumber,
-                                                            row.original
-                                                          )}
-                                                        />
-                                                        <label
-                                                          htmlFor={
-                                                            "item" +
-                                                            row.original
-                                                              .invoiceNumber
-                                                          }
-                                                        ></label>
-                                                      </div>
-                                                    );
-                                                  },
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
-                                                          .articlenumber
-                                                        : "Article Number"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "articleNumber",
-                                                  minWidth: 140,
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
-                                                          .articlename
-                                                        : "Article Name"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "articleName",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext
-                                                          .ticketingDashboard
-                                                          .articlemrp
-                                                        : "Article MRP"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "itemPrice",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
-                                                          .pricepaid
-                                                        : "Price Paid"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "pricePaid",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
-                                                          .discount
-                                                        : "Discount"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "discount",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext
-                                                          .ticketingDashboard
-                                                          .requiredsize
-                                                        : "Required Size"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "requireSize",
-                                                  Cell: (row) => {
-                                                    return (
-                                                      <div
-                                                        ref={this.setWrapperRef}
-                                                      >
-                                                        <input
-                                                          type="text"
-                                                          id={
-                                                            "requireSizeTxt" +
-                                                            row.original
-                                                              .articleNumber
-                                                          }
-                                                          value={
-                                                            row.original
-                                                              .requireSize || ""
-                                                          }
-                                                          name="requiredSize"
-                                                          className="order-input"
-                                                          autoComplete="off"
-                                                          ref={(input) => {
-                                                            this.searchInput = input;
-                                                          }}
-                                                          onChange={() => {
-                                                            this.handleRequireSize(
-                                                              this,
-                                                              row
-                                                            );
-                                                          }}
-                                                        />
-                                                      </div>
-                                                    );
-                                                  },
-                                                },
-                                              ]}
-                                              resizable={false}
-                                              defaultPageSize={5}
-                                              minRows={2}
-                                              showPagination={false}
+                                              onChange={this.handleGetOderItemData.bind(
+                                                this,
+                                                row.original.invoiceNumber,
+                                                row.original
+                                              )}
                                             />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                            ></label>
                                           </div>
-                                        );
-                                      }}
-                                    />
-                                  </div>
+                                        ),
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
+                                        accessor: "invoiceNumber",
+                                        minWidth: 150,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
+                                        accessor: "dateFormat",
+                                        minWidth: 120,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
+                                        accessor: "itemCount",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
+                                        accessor: "ordeItemPrice",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
+                                        accessor: "orderPricePaid",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
+                                        accessor: "storeCode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
+                                        accessor: "storeAddress",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
+                                        accessor: "discount",
+                                      },
+                                    ]}
+                                    resizable={false}
+                                    minRows={2}
+                                    defaultPageSize={5}
+                                    showPagination={true}
+                                  />
                                 </div>
                                 <div
-                                  className="tab-pane fade"
-                                  id="selectedproduct-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="selectedproduct-tab"
+                                  className="reactstoreselect custom-react-table"
+                                  id="orderitemtbl"
+                                  style={{ display: "none" }}
                                 >
-                                  <div
-                                    className="reactstoreselect custom-react-table"
-                                    id="ordertbls1"
-                                    style={{ display: "block" }}
-                                  >
-                                    <ReactTable
-                                      data={this.state.SelectedAllOrder}
-                                      expanded={this.state.expanded}
-                                      onExpandedChange={(
-                                        newExpanded,
-                                        index,
-                                        event
-                                      ) => {
-                                        if (newExpanded[index[0]] === false) {
-                                          newExpanded = {};
-                                        } else {
-                                          Object.keys(newExpanded).map((k) => {
-                                            newExpanded[k] =
-                                              parseInt(k) === index[0]
-                                                ? {}
-                                                : false;
-                                          });
-                                        }
-                                        this.setState({
-                                          ...this.state,
-                                          expanded: newExpanded,
+                                  <ReactTable
+                                    data={this.state.orderDetailsData}
+                                    expanded={this.state.expanded}
+                                    onExpandedChange={(
+                                      newExpanded,
+                                      index,
+                                      event
+                                    ) => {
+                                      if (newExpanded[index[0]] === false) {
+                                        newExpanded = {};
+                                      } else {
+                                        Object.keys(newExpanded).map((k) => {
+                                          newExpanded[k] =
+                                            parseInt(k) === index[0]
+                                              ? {}
+                                              : false;
                                         });
-                                      }}
-                                      columns={[
-                                        {
-                                          Header: <span></span>,
-                                          accessor: "invoiceNumber",
-                                          width: 20,
-                                          Cell: (row) => (
-                                            <div className="filter-checkbox">
-                                              <input
-                                                type="checkbox"
-                                                id={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                                style={{
-                                                  display: "none",
-                                                }}
-                                                name="AllOrder"
-                                                checked={this.state.selectedInvoiceNo.includes(
-                                                  row.original.invoiceNumber
-                                                )}
-                                                onChange={this.handleGetOderItemData.bind(
-                                                  this,
-                                                  row.original.invoiceNumber,
-                                                  row.original
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                              ></label>
-                                            </div>
-                                          ),
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicenumber
-                                                : "Invoice Number"}
-                                            </span>
-                                          ),
-                                          accessor: "invoiceNumber",
-                                          minWidth: 150,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicedate
-                                                : "Invoice Date"}
-                                            </span>
-                                          ),
-                                          accessor: "dateFormat",
-                                          minWidth: 120,
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemcount
-                                                : "Item Count"}
-                                            </span>
-                                          ),
-                                          accessor: "itemCount",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemprice
-                                                : "Item Price"}
-                                            </span>
-                                          ),
-                                          accessor: "ordeItemPrice",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .pricepaid
-                                                : "Price Paid"}
-                                            </span>
-                                          ),
-                                          accessor: "orderPricePaid",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storecode
-                                                : "Store Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storeaddress
-                                                : "Store Address"}
-                                            </span>
-                                          ),
-                                          accessor: "storeAddress",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span.discount
-                                                : "Discount"}
-                                            </span>
-                                          ),
-                                          accessor: "discount",
-                                        },
-                                      ]}
-                                      resizable={false}
-                                      minRows={2}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                    />
-                                  </div>
-                                  <div
-                                    className="reactstoreselect custom-react-table"
-                                    id="orderitemtbl1"
-                                    style={{ display: "none" }}
-                                  >
-                                    <ReactTable
-                                      data={this.state.SelectedAllOrder}
-                                      expanded={this.state.expanded}
-                                      onExpandedChange={(
-                                        newExpanded,
-                                        index,
-                                        event
-                                      ) => {
-                                        if (newExpanded[index[0]] === false) {
-                                          newExpanded = {};
-                                        } else {
-                                          Object.keys(newExpanded).map((k) => {
-                                            newExpanded[k] =
-                                              parseInt(k) === index[0]
-                                                ? {}
-                                                : false;
-                                          });
-                                        }
-                                        this.setState({
-                                          ...this.state,
-                                          expanded: newExpanded,
-                                        });
-                                      }}
-                                      columns={[
-                                        {
-                                          Header: <span></span>,
-                                          accessor: "invoiceNumber",
-                                          width: 20,
-                                          Cell: (row) => (
-                                            <div className="filter-checkbox">
-                                              <input
-                                                type="checkbox"
-                                                id={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                                style={{
-                                                  display: "none",
-                                                }}
-                                                name="AllOrder"
-                                                checked={this.state.selectedInvoiceNo.includes(
-                                                  row.original.invoiceNumber
-                                                )}
-                                                onChange={this.handleGetOderItemData.bind(
-                                                  this,
-                                                  row.original.invoiceNumber,
-                                                  row.original
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  "all" +
-                                                  row.original.invoiceNumber
-                                                }
-                                              ></label>
-                                            </div>
-                                          ),
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicenumber
-                                                : "Invoice Number"}
-                                            </span>
-                                          ),
-                                          accessor: "invoiceNumber",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .invoicedate
-                                                : "Invoice Date"}
-                                            </span>
-                                          ),
-                                          accessor: "dateFormat",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemcount
-                                                : "Item Count"}
-                                            </span>
-                                          ),
-                                          accessor: "itemCount",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .itemprice
-                                                : "Item Price"}
-                                            </span>
-                                          ),
-                                          accessor: "ordeItemPrice",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .pricepaid
-                                                : "Price Paid"}
-                                            </span>
-                                          ),
-                                          accessor: "orderPricePaid",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storecode
-                                                : "Store Code"}
-                                            </span>
-                                          ),
-                                          accessor: "storeCode",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span
-                                                  .storeaddress
-                                                : "Store Address"}
-                                            </span>
-                                          ),
-                                          accessor: "storeAddress",
-                                        },
-                                        {
-                                          Header: (
-                                            <span>
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.span.discount
-                                                : "Discount"}
-                                            </span>
-                                          ),
-                                          accessor: "discount",
-                                        },
-                                      ]}
-                                      //resizable={false}
-                                      minRows={2}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                      SubComponent={(row) => {
-                                        return (
-                                          <div
-                                            className="inner-custom-react-table"
-                                            id="inner-custom-react-table"
-                                          >
-                                            <ReactTable
-                                              data={this.state.OrderSubItem.filter(
-                                                (x) =>
-                                                  x.invoiceNumber ===
-                                                  row.original.invoiceNumber
+                                      }
+                                      this.setState({
+                                        ...this.state,
+                                        expanded: newExpanded,
+                                      });
+                                    }}
+                                    columns={[
+                                      {
+                                        Header: <span></span>,
+                                        accessor: "invoiceNumber",
+                                        width: 20,
+                                        Cell: (row) => (
+                                          <div className="filter-checkbox">
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                              style={{
+                                                display: "none",
+                                              }}
+                                              name="AllOrder"
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
                                               )}
-                                              columns={[
-                                                {
-                                                  Header: <span></span>,
-                                                  accessor: "size",
-                                                  width: 20,
-                                                  Cell: (row) => (
+                                              onChange={this.handleGetOderItemData.bind(
+                                                this,
+                                                row.original.invoiceNumber,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                            ></label>
+                                          </div>
+                                        ),
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
+                                        accessor: "invoiceNumber",
+                                        minWidth: 150,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
+                                        accessor: "dateFormat",
+                                        minWidth: 120,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
+                                        accessor: "itemCount",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
+                                        accessor: "ordeItemPrice",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
+                                        accessor: "orderPricePaid",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
+                                        accessor: "storeCode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
+                                        accessor: "storeAddress",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
+                                        accessor: "discount",
+                                      },
+                                    ]}
+                                    resizable={false}
+                                    minRows={2}
+                                    defaultPageSize={5}
+                                    showPagination={true}
+                                    SubComponent={(row) => {
+                                      return (
+                                        <div
+                                          className="inner-custom-react-table"
+                                          id="inner-custom-react-table"
+                                        >
+                                          <ReactTable
+                                            // data={row.original.orderItems}
+                                            data={this.state.OrderSubItem.filter(
+                                              (x) =>
+                                                x.invoiceNumber ===
+                                                row.original.invoiceNumber
+                                            )}
+                                            columns={[
+                                              {
+                                                Header: <span> </span>,
+                                                accessor: "invoiceNo",
+                                                width: 20,
+                                                Cell: (row) => {
+                                                  return (
                                                     <div className="filter-checkbox">
                                                       <input
                                                         type="checkbox"
                                                         id={
                                                           "item" +
                                                           row.original
-                                                            .articleNumber
+                                                            .invoiceNumber
                                                         }
                                                         style={{
                                                           display: "none",
@@ -6107,8 +5505,8 @@ class MyTicket extends Component {
                                                         checked={
                                                           this.state
                                                             .CheckBoxAllItem[
-                                                          row.original
-                                                            .articleNumber
+                                                            row.original
+                                                              .articleNumber
                                                           ] === true
                                                         }
                                                         onChange={this.checkIndividualItem.bind(
@@ -6122,170 +5520,732 @@ class MyTicket extends Component {
                                                         htmlFor={
                                                           "item" +
                                                           row.original
-                                                            .articleNumber
+                                                            .invoiceNumber
                                                         }
                                                       ></label>
                                                     </div>
-                                                  ),
+                                                  );
                                                 },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
                                                           .articlenumber
-                                                        : "Article Number"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "articleNumber",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
+                                                      : "Article Number"}
+                                                  </span>
+                                                ),
+                                                accessor: "articleNumber",
+                                                minWidth: 140,
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
                                                           .articlename
-                                                        : "Article Name"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "articleName",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext
+                                                      : "Article Name"}
+                                                  </span>
+                                                ),
+                                                accessor: "articleName",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
                                                           .ticketingDashboard
                                                           .articlemrp
-                                                        : "Article MRP"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "itemPrice",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
+                                                      : "Article MRP"}
+                                                  </span>
+                                                ),
+                                                accessor: "itemPrice",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
                                                           .pricepaid
-                                                        : "Price Paid"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "pricePaid",
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.span
+                                                      : "Price Paid"}
+                                                  </span>
+                                                ),
+                                                accessor: "pricePaid",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
                                                           .discount
-                                                        : "Discount"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "discount",
-                                                  sortable: true,
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext
+                                                      : "Discount"}
+                                                  </span>
+                                                ),
+                                                accessor: "discount",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
                                                           .ticketingDashboard
                                                           .requiredsize
-                                                        : "Required Size"}
-                                                    </span>
-                                                  ),
-                                                  accessor: "requireSize",
-                                                  Cell: (row) => {
-                                                    return (
-                                                      <div
-                                                        ref={this.setWrapperRef}
-                                                      >
-                                                        <input
-                                                          type="text"
-                                                          id={
-                                                            "requireSizeTxt" +
-                                                            row.original
-                                                              .articleNumber
-                                                          }
-                                                          className="order-input"
-                                                          value={
-                                                            row.original
-                                                              .requireSize || ""
-                                                          }
-                                                          name="requiredSize"
-                                                          autoComplete="off"
-                                                          ref={(input) => {
-                                                            this.searchInput = input;
-                                                          }}
-                                                          onChange={() => {
-                                                            this.handleRequireSize(
-                                                              this,
-                                                              row
-                                                            );
-                                                          }}
-                                                        />
-                                                      </div>
-                                                    );
-                                                  },
+                                                      : "Required Size"}
+                                                  </span>
+                                                ),
+                                                accessor: "requireSize",
+                                                Cell: (row) => {
+                                                  return (
+                                                    <div
+                                                      ref={this.setWrapperRef}
+                                                    >
+                                                      <input
+                                                        type="text"
+                                                        id={
+                                                          "requireSizeTxt" +
+                                                          row.original
+                                                            .articleNumber
+                                                        }
+                                                        value={
+                                                          row.original
+                                                            .requireSize || ""
+                                                        }
+                                                        name="requiredSize"
+                                                        className="order-input"
+                                                        autoComplete="off"
+                                                        ref={(input) => {
+                                                          this.searchInput = input;
+                                                        }}
+                                                        onChange={() => {
+                                                          this.handleRequireSize(
+                                                            this,
+                                                            row
+                                                          );
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  );
                                                 },
-                                              ]}
-                                              defaultPageSize={5}
-                                              showPagination={false}
-                                              minRows={2}
-                                            />
-                                          </div>
-                                        );
-                                      }}
-                                    />
-                                  </div>
+                                              },
+                                            ]}
+                                            resizable={false}
+                                            defaultPageSize={5}
+                                            minRows={2}
+                                            showPagination={false}
+                                          />
+                                        </div>
+                                      );
+                                    }}
+                                  />
                                 </div>
                               </div>
-                            </Modal>
-                          </div>
+                              <div
+                                className="tab-pane fade"
+                                id="selectedproduct-tab"
+                                role="tabpanel"
+                                aria-labelledby="selectedproduct-tab"
+                              >
+                                <div
+                                  className="reactstoreselect custom-react-table"
+                                  id="ordertbls1"
+                                  style={{ display: "block" }}
+                                >
+                                  <ReactTable
+                                    data={this.state.SelectedAllOrder}
+                                    expanded={this.state.expanded}
+                                    onExpandedChange={(
+                                      newExpanded,
+                                      index,
+                                      event
+                                    ) => {
+                                      if (newExpanded[index[0]] === false) {
+                                        newExpanded = {};
+                                      } else {
+                                        Object.keys(newExpanded).map((k) => {
+                                          newExpanded[k] =
+                                            parseInt(k) === index[0]
+                                              ? {}
+                                              : false;
+                                        });
+                                      }
+                                      this.setState({
+                                        ...this.state,
+                                        expanded: newExpanded,
+                                      });
+                                    }}
+                                    columns={[
+                                      {
+                                        Header: <span></span>,
+                                        accessor: "invoiceNumber",
+                                        width: 20,
+                                        Cell: (row) => (
+                                          <div className="filter-checkbox">
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                              style={{
+                                                display: "none",
+                                              }}
+                                              name="AllOrder"
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
+                                              )}
+                                              onChange={this.handleGetOderItemData.bind(
+                                                this,
+                                                row.original.invoiceNumber,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                            ></label>
+                                          </div>
+                                        ),
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
+                                        accessor: "invoiceNumber",
+                                        minWidth: 150,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
+                                        accessor: "dateFormat",
+                                        minWidth: 120,
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
+                                        accessor: "itemCount",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
+                                        accessor: "ordeItemPrice",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
+                                        accessor: "orderPricePaid",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
+                                        accessor: "storeCode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
+                                        accessor: "storeAddress",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
+                                        accessor: "discount",
+                                      },
+                                    ]}
+                                    resizable={false}
+                                    minRows={2}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                  />
+                                </div>
+                                <div
+                                  className="reactstoreselect custom-react-table"
+                                  id="orderitemtbl1"
+                                  style={{ display: "none" }}
+                                >
+                                  <ReactTable
+                                    data={this.state.SelectedAllOrder}
+                                    expanded={this.state.expanded}
+                                    onExpandedChange={(
+                                      newExpanded,
+                                      index,
+                                      event
+                                    ) => {
+                                      if (newExpanded[index[0]] === false) {
+                                        newExpanded = {};
+                                      } else {
+                                        Object.keys(newExpanded).map((k) => {
+                                          newExpanded[k] =
+                                            parseInt(k) === index[0]
+                                              ? {}
+                                              : false;
+                                        });
+                                      }
+                                      this.setState({
+                                        ...this.state,
+                                        expanded: newExpanded,
+                                      });
+                                    }}
+                                    columns={[
+                                      {
+                                        Header: <span></span>,
+                                        accessor: "invoiceNumber",
+                                        width: 20,
+                                        Cell: (row) => (
+                                          <div className="filter-checkbox">
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                              style={{
+                                                display: "none",
+                                              }}
+                                              name="AllOrder"
+                                              checked={this.state.selectedInvoiceNo.includes(
+                                                row.original.invoiceNumber
+                                              )}
+                                              onChange={this.handleGetOderItemData.bind(
+                                                this,
+                                                row.original.invoiceNumber,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.invoiceNumber
+                                              }
+                                            ></label>
+                                          </div>
+                                        ),
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicenumber
+                                              : "Invoice Number"}
+                                          </span>
+                                        ),
+                                        accessor: "invoiceNumber",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .invoicedate
+                                              : "Invoice Date"}
+                                          </span>
+                                        ),
+                                        accessor: "dateFormat",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemcount
+                                              : "Item Count"}
+                                          </span>
+                                        ),
+                                        accessor: "itemCount",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .itemprice
+                                              : "Item Price"}
+                                          </span>
+                                        ),
+                                        accessor: "ordeItemPrice",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .pricepaid
+                                              : "Price Paid"}
+                                          </span>
+                                        ),
+                                        accessor: "orderPricePaid",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storecode
+                                              : "Store Code"}
+                                          </span>
+                                        ),
+                                        accessor: "storeCode",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span
+                                                  .storeaddress
+                                              : "Store Address"}
+                                          </span>
+                                        ),
+                                        accessor: "storeAddress",
+                                      },
+                                      {
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.span.discount
+                                              : "Discount"}
+                                          </span>
+                                        ),
+                                        accessor: "discount",
+                                      },
+                                    ]}
+                                   minRows={2}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                    SubComponent={(row) => {
+                                      return (
+                                        <div
+                                          className="inner-custom-react-table"
+                                          id="inner-custom-react-table"
+                                        >
+                                          <ReactTable
+                                            data={this.state.OrderSubItem.filter(
+                                              (x) =>
+                                                x.invoiceNumber ===
+                                                row.original.invoiceNumber
+                                            )}
+                                            columns={[
+                                              {
+                                                Header: <span></span>,
+                                                accessor: "size",
+                                                width: 20,
+                                                Cell: (row) => (
+                                                  <div className="filter-checkbox">
+                                                    <input
+                                                      type="checkbox"
+                                                      id={
+                                                        "item" +
+                                                        row.original
+                                                          .articleNumber
+                                                      }
+                                                      style={{
+                                                        display: "none",
+                                                      }}
+                                                      name="AllItem"
+                                                      checked={
+                                                        this.state
+                                                          .CheckBoxAllItem[
+                                                          row.original
+                                                            .articleNumber
+                                                        ] === true
+                                                      }
+                                                      onChange={this.checkIndividualItem.bind(
+                                                        this,
+                                                        row.original
+                                                          .articleNumber,
+                                                        row.original
+                                                      )}
+                                                    />
+                                                    <label
+                                                      htmlFor={
+                                                        "item" +
+                                                        row.original
+                                                          .articleNumber
+                                                      }
+                                                    ></label>
+                                                  </div>
+                                                ),
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlenumber
+                                                      : "Article Number"}
+                                                  </span>
+                                                ),
+                                                accessor: "articleNumber",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlename
+                                                      : "Article Name"}
+                                                  </span>
+                                                ),
+                                                accessor: "articleName",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .articlemrp
+                                                      : "Article MRP"}
+                                                  </span>
+                                                ),
+                                                accessor: "itemPrice",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .pricepaid
+                                                      : "Price Paid"}
+                                                  </span>
+                                                ),
+                                                accessor: "pricePaid",
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .discount
+                                                      : "Discount"}
+                                                  </span>
+                                                ),
+                                                accessor: "discount",
+                                                sortable: true,
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .ticketingDashboard
+                                                          .requiredsize
+                                                      : "Required Size"}
+                                                  </span>
+                                                ),
+                                                accessor: "requireSize",
+                                                Cell: (row) => {
+                                                  return (
+                                                    <div
+                                                      ref={this.setWrapperRef}
+                                                    >
+                                                      <input
+                                                        type="text"
+                                                        id={
+                                                          "requireSizeTxt" +
+                                                          row.original
+                                                            .articleNumber
+                                                        }
+                                                        className="order-input"
+                                                        value={
+                                                          row.original
+                                                            .requireSize || ""
+                                                        }
+                                                        name="requiredSize"
+                                                        autoComplete="off"
+                                                        ref={(input) => {
+                                                          this.searchInput = input;
+                                                        }}
+                                                        onChange={() => {
+                                                          this.handleRequireSize(
+                                                            this,
+                                                            row
+                                                          );
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  );
+                                                },
+                                              },
+                                            ]}
+                                            defaultPageSize={5}
+                                            showPagination={false}
+                                            minRows={2}
+                                          />
+                                        </div>
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </Modal>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div style={{ padding: "15px", background: "#fff" }}>
-                <div className="rectangle-3 text-editor">
-                  <div className="row mt-2">
-                    <label className="ticket-title-where mb-0">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.tickettitle
-                        : "Ticket Title"}
+            </div>
+            <div style={{ padding: "15px", background: "#fff" }}>
+              <div className="rectangle-3 text-editor">
+                <div className="row mt-2">
+                  <label className="ticket-title-where mb-0">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.tickettitle
+                      : "Ticket Title"}
                     :
                   </label>
-                  </div>
-                  <div className="row" style={{ marginTop: "0" }}>
-                    <label className="label-2 mb-0">
-                      {ticketDetailsData.ticketTitle}
-                    </label>
-                  </div>
-                  <div className="row mt-3">
-                    <label className="ticket-title-where mb-0">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.ticketdetails
-                        : "Ticket Details"}
+                </div>
+                <div className="row" style={{ marginTop: "0" }}>
+                  <label className="label-2 mb-0">
+                    {ticketDetailsData.ticketTitle}
+                  </label>
+                </div>
+                <div className="row mt-3">
+                  <label className="ticket-title-where mb-0">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.ticketdetails
+                      : "Ticket Details"}
                     :
                   </label>
-                  </div>
-                  <div className="row" style={{ marginTop: "0" }}>
-                    <label className="label-3 pb-0">
-                      {ticketDetailsData.ticketdescription}
-                    </label>
-                  </div>
-                  <div className="row my-2 mx-1">
-                    {this.state.file.map((item, i) =>
-                      i < 5 ? (
+                </div>
+                <div className="row" style={{ marginTop: "0" }}>
+                  <label className="label-3 pb-0">
+                    {ticketDetailsData.ticketdescription}
+                  </label>
+                </div>
+                <div className="row my-2 mx-1">
+                  {this.state.file.map((item, i) =>
+                    i < 5 ? (
+                      <div style={{ position: "relative" }} key={i}>
+                        <div>
+                          <img
+                            src={CircleCancel}
+                            alt="thumb"
+                            className="circleCancle"
+                            onClick={() => {
+                              this.handleRemoveImage(i);
+                            }}
+                          />
+                        </div>
+
+                        <a href={item.name} download>
+                          <img
+                            src={
+                              item.Type === "docx"
+                                ? require("./../assets/Images/word.png")
+                                : item.Type === "xlsx"
+                                ? require("./../assets/Images/excel.png")
+                                : item.Type === "pdf"
+                                ? require("./../assets/Images/pdf.png")
+                                : item.Type === "txt"
+                                ? require("./../assets/Images/TxtIcon.png")
+                                : require("./../assets/Images/thumbticket.png")
+                            }
+                            title={item.name}
+                            alt="thumb"
+                            className="thumbtick"
+                          />
+                        </a>
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  )}
+
+                  {this.state.file.length > 4 ? (
+                    <img
+                      src={PlusImg}
+                      alt="thumb"
+                      className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)}
+                    />
+                  ) : (
+                    <img
+                      style={{ display: "none" }}
+                      src={PlusImg}
+                      alt="thumb"
+                      className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)}
+                    />
+                  )}
+                </div>
+                <Modal
+                  open={this.state.Plus}
+                  onClose={this.handleThumbModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                  <div>
+                    <div className="close">
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        onClick={this.handleThumbModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row my-3 mx-1">
+                      {this.state.file.map((item, i) => (
                         <div style={{ position: "relative" }} key={i}>
                           <div>
                             <img
@@ -6298,125 +6258,56 @@ class MyTicket extends Component {
                             />
                           </div>
 
-                          <a href={item.name} download>
+                          <div>
                             <img
                               src={
                                 item.Type === "docx"
                                   ? require("./../assets/Images/word.png")
                                   : item.Type === "xlsx"
-                                    ? require("./../assets/Images/excel.png")
-                                    : item.Type === "pdf"
-                                      ? require("./../assets/Images/pdf.png")
-                                      : item.Type === "txt"
-                                        ? require("./../assets/Images/TxtIcon.png")
-                                        : require("./../assets/Images/thumbticket.png")
+                                  ? require("./../assets/Images/excel.png")
+                                  : item.Type === "pdf"
+                                  ? require("./../assets/Images/pdf.png")
+                                  : item.Type === "txt"
+                                  ? require("./../assets/Images/TxtIcon.png")
+                                  : require("./../assets/Images/thumbticket.png")
                               }
                               title={item.name}
                               alt="thumb"
                               className="thumbtick"
                             />
-                          </a>
-                        </div>
-                      ) : (
-                          ""
-                        )
-                    )}
-
-                    {this.state.file.length > 4 ? (
-                      <img
-                        src={PlusImg}
-                        alt="thumb"
-                        className="thumbtick-plus"
-                        onClick={this.handleThumbModalOpen.bind(this)}
-                      />
-                    ) : (
-                        <img
-                          style={{ display: "none" }}
-                          src={PlusImg}
-                          alt="thumb"
-                          className="thumbtick-plus"
-                          onClick={this.handleThumbModalOpen.bind(this)}
-                        />
-                      )}
-                  </div>
-                  <Modal
-                    open={this.state.Plus}
-                    onClose={this.handleThumbModalClose.bind(this)}
-                    modalId="thumb-modal-popup"
-                    overlayId="logout-ovrlykb"
-                  >
-                    <div>
-                      <div className="close">
-                        <img
-                          src={CrossIcon}
-                          alt="cross-icon"
-                          onClick={this.handleThumbModalClose.bind(this)}
-                        />
-                      </div>
-                      <div className="row my-3 mx-1">
-                        {this.state.file.map((item, i) => (
-                          <div style={{ position: "relative" }} key={i}>
-                            <div>
-                              <img
-                                src={CircleCancel}
-                                alt="thumb"
-                                className="circleCancle"
-                                onClick={() => {
-                                  this.handleRemoveImage(i);
-                                }}
-                              />
-                            </div>
-
-                            <div>
-                              <img
-                                src={
-                                  item.Type === "docx"
-                                    ? require("./../assets/Images/word.png")
-                                    : item.Type === "xlsx"
-                                      ? require("./../assets/Images/excel.png")
-                                      : item.Type === "pdf"
-                                        ? require("./../assets/Images/pdf.png")
-                                        : item.Type === "txt"
-                                          ? require("./../assets/Images/TxtIcon.png")
-                                          : require("./../assets/Images/thumbticket.png")
-                                }
-                                title={item.name}
-                                alt="thumb"
-                                className="thumbtick"
-                              />
-                            </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  </Modal>
-                  <div className="row">
-                    <div className="mask1">
-                      <div className="mail-mask">
-                        <div
-                          className="dropdown"
-                          style={{ display: "inherit" }}
-                        ></div>
-
-                        <div
-                          className={
-                            this.state.isKB ? "dropdown iskbticket" : "dropdown"
-                          }
-                          style={{ display: "inherit" }}
-                        >
-                          <select
-                            className="my-tic-email"
-                            value={this.state.ticketSourceId}
-                            onChange={this.handleTicketSourceChange}
-                          >
-                            <option value={2}>Email</option>
-                            <option value={3}>Facebook</option>
-                            <option value={5}> SMS</option>
-                            <option value={1}>Call</option>
-                          </select>
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                </Modal>
+                <div className="row">
+                  <div className="mask1">
+                    <div className="mail-mask">
+                      <div
+                        className="dropdown"
+                        style={{ display: "inherit" }}
+                      ></div>
 
-                        {/* <div className="dropdown" style={{ display: "inherit" }}>
+                      <div
+                        className={
+                          this.state.isKB ? "dropdown iskbticket" : "dropdown"
+                        }
+                        style={{ display: "inherit" }}
+                      >
+                        <select
+                          className="my-tic-email"
+                          value={this.state.ticketSourceId}
+                          onChange={this.handleTicketSourceChange}
+                        >
+                          <option value={2}>Email</option>
+                          <option value={3}>Facebook</option>
+                          <option value={5}> SMS</option>
+                          <option value={1}>Call</option>
+                        </select>
+                      </div>
+
+                      {/* <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -6461,1188 +6352,1164 @@ class MyTicket extends Component {
                         </ul>
                       </div> */}
 
-                        <div
-                          className={
-                            this.state.isKB ? "mob-float iskbticket" : "mob-float"
-                          }
-                          style={{ display: "flex", float: "right" }}
-                        >
-                          <div className="line-1"></div>
-                          {EmailCollapseUpDown}
-                        </div>
+                      <div
+                        className={
+                          this.state.isKB ? "mob-float iskbticket" : "mob-float"
+                        }
+                        style={{ display: "flex", float: "right" }}
+                      >
+                        <div className="line-1"></div>
+                        {EmailCollapseUpDown}
                       </div>
                     </div>
                   </div>
-                  <div className="myTicketEmail">
-                    <Collapse isOpen={this.state.EmailCollapse}>
-                      <a
-                        href="#!"
-                        className="kblink"
-                        style={{ top: "5px" }}
-                        onClick={this.HandleKbLinkModalOpen.bind(this)}
-                      >
-                        <img
-                          src={KnowledgeLogo}
-                          alt="KnowledgeLogo"
-                          className="knoim"
-                        />
+                </div>
+                <div className="myTicketEmail">
+                  <Collapse isOpen={this.state.EmailCollapse}>
+                    <a
+                      href="#!"
+                      className="kblink"
+                      style={{ top: "5px" }}
+                      onClick={this.HandleKbLinkModalOpen.bind(this)}
+                    >
+                      <img
+                        src={KnowledgeLogo}
+                        alt="KnowledgeLogo"
+                        className="knoim"
+                      />
                       KB
                     </a>
-                      <div
-                        className="dropdown collapbtn"
-                        style={{ display: "inherit", top: "5px" }}
-                      >
-                        <button
-                          className="dropdown-toggle my-tic-email"
-                          type="button"
-                          data-toggle="dropdown"
-                          onClick={this.handleTemplateBindByIssueType.bind(this)}
-                        >
-                          <FontAwesomeIcon icon={faCalculator} />{" "}
-                          {TranslationContext !== undefined
-                            ? TranslationContext.p.template
-                            : "Template"}
-                        </button>
-                        <ul className="dropdown-menu">
-                          {this.state.CkEditorTemplateData !== null &&
-                            this.state.CkEditorTemplateData.map((item, i) => (
-                              <li key={i} value={item.templateID}>
-                                <span
-                                  onClick={this.handleCkEditorTemplateData.bind(
-                                    this,
-                                    item.templateID,
-                                    item.templateName,
-                                    2
-                                  )}
-                                >
-                                  {item.templateName}
-                                </span>
-                              </li>
-                            ))}
-                        </ul>
-                      </div>
-                      <div className="tic-det-ck-user myticlist-expand-sect">
-                        <select
-                          className="add-select-category"
-                          value="0"
-                          onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
-                        >
-                          <option value="0">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.link.users
-                              : "Users"}
-                          </option>
-                          {this.state.AssignToData !== null &&
-                            this.state.AssignToData.map((item, i) => (
-                              <option key={i} value={item.userID}>
-                                {item.fullName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown">
-                        <select
-                          className="add-select-category"
-                          value="0"
-                          onChange={this.setPlaceholderValue.bind(this)}
-                        >
-                          <option value="0">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.link.placeholders
-                              : "Placeholders"}
-                          </option>
-                          {this.state.placeholderData !== null &&
-                            this.state.placeholderData.map((item, i) => (
-                              <option key={i} value={item.mailParameterID}>
-                                {item.description}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <Card>
-                        <CardBody>
-                          <div className="my-tic-ck-height">
-                            <CKEditor
-                              data={this.state.mailBodyData}
-                              onChange={this.onAddCKEditorChange}
-                              onBlur={this.onCkBlur}
-                              config={{
-                                toolbar: [
-                                  {
-                                    name: "basicstyles",
-                                    items: ["Bold", "Italic", "Strike"],
-                                  },
-                                  {
-                                    name: "styles",
-                                    items: ["Styles", "Format"],
-                                  },
-                                  {
-                                    name: "paragraph",
-                                    items: ["NumberedList", "BulletedList"],
-                                  },
-                                  {
-                                    name: "links",
-                                    items: ["Link", "Unlink"],
-                                  },
-                                  {
-                                    name: "insert",
-                                    items: ["Image", "Table"],
-                                  },
-                                  {
-                                    name: "tools",
-                                    items: ["Maximize"],
-                                  },
-                                  {
-                                    name: "editing",
-                                    items: ["Scayt"],
-                                  },
-                                ],
-                              }}
-                            />
-                          </div>
-                        </CardBody>
-                        <div className="row colladrowa">
-                          <div className="col-md-12 colladrow">
-                            <ul className="ck-edit-mar">
-                              <li>
-                                <label>
-                                  To: &nbsp;
-                                {ticketDetailsData.customerEmailId}
-                                </label>
-                              </li>
-                              <li>
-                                <label className="">
-                                  <div className="input-group">
-                                    <span className="input-group-addon inputcc">
-                                      CC:
-                                  </span>
-                                    <input
-                                      type="text"
-                                      className="CCdi1"
-                                      name="userCC"
-                                      autoComplete="off"
-                                      value={this.state.mailFiled.userCC}
-                                      onChange={this.handleMailOnChange.bind(
-                                        this,
-                                        "userCC"
-                                      )}
-                                    />
-                                    <span className="input-group-addon inputcc-one">
-                                      {this.state.userCcCount < 1
-                                        ? "+" + this.state.userCcCount
-                                        : "+" + this.state.userCcCount}
-                                    </span>
-                                  </div>
-                                </label>
-                              </li>
-                              <li>
-                                <label className="">
-                                  <div className="input-group">
-                                    <span className="input-group-addon inputcc">
-                                      BCC:
-                                  </span>
-                                    <input
-                                      type="text"
-                                      className="CCdi1"
-                                      name="userBCC"
-                                      autoComplete="off"
-                                      value={this.state.mailFiled.userBCC}
-                                      onChange={this.handleMailOnChange.bind(
-                                        this,
-                                        "userBCC"
-                                      )}
-                                    />
-                                    <span className="input-group-addon inputcc-one">
-                                      {this.state.userBccCount < 1
-                                        ? "+" + this.state.userBccCount
-                                        : "+" + this.state.userBccCount}
-                                    </span>
-                                  </div>
-                                </label>
-                              </li>
-                              <li>
-                                <div className="filter-checkbox">
-                                  <input
-                                    type="checkbox"
-                                    id="fil-open"
-                                    name="filter-type"
-                                    style={{ display: "none" }}
-                                    onChange={() =>
-                                      this.showInformStoreFuncation()
-                                    }
-                                  // disabled={this.state.selectedStoreIDs.length === 0}
-                                  />
-                                  <label
-                                    htmlFor="fil-open"
-                                    style={{ paddingLeft: "25px" }}
-                                  >
-                                    <span>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span.informstore
-                                        : "Inform Store"}
-                                    </span>
-                                  </label>
-                                </div>
-                              </li>
-                              <li>
-                                <span>
-                                  <input
-                                    id="file-upload"
-                                    className="file-upload1 d-none"
-                                    type="file"
-                                    name="file"
-                                    onChange={this.handleFileUpload.bind(this)}
-                                    multiple
-                                  />
-                                  <label
-                                    htmlFor="file-upload"
-                                    onDrop={this.fileDrop}
-                                    onDragOver={this.fileDragOver}
-                                    onDragEnter={this.fileDragEnter}
-                                  >
-                                    <img
-                                      src={FileUpload}
-                                      alt="file-upload"
-                                      className="fileup"
-                                    />
-                                  </label>
-                                </span>
-                                <label style={{ color: "#2561a8" }}>
-                                  {this.state.fileText}{" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.ticketingDashboard.files
-                                    : "files"}
-                                </label>
-                              </li>
-                              <li style={{ float: "right" }}>
-                                <button
-                                  className="send1"
-                                  type="button"
-                                  onClick={this.handleSendMailData.bind(this, 2)}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.send
-                                    : "Send"}
-                                </button>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </Card>
-                    </Collapse>
-                  </div>
-                  <div>
-                    <Modal
-                      open={this.state.KbLink}
-                      onClose={this.HandleKbLinkModalClose.bind(this)}
-                      modalId="KbLink-popup"
-                      overlayId="logout-ovrlykb"
+                    <div
+                      className="dropdown collapbtn"
+                      style={{ display: "inherit", top: "5px" }}
                     >
-                      <div className="row" style={{ margin: "0" }}>
-                        <div className="col-md-7" style={{ padding: "0" }}>
-                          <div className="knokb">
-                            <h5>
-                              <img
-                                src={KnowledgeLogo}
-                                alt="KnowledgeLogo"
-                                className="knoim1"
-                              />
-                              {TranslationContext !== undefined
-                                ? TranslationContext.ticketingDashboard
-                                  .knowlegebase
-                                : "KNOWLEGE BASE"}
-                            </h5>
-                            <p>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.title.message
-                                : "Message"}
-                            </p>
-
-                            <div id="kb-accordion">
-                              {this.state.KbPopupData !== null &&
-                                this.state.KbPopupData.map((item, i) => (
-                                  <div key={i} className="kb-acc-cntr">
-                                    <p
-                                      className="table-details-data-modal"
-                                      data-toggle="collapse"
-                                      data-target={"#collapse" + i}
-                                      aria-expanded={i === 0 ? "true" : "false"}
-                                      aria-controls={"collapse" + i}
-                                      onClick={() =>
-                                        this.setState({ copied: false })
-                                      }
-                                    >
-                                      {item.subject}
-                                    </p>
-                                    <div
-                                      id={"collapse" + i}
-                                      className={
-                                        i === 0 ? "collapse show" : "collapse"
-                                      }
-                                      data-parent="#kb-accordion"
-                                    >
-                                      <p className="mb-0">{item.description}</p>
-                                      <CopyToClipboard
-                                        text={item.description}
-                                        onCopy={() =>
-                                          this.setState({ copied: true })
-                                        }
-                                      >
-                                        <a href="#!" className="copyblue-kbtext">
-                                          <img
-                                            src={CopyBlue}
-                                            alt=""
-                                            className="copyblue-kb"
-                                          />
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.a.copy
-                                            : "Copy"}
-                                        </a>
-                                      </CopyToClipboard>
-                                      {this.state.copied ? (
-                                        <span
-                                          className="ml-2"
-                                          style={{ color: "red" }}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.span.copied
-                                            : "Copied."}
-                                        </span>
-                                      ) : null}
-                                    </div>
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
+                      <button
+                        className="dropdown-toggle my-tic-email"
+                        type="button"
+                        data-toggle="dropdown"
+                        onClick={this.handleTemplateBindByIssueType.bind(this)}
+                      >
+                        <FontAwesomeIcon icon={faCalculator} />{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.template
+                          : "Template"}
+                      </button>
+                      <ul className="dropdown-menu">
+                        {this.state.CkEditorTemplateData !== null &&
+                          this.state.CkEditorTemplateData.map((item, i) => (
+                            <li key={i} value={item.templateID}>
+                              <span
+                                onClick={this.handleCkEditorTemplateData.bind(
+                                  this,
+                                  item.templateID,
+                                  item.templateName,
+                                  2
+                                )}
+                              >
+                                {item.templateName}
+                              </span>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setAssignedToValue.bind(this, "rplyCmd")}
+                      >
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.link.users
+                            : "Users"}
+                        </option>
+                        {this.state.AssignToData !== null &&
+                          this.state.AssignToData.map((item, i) => (
+                            <option key={i} value={item.userID}>
+                              {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown">
+                      <select
+                        className="add-select-category"
+                        value="0"
+                        onChange={this.setPlaceholderValue.bind(this)}
+                      >
+                        <option value="0">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.link.placeholders
+                            : "Placeholders"}
+                        </option>
+                        {this.state.placeholderData !== null &&
+                          this.state.placeholderData.map((item, i) => (
+                            <option key={i} value={item.mailParameterID}>
+                              {item.description}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <Card>
+                      <CardBody>
+                        <div className="my-tic-ck-height">
+                          <CKEditor
+                            data={this.state.mailBodyData}
+                            onChange={this.onAddCKEditorChange}
+                            onBlur={this.onCkBlur}
+                            config={{
+                              toolbar: [
+                                {
+                                  name: "basicstyles",
+                                  items: ["Bold", "Italic", "Strike"],
+                                },
+                                {
+                                  name: "styles",
+                                  items: ["Styles", "Format"],
+                                },
+                                {
+                                  name: "paragraph",
+                                  items: ["NumberedList", "BulletedList"],
+                                },
+                                {
+                                  name: "links",
+                                  items: ["Link", "Unlink"],
+                                },
+                                {
+                                  name: "insert",
+                                  items: ["Image", "Table"],
+                                },
+                                {
+                                  name: "tools",
+                                  items: ["Maximize"],
+                                },
+                                {
+                                  name: "editing",
+                                  items: ["Scayt"],
+                                },
+                              ],
+                            }}
+                          />
                         </div>
-                        <div className="col-md-5 kblinkright">
-                          <div className="knokb-a">
-                            <img
-                              src={CancelImg}
-                              alt="cancelImg"
-                              className="cancalImg-kb"
-                              onClick={this.HandleKbLinkModalClose.bind(this)}
-                            />
-                            <h5>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.h5.kbtemplate
-                                : "KB TEMPLATE"}
-                            </h5>
-                            <div className="form-group">
-                              <select
-                                value={this.state.selectedCategoryKB}
-                                onChange={this.setCategoryValueKB}
-                                className="kblinkrectangle-9 select-category-placeholderkblink"
-                              >
-                                <option>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.category
-                                    : "Category"}
-                                </option>
-                                {this.state.CategoryData !== null &&
-                                  this.state.CategoryData.map((item, i) => (
-                                    <option key={i} value={item.categoryID}>
-                                      {item.categoryName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                            <div className="form-group">
-                              <select
-                                value={this.state.selectedSubCategoryKB}
-                                onChange={this.setSubCategoryValueKB}
-                                className="kblinkrectangle-9 select-category-placeholderkblink"
-                              >
-                                <option>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label.subcategory
-                                    : "Sub Category"}
-                                </option>
-                                {this.state.SubCategoryData !== null &&
-                                  this.state.SubCategoryData.map((item, i) => (
-                                    <option key={i} value={item.subCategoryID}>
-                                      {item.subCategoryName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                            <div className="form-group">
-                              <select
-                                value={this.state.selectedIssueTypeKB}
-                                onChange={this.setIssueTypeValueKB}
-                                className="kblinkrectangle-9 select-category-placeholderkblink"
-                              >
-                                <option>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.type
-                                    : "Type"}
-                                </option>
-                                {this.state.IssueTypeData !== null &&
-                                  this.state.IssueTypeData.map((item, i) => (
-                                    <option key={i} value={item.issueTypeID}>
-                                      {item.issueTypeName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                            <div>
-                              <button
-                                onClick={this.handleKbLinkPopupSearch}
-                                className="kblink-search"
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.small.search
-                                  : "SEARCH"}
-                              </button>
-                            </div>
-                            <div style={{ marginTop: "275px" }}>
-                              <a
-                                href="#!"
-                                className="copyblue-kbtext d-inline-block"
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.viewpolicy
-                                  : "VIEW POLICY"}
-                                <img
-                                  src={ViewBlue}
-                                  alt="viewpolicy"
-                                  className="viewpolicy-kb"
+                      </CardBody>
+                      <div className="row colladrowa">
+                        <div className="col-md-12 colladrow">
+                          <ul className="ck-edit-mar">
+                            <li>
+                              <label>
+                                To: &nbsp;
+                                {ticketDetailsData.customerEmailId}
+                              </label>
+                            </li>
+                            <li>
+                              <label className="">
+                                <div className="input-group">
+                                  <span className="input-group-addon inputcc">
+                                    CC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userCC"
+                                    autoComplete="off"
+                                    value={this.state.mailFiled.userCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userCC"
+                                    )}
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
+                                  </span>
+                                </div>
+                              </label>
+                            </li>
+                            <li>
+                              <label className="">
+                                <div className="input-group">
+                                  <span className="input-group-addon inputcc">
+                                    BCC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userBCC"
+                                    autoComplete="off"
+                                    value={this.state.mailFiled.userBCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userBCC"
+                                    )}
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
+                                  </span>
+                                </div>
+                              </label>
+                            </li>
+                            <li>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-open"
+                                  name="filter-type"
+                                  style={{ display: "none" }}
+                                  onChange={() =>
+                                    this.showInformStoreFuncation()
+                                  }
                                 />
-                              </a>
-                            </div>
-                          </div>
+                                <label
+                                  htmlFor="fil-open"
+                                  style={{ paddingLeft: "25px" }}
+                                >
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.informstore
+                                      : "Inform Store"}
+                                  </span>
+                                </label>
+                              </div>
+                            </li>
+                            <li>
+                              <span>
+                                <input
+                                  id="file-upload"
+                                  className="file-upload1 d-none"
+                                  type="file"
+                                  name="file"
+                                  onChange={this.handleFileUpload.bind(this)}
+                                  multiple
+                                />
+                                <label
+                                  htmlFor="file-upload"
+                                  onDrop={this.fileDrop}
+                                  onDragOver={this.fileDragOver}
+                                  onDragEnter={this.fileDragEnter}
+                                >
+                                  <img
+                                    src={FileUpload}
+                                    alt="file-upload"
+                                    className="fileup"
+                                  />
+                                </label>
+                              </span>
+                              <label style={{ color: "#2561a8" }}>
+                                {this.state.fileText}{" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.files
+                                  : "files"}
+                              </label>
+                            </li>
+                            <li style={{ float: "right" }}>
+                              <button
+                                className="send1"
+                                type="button"
+                                onClick={this.handleSendMailData.bind(this, 2)}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.send
+                                  : "Send"}
+                              </button>
+                            </li>
+                          </ul>
                         </div>
                       </div>
-                    </Modal>
-                  </div>
-
+                    </Card>
+                  </Collapse>
+                </div>
+                <div>
                   <Modal
-                    open={this.state.hasAttachmentModal}
-                    onClose={this.handleHasAttachmetModalClose.bind(this)}
-                    modalId="thumb-modal-popup"
+                    open={this.state.KbLink}
+                    onClose={this.HandleKbLinkModalClose.bind(this)}
+                    modalId="KbLink-popup"
                     overlayId="logout-ovrlykb"
                   >
-                    <div>
-                      <div className="close">
-                        <img
-                          src={CrossIcon}
-                          alt="cross-icon"
-                          onClick={this.handleHasAttachmetModalClose.bind(this)}
-                        />
-                      </div>
-                      <div className="row my-3 mx-1">
-                        {this.state.FinalAttachmentData !== null &&
-                          this.state.FinalAttachmentData.map((item, k) => {
-                            return (
-                              <div style={{ position: "relative" }} key={k}>
-                                <div>
-                                  <img
-                                    src={CircleCancel}
-                                    alt="thumb"
-                                    className="circleCancle"
-                                    onClick={() => {
-                                      this.handleRemoveImage(k);
-                                    }}
-                                  />
-                                </div>
-
-                                <div>
-                                  <img
-                                    src={
-                                      item.Type === "docx"
-                                        ? require("./../assets/Images/word.png")
-                                        : item.Type === "xlsx"
-                                          ? require("./../assets/Images/excel.png")
-                                          : item.Type === "pdf"
-                                            ? require("./../assets/Images/pdf.png")
-                                            : item.Type === "txt"
-                                              ? require("./../assets/Images/TxtIcon.png")
-                                              : require("./../assets/Images/thumbticket.png")
-                                    }
-                                    title={item.name}
-                                    alt="thumb"
-                                    className="thumbtick"
-                                  />
-                                </div>
-                              </div>
-                            );
-                          })}
-                      </div>
-                    </div>
-                  </Modal>
-                  <div className="edit-storeTask-header newtab">
-                    <div className="tab-content">
-                      <div className="store-header-task">
-                        <ul className="nav alert-nav-tabs3" role="tablist">
-                          <li className="nav-item fo">
-                            <a
-                              className="nav-link active"
-                              data-toggle="tab"
-                              href="#Message-tab"
-                              role="tab"
-                              aria-controls="Message-tab"
-                              aria-selected="true"
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.title.message
-                                : "Message"}
-                            :
-                            {this.state.tabCounts.messages < 9
-                                ? "0" + this.state.tabCounts.messages
-                                : this.state.tabCounts.messages}
-                            </a>
-                          </li>
-                          <li className="nav-item fo">
-                            <a
-                              className="nav-link"
-                              data-toggle="tab"
-                              href="#Notes-tab"
-                              role="tab"
-                              aria-controls="Notes-tab"
-                              aria-selected="false"
-                              name="Notes"
-                              onClick={this.handleGetTabsName}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.a.notes
-                                : "Notes"}
-                            :
-                            {this.state.Notesdetails.length < 9
-                                ? "0" + this.state.Notesdetails.length
-                                : this.state.Notesdetails.length}
-                            </a>
-                          </li>
-                          <li className="nav-item fo">
-                            <a
-                              className="nav-link"
-                              data-toggle="tab"
-                              href="#Task-tab"
-                              role="tab"
-                              aria-controls="Task-tab"
-                              aria-selected="false"
-                              name="Task"
-                              onClick={this.handleGetTabsName}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.task
-                                : "Task"}
-                            :
-                            {this.state.tabCounts.task < 9
-                                ? "0" + this.state.tabCounts.task
-                                : this.state.tabCounts.task}
-                            </a>
-                          </li>
-                          <li className="nav-item fo">
-                            <a
-                              className="nav-link"
-                              data-toggle="tab"
-                              href="#Claim-tab"
-                              role="tab"
-                              aria-controls="Claim-tab"
-                              aria-selected="false"
-                              name="Claim"
-                              onClick={this.handleGetTabsName}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.claim
-                                : "Claim"}
-                            :
-                            {this.state.tabCounts.claim < 9
-                                ? "0" + this.state.tabCounts.claim
-                                : this.state.tabCounts.claim}
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-content p-0">
-                    <div
-                      className="tab-pane fade"
-                      id="Claim-tab"
-                      role="tabpanel"
-                      aria-labelledby="Claim-tab"
-                    >
-                      {this.state.ticket_Id > 0 ? (
-                        <MyTicketClaim
-                          claimData={{
-                            claimDeatils: {
-                              ticketId: this.state.ticket_Id,
-                              claimTabId: this.state.ClaimTab,
-                            },
-                          }}
-                        />
-                      ) : (
-                          ""
-                        )}
-                    </div>
-                    <div
-                      className="tab-pane fade show active"
-                      id="Message-tab"
-                      role="tabpanel"
-                      aria-labelledby="Message-tab"
-                      style={{ margin: "10px 0 30px" }}
-                    >
-                      <div className="row message-header">
-                        <div className="col-12 col-xs-12 col-sm-3">
-                          <label className="user-label">
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="col-md-7" style={{ padding: "0" }}>
+                        <div className="knokb">
+                          <h5>
+                            <img
+                              src={KnowledgeLogo}
+                              alt="KnowledgeLogo"
+                              className="knoim1"
+                            />
                             {TranslationContext !== undefined
-                              ? TranslationContext.label.user
-                              : "User"}
-                          </label>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-7">
-                          <label className="message-label">
+                              ? TranslationContext.ticketingDashboard
+                                  .knowlegebase
+                              : "KNOWLEGE BASE"}
+                          </h5>
+                          <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.title.message
                               : "Message"}
-                          </label>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-2">
-                          <label className="action-label">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p.action
-                              : "Action"}
-                          </label>
+                          </p>
+
+                          <div id="kb-accordion">
+                            {this.state.KbPopupData !== null &&
+                              this.state.KbPopupData.map((item, i) => (
+                                <div key={i} className="kb-acc-cntr">
+                                  <p
+                                    className="table-details-data-modal"
+                                    data-toggle="collapse"
+                                    data-target={"#collapse" + i}
+                                    aria-expanded={i === 0 ? "true" : "false"}
+                                    aria-controls={"collapse" + i}
+                                    onClick={() =>
+                                      this.setState({ copied: false })
+                                    }
+                                  >
+                                    {item.subject}
+                                  </p>
+                                  <div
+                                    id={"collapse" + i}
+                                    className={
+                                      i === 0 ? "collapse show" : "collapse"
+                                    }
+                                    data-parent="#kb-accordion"
+                                  >
+                                    <p className="mb-0">{item.description}</p>
+                                    <CopyToClipboard
+                                      text={item.description}
+                                      onCopy={() =>
+                                        this.setState({ copied: true })
+                                      }
+                                    >
+                                      <a href="#!" className="copyblue-kbtext">
+                                        <img
+                                          src={CopyBlue}
+                                          alt=""
+                                          className="copyblue-kb"
+                                        />
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.copy
+                                          : "Copy"}
+                                      </a>
+                                    </CopyToClipboard>
+                                    {this.state.copied ? (
+                                      <span
+                                        className="ml-2"
+                                        style={{ color: "red" }}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.copied
+                                          : "Copied."}
+                                      </span>
+                                    ) : null}
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
-                        <div
-                          className={
-                            this.state.isKB
-                              ? "inlineGridTicket iskbticket"
-                              : "inlineGridTicket"
-                          }
-                        >
+                      <div className="col-md-5 kblinkright">
+                        <div className="knokb-a">
+                          <img
+                            src={CancelImg}
+                            alt="cancelImg"
+                            className="cancalImg-kb"
+                            onClick={this.HandleKbLinkModalClose.bind(this)}
+                          />
+                          <h5>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.h5.kbtemplate
+                              : "KB TEMPLATE"}
+                          </h5>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedCategoryKB}
+                              onChange={this.setCategoryValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.category
+                                  : "Category"}
+                              </option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option key={i} value={item.categoryID}>
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedSubCategoryKB}
+                              onChange={this.setSubCategoryValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.subcategory
+                                  : "Sub Category"}
+                              </option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option key={i} value={item.subCategoryID}>
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedIssueTypeKB}
+                              onChange={this.setIssueTypeValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.type
+                                  : "Type"}
+                              </option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option key={i} value={item.issueTypeID}>
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div>
+                            <button
+                              onClick={this.handleKbLinkPopupSearch}
+                              className="kblink-search"
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.small.search
+                                : "SEARCH"}
+                            </button>
+                          </div>
+                          <div style={{ marginTop: "275px" }}>
+                            <a
+                              href="#!"
+                              className="copyblue-kbtext d-inline-block"
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewpolicy
+                                : "VIEW POLICY"}
+                              <img
+                                src={ViewBlue}
+                                alt="viewpolicy"
+                                className="viewpolicy-kb"
+                              />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+
+                <Modal
+                  open={this.state.hasAttachmentModal}
+                  onClose={this.handleHasAttachmetModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                  <div>
+                    <div className="close">
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        onClick={this.handleHasAttachmetModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row my-3 mx-1">
+                      {this.state.FinalAttachmentData !== null &&
+                        this.state.FinalAttachmentData.map((item, k) => {
+                          return (
+                            <div style={{ position: "relative" }} key={k}>
+                              <div>
+                                <img
+                                  src={CircleCancel}
+                                  alt="thumb"
+                                  className="circleCancle"
+                                  onClick={() => {
+                                    this.handleRemoveImage(k);
+                                  }}
+                                />
+                              </div>
+
+                              <div>
+                                <img
+                                  src={
+                                    item.Type === "docx"
+                                      ? require("./../assets/Images/word.png")
+                                      : item.Type === "xlsx"
+                                      ? require("./../assets/Images/excel.png")
+                                      : item.Type === "pdf"
+                                      ? require("./../assets/Images/pdf.png")
+                                      : item.Type === "txt"
+                                      ? require("./../assets/Images/TxtIcon.png")
+                                      : require("./../assets/Images/thumbticket.png")
+                                  }
+                                  title={item.name}
+                                  alt="thumb"
+                                  className="thumbtick"
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </Modal>
+                <div className="edit-storeTask-header newtab">
+                  <div className="tab-content">
+                    <div className="store-header-task">
+                      <ul className="nav alert-nav-tabs3" role="tablist">
+                        <li className="nav-item fo">
                           <a
-                            href="#!"
-                            className="comment-text"
-                            onClick={this.handleFreeTextCommentOpen.bind(this)}
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#Message-tab"
+                            role="tab"
+                            aria-controls="Message-tab"
+                            aria-selected="true"
                           >
                             {TranslationContext !== undefined
-                              ? TranslationContext.p.comment
-                              : "Comment"}
+                              ? TranslationContext.title.message
+                              : "Message"}
+                            :
+                            {this.state.tabCounts.messages < 9
+                              ? "0" + this.state.tabCounts.messages
+                              : this.state.tabCounts.messages}
                           </a>
-                        </div>
+                        </li>
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#Notes-tab"
+                            role="tab"
+                            aria-controls="Notes-tab"
+                            aria-selected="false"
+                            name="Notes"
+                            onClick={this.handleGetTabsName}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.a.notes
+                              : "Notes"}
+                            :
+                            {this.state.Notesdetails.length < 9
+                              ? "0" + this.state.Notesdetails.length
+                              : this.state.Notesdetails.length}
+                          </a>
+                        </li>
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#Task-tab"
+                            role="tab"
+                            aria-controls="Task-tab"
+                            aria-selected="false"
+                            name="Task"
+                            onClick={this.handleGetTabsName}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.task
+                              : "Task"}
+                            :
+                            {this.state.tabCounts.task < 9
+                              ? "0" + this.state.tabCounts.task
+                              : this.state.tabCounts.task}
+                          </a>
+                        </li>
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#Claim-tab"
+                            role="tab"
+                            aria-controls="Claim-tab"
+                            aria-selected="false"
+                            name="Claim"
+                            onClick={this.handleGetTabsName}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claim
+                              : "Claim"}
+                            :
+                            {this.state.tabCounts.claim < 9
+                              ? "0" + this.state.tabCounts.claim
+                              : this.state.tabCounts.claim}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="tab-content p-0">
+                  <div
+                    className="tab-pane fade"
+                    id="Claim-tab"
+                    role="tabpanel"
+                    aria-labelledby="Claim-tab"
+                  >
+                    {this.state.ticket_Id > 0 ? (
+                      <MyTicketClaim
+                        claimData={{
+                          claimDeatils: {
+                            ticketId: this.state.ticket_Id,
+                            claimTabId: this.state.ClaimTab,
+                          },
+                        }}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div
+                    className="tab-pane fade show active"
+                    id="Message-tab"
+                    role="tabpanel"
+                    aria-labelledby="Message-tab"
+                    style={{ margin: "10px 0 30px" }}
+                  >
+                    <div className="row message-header">
+                      <div className="col-12 col-xs-12 col-sm-3">
+                        <label className="user-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.user
+                            : "User"}
+                        </label>
                       </div>
-                      {this.state.messageDetails !== null &&
-                        this.state.messageDetails.map((item, i) => {
-                          return (
-                            <div key={i}>
-                              <div className="row top-margin">
-                                <div className="col-md-5">
-                                  <div className="v3"></div>
-                                </div>
-                                <div className="col-md-2">
-                                  <label className="today-02">
-                                    {item.dayOfCreation}
+                      <div className="col-12 col-xs-12 col-sm-7">
+                        <label className="message-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.title.message
+                            : "Message"}
+                        </label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2">
+                        <label className="action-label">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.action
+                            : "Action"}
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
+                      <div
+                        className={
+                          this.state.isKB
+                            ? "inlineGridTicket iskbticket"
+                            : "inlineGridTicket"
+                        }
+                      >
+                        <a
+                          href="#!"
+                          className="comment-text"
+                          onClick={this.handleFreeTextCommentOpen.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.comment
+                            : "Comment"}
+                        </a>
+                      </div>
+                    </div>
+                    {this.state.messageDetails !== null &&
+                      this.state.messageDetails.map((item, i) => {
+                        return (
+                          <div key={i}>
+                            <div className="row top-margin">
+                              <div className="col-md-5">
+                                <div className="v3"></div>
+                              </div>
+                              <div className="col-md-2">
+                                <label className="today-02">
+                                  {item.dayOfCreation}
                                   &nbsp; (
                                   {item.messageCount < 9
-                                      ? "0" + item.messageCount
-                                      : item.messageCount}
+                                    ? "0" + item.messageCount
+                                    : item.messageCount}
                                   )
                                 </label>
-                                </div>
-                                <div className="col-md-5">
-                                  <div className="v4"></div>
-                                </div>
                               </div>
-                              {item.msgDetails !== null &&
-                                item.msgDetails.map((details, j) => {
-                                  //
-                                  return (
-                                    <div key={j}>
-                                      <div>
-                                        <div className="row top-margin">
-                                          <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                                            <div
-                                              className="d-flex"
-                                              style={{ marginTop: "0" }}
-                                            >
-                                              {details.latestMessageDetails
-                                                .isSystemGenerated === true ? (
+                              <div className="col-md-5">
+                                <div className="v4"></div>
+                              </div>
+                            </div>
+                            {item.msgDetails !== null &&
+                              item.msgDetails.map((details, j) => {
+                                return (
+                                  <div key={j}>
+                                    <div>
+                                      <div className="row top-margin">
+                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                                          <div
+                                            className="d-flex"
+                                            style={{ marginTop: "0" }}
+                                          >
+                                            {details.latestMessageDetails
+                                              .isSystemGenerated === true ? (
+                                              <img
+                                                src={BlackUserIcon}
+                                                alt="Avatar"
+                                                className="oval-7"
+                                              />
+                                            ) : (
+                                              <>
+                                                {details.latestMessageDetails
+                                                  .isCustomerComment === 1 ? (
                                                   <img
                                                     src={BlackUserIcon}
                                                     alt="Avatar"
-                                                    className="oval-7"
+                                                    className="oval-6"
                                                   />
                                                 ) : (
-                                                  <>
-                                                    {details.latestMessageDetails
-                                                      .isCustomerComment === 1 ? (
-                                                        <img
-                                                          src={BlackUserIcon}
-                                                          alt="Avatar"
-                                                          className="oval-6"
-                                                        />
-                                                      ) : (
-                                                        <img
-                                                          src={Headphone2Img}
-                                                          alt="headphone"
-                                                          className="oval-55"
-                                                        />
-                                                      )}
-                                                  </>
+                                                  <img
+                                                    src={Headphone2Img}
+                                                    alt="headphone"
+                                                    className="oval-55"
+                                                  />
                                                 )}
+                                              </>
+                                            )}
 
-                                              <div>
+                                            <div>
+                                              <label
+                                                className="solved-by-naman-r mt-0"
+                                                style={{
+                                                  marginLeft: "7px",
+                                                }}
+                                              >
+                                                {
+                                                  details.latestMessageDetails
+                                                    .commentBy
+                                                }
+                                              </label>
+                                              {details.latestMessageDetails
+                                                .isReAssign === true ? (
                                                 <label
-                                                  className="solved-by-naman-r mt-0"
                                                   style={{
+                                                    display: "block",
                                                     marginLeft: "7px",
                                                   }}
                                                 >
-                                                  {
-                                                    details.latestMessageDetails
-                                                      .commentBy
-                                                  }
-                                                </label>
-                                                {details.latestMessageDetails
-                                                  .isReAssign === true ? (
-                                                    <label
-                                                      style={{
-                                                        display: "block",
-                                                        marginLeft: "7px",
-                                                      }}
-                                                    >
-                                                      {TranslationContext !==
-                                                        undefined
-                                                        ? TranslationContext.label
-                                                          .reassignto
-                                                        : "Reassign to"}{" "}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .reassignto
+                                                    : "Reassign to"}
                                                   &nbsp;
-                                                      <span className="solved-by-naman-r">
-                                                        {
-                                                          details
-                                                            .latestMessageDetails
-                                                            .newAgentName
-                                                        }
-                                                      </span>
-                                                    </label>
-                                                  ) : null}
-                                              </div>
-                                              {details.latestMessageDetails
-                                                .isInternalComment ===
-                                                true ? null : (
-                                                  <img
-                                                    src={
-                                                      details.latestMessageDetails
-                                                        .ticketSourceName ===
-                                                        "Calls"
-                                                        ? require("./../assets/Images/headphone3.png")
-                                                        : details
-                                                          .latestMessageDetails
-                                                          .ticketSourceName ===
-                                                          "Facebook"
-                                                          ? require("./../assets/Images/facebook.png")
-                                                          : details
-                                                            .latestMessageDetails
-                                                            .ticketSourceName ===
-                                                            "Mails"
-                                                            ? require("./../assets/Images/SecuredLetter2.png")
-                                                            : details
-                                                              .latestMessageDetails
-                                                              .ticketSourceName ===
-                                                              "Twitter"
-                                                              ? require("./../assets/Images/twitter.png")
-                                                              : require("./../assets/Images/twitter.png")
+                                                  <span className="solved-by-naman-r">
+                                                    {
+                                                      details
+                                                        .latestMessageDetails
+                                                        .newAgentName
                                                     }
-                                                    alt="sourceIMG"
-                                                    className="smg-Img1 headPhone3 black-twitter"
-                                                  />
-                                                )}
-                                              {details.latestMessageDetails
-                                                .isSystemGenerated === true ? (
-                                                  <img
-                                                    src={
-                                                      details.latestMessageDetails
-                                                        .ticketSourceName ===
-                                                        "Calls"
-                                                        ? require("./../assets/Images/headphone3.png")
-                                                        : details
-                                                          .latestMessageDetails
-                                                          .ticketSourceName ===
-                                                          "Facebook"
-                                                          ? require("./../assets/Images/facebook.png")
-                                                          : details
-                                                            .latestMessageDetails
-                                                            .ticketSourceName ===
-                                                            "Mails"
-                                                            ? require("./../assets/Images/SecuredLetter2.png")
-                                                            : details
-                                                              .latestMessageDetails
-                                                              .ticketSourceName ===
-                                                              "Twitter"
-                                                              ? require("./../assets/Images/twitter.png")
-                                                              : require("./../assets/Images/twitter.png")
-                                                    }
-                                                    alt="sourceIMG"
-                                                    className="smg-Img1 headPhone3 black-twitter"
-                                                  />
-                                                ) : null}
+                                                  </span>
+                                                </label>
+                                              ) : null}
                                             </div>
+                                            {details.latestMessageDetails
+                                              .isInternalComment ===
+                                            true ? null : (
+                                              <img
+                                                src={
+                                                  details.latestMessageDetails
+                                                    .ticketSourceName ===
+                                                  "Calls"
+                                                    ? require("./../assets/Images/headphone3.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Facebook"
+                                                    ? require("./../assets/Images/facebook.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Mails"
+                                                    ? require("./../assets/Images/SecuredLetter2.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Twitter"
+                                                    ? require("./../assets/Images/twitter.png")
+                                                    : require("./../assets/Images/twitter.png")
+                                                }
+                                                alt="sourceIMG"
+                                                className="smg-Img1 headPhone3 black-twitter"
+                                              />
+                                            )}
+                                            {details.latestMessageDetails
+                                              .isSystemGenerated === true ? (
+                                              <img
+                                                src={
+                                                  details.latestMessageDetails
+                                                    .ticketSourceName ===
+                                                  "Calls"
+                                                    ? require("./../assets/Images/headphone3.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Facebook"
+                                                    ? require("./../assets/Images/facebook.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Mails"
+                                                    ? require("./../assets/Images/SecuredLetter2.png")
+                                                    : details
+                                                        .latestMessageDetails
+                                                        .ticketSourceName ===
+                                                      "Twitter"
+                                                    ? require("./../assets/Images/twitter.png")
+                                                    : require("./../assets/Images/twitter.png")
+                                                }
+                                                alt="sourceIMG"
+                                                className="smg-Img1 headPhone3 black-twitter"
+                                              />
+                                            ) : null}
                                           </div>
-                                          <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                            {details.latestMessageDetails
-                                              .isSystemGenerated ===
-                                              true ? null : (
-                                                <>
-                                                  {details.latestMessageDetails
-                                                    .isInternalComment === true ? (
-                                                      <img
-                                                        src={commentImg}
-                                                        alt="comment"
-                                                        className="commentImg"
-                                                        style={{
-                                                          display: "inline-block",
-                                                        }}
-                                                      />
-                                                    ) : null}
-                                                </>
-                                              )}
-
-                                            {/* --------------Show Attchement Icone on condition--------------- */}
-                                            {details.latestMessageDetails
-                                              .hasAttachment === 1 ? (
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          {details.latestMessageDetails
+                                            .isSystemGenerated ===
+                                          true ? null : (
+                                            <>
+                                              {details.latestMessageDetails
+                                                .isInternalComment === true ? (
                                                 <img
-                                                  src={ClipImg}
-                                                  alt="attechment"
-                                                  className="fileAttchImg"
-                                                  onClick={this.handleHasAttachmetModalOpen.bind(
-                                                    this,
-                                                    details.latestMessageDetails
-                                                      .mailID
-                                                  )}
+                                                  src={commentImg}
+                                                  alt="comment"
+                                                  className="commentImg"
+                                                  style={{
+                                                    display: "inline-block",
+                                                  }}
                                                 />
                                               ) : null}
-                                            {/* ----------------------------- */}
+                                            </>
+                                          )}
 
-                                            <p
-                                              className="label-5"
-                                              style={{
-                                                display: "inline-block",
-                                              }}
-                                            >
-                                              {/* {details.latestMessageDetails.ticketMailBody
-                                              .replace(/<[^>]+>/g, "")
-                                              .replace(/&nbsp;/gi, " ")} */}
-                                              {ReactHtmlParser(
+                                          {/* --------------Show Attchement Icone on condition--------------- */}
+                                          {details.latestMessageDetails
+                                            .hasAttachment === 1 ? (
+                                            <img
+                                              src={ClipImg}
+                                              alt="attechment"
+                                              className="fileAttchImg"
+                                              onClick={this.handleHasAttachmetModalOpen.bind(
+                                                this,
                                                 details.latestMessageDetails
-                                                  .ticketMailBody
+                                                  .mailID
                                               )}
-                                            </p>
-                                          </div>
+                                            />
+                                          ) : null}
+                                          {/* ----------------------------- */}
 
-                                          <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                                            {details.trailMessageDetails
-                                              .length === 0 ? null : (
-                                                <div>
-                                                  {this.state.collapseUp &&
+                                          <p
+                                            className="label-5"
+                                            style={{
+                                              display: "inline-block",
+                                            }}
+                                          >
+                                            {ReactHtmlParser(
+                                              details.latestMessageDetails
+                                                .ticketMailBody
+                                            )}
+                                          </p>
+                                        </div>
+
+                                        <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
+                                          {details.trailMessageDetails
+                                            .length === 0 ? null : (
+                                            <div>
+                                              {this.state.collapseUp &&
+                                              "i" +
+                                                details.latestMessageDetails
+                                                  .mailID ===
+                                                this.state.collapseId ? (
+                                                <img
+                                                  src={Up1Img}
+                                                  alt="up"
+                                                  className="up-1"
+                                                  onClick={this.handleUpClose.bind(
+                                                    this,
+                                                    "i" +
+                                                      details
+                                                        .latestMessageDetails
+                                                        .mailID
+                                                  )}
+                                                  id={
                                                     "i" +
                                                     details.latestMessageDetails
-                                                      .mailID ===
-                                                    this.state.collapseId ? (
-                                                      <img
-                                                        src={Up1Img}
-                                                        alt="up"
-                                                        className="up-1"
-                                                        onClick={this.handleUpClose.bind(
-                                                          this,
-                                                          "i" +
-                                                          details
-                                                            .latestMessageDetails
-                                                            .mailID
-                                                        )}
-                                                        id={
-                                                          "i" +
-                                                          details.latestMessageDetails
-                                                            .mailID
-                                                        }
-                                                      />
-                                                    ) : (
-                                                      <img
-                                                        src={Down1Img}
-                                                        alt="up"
-                                                        className="up-1"
-                                                        onClick={this.handleUpOpen.bind(
-                                                          this,
-                                                          "i" +
-                                                          details
-                                                            .latestMessageDetails
-                                                            .mailID
-                                                        )}
-                                                        id={
-                                                          "i" +
-                                                          details.latestMessageDetails
-                                                            .mailID
-                                                        }
-                                                      />
-                                                    )}
-                                                </div>
-                                              )}
-
-                                            <div
-                                              className={
-                                                this.state.isKB
-                                                  ? "inlineGridTicket iskbticket"
-                                                  : "inlineGridTicket"
-                                              }
-                                            >
-                                              {details.latestMessageDetails
-                                                .isCustomerComment === 1 ? (
-                                                  <a
-                                                    href="#!"
-                                                    className="reply-comment"
-                                                    onClick={this.hanldeCommentOpen2.bind(
-                                                      this,
-                                                      details.latestMessageDetails
+                                                      .mailID
+                                                  }
+                                                />
+                                              ) : (
+                                                <img
+                                                  src={Down1Img}
+                                                  alt="up"
+                                                  className="up-1"
+                                                  onClick={this.handleUpOpen.bind(
+                                                    this,
+                                                    "i" +
+                                                      details
+                                                        .latestMessageDetails
                                                         .mailID
-                                                    )}
-                                                  >
-                                                    {TranslationContext !==
-                                                      undefined
-                                                      ? TranslationContext.a.reply
-                                                      : "Reply"}
-                                                  </a>
-                                                ) : null}
+                                                  )}
+                                                  id={
+                                                    "i" +
+                                                    details.latestMessageDetails
+                                                      .mailID
+                                                  }
+                                                />
+                                              )}
+                                            </div>
+                                          )}
 
+                                          <div
+                                            className={
+                                              this.state.isKB
+                                                ? "inlineGridTicket iskbticket"
+                                                : "inlineGridTicket"
+                                            }
+                                          >
+                                            {details.latestMessageDetails
+                                              .isCustomerComment === 1 ? (
                                               <a
                                                 href="#!"
-                                                className="comment-text"
-                                                onClick={this.handleCommentCollapseOpen.bind(
+                                                className="reply-comment"
+                                                onClick={this.hanldeCommentOpen2.bind(
                                                   this,
                                                   details.latestMessageDetails
                                                     .mailID
                                                 )}
                                               >
-                                                {TranslationContext !== undefined
-                                                  ? TranslationContext.p.comment
-                                                  : "Comment"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a.reply
+                                                  : "Reply"}
                                               </a>
-                                            </div>
-                                            <div
-                                              className="row"
-                                              style={{ width: "100%" }}
+                                            ) : null}
+
+                                            <a
+                                              href="#!"
+                                              className="comment-text"
+                                              onClick={this.handleCommentCollapseOpen.bind(
+                                                this,
+                                                details.latestMessageDetails
+                                                  .mailID
+                                              )}
                                             >
-                                              <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                              <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                                                <div className="commentcollapseTicket"></div>
-                                              </div>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.comment
+                                                : "Comment"}
+                                            </a>
+                                          </div>
+                                          <div
+                                            className="row"
+                                            style={{ width: "100%" }}
+                                          >
+                                            <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                            <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                                              <div className="commentcollapseTicket"></div>
                                             </div>
                                           </div>
                                         </div>
-                                        {details.trailMessageDetails.length ===
-                                          0 ? null : (
-                                            <div className="row card-op-out">
-                                              <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                              <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                                <UncontrolledCollapse
-                                                  toggler={
-                                                    "#i" +
-                                                    details.latestMessageDetails
-                                                      .mailID
-                                                  }
-                                                // isOpen={this.state.collapseUp}
-                                                >
-                                                  <Card>
-                                                    <CardBody>
-                                                      {details.trailMessageDetails !==
-                                                        null &&
-                                                        details.trailMessageDetails.map(
-                                                          function (MsgData, s) {
-                                                            return (
-                                                              <div
-                                                                className="card-details"
-                                                                key={s}
-                                                              >
-                                                                <div className="card-details-1">
-                                                                  <label
-                                                                    className="label-5"
-                                                                    style={{
-                                                                      display:
-                                                                        "block",
-                                                                    }}
-                                                                  >
-                                                                    {ReactHtmlParser(
-                                                                      MsgData.ticketMailBody
-                                                                    )}
-                                                                    {/* {MsgData.ticketMailBody
-                                                                  .replace(
-                                                                    /<[^>]+>/g,
-                                                                    ""
-                                                                  )
-                                                                  .replace(
-                                                                    /&nbsp;/gi,
-                                                                    " "
-                                                                  )} */}
-                                                                  </label>
-                                                                </div>
-                                                              </div>
-                                                            );
-                                                          }
-                                                        )}
-                                                      {details.trailMessageDetails
-                                                        .length === 0 && (
-                                                          <div className="card-details">
+                                      </div>
+                                      {details.trailMessageDetails.length ===
+                                      0 ? null : (
+                                        <div className="row card-op-out">
+                                          <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                          <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                            <UncontrolledCollapse
+                                              toggler={
+                                                "#i" +
+                                                details.latestMessageDetails
+                                                  .mailID
+                                              }
+                                           >
+                                              <Card>
+                                                <CardBody>
+                                                  {details.trailMessageDetails !==
+                                                    null &&
+                                                    details.trailMessageDetails.map(
+                                                      function(MsgData, s) {
+                                                        return (
+                                                          <div
+                                                            className="card-details"
+                                                            key={s}
+                                                          >
                                                             <div className="card-details-1">
-                                                              <label className="i-have-solved-this-i">
-                                                                {
-                                                                  details
-                                                                    .trailMessageDetails
-                                                                    .ticketMailSubject
-                                                                }
-                                                              </label>
                                                               <label
                                                                 className="label-5"
                                                                 style={{
-                                                                  display: "block",
+                                                                  display:
+                                                                    "block",
                                                                 }}
                                                               >
                                                                 {ReactHtmlParser(
-                                                                  details
-                                                                    .trailMessageDetails
-                                                                    .ticketMailBody
+                                                                  MsgData.ticketMailBody
                                                                 )}
-                                                                {/* {details.trailMessageDetails.ticketMailBody
-                                                            .replace(
-                                                              /<[^>]+>/g,
-                                                              ""
-                                                            )
-                                                            .replace(
-                                                              /&nbsp;/gi,
-                                                              " "
-                                                            )} */}
                                                               </label>
                                                             </div>
                                                           </div>
-                                                        )}
-                                                    </CardBody>
-                                                  </Card>
-                                                </UncontrolledCollapse>
-                                              </div>
-                                              <div className="col-12 col-xs-12 col-sm-2"></div>
-                                            </div>
-                                          )}
-                                      </div>
+                                                        );
+                                                      }
+                                                    )}
+                                                  {details.trailMessageDetails
+                                                    .length === 0 && (
+                                                    <div className="card-details">
+                                                      <div className="card-details-1">
+                                                        <label className="i-have-solved-this-i">
+                                                          {
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailSubject
+                                                          }
+                                                        </label>
+                                                        <label
+                                                          className="label-5"
+                                                          style={{
+                                                            display: "block",
+                                                          }}
+                                                        >
+                                                          {ReactHtmlParser(
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailBody
+                                                          )}
+                                                        </label>
+                                                      </div>
+                                                    </div>
+                                                  )}
+                                                </CardBody>
+                                              </Card>
+                                            </UncontrolledCollapse>
+                                          </div>
+                                          <div className="col-12 col-xs-12 col-sm-2"></div>
+                                        </div>
+                                      )}
                                     </div>
-                                  );
-                                })}
-                            </div>
-                          );
-                        })}
-                      <Modal
-                        open={this.state.CommentCollapse}
-                        onClose={this.handleCommentCollapseOpen.bind(this)}
-                        closeIconId="sdsg"
-                        modalId="Historical-popup"
-                        overlayId="logout-ovrly"
-                        classNames={{
-                          modal: "historical-popup",
-                        }}
-                      >
-                        <div className="commenttextborder">
-                          <div className="comment-disp">
-                            <div className="Commentlabel">
-                              <label className="Commentlabel1">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.p.comment
-                                  : "Comment"}
-                              </label>
-                            </div>
-                            <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
-                              <select
-                                className="add-select-category"
-                                value="0"
-                                onChange={this.setAssignedToValue.bind(
-                                  this,
-                                  "comment"
-                                )}
-                              >
-                                <option value="0">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.link.users
-                                    : "Users"}
-                                </option>
-                                {this.state.AssignToData !== null &&
-                                  this.state.AssignToData.map((item, i) => (
-                                    <option key={i} value={item.userID}>
-                                      {item.fullName}
-                                    </option>
-                                  ))}
-                              </select>
-                            </div>
-                            <div>
-                              <img
-                                src={CrossIcon}
-                                alt="Minus"
-                                className="pro-cross-icn m-0"
-                                onClick={this.handleCommentCollapseClose.bind(
-                                  this
-                                )}
-                              />
-                            </div>
+                                  </div>
+                                );
+                              })}
                           </div>
-                          <div className="commenttextmessage">
-                            <textarea
-                              cols="31"
-                              rows="3"
-                              className="ticketMSGCmt-textarea"
-                              name="ticketcommentMSG"
-                              maxLength={300}
-                              value={this.state.ticketcommentMSG}
-                              onChange={this.handleNoteOnChange}
-                              onClick={this.setNotiCurPosiCmnt}
-                            ></textarea>
-                          </div>
-                          {this.state.ticketcommentMSG.length === 0 && (
-                            <p
-                              style={{
-                                color: "red",
-                                marginBottom: "0px",
-                              }}
-                            >
-                              {this.state.tckcmtMSGCompulsory}
-                            </p>
-                          )}
-                          <div className="SendCommentBtn">
-                            <button
-                              className="SendCommentBtn1"
-                              onClick={this.handleSendMailData.bind(this, 3)}
-                            >
+                        );
+                      })}
+                    <Modal
+                      open={this.state.CommentCollapse}
+                      onClose={this.handleCommentCollapseOpen.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                      classNames={{
+                        modal: "historical-popup",
+                      }}
+                    >
+                      <div className="commenttextborder">
+                        <div className="comment-disp">
+                          <div className="Commentlabel">
+                            <label className="Commentlabel1">
                               {TranslationContext !== undefined
-                                ? TranslationContext.button.send
-                                : "SEND"}
-                            </button>
+                                ? TranslationContext.p.comment
+                                : "Comment"}
+                            </label>
+                          </div>
+                          <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(
+                                this,
+                                "comment"
+                              )}
+                            >
+                              <option value="0">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.users
+                                  : "Users"}
+                              </option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.userID}>
+                                    {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div>
+                            <img
+                              src={CrossIcon}
+                              alt="Minus"
+                              className="pro-cross-icn m-0"
+                              onClick={this.handleCommentCollapseClose.bind(
+                                this
+                              )}
+                            />
                           </div>
                         </div>
-                      </Modal>
-                      <Modal
-                        open={this.state.CommentCollapse2}
-                        onClose={this.hanldeCommentClose2.bind(this)}
-                        closeIconId="sdsg"
-                        modalId="Historical-popup"
-                        overlayId="logout-ovrly"
-                        classNames={{ modal: "historical-popup" }}
-                      >
-                        <div className="col-12" style={{ marginTop: "5px" }}>
-                          <div className="mask1">
-                            <div className="mail-mask">
-                              <div
-                                className="dropdown"
-                                style={{ display: "inherit" }}
+                        <div className="commenttextmessage">
+                          <textarea
+                            cols="31"
+                            rows="3"
+                            className="ticketMSGCmt-textarea"
+                            name="ticketcommentMSG"
+                            maxLength={300}
+                            value={this.state.ticketcommentMSG}
+                            onChange={this.handleNoteOnChange}
+                            onClick={this.setNotiCurPosiCmnt}
+                          ></textarea>
+                        </div>
+                        {this.state.ticketcommentMSG.length === 0 && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginBottom: "0px",
+                            }}
+                          >
+                            {this.state.tckcmtMSGCompulsory}
+                          </p>
+                        )}
+                        <div className="SendCommentBtn">
+                          <button
+                            className="SendCommentBtn1"
+                            onClick={this.handleSendMailData.bind(this, 3)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.send
+                              : "SEND"}
+                          </button>
+                        </div>
+                      </div>
+                    </Modal>
+                    <Modal
+                      open={this.state.CommentCollapse2}
+                      onClose={this.hanldeCommentClose2.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                      classNames={{ modal: "historical-popup" }}
+                    >
+                      <div className="col-12" style={{ marginTop: "5px" }}>
+                        <div className="mask1">
+                          <div className="mail-mask">
+                            <div
+                              className="dropdown"
+                              style={{ display: "inherit" }}
+                            >
+                              <select
+                                className="my-tic-email"
+                                value={this.state.ReplySourceId}
+                                onChange={this.handleReplyTcktSourceChange}
                               >
-                                <select
-                                  className="my-tic-email"
-                                  value={this.state.ReplySourceId}
-                                  onChange={this.handleReplyTcktSourceChange}
-                                >
-                                  <option value={2}>Email</option>
-                                  <option value={3}>Facebook</option>
-                                  <option value={5}> SMS</option>
-                                  <option value={1}>Call</option>
-                                </select>
-                              </div>
-                              {/* <div
+                                <option value={2}>Email</option>
+                                <option value={3}>Facebook</option>
+                                <option value={5}> SMS</option>
+                                <option value={1}>Call</option>
+                              </select>
+                            </div>
+                            {/* <div
                               className="dropdown"
                               style={{ display: "inherit" }}
                             >
@@ -7701,287 +7568,13 @@ class MyTicket extends Component {
                                 </li>
                               </ul>
                             </div> */}
-                              <div className="tic-det-ck-user tic-det-ck-user-rply myticlist-expand-sect">
-                                <select
-                                  className="add-select-category"
-                                  value="0"
-                                  onChange={this.setAssignedToValue.bind(
-                                    this,
-                                    "rply"
-                                  )}
-                                >
-                                  <option value="0">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.link.users
-                                      : "Users"}
-                                  </option>
-                                  {this.state.AssignToData !== null &&
-                                    this.state.AssignToData.map((item, i) => (
-                                      <option key={i} value={item.userID}>
-                                        {item.fullName}
-                                      </option>
-                                    ))}
-                                </select>
-                              </div>
-                              <div className="my-ticket-temp">
-                                <a
-                                  href="#!"
-                                  className="kblink"
-                                  onClick={this.HandleKbLinkModalOpen.bind(this)}
-                                >
-                                  <img
-                                    src={KnowledgeLogo}
-                                    alt="KnowledgeLogo"
-                                    className="knoim"
-                                  />
-                                KB
-                              </a>
-                                <div
-                                  className="dropdown collapbtn"
-                                  style={{ display: "inherit" }}
-                                >
-                                  <button
-                                    className="dropdown-toggle my-tic-email"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    onClick={this.handleTemplateBindByIssueType.bind(
-                                      this,
-                                      1
-                                    )}
-                                  >
-                                    <FontAwesomeIcon icon={faCalculator} />
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.p.template
-                                      : "Template"}
-                                  </button>
-                                  <ul className="dropdown-menu">
-                                    {this.state.ReplyCKEditoertemplat !== null &&
-                                      this.state.ReplyCKEditoertemplat.map(
-                                        (item, i) => (
-                                          <li key={i} value={item.templateID}>
-                                            <span
-                                              onClick={this.handleCkEditorTemplateData.bind(
-                                                this,
-                                                item.templateID,
-                                                item.templateName,
-                                                1
-                                              )}
-                                            >
-                                              {item.templateName}
-                                            </span>
-                                          </li>
-                                        )
-                                      )}
-                                  </ul>
-                                </div>
-                              </div>
-                              <div className="mob-float my-tic-mob-float">
-                                <div
-                                  style={{ cursor: "pointer" }}
-                                  onClick={this.hanldeCommentClose2.bind(this)}
-                                >
-                                  <img
-                                    src={CrossIcon}
-                                    alt="Minus"
-                                    className="pro-cross-img"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-md-12 my-tic-ckeditor">
-                          <CKEditor
-                            id="ckeditor1"
-                            data={this.state.replymailBodyData}
-                            onChange={this.onreplyCKEditorChange}
-                            onBlur={this.onCkBlurReply}
-                            config={{
-                              toolbar: [
-                                {
-                                  name: "basicstyles",
-                                  items: ["Bold", "Italic", "Strike"],
-                                },
-                                {
-                                  name: "styles",
-                                  items: ["Styles", "Format"],
-                                },
-                                {
-                                  name: "paragraph",
-                                  items: ["NumberedList", "BulletedList"],
-                                },
-                                {
-                                  name: "links",
-                                  items: ["Link", "Unlink"],
-                                },
-                                {
-                                  name: "insert",
-                                  items: ["Image", "Table"],
-                                },
-                                {
-                                  name: "tools",
-                                  items: ["Maximize"],
-                                },
-                                {
-                                  name: "editing",
-                                  items: ["Scayt"],
-                                },
-                              ],
-                            }}
-                          />
-                          <div className="row colladrowa">
-                            <div className="col-md-12 colladrow">
-                              <ul style={{ padding: "0 15px" }}>
-                                <li>
-                                  <label>
-                                    To: &nbsp;
-                                  {ticketDetailsData.customerEmailId}
-                                  </label>
-                                </li>
-                                <li>
-                                  <div className="filter-checkbox">
-                                    <input
-                                      type="checkbox"
-                                      id="custRply"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={() => this.showInformStoreReply()}
-                                    />
-                                    <label
-                                      htmlFor="custRply"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.span.informstore
-                                          : "Inform Store"}
-                                      </span>
-                                    </label>
-                                  </div>
-                                </li>
-                                <li>
-                                  <span>
-                                    <input
-                                      id="Rplyfile"
-                                      className="file-upload1 d-none"
-                                      type="file"
-                                      name="Rplyfile"
-                                      onChange={this.handleReplyFileUpload.bind(
-                                        this
-                                      )}
-                                      multiple
-                                    />
-                                    <label
-                                      htmlFor="Rplyfile"
-                                      onDrop={this.fileDrop}
-                                      onDragOver={this.fileDragOver}
-                                      onDragEnter={this.fileDragEnter}
-                                    >
-                                      <img
-                                        src={FileUpload}
-                                        alt="file-upload"
-                                        className="fileup"
-                                      />
-                                    </label>
-                                  </span>
-                                  <label style={{ color: "#2561a8" }}>
-                                    {this.state.ReplyfileText}{" "}
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                        .files
-                                      : "files"}
-                                  </label>
-                                </li>
-                                <li className="w-100"></li>
-                                <li>
-                                  <label className="">
-                                    <div className="input-group">
-                                      <span className="input-group-addon inputcc">
-                                        CC:
-                                    </span>
-                                      <input
-                                        type="text"
-                                        className="CCdi1"
-                                        name="userCC"
-                                        autoComplete="off"
-                                        value={this.state.mailFiled.userCC}
-                                        onChange={this.handleMailOnChange.bind(
-                                          this,
-                                          "userCC"
-                                        )}
-                                      />
-                                      <span className="input-group-addon inputcc-one">
-                                        {this.state.userCcCount < 1
-                                          ? "+" + this.state.userCcCount
-                                          : "+" + this.state.userCcCount}
-                                      </span>
-                                    </div>
-                                  </label>
-                                </li>
-                                <li>
-                                  <label className="">
-                                    <div className="input-group">
-                                      <span className="input-group-addon inputcc">
-                                        BCC:
-                                    </span>
-                                      <input
-                                        type="text"
-                                        className="CCdi"
-                                        name="userBCC"
-                                        value={this.state.mailFiled.userBCC}
-                                        onChange={this.handleMailOnChange.bind(
-                                          this,
-                                          "userBCC"
-                                        )}
-                                      />
-                                      <span className="input-group-addon inputcc-one">
-                                        {this.state.userBccCount < 1
-                                          ? "+" + this.state.userBccCount
-                                          : "+" + this.state.userBccCount}
-                                      </span>
-                                    </div>
-                                  </label>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          className="send my-tic-send"
-                          type="button"
-                          onClick={this.handleSendMailData.bind(this, 1)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.send
-                            : "Send"}
-                        </button>
-                      </Modal>
-                      <Modal
-                        open={this.state.FreeTextComment}
-                        onClose={this.handleFreeTextCommentOpen.bind(this)}
-                        closeIconId="sdsg"
-                        modalId="Historical-popup"
-                        overlayId="logout-ovrly"
-                        classNames={{
-                          modal: "historical-popup",
-                        }}
-                      >
-                        <div className="commenttextborder">
-                          <div className="comment-disp">
-                            <div className="Commentlabel">
-                              <label className="Commentlabel1">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.p.comment
-                                  : "Comment"}
-                              </label>
-                            </div>
-                            <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
+                            <div className="tic-det-ck-user tic-det-ck-user-rply myticlist-expand-sect">
                               <select
                                 className="add-select-category"
                                 value="0"
                                 onChange={this.setAssignedToValue.bind(
                                   this,
-                                  "freeCmd"
+                                  "rply"
                                 )}
                               >
                                 <option value="0">
@@ -7997,417 +7590,687 @@ class MyTicket extends Component {
                                   ))}
                               </select>
                             </div>
-                            <div>
-                              <img
-                                src={CrossIcon}
-                                alt="Minus"
-                                className="pro-cross-icn m-0"
-                                onClick={this.handleFreeTextCommentOpen.bind(
-                                  this,
-                                  "close"
-                                )}
-                              />
+                            <div className="my-ticket-temp">
+                              <a
+                                href="#!"
+                                className="kblink"
+                                onClick={this.HandleKbLinkModalOpen.bind(this)}
+                              >
+                                <img
+                                  src={KnowledgeLogo}
+                                  alt="KnowledgeLogo"
+                                  className="knoim"
+                                />
+                                KB
+                              </a>
+                              <div
+                                className="dropdown collapbtn"
+                                style={{ display: "inherit" }}
+                              >
+                                <button
+                                  className="dropdown-toggle my-tic-email"
+                                  type="button"
+                                  data-toggle="dropdown"
+                                  onClick={this.handleTemplateBindByIssueType.bind(
+                                    this,
+                                    1
+                                  )}
+                                >
+                                  <FontAwesomeIcon icon={faCalculator} />
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.template
+                                    : "Template"}
+                                </button>
+                                <ul className="dropdown-menu">
+                                  {this.state.ReplyCKEditoertemplat !== null &&
+                                    this.state.ReplyCKEditoertemplat.map(
+                                      (item, i) => (
+                                        <li key={i} value={item.templateID}>
+                                          <span
+                                            onClick={this.handleCkEditorTemplateData.bind(
+                                              this,
+                                              item.templateID,
+                                              item.templateName,
+                                              1
+                                            )}
+                                          >
+                                            {item.templateName}
+                                          </span>
+                                        </li>
+                                      )
+                                    )}
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="mob-float my-tic-mob-float">
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={this.hanldeCommentClose2.bind(this)}
+                              >
+                                <img
+                                  src={CrossIcon}
+                                  alt="Minus"
+                                  className="pro-cross-img"
+                                />
+                              </div>
                             </div>
                           </div>
-                          <div className="commenttextmessage">
-                            <textarea
-                              cols="31"
-                              rows="3"
-                              className="ticketMSGCmt-textarea"
-                              name="ticketFreeTextcomment"
-                              maxLength={300}
-                              value={this.state.ticketFreeTextcomment}
-                              onChange={this.handleNoteOnChange}
-                              onClick={this.setNotiCurPosiFreeCmnt}
-                            ></textarea>
-                          </div>
-                          {this.state.ticketFreeTextcomment.length === 0 && (
-                            <p
-                              style={{
-                                color: "red",
-                                marginBottom: "0px",
-                              }}
-                            >
-                              {this.state.freetextCommentCompulsory}
-                            </p>
-                          )}
-                          <div className="SendCommentBtn">
-                            <button
-                              className="SendCommentBtn1"
-                              onClick={this.handleSendMailData.bind(this)}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.button.send
-                                : "SEND"}
-                            </button>
-                          </div>
                         </div>
-                      </Modal>
-                    </div>
-
-                    <div
-                      className="tab-pane fade"
-                      id="Task-tab"
-                      role="tabpanel"
-                      aria-labelledby="Task-tab"
-                    >
-                      {this.state.ticket_Id > 0 ? (
-                        <div className={this.props.isKB ? "iskbticket" : ""}>
-                          <MyTicketTask
-                            callbackToParent={this.callbackToParent}
-                            isKB={this.state.isKB}
-                            taskData={{
-                              TicketData: {
-                                TicketId: this.state.ticket_Id,
-                                // GridData: this.state.taskTableGrid,
-                                TabActiveId: this.state.TaskTab,
+                      </div>
+                      <div className="col-md-12 my-tic-ckeditor">
+                        <CKEditor
+                          id="ckeditor1"
+                          data={this.state.replymailBodyData}
+                          onChange={this.onreplyCKEditorChange}
+                          onBlur={this.onCkBlurReply}
+                          config={{
+                            toolbar: [
+                              {
+                                name: "basicstyles",
+                                items: ["Bold", "Italic", "Strike"],
                               },
-                            }}
-                          // callBackTaskLenght={this.handleGetCountOfTabs(this.state.ticket_Id)}
-                          />
+                              {
+                                name: "styles",
+                                items: ["Styles", "Format"],
+                              },
+                              {
+                                name: "paragraph",
+                                items: ["NumberedList", "BulletedList"],
+                              },
+                              {
+                                name: "links",
+                                items: ["Link", "Unlink"],
+                              },
+                              {
+                                name: "insert",
+                                items: ["Image", "Table"],
+                              },
+                              {
+                                name: "tools",
+                                items: ["Maximize"],
+                              },
+                              {
+                                name: "editing",
+                                items: ["Scayt"],
+                              },
+                            ],
+                          }}
+                        />
+                        <div className="row colladrowa">
+                          <div className="col-md-12 colladrow">
+                            <ul style={{ padding: "0 15px" }}>
+                              <li>
+                                <label>
+                                  To: &nbsp;
+                                  {ticketDetailsData.customerEmailId}
+                                </label>
+                              </li>
+                              <li>
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id="custRply"
+                                    name="filter-type"
+                                    style={{ display: "none" }}
+                                    onChange={() => this.showInformStoreReply()}
+                                  />
+                                  <label
+                                    htmlFor="custRply"
+                                    style={{ paddingLeft: "25px" }}
+                                  >
+                                    <span>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.informstore
+                                        : "Inform Store"}
+                                    </span>
+                                  </label>
+                                </div>
+                              </li>
+                              <li>
+                                <span>
+                                  <input
+                                    id="Rplyfile"
+                                    className="file-upload1 d-none"
+                                    type="file"
+                                    name="Rplyfile"
+                                    onChange={this.handleReplyFileUpload.bind(
+                                      this
+                                    )}
+                                    multiple
+                                  />
+                                  <label
+                                    htmlFor="Rplyfile"
+                                    onDrop={this.fileDrop}
+                                    onDragOver={this.fileDragOver}
+                                    onDragEnter={this.fileDragEnter}
+                                  >
+                                    <img
+                                      src={FileUpload}
+                                      alt="file-upload"
+                                      className="fileup"
+                                    />
+                                  </label>
+                                </span>
+                                <label style={{ color: "#2561a8" }}>
+                                  {this.state.ReplyfileText}{" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .files
+                                    : "files"}
+                                </label>
+                              </li>
+                              <li className="w-100"></li>
+                              <li>
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      CC:
+                                    </span>
+                                    <input
+                                      type="text"
+                                      className="CCdi1"
+                                      name="userCC"
+                                      autoComplete="off"
+                                      value={this.state.mailFiled.userCC}
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userCC"
+                                      )}
+                                    />
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userCcCount < 1
+                                        ? "+" + this.state.userCcCount
+                                        : "+" + this.state.userCcCount}
+                                    </span>
+                                  </div>
+                                </label>
+                              </li>
+                              <li>
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      BCC:
+                                    </span>
+                                    <input
+                                      type="text"
+                                      className="CCdi"
+                                      name="userBCC"
+                                      value={this.state.mailFiled.userBCC}
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userBCC"
+                                      )}
+                                    />
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userBccCount < 1
+                                        ? "+" + this.state.userBccCount
+                                        : "+" + this.state.userBccCount}
+                                    </span>
+                                  </div>
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      ) : (
-                          ""
-                        )}
-                    </div>
-                    <div
-                      className="tab-pane fade"
-                      id="Notes-tab"
-                      role="tabpanel"
-                      aria-labelledby="Notes-tab"
-                    >
-                      <div
-                        className="row removemarg"
-                        style={{ marginTop: "20px" }}
+                      </div>
+                      <button
+                        className="send my-tic-send"
+                        type="button"
+                        onClick={this.handleSendMailData.bind(this, 1)}
                       >
-                        <div
-                          className={
-                            this.props.isKB
-                              ? "col-12 col-xs-12 col-sm-4 iskbticket"
-                              : "col-12 col-xs-12 col-sm-4"
-                          }
-                        >
-                          <textarea
-                            className={
-                              this.state.isKB
-                                ? "Add-Notes-textarea iskbticket"
-                                : "Add-Notes-textarea"
-                            }
-                            placeholder={
-                              TranslationContext !== undefined
-                                ? TranslationContext.placeholder.addnotes
-                                : "Add Notes"
-                            }
-                            name="NoteAddComment"
-                            value={this.state.NoteAddComment}
-                            onChange={this.handleNoteOnChange}
-                          ></textarea>
-                          {this.state.NoteAddComment.length === 0 && (
-                            <p
-                              style={{
-                                color: "red",
-                                marginBottom: "0px",
-                              }}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.send
+                          : "Send"}
+                      </button>
+                    </Modal>
+                    <Modal
+                      open={this.state.FreeTextComment}
+                      onClose={this.handleFreeTextCommentOpen.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                      classNames={{
+                        modal: "historical-popup",
+                      }}
+                    >
+                      <div className="commenttextborder">
+                        <div className="comment-disp">
+                          <div className="Commentlabel">
+                            <label className="Commentlabel1">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.comment
+                                : "Comment"}
+                            </label>
+                          </div>
+                          <div className="tic-det-ck-user tic-det-Freecmd myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(
+                                this,
+                                "freeCmd"
+                              )}
                             >
-                              {this.state.notesCommentCompulsion}
-                            </p>
-                          )}
+                              <option value="0">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.link.users
+                                  : "Users"}
+                              </option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.userID}>
+                                    {item.fullName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div>
+                            <img
+                              src={CrossIcon}
+                              alt="Minus"
+                              className="pro-cross-icn m-0"
+                              onClick={this.handleFreeTextCommentOpen.bind(
+                                this,
+                                "close"
+                              )}
+                            />
+                          </div>
+                        </div>
+                        <div className="commenttextmessage">
+                          <textarea
+                            cols="31"
+                            rows="3"
+                            className="ticketMSGCmt-textarea"
+                            name="ticketFreeTextcomment"
+                            maxLength={300}
+                            value={this.state.ticketFreeTextcomment}
+                            onChange={this.handleNoteOnChange}
+                            onClick={this.setNotiCurPosiFreeCmnt}
+                          ></textarea>
+                        </div>
+                        {this.state.ticketFreeTextcomment.length === 0 && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginBottom: "0px",
+                            }}
+                          >
+                            {this.state.freetextCommentCompulsory}
+                          </p>
+                        )}
+                        <div className="SendCommentBtn">
                           <button
-                            type="button"
-                            className={
-                              this.state.isKB
-                                ? "notesbtn notesbtn-text iskbticket"
-                                : "notesbtn notesbtn-text"
-                            }
-                            onClick={this.handleNoteAddComments.bind(this)}
-                            style={{ marginTop: "5px" }}
+                            className="SendCommentBtn1"
+                            onClick={this.handleSendMailData.bind(this)}
                           >
                             {TranslationContext !== undefined
-                              ? TranslationContext.a.addcomments
-                              : "ADD COMMENT"}
+                              ? TranslationContext.button.send
+                              : "SEND"}
                           </button>
                         </div>
+                      </div>
+                    </Modal>
+                  </div>
 
-                        <div className="col-12 col-xs-12 col-sm-8 my-ticket-notes">
-                          {this.state.Notesdetails !== null &&
-                            this.state.Notesdetails.map((item, i) => (
-                              <div className="row my-ticket-notes-row" key={i}>
-                                <div className="col-md-1">
-                                  <div className="oval-5-1-new">
-                                    <img
-                                      src={StoreIcon}
-                                      style={{ padding: "5px" }}
-                                      alt="store-icon"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-md-11">
-                                  <div className="row my-ticket-notes-created">
-                                    <label className="varun-nagpal">
-                                      {item.createdByName}
-                                    </label>
-                                  </div>
-                                  <div className="row my-ticket-notes-created">
-                                    <label className="hi-diwakar-i-really tab">
-                                      {item.note}
-                                    </label>
-                                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="Task-tab"
+                    role="tabpanel"
+                    aria-labelledby="Task-tab"
+                  >
+                    {this.state.ticket_Id > 0 ? (
+                      <div className={this.props.isKB ? "iskbticket" : ""}>
+                        <MyTicketTask
+                          callbackToParent={this.callbackToParent}
+                          isKB={this.state.isKB}
+                          taskData={{
+                            TicketData: {
+                              TicketId: this.state.ticket_Id,
+
+                              TabActiveId: this.state.TaskTab,
+                            },
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="Notes-tab"
+                    role="tabpanel"
+                    aria-labelledby="Notes-tab"
+                  >
+                    <div
+                      className="row removemarg"
+                      style={{ marginTop: "20px" }}
+                    >
+                      <div
+                        className={
+                          this.props.isKB
+                            ? "col-12 col-xs-12 col-sm-4 iskbticket"
+                            : "col-12 col-xs-12 col-sm-4"
+                        }
+                      >
+                        <textarea
+                          className={
+                            this.state.isKB
+                              ? "Add-Notes-textarea iskbticket"
+                              : "Add-Notes-textarea"
+                          }
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.addnotes
+                              : "Add Notes"
+                          }
+                          name="NoteAddComment"
+                          value={this.state.NoteAddComment}
+                          onChange={this.handleNoteOnChange}
+                        ></textarea>
+                        {this.state.NoteAddComment.length === 0 && (
+                          <p
+                            style={{
+                              color: "red",
+                              marginBottom: "0px",
+                            }}
+                          >
+                            {this.state.notesCommentCompulsion}
+                          </p>
+                        )}
+                        <button
+                          type="button"
+                          className={
+                            this.state.isKB
+                              ? "notesbtn notesbtn-text iskbticket"
+                              : "notesbtn notesbtn-text"
+                          }
+                          onClick={this.handleNoteAddComments.bind(this)}
+                          style={{ marginTop: "5px" }}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.addcomments
+                            : "ADD COMMENT"}
+                        </button>
+                      </div>
+
+                      <div className="col-12 col-xs-12 col-sm-8 my-ticket-notes">
+                        {this.state.Notesdetails !== null &&
+                          this.state.Notesdetails.map((item, i) => (
+                            <div className="row my-ticket-notes-row" key={i}>
+                              <div className="col-md-1">
+                                <div className="oval-5-1-new">
+                                  <img
+                                    src={StoreIcon}
+                                    style={{ padding: "5px" }}
+                                    alt="store-icon"
+                                  />
                                 </div>
                               </div>
-                            ))}
-                        </div>
+                              <div className="col-md-11">
+                                <div className="row my-ticket-notes-created">
+                                  <label className="varun-nagpal">
+                                    {item.createdByName}
+                                  </label>
+                                </div>
+                                <div className="row my-ticket-notes-created">
+                                  <label className="hi-diwakar-i-really tab">
+                                    {item.note}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <Modal
-                open={this.state.profilemodal}
-                onClose={this.HandleProfileModalClose.bind(this)}
-                modalId="profile-popup"
-                overlayId="logout-ovrly"
-              >
-                <div className="profilemodalmaindiv">
-                  <div style={{ float: "right" }}>
-                    <img
-                      src={CrossIcon}
-                      alt="cross-icon"
-                      className="pro-cross-icn"
-                      onClick={this.HandleProfileModalClose.bind(this)}
-                    />
-                  </div>
-                  <div className="row profilemodalrow">
-                    <div className="col-md-6">
-                      <label className="profilemodal-text">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.name
-                          : "Name"}
-                      </label>
-                      <label className="profilemodal-textval">
-                        {ticketDetailsData.customerName}
-                      </label>
-                    </div>
-                    <div className="col-md-6">
-                      <label className="profilemodal-text">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.mobile
-                          : "Mobile"}
-                      </label>
-                      <label className="profilemodal-textval">
-                        {ticketDetailsData.customerPhoneNumber}
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row profilemodalrow-1">
-                    <div className="col-md-6">
-                      <label className="profilemodal-text">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.a.email
-                          : "Email"}
-                      </label>
-                      <label
-                        className="profilemodal-textval"
-                        style={{ wordBreak: "break-word" }}
-                      >
-                        {ticketDetailsData.customerEmailId}
-                      </label>
-                    </div>
-
-                    <div className="col-md-6">
-                      <label className="profilemodal-text">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.alternatenumber
-                          : "Alternate Number"}
-                      </label>
-                      <label className="profilemodal-textval">
-                        {ticketDetailsData.altNumber}
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row" style={{ marginLeft: "15px" }}>
-                    <div className="openticketbox profilemodalrow-1">
-                      <label className="open-tickets-box-text">
-                        {ticketDetailsData.openTicket}
-                        <small className="open-tickets-box-textval">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.ticketingDashboard.opentickets
-                            : "Open Tickets"}
-                        </small>
-                      </label>
-                    </div>
-                    <div className="openticketbox-2 profilemodalrow-1">
-                      <label className="open-tickets-box-text">
-                        {ticketDetailsData.totalticket}
-                        <small className="open-tickets-box-textval">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.ticketingDashboard.totaltickets
-                            : "Total Tickets"}
-                        </small>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row profilemodal-row-3">
-                    <img src={CustomerIcon} alt="customer-icon" />
-                    <label className="full-profile-view-text">
+            </div>
+            <Modal
+              open={this.state.profilemodal}
+              onClose={this.HandleProfileModalClose.bind(this)}
+              modalId="profile-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="profilemodalmaindiv">
+                <div style={{ float: "right" }}>
+                  <img
+                    src={CrossIcon}
+                    alt="cross-icon"
+                    className="pro-cross-icn"
+                    onClick={this.HandleProfileModalClose.bind(this)}
+                  />
+                </div>
+                <div className="row profilemodalrow">
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">
                       {TranslationContext !== undefined
-                        ? TranslationContext.label.fullprofileview
-                        : "FULL PROFILE VIEW"}
+                        ? TranslationContext.span.name
+                        : "Name"}
+                    </label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.customerName}
+                    </label>
+                  </div>
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.mobile
+                        : "Mobile"}
+                    </label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.customerPhoneNumber}
                     </label>
                   </div>
                 </div>
-              </Modal>
+                <div className="row profilemodalrow-1">
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.email
+                        : "Email"}
+                    </label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.customerEmailId}
+                    </label>
+                  </div>
 
-              <div className="row d-none" style={{ margin: "0" }}>
-                <div className="TicketTabs">
-                  <ul className="mb-0">
-                    <li className="SubR">
-                      <img src={PlusImg} alt="Plus" className="Ticket" />
-                    </li>
-                    <li className="Sub">
-                      <span>
-                        <img src={Ticket} alt="Ticket" className="Ticket" />
-                      </span>
-                      <label className="Subject">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.subject
-                          : "Subject"}
-                      :
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">
                       {TranslationContext !== undefined
-                          ? TranslationContext.ticketingDashboard.needtochangem
-                          : "Need to change m..."}
-                      </label>
-                      <span>
-                        <img
-                          src={CancelImgGrey}
-                          alt="Cancel"
-                          className="cancel"
-                        />
-                      </span>
-                    </li>
-                    <li className="Sub active">
-                      <span>
-                        <img src={Ticket} alt="Ticket" className="Ticket" />
-                      </span>
-                      <label className="Subject">
+                        ? TranslationContext.label.alternatenumber
+                        : "Alternate Number"}
+                    </label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.altNumber}
+                    </label>
+                  </div>
+                </div>
+                <div className="row" style={{ marginLeft: "15px" }}>
+                  <div className="openticketbox profilemodalrow-1">
+                    <label className="open-tickets-box-text">
+                      {ticketDetailsData.openTicket}
+                      <small className="open-tickets-box-textval">
                         {TranslationContext !== undefined
-                          ? TranslationContext.span.subject
-                          : "Subject"}
-                      :
-                      {TranslationContext !== undefined
-                          ? TranslationContext.ticketingDashboard.needtochangem
-                          : "Need to change m..."}
-                      </label>
-                      <span>
-                        <img
-                          src={CancelImgGrey}
-                          alt="Cancel"
-                          className="cancel"
-                        />
-                      </span>
-                    </li>
-                    <li className="Sub">
-                      <span>
-                        <img src={Ticket} alt="Ticket" className="Ticket" />
-                      </span>
-                      <label className="Subject">
+                          ? TranslationContext.ticketingDashboard.opentickets
+                          : "Open Tickets"}
+                      </small>
+                    </label>
+                  </div>
+                  <div className="openticketbox-2 profilemodalrow-1">
+                    <label className="open-tickets-box-text">
+                      {ticketDetailsData.totalticket}
+                      <small className="open-tickets-box-textval">
                         {TranslationContext !== undefined
-                          ? TranslationContext.span.subject
-                          : "Subject"}
-                      :
-                      {TranslationContext !== undefined
-                          ? TranslationContext.ticketingDashboard.needtochangem
-                          : "Need to change m..."}
-                      </label>
-                      <span>
-                        <img
-                          src={CancelImgGrey}
-                          alt="Cancel"
-                          className="cancel"
-                        />
-                      </span>
-                    </li>
-                    <li className="Sub">
-                      <span>
-                        <img src={Ticket} alt="Ticket" className="Ticket" />
-                      </span>
-                      <label className="Subject">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.subject
-                          : "Subject"}
-                      :
-                      {TranslationContext !== undefined
-                          ? TranslationContext.ticketingDashboard.needtochangem
-                          : "Need to change m..."}
-                      </label>
-                      <span>
-                        <img
-                          src={CancelImgGrey}
-                          alt="Cancel"
-                          className="cancel"
-                        />
-                      </span>
-                    </li>
-                    <li className="SubL">
-                      <label className="More">
-                        {TranslationContext !== undefined
-                          ? TranslationContext.label.more
-                          : "More"}
-                      </label>
-                      <span>
-                        <img src={MoreUp} alt="Cancel" className="MoreUp" />
-                      </span>
-                    </li>
-                  </ul>
+                          ? TranslationContext.ticketingDashboard.totaltickets
+                          : "Total Tickets"}
+                      </small>
+                    </label>
+                  </div>
+                </div>
+                <div className="row profilemodal-row-3">
+                  <img src={CustomerIcon} alt="customer-icon" />
+                  <label className="full-profile-view-text">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.fullprofileview
+                      : "FULL PROFILE VIEW"}
+                  </label>
                 </div>
               </div>
-              {/* -------------------Start knowledge base modal pop up----------------------- */}
-              <Modal
-                open={this.state.KnowledgeBaseModal}
-                onClose={this.hadnleCloseKnowledage.bind(this)}
-                closeIconId="sdsg"
-                modalId="Historical-popup"
-                overlayId="logout-ovrly"
-                classNames={{
-                  modal: "myticket-knowpopup",
-                }}
-              >
-                <div className="commenttextborder">
-                  <div className="comment-disp">
-                    <div></div>
-                  </div>
-                  <div className="Commentlabel">
-                    <p className="Commentlabel1 mb-4 text-center">
+            </Modal>
+
+            <div className="row d-none" style={{ margin: "0" }}>
+              <div className="TicketTabs">
+                <ul className="mb-0">
+                  <li className="SubR">
+                    <img src={PlusImg} alt="Plus" className="Ticket" />
+                  </li>
+                  <li className="Sub">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
                       {TranslationContext !== undefined
-                        ? TranslationContext.ticketingDashboard
-                          .addthisticketinknowledgebase
-                        : "Add this ticket in Knowledge Base ?"}
-                    </p>
-                  </div>
-                  <div className="SendCommentBtn mb-0" style={{ float: "left" }}>
-                    <button
-                      className="SendCommentBtn1"
-                      onClick={this.handleYesNoClick.bind(this, false)}
-                    >
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
                       {TranslationContext !== undefined
-                        ? TranslationContext.option.no
-                        : "No"}
-                    </button>
-                  </div>
-                  <div className="SendCommentBtn mb-0">
-                    <button
-                      className="SendCommentBtn1"
-                      onClick={this.handleYesNoClick.bind(this, true)}
-                    >
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="Sub active">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
                       {TranslationContext !== undefined
-                        ? TranslationContext.option.yes
-                        : "Yes"}
-                    </button>
-                  </div>
-                </div>
-              </Modal>
-              {/* -------------------End knowledge base modal pop up----------------------- */}
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="Sub">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="Sub">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.subject
+                        : "Subject"}
+                      :
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.needtochangem
+                        : "Need to change m..."}
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="SubL">
+                    <label className="More">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.more
+                        : "More"}
+                    </label>
+                    <span>
+                      <img src={MoreUp} alt="Cancel" className="MoreUp" />
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </div>
-          )}
+            {/* -------------------Start knowledge base modal pop up----------------------- */}
+            <Modal
+              open={this.state.KnowledgeBaseModal}
+              onClose={this.hadnleCloseKnowledage.bind(this)}
+              closeIconId="sdsg"
+              modalId="Historical-popup"
+              overlayId="logout-ovrly"
+              classNames={{
+                modal: "myticket-knowpopup",
+              }}
+            >
+              <div className="commenttextborder">
+                <div className="comment-disp">
+                  <div></div>
+                </div>
+                <div className="Commentlabel">
+                  <p className="Commentlabel1 mb-4 text-center">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard
+                          .addthisticketinknowledgebase
+                      : "Add this ticket in Knowledge Base ?"}
+                  </p>
+                </div>
+                <div className="SendCommentBtn mb-0" style={{ float: "left" }}>
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleYesNoClick.bind(this, false)}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.no
+                      : "No"}
+                  </button>
+                </div>
+                <div className="SendCommentBtn mb-0">
+                  <button
+                    className="SendCommentBtn1"
+                    onClick={this.handleYesNoClick.bind(this, true)}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.yes
+                      : "Yes"}
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* -------------------End knowledge base modal pop up----------------------- */}
+          </div>
+        )}
       </Fragment>
     );
   }

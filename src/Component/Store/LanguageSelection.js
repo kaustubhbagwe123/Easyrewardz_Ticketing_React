@@ -1,16 +1,11 @@
 import React, { Component } from "react";
-import "react-app-polyfill/ie9";
-import "react-app-polyfill/ie11";
-import "./../../assets/css/custome.css";
 import Logo from "./../../assets/Images/logo.jpg";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { authHeader } from "../../helpers/authHeader";
 import config from "../../helpers/config";
-import {
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
+import ShopSter from "./../../assets/Images/Shopster.png";
+import RightBlue from "./../../assets/Images/blueRight.svg";
 
 class LanguageSelection extends Component {
   constructor(props) {
@@ -19,14 +14,27 @@ class LanguageSelection extends Component {
     this.state = {
       language: "",
       languageData: [],
+      isMobileView: false,
     };
   }
   componentDidMount() {
     this.handleGetSelectedLanguageDetails();
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
   }
-////handle crm role 
+  resize() {
+    if (window.innerWidth <= 760) {
+      this.setState({ isMobileView: window.innerWidth <= 760 });
+    } else {
+      this.setState({ isMobileView: false });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize.bind(this));
+  }
+  ////handle crm role
   handleCRMRole() {
-    debugger;
+    
     let self = this;
     axios({
       method: "post",
@@ -34,69 +42,114 @@ class LanguageSelection extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
           if (data !== null) {
+            var isCallStorePayAPI = false;
             for (var i = 0; i <= data.length; i++) {
               if (i === data.length) {
-                NotificationManager.error(
-                  "You don't have any sufficient page access. Please contact administrator for access.",
-                  "",
-                  2000
-                );
+                if (isCallStorePayAPI) {
+                  self.handleGenerateStorePayLink();
+                } else {
+                  NotificationManager.error(
+                    "You don't have any sufficient page access. Please contact administrator for access.",
+                    "",
+                    2000
+                  );
+                }
+                self.props.history.push("/store/nomodulefound");
                 self.setState({
                   loading: false,
                 });
-              } else if (
+              }
+              // else
+              if (
                 data[i].moduleName === "Dashboard" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/storedashboard");
-                }, 400);
+                self.props.history.push("/store/storedashboard");
                 return;
-              } else if (
+              }
+              // else
+              if (
                 data[i].moduleName === "Tasks" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/StoreTask");
-                }, 400);
+                self.props.history.push("/store/StoreTask");
                 return;
-              } else if (
+              }
+              // else
+              if (
                 data[i].moduleName === "Claim" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/claim");
-                }, 400);
+                self.props.history.push("/store/claim");
                 return;
-              } else if (
+              }
+              // else
+              if (
                 data[i].moduleName === "Campaign" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
+                self.props.history.push("/store/campaign");
                 return;
-              } else if (
+              }
+              //  else
+              if (
                 data[i].moduleName === "Appointment" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/appointment");
-                }, 400);
+                self.props.history.push("/store/appointment");
                 return;
-              } else if (
+              }
+              // else
+              if (
+                data[i].moduleName === "MyTicket" &&
+                data[i].modulestatus === true
+              ) {
+                self.props.history.push("/store/myTicketList");
+                return;
+              }
+              //  else
+              if (
+                data[i].moduleName === "Orders" &&
+                data[i].modulestatus === true
+              ) {
+                self.props.history.push("/store/orders");
+                return;
+              }
+              //else
+              if (
+                data[i].moduleName === "Chat" &&
+                data[i].modulestatus === true
+              ) {
+                self.props.history.push({
+                  pathname: "/store/Chatbot",
+                  state: {
+                    programCode: res.data.responseData.programCode,
+                    storeCode: res.data.responseData.storeCode,
+                    agentId: res.data.responseData.userID,
+                    tenantID: res.data.responseData.tenantID,
+                    UserName: res.data.responseData.agentName,
+                  },
+                });
+                return;
+              }
+              // else
+              if (
                 data[i].moduleName === "Settings" &&
                 data[i].modulestatus === true
               ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
+                self.props.history.push("/store/settings");
                 return;
+              }
+              // else
+              if (
+                data[i].moduleName === "StorePay" &&
+                data[i].modulestatus === true
+              ) {
+                isCallStorePayAPI = true;
               }
             }
           }
@@ -106,7 +159,28 @@ class LanguageSelection extends Component {
         console.log(data);
       });
   }
-////handle continue button click 
+  ////handle genrate store pay link
+  handleGenerateStorePayLink = () => {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StorePay/GenerateStorePayLink",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var storePayURL = response.data.responseData;
+        if (message === "Success" && storePayURL) {
+          // self.setState({ storePayURL });
+          window.location.href = storePayURL;
+        } else {
+          // window.location = "http://www.google.com/";
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGenerateStorePayLink");
+      });
+  };
+  ////handle continue button click
   handleContinue() {
     let language = this.state.language;
     if (language === "hindi") {
@@ -124,18 +198,16 @@ class LanguageSelection extends Component {
     }
     this.handleCRMRole();
   }
-  ////handle skip button click 
+  ////handle skip button click
   handleSkip() {
     this.handleCRMRole();
   }
-////handle on change 
+  ////handle on change
   handleOnChange(e) {
-    debugger;
     this.setState({ language: e.target.value });
   }
-////handle get seleted language details
+  ////handle get seleted language details
   handleGetSelectedLanguageDetails() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -143,7 +215,6 @@ class LanguageSelection extends Component {
       headers: authHeader(),
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         var languageData = [];
@@ -165,24 +236,45 @@ class LanguageSelection extends Component {
 
   render() {
     return (
-      <div className="auth-wrapper box-center">
+      <div className="auth-wrapper box-center Mainpro">
+        <div className="Shopster">
+          <img src={ShopSter} alt="ShopSter" className="" />
+        </div>
+        <h3 className="logintxt">Select Language</h3>
         <div className="auth-content">
           <div className="card">
             <div className="card-body text-center">
-              <div className="mb-4">
-                <img
-                  src={Logo}
-                  alt="logo"
-                  className="main-logo"
-                  style={{ width: "210px" }}
-                />
-              </div>
-              <label
-                className="sign-in"
-                style={{ fontSize: "16px", fontWeight: "bold" }}
-              >
-                Choose Language
-              </label>
+              {!this.state.isMobileView ? (
+                <div className="mb-4">
+                  <img
+                    src={Logo}
+                    alt="logo"
+                    className="main-logo initial-logo logohi"
+                  />
+                </div>
+              ) : null}
+              {!this.state.isMobileView ? (
+                <label
+                  className="sign-in"
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Choose Language
+                </label>
+              ) : (
+                <label
+                  className="sign-in"
+                  style={{
+                    display: "block",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Choose One Language
+                </label>
+              )}
               <div
                 className="languagebox"
                 onClick={this.handleOnChange.bind(this)}
@@ -200,26 +292,15 @@ class LanguageSelection extends Component {
                           value={item.language.split(" ")[0].toLowerCase()}
                         >
                           {item.language}
+                          {item.language.split(" ")[0].toLowerCase() ===
+                            this.state.language && this.state.isMobileView ? (
+                            <img src={RightBlue} style={{ float: "right" }} />
+                          ) : null}
                         </button>
                       );
                     })
                   : null}
-
-                {/* <button class="langbtn" value="hindi">
-                  हिन्दी
-                </button>
-                <button class="langbtn" value="marathi">
-                  मराठी
-                </button>
-                <button class="langbtn" value="punjabi">
-                  ਪੰਜਾਬੀ
-                </button>
-                <button class="langbtn" value="gujrati">
-                  ગુજરાતી
-                </button>
-                <button class="langbtn" value="telugu">
-                  తెలుగు
-                </button> */}
+ 
               </div>
               <button
                 type="submit"

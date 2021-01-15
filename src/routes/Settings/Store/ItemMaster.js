@@ -26,7 +26,7 @@ import matchSorter from "match-sorter";
 import { CSVLink } from "react-csv";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-import { Spin } from "antd";
+import { Spin, Empty } from "antd";
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -70,6 +70,7 @@ class ItemMaster extends Component {
       isATOZ: true,
       translateLanguage: {},
       bulkuploadLoading: false,
+      isloading: false,
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -88,7 +89,7 @@ class ItemMaster extends Component {
     }
   }
   fileUpload = (file) => {
-    if (file) {
+    if (file.length > 0) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
       this.setState({
@@ -97,6 +98,8 @@ class ItemMaster extends Component {
         file: file[0],
         fileValidation: "",
       });
+    } else {
+      NotificationManager.error("File accept only csv type.");
     }
   };
 
@@ -109,6 +112,7 @@ class ItemMaster extends Component {
   ////handel get item data
   handleGetItem() {
     let self = this;
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Item/GetItemList",
@@ -119,7 +123,7 @@ class ItemMaster extends Component {
         var data = response.data.responseData;
 
         if (message === "Success") {
-          self.setState({ itemData: data });
+          self.setState({ itemData: data, isloading: false });
           self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
@@ -221,10 +225,11 @@ class ItemMaster extends Component {
             self.state.sortFilteritemGroup.push({ itemGroup: distinct[i] });
           }
         } else {
-          self.setState({ itemData: [] });
+          self.setState({ itemData: [], isloading: false });
         }
       })
       .catch((response) => {
+        self.setState({ isloading: false });
         console.log(response);
       });
   }
@@ -243,16 +248,12 @@ class ItemMaster extends Component {
       });
       const formData = new FormData();
       formData.append("file", this.state.file);
-      // this.setState({ isShowProgress: true });
+
       axios({
         method: "post",
         url: config.apiUrl + "/Item/BulkUploadItem",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // },
       })
         .then((response) => {
           var status = response.data.message;
@@ -265,14 +266,25 @@ class ItemMaster extends Component {
             );
             self.setState({ fileName: "", fileSize: "" });
             self.handleGetItem();
-            //self.setState(itemData);
+
+            self.setState({
+              isErrorBulkUpload: false,
+              isShowProgress: false,
+              bulkuploadLoading: false,
+            });
+          } else if (status === "Record Uploaded Partially") {
+            NotificationManager.error(
+              "File uploaded partially.Please check the log."
+            );
+            self.setState({ fileName: "", fileSize: "" });
+            self.handleGetItem();
+
             self.setState({
               isErrorBulkUpload: false,
               isShowProgress: false,
               bulkuploadLoading: false,
             });
           } else {
-            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             self.setState({ bulkuploadLoading: false });
             NotificationManager.error(
               TranslationContext !== undefined
@@ -1348,6 +1360,7 @@ class ItemMaster extends Component {
                 </div>
               </div>
               <a
+                href="#!"
                 style={{
                   margin: "0 25px",
                   textDecoration: "underline",
@@ -1730,7 +1743,7 @@ class ItemMaster extends Component {
                               : "Item Name"}
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Item Name"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1877,6 +1890,16 @@ class ItemMaster extends Component {
                     defaultPageSize={10}
                     minRows={2}
                     showPagination={true}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin size="large" tip="Loading..." />
+                      ) : this.state.itemData.length === 0 ? (
+                        <Empty
+                          style={{ margin: "0" }}
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        />
+                      ) : null
+                    }
                   />
                 </div>
               </div>
@@ -1907,7 +1930,7 @@ class ItemMaster extends Component {
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload}>
+                      <Dropzone accept=".csv" onDrop={this.fileUpload}>
                         {({ getRootProps, getInputProps }) => (
                           <div {...getRootProps()}>
                             <input

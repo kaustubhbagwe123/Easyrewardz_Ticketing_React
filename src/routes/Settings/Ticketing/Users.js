@@ -18,13 +18,9 @@ import Modal from "react-responsive-modal";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import Select from "react-select";
 import { CSVLink } from "react-csv";
-// import { string } from "prop-types";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -714,7 +710,6 @@ class Users extends Component {
     var issue = [];
     var userEditData = e;
     userEditData.user_Id = userEditData.userId;
-    // userEditData.user_Name = userEditData.userName;
     userEditData.selectUserName = userEditData.userName;
     userEditData.first_Name = userEditData.firstName;
     userEditData.last_Name = userEditData.lastName;
@@ -1501,7 +1496,6 @@ class Users extends Component {
               unique[userdata[i].designation] = 1;
             }
           }
-
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortDesignation.push({
               designation: distinct[i],
@@ -1519,7 +1513,6 @@ class Users extends Component {
               unique[userdata[i].userName] = 1;
             }
           }
-
           for (let i = 0; i < distinct.length; i++) {
             self.state.sortUsername.push({
               userName: distinct[i],
@@ -1732,7 +1725,6 @@ class Users extends Component {
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseenterfirstname
             : "Please enter first name.",
-        // lastnameCompulsion: "Please enter last name.",
         mobilenumberCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.alertmessage.pleaseentermobilenumber
@@ -1817,7 +1809,6 @@ class Users extends Component {
 
   handleAddProfileDetails() {
     const TranslationContext = this.state.translateLanguage.default;
-
     if (
       this.state.selectedDesignation > 0 &&
       (this.state.selectedReporteeDesign > 0 ||
@@ -2095,9 +2086,7 @@ class Users extends Component {
 
   handleDeleteUser(id) {
     const TranslationContext = this.state.translateLanguage.default;
-
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/User/DeleteUser",
@@ -2129,7 +2118,6 @@ class Users extends Component {
   }
   handleSendMail(id) {
     const TranslationContext = this.state.translateLanguage.default;
-
     let self = this;
 
     axios({
@@ -2156,7 +2144,6 @@ class Users extends Component {
   }
   handleUpdateUser() {
     const TranslationContext = this.state.translateLanguage.default;
-
     var radiob = true;
     var agentb = true;
     if (this.state.userEditData.is_Assign_Escalation === true) {
@@ -2282,7 +2269,6 @@ class Users extends Component {
           this.state.userEditData.reportee_ID == -1
             ? 0
             : this.state.userEditData.reportee_ID,
-        // UserName: this.state.userEditData.userName,
         UserName: this.state.userEditData.selectUserName,
         EmailID: this.state.userEditData.email_ID,
         MobileNo: this.state.userEditData.mobile_Number,
@@ -2345,7 +2331,6 @@ class Users extends Component {
           TranslationContext !== undefined
             ? TranslationContext.validation.pleaseenterfirstname
             : "Please enter first name.",
-        // editlastnameCompulsion: "Please enter last name.",
         editmobilenumberCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.alertmessage.pleaseentermobilenumber
@@ -2579,16 +2564,11 @@ class Users extends Component {
         const formData = new FormData();
 
         formData.append("file", this.state.fileN[0]);
-        // this.setState({ showProgress: true });
         axios({
           method: "post",
           url: config.apiUrl + "/User/BulkUploadUser",
           headers: authHeader(),
           data: formData,
-          // onUploadProgress: (ev = ProgressEvent) => {
-          //   const progress = (ev.loaded / ev.total) * 100;
-          //   this.updateUploadProgress(Math.round(progress));
-          // }
         })
           .then(function(res) {
             let status = res.data.message;
@@ -2610,8 +2590,6 @@ class Users extends Component {
               self.setState({
                 showProgress: false,
                 bulkuploadLoading: false,
-                // isFileUploadFail: true,
-                // progressValue: 0
               });
               NotificationManager.error(
                 TranslationContext !== undefined
@@ -2651,7 +2629,6 @@ class Users extends Component {
 
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -2928,11 +2905,6 @@ class Users extends Component {
                       autoComplete="off"
                       onChange={this.handleOnChangeEditData}
                     />
-                    {/* {this.state.userEditData.last_Name === "" && (
-                      <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.editlastnameCompulsion}
-                      </p>
-                    )} */}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">
@@ -3624,7 +3596,7 @@ class Users extends Component {
                                               ? TranslationContext.label
                                                   .reporteedesignation
                                               : "Reportee Designation"}
-                                            :{" "}
+                                            :
                                           </p>
                                           <b>
                                             {row.original.reporteeDesignation}
@@ -3997,11 +3969,6 @@ class Users extends Component {
                           autoComplete="off"
                           onChange={this.handleOnChangeUserData}
                         />
-                        {/* {this.state.selectLastName.length === 0 && (
-                          <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.lastnameCompulsion}
-                          </p>
-                        )} */}
                       </div>
                       <div className="div-cntr">
                         <label>
@@ -4328,12 +4295,10 @@ class Users extends Component {
                               ? TranslationContext.button.select
                               : "Select"
                           }
-                          // menuIsOpen={true}
                           closeMenuOnSelect={false}
                           name="selectedBrand"
                           onChange={this.handleBrandChange.bind(this, "add")}
                           value={this.state.selectedBrand}
-                          // showNewOptionAtTop={false}
                           isMulti
                         />
                         {this.state.selectedBrand.length === 0 && (
@@ -4358,12 +4323,10 @@ class Users extends Component {
                               ? TranslationContext.button.select
                               : "Select"
                           }
-                          // menuIsOpen={true}
                           name="selectedCategory"
                           closeMenuOnSelect={false}
                           onChange={this.handleCategoryChange.bind(this, "add")}
                           value={this.state.selectedCategory}
-                          // showNewOptionAtTop={false}
                           isMulti
                         />
                         {this.state.selectedCategory.length === 0 && (
@@ -4388,7 +4351,6 @@ class Users extends Component {
                               ? TranslationContext.button.select
                               : "Select"
                           }
-                          // menuIsOpen={true}
                           name="selectedSubCategory"
                           closeMenuOnSelect={false}
                           onChange={this.handleSubCategoryChange.bind(
@@ -4396,7 +4358,6 @@ class Users extends Component {
                             "add"
                           )}
                           value={this.state.selectedSubCategory}
-                          // showNewOptionAtTop={false}
                           isMulti
                         />
                         {this.state.selectedSubCategory.length === 0 && (
@@ -4421,12 +4382,10 @@ class Users extends Component {
                               ? TranslationContext.button.select
                               : "Select"
                           }
-                          // menuIsOpen={true}
                           name="selectedIssueType"
                           closeMenuOnSelect={false}
                           onChange={this.handleIssueTypeChange}
                           value={this.state.selectedIssueType}
-                          // showNewOptionAtTop={false}
                           isMulti
                         />
                         {this.state.selectedIssueType.length === 0 && (
@@ -4553,13 +4512,6 @@ class Users extends Component {
                                   </label>
                                 </div>
                               </div>
-
-                              {/* {this.state.selectedSupervisorRadio===false && this.state.selectedAgentRadio ===false (
-                              <p style={{ color: "red", marginBottom: "0px" }}>
-                                {this.state.RadioCompulsion}
-                              </p>
-                            )}
-                             */}
                             </>
                           ) : null}
                         </div>

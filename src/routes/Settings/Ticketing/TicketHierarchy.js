@@ -762,7 +762,6 @@ class TicketHierarchy extends Component {
     this.setState({
       temphierarchyData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
   hanldeGetReportListDropDown() {
     let self = this;
@@ -817,18 +816,11 @@ class TicketHierarchy extends Component {
         const formData = new FormData();
 
         formData.append("file", this.state.fileN[0]);
-
-        // this.setState({ showProgress: true });
         axios({
           method: "post",
           url: config.apiUrl + "/Hierarchy/BulkUploadHierarchy",
           headers: authHeader(),
           data: formData,
-          // cancelToken: source.token,
-          // onUploadProgress: (ev = ProgressEvent) => {
-          //   const progress = (ev.loaded / ev.total) * 100;
-          //   this.updateUploadProgress(Math.round(progress));
-          // }
         })
           .then(function(res) {
             let status = res.data.message;
@@ -850,8 +842,6 @@ class TicketHierarchy extends Component {
               self.setState({
                 showProgress: false,
                 bulkuploadLoading: false,
-                // isFileUploadFail: true,
-                // progressValue: 0
               });
               NotificationManager.error(
                 TranslationContext !== undefined
@@ -1285,7 +1275,6 @@ class TicketHierarchy extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                    {" "}
                     {TranslationContext !== undefined
                       ? TranslationContext.p.sortatoz
                       : "SORT BY A TO Z"}
@@ -1300,7 +1289,6 @@ class TicketHierarchy extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                    {" "}
                     {TranslationContext !== undefined
                       ? TranslationContext.p.sortztoa
                       : "SORT BY Z TO A"}
@@ -1318,7 +1306,6 @@ class TicketHierarchy extends Component {
               </a>
               <div className="filter-type ">
                 <p>
-                  {" "}
                   {TranslationContext !== undefined
                     ? TranslationContext.p.filterbytype
                     : "FILTER BY TYPE"}
@@ -1558,7 +1545,6 @@ class TicketHierarchy extends Component {
                         accessor: "createdbyperson",
                         sortable: false,
                         Cell: (row) => {
-                          // var ids = row.original["designationID"];
                           return (
                             <div>
                               <span className="one-liner">
@@ -1642,7 +1628,6 @@ class TicketHierarchy extends Component {
                       {
                         Header: (
                           <span>
-                            {" "}
                             {TranslationContext !== undefined
                               ? TranslationContext.span.actions
                               : "Actions"}
@@ -1746,6 +1731,7 @@ class TicketHierarchy extends Component {
                                   placement="bottom"
                                   trigger="click"
                                 >
+                                   
                                   <label className="Table-action-edit-button-text">
                                     <MyButton>
                                       {TranslationContext !== undefined
@@ -1804,7 +1790,6 @@ class TicketHierarchy extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">
-                          {" "}
                           {TranslationContext !== undefined
                             ? TranslationContext.label.reportto
                             : "Reports To"}
@@ -2054,12 +2039,9 @@ class TicketHierarchy extends Component {
                                   className="file-progress"
                                   now={this.state.progressValue}
                                 />
-                                {/* {this.state.progressValue !== 100 ? ( */}
                                 <div className="cancel-upload">
-                                  {/* <img src={UploadCancel} alt="upload cancel" onClick={source.cancel('Operation canceled by the user.')} /> */}
                                   <img src={UploadCancel} alt="upload cancel" />
                                 </div>
-                                {/* ) : null} */}
                               </div>
                             </div>
                           </div>

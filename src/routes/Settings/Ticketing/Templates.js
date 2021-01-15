@@ -688,7 +688,6 @@ class Templates extends Component {
     this.setState({
       temptemplate: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   setTemplateEditData(editdata) {
@@ -796,6 +795,7 @@ class Templates extends Component {
   };
   selectAboveIndividualSLA = async (issueId, event) => {
     const TranslationContext = this.state.translateLanguage.default;
+
     var indiSla = this.state.indiSla;
     var separator = ",";
     var values = indiSla.split(separator);
@@ -888,6 +888,7 @@ class Templates extends Component {
 
   selectNoSLA = async (event) => {
     const TranslationContext = this.state.translateLanguage.default;
+
     var checkboxes = document.getElementsByName("allSla");
     document.getElementById("issueTypeValue").textContent =
       TranslationContext !== undefined
@@ -991,6 +992,7 @@ class Templates extends Component {
         let slaIssueType = res.data.responseData;
         if (slaIssueType !== null && slaIssueType !== undefined) {
           self.setState({ slaIssueType });
+          // self.setState({ slaIssueType, selectedSlaIssueType });
           var checkboxes = document.getElementsByName("allSla");
           for (var i in checkboxes) {
             if (checkboxes[i].checked === true) {
@@ -1006,6 +1008,7 @@ class Templates extends Component {
 
   deleteTemplate(deleteId) {
     const TranslationContext = this.state.translateLanguage.default;
+
     let self = this;
     axios({
       method: "post",
@@ -1632,7 +1635,6 @@ class Templates extends Component {
                             </>
                           );
                         },
-                        // accessor: "createdBy"
                       },
                       {
                         Header: (

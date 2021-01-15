@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import InfoIcon from "./../../assets/Images/info-icon.png";
-// import HeadphoneImg from "./../../assets/Images/headphone3.png";
-// import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
@@ -33,7 +31,7 @@ class Claim extends Component {
       issueTypeID: "",
       assignToID: 0,
       raisedByID: 0,
-      claimID: "",
+      ClaimID: "",
       isTicketMapped: "",
       isTaskMapped: "",
       titleID: "",
@@ -42,6 +40,8 @@ class Claim extends Component {
       statusID: "",
       claimCreateDate: "",
       translateLanguage: {},
+      raisedByTab: true,
+      AssignTab: false,
     };
     this.handleOnCategoryChangeData = this.handleOnCategoryChangeData.bind(
       this
@@ -69,29 +69,28 @@ class Claim extends Component {
   handlePageChange() {
     this.props.history.push("raiseClaim");
   }
-  // handleChangeStoreTask = () => {
-  //   this.props.history.push("/store/claimApproveReject");
-  // };
   HandleRowClickPage = (rowInfo, column) => {
     return {
       onClick: (e) => {
-        var claimID = column.original["claimID"];
-        this.handleRedirectToViewStoreClaim(claimID);
-        // "/store/claimApproveReject"
+        var ClaimID = column.original["claimID"];
+        this.setState({
+          ClaimID,
+        });
+        setTimeout(() => {
+          this.handleRedirectToViewStoreClaim();
+        }, 100);
       },
     };
   };
 
-  handleRedirectToViewStoreClaim(claimID) {
-    debugger;
+  handleRedirectToViewStoreClaim() {
     this.props.history.push({
       pathname: "claimApproveReject",
-      state: { ClaimID: claimID },
+      state: this.state,
     });
   }
 
   handleGetClaimData(tabFor) {
-    debugger;
     this.setState({ isloading: true, FilterCollapse: false, tabFor: tabFor });
     let self = this;
     axios({
@@ -101,22 +100,41 @@ class Claim extends Component {
       params: { tab_For: tabFor },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
           if (tabFor === 1) {
-            self.setState({ raisedByMeData: responseData, isloading: false });
+            self.setState({
+              raisedByMeData: responseData,
+              isloading: false,
+              raisedByTab: true,
+              AssignTab:false,
+            });
           }
           if (tabFor === 2) {
-            self.setState({ assignToMeData: responseData, isloading: false });
+            self.setState({
+              assignToMeData: responseData,
+              isloading: false,
+              AssignTab: true,
+              raisedByTab:false
+            });
           }
         } else {
           if (tabFor === 1) {
-            self.setState({ raisedByMeData: responseData, isloading: false });
+            self.setState({
+              raisedByMeData: responseData,
+              isloading: false,
+              raisedByTab: true,
+              AssignTab:false,
+            });
           }
           if (tabFor === 2) {
-            self.setState({ assignToMeData: responseData, isloading: false });
+            self.setState({
+              assignToMeData: responseData,
+              isloading: false,
+              AssignTab: true,
+              raisedByTab:false
+            });
           }
         }
       })
@@ -131,7 +149,6 @@ class Claim extends Component {
   }
 
   handleGetClaimCategory() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -140,7 +157,6 @@ class Claim extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -153,7 +169,6 @@ class Claim extends Component {
   }
 
   handleGetClaimSubCategory() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -162,7 +177,6 @@ class Claim extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -175,7 +189,6 @@ class Claim extends Component {
   }
 
   handleGetClaimIssueType() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -184,7 +197,6 @@ class Claim extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -197,7 +209,6 @@ class Claim extends Component {
   }
 
   handleGetStoreUser() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -205,7 +216,6 @@ class Claim extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -218,7 +228,6 @@ class Claim extends Component {
   }
 
   handleOnCategoryChangeData = async (e) => {
-    debugger;
     await this.setState({
       [e.target.name]: e.target.value,
       claimSubCategoryName: [],
@@ -242,12 +251,10 @@ class Claim extends Component {
   }
 
   handleClaimCreateDate(name, date) {
-    debugger;
     this.setState({ [name]: date });
   }
 
   handleGetStoreFilterList() {
-    debugger;
     let self = this;
     this.setState({ isloading: true });
 
@@ -255,7 +262,6 @@ class Claim extends Component {
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardListClaim",
       data: {
-        // claimID: this.state.claimID === "" ? 0 : parseInt(this.state.claimID),
         claimID:
           this.state.claimID === ""
             ? 0
@@ -297,7 +303,6 @@ class Claim extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
@@ -497,7 +502,10 @@ class Claim extends Component {
                                       </option>
                                       {this.state.statusData !== null &&
                                         this.state.statusData.map((item, i) => (
-                                          <option value={item.claimStatusID}>
+                                          <option
+                                            value={item.claimStatusID}
+                                            key={i}
+                                          >
                                             {item.claimStatusName}
                                           </option>
                                         ))}
@@ -679,7 +687,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.id
-                                  : "ID"}{" "}
+                                  : "ID"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -690,7 +698,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.status
-                                  : "Status"}{" "}
+                                  : "Status"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -746,7 +754,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.claimissuetype
-                                  : "Claim Issue Type"}{" "}
+                                  : "Claim Issue Type"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -757,7 +765,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.category
-                                  : "Category"}{" "}
+                                  : "Category"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -825,7 +833,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.raisedby
-                                  : "Raised by"}{" "}
+                                  : "Raised by"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -843,7 +851,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.creationon
-                                  : "Creation on"}{" "}
+                                  : "Creation on"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -872,7 +880,7 @@ class Claim extends Component {
                                                   : "Created by" +
                                                     " " +
                                                     row.original.raiseBy +
-                                                    " "}{" "}
+                                                    " "}
                                               </p>
                                               <p>{row.original.creationAgo}</p>
                                             </li>
@@ -882,7 +890,7 @@ class Claim extends Component {
                                                 undefined
                                                   ? TranslationContext.p
                                                       .assignedto
-                                                  : "Assigned to"}{" "}
+                                                  : "Assigned to"}
                                                 {" " + row.original.assignTo}
                                               </p>
                                               <p>{row.original.assignOn}</p>
@@ -893,12 +901,12 @@ class Claim extends Component {
                                                 undefined
                                                   ? TranslationContext.p
                                                       .updatedby
-                                                  : "Updated by"}{" "}
-                                                {row.original.modifiedBy}
+                                                  : "Updated by "}
+                                                {row.original.modifyBy}
                                               </p>
                                               <p>{row.original.modifyOn}</p>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                               <p>
                                                 {TranslationContext !==
                                                 undefined
@@ -907,8 +915,8 @@ class Claim extends Component {
                                                   : "Response time remaining by"}
                                               </p>
                                               <p></p>
-                                            </li>
-                                            <li>
+                                            </li> */}
+                                            {/* <li>
                                               <p>
                                                 {TranslationContext !==
                                                 undefined
@@ -917,8 +925,8 @@ class Claim extends Component {
                                                   : "Response overdue by"}
                                               </p>
                                               <p></p>
-                                            </li>
-                                            <li>
+                                            </li> */}
+                                            {/* <li>
                                               <p>
                                                 {TranslationContext !==
                                                 undefined
@@ -927,7 +935,7 @@ class Claim extends Component {
                                                   : "Resolution overdue by"}
                                               </p>
                                               <p></p>
-                                            </li>
+                                            </li> */}
                                           </ul>
                                         </div>
                                       }
@@ -954,14 +962,8 @@ class Claim extends Component {
                               </span>
                             ),
                             accessor: "assignTo",
-                            // Cell: (props) => (
-                            //   <span>
-                            //     <label>A, Bansal</label>
-                            //   </span>
-                            // ),
                           },
                         ]}
-                        // resizable={false}
                         defaultPageSize={10}
                         minRows={2}
                         showPagination={true}
@@ -1281,7 +1283,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.id
-                                  : "ID"}{" "}
+                                  : "ID"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1292,7 +1294,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.status
-                                  : "Status"}{" "}
+                                  : "Status"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1348,7 +1350,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.claimissuetype
-                                  : "Claim Issue Type"}{" "}
+                                  : "Claim Issue Type"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1359,7 +1361,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.category
-                                  : "Category"}{" "}
+                                  : "Category"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1435,7 +1437,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.raisedby
-                                  : "Raised by"}{" "}
+                                  : "Raised by"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1446,7 +1448,7 @@ class Claim extends Component {
                               <span>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.creationon
-                                  : "Creation on"}{" "}
+                                  : "Creation on"}
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
@@ -1475,7 +1477,7 @@ class Claim extends Component {
                                                   : "Created by" +
                                                     " " +
                                                     row.original.raiseBy +
-                                                    " "}{" "}
+                                                    " "}
                                               </p>
                                               <p>{row.original.creationAgo}</p>
                                             </li>
@@ -1485,7 +1487,7 @@ class Claim extends Component {
                                                 undefined
                                                   ? TranslationContext.p
                                                       .assignedto
-                                                  : "Assigned to"}{" "}
+                                                  : "Assigned to"}
                                                 {" " + row.original.assignTo}
                                               </p>
                                               <p>{row.original.assignOn}</p>
@@ -1496,26 +1498,21 @@ class Claim extends Component {
                                                 undefined
                                                   ? TranslationContext.p
                                                       .updatedby
-                                                  : "Updated by"}{" "}
-                                                {row.original.modifiedBy}
+                                                  : "Updated by "}
+                                                {row.original.modifyBy}
                                               </p>
                                               <p>{row.original.modifyOn}</p>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                               <p>
                                                 {TranslationContext !==
                                                 undefined
                                                   ? TranslationContext.p
                                                       .responsetimerem
-                                                  : "Resolution time remaining by"}
+                                                  : "Response time remaining by"}
                                               </p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .resolutionTimeRemaining
-                                                }
-                                              </p>
-                                            </li>
+                                              <p></p>
+                                            </li> */}
                                             {/* <li>
                                               <p>
                                                 {TranslationContext !==
@@ -1526,7 +1523,7 @@ class Claim extends Component {
                                               </p>
                                               <p></p>
                                             </li> */}
-                                            <li>
+                                            {/* <li>
                                               <p>
                                                 {TranslationContext !==
                                                 undefined
@@ -1534,13 +1531,8 @@ class Claim extends Component {
                                                       .resolutionoverdueby
                                                   : "Resolution overdue by"}
                                               </p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .resolutionOverdueBy
-                                                }
-                                              </p>
-                                            </li>
+                                              <p></p>
+                                            </li> */}
                                           </ul>
                                         </div>
                                       }
@@ -1567,14 +1559,8 @@ class Claim extends Component {
                               </span>
                             ),
                             accessor: "assignTo",
-                            // Cell: (props) => (
-                            //   <span>
-                            //     <label>A, Bansal</label>
-                            //   </span>
-                            // ),
                           },
                         ]}
-                        // resizable={false}
                         defaultPageSize={10}
                         minRows={2}
                         showPagination={true}

@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+  // apiUrl: "https://localhost:44357/api",
   isHomeShope: true, /// make false when give Homeshop build for client
   isShowTaskTab: true, /// make false when give multiTenant store module build for client
 
@@ -34,7 +34,7 @@ let config = {
     [
       "Shlok.barot",
       "Shlok",
-      "barot",
+      "Barot",
       "9665958060",
       "shlok@gmail.com",
       "Executive",
@@ -194,13 +194,7 @@ let config = {
   campaignTemplate: [["CampaignName", "Script"]],
   departmentTemplate: [
     ["Brand", "StoreCode", "Department", "Function", "Status"],
-    [
-      "Paragon|Bata",
-      "TestStoreBulkasf|ApitestStoresa",
-      "Department 10",
-      "Function10-1",
-      "Active",
-    ],
+    ["Paragon", "TestStoreBulkasf", "Department 10", "Function10-1", "Active"],
   ],
   storeUserTemplate: [
     [
@@ -225,7 +219,7 @@ let config = {
       "8097654323",
       "abc@gmail.com",
       "Department-1",
-      "Function-1|Function-2",
+      "Function-1",
       "CXO",
       "CTTO",
       "xyz",
@@ -236,16 +230,16 @@ let config = {
   ],
   storeSlaTemplate: [
     [
-      "IssueType",
+      "FunctionType",
       "Priority",
       "SLABreachPercent",
       "ResolutionValue",
       "ResolutionDuration",
       "Status",
     ],
-    ["Issue1", "High", "30", "2", "Day", "Active"],
-    ["Issue1", "Medium", "30", "2", "Day", "Active"],
-    ["Issue1", "Low", "30", "2", "Day", "Active"],
+    ["Function1", "High", "30", "2", "Day", "Active"],
+    ["Function1", "Medium", "30", "2", "Day", "Active"],
+    ["Function1", "Low", "30", "2", "Day", "Active"],
   ],
   storeOrder_Template: [
     [
@@ -260,23 +254,82 @@ let config = {
     ["template1", "5", "8", "5.5", "CM", "5", "KG"],
     ["template2", "6", "9", "7.5", "CM", "5", "KG"],
   ],
-  //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
-  // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
-  //apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
-  //apiUrl: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API V2---------
-  //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
-  //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
-  //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
-  //apiUrl: 'https://api-bell-tktqa.ercx.co/Api',   /// ----- Client API for store module-------
-  // apiUrl: 'https://ertktapistable.dscdev.brainvire.net/Api'
-  // socketUrl: "http://ndjs.shopster.live/api/sendreply", /// ------Client Socket--------
-  // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
-  //socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
-  // socketUrl: "ws://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+  slot_Template: [
+    [
+      "StoreCode",
+      "OperationalDays",
+      "TemplateName",
+      "SlotStartTime",
+      "SlotEndTime",
+      "SlotOccupancy",
+      "SlotStatus",
+      "Slotdaysneedtodisplay",
+      "Applicablefrom",
+      "MaxPeoplePerApt",
+      "DisplaySlotCode",
+      "SlotSettingStatus",
+    ],
+    [
+      "SMB3024",
+      "Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday",
+      "Manual template 3",
+      "10:00 AM",
+      "10:30 AM",
+      "2",
+      "1",
+      "10",
+      "2020-12-01",
+      "10",
+      "302",
+      "Active",
+    ],
+    [
+      "SMB3024",
+      "Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday",
+      "Manual template 3",
+      "10:30 AM",
+      "11:00 AM",
+      "2",
+      "1",
+      "10",
+      "2020-12-01",
+      "10",
+      "302",
+      "Active",
+    ],
+    [
+      "SMB3024",
+      "Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday",
+      "Manual template 3",
+      "6:00 PM",
+      "6:30 PM",
+      "2",
+      "1",
+      "10",
+      "2020-12-01",
+      "10",
+      "302",
+      "Active",
+    ],
+  ],
+  // apiUrl: "https://api-bell.ercx.co/Api", /// -------HomeShop API---------
+  apiUrl: "https://api.shopster.live/Api", /// -------Shopsher API---------
+  // apiUrl: "https://qa-api-belltkt.shopster.live/Api", ///------Client Phase 2--------
+  // apiUrl: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API V2---------
+  // apiUrl: "https://qa-api.shopster.live/Api", /// ----- Client API -------
+  // socketUrl: "wss://qa-api-socketnd.shopster.live", /// ----- Client API -------
+  // apiUrl: 'https://api-bell-tktqa.ercx.co/Api',   /// ----- Client API for store module-------
+  // apiUrl: 'https://api-preprod.shopster.live/Api',   /// ----- Client API for store module-------
+  socketUrl: "wss://ndjs.shopster.live", /// ------Client Socket--------
+  // socketUrl: "wss://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+  // socketUrl: "wss://ndjs-preprod.shopster.live",  /// -----------Socket preprod client---------------
   // socketUrl: "https://api-bellchatsocketserverqa.ercx.co", /// -------Socket URL Client---------
-  // socketUrl:"http://localhost:4000/",
+  // socketUrl: "ws://localhost:4000",
   // soundURL: "https://localhost:44357/Uploadfiles/Chat/ChatBotSoundFiles/",
-  // soundURL: "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
+  // soundURL:
+  //   "https://multitenancyshopsterapiv2.dcdev.brainvire.net/Uploadfiles/Chat/ChatBotSoundFiles/",
+  // soundURL:"https://api-preprod.shopster.live/Uploadfiles/Chat/ChatBotSoundFiles/",
+  soundURL: "https://api.shopster.live/Uploadfiles/Chat/ChatBotSoundFiles/",
 };
 
 export default config;

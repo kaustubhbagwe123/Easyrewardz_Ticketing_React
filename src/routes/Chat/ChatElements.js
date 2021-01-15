@@ -8,17 +8,20 @@ import storeSettings from "./../../assets/Images/store-settings.png";
 import { Popover } from "antd";
 
 class ChatElements extends Component {
-
   hide(e, id) {
-    debugger;
     // document.getElementById(id).style.display="none";
-    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display="none";
+    document.getElementById(
+      id
+    ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+      "none";
   }
   show(e, id) {
-    debugger;
-    if(document.getElementById(id))    
+    if (document.getElementById(id))
       // document.getElementById(id).style.display="block";
-      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display="block";
+      document.getElementById(
+        id
+      ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+        "block";
   }
 
   render() {
@@ -48,7 +51,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D2",
@@ -75,7 +78,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D3",
@@ -102,7 +105,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D4",
@@ -129,7 +132,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D5",
@@ -156,7 +159,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D6",
@@ -183,7 +186,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D7",
@@ -210,7 +213,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D8",
@@ -237,7 +240,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D9",
@@ -264,7 +267,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D10",
@@ -291,7 +294,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D11",
@@ -318,7 +321,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D12",
@@ -345,7 +348,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D13",
@@ -372,7 +375,7 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
+        ),
       },
       {
         id: "D14",
@@ -399,8 +402,8 @@ class ChatElements extends Component {
               ></label>
             </div>
           </div>
-        )
-      }
+        ),
+      },
     ];
 
     const columnsChatElement = [
@@ -411,7 +414,7 @@ class ChatElements extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "eleIcon"
+        accessor: "eleIcon",
       },
       {
         Header: (
@@ -420,7 +423,7 @@ class ChatElements extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "eleCode"
+        accessor: "eleCode",
       },
       {
         Header: (
@@ -429,7 +432,7 @@ class ChatElements extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "eleName"
+        accessor: "eleName",
       },
       {
         Header: (
@@ -438,7 +441,7 @@ class ChatElements extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "deactive"
+        accessor: "deactive",
       },
       {
         Header: <span>Actions</span>,
@@ -448,61 +451,82 @@ class ChatElements extends Component {
         //     <label className="Table-action-edit-button-text">EDIT</label>
         //   </button>
         // )
-        Cell: row => {
+        Cell: (row) => {
           var ids = row.original["id"];
           return (
             <div>
-              <Popover content={<div className={"edtpadding"} id={"edtpadding"+ids }>
-                <div className="d-flex">
-                  <div>
-                    <div className="">
-                      <label className="popover-header-text">EDIT ELEMENT</label>
-                    </div>
-                    <div className="pop-over-div">
-                      <label className="edit-label-1">Element Code</label>
-                      <input
-                        type="text"
-                        className="txt-edit-popover"
-                        placeholder="Enter Element Code"
-                        maxLength={10}
-                      />
-                    </div>
-                    <div className="pop-over-div">
-                      <label className="edit-label-1">Element Name</label>
-                      <input
-                        type="text"
-                        className="txt-edit-popover"
-                        placeholder="Enter Element Name"
-                        maxLength={25}
-                      />
-                    </div>
-                    <div className="pop-over-div" style={{ width: "170px" }}>
-                      <label className="edit-label-1">Element Icon</label>
-                      <div className="custom-file txt-edit-popover">
-                        <input type="file" className="custom-file-input" />
-                        <label className="custom-file-label">Element_Icon.png</label>
+              <Popover
+                content={
+                  <div className={"edtpadding"} id={"edtpadding" + ids}>
+                    <div className="d-flex">
+                      <div>
+                        <div className="">
+                          <label className="popover-header-text">
+                            EDIT ELEMENT
+                          </label>
+                        </div>
+                        <div className="pop-over-div">
+                          <label className="edit-label-1">Element Code</label>
+                          <input
+                            type="text"
+                            className="txt-edit-popover"
+                            placeholder="Enter Element Code"
+                            maxLength={10}
+                          />
+                        </div>
+                        <div className="pop-over-div">
+                          <label className="edit-label-1">Element Name</label>
+                          <input
+                            type="text"
+                            className="txt-edit-popover"
+                            placeholder="Enter Element Name"
+                            maxLength={25}
+                          />
+                        </div>
+                        <div
+                          className="pop-over-div"
+                          style={{ width: "170px" }}
+                        >
+                          <label className="edit-label-1">Element Icon</label>
+                          <div className="custom-file txt-edit-popover">
+                            <input type="file" className="custom-file-input" />
+                            <label className="custom-file-label">
+                              Element_Icon.png
+                            </label>
+                          </div>
+                        </div>
+                        <br />
+                        <div>
+                          <a
+                            href="#!"
+                            className="pop-over-cancle canblue"
+                            id="can1"
+                            onClick={() => this.hide(this, "edtpadding" + ids)}
+                          >
+                            CANCEL
+                          </a>
+                          <button className="pop-over-button">SAVE</button>
+                        </div>
                       </div>
                     </div>
-                    <br />
-                    <div>
-                      <a href="#!" className="pop-over-cancle canblue" id="can1" onClick={() => this.hide(this, "edtpadding"+ids)}>CANCEL</a>
-                      <button className="pop-over-button">
-                        SAVE
-            </button>
-                    </div>
                   </div>
-                </div>
-              </div>} placement="bottom" trigger="click">
-                <button className="react-tabel-button editre" id={ids} onClick={() => this.show(this, "edtpadding"+ids)}>
+                }
+                placement="bottom"
+                trigger="click"
+              >
+                <button
+                  className="react-tabel-button editre"
+                  id={ids}
+                  onClick={() => this.show(this, "edtpadding" + ids)}
+                >
                   EDIT
                 </button>
               </Popover>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
-   
 
     return (
       <Fragment>
@@ -611,9 +635,7 @@ class ChatElements extends Component {
                         </div> */}
                     </div>
                     <div className="btnSpace">
-                      <button className="CreateADDBtn">
-                        ADD
-                      </button>
+                      <button className="CreateADDBtn">ADD</button>
                     </div>
                   </div>
                 </div>

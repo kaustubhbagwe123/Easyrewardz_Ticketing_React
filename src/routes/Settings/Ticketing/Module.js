@@ -44,7 +44,6 @@ class Module extends Component {
 
   componentDidMount() {
     this.handleGetModulesNames();
-    // this.handleGetModulesItems();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -179,7 +178,6 @@ class Module extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let moduleID = data[0].moduleID;
@@ -214,7 +212,6 @@ class Module extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -238,7 +235,6 @@ class Module extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -317,7 +313,6 @@ class Module extends Component {
                           </div>
                         ) : (
                           this.state.modulesItems !== null &&
-                          // name.moduleID === 8 &&
                           this.state.modulesItems.map((item, i) => (
                             <div className="module-switch" key={i}>
                               <div className="switch switch-primary">
@@ -343,7 +338,6 @@ class Module extends Component {
                             </div>
                           ))
                         )}
-
                       </Tab>
                     ))}
                 </Tabs>

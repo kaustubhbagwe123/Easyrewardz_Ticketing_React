@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import logo from "../../assets/Images/logo.jpg";
+import Inform from "../../assets/Images/order-info.png";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
@@ -10,6 +11,7 @@ import {
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
 import { encryption } from "../../helpers/encryption";
+import { Tooltip } from 'antd';
 
 class StoreChangePassword extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class StoreChangePassword extends Component {
       oldPassword: "",
       ProfileData: [],
       oldPasswordCompulsion: "",
+      newPasswordCompulsoryRex: "",
     };
     this.handleCheckPassword = this.handleCheckPassword.bind(this);
     this.handlechange = this.handlechange.bind(this);
@@ -29,7 +32,6 @@ class StoreChangePassword extends Component {
     this.validator = new SimpleReactValidator();
   }
   componentDidMount() {
-    debugger;
     this.handleGetUserProfileData();
   }
 
@@ -63,6 +65,22 @@ class StoreChangePassword extends Component {
     });
   }
 
+  handleCheckValidationRegX = () => {
+    if (this.state.newPassword !== "") {
+      var regX = /^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)(?=\S*[^\w\s])\S{8,}$/;
+      if (!regX.test(this.state.newPassword)) {
+        this.setState({
+          newPasswordCompulsoryRex:
+            "Incomplete Password",
+        });
+      } else {
+        this.setState({
+          newPasswordCompulsoryRex: "",
+        });
+      }
+    }
+  };
+
   handleCheckPassword(e) {
     e.preventDefault();
 
@@ -79,13 +97,10 @@ class StoreChangePassword extends Component {
       }
     } else {
       this.validator.showMessages();
-      // rerender to show messages for the first time
-      // you can use the autoForceUpdate option to do this automatically`
       this.forceUpdate();
     }
   }
   handleChangePassword(newPassword) {
-    debugger;
     let self = this;
 
     // let emaiId=encryption(EmailID, "enc");
@@ -113,46 +128,48 @@ class StoreChangePassword extends Component {
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
     var _token = window.localStorage.getItem("token");
     // change password
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreUser/StoreChangePassword",
-      data: {
-        EmailID: emailIDsystem,
-        Password: this.state.oldPassword,
-        NewPassword: encPassword,
-        ChangePasswordType: changePasswordType,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "X-Authorized-Token": _token,
-        "X-Authorized-Domainname": X_Authorized_Domainname,
-      },
-    })
-      .then(function(response) {
-        // let data = response;
-        debugger;
-        let Msg = response.data.responseData;
-        if (Msg === true) {
-          NotificationManager.success(
-            "Password Changed successfully.",
-            "",
-            1500
-          );
-          setTimeout(function() {
-            self.props.history.push("/SignIn");
-          }, 1500);
-        } else {
-          NotificationManager.error("Old password is wrong.", "", 1500);
-        }
+    if (this.state.newPasswordCompulsoryRex === "") {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreUser/StoreChangePassword",
+        data: {
+          EmailID: emailIDsystem,
+          Password: this.state.oldPassword,
+          NewPassword: encPassword,
+          ChangePasswordType: changePasswordType,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "X-Authorized-Token": _token,
+          "X-Authorized-Domainname": X_Authorized_Domainname,
+        },
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(response) {
+          // let data = response;
+
+          let Msg = response.data.responseData;
+          if (Msg === true) {
+            NotificationManager.success(
+              "Password Changed successfully.",
+              "",
+              1500
+            );
+            setTimeout(function() {
+              self.props.history.push("/SignIn");
+            }, 1500);
+          } else {
+            NotificationManager.error("Old password is wrong.", "", 1500);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    }
   }
   render() {
     return (
-      <div className="auth-wrapper box-center change-password-auth-wrapper">
+      <div className="auth-wrapper box-center change-password-auth-wrapper authpaswd mobauthpaswd">
         <div className="auth-content">
           <div
             className="card forgotpass-card changepass-card"
@@ -160,7 +177,7 @@ class StoreChangePassword extends Component {
           >
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
@@ -207,12 +224,21 @@ class StoreChangePassword extends Component {
                     className="program-code-textbox"
                     onChange={this.handlechange}
                     maxLength={25}
+                    onBlur={this.handleCheckValidationRegX.bind(this)}
                   />
+                  <Tooltip placement="right" title="Min 8 Chars - One capital, One small, One special character & One numeric character is mandatory.">
+                    <img src={Inform} className="passwrdInfor" />
+                  </Tooltip>
                   {this.validator.message(
                     "New Password",
                     this.state.newPassword,
                     "required"
                   )}
+                  {this.state.newPasswordCompulsoryRex ? (
+                    <p style={{ color: "red" }}>
+                      {this.state.newPasswordCompulsoryRex}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">

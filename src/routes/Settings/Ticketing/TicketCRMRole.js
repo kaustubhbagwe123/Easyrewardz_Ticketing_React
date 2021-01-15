@@ -625,7 +625,6 @@ class TicketCRMRole extends Component {
   createUpdateCrmRole(e, addUpdate, crmRoleId) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-    // if (self.validator.allValid()) {
     let RoleisActive,
       CRMRoleID,
       RoleName,
@@ -755,7 +754,6 @@ class TicketCRMRole extends Component {
       });
 
     this.forceUpdate();
-    // }
   }
 
   deleteCrmRole(deleteId) {
@@ -945,7 +943,6 @@ class TicketCRMRole extends Component {
         const formData = new FormData();
 
         formData.append("file", this.state.fileN[0]);
-        // this.setState({ showProgress: true });
         axios({
           method: "post",
           url: config.apiUrl + "/CRMRole/BulkUploadCRMRole",
@@ -976,7 +973,6 @@ class TicketCRMRole extends Component {
               self.setState({
                 showProgress: false,
                 bulkuploadLoading: false,
-                // isFileUploadFail: true,
                 progressValue: 0,
               });
               NotificationManager.error(
@@ -1245,7 +1241,6 @@ class TicketCRMRole extends Component {
                         ),
                         accessor: "roleName",
                         Cell: (row) => {
-                          // var ids = row.original["id"];
                           return (
                             <div>
                               <span className="one-liner">

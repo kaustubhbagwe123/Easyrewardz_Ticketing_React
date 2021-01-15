@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import { Popover, Spin } from "antd";
+import { Popover, Spin, Empty } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import ReactTable from "react-table";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -93,7 +93,6 @@ const Content = (props) => {
           className="edit-dropDwon dropdown-setting"
           name="report_To"
           value={reportTo}
-          //onChange={this.handleOnChangeData}
           onChange={(e) => setreportToValue(e.target.value)}
         >
           <option>
@@ -246,6 +245,7 @@ class HierarchyMaster extends Component {
       isATOZ: true,
       translateLanguage: {},
       bulkuploadLoading: false,
+      isloading: false,
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -328,6 +328,7 @@ class HierarchyMaster extends Component {
         StatusModel: false,
         hierarchyData: this.state.sortAllData,
         filterTxtValue: "",
+
         hierarchyData: this.state.isortA
           ? this.state.itemData
           : this.state.sortAllData,
@@ -351,20 +352,16 @@ class HierarchyMaster extends Component {
       });
       const formData = new FormData();
       formData.append("file", this.state.file);
-      // this.setState({ isShowProgress: true });
+
       axios({
         method: "post",
         url: config.apiUrl + "/StoreHierarchy/BulkUploadStoreHierarchy",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // },
       })
         .then((response) => {
           var status = response.data.message;
-          // var itemData = response.data.responseData;
+
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -379,8 +376,19 @@ class HierarchyMaster extends Component {
             });
             self.handleGetItem();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else if (status === "Record Uploaded Partially") {
+            NotificationManager.error(
+              "File uploaded partially.Please check the log."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
+            self.handleGetItem();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             self.setState({ isShowProgress: false, bulkuploadLoading: false });
             NotificationManager.error(
               TranslationContext !== undefined
@@ -742,7 +750,6 @@ class HierarchyMaster extends Component {
     this.setState({
       temphierarchyData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   handleOnChangeHierarchyData = (e) => {
@@ -761,7 +768,7 @@ class HierarchyMaster extends Component {
   };
 
   fileUpload = (file) => {
-    if (file) {
+    if (file.length > 0) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
       this.setState({
@@ -770,6 +777,8 @@ class HierarchyMaster extends Component {
         file: file[0],
         fileValidation: "",
       });
+    } else {
+      NotificationManager.error("File accept only csv type.");
     }
   };
 
@@ -891,7 +900,7 @@ class HierarchyMaster extends Component {
   // get item list
   handleGetItem() {
     let self = this;
-
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreHierarchy/ListStoreHierarchy",
@@ -902,7 +911,7 @@ class HierarchyMaster extends Component {
         let data = response.data.responseData;
 
         if (data !== null) {
-          self.setState({ sortAllData: data });
+          self.setState({ sortAllData: data, isloading: false });
           var unique = [];
           var distinct = [];
           var sortDesignation = [];
@@ -978,6 +987,7 @@ class HierarchyMaster extends Component {
         }
 
         self.setState({
+          isloading: false,
           hierarchyData: data,
           sortCreatedBy,
           sortFilterCreatedBy,
@@ -990,6 +1000,7 @@ class HierarchyMaster extends Component {
         });
       })
       .catch((response) => {
+        self.setState({ isloading: false });
         console.log(response);
       });
   }
@@ -1014,7 +1025,8 @@ class HierarchyMaster extends Component {
   // delete item
   handleDeleteHierarchy(hierarchy_Id) {
     const TranslationContext = this.state.translateLanguage.default;
-
+    let self = this;
+    this.setState({ isDelete: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreHierarchy/DeleteStoreHierarchy",
@@ -1026,25 +1038,27 @@ class HierarchyMaster extends Component {
       .then((response) => {
         let status = response.data.message;
         if (status === "Success") {
-          this.handleGetItem();
+          self.handleGetItem();
           NotificationManager.success(
             TranslationContext !== undefined
               ? TranslationContext.alertmessage.designationdeletedsuccessfully
               : "Designation deleted successfully."
           );
-          this.hanldeGetReportListDropDown();
+          self.hanldeGetReportListDropDown();
+          self.setState({ isDelete: false });
         } else {
           NotificationManager.error(response.data.message);
+          self.setState({ isDelete: false });
         }
       })
       .catch((response) => {
+        self.setState({ isDelete: false });
         console.log(response);
       });
   }
 
   handleUpdateHierarchyData(e, designationID) {
     const TranslationContext = this.state.translateLanguage.default;
-
     if (
       this.state.updateDesignation.length > 0 &&
       this.state.updateReprtTo !== "select" &&
@@ -1059,6 +1073,8 @@ class HierarchyMaster extends Component {
         activeStatus = 0;
       }
       this.setState({ editSaveLoading: true });
+
+      // update item
       axios({
         method: "post",
         url: config.apiUrl + "/StoreHierarchy/UpdateStoreHierarchy",
@@ -1073,23 +1089,23 @@ class HierarchyMaster extends Component {
         .then((response) => {
           let status = response.data.message;
           if (status === "Success") {
-            self.handleGetItem();
+            this.handleGetItem();
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.hierarchyupdatesuccessfully
                 : "Hierarchy update successfully."
             );
-            self.hanldeGetReportListDropDown();
-            self.setState({ editSaveLoading: false });
+            this.hanldeGetReportListDropDown();
+            this.setState({ editSaveLoading: false });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.recordalreadyexists
                 : "Record Already Exists."
             );
-            self.setState({ editSaveLoading: false });
+            this.setState({ editSaveLoading: false });
           } else {
-            self.setState({ editSaveLoading: false });
+            this.setState({ editSaveLoading: false });
             NotificationManager.error(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.hierarchynotupdate
@@ -1124,6 +1140,7 @@ class HierarchyMaster extends Component {
       return false;
     }
     this.setState({ isortA: false });
+
     if (data === "designationName") {
       if (
         this.state.sreportToFilterCheckbox !== "" ||
@@ -1216,7 +1233,6 @@ class HierarchyMaster extends Component {
 
   handleSubmitData() {
     const TranslationContext = this.state.translateLanguage.default;
-
     if (
       this.state.designation_name.length > 0 &&
       parseInt(this.state.selectReportTo) !== 0 &&
@@ -1235,6 +1251,8 @@ class HierarchyMaster extends Component {
         ReportId = 0;
       }
       this.setState({ addSaveLoading: true });
+
+      // create item
       axios({
         method: "post",
         url: config.apiUrl + "/StoreHierarchy/CreateStoreHierarchy",
@@ -1248,14 +1266,14 @@ class HierarchyMaster extends Component {
         .then((response) => {
           let status = response.data.message;
           if (status === "Success") {
-            self.handleGetItem();
+            this.handleGetItem();
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.hierarchyaddedsuccessfully
                 : "Hierarchy added successfully."
             );
-            self.hanldeGetReportListDropDown();
-            self.setState({
+            this.hanldeGetReportListDropDown();
+            this.setState({
               designation_name: "",
               selectReportTo: 0,
               selectStatus: 0,
@@ -1270,7 +1288,7 @@ class HierarchyMaster extends Component {
                 ? TranslationContext.alertmessage.recordalreadyexists
                 : "Record Already Exists."
             );
-            self.setState({ addSaveLoading: false });
+            this.setState({ addSaveLoading: false });
           }
         })
         .catch((response) => {
@@ -1793,7 +1811,15 @@ class HierarchyMaster extends Component {
                                               this,
                                               ids
                                             )}
+                                            disabled={this.state.isDelete}
                                           >
+                                            {this.state.isDelete ? (
+                                              <FontAwesomeIcon
+                                                className="circular-loader"
+                                                icon={faCircleNotch}
+                                                spin
+                                              />
+                                            ) : null}
                                             {TranslationContext !== undefined
                                               ? TranslationContext.button.delete
                                               : "Delete"}
@@ -1856,16 +1882,22 @@ class HierarchyMaster extends Component {
                         },
                       },
                     ]}
-                    // resizable={false}
-                    minRows={1}
+                    minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin size="large" tip="Loading..." />
+                      ) : hierarchyData.length === 0 ? (
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                      ) : null
+                    }
                   />
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="createHierarchyMask">
-                  <div className="createSpace">
+                  <div className="storeSettingcreateDiv">
                     <label className="create-department">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.createhierarchy
@@ -2010,7 +2042,7 @@ class HierarchyMaster extends Component {
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload}>
+                      <Dropzone onDrop={this.fileUpload} accept=".csv">
                         {({ getRootProps, getInputProps }) => (
                           <div {...getRootProps()}>
                             <input

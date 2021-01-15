@@ -12,6 +12,15 @@
     "storePay": "स्टोर पे"
   },
   "label": {
+    "taskassignfail": "टास्क असाइनिंग फेल।",
+    "tasksubmitedfail": "टास्क सब्मिट फेल।",
+    "tasksumitedsuccessfully": "कार्य सफलतापूर्वक प्रस्तुत किया गया",
+    "taskAssignesuccessfully": "टास्क सफलतापूर्वक सौंपा गया।",
+    "commentaddedsuccessfuly": "टिप्पणी सफलतापूर्वक जोड़ा गया।",
+    "commentnotaddedsuccessfuly": "टिप्पणी नहीं सफलतापूर्वक जोड़ा गया।",
+    "taskhistorical": "ऐतिहासिक कार्य",
+    "taksclousedate": "टास्क क्लोजर डेट",
+    "storetaskid": "दुकान कार्य आईडी",
     "charactersremaining": " शेष वर्ण...",
     "allselected": "सभी चयनित",
     "selected": "चुन लिया",
@@ -94,7 +103,7 @@
     "nostoreattached": "कोई भी स्टोर संलग्न नहीं है",
     "product": "उत्पाद",
     "noproductattached": "कोई उत्पाद संलग्न नहीं है",
-    "to": "सेवा",
+    "to": "तक",
     "cc": "सीसी",
     "bcc": "गुप्त प्रतिलिपि",
     "informstore": "स्टोर सूचित करें",
@@ -362,7 +371,7 @@
     "onlycard": "केवल कार्ड",
     "editcampaignsetting": "एडिट कैम्पिंग सेटिंग",
     "taskidslashtitle": "टास्क आईडी / शीर्षक",
-    "createdby": "के द्वारा बनाई गई",
+    "createdby": "के द्वारा बनाई गई ",
     "linkedticketid": "लिंक्ड टिकट आईडी",
     "assignedto": "को सौंपना",
     "taskwithtickets": "टिकट के साथ कार्य",
@@ -515,7 +524,19 @@
     "notificationtime": "अधिसूचना का समय",
     "sounds": "आवाज़",
     "newmessage": "नया संदेश",
-    "soundcontroller": "ध्वनि नियंत्रक"
+    "soundcontroller": "ध्वनि नियंत्रक",
+    "slotoccupancy": "स्लॉट व्यवसाय",
+    "slotstatusunabledisable": "स्लॉट स्थिति (सक्षम / अक्षम करें)",
+    "appointmentcancellation": "नियुक्ति रद्द करना",
+    "communicationviawhatsapp": "व्हाट्सएप के माध्यम से संचार",
+    "checkcustomerlastreceivedmessagewithin24hrs": "ग्राहक को अंतिम प्राप्त संदेश 24 घंटे में देखें",
+    "donotcheckforanytime": "किसी भी समय की जाँच न करें",
+    "messageviawhatsapp": "व्हाट्सएप के माध्यम से संदेश",
+    "placeholders": "प्लेसहोल्डर",
+    "communicationviasms": "एसएमएस के माध्यम से संचार",
+    "messageviasms": "एसएमएस के माध्यम से संदेश",
+    "customerhasendchattimeout": "चैट को ग्राहक के समय से समाप्त कर दिया गया है",
+    "appointmentreminder":"नियुक्ति अनुस्मारक"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -523,6 +544,9 @@
     "daterange": "तिथि सीमा :"
   },
   "p": {
+    "opencampaignstats": "अभियान आँकड़े खोलें",
+    "claimvsinvoicearticle": "दावा बनाम चालान लेख",
+    "openclaimstata": "ओपन स्टैट स्टैट्स",
     "settingordersettingdetails": "फिजिटल फ्लो से संबंधित कॉन्फ़िगरेशन आपको सक्षम बनाता है जहां आप ऑर्डर फ्लो का प्रबंधन कर सकते हैं।",
     "settingfileuploaddetails": "कोनसे सेक्शन से हमने क्या फाइल अपलोड की है और फाइल के अपलोड की स्तिथि, ये सब हम सिर्फ एक इसी स्क्रीन से देख सकते है।",
     "settingmodulesettingdetails": "मॉड्यूल के आधार पर अपना कॉन्फ़िगरेशन स्वयं करें और अपने व्यवसाय को आसान बनाएं और सुविधाओं का उपयोग करें।",
@@ -764,6 +788,7 @@
     "bycustomertype": "ग्राहक प्रकार द्वारा",
     "bytickettype": "टिकट के प्रकार से",
     "bycategory": "श्रेणी के द्वारा",
+    "bycustomer":"ग्राहक के द्वारा",
     "apply": "लागू",
     "clearsearch": "स्पष्ट खोज",
     "clearfilter": "स्पष्ट निस्यंदक",
@@ -834,8 +859,11 @@
     "profile": "प्रोफ़ाइल",
     "storeselected": "दुकान चयनित",
     "createnewtemplate": "नया टेम्पलेट बनाएं",
-    "wishlist": "इच्छा-सूची"
-    
+    "wishlist": "इच्छा-सूची",
+    "manual": "गाइड",
+    "bulkupload": "सामूहिक डालना",
+    "automatic": "स्वचालित",
+    "selfpickup":"स्व चयन"
   },
   "span": {
     "status": "स्थिति",
@@ -1060,7 +1088,8 @@
     "qty": "मात्रा",
     "executeddate": "निष्पादित दिनांक",
     "tier": "टियर",
-    "proceed": "बढ़ना"
+    "proceed": "बढ़ना",
+    "invoicecount": "समान की गिन्ती"
   },
   "div": {
     "viewtickets": "टिकट देखें",
@@ -1084,12 +1113,13 @@
     "sms": "एसएमएस",
     "email": "ईमेल",
     "programcode": "प्रोग्राम कोड",
-    "chatsessiontimeout": "चैट सत्र समय समाप्त",
+    "agentchatsessiontimeout": "एजेंट चैट सत्र टाइम आउट",
     "historicalchattime": "ऐतिहासिक चैट समय",
     "setlimittypeboxofchatwindow": "चैट विंडो में लिखने की अधिकतम सीमा",
     "sendviamessenger": "संदेशवाहक के माध्यम से भेजें",
     "todate": "तारीख तक",
-    "phonenumberemailidorderid": "(फोन नंबर, ईमेल आईडी, आदेश आईडी)"
+    "phonenumberemailidorderid": "(फोन नंबर, ईमेल आईडी, आदेश आईडी)",
+    "customerchatsessiontimeout": "ग्राहक चैट सत्र टाइमआउट"
   },
   "button": {
     "logout": "लॉगआउट",
@@ -1188,7 +1218,8 @@
     "addtobag": "झोले में डालो",
     "addslot": "स्लॉट जोड़ें",
     "resetdefault": "बाकी डिफ़ॉल्ट",
-    "savechanges": "परिवर्तनों को सुरक्षित करें"
+    "savechanges": "परिवर्तनों को सुरक्षित करें",
+    "generateslot": "स्लॉट उत्पन्न करें"
   },
   "strong": {
     "hierarchy": "अनुक्रम",
@@ -1478,7 +1509,14 @@
     "claimraisedon": "दावा उठाया गया",
     "raisedby": "द्वारा उठाया",
     "channelofpurchase": "खरीद का चैनल",
-    "modeofpayment": "भुगतान का प्रकार"
+    "modeofpayment": "भुगतान का प्रकार",
+    "currentslot": "वर्तमान खांचा",
+    "skipcurrentslotshownextslot": "वर्तमान स्लॉट छोड़ें और अगला स्लॉट दिखाएं",
+    "skipcurrentnextslot": "वर्तमान और अगला स्लॉट छोड़ें",
+    "selecttiming": "समय का चयन करें",
+    "minutes": "मिनट",
+    "hours": "घंटे",
+    "hour": "घंटा"
   },
   "radio": {
     "email": "ईमेल",
@@ -1614,7 +1652,11 @@
     "referenceno": "संदर्भ संख्या।",
     "addnewdepartment": "नया विभाग जोड़ें",
     "addnewfunction": "नया फ़ंक्शन जोड़ें",
-    "itemquantity": "सामान की मात्रा"
+    "itemquantity": "सामान की मात्रा",
+    "doyouwanttodeletetheseslot": "क्या आप इन स्लॉट को हटाना चाहते हैं?",
+    "thisslotalreadycreatedappointment.": "इस स्लॉट ने पहले से ही नियुक्ति बनाई है।",
+    "properties": "गुण",
+    "datetime":"दिनांक & समय"
   },
   "content": {
     "howmanydaystoshowchathistory": "चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"
@@ -1655,10 +1697,23 @@
     "pleaseenterbrandcode": "कृपया ब्रांड कोड दर्ज करें।",
     "pleaseenterbrandname": "कृपया ब्रांड नाम दर्ज करें।",
     "pleaseselectstatus": "कृपया पहले स्टेटस चुने।",
-    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें",
+    "pleaseentertemplatename": "कृपया टेम्पलेट का नाम दर्ज करें।",
     "pleaseenteralerttype": "कृपया अलर्ट टाइप दर्ज करें",
     "pleaseselectcommunicationmode": "कृपया किसी भी संचार मोड का चयन करें",
-    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।"
+    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।",
+    "pleaseselectstore": "कृपया स्टोर चुनें।",
+    "pleaseselectoperationaldays": "कृपया परिचालन दिनों का चयन करें।",
+    "pleaseselectslottemplate": "कृपया स्लॉट टेम्प्लेट चुनें।",
+    "pleaseselectslotdaysdisplay": "कृपया स्लॉट दिवस प्रदर्शन का चयन करें।",
+    "pleaseselectmaxpeopleonappointment": "कृपया नियुक्ति पर अधिकतम लोगों का चयन करें।",
+    "pleaseselectslotdisplaycode": "कृपया स्लॉट प्रदर्शन कोड का चयन करें।",
+    "pleaseselectslotduration": "कृपया स्लॉट अवधि का चयन करें।",
+    "pleaseselectslotgap": "कृपया स्लॉट अंतर का चयन करें।",
+    "pleaseselectfromtime": "कृपया समय से चयन करें।",
+    "pleaseselecttotime": "कृपया समय का चयन करें।",
+    "pleaseselectstarttime": "कृपया प्रारंभ समय चुनें।",
+    "pleaseselectendtime": "कृपया अंतिम समय चुनें।",
+    "pleaseselectclaimtype": "कृपया दावा प्रकार चुनें"
   },
   "alertmessage": {
     "usernotcreated": "उपयोगकर्ता नहीं बनाया गया",
@@ -1815,9 +1870,24 @@
     "brandnotupdated": "ब्रांड अपडेट नहीं हुआ।",
     "pleaseselectsubcategory": "कृपया उपश्रेणी का चयन करें",
     "pleaseselectcategory": "कृपया श्रेणी का चयन करें।",
-    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।"
+    "pleaseselectbrand": "कृपया ब्रांड का चयन करें।",
+    "pleaseenterfinalclaimpercentage": "कृपया अंतिम दावा प्रतिशत दर्ज करें।",
+    "pleaseentervalidreason": "कृपया मान्य कारण दर्ज करें।",
+    "storecommentaddedsuccessfully": "स्टोर टिप्पणी सफलतापूर्वक जोड़ा गया।",
+    "storecommentnotadded": "स्टोर टिप्पणी नहीं जोड़ी गई।",
+    "pleaseentercustomername": "कृपया ग्राहक का नाम दर्ज करें।",
+    "pleaseentermobileno": "कृपया मोबाइल नंबर दर्ज करें।",
+    "claimassignedsuccesfully": "दावा सफलतापूर्वक सौंपा गया",
+    "orderconfirmed": "ऑर्डर की पुष्टि की गई",
+    "orderfailed": "आदेश विफल",
+    "datanotupdated":"डेटा अपडेट नहीं किया गया।",
+    "recordcancelledsuccessfully":"रिकॉर्ड सफलतापूर्वक रद्द किया गया।",
+    "recordnotcancelled":"रिकॉर्ड रद्द नहीं किया गया।",
+    "recordnotuUpdated":"रिकॉर्ड अद्यतन नहीं।"
   },
   "ticketingDashboard": {
+    "campaigncomment": "अभियान टिप्पणी",
+    "campaignraiseticket": "अभियान रीज़ टिकट",
     "viewMoreInsights": "अधिक जानकारी देखें",
     "openByPriority": "प्राथमिकता से खोलें",
     "noDataAvailable": "कोई डेटा उपलब्ध नहीं है",
@@ -1961,21 +2031,58 @@
     "pleaseselectpickuptime": "कृपया पिकअप समय चुनें।",
     "pincodeisnotmapped": "पिनकोड को मैप नहीं किया गया है।",
     "expecteddeliverydate": "अपेक्षित वितरण की तारीख",
-    "uploadtemplates":"टेम्प्लेट अपलोड करें",
-    "campaignautoassigned":""
+    "uploadtemplates": "टेम्प्लेट अपलोड करें",
+    "pleaseentervalidphonenumber": "कृपया एक वैध नंबर डालें।",
+    "neworderaddedsuccessfully": "नया आदेश सफलतापूर्वक जोड़ा गया।",
+    "ordernotadded": "आदेश नहीं जोड़ा गया।",
+    "taskassignsuccessfully": "टास्क सफलतापूर्वक असाइन करें।",
+    "taskassignfailed": "टास्क असाइनमेंट विफल।",
+    "closuredate": "बंद करने की तारीख",
+    "downloadsamplefile": "डाउनलोड नमूना फ़ाइल",
+    "finalclaimaskedfor": "फाइनल क्लेम मांगा",
+    "commentsbyapproval": "टिप्पणियाँ अनुमोदन द्वारा",
+    "addyourcommenthere": "अपनी टिप्पणी यहां जोड़ें",
+    "commentsbyreject": "टिप्पणियां अस्वीकार द्वारा",
+    "reasonforrejection": "खारिज करने का कारण",
+    "pleaseselectcourierpartner": "कृपया कूरियर भागीदार चुनें।",
+    "customernotexist": "ग्राहक मौजूद नहीं है।",
+    "cancelbuttoninshipment": "शिपमेंट में बटन रद्द करें",
+    "maximumretrycount": "अधिकतम रिट्री काउंट",
+    "stateflag": "राज्य का झंडा",
+    "currency": "मुद्रा",
+    "submitasreOpen": "रोपेन के रूप में सबमिट करें",
+    "downloadfile": "फ़ाइल डाउनलोड करें",
+    "pushtoposs": "पुश करने के लिए",
+    "podaccept": "पी ओ डी स्वीकार करें",
+    "clicktodownload": "डाउनलोड करने के लिए क्लिक करें",
+    "sharedetailswithcustomer":"ग्राहक के साथ शेयर विवरण",
+    "showshipmentcharges":"शिपमेंट शुल्क दिखाएं",
+    "enablecheckservice":"चेक सेवा सक्षम करें",
+    "showitemproperty":"आइटम प्रॉपर्टी दिखाएं",
+    "cancelbag":"बैग रद्द करें",
+    "showselfpickuptab":"सेल्फ पिक टैब दिखाएं",
+    "availableqty":"उपलब्ध मात्रा",
+    "showavailablequantity":"उपलब्ध मात्रा दिखाएं"
   },
   "tip": {
     "pleasewait": "कृपया प्रतीक्षा करें..."
   },
   "dropdown": {
-    "closechat": "गपशप"
+    "closechat": "गपशप",
+    "selectpaymentstatus": "भुगतान की स्थिति चुनें",
+    "paymentcollected": "भुगतान एकत्र किया गया",
+    "paymentpending": "भुगतान लंबित"
   },
   "panel": {
     "insights": "अंतर्दृष्टि",
     "orders": "आदेश",
-    "lasttransaction": "अंतिम लेन-देन"
+    "lasttransaction": "अंतिम लेन-देन",
+    "appointmentreminderbefore":"Appointment reminder before"
   },
   "tab": {
-    "notificationsandsounds": "सूचनाएं और ध्वनियाँ"
+    "notificationsandsounds": "सूचनाएं और ध्वनियाँ",
+    "campaignupload":"अभियान अपलोड",
+    "dashboardsettings":"डैशबोर्ड सेटिंग्स",
+    "hsmsettings":"एच एस एम सेटिंग्स"
   }
 }

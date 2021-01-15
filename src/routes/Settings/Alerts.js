@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sorting from "./../../assets/Images/sorting.png";
 import { Popover } from "antd";
-// import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
-// import "react-table/react-table.css";
 import DelBigIcon from "./../../assets/Images/del-big.png";
 import FileUpload from "./../../assets/Images/file.png";
 import DelBlack from "./../../assets/Images/del-black.png";
@@ -27,15 +25,11 @@ import Modal from "react-bootstrap/Modal";
 import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../helpers/config";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
-// import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
   constructor(props) {
@@ -244,10 +238,6 @@ class Alerts extends Component {
         this.state.ckCusrsorPositionCustomer,
         ckDataArrLast.length
       );
-      // let ckDataArrLast = ckDataArr.pop();
-      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      // ck += placeholderName;
       ckDataArrLast = textBefore + " " + placeholderName + textAfter;
       let newCkCusrsorPosition =
         this.state.ckCusrsorPositionCustomer + placeholderName.length + 1;
@@ -256,9 +246,7 @@ class Alerts extends Component {
         ckCusrsorDataCustomer: ckDataArrLast,
       });
       if (ckTags) {
-        // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-        // ckDataArr.push(ckFinal);
         ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
@@ -302,10 +290,6 @@ class Alerts extends Component {
         this.state.ckCusrsorPositionInternal,
         ckDataArrLast.length
       );
-      // let ckDataArrLast = ckDataArr.pop();
-      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      // ck += placeholderName;
       ckDataArrLast = textBefore + " " + placeholderName + textAfter;
       let newCkCusrsorPosition =
         this.state.ckCusrsorPositionInternal + placeholderName.length + 1;
@@ -314,9 +298,7 @@ class Alerts extends Component {
         ckCusrsorDataInternal: ckDataArrLast,
       });
       if (ckTags) {
-        // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-        // ckDataArr.push(ckFinal);
         ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
@@ -358,10 +340,6 @@ class Alerts extends Component {
         this.state.ckCusrsorPositionStore,
         ckDataArrLast.length
       );
-      // let ckDataArrLast = ckDataArr.pop();
-      // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
-      // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
-      // ck += placeholderName;
       ckDataArrLast = textBefore + " " + placeholderName + textAfter;
       let newCkCusrsorPosition =
         this.state.ckCusrsorPositionStore + placeholderName.length + 1;
@@ -370,9 +348,7 @@ class Alerts extends Component {
         ckCusrsorDataStore: ckDataArrLast,
       });
       if (ckTags) {
-        // let ckFinal = ckTags[0] + ck + ckTags[1];
         let ckFinal = ckTags[0] + ckDataArrLast + ckTags[1];
-        // ckDataArr.push(ckFinal);
         ckDataArr.splice(selectedArr, 1, ckFinal);
         ckData = ckDataArr.join(" ");
       }
@@ -382,8 +358,6 @@ class Alerts extends Component {
         this.setState({ selectedCKStore: ckDataArrLast });
       }
     } else if (type == "Notification") {
-      // let startPoint = document.getElementById("notifiPlaceholder").selectionStart;
-      // let textLength = document.getElementById("notifiPlaceholder").value.length;
       let textBefore = this.state.selectedNotifContent.substring(
         0,
         this.state.notiCurPosi
@@ -392,13 +366,10 @@ class Alerts extends Component {
         this.state.notiCurPosi,
         this.state.notiCount
       );
-      // let ckData = this.state.selectedNotifContent;
-      // ckData += placeholderName;
       let ckData = textBefore + " " + placeholderName + textAfter;
       let notiCurPosi = textBefore.length + placeholderName.length + 1;
       let notiCount =
         textBefore.length + placeholderName.length + 1 + textAfter.length;
-      // document.getElementById("notifiPlaceholder").setSelectionRange(abc,abc);
       this.setState({ selectedNotifContent: ckData, notiCurPosi, notiCount });
     }
   }
@@ -473,7 +444,6 @@ class Alerts extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterAlertType.length === 0 ||
       this.state.sortFilterCreatedBy.length === 0 ||
@@ -799,7 +769,6 @@ class Alerts extends Component {
     this.setState({
       tempalert: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
@@ -1199,12 +1168,6 @@ class Alerts extends Component {
         } else {
           this.setState({ ckCustomerCompulsion: "" });
         }
-        // if (this.state.selectedSubjectCustomer === "") {
-        //   this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
-        //   return false;
-        // } else {
-        //   this.setState({ subjectCustomerCompulsion: "" });
-        // }
       }
 
       if (this.state.emailInt == true) {
@@ -1214,14 +1177,6 @@ class Alerts extends Component {
         } else {
           this.setState({ ckInternalCompulsion: "" });
         }
-        // if (this.state.selectedSubjectInternal === "") {
-        //   this.setState({
-        //     subjectInternalCompulsion: "Please Enter Description.",
-        //   });
-        //   return false;
-        // } else {
-        //   this.setState({ subjectInternalCompulsion: "" });
-        // }
       }
 
       if (this.state.emailStore == true) {
@@ -1232,15 +1187,6 @@ class Alerts extends Component {
         } else {
           this.setState({ ckStoreCompulsion: "" });
         }
-        // if (this.state.selectedSubjectCustomer === "") {
-        //   this.setState({
-        //     subjectStoreCompulsion: "Please Enter Description.",
-        //   });
-
-        //   return false;
-        // } else {
-        //   this.setState({ subjectStoreCompulsion: "" });
-        // }
       }
       var CommunicationModeDetails = [];
 
@@ -1408,8 +1354,6 @@ class Alerts extends Component {
       } else {
         this.setState({ AddAlertTabsPopup: true });
       }
-
-      // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
     } else {
       this.setState({
         alertTypeCompulsion:
@@ -1447,11 +1391,6 @@ class Alerts extends Component {
       selectedSMSContent: "",
       selectedNotifContent: "",
       NotifContentCompulsion: "",
-      // emailCust: false,
-      // emailInt: false,
-      // emailStore: false,
-      // smsCust: false,
-      // notiInt: false,
     });
   }
   updateContent(newContent) {
@@ -1475,30 +1414,21 @@ class Alerts extends Component {
     var validation = [];
     if (this.state.selectedEmailCustomer === true) {
       checkboxvalue.push("1");
-      if (
-        // this.state.selectedSubjectCustomer.length > 0 &&
-        this.state.selectedCKCustomer.length > 0
-      ) {
+      if (this.state.selectedCKCustomer.length > 0) {
         validation.push("1");
       }
     }
 
     if (this.state.selectedEmailInternal === true) {
       checkboxvalue.push("1");
-      if (
-        // this.state.selectedSubjectInternal.length > 0 &&
-        this.state.selectedCKInternal.length > 0
-      ) {
+      if (this.state.selectedCKInternal.length > 0) {
         validation.push("1");
       }
     }
 
     if (this.state.selectedEmailStore === true) {
       checkboxvalue.push("1");
-      if (
-        // this.state.selectedSubjectStore.length > 0 &&
-        this.state.selectedCKStore.length > 0
-      ) {
+      if (this.state.selectedCKStore.length > 0) {
         validation.push("1");
       }
     }
@@ -1816,7 +1746,6 @@ class Alerts extends Component {
   hanldeAddBulkUpload() {
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -2233,8 +2162,6 @@ class Alerts extends Component {
                           TranslationContext !== undefined
                             ? TranslationContext.span.action
                             : "Actions",
-                        // accessor: "action",
-
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -2318,45 +2245,6 @@ class Alerts extends Component {
                     showPagination={true}
                     minRows={1}
                   />
-                  {/* 
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -2669,53 +2557,7 @@ class Alerts extends Component {
                                     ? TranslationContext.label.composeyouremail
                                     : "Compose your Email"}
                                 </label>
-                                {/* <div className="div-padding-alert">
-                                  <div className="form-group row">
-                                    <label className="label-color-alert col-sm-auto">
-                                      Subject
-                                    </label>
-                                    <div className="col-sm">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box4 w-100 ml-0"
-                                        name="selectedSubjectCustomer"
-                                        value={
-                                          this.state.selectedSubjectCustomer
-                                        }
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                      {this.state.selectedSubjectCustomer
-                                        .length === 0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px"
-                                          }}
-                                        >
-                                          {this.state.subjectCustomerCompulsion}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div> */}
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Customer"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
+
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
                                     <select
@@ -2779,53 +2621,7 @@ class Alerts extends Component {
                                     ? TranslationContext.label.composeyouremail
                                     : "Compose your Email"}
                                 </label>
-                                {/* <div className="div-padding-alert">
-                                  <div className="form-group row">
-                                    <label className="label-color-alert col-sm-auto">
-                                      Subject
-                                    </label>
-                                    <div className="col-sm">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box4 w-100 ml-0"
-                                        name="selectedSubjectInternal"
-                                        value={
-                                          this.state.selectedSubjectInternal
-                                        }
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                      {this.state.selectedSubjectInternal
-                                        .length === 0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px"
-                                          }}
-                                        >
-                                          {this.state.subjectInternalCompulsion}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div> */}
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Internal"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
+
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select
@@ -2890,51 +2686,7 @@ class Alerts extends Component {
                                     ? TranslationContext.label.composeyouremail
                                     : "Compose your Email"}
                                 </label>
-                                {/* <div className="div-padding-alert">
-                                  <div className="form-group row">
-                                    <label className="label-color-alert col-sm-auto">
-                                      Subject
-                                    </label>
-                                    <div className="col-sm">
-                                      <input
-                                        type="text"
-                                        className="textbox-email-editor text-box4 w-100 ml-0"
-                                        name="selectedSubjectStore"
-                                        value={this.state.selectedSubjectStore}
-                                        onChange={this.setDataOnChangeAlert}
-                                      />
-                                      {this.state.selectedSubjectStore
-                                        .length === 0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px"
-                                          }}
-                                        >
-                                          {this.state.subjectStoreCompulsion}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div> */}
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Store"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
+
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select
@@ -2987,17 +2739,6 @@ class Alerts extends Component {
                                     {this.state.ckStoreCompulsion}
                                   </p>
                                 )}
-                                {/*<div className="div-button1">
-                                <button
-                                  className="butn-2"
-                                  type="submit"
-                                  id="sms-tab"
-                                  onClick={this.handleTabChange.bind(this,1)}
-                                  
-                                >
-                                  SAVE & NEXT
-                                </button>
-                              </div>*/}
                               </div>
                             </div>
                           </div>
@@ -3025,14 +2766,6 @@ class Alerts extends Component {
                                 {this.state.SMSContentCompulsion}
                               </p>
                             )}
-                            {/*<div className="div-button1">
-                              <button className="butn-2" type="submit" 
-                              onClick={this.handleTabChange.bind(this,2)}
-                              
-                              >
-                                SAVE & NEXT
-                              </button>
-                            </div>*/}
                           </div>
                         </div>
                         <div
@@ -3090,13 +2823,6 @@ class Alerts extends Component {
                                 {this.state.NotifContentCompulsion}
                               </p>
                             )}
-                            {/* <div className="div-button1">
-                              <button className="butn-2" type="submit"
-                             
-                              >
-                                SAVE & NEXT
-                              </button>
-                          </div>*/}
                           </div>
                         </div>
                         <div className="div-button1 alert-proper">
@@ -3142,14 +2868,8 @@ class Alerts extends Component {
                     id="file-upload"
                     className="file-upload d-none"
                     type="file"
-                    // onChange={this.fileUpload}
                   />
-                  <label
-                    htmlFor="file-upload"
-                    // onDrop={this.fileDrop}
-                    // onDragOver={this.fileDragOver}
-                    // onDragEnter={this.fileDragEnter}
-                  >
+                  <label htmlFor="file-upload">
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
                     </div>
@@ -3209,12 +2929,7 @@ class Alerts extends Component {
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <a
-                              className="file-retry"
-                              // onClick={this.hanldeAddBulkUpload.bind(this)}
-                            >
-                              Retry
-                            </a>
+                            <a className="file-retry">Retry</a>
                           </div>
                           <div>
                             <span className="file-failed">Failed</span>
@@ -3243,12 +2958,7 @@ class Alerts extends Component {
                       ) : null}
                     </div>
                   )}
-                  {/* <button
-                    className="butn"
-                    onClick={this.hanldeAddBulkUpload.bind(this)}
-                  >
-                    ADD
-                  </button> */}
+
                   <button className="butn">ADD</button>
                 </div>
               </div>
@@ -3436,7 +3146,6 @@ class Alerts extends Component {
             </div>
           </div>
         </Modal>
-        {/* <NotificationContainer /> */}
       </React.Fragment>
     );
   }

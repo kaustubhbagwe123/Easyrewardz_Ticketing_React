@@ -7,10 +7,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import LoadingImg from "./../../assets/Images/loading.png";
 import CancelImg from "./../../assets/Images/cancel.png";
 import ReactTable from "react-table";
@@ -18,6 +15,8 @@ import moment from "moment";
 import DownImg from "./../../assets/Images/down.png";
 import { Progress } from "antd";
 import { withRouter } from "react-router-dom";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class EditStoreTask extends Component {
   constructor(props) {
@@ -67,6 +66,7 @@ class EditStoreTask extends Component {
       oldassignToID: 0,
       isCommentMax: "",
       isSubmit: false,
+      translateLanguage: {},
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
@@ -84,6 +84,13 @@ class EditStoreTask extends Component {
       this.handleGetStoreTaskProcressBar(taskId);
     } else {
       this.props.history.push("/store/StoreTask");
+    }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
     }
   }
 
@@ -142,7 +149,6 @@ class EditStoreTask extends Component {
       params: { TaskID: taskId },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         var departmentID = 0;
@@ -294,7 +300,7 @@ class EditStoreTask extends Component {
   ////handle add comment by task id
   handleAddCommentByTaskId(type) {
     let self = this;
-
+    const TranslationContext = this.state.translateLanguage.default;
     if (type == true) {
       axios({
         method: "post",
@@ -310,11 +316,19 @@ class EditStoreTask extends Component {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message == "Success" && responseData > 0) {
-            NotificationManager.success("Comment Added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.label.commentaddedsuccessfuly
+                : "Comment Added successfully."
+            );
             self.setState({ assginToModal: false, assignComment: "" });
             self.handleGetCommentOnTask(self.state.taskId);
           } else {
-            NotificationManager.error("Comment Not Added successfully.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.label.commentnotaddedsuccessfuly
+                : "Comment Not Added successfully."
+            );
             self.setState({ assginToModal: false });
           }
         })
@@ -345,11 +359,19 @@ class EditStoreTask extends Component {
             var message = response.data.message;
             var responseData = response.data.responseData;
             if (message == "Success" && responseData > 0) {
-              NotificationManager.success("Comment Added successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.label.commentaddedsuccessfuly
+                  : "Comment Added successfully."
+              );
               self.setState({ iscmtLoading: false, comment: "" });
               self.handleGetCommentOnTask(self.state.taskId);
             } else {
-              NotificationManager.error("Comment Not Added successfully.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.label.commentnotaddedsuccessfuly
+                  : "Comment Not Added successfully."
+              );
               self.setState({ iscmtLoading: false });
             }
           })
@@ -415,6 +437,7 @@ class EditStoreTask extends Component {
   }
   ////handle assign task
   handleAssignTask(btnValue) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -437,14 +460,25 @@ class EditStoreTask extends Component {
             assignComment: "",
             assginToModal: false,
           });
-          NotificationManager.success("Task Assign Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.label.taskAssignesuccessfully
+              : "Task Assign Successfully."
+          );
           if (btnValue !== "skip") {
-            NotificationManager.success("Comment Added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.label.commentaddedsuccessfuly
+                : "Comment Added successfully."
+            );
           }
           self.componentDidMount();
-          // self.handleStoreTaskDetialsById(self.state.taskId);
         } else {
-          NotificationManager.error("Task Assign Fail.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.label.taskassignfail
+              : "Task Assign Fail."
+          );
           self.setState({ userModel: false });
         }
       })
@@ -455,7 +489,6 @@ class EditStoreTask extends Component {
 
   ////handle Update Task
   handleUpdateTask(statusId) {
-    debugger;
     let self = this;
 
     if (this.state.departmentID == 0) {
@@ -502,8 +535,7 @@ class EditStoreTask extends Component {
         inputParam.TaskStatusId = statusId;
         inputParam.TaskTitle = this.state.taskTitle;
         inputParam.TaskDescription = this.state.taskDetails;
-
-        debugger;
+        const TranslationContext = this.state.translateLanguage.default;
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -511,15 +543,23 @@ class EditStoreTask extends Component {
           data: inputParam,
         })
           .then(function(response) {
-            debugger;
             var message = response.data.message;
             if (message === "Success") {
               self.setState({ isSubmit: false });
 
-              NotificationManager.success("Task Submited Successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.label.tasksumitedsuccessfully
+                  : "Task Submited Successfully."
+              );
+
               self.props.history.push("/store/StoreTask");
             } else {
-              NotificationManager.error("Task Submited Failed.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.label.tasksubmitedfail
+                  : "Task Submited Failed."
+              );
               self.setState({ isSubmit: false });
             }
           })
@@ -639,18 +679,11 @@ class EditStoreTask extends Component {
     }
     if (name == "comment") {
       if (value !== "") {
-        // if (value.length < 50) {
         this.setState({
           comment: value,
           iscomment: "",
           isCommentMax: "",
         });
-        // } else {
-        //   this.setState({
-        //     isCommentMax: "Comment Has Certain Limit",
-        //     iscomment: "",
-        //   });
-        // }
       } else {
         this.setState({
           iscomment: "Please Enter Comment.",
@@ -679,7 +712,6 @@ class EditStoreTask extends Component {
     } else {
       this.setState({
         assignComment: e.target.value,
-        // isAssignComment: "Please enter comment.",
       });
     }
   }
@@ -695,21 +727,28 @@ class EditStoreTask extends Component {
   handleSkipButtonClick() {
     this.handleAssignTask("skip");
   }
-  ////handle assgin to modal open
+  //handle assgin to modal open
   handleAssginToModalOpen() {
-    this.setState({ assginToModal: true });
+    if (this.state.agentId) {
+      this.setState({ assginToModal: true });
+    } else {
+      NotificationManager.error("Please Select Re-Assign Name.");
+    }
   }
-  ///handle assgin to modal close
+  //handle assgin to modal close
   handleAssginToModalClose() {
     this.setState({ assginToModal: false });
   }
   render() {
-    console.log(this.state.isSubmit, "----isSubmit");
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="edit-storeTask-header">
           <label className="store-header-lbl">
-            Store Task ID : <span>{this.state.taskId}</span>
+            {TranslationContext !== undefined
+              ? TranslationContext.label.storetaskid
+              : "Store Task ID "}
+            : <span>{this.state.taskId}</span>
           </label>
           <a
             className="loading-rectangle-cntr"
@@ -734,20 +773,44 @@ class EditStoreTask extends Component {
               <label className="naman-r">{this.state.assignToName}</label>
               <img src={DownImg} alt="down" className="down-header" />
             </a>
-            <button
-              type="button"
-              className={
-                this.state.canSubmit || this.state.canEdit
-                  ? "btn-store-resolved"
-                  : "btn-store-resolved disabled-link"
-              }
-              onClick={this.handleSubmitReopnModalOpen.bind(this)}
-            >
-              <label className="myticket-submit-solve-button-text">
-                SUBMIT AS RESOLVED
-              </label>
-              <img src={DownWhiteImg} alt="headphone" className="down-white" />
-            </button>
+            {this.state.taskStatusId === 223 ? (
+              <button
+                type="button"
+                className={
+                  this.state.canSubmit || this.state.canEdit
+                    ? "btn-store-resolved"
+                    : "btn-store-resolved disabled-link"
+                }
+                onClick={this.handleUpdateTask.bind(this, 224)}
+              >
+                <label className="myticket-submit-solve-button-text">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.submitasreOpen
+                    : "Submit as ReOpen"}
+                </label>
+              </button>
+            ) : (
+              <button
+                type="button"
+                className={
+                  this.state.canSubmit || this.state.canEdit
+                    ? "btn-store-resolved"
+                    : "btn-store-resolved disabled-link"
+                }
+                onClick={this.handleSubmitReopnModalOpen.bind(this)}
+              >
+                <label className="myticket-submit-solve-button-text">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.submitasresolved
+                    : "SUBMIT AS RESOLVED"}
+                </label>
+                <img
+                  src={DownWhiteImg}
+                  alt="headphone"
+                  className="down-white"
+                />
+              </button>
+            )}
           </div>
           <Modal
             open={this.state.SubmitBtnReopn}
@@ -757,62 +820,92 @@ class EditStoreTask extends Component {
             overlayId="logout-ovrly"
           >
             <div className="store-hdrtMdal">
-              {this.state.taskStatusId === 222 ? (
-                <div className="row">
-                  <label
-                    className={
-                      this.state.isSubmit
-                        ? "modal-lbl disabled-link"
-                        : "modal-lbl"
-                    }
-                    onClick={this.handleUpdateTask.bind(this, 224)}
-                  >
-                    Submit as <span className="modal-lbl-1">ReOpen</span>
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  {this.state.canSubmit || this.state.canAssignTo ? (
-                    <div className="row">
-                      <label
-                        disabled={this.state.isSubmit}
-                        className={
-                          this.state.isSubmit
-                            ? "modal-lbl disabled-link"
-                            : "modal-lbl"
-                        }
-                        onClick={this.handleUpdateTask.bind(this, 222)}
-                      >
-                        Submit as <span className="modal-lbl-1">Solved</span>
-                      </label>
-                    </div>
-                  ) : null}
-                </div>
-              )}
+              <>
+                {this.state.taskStatusId === 222 ? (
+                  <div className="row">
+                    <label
+                      className={
+                        this.state.isSubmit
+                          ? "modal-lbl disabled-link"
+                          : "modal-lbl"
+                      }
+                      onClick={this.handleUpdateTask.bind(this, 224)}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.submitas
+                        : "Submit as"}
+                      &nbsp;
+                      <span className="modal-lbl-1">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.reopen
+                          : "ReOpen"}
+                      </span>
+                    </label>
+                  </div>
+                ) : (
+                  <div>
+                    {this.state.canSubmit || this.state.canAssignTo ? (
+                      <div className="row">
+                        <label
+                          disabled={this.state.isSubmit}
+                          className={
+                            this.state.isSubmit
+                              ? "modal-lbl disabled-link"
+                              : "modal-lbl"
+                          }
+                          onClick={this.handleUpdateTask.bind(this, 222)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.submitas
+                            : "Submit as"}
+                          &nbsp;
+                          <span className="modal-lbl-1">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.solved
+                              : "Solved"}
+                          </span>
+                        </label>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
 
-              {this.state.taskStatusId !== 222 || this.state.canEdit ? (
-                <div className="row" style={{ marginTop: "8px" }}>
-                  <label
-                    disabled={this.state.isSubmit}
-                    className={
-                      this.state.isSubmit
-                        ? "modal-lbl disabled-link"
-                        : "modal-lbl"
-                    }
-                    className="modal-lbl"
-                    onClick={this.handleUpdateTask.bind(this, 223)}
-                  >
-                    Submit as <span className="modal-lbl-2">Closed</span>
-                  </label>
-                </div>
-              ) : null}
+                {this.state.taskStatusId !== 222 || this.state.canEdit ? (
+                  <div className="row" style={{ marginTop: "8px" }}>
+                    <label
+                      disabled={this.state.isSubmit}
+                      className={
+                        this.state.isSubmit
+                          ? "modal-lbl disabled-link"
+                          : "modal-lbl"
+                      }
+                      className="modal-lbl"
+                      onClick={this.handleUpdateTask.bind(this, 223)}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.submitas
+                        : "Submit as"}
+                      &nbsp;
+                      <span className="modal-lbl-2">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.small.closed
+                          : "Closed"}
+                      </span>
+                    </label>
+                  </div>
+                ) : null}
+              </>
             </div>
           </Modal>
         </div>
         <div className="row width">
           <div className="col-md-7">
             <div className="card store-card-padding h-100">
-              <label className="store-Edit-lbl"> Task Title</label>
+              <label className="store-Edit-lbl">
+                {TranslationContext !== undefined
+                  ? TranslationContext.span.tasktitle
+                  : "Task Title"}
+              </label>
               <input
                 type="text"
                 className={
@@ -832,7 +925,11 @@ class EditStoreTask extends Component {
               )}
               <div className="row">
                 <div className="col-md-4 store-mrg">
-                  <label className="store-Edit-lbl">Department</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.department
+                      : "Department"}
+                  </label>
                   <select
                     id="inputState"
                     className={
@@ -844,7 +941,12 @@ class EditStoreTask extends Component {
                     onChange={this.handleOnchange}
                     name="department"
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
+
                     {this.state.departmentData !== null &&
                       this.state.departmentData.map((item, i) => (
                         <option
@@ -863,7 +965,11 @@ class EditStoreTask extends Component {
                   )}
                 </div>
                 <div className="col-md-4 store-mrg">
-                  <label className="store-Edit-lbl">Function</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.function
+                      : "Function"}
+                  </label>
                   <select
                     id="inputState"
                     className={
@@ -875,7 +981,11 @@ class EditStoreTask extends Component {
                     name="funcation"
                     onChange={this.handleOnchange}
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
                     {this.state.funcationData !== null &&
                       this.state.funcationData.map((item, i) => (
                         <option
@@ -894,7 +1004,11 @@ class EditStoreTask extends Component {
                   )}
                 </div>
                 <div className="col-md-4 store-mrg">
-                  <label className="store-Edit-lbl">Priority</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.strong.priority
+                      : "Priority"}
+                  </label>
                   <select
                     id="inputState"
                     className={
@@ -906,7 +1020,11 @@ class EditStoreTask extends Component {
                     name="priority"
                     onChange={this.handleOnchange}
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
                     {this.state.priorityData !== null &&
                       this.state.priorityData.map((item, i) => (
                         <option
@@ -927,7 +1045,11 @@ class EditStoreTask extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 store-mrg">
-                  <label className="store-Edit-lbl">Task Details</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.taskdetails
+                      : "Task Details"}
+                  </label>
                   <textarea
                     rows="8"
                     className={
@@ -948,11 +1070,20 @@ class EditStoreTask extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 store-mrg">
-                  <label className="store-Edit-lbl">Comments</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.comments
+                      : "Comments:"}{" "}
+                  </label>
                   <textarea
                     rows="8"
                     className="textarea-store-comments"
-                    placeholder="Add your comment here"
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard
+                            .addyourcommenthere
+                        : "Add your comment here"
+                    }
                     value={this.state.comment}
                     name="comment"
                     onChange={this.handleOnchange}
@@ -962,17 +1093,14 @@ class EditStoreTask extends Component {
                       {this.state.iscomment}
                     </p>
                   )}
-                  {/* {this.state.isCommentMax !== "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.isCommentMax}
-                    </p>
-                  )} */}
                 </div>
               </div>
               <div className="row">
                 <div className="col-md-12 store-mrg">
                   <label className="store-Edit-lbl">
-                    Comments:{" "}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.comments + ":"
+                      : "Comments: "}
                     {this.state.commentCount < 9
                       ? "0" + this.state.commentCount
                       : this.state.commentCount}
@@ -991,7 +1119,10 @@ class EditStoreTask extends Component {
                     ) : (
                       ""
                     )}
-                    Add Comment
+
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.addcomment
+                      : "Add Comment"}
                   </button>
                 </div>
               </div>
@@ -1014,7 +1145,10 @@ class EditStoreTask extends Component {
                             {item.isCommentOnAssign === 1 ? (
                               <div className="row" style={{ margin: "0" }}>
                                 <label className="naman-R allign-reassign">
-                                  Reassign to {item.newAgentName}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.reassignto
+                                    : "Reassign to"}{" "}
+                                  {item.newAgentName}
                                 </label>
                               </div>
                             ) : null}
@@ -1028,7 +1162,11 @@ class EditStoreTask extends Component {
                             className="col-md-12"
                             style={{ marginTop: "3px" }}
                           >
-                            <span className="store-comment">Comment :</span>
+                            <span className="store-comment">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.comments
+                                : "Comments :"}
+                            </span>
                           </div>
                         </div>
                         <div className="row">
@@ -1047,10 +1185,18 @@ class EditStoreTask extends Component {
             <div className="card store-card-2 h-100">
               <div className="row">
                 <div className="col-md-6">
-                  <label className="store-Edit-lbl">Issue Raised By:</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.issueraisedby
+                      : "Issue Raised By:"}
+                  </label>
                 </div>
                 <div className="col-md-4">
-                  <label className="store-Edit-lbl">Store Name:</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.storename + ":"
+                      : "Store Name:"}
+                  </label>
                 </div>
               </div>
               <div className="row">
@@ -1074,7 +1220,11 @@ class EditStoreTask extends Component {
               </div>
               <div className="row store-mrg-3">
                 <div className="col-md-6">
-                  <label className="store-Edit-lbl">Store Address:</label>
+                  <label className="store-Edit-lbl">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.storeaddress + ":"
+                      : "Store Address:"}
+                  </label>
                 </div>
               </div>
               <div className="row">
@@ -1086,20 +1236,23 @@ class EditStoreTask extends Component {
               </div>
               <div className="row store-mrg-3">
                 <div className="col-md-6">
-                  <label className="task-clouserDate">Task Closure Date</label>
+                  <label className="task-clouserDate">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.taksclousedate
+                      : "Task Closure Date"}
+                  </label>
                 </div>
               </div>
               <div className="row">
                 <div className="col-md-12 progress-sect">
                   <div className="col-md-3" style={{ padding: 0 }}>
                     <label className="store-date">
-                      {this.state.progressData.closureTaskDate}{" "}
+                      {this.state.progressData.closureTaskDate}
                     </label>
                   </div>
                   <div className="col-md-9" style={{ padding: 0 }}>
                     <Progress
                       showInfo={false}
-                      // strokeColor={this.state.progressData.colorCode}
                       strokeColor={{
                         "0%": this.state.progressData.colorCode
                           ? this.state.progressData.colorCode.split(",")[0]
@@ -1136,7 +1289,11 @@ class EditStoreTask extends Component {
             overlayId="logout-ovrly"
             classNames={{ modal: "historical-popup" }}
           >
-            <label className="lblHistorical">Ticket Historical</label>
+            <label className="lblHistorical">
+              {TranslationContext !== undefined
+                ? TranslationContext.label.taskhistorical
+                : "Task Historical"}
+            </label>
             <img
               src={CancelImg}
               alt="cancelImg"
@@ -1148,16 +1305,34 @@ class EditStoreTask extends Component {
                 data={this.state.historyData}
                 columns={[
                   {
-                    Header: <span>Name</span>,
+                    Header: (
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.name
+                          : "Name"}
+                      </span>
+                    ),
                     accessor: "name",
                     width: 150,
                   },
                   {
-                    Header: <span>Action</span>,
+                    Header: (
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.action
+                          : "Action"}
+                      </span>
+                    ),
                     accessor: "action",
                   },
                   {
-                    Header: <span>Time & Date</span>,
+                    Header: (
+                      <span>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.timeanddate
+                          : "Time & Date"}
+                      </span>
+                    ),
                     accessor: "dateandTime",
                     width: 200,
                     Cell: (row) => {
@@ -1172,7 +1347,6 @@ class EditStoreTask extends Component {
                   },
                 ]}
                 resizable={false}
-                // defaultPageSize={5}
                 minRows={2}
                 showPagination={false}
               />
@@ -1193,28 +1367,34 @@ class EditStoreTask extends Component {
               data={this.state.userData}
               columns={[
                 {
-                  Header: <span>Emp Id</span>,
+                  Header: (
+                    <span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.empid
+                        : "Emp Id"}
+                    </span>
+                  ),
                   accessor: "user_ID",
                   width: 80,
                 },
                 {
-                  Header: <span>Name</span>,
+                  Header: (
+                    <span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.name
+                        : "Name"}
+                    </span>
+                  ),
                   accessor: "userName",
                 },
-                // {
-                //   Header: <span>Designation</span>,
-                //   accessor: "designation"
-                // }
               ]}
               minRows={2}
               showPagination={false}
               resizable={false}
               getTrProps={(rowInfo, column) => {
-                // ////
                 const index = column ? column.index : -1;
                 return {
                   onClick: (e) => {
-                    ////
                     this.selectedRow = index;
                     var agentId = column.original["user_ID"];
                     this.setState({ agentId });
@@ -1231,7 +1411,9 @@ class EditStoreTask extends Component {
                 className="btn btn-outline-primary"
                 onClick={this.handleAssginToModalOpen.bind(this)}
               >
-                SELECT
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.select
+                  : "SELECT"}
               </button>
             </div>
             <div
@@ -1256,7 +1438,11 @@ class EditStoreTask extends Component {
           <div className="commenttextborder">
             <div className="comment-disp">
               <div className="Commentlabel">
-                <label className="Commentlabel1">Add Comment</label>
+                <label className="Commentlabel1">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.button.addcomment
+                    : "Add Comment"}
+                </label>
               </div>
               <div>
                 <img
@@ -1287,7 +1473,9 @@ class EditStoreTask extends Component {
                 className="SendCommentBtn1"
                 onClick={this.handleSkipButtonClick.bind(this)}
               >
-                SKIP
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.skip
+                  : "SKIP"}
               </button>
             </div>
             <div className="SendCommentBtn" style={{ margin: "0" }}>
@@ -1295,7 +1483,9 @@ class EditStoreTask extends Component {
                 className="SendCommentBtn1"
                 onClick={this.handleAssigntoWithComment.bind(this)}
               >
-                ADD
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.add
+                  : "ADD"}
               </button>
             </div>
           </div>

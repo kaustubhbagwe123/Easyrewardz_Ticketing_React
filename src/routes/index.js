@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+// import Loadable from "react-loadable";
 import Dashboard from "./Dashboard";
 import Layout from "./../Component/layout";
 import MyTicket from "./MyTicket";
@@ -14,8 +15,6 @@ import FileUploadLogs from "./Settings/FileUploadLogs";
 import TicketHierarchy from "./Settings/Ticketing/TicketHierarchy";
 import Brands from "./Settings/Ticketing/Brands";
 import Users from "./Settings/Ticketing/Users";
-import SLATemplate from "./SLATemplate";
-import Store_CRMRoles from "./Store_CRMRoles";
 import CreatePriority from "./CreatePriority";
 import Alerts from "./Settings/Alerts";
 import Templates from "./Settings/Ticketing/Templates";
@@ -25,24 +24,19 @@ import Reports from "./Settings/Ticketing/Reports";
 import Module from "./Settings/Ticketing/Module";
 import CreateSLA from "./Settings/Ticketing/CreateSLA";
 import StoreMaster from "./Settings/Ticketing/StoreMaster";
-import QaHierarchyMaster from "./QA/QaHierarchyMaster";
-import QaCrmRoles from "./QA/QaCrmRoles";
 import CategoryMaster from "./Settings/Ticketing/CategoryMaster";
-import QAReports from "./QA/QAReports";
 import ChatElements from "./Chat/ChatElements";
 import ChatLanguage from "./Chat/ChatLanguage";
 import ChatRules from "./Chat/ChatRules";
 import ChatThemes from "./Chat/ChatThemes";
 import ChatConfigureBrand from "./Chat/ChatConfigureBrand";
-import QaUserMaster from "./QA/QaUserMaster";
-import QaAuditParameters from "./QA/QaAuditParameters";
 import HistoricalChat from "./Chat/HistoricalChat";
 import UserProfile from "./UserProfile";
 import BlockedEmail from "./Settings/Ticketing/BlockedEmail";
 import JunkWords from "./Settings/Ticketing/JunkWords";
 import { NotificationContainer } from "react-notifications";
 
-export class App extends Component { 
+export class App extends Component {
   render() {
     const { match } = this.props;
     return (
@@ -60,7 +54,6 @@ export class App extends Component {
           path={`${match.url}/myTicketList`}
           component={MyTicketList}
         />
-       
         <Route
           exact
           path={`${match.url}/ticketHierarchy`}
@@ -92,22 +85,11 @@ export class App extends Component {
         <Route exact path={`${match.url}/brands`} component={Brands} />
         <Route
           exact
-          path={`${match.url}/slaTemplate`}
-          component={SLATemplate}
-        />
-
-        <Route
-          exact
-          path={`${match.url}/store_CRMRoles`}
-          component={Store_CRMRoles}
-        />
-        <Route
-          exact
           path={`${match.url}/priority`}
           component={CreatePriority}
         />
         <Route exact path={`${match.url}/alerts`} component={Alerts} />
-       
+
         <Route exact path={`${match.url}/templates`} component={Templates} />
         <Route
           exact
@@ -131,18 +113,12 @@ export class App extends Component {
           path={`${match.url}/storeMaster`}
           component={StoreMaster}
         />
-        <Route
-          exact
-          path={`${match.url}/qaHierarchyMaster`}
-          component={QaHierarchyMaster}
-        />
-        <Route exact path={`${match.url}/qaCrmRoles`} component={QaCrmRoles} />
+
         <Route
           exact
           path={`${match.url}/categoryMaster`}
           component={CategoryMaster}
         />
-        <Route exact path={`${match.url}/qaReports`} component={QAReports} />
         <Route
           exact
           path={`${match.url}/chatElements`}
@@ -159,16 +135,6 @@ export class App extends Component {
           exact
           path={`${match.url}/chatConfigureBrand`}
           component={ChatConfigureBrand}
-        />
-        <Route
-          exact
-          path={`${match.url}/qAUserMaster`}
-          component={QaUserMaster}
-        />
-        <Route
-          exact
-          path={`${match.url}/qAAuditParameters`}
-          component={QaAuditParameters}
         />
         <Route
           exact

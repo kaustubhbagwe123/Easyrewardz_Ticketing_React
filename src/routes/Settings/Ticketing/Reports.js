@@ -376,7 +376,6 @@ class Reports extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "reportName") {
       if (
         this.state.sscheduleStatusFilterCheckbox !== "" ||
@@ -535,7 +534,6 @@ class Reports extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-
     var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
     var sscheduleStatusFilterCheckbox = this.state
       .sscheduleStatusFilterCheckbox;
@@ -760,11 +758,9 @@ class Reports extends Component {
     this.setState({
       tempReportData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   hide(e, id) {
-    // document.getElementById(id).style.display="none";
     document.getElementById(
       id
     ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -772,7 +768,6 @@ class Reports extends Component {
   }
   show(e, id) {
     if (document.getElementById(id))
-      // document.getElementById(id).style.display="block";
       document.getElementById(
         id
       ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
@@ -823,7 +818,6 @@ class Reports extends Component {
     this.setState({ Schedule_ID: rowData.scheduleID });
     let withClaim = 0;
     let withTask = 0;
-    // allTab=objEdit;
     withClaim = allTab["HaveClaim"];
     withTask = allTab["HaveTask"];
     this.state.selectBrand = allTab["BrandID"];
@@ -867,9 +861,14 @@ class Reports extends Component {
     // }
     this.state.selectedReportName = rowData.reportName;
     var scheduledIds = rowData.scheduleFor;
+    var scheduledIdsArray = scheduledIds.split(",");
+    // this.state.AssignToData.filter(x => x.userID == )
+
+    // this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
     this.state.selectBrand = allTab["BrandID"];
     this.state.selectedIssueType = allTab["IssueType"];
     this.state.selectedTaskPriority = allTab["TaskPriority"];
+    // this.state.selectedCategory=allTab["CategoryId"];
     this.setState(
       {
         selectedCategory: allTab["CategoryId"],
@@ -878,6 +877,8 @@ class Reports extends Component {
         this.handleGetSubCategoryList();
       }
     );
+    //this.handleGetSubCategoryList();
+    // this.state.selectedSubCategory=allTab["SubCategoryId"];
     this.setState(
       {
         selectedSubCategory: allTab["SubCategoryId"],
@@ -904,6 +905,7 @@ class Reports extends Component {
     this.state.selectedVisitStoreAddress = allTab["WantToStoreCodeORAddress"];
 
     this.state.selectedClaimStatus = allTab["ClaimStatusId"];
+    // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
     this.setState(
       {
         selectedClaimCategory: allTab["ClaimCategoryId"],
@@ -912,6 +914,7 @@ class Reports extends Component {
         this.handleGetSubCategoryList();
       }
     );
+    // this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
     this.setState(
       {
         selectedClaimSubCategory: allTab["ClaimSubCategoryId"],
@@ -923,6 +926,7 @@ class Reports extends Component {
     this.state.selectedClaimIssueType = allTab["ClaimIssueTypeId"];
 
     this.state.selectedTaskStatus = allTab["TaskStatusId"];
+    // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
     this.setState(
       {
         selectedDepartment: allTab["TaskDepartment_Id"],
@@ -933,6 +937,7 @@ class Reports extends Component {
     );
     this.state.selectedFunction = allTab["TaskFunction_Id"];
 
+    //////////////////Scheduler/////////////////////////
     this.state.IsDaily = rowData.isDaily;
     this.state.selectScheduleDate = rowData.scheduleType;
     this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
@@ -1044,6 +1049,7 @@ class Reports extends Component {
       selectedNoOfWeekForYear: rowData.noOfWeekForYear,
     });
 
+    ///////////////////////////////////////////////////
     this.handleAddReportOpen();
   };
   handleAddReportClose() {
@@ -1096,6 +1102,7 @@ class Reports extends Component {
   }
   handleGetFunctionList() {
     let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
@@ -1245,6 +1252,9 @@ class Reports extends Component {
     this.setState({
       selectedNoOfWeek: e.target.value,
     });
+    // this.setState({
+    //   selectedNoOfWeek: e.currentTarget.value
+    // });
   };
   handleDailyDay = (e) => {
     this.setState({
@@ -1257,6 +1267,11 @@ class Reports extends Component {
     });
   };
   handleChangeTab(index) {
+    // this.setState({ NextPopup: true });
+    //   this.setState({
+    //     tabIndex: index
+    //   });
+
     var allTab = {};
     allTab = this.SetSearchParametr();
     this.setState({ ReportParams: allTab });
@@ -1272,7 +1287,6 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        let status = res.data.message;
         let data = res.data.responseData;
         self.setState({ totalResultCount: data });
         self.handleNextPopupOpen();
@@ -1749,7 +1763,6 @@ class Reports extends Component {
     })
       .then(function(res) {
         let AssignData = res.data.responseData;
-
         self.setState({
           AssignToData: AssignData,
         });
@@ -1987,7 +2000,7 @@ class Reports extends Component {
     }
     if (this.state.DefaultPopupName == "Total Ticket Created") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
       this.setState({
         loadingDownload: true,
@@ -2013,9 +2026,11 @@ class Reports extends Component {
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2029,7 +2044,7 @@ class Reports extends Component {
         });
     } else if (this.state.DefaultPopupName == "Total Open Ticket") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
       this.setState({
         loadingDownload: true,
@@ -2057,9 +2072,11 @@ class Reports extends Component {
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2070,7 +2087,7 @@ class Reports extends Component {
         });
     } else if (this.state.DefaultPopupName == "Total Closed Ticket") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
       var totalError = 0;
       if (this.state.TicketClosedFrom == "") {
@@ -2118,9 +2135,11 @@ class Reports extends Component {
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2177,15 +2196,16 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2196,7 +2216,7 @@ class Reports extends Component {
         });
     } else if (this.state.DefaultPopupName == "Escalated Tickets") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
       this.setState({
         loadingDownload: true,
@@ -2223,9 +2243,11 @@ class Reports extends Component {
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2236,7 +2258,7 @@ class Reports extends Component {
         });
     } else if (this.state.DefaultPopupName == "Re-Assigned Tickets") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
       this.setState({
         loadingDownload: true,
@@ -2258,15 +2280,16 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          //  window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2277,7 +2300,7 @@ class Reports extends Component {
         });
     } else if (this.state.DefaultPopupName == "Re-Opened Tickets") {
       for (var i = 0; i < this.state.SelectedSourceIds.length; ++i) {
-        sourceIds = this.state.SelectedSourceIds[i].ticketSourceId + ",";
+        sourceIds += this.state.SelectedSourceIds[i].ticketSourceId + ",";
       }
       this.setState({
         loadingDownload: true,
@@ -2299,15 +2322,16 @@ class Reports extends Component {
         },
       })
         .then(function(res) {
-          // window.open(res.data.responseData);
           self.setState({
             loadingDownload: false,
           });
           var resultArr = res.data.responseData.split("@");
           if (resultArr.length > 1) {
-            self.setState({ FileURL: resultArr[0] });
-            self.setState({ OpenDefaultMailModal: true });
-            self.setState({ OpenDefaultModal: false });
+            self.setState({
+              FileURL: resultArr[0],
+              OpenDefaultMailModal: true,
+              OpenDefaultModal: false,
+            });
           } else {
             window.open(resultArr[0]);
             self.setState({ OpenDefaultModal: false });
@@ -2386,10 +2410,17 @@ class Reports extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        let data = res.data;
         let CategoryData = res.data;
-        self.setState({
-          CategoryData: CategoryData,
-        });
+        if (data.length > 0) {
+          self.setState({
+            CategoryData: CategoryData,
+          });
+        } else {
+          self.setState({
+            CategoryData: [],
+          });
+        }
       })
       .catch((data) => {
         console.log(data);
@@ -2414,10 +2445,13 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        var SubCategoryData = res.data.responseData;
-        self.setState({
-          SubCategoryData: SubCategoryData,
-        });
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ SubCategoryData: data });
+        } else {
+          self.setState({ SubCategoryData: [] });
+        }
       })
       .catch((data) => {
         console.log(data);
@@ -2440,8 +2474,13 @@ class Reports extends Component {
       },
     })
       .then(function(res) {
-        let IssueTypeData = res.data.responseData;
-        self.setState({ IssueTypeData: IssueTypeData });
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ IssueTypeData: data });
+        } else {
+          self.setState({ IssueTypeData: [] });
+        }
       })
       .catch((data) => {
         console.log(data);
@@ -2477,6 +2516,7 @@ class Reports extends Component {
           },
         })
           .then(function(res) {
+            // this.handleReportList();
             self.handleReportList();
             self.handleNextPopupClose();
             NotificationManager.success(
@@ -2641,6 +2681,7 @@ class Reports extends Component {
             self.state.selectedScheduleTime = "";
 
             self.ScheduleCloseModel();
+            // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
             NotificationManager.success(
@@ -2775,7 +2816,6 @@ class Reports extends Component {
     const datareport = this.state.ReportData;
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -3014,6 +3054,7 @@ class Reports extends Component {
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addreport-popup"
+            // overlayId="logout-ovrly"
           >
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
@@ -3187,8 +3228,6 @@ class Reports extends Component {
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportCreateDate}
-
-                          // className="form-control"
                         />
                         {this.state.ReportCreateDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3276,7 +3315,6 @@ class Reports extends Component {
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportLastDate}
-                          // className="form-control"
                         />
                         {this.state.ReportLastDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4114,7 +4152,6 @@ class Reports extends Component {
               modal: "schedule-width",
             }}
             overlayId="logout-ovrly"
-            // overlayId="logout-ovrly"
           >
             <div className="" id="EmailID">
               <div className="total-tic-title">
@@ -4363,7 +4400,9 @@ class Reports extends Component {
                 <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
                   <Select
                     getOptionLabel={(option) => option.ticketSourceName}
-                    getOptionValue={(option) => option.ticketSourceId}
+                    getOptionValue={
+                      (option) => option.ticketSourceId //id
+                    }
                     options={this.state.TicketSourceData}
                     placeholder={
                       TranslationContext !== undefined
@@ -4539,7 +4578,9 @@ class Reports extends Component {
                         <div className="normal-dropdown dropdown-setting1 schedule-multi">
                           <Select
                             getOptionLabel={(option) => option.fullName}
-                            getOptionValue={(option) => option.userID}
+                            getOptionValue={
+                              (option) => option.userID //id
+                            }
                             options={this.state.AssignToData}
                             placeholder={
                               TranslationContext !== undefined
@@ -4813,7 +4854,6 @@ class Reports extends Component {
                                         ? TranslationContext.option.select
                                         : "Select"
                                     }
-                                    // menuIsOpen={true}
                                     closeMenuOnSelect={false}
                                     onChange={this.setNameOfMonthForYear.bind(
                                       this
@@ -4821,7 +4861,6 @@ class Reports extends Component {
                                     value={
                                       this.state.selectedNameOfMonthForYear
                                     }
-                                    // showNewOptionAtTop={false}
                                     isMulti
                                   />
                                 </div>
@@ -4938,6 +4977,7 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
+
                         <div className="dash-timepicker">
                           <DatePicker
                             selected={this.state.selectedScheduleTime}

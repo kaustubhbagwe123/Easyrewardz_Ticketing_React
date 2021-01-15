@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+// import Loadable from "react-loadable";
 import StoreLayout from "./../StoreManager/storelayout";
 import StoreDashboard from "./StoreDashboard";
 import StoreTask from "./StoreTask";
@@ -33,6 +34,10 @@ import OrderSetting from "./../Settings/Store/OrderSetting";
 import storeMyTicket from "./storeMyTicket";
 import storeMyTicketList from "./storeMyTicketList";
 import Orders from "./Orders";
+import Notification from "./MobileChatNotification";
+import WebBotLink from "./WebBotLink";
+import Chatbot from "./Chatbot";
+import StoreChangePassword from "./../../Component/Store/ChangePassword";
 
 export class StoreApp extends Component {
   render() {
@@ -155,6 +160,15 @@ export class StoreApp extends Component {
           component={OrderSetting}
         />
         <Route exact path={`${match.url}/orders`} component={Orders} />
+        <Route
+          exact
+          path={`${match.url}/notification`}
+          component={Notification}
+        />
+        <Route exact path={`${match.url}/webBotLink`} component={WebBotLink} />
+        <Route exact path={`${match.url}/Chatbot`} component={Chatbot} />
+        <Route exact path={`${match.url}/storeChangePassword`} component={StoreChangePassword} />
+
         <NotificationContainer />
       </StoreLayout>
     );

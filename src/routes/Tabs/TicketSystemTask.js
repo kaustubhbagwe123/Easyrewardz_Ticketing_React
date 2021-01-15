@@ -74,7 +74,6 @@ class TicketSystemTask extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -169,7 +168,6 @@ class TicketSystemTask extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -210,7 +208,6 @@ class TicketSystemTask extends Component {
     }, 1);
   };
   setAssignToValue = (e) => {
-    debugger;
     let assignToValue = e.currentTarget.value;
 
     var taskfield = this.state.taskfield;
@@ -233,7 +230,6 @@ class TicketSystemTask extends Component {
   };
 
   handleCreateTask() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.validator.allValid()) {
       if (this.state.taskfield) {

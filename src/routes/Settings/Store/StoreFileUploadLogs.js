@@ -14,6 +14,7 @@ import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
+import {Spin,Empty} from "antd"
 
 class StoreFileUploadLogs extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class StoreFileUploadLogs extends Component {
       sfileUploadStatusFilterCheckbox: "",
       isATOZ: true,
       translateLanguage: {},
+      isloading:false
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -49,7 +51,7 @@ class StoreFileUploadLogs extends Component {
   }
 
   componentDidMount() {
-    this.handleGetFileUploadLog();
+     this.handleGetFileUploadLog();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -66,6 +68,7 @@ class StoreFileUploadLogs extends Component {
 
   handleGetFileUploadLog() {
     let self = this;
+    this.setState({isloading:true})
     axios({
       method: "post",
       url: config.apiUrl + "/StoreFile/GetStoreFileUploadLogs",
@@ -73,6 +76,7 @@ class StoreFileUploadLogs extends Component {
     })
       .then(function(res) {
         let fileUploadLog = res.data.responseData;
+        self.setState({isloading:false})
         if (fileUploadLog !== null) {
           self.state.sortAllData = fileUploadLog;
           var unique = [];
@@ -163,6 +167,7 @@ class StoreFileUploadLogs extends Component {
         }
       })
       .catch((data) => {
+        self.setState({isloading:false})
         console.log(data);
       });
   }
@@ -725,7 +730,6 @@ class StoreFileUploadLogs extends Component {
     this.setState({
       tempfileUploadLog: itemsArray,
     });
-    // this.StatusCloseModel();
   };
   handleClearSearch() {
     this.setState({
@@ -990,9 +994,7 @@ class StoreFileUploadLogs extends Component {
               {
                 Header: (
                   <span
-                    className={
-                      this.state.sortHeader === "Type" ? "sort-column" : ""
-                    }
+                    className={this.state.sortHeader === "Type" ? "sort-column" : ""}
                     onClick={this.StatusOpenModel.bind(
                       this,
                       "fileType",
@@ -1004,11 +1006,10 @@ class StoreFileUploadLogs extends Component {
                     {TranslationContext !== undefined
                       ? TranslationContext.span.type
                       : "Type"}
-
+        
                     <FontAwesomeIcon
                       icon={
-                        this.state.isATOZ === false &&
-                        this.state.sortHeader === "Type"
+                        this.state.isATOZ === false && this.state.sortHeader === "Type"
                           ? faCaretUp
                           : faCaretDown
                       }
@@ -1021,9 +1022,7 @@ class StoreFileUploadLogs extends Component {
               {
                 Header: (
                   <span
-                    className={
-                      this.state.sortHeader === "Name" ? "sort-column" : ""
-                    }
+                    className={this.state.sortHeader === "Name" ? "sort-column" : ""}
                     onClick={this.StatusOpenModel.bind(
                       this,
                       "fileName",
@@ -1035,11 +1034,10 @@ class StoreFileUploadLogs extends Component {
                     {TranslationContext !== undefined
                       ? TranslationContext.span.filename
                       : "File Name"}
-
+        
                     <FontAwesomeIcon
                       icon={
-                        this.state.isATOZ === false &&
-                        this.state.sortHeader === "Name"
+                        this.state.isATOZ === false && this.state.sortHeader === "Name"
                           ? faCaretUp
                           : faCaretDown
                       }
@@ -1052,9 +1050,7 @@ class StoreFileUploadLogs extends Component {
               {
                 Header: (
                   <span
-                    className={
-                      this.state.sortHeader === "Date" ? "sort-column" : ""
-                    }
+                    className={this.state.sortHeader === "Date" ? "sort-column" : ""}
                     onClick={this.StatusOpenModel.bind(
                       this,
                       "createdDate",
@@ -1066,11 +1062,10 @@ class StoreFileUploadLogs extends Component {
                     {TranslationContext !== undefined
                       ? TranslationContext.span.date
                       : "Date"}
-
+        
                     <FontAwesomeIcon
                       icon={
-                        this.state.isATOZ === false &&
-                        this.state.sortHeader === "Date"
+                        this.state.isATOZ === false && this.state.sortHeader === "Date"
                           ? faCaretUp
                           : faCaretDown
                       }
@@ -1139,9 +1134,7 @@ class StoreFileUploadLogs extends Component {
               {
                 Header: (
                   <span
-                    className={
-                      this.state.sortHeader === "Status" ? "sort-column" : ""
-                    }
+                    className={this.state.sortHeader === "Status" ? "sort-column" : ""}
                     onClick={this.StatusOpenModel.bind(
                       this,
                       "fileUploadStatus",
@@ -1222,6 +1215,13 @@ class StoreFileUploadLogs extends Component {
             resizable={false}
             defaultPageSize={5}
             showPagination={true}
+            noDataText={
+              this.state.isloading ? (
+                <Spin size="large" tip="Loading..." />
+              ) : this.state.fileUploadLog.length === 0 ? (
+                <Empty style={{margin:"0"}}image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              ) : null
+            }
           />
         </div>
       </div>

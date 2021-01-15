@@ -22,6 +22,7 @@ import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
+import TicketFromStore from "./../assets/Images/store.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
@@ -61,7 +62,6 @@ class Dashboard extends Component {
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     ).subtract(30, "days");
     let end = moment(start).add(30, "days");
-    // .subtract(1, "seconds");
     this.state = {
       start: start,
       end: end,
@@ -93,7 +93,6 @@ class Dashboard extends Component {
       selectedChannelOfPurchase: [],
       selectedTicketActionType: [],
       CategoryData: [],
-      // CategoryDataAll: [],
       SubCategoryData: [],
       ClaimSubCategoryData: [],
       IssueTypeData: [],
@@ -767,7 +766,6 @@ class Dashboard extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -1256,17 +1254,9 @@ class Dashboard extends Component {
       headers: authHeader(),
       params: {
         UserIds: this.state.AgentIds,
-        // UserIds: "6,7,8",
-        // fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
         fromdate: fromdate,
-        // fromdate: this.state.start._d,
-        // fromdate: "2019-12-26",
         todate: todate,
-        // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
-        // todate: this.state.end._d,
-        // todate: "2020-01-15",
         BrandID: this.state.BrandIds,
-        // BrandID: "26, 31"
       },
     })
       .then(function(res) {
@@ -1299,16 +1289,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DashBoardGraphData",
       headers: authHeader(),
       params: {
-        // UserIds: "6,7,8",
-        // fromdate: "2019-12-26",
-        // todate: "2020-01-15",
-        // BrandID: "26, 31"
         UserIds: this.state.AgentIds,
-        // fromdate: this.state.start._d,
-        // fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
         fromdate: fromdate,
-        // todate: this.state.end._d,
-        // todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         todate: todate,
         BrandID: this.state.BrandIds,
       },
@@ -1481,11 +1463,9 @@ class Dashboard extends Component {
       document.getElementById("spnBrand").textContent = "select";
     }
     if (checkboxes.length - 1 === brandcount) {
-      //document.getElementById("all-brand").checked = true;
       document.getElementById("spnBrand").textContent = "ALL";
       this.setState({ CheckBoxAllBrand: true });
     } else {
-      // document.getElementById("all-brand").checked = false;
       this.setState({ CheckBoxAllBrand: false });
     }
 
@@ -1627,9 +1607,6 @@ class Dashboard extends Component {
         }
       }
     }
-    // await this.setState({
-    //   ticketIds: strIds
-    // });
     const newSelected = Object.assign({}, this.state.cSelectedRow);
     newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
 
@@ -1899,7 +1876,6 @@ class Dashboard extends Component {
           assignFirstName: "",
           assignLastName: "",
           assignEmail: "",
-          // selectedDesignation: 0
         });
       })
       .catch((data) => {
@@ -1977,7 +1953,6 @@ class Dashboard extends Component {
     });
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFilterTicketData: this.state.sortTicketData,
       sortFilterCategoryData: this.state.sortCategoryData,
@@ -3342,6 +3317,7 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -3585,6 +3561,7 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let data = res.data.responseData;
         let Status = res.data.message;
         let CSVData = data;
@@ -3699,6 +3676,7 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData.dashboardTicketList;
         let count = 0;
@@ -4052,7 +4030,6 @@ class Dashboard extends Component {
 
   filteTextChange(e) {
     this.setState({ filterTxtValue: e.target.value });
-    // if (e.target.value !== "") {
     if (this.state.sortColumnName === "status") {
       var sortFilterTicketData = matchSorter(
         this.state.sortTicketData,
@@ -4122,7 +4099,6 @@ class Dashboard extends Component {
         });
       }
     }
-    // }
   }
   //// handle change filtre by check box
   setColorSortCheckStatus = (e) => {
@@ -4578,43 +4554,11 @@ class Dashboard extends Component {
               <div className="col-md-6 col-6 p-0">
                 <div className="DashTimeRange">
                   <div className="show-grid">
-                    {/* <Col xs={3} /> */}
                     <div id="DateTimeRangeContainerNoMobileMode">
-                      {/* <DateTimeRangeContainer
-                      ranges={ranges}
-                      start={this.state.start}
-                      end={this.state.end}
-                      local={local}
-                      applyCallback={this.applyCallback}
-                      smartMode
-                      leftMode
-                      // forceMobileMode
-                      noMobileMode
-                    >
-                      <FormControl
-                        id="formControlsTextB"
-                        type="text"
-                        label="Text"
-                        placeholder="Enter text"
-                        style={{ cursor: "pointer" }}
-                        disabled={disabled}
-                        value={value}
-                      />
-                    </DateTimeRangeContainer> */}
-                      {/* <RangePicker
-                      onChange={this.applyCallback}
-                      bordered={false}
-                      format="DD-MM-YYYY"
-                      defaultValue={[
-                        moment(this.state.start, "DD-MM-YYYY"),
-                        moment(this.state.end, "DD-MM-YYYY")
-                      ]}
-                    /> */}
                       <DatePickerComponenet
                         applyCallback={this.applyCallback}
                       />
                     </div>
-                    {/* <Col xs={3} md={4} /> */}
                   </div>
                 </div>
               </div>
@@ -4933,7 +4877,6 @@ class Dashboard extends Component {
                         <div className="col-lg-3">
                           <div
                             className="dash-top-cards"
-                            // onMouseOver={this.handleMouseHover.bind(this)}
                             onMouseLeave={this.handleMouseLeave.bind(this)}
                             onMouseEnter={this.handleMouseHover.bind(this)}
                           >
@@ -5692,7 +5635,6 @@ class Dashboard extends Component {
                                               .channelofpurchase
                                           : "Channel Of Purchase"
                                       }
-                                      // menuIsOpen={true}
                                       closeMenuOnSelect={false}
                                       onChange={this.setChannelOfPurchaseValue.bind(
                                         this
@@ -5700,7 +5642,6 @@ class Dashboard extends Component {
                                       value={
                                         this.state.selectedChannelOfPurchase
                                       }
-                                      // showNewOptionAtTop={false}
                                       isMulti
                                     />
                                   </div>
@@ -5721,7 +5662,6 @@ class Dashboard extends Component {
                                               .ticketactiontype
                                           : "Ticket Action Type"
                                       }
-                                      // menuIsOpen={true}
                                       closeMenuOnSelect={false}
                                       onChange={this.setTicketActionTypeValue.bind(
                                         this
@@ -5729,7 +5669,6 @@ class Dashboard extends Component {
                                       value={
                                         this.state.selectedTicketActionType
                                       }
-                                      // showNewOptionAtTop={false}
                                       isMulti
                                     />
                                   </div>
@@ -5959,7 +5898,6 @@ class Dashboard extends Component {
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
                                     value={this.state.ByAllLastDate}
-                                    // className="form-control"
                                   />
                                 </div>
                                 <div
@@ -6666,9 +6604,6 @@ class Dashboard extends Component {
                                 open={this.state.Schedule}
                                 modalId="ScheduleModel"
                                 className="schedule-width"
-                                // className={{
-                                //   modal: "schedule-width"
-                                // }}
                                 overlayId="logout-ovrly"
                               >
                                 <div>
@@ -6695,11 +6630,9 @@ class Dashboard extends Component {
                                             ? TranslationContext.p.teammember
                                             : "Team Member"
                                         }
-                                        // menuIsOpen={true}
                                         closeMenuOnSelect={false}
                                         onChange={this.setTeamMember.bind(this)}
                                         value={this.state.selectedTeamMember}
-                                        // showNewOptionAtTop={false}
                                         isMulti
                                       />
                                     </div>
@@ -6933,7 +6866,6 @@ class Dashboard extends Component {
                                                         .select
                                                     : "Select"
                                                 }
-                                                // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfDayForWeek.bind(
                                                   this
@@ -6942,7 +6874,6 @@ class Dashboard extends Component {
                                                   this.state
                                                     .selectedNameOfDayForWeek
                                                 }
-                                                // showNewOptionAtTop={false}
                                                 isMulti
                                               />
                                             </div>
@@ -6982,7 +6913,6 @@ class Dashboard extends Component {
                                                         .select
                                                     : "Select"
                                                 }
-                                                // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfMonthForYear.bind(
                                                   this
@@ -6991,7 +6921,6 @@ class Dashboard extends Component {
                                                   this.state
                                                     .selectedNameOfMonthForYear
                                                 }
-                                                // showNewOptionAtTop={false}
                                                 isMulti
                                               />
                                             </div>
@@ -7078,7 +7007,6 @@ class Dashboard extends Component {
                                                         .select
                                                     : "Select"
                                                 }
-                                                // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfDayForYear.bind(
                                                   this
@@ -7087,7 +7015,6 @@ class Dashboard extends Component {
                                                   this.state
                                                     .selectedNameOfDayForYear
                                                 }
-                                                // showNewOptionAtTop={false}
                                                 isMulti
                                               />
                                             </div>
@@ -7122,7 +7049,6 @@ class Dashboard extends Component {
                                                         .select
                                                     : "Select"
                                                 }
-                                                // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfMonthForDailyYear.bind(
                                                   this
@@ -7131,7 +7057,6 @@ class Dashboard extends Component {
                                                   this.state
                                                     .selectedNameOfMonthForDailyYear
                                                 }
-                                                // showNewOptionAtTop={false}
                                                 isMulti
                                               />
                                             </div>
@@ -7140,12 +7065,6 @@ class Dashboard extends Component {
                                       </div>
                                     ) : null}
 
-                                    {/* <input
-                                      type="text"
-                                      className="txt-1 txt1Place txt1Time"
-                                      placeholder="11AM"
-                                      onChange={this.handleScheduleTime}
-                                    /> */}
                                     <div className="dash-timepicker">
                                       <DatePicker
                                         selected={
@@ -7237,9 +7156,6 @@ class Dashboard extends Component {
                                       src={BlackLeftArrow}
                                       alt="black-left-arrow-icon"
                                       className="black-left-arrow"
-                                      // onClick={this.handleAssignModalClose.bind(
-                                      //   this
-                                      // )}
                                     />
                                   </a>
                                   <label className="claim-details">
@@ -7297,7 +7213,6 @@ class Dashboard extends Component {
                                       value={this.state.selectedDesignation}
                                       onChange={this.setDesignationValue}
                                     >
-                                      {/* <option>Select</option> */}
                                       <option>
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label.designation
@@ -7391,7 +7306,6 @@ class Dashboard extends Component {
                                         accessor: "email",
                                       },
                                     ]}
-                                    // resizable={false}
                                     defaultPageSize={5}
                                     minRows={3}
                                     showPagination={true}
@@ -7460,7 +7374,6 @@ class Dashboard extends Component {
                                     type="checkbox"
                                     id="fil-aball"
                                     name="MyTicketListcheckbox[]"
-                                    // checked={this.state.CheckBoxChecked}
                                     onChange={this.checkAllCheckbox.bind(this)}
                                   />
                                 ) : null}
@@ -7538,6 +7451,14 @@ class Dashboard extends Component {
                                         alt="HeadPhone"
                                         className="headPhone3 black-twitter"
                                         title="Twitter"
+                                      />
+                                    ) : row.original.ticketSourceType ===
+                                      "TicketFromStore" ? (
+                                      <img
+                                        src={TicketFromStore}
+                                        alt="HeadPhone"
+                                        className="headPhone3"
+                                        title="TicketFromStore"
                                       />
                                     ) : null}
                                     {row.original.ticketID}
@@ -7620,7 +7541,6 @@ class Dashboard extends Component {
                                           :{row.original.claimStatus}
                                         </p>
                                         <div className="d-flex align-items-center">
-                                          {/* 2 NEW */}
                                           <div className="nw-chat">
                                             <img src={Chat} alt="chat" />
                                           </div>
@@ -7962,44 +7882,6 @@ class Dashboard extends Component {
                     getTrProps={this.HandleRowClickPage}
                     minRows={2}
                   />
-                  {/* <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div> */}
                 </div>
               )}
             </div>

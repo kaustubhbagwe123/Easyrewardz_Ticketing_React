@@ -18,7 +18,7 @@ import NotificationImg from "./../../../assets/Images/Notification.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
-import { Checkbox } from "antd";
+import { Checkbox, Spin, Empty } from "antd";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import CKEditor from "ckeditor4-react";
 import Modal from "react-bootstrap/Modal";
@@ -150,6 +150,7 @@ class Alerts extends Component {
       viewNotifInternal: false,
       viewNotifTicketing: false,
       translateLanguage: {},
+      isloading: false,
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -161,6 +162,7 @@ class Alerts extends Component {
     this.handleAlertData = this.handleAlertData.bind(this);
     this.handleUpdateAlert = this.handleUpdateAlert.bind(this);
     this.handleEditModal = this.handleEditModal.bind(this);
+
     this.handlePlaceholderList = this.handlePlaceholderList.bind(this);
   }
 
@@ -606,6 +608,7 @@ class Alerts extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
+
     var salertTypeNameFilterCheckbox = this.state.salertTypeNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var sisAlertActiveFilterCheckbox = this.state.sisAlertActiveFilterCheckbox;
@@ -799,7 +802,6 @@ class Alerts extends Component {
     this.setState({
       tempalert: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
@@ -821,6 +823,8 @@ class Alerts extends Component {
         });
         this.handlePlaceholderList(e.target.value);
         let self = this;
+
+        // validate whether alert exists or not
         axios({
           method: "post",
           url: config.apiUrl + "/Alert/ValidateStoreAlertNameExist",
@@ -886,6 +890,7 @@ class Alerts extends Component {
   // alert type dropdown list
   handleAlertData() {
     let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/BindStoreAlerts",
@@ -1040,6 +1045,9 @@ class Alerts extends Component {
     this.handlePlaceholderList(alertId);
 
     let self = this;
+
+    // alert grid data
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/GetStoreAlertList",
@@ -1049,6 +1057,7 @@ class Alerts extends Component {
       .then(function(res) {
         let alert = res.data.responseData;
         var data = res.data.responseData;
+        self.setState({ isloading: false });
         if (id) {
           var data = alert[0].alertContent;
           var selectedSubjectCustomer = "";
@@ -1190,6 +1199,7 @@ class Alerts extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isloading: false });
         console.log(data);
       });
   }
@@ -1272,7 +1282,6 @@ class Alerts extends Component {
       if (this.state.emailCust == true) {
         if (this.state.selectedCKCustomer === "") {
           this.setState({ ckCustomerCompulsion: "Please Enter Description." });
-          // return false;
         } else {
           this.setState({ ckCustomerCompulsion: "" });
         }
@@ -1280,10 +1289,6 @@ class Alerts extends Component {
 
       if (this.state.emailInt == true) {
         if (this.state.selectedSubjectInternal === "") {
-          // this.setState({
-          //   subjectInternalCompulsion: "Please Enter Description.",
-          // });
-          // return false;
         } else {
           this.setState({ subjectInternalCompulsion: "" });
         }
@@ -1291,10 +1296,6 @@ class Alerts extends Component {
 
       if (this.state.emailTicketing == true) {
         if (this.state.selectedSubjectStore === "") {
-          // this.setState({
-          //   subjectStoreCompulsion: "Please Enter Description.",
-          // });
-          // return false;
         } else {
           this.setState({ subjectStoreCompulsion: "" });
         }
@@ -1370,9 +1371,6 @@ class Alerts extends Component {
       } else {
         // return false;
       }
-      // this.setState({
-      //   editSaveLoading: true,
-      // });
 
       let self = this;
 
@@ -1503,7 +1501,6 @@ class Alerts extends Component {
         this.state.selectedNotifTicketing === true)
     ) {
       this.setState({ AddAlertTabsPopup: true });
-      // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
     } else {
       this.setState({
         alertTypeCompulsion: "Please Enter Alert Type",
@@ -1535,18 +1532,6 @@ class Alerts extends Component {
       NotifContentCompulsion: "",
       NotifTicketingContentCompulsion: "",
 
-      // emailCust: false,
-      // emailInt: false,
-      // emailTicketing: false,
-      // notiTicketing: false,
-      // smsCust: false,
-      // notiInt: false,
-      // viewEmailCustomer: false,
-      // viewEmailInternal: false,
-      // viewEmailStore: false,
-      // viewSMSCustomer: false,
-      // viewNotifInternal: false,
-      // viewNotifTicketing: false,
       isEdit: false,
     });
   }
@@ -1571,30 +1556,21 @@ class Alerts extends Component {
     var validation = [];
     if (this.state.selectedEmailCustomer === true) {
       checkboxvalue.push("1");
-      if (
-        // this.state.selectedSubjectCustomer.length > 0 &&
-        this.state.selectedCKCustomer.length > 0
-      ) {
+      if (this.state.selectedCKCustomer.length > 0) {
         validation.push("1");
       }
     }
 
     if (this.state.selectedEmailInternal === true) {
       checkboxvalue.push("1");
-      if (
-        // this.state.selectedSubjectInternal.length > 0 &&
-        this.state.selectedCKInternal.length > 0
-      ) {
+      if (this.state.selectedCKInternal.length > 0) {
         validation.push("1");
       }
     }
 
     if (this.state.selectedEmailStore === true) {
       checkboxvalue.push("1");
-      if (
-        // this.state.selectedSubjectStore.length > 0 &&
-        this.state.selectedCKStore.length > 0
-      ) {
+      if (this.state.selectedCKStore.length > 0) {
         validation.push("1");
       }
     }
@@ -1798,7 +1774,6 @@ class Alerts extends Component {
 
   editAlertModalData(e) {
     const { name, value } = e.target;
-
     var data = this.state.alertEdit;
     if (name === "selectedAlertType") {
       if (value == "Select Alert") {
@@ -1984,7 +1959,6 @@ class Alerts extends Component {
 
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -2067,6 +2041,23 @@ class Alerts extends Component {
       alertColor: "",
     });
   }
+  setPlaceholderValueText = (e) => {
+    var finalval = this.state.placeholderData.filter(
+      (x) => x.mailParameterID == Number(e.target.value)
+    )[0].parameterName;
+    var notiContent = this.state.selectedNotifContent;
+    notiContent += " " + finalval;
+    this.setState({ selectedNotifContent: notiContent });
+  };
+  setEditPlaceholderValueText = (e) => {
+    var finalval = this.state.placeholderData.filter(
+      (x) => x.mailParameterID == Number(e.target.value)
+    )[0].parameterName;
+    var notiContent = this.state.selectedNotifContent;
+    notiContent += " " + finalval;
+    this.setState({ selectedNotifContent: notiContent });
+    this.setState({ selectedNotifContent: notiContent });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2475,7 +2466,6 @@ class Alerts extends Component {
                           TranslationContext !== undefined
                             ? TranslationContext.header.actions
                             : "Actions",
-                        // accessor: "action",
                         sortable: false,
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -2560,7 +2550,21 @@ class Alerts extends Component {
                     resizable={false}
                     defaultPageSize={10}
                     showPagination={true}
-                    minRows={1}
+                    minRows={2}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin
+                          size="large"
+                          tip="Loading..."
+                          style={{ marginTop: "20px" }}
+                        />
+                      ) : this.state.alert.length === 0 ? (
+                        <Empty
+                          style={{ margin: "0" }}
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        />
+                      ) : null
+                    }
                   />
                 </div>
               </div>
@@ -2607,6 +2611,7 @@ class Alerts extends Component {
                       </p>
                     )}
                   </div>
+
                   <h4>
                     {TranslationContext !== undefined
                       ? TranslationContext.h4.communicationmode
@@ -2622,62 +2627,66 @@ class Alerts extends Component {
                         {this.state.communicationModeCompulsion}
                       </p>
                     )}
-                  <div className="div-cntr">
-                    <label>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.email
-                        : "Email"}
-                    </label>
-                    <br />
-                    <Checkbox
-                      className="cre-str-alrt"
-                      onChange={this.handleAlertTabs.bind(this, "1")}
-                      value="emailCust"
-                      checked={this.state.viewEmailCustomer}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.checkbox.customer
-                        : "Customer"}
-                    </Checkbox>
-                    <Checkbox
-                      className="cre-str-alrt"
-                      onChange={this.handleAlertTabs.bind(this, "1")}
-                      value="emailInt"
-                      checked={this.state.viewEmailInternal}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.checkbox.internal
-                        : "Internal"}
-                    </Checkbox>
-                    <Checkbox
-                      className="cre-str-alrt"
-                      onChange={this.handleAlertTabs.bind(this, "1")}
-                      value="emailTicketing"
-                      checked={this.state.viewEmailStore}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.checkbox.ticketing
-                        : "Ticketing"}
-                    </Checkbox>
-                  </div>
-                  <div className="div-cntr">
-                    <label>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.sms
-                        : "SMS"}
-                    </label>
-                    <br />
-                    <Checkbox
-                      className="cre-str-alrt"
-                      onChange={this.handleAlertTabs.bind(this, "1")}
-                      value="smsCust"
-                      checked={this.state.viewSMSCustomer}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.checkbox.customer
-                        : "Customer"}
-                    </Checkbox>
-                  </div>
+                  {this.state.selectedAlertTypeName !== "Call Back Later" ? (
+                    <>
+                      <div className="div-cntr">
+                        <label>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.email
+                            : "Email"}
+                        </label>
+                        <br />
+                        <Checkbox
+                          className="cre-str-alrt"
+                          onChange={this.handleAlertTabs.bind(this, "1")}
+                          value="emailCust"
+                          checked={this.state.viewEmailCustomer}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.checkbox.customer
+                            : "Customer"}
+                        </Checkbox>
+                        <Checkbox
+                          className="cre-str-alrt"
+                          onChange={this.handleAlertTabs.bind(this, "1")}
+                          value="emailInt"
+                          checked={this.state.viewEmailInternal}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.checkbox.internal
+                            : "Internal"}
+                        </Checkbox>
+                        <Checkbox
+                          className="cre-str-alrt"
+                          onChange={this.handleAlertTabs.bind(this, "1")}
+                          value="emailTicketing"
+                          checked={this.state.viewEmailStore}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.checkbox.ticketing
+                            : "Ticketing"}
+                        </Checkbox>
+                      </div>
+                      <div className="div-cntr">
+                        <label>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.sms
+                            : "SMS"}
+                        </label>
+                        <br />
+                        <Checkbox
+                          className="cre-str-alrt"
+                          onChange={this.handleAlertTabs.bind(this, "1")}
+                          value="smsCust"
+                          checked={this.state.viewSMSCustomer}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.checkbox.customer
+                            : "Customer"}
+                        </Checkbox>
+                      </div>
+                    </>
+                  ) : null}
                   <div className="div-cntr">
                     <label>
                       {TranslationContext !== undefined
@@ -2695,16 +2704,18 @@ class Alerts extends Component {
                         ? TranslationContext.checkbox.internal
                         : "Internal"}
                     </Checkbox>
-                    <Checkbox
-                      className="cre-str-alrt"
-                      onChange={this.handleAlertTabs.bind(this, "1")}
-                      value="notiTicketing"
-                      checked={this.state.viewNotifTicketing}
-                    >
-                      {TranslationContext !== undefined
-                        ? TranslationContext.checkbox.ticketing
-                        : "Ticketing"}
-                    </Checkbox>
+                    {this.state.selectedAlertTypeName !== "Call Back Later" ? (
+                      <Checkbox
+                        className="cre-str-alrt"
+                        onChange={this.handleAlertTabs.bind(this, "1")}
+                        value="notiTicketing"
+                        checked={this.state.viewNotifTicketing}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.checkbox.ticketing
+                          : "Ticketing"}
+                      </Checkbox>
+                    ) : null}{" "}
                   </div>
                   <div className="div-cntr">
                     <label>
@@ -2717,7 +2728,6 @@ class Alerts extends Component {
                       value={this.state.selectedStatus}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      {/* <option value="">Select</option> */}
                       <option value="true">
                         {TranslationContext !== undefined
                           ? TranslationContext.option.active
@@ -3138,6 +3148,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
+
                                 {this.state.placeholderShown && (
                                   <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
                                     <select
@@ -3145,7 +3156,8 @@ class Alerts extends Component {
                                       value="0"
                                       onChange={this.setPlaceholderValue.bind(
                                         this,
-                                        "Store"
+                                        // "Store"
+                                        "Ticketing"
                                       )}
                                     >
                                       <option value="0">
@@ -3281,7 +3293,39 @@ class Alerts extends Component {
                                             .composeyournotification
                                         : " Compose your Notification"}
                                     </label>
+
+                                    <div
+                                      className="tic-det-ck-user myticlist-expand-sect"
+                                      style={{ top: "110px" }}
+                                    >
+                                      <select
+                                        className="add-select-category"
+                                        value="0"
+                                        onChange={this.setPlaceholderValueText.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option
+                                                .placeholders
+                                            : "Placeholders"}
+                                        </option>
+                                        {this.state.placeholderData !== null &&
+                                          this.state.placeholderData.map(
+                                            (item, i) => (
+                                              <option
+                                                key={i}
+                                                value={item.mailParameterID}
+                                              >
+                                                {item.description}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </div>
                                   </div>
+
                                   <textarea
                                     rows="10"
                                     className="text-areaModel"
@@ -3319,7 +3363,43 @@ class Alerts extends Component {
                                             .composeyournotification
                                         : " Compose your Notification"}
                                     </label>
+                                    {/* {this.state.selectedAlertTypeName ===
+                                      "Call Back Later" ||
+                                    this.state.alertEdit.selectedAlertTypeName ===
+                                      "Call Back Later" ? ( */}
+                                    <div
+                                      className="tic-det-ck-user myticlist-expand-sect"
+                                      style={{ top: "110px" }}
+                                    >
+                                      <select
+                                        className="add-select-category"
+                                        value="0"
+                                        onChange={this.setEditPlaceholderValueText.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="0">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option
+                                                .placeholders
+                                            : "Placeholders"}
+                                        </option>
+                                        {this.state.placeholderData !== null &&
+                                          this.state.placeholderData.map(
+                                            (item, i) => (
+                                              <option
+                                                key={i}
+                                                value={item.mailParameterID}
+                                              >
+                                                {item.description}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </div>
+                                    {/* ) : null} */}
                                   </div>
+
                                   <textarea
                                     rows="10"
                                     className="text-areaModel"
@@ -3498,6 +3578,7 @@ class Alerts extends Component {
                           </div>
                           <div>
                             <span className="file-failed">
+                              {" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.failed
                                 : "Failed"}
@@ -3527,6 +3608,7 @@ class Alerts extends Component {
                       ) : null}
                     </div>
                   )}
+
                   <button className="butn">
                     {TranslationContext !== undefined
                       ? TranslationContext.button.add
@@ -3583,11 +3665,13 @@ class Alerts extends Component {
                 </p>
               )}
             </div>
+
             <h4>
               {TranslationContext !== undefined
                 ? TranslationContext.h4.communicationmode
                 : "Communication Mode"}
             </h4>
+
             {this.state.emailCust === false &&
               this.state.emailTicketing === false &&
               this.state.notiTicketing === false &&
@@ -3598,58 +3682,62 @@ class Alerts extends Component {
                   {this.state.editcommunicationModeCompulsion}
                 </p>
               )}
-            <div className="div-cntr">
-              <label>
-                {TranslationContext !== undefined
-                  ? TranslationContext.label.email
-                  : "Email"}
-              </label>
-              <br />
-              <Checkbox
-                onChange={this.handleAlertTabs.bind(this, "")}
-                checked={this.state.emailCust}
-                value="emailCust"
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.checkbox.customer
-                  : "Customer"}
-              </Checkbox>
-              <Checkbox
-                onChange={this.handleAlertTabs.bind(this, "")}
-                checked={this.state.emailInt}
-                value="emailInt"
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.checkbox.internal
-                  : "Internal"}
-              </Checkbox>
-              <Checkbox
-                onChange={this.handleAlertTabs.bind(this, "")}
-                checked={this.state.emailTicketing}
-                value="emailTicketing"
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.checkbox.ticketing
-                  : "Ticketing"}
-              </Checkbox>
-            </div>
-            <div className="div-cntr">
-              <label>
-                {TranslationContext !== undefined
-                  ? TranslationContext.label.sms
-                  : "SMS"}
-              </label>
-              <br />
-              <Checkbox
-                onChange={this.handleAlertTabs.bind(this, "")}
-                checked={this.state.smsCust}
-                value="smsCust"
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.checkbox.customer
-                  : "Customer"}
-              </Checkbox>
-            </div>
+            {this.state.alertEdit.AlertTypeName !== "Call Back Later" ? (
+              <>
+                <div className="div-cntr">
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.email
+                      : "Email"}
+                  </label>
+                  <br />
+                  <Checkbox
+                    onChange={this.handleAlertTabs.bind(this, "")}
+                    checked={this.state.emailCust}
+                    value="emailCust"
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.checkbox.customer
+                      : "Customer"}
+                  </Checkbox>
+                  <Checkbox
+                    onChange={this.handleAlertTabs.bind(this, "")}
+                    checked={this.state.emailInt}
+                    value="emailInt"
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.checkbox.internal
+                      : "Internal"}
+                  </Checkbox>
+                  <Checkbox
+                    onChange={this.handleAlertTabs.bind(this, "")}
+                    checked={this.state.emailTicketing}
+                    value="emailTicketing"
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.checkbox.ticketing
+                      : "Ticketing"}
+                  </Checkbox>
+                </div>
+                <div className="div-cntr">
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.sms
+                      : "SMS"}
+                  </label>
+                  <br />
+                  <Checkbox
+                    onChange={this.handleAlertTabs.bind(this, "")}
+                    checked={this.state.smsCust}
+                    value="smsCust"
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.checkbox.customer
+                      : "Customer"}
+                  </Checkbox>
+                </div>
+              </>
+            ) : null}
             <div className="div-cntr">
               <label>
                 {TranslationContext !== undefined
@@ -3666,15 +3754,17 @@ class Alerts extends Component {
                   ? TranslationContext.checkbox.internal
                   : "Internal"}
               </Checkbox>
-              <Checkbox
-                onChange={this.handleAlertTabs.bind(this, "")}
-                checked={this.state.notiTicketing}
-                value="notiTicketing"
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.checkbox.ticketing
-                  : "Ticketing"}
-              </Checkbox>
+              {this.state.alertEdit.AlertTypeName !== "Call Back Later" ? (
+                <Checkbox
+                  onChange={this.handleAlertTabs.bind(this, "")}
+                  checked={this.state.notiTicketing}
+                  value="notiTicketing"
+                >
+                  {TranslationContext !== undefined
+                    ? TranslationContext.checkbox.ticketing
+                    : "Ticketing"}
+                </Checkbox>
+              ) : null}
             </div>
 
             <div className="div-cntr">

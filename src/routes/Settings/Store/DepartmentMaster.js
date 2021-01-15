@@ -13,7 +13,7 @@ import { ProgressBar } from "react-bootstrap";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
-import { Popover, Select as Aselect, Spin } from "antd";
+import { Popover, Select as Aselect, Spin, Empty } from "antd";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Select from "react-select";
 import axios from "axios";
@@ -107,6 +107,9 @@ class DepartmentMaster extends Component {
       departmentId: 0,
       translateLanguage: {},
       bulkuploadLoading: false,
+      isSubmit: false,
+      isDelete: false,
+      isloading: false,
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -122,7 +125,6 @@ class DepartmentMaster extends Component {
 
   componentDidMount() {
     this.handleGetBrandData();
-    // this.handleGetDepartmentList();
     this.handleGetDepartmentGridData();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
@@ -1053,6 +1055,7 @@ class DepartmentMaster extends Component {
   ////Get Detapartment grid data
   handleGetDepartmentGridData() {
     let self = this;
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/GetDeparmentBrandMappingList",
@@ -1061,6 +1064,7 @@ class DepartmentMaster extends Component {
       .then((res) => {
         let status = res.data.message;
         let data = res.data.responseData;
+        self.setState({ isloading: false });
         if (status === "Success") {
           self.setState({ departmentGrid: data });
         } else {
@@ -1194,6 +1198,7 @@ class DepartmentMaster extends Component {
         }
       })
       .catch((res) => {
+        self.setState({ isloading: false });
         console.log(res);
       });
   }
@@ -1423,6 +1428,7 @@ class DepartmentMaster extends Component {
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedStoreCode !== null &&
+      this.state.selectedStoreCode.length > 0 &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.listFunction > 0 || this.state.listFunction !== "") &&
       (this.state.selectStatus !== "0" && this.state.selectStatus !== 0)
@@ -1450,7 +1456,6 @@ class DepartmentMaster extends Component {
         departmentData = this.state.list1Value;
       }
 
-      // functionData = this.state.listFunction;
       functionData = this.state.functionData.filter(
         (x) => x.funcationName === this.state.listFunction
       )[0].functionID;
@@ -1461,6 +1466,7 @@ class DepartmentMaster extends Component {
         activeStatus = 0;
       }
 
+      this.setState({ isSubmit: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreDepartment/CreateDepartment",
@@ -1483,6 +1489,7 @@ class DepartmentMaster extends Component {
                 : "Department added successfully."
             );
             self.setState({
+              isSubmit: false,
               selectedBrand: [],
               selectedStoreCode: [],
               list1Value: "",
@@ -1506,11 +1513,14 @@ class DepartmentMaster extends Component {
                 ? TranslationContext.alertmessage.recordalreadyexists
                 : "Record Already Exists."
             );
+            self.setState({ isSubmit: false });
           } else {
+            self.setState({ isSubmit: false });
             NotificationManager.error(status);
           }
         })
         .catch((data) => {
+          self.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
@@ -1586,6 +1596,7 @@ class DepartmentMaster extends Component {
     const TranslationContext = this.state.translateLanguage.default;
 
     let self = this;
+    this.setState({ isDelete: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/DeleteBrandDepartmentMapping",
@@ -1597,6 +1608,8 @@ class DepartmentMaster extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
+          self.setState({ isDelete: false });
+
           self.handleGetDepartmentGridData();
           NotificationManager.success(
             TranslationContext !== undefined
@@ -1604,6 +1617,7 @@ class DepartmentMaster extends Component {
               : "Department deleted successfully."
           );
         } else {
+          self.setState({ isDelete: false });
           NotificationManager.error(
             TranslationContext !== undefined
               ? TranslationContext.alertmessage.departmentnotdelete
@@ -1612,6 +1626,7 @@ class DepartmentMaster extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isDelete: false });
         console.log(data);
       });
   }
@@ -1668,7 +1683,7 @@ class DepartmentMaster extends Component {
     }
   }
   fileUpload = (file) => {
-    if (file) {
+    if (file.length > 0) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
       this.setState({
@@ -1677,6 +1692,8 @@ class DepartmentMaster extends Component {
         file: file[0],
         fileValidation: "",
       });
+    } else {
+      NotificationManager.error("File accept only csv type.");
     }
   };
 
@@ -1693,16 +1710,11 @@ class DepartmentMaster extends Component {
       });
       const formData = new FormData();
       formData.append("file", this.state.file);
-      // this.setState({ isShowProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreDepartment/BulkUploadDepartment",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // },
       })
         .then((response) => {
           var status = response.data.message;
@@ -1721,9 +1733,20 @@ class DepartmentMaster extends Component {
             });
             self.handleGetDepartmentGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else if (status === "Record Uploaded Partially") {
+            NotificationManager.error(
+              "File uploaded partially.Please check the log."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
+            self.handleGetDepartmentGridData();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             self.setState({ isShowProgress: false, bulkuploadLoading: false });
-            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             NotificationManager.error(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.filenotuploaded
@@ -2137,7 +2160,6 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            // className={this.state.brandColor}
                             className={
                               this.state.sortHeader === "Brand Name"
                                 ? "sort-column"
@@ -2153,7 +2175,7 @@ class DepartmentMaster extends Component {
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.span.brandname
-                              : "Brand Name"}{" "}
+                              : "Brand Name"}
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2373,12 +2395,20 @@ class DepartmentMaster extends Component {
                                             : "CANCEL"}
                                         </a>
                                         <button
+                                          disabled={this.state.isDelete}
                                           className="butn"
                                           onClick={this.handleDeleteDepartmentData.bind(
                                             this,
                                             ids
                                           )}
                                         >
+                                          {this.state.isDelete ? (
+                                            <FontAwesomeIcon
+                                              className="circular-loader"
+                                              icon={faCircleNotch}
+                                              spin
+                                            />
+                                          ) : null}
                                           {TranslationContext !== undefined
                                             ? TranslationContext.button.delete
                                             : "Delete"}
@@ -2416,6 +2446,16 @@ class DepartmentMaster extends Component {
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin size="large" tip="Loading..." />
+                      ) : this.state.departmentGrid.length == 0 ? (
+                        <Empty
+                          style={{ margin: "0" }}
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        />
+                      ) : null
+                    }
                   />
                 </div>
               </div>
@@ -2441,7 +2481,6 @@ class DepartmentMaster extends Component {
                           ? TranslationContext.option.select
                           : "Select"
                       }
-                      // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       name="selectedBrand"
                       onChange={this.handleBrandChange.bind(this, "add")}
@@ -2581,16 +2620,12 @@ class DepartmentMaster extends Component {
                       notFoundContent="No Data Found"
                       className="depatselect"
                     >
-                      {/* {functionList} */}
                       {this.state.functionData !== null &&
                         this.state.functionData.map((item, j) => (
                           <Option key={j} value={item.funcationName}>
                             {item.funcationName}
                           </Option>
                         ))}
-                      {/* <Option value={NEW_ITEM}>
-                        <span className="sweetAlert-inCategory">+ ADD NEW</span>
-                      </Option> */}
                     </Aselect>
                     {this.state.showFuncation ? (
                       <span
@@ -2697,6 +2732,13 @@ class DepartmentMaster extends Component {
                       className="butn"
                       onClick={this.handleCreateDepartment.bind(this)}
                     >
+                      {this.state.isSubmit ? (
+                        <FontAwesomeIcon
+                          className="circular-loader"
+                          icon={faCircleNotch}
+                          spin
+                        />
+                      ) : null}
                       {TranslationContext !== undefined
                         ? TranslationContext.button.add
                         : "ADD"}
@@ -2729,7 +2771,7 @@ class DepartmentMaster extends Component {
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload}>
+                      <Dropzone accept=".csv" onDrop={this.fileUpload}>
                         {({ getRootProps, getInputProps }) => (
                           <div {...getRootProps()}>
                             <input
@@ -2743,7 +2785,7 @@ class DepartmentMaster extends Component {
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addfile
                                 : "Add File"}
-                            </span>{" "}
+                            </span>
                             {TranslationContext !== undefined
                               ? TranslationContext.div.or
                               : "or"}

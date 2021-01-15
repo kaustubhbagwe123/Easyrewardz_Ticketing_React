@@ -1,15 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Collapse, CardBody, Card, Input } from "reactstrap";
-import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
-import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
-import Headphone2Img from "./../../assets/Images/headphone2.png";
 import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
-import { Select, Table, message } from "antd";
+import { Table, message } from "antd";
 import { NotificationManager } from "react-notifications";
 import { Link } from "react-router-dom";
 import ReactAutocomplete from "react-autocomplete";
@@ -17,8 +14,8 @@ import DatePicker from "react-datepicker";
 import SimpleReactValidator from "simple-react-validator";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
-const { Option } = Select;
-const NEW_ITEM = "NEW_ITEM";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class RaiseClaim extends Component {
   constructor(props) {
@@ -81,6 +78,10 @@ class RaiseClaim extends Component {
       selectedTicketSource: 0,
       SearchItem: [],
       translateLanguage: {},
+      isSubmit: false,
+      isStoreSelect: false,
+      validPurchaseStoreName: "",
+      showClaimUI: false,
     };
     this.toggle = this.toggle.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -120,12 +121,20 @@ class RaiseClaim extends Component {
 
   ////handle add manullay order
   hadleAddManuallyOrderData() {
+    const TranslationContext = this.state.translateLanguage.default;
+
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.state.customerId;
 
       this.setState({ saveLoader: true });
-
+      if (this.state.isStoreSelect === false) {
+        this.setState({
+          validPurchaseStoreName:
+            "Please select valid purchase from store name",
+        });
+        return false;
+      }
       axios({
         method: "post",
         url: config.apiUrl + "/Order/createOrder",
@@ -136,9 +145,9 @@ class RaiseClaim extends Component {
           BillID: this.state.billId,
           TicketSourceID: this.state.selectedTicketSource,
           ModeOfPaymentID: this.state.modeOfPayment,
-          TransactionDate: this.state.OrderCreatDate, ///createdDate,
+          TransactionDate: this.state.OrderCreatDate,
           InvoiceNumber: "",
-          InvoiceDate: this.state.OrderCreatDate, //createdDate,
+          InvoiceDate: this.state.OrderCreatDate,
           OrderPrice: this.state.orderMRP,
           PricePaid: this.state.pricePaid,
           CustomerID: CustID,
@@ -152,7 +161,12 @@ class RaiseClaim extends Component {
           let status = res.data.message;
           if (status === "Success") {
             let data = res.data.responseData;
-            NotificationManager.success("New Order added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard
+                    .neworderaddedsuccessfully
+                : "New Order added successfully."
+            );
 
             self.setState({
               orderNumber: data,
@@ -175,7 +189,11 @@ class RaiseClaim extends Component {
               self.handleOrderSearchData(self);
             }, 100);
           } else {
-            NotificationManager.error("Order not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.ordernotadded
+                : "Order not added."
+            );
             self.setState({
               saveLoader: false,
             });
@@ -203,6 +221,8 @@ class RaiseClaim extends Component {
       SearchData,
       StorAddress,
       purchaseFrmStorID: Store_Id,
+      isStoreSelect: true,
+      validPurchaseStoreName: "",
     });
   }
 
@@ -211,9 +231,15 @@ class RaiseClaim extends Component {
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
-
+    this.state.StorAddress["address"] = "";
     if (SearchData[field].length > 3) {
-      this.setState({ SearchData, SearchItem: [] });
+      this.setState({
+        SearchData,
+        SearchItem: [],
+        StorAddress: this.state.StorAddress,
+        isStoreSelect: false,
+        validPurchaseStoreName: "",
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/Store/getStores",
@@ -223,7 +249,6 @@ class RaiseClaim extends Component {
         },
       })
         .then(function(res) {
-          //
           let status = res.data.message;
           var data = res.data.responseData;
           if (status === "Success") {
@@ -243,6 +268,9 @@ class RaiseClaim extends Component {
       self.setState({
         SearchData,
         SearchItem: [],
+        StorAddress: this.state.StorAddress,
+        isStoreSelect: false,
+        validPurchaseStoreName: "",
       });
     }
   }
@@ -273,7 +301,6 @@ class RaiseClaim extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
@@ -368,9 +395,7 @@ class RaiseClaim extends Component {
   };
   handlePercentageOnChange = (e) => {
     const input = e.target.value;
-    let IsNumber = false;
-    let RE = /^-?\d*(\.\d+)?$/;
-    //IsNumber= RE.test(value);
+
     if (!isNaN(input)) {
       this.setState({ claimPercentage: input });
     } else {
@@ -847,26 +872,7 @@ class RaiseClaim extends Component {
             (x) =>
               x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
           );
-          // if (Order_Master.length === selectedRow.length) {
-          //   const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
-          //   newSelected[Order_Master[0].orderMasterID] = !this.state
-          //     .CheckBoxAllOrder[Order_Master[0].orderMasterID];
-          //   this.setState({
-          //     CheckBoxAllOrder: Order_Master[0].orderMasterID
-          //       ? newSelected
-          //       : false,
-          //   });
-          //   var data_master = this.state.orderDetailsData.filter(
-          //     (y) => y.orderMasterID === Order_Master[0].orderMasterID
-          //   );
-          //   if (data_master.length > 0) {
-          //     var MastOrd = this.state.SelectedAllOrder;
-          //     MastOrd.push(data_master[0]);
-          //     this.setState({
-          //       SelectedAllOrder: MastOrd,
-          //     });
-          //   }
-          // }
+
           break;
         }
       } else {
@@ -890,19 +896,6 @@ class RaiseClaim extends Component {
                   ? newSelected
                   : false,
               });
-              // var data_master = this.state.orderDetailsData.filter(
-              //   (y) => y.orderMasterID === Order_Master[0].orderMasterID
-              // );
-              // var GetIndex = this.state.orderDetailsData.findIndex(
-              //   (y) => y.orderMasterID === Order_Master[0].orderMasterID
-              // );
-              // if (data_master.length > 0) {
-              //   var MastOrd = this.state.SelectedAllOrder;
-              //   MastOrd.splice(GetIndex, 1);
-              //   this.setState({
-              //     SelectedAllOrder: MastOrd,
-              //   });
-              // }
             }
 
             break;
@@ -1045,8 +1038,10 @@ class RaiseClaim extends Component {
       this.setState({ searchCompulsion: "" });
     }
     if (this.state.fileName.length > 0) {
+      formIsValid = true;
     } else {
       errors["productImg"] = "Please select product image";
+      formIsValid = false;
     }
     if (!this.state.claimPercentage) {
       formIsValid = false;
@@ -1142,6 +1137,7 @@ class RaiseClaim extends Component {
       formData.append("orderDetails", JSON.stringify(OrderData));
       formData.append("orderItemDetails", JSON.stringify(order_itemData));
       let self = this;
+      this.setState({ isSubmit: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreClaim/RaiseClaim",
@@ -1150,15 +1146,16 @@ class RaiseClaim extends Component {
       })
         .then(function(res) {
           let status = res.data.message;
-          let data = res.data.responseData;
+          self.setState({ isSubmit: false });
           if (status === "Success") {
-            NotificationManager.success("Record saved successfully");
+            NotificationManager.success("Claim has been raised successfully");
             self.props.history.push("/store/claim");
           } else {
-            NotificationManager.error(res.data.message);
+            NotificationManager.error(status);
           }
         })
         .catch((data) => {
+          self.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
@@ -1169,6 +1166,7 @@ class RaiseClaim extends Component {
   }
 
   handleSearchCustomer(e) {
+    const TranslationContext = this.state.translateLanguage.default;
     e.preventDefault();
     if (this.state.SrchEmailPhone !== "") {
       let self = this;
@@ -1181,15 +1179,43 @@ class RaiseClaim extends Component {
         },
       })
         .then(function(res) {
-          let SearchData = res.data.responseData[0];
-          if (SearchData) {
+          var msg = res.data.message;
+          if (msg === "Success") {
+            let SearchData = res.data.responseData[0];
             let GetCustId = SearchData.customerID;
             self.setState({
               customerId: GetCustId,
-              // message: res.data.message
+              showClaimUI: true,
             });
             self.handleGetCustomerData(GetCustId);
+          } else {
+            self.setState({
+              customerId: 0,
+              customerData: {},
+              showClaimUI: false,
+            });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.customernotexist
+                : "Customer not exist."
+            );
           }
+          document.getElementById("OrdPurchaseData").value = "";
+          self.setState({
+            orderId: "",
+            billId: "",
+            productBarCode: "",
+            selectedTicketSource: "",
+            modeOfPayment: "",
+            OrderCreatDate: "",
+            orderMRP: "",
+            pricePaid: "",
+            discount: "",
+            size: "",
+            requiredSize: "",
+            purchaseFrmStorName: {},
+            StorAddress: {},
+          });
         })
         .catch((data) => {
           console.log(data);
@@ -1214,10 +1240,11 @@ class RaiseClaim extends Component {
     })
       .then(function(res) {
         var CustMsg = res.data.message;
-        var customerData = res.data.responseData;
+        var data = res.data.responseData;
         if (CustMsg === "Success") {
-          self.setState({ customerData: customerData, loading: false });
-          // self.handleEditCustomerClose();
+          self.setState({ customerData: data, loading: false });
+        } else {
+          self.setState({ customerData: {}, loading: false });
         }
       })
       .catch((data) => {
@@ -1236,7 +1263,6 @@ class RaiseClaim extends Component {
     this.setState({ showManual: !this.state.showManual });
   }
   setTicketSourceValue = (e) => {
-    //
     let value = e.currentTarget.value;
     this.setState({ selectedTicketSource: value });
   };
@@ -1252,7 +1278,6 @@ class RaiseClaim extends Component {
     this.setState({ OrderCreatDate: date });
   };
   handleNumberOnchange = (e) => {
-    //
     var values = e.target.value;
     var names = e.target.name;
 
@@ -1311,57 +1336,45 @@ class RaiseClaim extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     const { orderDetailsData, customerData } = this.state;
 
-    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
-      <Option key={o} value={item.categoryID}>
-        {item.categoryName}
-      </Option>
-    ));
-
-    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
-      <Option key={o} value={item.subCategoryID}>
-        {item.subCategoryName}
-      </Option>
-    ));
-
-    const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
-      <Option key={i} value={item.issueTypeID}>
-        {item.issueTypeName}
-      </Option>
-    ));
-
     return (
       <Fragment>
         <div className="raiseclaim">
           <div className="row" style={{ background: "#ecf2f4", margin: 0 }}>
-            <div className="col-md-8">
-              {/* <label className="claim-ticket">Claim Ticket ID :</label>
-              <label className="claim-A22345">
-                <b>{this.state.ticketId}</b>
-              </label> */}
-            </div>
-            <div className="col-md-4">
-              <div
-                className="btn-margin"
-                style={{ float: "right", marginLeft: "30px" }}
-              >
-                <Link to={"/store/claim"}>
-                  <button type="button" className="btn-btn-claim">
-                    {TranslationContext !== undefined
-                      ? TranslationContext.button.cancel
-                      : "CANCEL"}
-                  </button>
-                </Link>
-                <button
-                  type="button"
-                  className="btn-claim"
-                  onClick={this.handleAddStoreClaim.bind(this)}
+            <div className="col-md-8"></div>
+            {this.state.showClaimUI ? (
+              <div className="col-md-4">
+                <div
+                  className="btn-margin"
+                  style={{ float: "right", marginLeft: "30px" }}
                 >
-                  {TranslationContext !== undefined
-                    ? TranslationContext.button.submitclaim
-                    : "SUBMIT CLAIM"}
-                </button>
+                  <Link to={"/store/claim"}>
+                    <button type="button" className="btn-btn-claim">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.cancel
+                        : "CANCEL"}
+                    </button>
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn-claim"
+                    onClick={this.handleAddStoreClaim.bind(this)}
+                    style={{ width: "155px" }}
+                    disabled={this.state.isSubmit}
+                  >
+                    {this.state.isSubmit ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : null}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.submitclaim
+                      : "SUBMIT CLAIM"}
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
           <div className="back-color">
             <div className="row m-0">
@@ -1421,982 +1434,1025 @@ class RaiseClaim extends Component {
                         </div>
                       </div>
                     </form>
-                    <div className="col-md-12">
-                      <div className="claim-status-card">
-                        <label>
-                          <b>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.claimstatusopen
-                              : "Claim Status: Open"}
-                          </b>
-                        </label>
-                        <div className="claimplus">
-                          <span className="plusline2"></span>
-                          <img
-                            src={PlusImg}
-                            alt="Plush"
-                            className="plush-img-1"
-                            onClick={this.toggle}
-                          />
-                        </div>
-                      </div>
+                    {this.state.showClaimUI ? (
+                      <div>
+                        <div className="col-md-12">
+                          <div className="claim-status-card">
+                            <label>
+                              <b>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.claimstatusopen
+                                  : "Claim Status: Open"}
+                              </b>
+                            </label>
+                            <div className="claimplus">
+                              <span className="plusline2"></span>
+                              <img
+                                src={PlusImg}
+                                alt="Plush"
+                                className="plush-img-1"
+                                onClick={this.toggle}
+                              />
+                            </div>
+                          </div>
 
-                      <Collapse
-                        isOpen={this.state.collapse}
-                        style={{
-                          width: "100%",
-                          border: "1px solid #eee",
-                          borderRadius: "5px",
-                        }}
-                      >
-                        <Card className="w-100">
-                          <CardBody style={{ padding: "15px 0 0" }}>
-                            {this.state.showManual ? null : (
-                              <div className="row m-0">
-                                <div className="col-md-6">
-                                  <label className="orderdetailtext">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.orderdetails
-                                      : "Order details"}
-                                  </label>
-                                </div>
-                                <div className="col-md-6">
-                                  <form
-                                    name="form"
-                                    onSubmit={this.handleOrderSearchData.bind(
-                                      this
-                                    )}
-                                  >
-                                    <div>
-                                      <input
-                                        type="text"
-                                        className="searchtext"
-                                        placeholder={
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .searchorder
-                                            : "Search Order"
-                                        }
-                                        name="orderNumber"
-                                        value={this.state.orderNumber}
-                                        onChange={this.handleOrderChange.bind(
-                                          this
-                                        )}
-                                      />
-                                      <img
-                                        src={SearchBlackImg}
-                                        alt="Search"
-                                        className="searchImg-raise"
-                                        onClick={this.handleOrderSearchData.bind(
-                                          this
-                                        )}
-                                      />
+                          <Collapse
+                            isOpen={this.state.collapse}
+                            style={{
+                              width: "100%",
+                              border: "1px solid #eee",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            <Card className="w-100">
+                              <CardBody style={{ padding: "15px 0 0" }}>
+                                {this.state.showManual ? null : (
+                                  <div className="row m-0">
+                                    <div className="col-md-6">
+                                      <label className="orderdetailtext">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .orderdetails
+                                          : "Order details"}
+                                      </label>
                                     </div>
-                                  </form>
-                                </div>
-                              </div>
-                            )}
-                            {this.state.SearchDetails ? (
-                              <div
-                                style={{
-                                  borderTop: "1px solid #EEE",
-                                  marginTop: "12px",
-                                }}
-                              >
-                                <div className="reacttableordermodal">
-                                  <Table
-                                    className="components-table-demo-nested custom-antd-table"
-                                    dataSource={orderDetailsData}
-                                    columns={[
-                                      {
-                                        title: "",
-                                        // dataIndex: "invoiceNumber",
-                                        render: (row, data) => {
-                                          // //
-                                          return (
-                                            <div className="filter-checkbox">
-                                              <input
-                                                type="checkbox"
-                                                className="d-none"
-                                                id={"all" + data.invoiceNumber}
-                                                name="AllOrder"
-                                                checked={
-                                                  this.state
-                                                    .selectedInvoiceNo ===
-                                                  data.invoiceNumber
-                                                }
-                                                onChange={this.handleGetOderItemData.bind(
-                                                  this,
-                                                  data.invoiceNumber,
-                                                  data
-                                                )}
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  "all" + data.invoiceNumber
-                                                }
-                                              ></label>
-                                            </div>
-                                          );
-                                        },
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span
-                                                .invoicenumber
-                                            : "Invoice Number",
-                                        dataIndex: "invoiceNumber",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span
-                                                .invoicedate
-                                            : "Invoice Date",
-                                        dataIndex: "dateFormat",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span.itemcount
-                                            : "Item Count",
-                                        dataIndex: "itemCount",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span.itemprice
-                                            : "Item Price",
-                                        dataIndex: "ordeItemPrice",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span.pricepaid
-                                            : "Price Paid",
-                                        dataIndex: "orderPricePaid",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span.storecode
-                                            : "Store Code",
-                                        dataIndex: "storeCode",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span
-                                                .storeaddress
-                                            : "Store Address",
-                                        dataIndex: "storeAddress",
-                                      },
-                                      {
-                                        title:
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.span.discount
-                                            : "Discount",
-                                        dataIndex: "discount",
-                                      },
-                                    ]}
-                                    expandedRowRender={(row) => {
-                                      return (
-                                        <Table
-                                          // dataSource={this.state.OrderSubItem}
-                                          dataSource={this.state.OrderSubItem.filter(
-                                            (x) =>
-                                              x.invoiceNumber ===
-                                              row.invoiceNumber
-                                          )}
-                                          columns={[
-                                            {
-                                              title: "",
-                                              // dataIndex: "invoiceNumber",
-                                              render: (row, item) => {
-                                                // //
-                                                return (
-                                                  <div className="filter-checkbox">
-                                                    <input
-                                                      type="checkbox"
-                                                      className="d-none"
-                                                      id={
-                                                        "item" +
-                                                        item.articleNumber
-                                                      }
-                                                      name="AllItem"
-                                                      checked={
-                                                        this.state
-                                                          .CheckBoxAllItem[
-                                                          item.articleNumber
-                                                        ] === true
-                                                      }
-                                                      onChange={this.checkIndividualItem.bind(
-                                                        this,
-                                                        item.articleNumber,
-                                                        item
-                                                      )}
-                                                    />
-                                                    <label
-                                                      htmlFor={
-                                                        "item" +
-                                                        item.articleNumber
-                                                      }
-                                                    ></label>
-                                                  </div>
-                                                );
-                                              },
-                                            },
-                                            {
-                                              title:
-                                                TranslationContext !== undefined
-                                                  ? TranslationContext.span
-                                                      .articlenumber
-                                                  : "Article Number",
-                                              dataIndex: "articleNumber",
-                                            },
-                                            {
-                                              title:
-                                                TranslationContext !== undefined
-                                                  ? TranslationContext.span
-                                                      .articlename
-                                                  : "Article Name",
-                                              dataIndex: "articleName",
-                                            },
-                                            {
-                                              title:
-                                                TranslationContext !== undefined
-                                                  ? TranslationContext.span
-                                                      .itemprice
-                                                  : "Article MRP",
-                                              dataIndex: "itemPrice",
-                                            },
-                                            {
-                                              title:
-                                                TranslationContext !== undefined
-                                                  ? TranslationContext.span
-                                                      .pricepaid
-                                                  : "Price Paid",
-                                              dataIndex: "pricePaid",
-                                            },
-                                            {
-                                              title:
-                                                TranslationContext !== undefined
-                                                  ? TranslationContext.span
-                                                      .discount
-                                                  : "Discount",
-                                              dataIndex: "discount",
-                                            },
-                                          ]}
-                                          // rowSelection={rowSelection}
-                                          pagination={false}
-                                        />
-                                      );
-                                    }}
-                                    pagination={false}
-                                  />
-                                </div>
-                              </div>
-                            ) : this.state.showManual ? (
-                              <div>
-                                <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
-                                  <div className="col-md-6">
-                                    <label className="addmanuallytext">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.addmanually
-                                        : "Add Manually"}
-                                    </label>
-                                  </div>
-                                </div>
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label.orderid
-                                          : "Order ID"
-                                      }
-                                      name="orderId"
-                                      maxLength={10}
-                                      value={this.state.orderId}
-                                      onChange={this.handleManuallyOnchange}
-                                    />
-                                    {this.validator.message(
-                                      "OrderId",
-                                      this.state.orderId,
-                                      "required"
-                                    )}
-                                  </div>
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label.billid
-                                          : "Bill ID"
-                                      }
-                                      name="billId"
-                                      maxLength={10}
-                                      value={this.state.billId}
-                                      onChange={this.handleManuallyOnchange}
-                                    />
-                                    {this.validator.message(
-                                      "BillId",
-                                      this.state.billId,
-                                      "required"
-                                    )}
-                                  </div>
-                                </div>
-
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label
-                                              .productbarcode
-                                          : "Product Bar Code"
-                                      }
-                                      name="productBarCode"
-                                      maxLength={10}
-                                      value={this.state.productBarCode}
-                                      onChange={this.handleManuallyOnchange}
-                                      autoComplete="off"
-                                    />
-                                    {this.validator.message(
-                                      "ProductBarCode",
-                                      this.state.productBarCode,
-                                      "required"
-                                    )}
-                                  </div>
-                                  <div className="col-md-6">
-                                    <select
-                                      value={this.state.selectedTicketSource}
-                                      onChange={this.setTicketSourceValue}
-                                      className="category-select-system dropdown-label"
-                                    >
-                                      <option>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option
-                                              .channelofpurchase
-                                          : "Channel Of Purchase"}
-                                      </option>
-                                      {this.state.ChannelOfPurchaseData !==
-                                        null &&
-                                        this.state.ChannelOfPurchaseData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.channelOfPurchaseID}
-                                            >
-                                              {item.nameOfChannel}
-                                            </option>
-                                          )
+                                    <div className="col-md-6">
+                                      <form
+                                        name="form"
+                                        onSubmit={this.handleOrderSearchData.bind(
+                                          this
                                         )}
-                                    </select>
-                                    {this.validator.message(
-                                      "ChannelOfPurchaseData",
-                                      this.state.ChannelOfPurchaseData,
-                                      "required"
-                                    )}
-                                  </div>
-                                </div>
-
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <select
-                                      className="category-select-system dropdown-label"
-                                      value={this.state.modeOfPayment}
-                                      onChange={this.setModePaymentValue}
-                                    >
-                                      <option
-                                        value=""
-                                        className="select-sub-category-placeholder"
                                       >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.option
-                                              .modeofpayment
-                                          : "Mode Of Payment"}
-                                      </option>
-                                      {this.state.modeData !== null &&
-                                        this.state.modeData.map((item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.paymentModeID}
-                                            className="select-category-placeholder"
-                                          >
-                                            {item.paymentModename}
-                                          </option>
-                                        ))}
-                                    </select>
-                                    {this.validator.message(
-                                      "ModeOfPayment",
-                                      this.state.modeOfPayment,
-                                      "required"
-                                    )}
-                                  </div>
-                                  <div className="col-md-6 dapic">
-                                    <DatePicker
-                                      selected={this.state.OrderCreatDate}
-                                      onChange={this.handleByDateCreate}
-                                      placeholderText="Date"
-                                      showMonthDropdown
-                                      showYearDropdown
-                                      className="addmanuallytext1"
-                                    />
-                                    {this.validator.message(
-                                      "Date",
-                                      this.state.OrderCreatDate,
-                                      "required"
-                                    )}
-                                  </div>
-                                </div>
-
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label.mrp
-                                          : "MRP"
-                                      }
-                                      name="orderMRP"
-                                      value={this.state.orderMRP}
-                                      onChange={this.handleNumberOnchange}
-                                      autoComplete="off"
-                                      maxLength={10}
-                                    />
-                                    {this.validator.message(
-                                      "mrp",
-                                      this.state.orderMRP,
-                                      "required"
-                                    )}
-                                  </div>
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label.pricepaid
-                                          : "Price Paid"
-                                      }
-                                      name="pricePaid"
-                                      value={this.state.pricePaid}
-                                      onChange={this.handleNumberOnchange}
-                                      autoComplete="off"
-                                      maxLength={10}
-                                    />
-                                    {this.validator.message(
-                                      "PricePaid",
-                                      this.state.pricePaid,
-                                      "required"
-                                    )}
-                                  </div>
-                                </div>
-
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label.discount
-                                          : "Discount"
-                                      }
-                                      name="discount"
-                                      value={this.state.discount}
-                                      onChange={this.handleNumberOnchange}
-                                      autoComplete="off"
-                                      maxLength={10}
-                                    />
-                                    {this.validator.message(
-                                      "Discount",
-                                      this.state.discount,
-                                      "required"
-                                    )}
-                                  </div>
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label.size
-                                          : "Size"
-                                      }
-                                      name="size"
-                                      value={this.state.size}
-                                      onChange={this.handleManuallyOnchange}
-                                      autoComplete="off"
-                                      maxLength={10}
-                                    />
-                                    {this.validator.message(
-                                      "size",
-                                      this.state.size,
-                                      "required"
-                                    )}
-                                  </div>
-                                </div>
-
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label
-                                              .requiredsize
-                                          : "Required Size"
-                                      }
-                                      name="requiredSize"
-                                      value={this.state.requiredSize}
-                                      onChange={this.handleManuallyOnchange}
-                                    />
-                                    {this.validator.message(
-                                      "RequiredSize",
-                                      this.state.requiredSize,
-                                      "required"
-                                    )}
-                                  </div>
-                                  <div className="col-md-6">
-                                    <ReactAutocomplete
-                                      wrapperStyle={{
-                                        display: "block",
-                                        position: "relative",
-                                      }}
-                                      getItemValue={(item) => item.storeName}
-                                      items={this.state.SearchItem}
-                                      renderItem={(item, isHighlighted) => (
-                                        <div
-                                          style={{
-                                            background: isHighlighted
-                                              ? "lightgray"
-                                              : "white",
-                                          }}
-                                          value={item.storeID}
-                                        >
-                                          {item.storeName}
-                                        </div>
-                                      )}
-                                      renderInput={(props) => {
-                                        return (
+                                        <div>
                                           <input
+                                            type="text"
+                                            className="searchtext"
                                             placeholder={
                                               TranslationContext !== undefined
                                                 ? TranslationContext.label
-                                                    .purchasefromstorename
-                                                : "Purchase from Store name"
+                                                    .searchorder
+                                                : "Search Order"
                                             }
-                                            className="addmanuallytext1 dropdown-next-div"
-                                            type="text"
-                                            {...props}
+                                            name="orderNumber"
+                                            value={this.state.orderNumber}
+                                            onChange={this.handleOrderChange.bind(
+                                              this
+                                            )}
                                           />
-                                        );
-                                      }}
-                                      onChange={this.handlePurchaseStoreName.bind(
-                                        this,
-                                        "store"
-                                      )}
-                                      onSelect={this.HandleSelectdata.bind(
-                                        this,
-                                        (item) => item.storeID,
-                                        "store"
-                                      )}
-                                      value={
-                                        this.state.purchaseFrmStorName["store"]
-                                      }
-                                    />
+                                          <img
+                                            src={SearchBlackImg}
+                                            alt="Search"
+                                            className="searchImg-raise"
+                                            onClick={this.handleOrderSearchData.bind(
+                                              this
+                                            )}
+                                          />
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                )}
+                                {this.state.SearchDetails ? (
+                                  <div
+                                    style={{
+                                      borderTop: "1px solid #EEE",
+                                      marginTop: "12px",
+                                    }}
+                                  >
+                                    <div className="reacttableordermodal">
+                                      <Table
+                                        className="components-table-demo-nested custom-antd-table"
+                                        dataSource={orderDetailsData}
+                                        columns={[
+                                          {
+                                            title: "",
 
-                                    {this.validator.message(
-                                      "PurchaseFrmStorAddress",
-                                      this.state.purchaseFrmStorName["store"],
-                                      "required"
-                                    )}
-                                    {this.state.purchaseFrmStorID === 0 && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
+                                            render: (row, data) => {
+                                              return (
+                                                <div className="filter-checkbox">
+                                                  <input
+                                                    type="checkbox"
+                                                    className="d-none"
+                                                    id={
+                                                      "all" + data.invoiceNumber
+                                                    }
+                                                    name="AllOrder"
+                                                    checked={
+                                                      this.state
+                                                        .selectedInvoiceNo ===
+                                                      data.invoiceNumber
+                                                    }
+                                                    onChange={this.handleGetOderItemData.bind(
+                                                      this,
+                                                      data.invoiceNumber,
+                                                      data
+                                                    )}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "all" + data.invoiceNumber
+                                                    }
+                                                  ></label>
+                                                </div>
+                                              );
+                                            },
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .invoicenumber
+                                                : "Invoice Number",
+                                            dataIndex: "invoiceNumber",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .invoicedate
+                                                : "Invoice Date",
+                                            dataIndex: "dateFormat",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .itemcount
+                                                : "Item Count",
+                                            dataIndex: "itemCount",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .itemprice
+                                                : "Item Price",
+                                            dataIndex: "ordeItemPrice",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .pricepaid
+                                                : "Price Paid",
+                                            dataIndex: "orderPricePaid",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .storecode
+                                                : "Store Code",
+                                            dataIndex: "storeCode",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .storeaddress
+                                                : "Store Address",
+                                            dataIndex: "storeAddress",
+                                          },
+                                          {
+                                            title:
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.span
+                                                    .discount
+                                                : "Discount",
+                                            dataIndex: "discount",
+                                          },
+                                        ]}
+                                        expandedRowRender={(row) => {
+                                          return (
+                                            <Table
+                                              dataSource={this.state.OrderSubItem.filter(
+                                                (x) =>
+                                                  x.invoiceNumber ===
+                                                  row.invoiceNumber
+                                              )}
+                                              columns={[
+                                                {
+                                                  title: "",
+
+                                                  render: (row, item) => {
+                                                    return (
+                                                      <div className="filter-checkbox">
+                                                        <input
+                                                          type="checkbox"
+                                                          className="d-none"
+                                                          id={
+                                                            "item" +
+                                                            item.articleNumber
+                                                          }
+                                                          name="AllItem"
+                                                          checked={
+                                                            this.state
+                                                              .CheckBoxAllItem[
+                                                              item.articleNumber
+                                                            ] === true
+                                                          }
+                                                          onChange={this.checkIndividualItem.bind(
+                                                            this,
+                                                            item.articleNumber,
+                                                            item
+                                                          )}
+                                                        />
+                                                        <label
+                                                          htmlFor={
+                                                            "item" +
+                                                            item.articleNumber
+                                                          }
+                                                        ></label>
+                                                      </div>
+                                                    );
+                                                  },
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlenumber
+                                                      : "Article Number",
+                                                  dataIndex: "articleNumber",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .articlename
+                                                      : "Article Name",
+                                                  dataIndex: "articleName",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .itemprice
+                                                      : "Article MRP",
+                                                  dataIndex: "itemPrice",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .pricepaid
+                                                      : "Price Paid",
+                                                  dataIndex: "pricePaid",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .discount
+                                                      : "Discount",
+                                                  dataIndex: "discount",
+                                                },
+                                              ]}
+                                              pagination={false}
+                                            />
+                                          );
                                         }}
-                                      >
-                                        {this.state.validPurchaseStoreName}
-                                      </p>
-                                    )}
+                                        pagination={false}
+                                      />
+                                    </div>
                                   </div>
-                                </div>
+                                ) : this.state.showManual ? (
+                                  <div>
+                                    <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
+                                      <div className="col-md-6">
+                                        <label className="addmanuallytext">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .addmanually
+                                            : "Add Manually"}
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.orderid
+                                              : "Order ID"
+                                          }
+                                          name="orderId"
+                                          maxLength={10}
+                                          value={this.state.orderId}
+                                          onChange={this.handleManuallyOnchange}
+                                        />
+                                        {this.validator.message(
+                                          "OrderId",
+                                          this.state.orderId,
+                                          "required"
+                                        )}
+                                      </div>
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.billid
+                                              : "Bill ID"
+                                          }
+                                          name="billId"
+                                          maxLength={10}
+                                          value={this.state.billId}
+                                          onChange={this.handleManuallyOnchange}
+                                        />
+                                        {this.validator.message(
+                                          "BillId",
+                                          this.state.billId,
+                                          "required"
+                                        )}
+                                      </div>
+                                    </div>
 
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-6">
-                                    <input
-                                      type="text"
-                                      className="addmanuallytext1"
-                                      placeholder={
-                                        TranslationContext !== undefined
-                                          ? TranslationContext.label
-                                              .purchasefromstoreaddres
-                                          : "Purchase from Store Addres"
-                                      }
-                                      name="purchaseFrmStorAddress"
-                                      value={this.state.StorAddress.address}
-                                      readOnly
-                                    />
-                                  </div>
-                                </div>
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .productbarcode
+                                              : "Product Bar Code"
+                                          }
+                                          name="productBarCode"
+                                          maxLength={10}
+                                          value={this.state.productBarCode}
+                                          onChange={this.handleManuallyOnchange}
+                                          autoComplete="off"
+                                        />
+                                        {this.validator.message(
+                                          "ProductBarCode",
+                                          this.state.productBarCode,
+                                          "required"
+                                        )}
+                                      </div>
+                                      <div className="col-md-6">
+                                        <select
+                                          value={
+                                            this.state.selectedTicketSource
+                                          }
+                                          onChange={this.setTicketSourceValue}
+                                          className="category-select-system dropdown-label"
+                                        >
+                                          <option>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .channelofpurchase
+                                              : "Channel Of Purchase"}
+                                          </option>
+                                          {this.state.ChannelOfPurchaseData !==
+                                            null &&
+                                            this.state.ChannelOfPurchaseData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={
+                                                    item.channelOfPurchaseID
+                                                  }
+                                                >
+                                                  {item.nameOfChannel}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        {this.validator.message(
+                                          "ChannelOfPurchaseData",
+                                          this.state.ChannelOfPurchaseData,
+                                          "required"
+                                        )}
+                                      </div>
+                                    </div>
 
-                                <div className="row m-b-10 m-l-10 m-r-10">
-                                  <div className="col-md-3">
-                                    <button
-                                      type="button"
-                                      className="addmanual m-t-15"
-                                      onClick={this.hadleAddManuallyOrderData.bind(
-                                        this
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.save
-                                        : "SAVE"}
-                                    </button>
-                                  </div>
-                                  <div className="col-md-3">
-                                    <button
-                                      type="button"
-                                      className="addmanual m-t-15"
-                                      onClick={this.handleAddOrder.bind(this)}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.cancel
-                                        : "CANCEL"}
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="uploadsearch uploadsearch-space">
-                                <div className="row">
-                                  <div className="col-md-12 uploadsechmargin">
-                                    <label className="uploadsearch-text">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label
-                                            .noorderfoundwiththisnumber
-                                        : "No order found with this number"}
-                                    </label>
-                                  </div>
-                                </div>
-                                <div className="row">
-                                  <div className="col-md-12 uploadsechmargin">
-                                    <button
-                                      type="button"
-                                      className="uploadsearchbtn"
-                                    >
-                                      <label
-                                        className="uploadsearchbtn-text"
-                                        onClick={this.handleAddOrder.bind(this)}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.addmanually
-                                          : "ADD MANUALLY"}
-                                      </label>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </CardBody>
-                        </Card>
-                      </Collapse>
-                    </div>
-                    <div className="row m-0 w-100">
-                      <div className="form-group col-md-4">
-                        <label className="label-6">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.brand
-                            : "Brand"}
-                        </label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-label"
-                          value={this.state.selectBrand}
-                          onChange={this.handleBrandChange}
-                        >
-                          <option value={0}>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.select
-                              : "select"}
-                          </option>
-                          {this.state.brandData !== null &&
-                            this.state.brandData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.brandID}
-                                className="select-category-placeholder"
-                              >
-                                {item.brandName}
-                              </option>
-                            ))}
-                        </select>
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errors["Brand"]}
-                        </p>
-                      </div>
-                      <div className="form-group col-md-4">
-                        <label className="label-6">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.claimcategory
-                            : "Claim Category"}
-                        </label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-label"
-                          onChange={this.handleCategoryChange}
-                          value={this.state.list1Value}
-                        >
-                          <option value={0}>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.select
-                              : "select"}
-                          </option>
-                          {this.state.categoryDropData !== null &&
-                            this.state.categoryDropData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.categoryID}
-                                className="select-category-placeholder"
-                              >
-                                {item.categoryName}
-                              </option>
-                            ))}
-                        </select>
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <select
+                                          className="category-select-system dropdown-label"
+                                          value={this.state.modeOfPayment}
+                                          onChange={this.setModePaymentValue}
+                                        >
+                                          <option
+                                            value=""
+                                            className="select-sub-category-placeholder"
+                                          >
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .modeofpayment
+                                              : "Mode Of Payment"}
+                                          </option>
+                                          {this.state.modeData !== null &&
+                                            this.state.modeData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.paymentModeID}
+                                                  className="select-category-placeholder"
+                                                >
+                                                  {item.paymentModename}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        {this.validator.message(
+                                          "ModeOfPayment",
+                                          this.state.modeOfPayment,
+                                          "required"
+                                        )}
+                                      </div>
+                                      <div className="col-md-6 dapic">
+                                        <DatePicker
+                                          selected={this.state.OrderCreatDate}
+                                          onChange={this.handleByDateCreate}
+                                          placeholderText="Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          className="addmanuallytext1"
+                                        />
+                                        {this.validator.message(
+                                          "Date",
+                                          this.state.OrderCreatDate,
+                                          "required"
+                                        )}
+                                      </div>
+                                    </div>
 
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errors["Category"]}
-                        </p>
-                      </div>
-                      <div className="form-group col-md-4">
-                        <label className="label-6">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.subcategory
-                            : "Sub Category"}
-                        </label>
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.mrp
+                                              : "MRP"
+                                          }
+                                          name="orderMRP"
+                                          value={this.state.orderMRP}
+                                          onChange={this.handleNumberOnchange}
+                                          autoComplete="off"
+                                          maxLength={10}
+                                        />
+                                        {this.validator.message(
+                                          "mrp",
+                                          this.state.orderMRP,
+                                          "required"
+                                        )}
+                                      </div>
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .pricepaid
+                                              : "Price Paid"
+                                          }
+                                          name="pricePaid"
+                                          value={this.state.pricePaid}
+                                          onChange={this.handleNumberOnchange}
+                                          autoComplete="off"
+                                          maxLength={10}
+                                        />
+                                        {this.validator.message(
+                                          "PricePaid",
+                                          this.state.pricePaid,
+                                          "required"
+                                        )}
+                                      </div>
+                                    </div>
 
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-label"
-                          onChange={this.handleSubCatOnChange}
-                          value={this.state.ListOfSubCate}
-                        >
-                          <option value={0}>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.select
-                              : "select"}
-                          </option>
-                          {this.state.SubCategoryDropData !== null &&
-                            this.state.SubCategoryDropData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.subCategoryID}
-                                className="select-category-placeholder"
-                              >
-                                {item.subCategoryName}
-                              </option>
-                            ))}
-                        </select>
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errors["SubCategory"]}
-                        </p>
-                      </div>
-                      <div className="form-group col-md-4">
-                        <label className="label-6">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.option.claimtype
-                            : "Claim Type"}
-                        </label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-label"
-                          onChange={this.handleIssueOnChange}
-                          value={this.state.ListOfIssue}
-                        >
-                          <option value={0}>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.select
-                              : "select"}
-                          </option>
-                          {this.state.ListOfIssueData !== null &&
-                            this.state.ListOfIssueData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                                className="select-category-placeholder"
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                        </select>
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errors["IssueType"]}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="row m-0">
-                      <div className="form-group col-md-4">
-                        <label className="label-6">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.claimaskedfor
-                            : "Claim Asked for %"}
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control textBox"
-                          placeholder={
-                            TranslationContext !== undefined
-                              ? TranslationContext.label.claimpercentage
-                              : "Claim Percentage"
-                          }
-                          name="claimPercentage"
-                          onKeyUp={this.handlePercentageOnChange}
-                          value={this.state.claimPercentage}
-                          onChange={this.handleOnChange}
-                        />
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errors["ClaimPercent"]}
-                        </p>
-                      </div>
-                      <div className="col-md-4" style={{ marginTop: "44px" }}>
-                        <input
-                          id="file-upload"
-                          className="d-none file-uploadprofile"
-                          type="file"
-                          onChange={this.fileUpload.bind(this)}
-                        />
-                        <label
-                          htmlFor="file-upload"
-                          className=" form-control btn-btn-claim"
-                          style={{ marginTop: "0" }}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.attachproductimage
-                            : "Attach Product Image"}
-                        </label>
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errors["productImg"]}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="row m-0">
-                      <div className="form-group col-md-4">
-                        <label className="label-6">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.attachedimage
-                            : "Attached Image"}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-md-12">
-                      {this.state.imageUrl ? (
-                        <div
-                          className="batashoes position-relative"
-                          onClick={() => this.setState({ imageUrl: "" })}
-                        >
-                          <span className="img-cross">+</span>
-                          <img
-                            src={this.state.imageUrl}
-                            alt="Bata"
-                            className="w-100"
-                          />
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .discount
+                                              : "Discount"
+                                          }
+                                          name="discount"
+                                          value={this.state.discount}
+                                          onChange={this.handleNumberOnchange}
+                                          autoComplete="off"
+                                          maxLength={10}
+                                        />
+                                        {this.validator.message(
+                                          "Discount",
+                                          this.state.discount,
+                                          "required"
+                                        )}
+                                      </div>
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label.size
+                                              : "Size"
+                                          }
+                                          name="size"
+                                          value={this.state.size}
+                                          onChange={this.handleManuallyOnchange}
+                                          autoComplete="off"
+                                          maxLength={10}
+                                        />
+                                        {this.validator.message(
+                                          "size",
+                                          this.state.size,
+                                          "required"
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .requiredsize
+                                              : "Required Size"
+                                          }
+                                          name="requiredSize"
+                                          value={this.state.requiredSize}
+                                          onChange={this.handleManuallyOnchange}
+                                        />
+                                        {this.validator.message(
+                                          "RequiredSize",
+                                          this.state.requiredSize,
+                                          "required"
+                                        )}
+                                      </div>
+                                      <div className="col-md-6">
+                                        <ReactAutocomplete
+                                          wrapperStyle={{
+                                            display: "block",
+                                            position: "relative",
+                                          }}
+                                          getItemValue={(item) =>
+                                            item.storeName
+                                          }
+                                          items={this.state.SearchItem}
+                                          renderItem={(item, isHighlighted) => (
+                                            <div
+                                              style={{
+                                                background: isHighlighted
+                                                  ? "lightgray"
+                                                  : "white",
+                                              }}
+                                              value={item.storeID}
+                                            >
+                                              {item.storeName}
+                                            </div>
+                                          )}
+                                          renderInput={(props) => {
+                                            return (
+                                              <input
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.label
+                                                        .purchasefromstorename
+                                                    : "Purchase from Store name"
+                                                }
+                                                className="addmanuallytext1 dropdown-next-div"
+                                                type="text"
+                                                {...props}
+                                              />
+                                            );
+                                          }}
+                                          onChange={this.handlePurchaseStoreName.bind(
+                                            this,
+                                            "store"
+                                          )}
+                                          onSelect={this.HandleSelectdata.bind(
+                                            this,
+                                            (item) => item.storeID,
+                                            "store"
+                                          )}
+                                          value={
+                                            this.state.purchaseFrmStorName[
+                                              "store"
+                                            ]
+                                          }
+                                        />
+
+                                        {this.validator.message(
+                                          "PurchaseFrmStorAddress",
+                                          this.state.purchaseFrmStorName[
+                                            "store"
+                                          ],
+                                          "required"
+                                        )}
+                                        {this.state.isStoreSelect === false && (
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.validPurchaseStoreName}
+                                          </p>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-6">
+                                        <input
+                                          type="text"
+                                          className="addmanuallytext1"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .purchasefromstoreaddres
+                                              : "Purchase from Store Addres"
+                                          }
+                                          name="purchaseFrmStorAddress"
+                                          value={this.state.StorAddress.address}
+                                          readOnly
+                                          id="OrdPurchaseData"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="row m-b-10 m-l-10 m-r-10">
+                                      <div className="col-md-3">
+                                        <button
+                                          type="button"
+                                          className="addmanual m-t-15"
+                                          onClick={this.hadleAddManuallyOrderData.bind(
+                                            this
+                                          )}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.save
+                                            : "SAVE"}
+                                        </button>
+                                      </div>
+                                      <div className="col-md-3">
+                                        <button
+                                          type="button"
+                                          className="addmanual m-t-15"
+                                          onClick={this.handleAddOrder.bind(
+                                            this
+                                          )}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.cancel
+                                            : "CANCEL"}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="uploadsearch uploadsearch-space">
+                                    <div className="row">
+                                      <div className="col-md-12 uploadsechmargin">
+                                        <label className="uploadsearch-text">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .noorderfoundwiththisnumber
+                                            : "No order found with this number"}
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-12 uploadsechmargin">
+                                        <button
+                                          type="button"
+                                          className="uploadsearchbtn"
+                                        >
+                                          <label
+                                            className="uploadsearchbtn-text"
+                                            onClick={this.handleAddOrder.bind(
+                                              this
+                                            )}
+                                          >
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .addmanually
+                                              : "ADD MANUALLY"}
+                                          </label>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </CardBody>
+                            </Card>
+                          </Collapse>
                         </div>
-                      ) : null}
-                    </div>
+                        <div className="row m-0 w-100">
+                          <div className="form-group col-md-4">
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.brand
+                                : "Brand"}
+                            </label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-label"
+                              value={this.state.selectBrand}
+                              onChange={this.handleBrandChange}
+                            >
+                              <option value={0}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.select
+                                  : "select"}
+                              </option>
+                              {this.state.brandData !== null &&
+                                this.state.brandData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.brandID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.brandName}
+                                  </option>
+                                ))}
+                            </select>
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.errors["Brand"]}
+                            </p>
+                          </div>
+                          <div className="form-group col-md-4">
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimcategory
+                                : "Claim Category"}
+                            </label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-label"
+                              onChange={this.handleCategoryChange}
+                              value={this.state.list1Value}
+                            >
+                              <option value={0}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.select
+                                  : "select"}
+                              </option>
+                              {this.state.categoryDropData !== null &&
+                                this.state.categoryDropData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.categoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.errors["Category"]}
+                            </p>
+                          </div>
+                          <div className="form-group col-md-4">
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.subcategory
+                                : "Sub Category"}
+                            </label>
+
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-label"
+                              onChange={this.handleSubCatOnChange}
+                              value={this.state.ListOfSubCate}
+                            >
+                              <option value={0}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.select
+                                  : "select"}
+                              </option>
+                              {this.state.SubCategoryDropData !== null &&
+                                this.state.SubCategoryDropData.map(
+                                  (item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.subCategoryID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.subCategoryName}
+                                    </option>
+                                  )
+                                )}
+                            </select>
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.errors["SubCategory"]}
+                            </p>
+                          </div>
+                          <div className="form-group col-md-4">
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.claimtype
+                                : "Claim Type"}
+                            </label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-label"
+                              onChange={this.handleIssueOnChange}
+                              value={this.state.ListOfIssue}
+                            >
+                              <option value={0}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.select
+                                  : "select"}
+                              </option>
+                              {this.state.ListOfIssueData !== null &&
+                                this.state.ListOfIssueData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.issueTypeID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.errors["IssueType"]}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="row m-0">
+                          <div className="form-group col-md-4">
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimaskedfor
+                                : "Claim Asked for %"}
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control textBox"
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.claimpercentage
+                                  : "Claim Percentage"
+                              }
+                              name="claimPercentage"
+                              onKeyUp={this.handlePercentageOnChange}
+                              value={this.state.claimPercentage}
+                              onChange={this.handleOnChange}
+                              autoComplete="off"
+                            />
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.errors["ClaimPercent"]}
+                            </p>
+                          </div>
+                          <div
+                            className="col-md-4"
+                            style={{ marginTop: "44px" }}
+                          >
+                            <input
+                              id="file-upload"
+                              className="d-none file-uploadprofile"
+                              type="file"
+                              accept="image/*"
+                              onChange={this.fileUpload.bind(this)}
+                            />
+                            <label
+                              htmlFor="file-upload"
+                              className=" form-control btn-btn-claim"
+                              style={{ marginTop: "0" }}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.attachproductimage
+                                : "Attach Product Image"}
+                            </label>
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.errors["productImg"]}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="row m-0">
+                          <div className="form-group col-md-4">
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.attachedimage
+                                : "Attached Image"}
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-12">
+                          {this.state.imageUrl ? (
+                            <img
+                              src={this.state.imageUrl}
+                              alt="Bata"
+                              className="batashoes"
+                            />
+                          ) : null}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
-                <div className="card card-radius2" style={{ padding: "20px" }}>
-                  <label>
-                    <b>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.b.customername
-                        : "CUSTOMER NAME"}
-                    </b>
-                  </label>
+              {this.state.showClaimUI ? (
+                <>
+                  <div className="col-md-3">
+                    <div
+                      className="card card-radius2"
+                      style={{ padding: "20px" }}
+                    >
+                      <label>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.customername
+                            : "CUSTOMER NAME"}
+                        </b>
+                      </label>
 
-                  <label>
-                    {customerData.customerName ? (
-                      <span className="a">
-                        {customerData.customerName.charAt(0).toUpperCase()}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                    {customerData.customerName}
-                  </label>
-                  <br />
-                  <label>
-                    <b>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.b.phonenumber
-                        : "PHONE NUMBER"}
-                    </b>
-                  </label>
-                  <label>{customerData.customerPhoneNumber}</label>
-                  <br />
-                  <label>
-                    <b>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.b.alternatenumber
-                        : "ALTERNATE NUMBER"}
-                    </b>
-                  </label>
-                  <label>{customerData.altNumber}</label>
-                  <br />
-                  <label>
-                    <b>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.b.email
-                        : "EMAIL"}
-                    </b>
-                  </label>
-                  <label>{customerData.customerEmailId}</label>
-                  <br />
-                  <label>
-                    <b>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.b.alternateemail
-                        : "ALTERNATE EMAIL"}
-                    </b>
-                  </label>
-                  <label>{customerData.altEmailID}</label>
-                  <br />
-                  <label>
-                    <b>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.b.gender
-                        : "GENDER"}
-                    </b>
-                  </label>
-                  {this.state.ticketId > 0 ? (
-                    <label>{customerData.gender}</label>
-                  ) : (
-                    <label>
-                      {customerData.genderID == 1
-                        ? "MALE"
-                        : customerData.genderID == 2
-                        ? "FEMALE"
-                        : "OTHER"}
-                    </label>
-                  )}
-                  <br />
-                </div>
-              </div>
+                      <label>
+                        {customerData.customerName ? (
+                          <span className="a">
+                            {customerData.customerName.charAt(0).toUpperCase()}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                        {customerData.customerName}
+                      </label>
+                      <br />
+                      <label>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.phonenumber
+                            : "PHONE NUMBER"}
+                        </b>
+                      </label>
+                      <label>{customerData.customerPhoneNumber}</label>
+                      <br />
+                      <label>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.alternatenumber
+                            : "ALTERNATE NUMBER"}
+                        </b>
+                      </label>
+                      <label>{customerData.altNumber}</label>
+                      <br />
+                      <label>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.email
+                            : "EMAIL"}
+                        </b>
+                      </label>
+                      <label>{customerData.customerEmailId}</label>
+                      <br />
+                      <label>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.alternateemail
+                            : "ALTERNATE EMAIL"}
+                        </b>
+                      </label>
+                      <label>{customerData.altEmailID}</label>
+                      <br />
+                      <label>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.b.gender
+                            : "GENDER"}
+                        </b>
+                      </label>
+                      {this.state.ticketId > 0 ? (
+                        <label>{customerData.gender}</label>
+                      ) : (
+                        <label>
+                          {customerData.genderID == 1
+                            ? "MALE"
+                            : customerData.genderID == 2
+                            ? "FEMALE"
+                            : "OTHER"}
+                        </label>
+                      )}
+                      <br />
+                    </div>
+                  </div>
+                </>
+              ) : null}
             </div>
           </div>
         </div>

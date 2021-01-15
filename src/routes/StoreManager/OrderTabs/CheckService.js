@@ -128,16 +128,16 @@ class CheckService extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <>
-        <div className="check-svr">
+        <div className="check-svr mobcheck">
           <div className="row m-b-10 mx-0">
-            <div className="col-5">
+            <div className="col-12 col-md-5">
               <label className="naman">
                 {TranslationContext !== undefined
                   ? TranslationContext.label.storepincode
                   : "Store Pin Code"}
               </label>
             </div>
-            <div className="col-md-6 col-7">
+            <div className="col-12 col-md-7">
               <input
                 type="text"
                 className="txt-1"
@@ -148,14 +148,14 @@ class CheckService extends Component {
             </div>
           </div>
           <div className="row mx-0">
-            <div className="col-5">
+            <div className="col-12 col-md-5">
               <label className="naman">
                 {TranslationContext !== undefined
                   ? TranslationContext.label.enterpincode
                   : "Enter Pin Code"}
               </label>
             </div>
-            <div className="col-md-6 col-7">
+            <div className="col-12 col-md-7">
               <input
                 type="text"
                 className="txt-1"
@@ -183,18 +183,22 @@ class CheckService extends Component {
             </div>
           </div>
 
-          <button
-            className={
-              this.state.btnSubmitData
-                ? "check-svcBtn order-grid-btn-disable"
-                : "check-svcBtn"
-            }
-            onClick={this.handleUpdateCheckServiceData.bind(this)}
-          >
-            {TranslationContext !== undefined
-              ? TranslationContext.button.submit
-              : "Submit"}
-          </button>
+          <div className="row mx-0">
+            <div className="Col-12 col-md-12 btor">
+              <button
+              className={
+                this.state.btnSubmitData
+                  ? "check-svcBtn order-grid-btn-disable"
+                  : "check-svcBtn"
+              }
+              onClick={this.handleUpdateCheckServiceData.bind(this)}
+            >
+              {TranslationContext !== undefined
+                ? TranslationContext.button.submit
+                : "Submit"}
+            </button>
+            </div>
+          </div>
         </div>
       </>
     );

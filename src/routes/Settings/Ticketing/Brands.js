@@ -325,7 +325,6 @@ class Brands extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "brandCode") {
       if (
         this.state.sbrandNameFilterCheckbox !== "" ||
@@ -484,7 +483,6 @@ class Brands extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-
     var sbrandCodeFilterCheckbox = this.state.sbrandCodeFilterCheckbox;
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var screated_ByFilterCheckbox = this.state.screated_ByFilterCheckbox;
@@ -695,7 +693,6 @@ class Brands extends Component {
     this.setState({
       tempbrandData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
   handleBrandOnchange = (e) => {
     this.setState({
@@ -742,7 +739,6 @@ class Brands extends Component {
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
-
         if (status === "Success") {
           self.setState({
             brandData: data,
@@ -987,7 +983,6 @@ class Brands extends Component {
 
   filteTextChange(e) {
     this.setState({ filterTxtValue: e.target.value });
-
     if (this.state.sortColumn === "brandCode") {
       var sortFilterBrandCode = matchSorter(
         this.state.sortBrandCode,
@@ -1055,7 +1050,6 @@ class Brands extends Component {
     const { brandData } = this.state;
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}

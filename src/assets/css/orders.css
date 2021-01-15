@@ -41,6 +41,20 @@
 .orders-tab-cont {
   padding: 12px 16px;
 }
+.orddropdown {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding-right: 40px;
+  background: #ecf2f4
+    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAICAYAAAAiJnXPAAAAcElEQVR4nJXPMQrCUBBF0TNGhTTRbVho4f43IQlkGyEIsVIL/w/ykQRvM/DgzpsJVNjgZZ3Ac4sdTqhXxMCEPlJwxAX7BemBDkN8hQ3OqbFkwg13Pr9kRrRpY9nQZqGUfolZGBfOnjngmuZflFfMvAHCTRZc4oUWEgAAAABJRU5ErkJggg==)
+    no-repeat right 12px center;
+  border: none;
+  cursor: pointer;
+}
 /* order tabs ends */
 
 /* shopping bag starts */
@@ -119,7 +133,7 @@
 }
 .order-popover-table .ant-popover-inner-content {
   padding: 0;
-  width: 425px;
+  width: 530px;
 }
 .order-popover-table .ant-popover-inner {
   overflow: hidden;
@@ -229,7 +243,7 @@
   padding-right: 10px;
 }
 .shopping-popover-cancel {
-  width: 280px;
+  width: 330px;
 }
 .shopping-popover-cancel .ant-popover-inner-content {
   padding-top: 15px;
@@ -241,6 +255,19 @@
 }
 .username-mar {
   margin-right: 10px;
+}
+.ordDisply {
+  display: contents;
+}
+.ordDisply select {
+  font-size: 12px !important;
+  color: #4a4a4a !important;
+  width: 17% !important;
+  cursor: pointer;
+  margin-right: 15px !important;
+}
+.ordDisply label {
+  margin-right: 7px;
 }
 /* shopping bag ends */
 
@@ -455,8 +482,9 @@
   border-radius: 8px 8px 4px 4px;
 }
 .order-popover-table-big .ant-popover-inner-content {
-  width: 560px;
+  width: 638px;
 }
+
 .order-popover-table-big .antd-table-order .ant-table-thead > tr > th,
 .order-popover-table-big .antd-table-order .ant-table-tbody > tr > td {
   width: 100%;
@@ -494,6 +522,18 @@
 .order-status-header .ant-table-filter-icon {
   width: 8px !important;
   left: 60px;
+}
+.ordSelfPick-status-header .ant-table-filter-icon::before {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid #4a4a4a;
+  transform: none;
+}
+.ordSelfPick-status-header .ant-table-filter-icon {
+  width: 8px !important;
+  left: 75px;
 }
 .order-popover-butns .ant-popover-inner-content {
   padding: 20px 30px;
@@ -692,6 +732,7 @@
 }
 .order-bill-no {
   max-width: 100px;
+  display: inline-block;
 }
 /* order ends */
 
@@ -701,9 +742,9 @@
 .shipment-table-popup .ant-table-row-cell-last .ant-table-header-column {
   width: 100%;
 }
-.shipment-status-popover .username-mar {
+/* .shipment-status-popover .username-mar {
   flex: 0 0 40%;
-}
+} */
 .shipment-status-popover div {
   margin-bottom: 5px;
 }
@@ -978,8 +1019,10 @@
     > .ant-popover-arrow {
     margin-left: -17px;
   }
+
   .order-bill-no {
     max-width: 100px;
+    /* display: contents; */
   }
   /* order ends */
 
@@ -1024,7 +1067,162 @@
   }
 
   .ship-mar-bot {
-    margin-bottom: 15px;
+    margin-bottom: 70px;
+  }
+  .getAddressMdlMobile {
+    padding: 10px 0 10px 0px !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+    animation: animatebottom 0.6s;
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+  }
+  @keyframes animatebottom {
+    from {
+      bottom: -300px;
+      opacity: 0;
+    }
+    to {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+  #ordmdl-ovrly {
+    padding: 70px 0px 0 0;
+    background-color: rgba(77, 92, 116, 0.2);
+    z-index: 10000;
+  }
+  .getAddressMdlMobile .closemob {
+    display: block !important;
+    width: 25%;
+    margin: 0 auto 20px;
+    border: 2px solid #eaeaea;
+    border-radius: 15px;
+  }
+  .padding-divMobile {
+    padding: 20px 40px;
+  }
+  .padding-divMobile input[type="text"] {
+    color: #f9f9f9;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 16px;
+    background: #eaeaea;
+    border-radius: 4px;
+    border: 0;
+    width: 100%;
+    margin-bottom: 10px;
+    color: #000000;
+  }
+  .mobileAddress {
+    color: #f9f9f9;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 16px;
+    background: #eaeaea;
+    border-radius: 4px;
+    border: 0;
+    width: 100%;
+    resize: none;
+    display: block;
+    margin-bottom: 10px;
+    color: #000000;
+  }
+  .mobileProceedOrd {
+    font-size: 18px;
+    white-space: nowrap;
+    padding: 4px 10px !important;
+    border-radius: 3px;
+    width: 100%;
+    text-transform: none;
+    cursor: pointer;
+    background: #ff8c3f;
+    border-color: #ff8c3f;
+    margin-top: 25px;
+    color: #ffff;
+  }
+  .ordShopCanl {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .shopbag .react-pagination-js-bootstrap .pageElli {
+    padding: 0 2px !important;
+  }
+  .ordertab .react-pagination-js-bootstrap .pageElli {
+    padding: 0 2px !important;
+  }
+  .shipmo .react-pagination-js-bootstrap .pageElli {
+    padding: 0 2px !important;
+  }
+  .shipassign .react-pagination-js-bootstrap .pageElli {
+    padding: 0 2px !important;
+  }
+  .shopbag .react-pagination-js-bootstrap .page {
+    padding: 0 10px !important;
+  }
+  .ordertab .react-pagination-js-bootstrap .page {
+    padding: 0 10px !important;
+  }
+  .shipmo .react-pagination-js-bootstrap .page {
+    padding: 0 10px !important;
+  }
+  .shipassign .react-pagination-js-bootstrap .page {
+    padding: 0 10px !important;
+  }
+  #ordShopCancelModal {
+    width: auto;
+    border-radius: 10px;
+    height: 280px;
+  }
+  .shopCancel textarea {
+    height: 130px;
+    resize: none;
+    display: block;
+    color: #4a4a4a;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 16px;
+    background: #ecf2f4;
+    border-radius: 4px;
+    border: 0;
+    width: 100%;
+    margin: 10px 0 15px;
+  }
+  .shopRemoveBtn {
+    width: 130px;
+    background-color: #2561a8;
+    border-radius: 5px;
+    height: 30px;
+    font-size: 13px;
+    border: 0;
+    text-shadow: none;
+    box-shadow: none;
+    text-transform: none;
+    margin-left: 15px;
+    line-height: 10px;
+  }
+  .shopCancelBtnOrd {
+    width: 90px;
+    border-radius: 5px;
+    height: 30px;
+    font-size: 13px;
+    border: 1px solid #2561a8;
+    text-shadow: none;
+    box-shadow: none;
+    color: #2561a8;
+    background: #fff;
+    margin-left: 0;
+    text-transform: none;
+    line-height: 10px;
+  }
+  .ordShopbtnDiv {
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  .ordShopDivLbl {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
@@ -1064,6 +1262,7 @@
     > td:nth-child(2) {
     width: 120px !important;
   }
+
   .order-popover-table-big.ant-popover-placement-bottom
     > .ant-popover-content
     > .ant-popover-arrow {
@@ -1181,6 +1380,7 @@
     padding-right: 15px;
     padding-left: 22px;
   }
+
   .order-popover-table.order-popover-table-big
     .ant-table-thead
     > tr
@@ -1235,3 +1435,393 @@
 }
 
 /* responsive ends */
+.ordMainhtml {
+  background: #ffff;
+  border-radius: 0px;
+  border: 0.5px solid #1c1a1a;
+  margin-top: 5px;
+  padding: 15px;
+  width: 80%;
+  margin-left: 80px;
+}
+.ord2tbl {
+  background: #ffff;
+  border-radius: 0px;
+  border: 0.5px solid #1c1a1a;
+  padding: 20px 0px 20px 25px;
+}
+.ord3tbl {
+  background: #ffff;
+  border-radius: 0px;
+  border: 0.5px solid #1c1a1a;
+  padding: 0px 0px 0px 25px;
+  margin-top: 18px;
+}
+.ord4tbl {
+  background: #ffff;
+  border-radius: 0px;
+  border: 0.5px solid #1c1a1a;
+  margin-top: 18px;
+}
+.ordWidth {
+  width: 100%;
+}
+.ordRow {
+  display: flex;
+  flex-wrap: wrap;
+}
+.ordMl {
+  margin-left: 3px;
+}
+.ordShipdt {
+  display: contents;
+  font-weight: 700;
+}
+.ordMtb {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.ordMtb label {
+  font-weight: 700;
+}
+label p {
+  display: contents;
+}
+.ordLeftMb {
+  margin-bottom: 8px;
+}
+.ord3tbl label {
+  display: block;
+  font-weight: 500;
+}
+.ordFw {
+  font-weight: 800 !important;
+}
+.ord4tbl table thead tr {
+  background-color: #fff !important;
+}
+.ord4tbl table tr th:last-child {
+  float: none;
+  text-align: center;
+}
+.ord4tbl table tbody tr {
+  border-bottom: 1px solid #000;
+}
+.ord4tbl .table-bordered td,
+.table-bordered th {
+  border: 1px solid rgb(19, 3, 3);
+}
+.ord4tbl .table-bordered th {
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+}
+.ord4tbl .table-bordered td {
+  color: #000;
+  font-weight: 500;
+}
+.ord4tbl .table-bordered thead td,
+.table-bordered thead th {
+  border-bottom-width: 0;
+}
+.ord4tbl table td,
+.ord4tbl table th {
+  padding: 10px 15px;
+}
+.ord4tbl table tbody tr td:nth-child(3) {
+  text-align: right;
+}
+.ord4tbl table tbody tr td:nth-child(4) {
+  text-align: center;
+}
+.ordShipLabel {
+  display: block;
+}
+.txtRight {
+  text-align: right;
+  right: 20px;
+}
+.custStoreMt {
+  margin-top: -12px;
+  margin-bottom: 10px;
+}
+.shipFsw {
+  font-size: 20px;
+  font-weight: bolder;
+}
+.requstId {
+  text-align: right;
+  margin-right: -20px;
+}
+.ordTbltotal {
+  font-weight: 600;
+  font-size: 15px;
+}
+.ordTblDiv {
+  text-align: right;
+}
+.btnTA {
+  text-align: right;
+  margin-top: 20px;
+}
+.btnPrintLbl {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 30%;
+  height: 43px;
+  cursor: pointer;
+  color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
+}
+.ord-mr-15 {
+  margin-right: 15px;
+}
+.ord-mr-60 {
+  margin-right: 50px;
+}
+.ordbrdLbl {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+  padding: 8px;
+  width: 100%;
+  border-color: #ddd9d9;
+}
+.ordTxtwrap {
+  width: 200px;
+  overflow-wrap: break-word;
+  white-space: break-spaces;
+}
+.ordTxtAlign {
+  text-align: initial;
+}
+.pod-pophover {
+  width: 250px !important;
+}
+.podFilBtn {
+  height: 35px;
+  padding: 0px 0px 0px 0px !important;
+}
+.Podfilter {
+  padding: 5px 0px !important;
+}
+.Poddown-excel {
+  text-align: right;
+}
+.Poddown-excel p {
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 10px;
+  display: inline;
+}
+.shipItemtlTp {
+  /* max-width: 100px; */
+  display: inherit;
+}
+.ordShopI {
+  width: 100%;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+.ordDateShop {
+  color: #605e5e;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 14px;
+  text-align: left;
+  display: inline-block;
+  padding-left: 30px;
+}
+.webBotDd {
+  width: 100% !important;
+  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 15px
+    center;
+  background-size: 13px;
+  padding-right: 50px;
+  cursor: pointer;
+  height: calc(2.55rem + 2px);
+  display: block;
+  border-radius: 5px;
+}
+.webBotDd .ant-select-selection {
+  border: 0;
+  box-shadow: none;
+  background: none;
+}
+.webBotDd .ant-select-selection__placeholder,
+.ant-select-search__field__placeholder {
+  line-height: 22px;
+  height: 40px !important;
+  font-size: 14px;
+  margin-top: -4px;
+}
+.webBotDd .ant-select-selection-selected-value {
+  line-height: 40px;
+  font-size: 14px;
+}
+.webBotLbl {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+.wbLbl {
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+.ordCancleimg {
+  float: right;
+  width: 17px;
+  height: 17px;
+  margin: 10px 10px 10px 0px;
+  cursor: pointer;
+}
+#ordItemMdlDrag {
+  top: "50%";
+  left: "50%";
+  right: "auto";
+  bottom: "auto";
+  margin-right: "-50%";
+  transform: "translate(-50%, -50%)";
+}
+
+.ordItheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #e5e9ed;
+  color: #4a4a4a;
+  font-weight: bold;
+  border-radius: 5px;
+}
+.itmDb {
+  display: none;
+}
+.ordItmData {
+  position: absolute;
+  z-index: 9;
+  background-color: #fff;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
+  width: 610px;
+  border-radius: 5px;
+}
+
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -50px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0px;
+    opacity: 1;
+  }
+}
+@keyframes animatebottom {
+  from {
+    bottom: -50px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+.lblCloseOrd {
+  font-weight: 600;
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  z-index: 6;
+  cursor: pointer;
+}
+.ordItmCancle {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  left: 535px;
+  bottom: 1px;
+  cursor: pointer;
+  top: 7px;
+}
+.ordImgWrd {
+  width: 190px;
+  word-break: break-all;
+}
+.itemOrdImg {
+  width: 60px;
+  height: 80px;
+}
+.skuIdLbl {
+  width: 60px;
+  word-break: break-all;
+}
+.OrdItem {
+  display: none;
+}
+.ordItmDis {
+  display: none;
+}
+.webBotDd input,
+.webBotDd select {
+  padding: 0 !important;
+}
+.dropDrownSpace input {
+  padding: 11px 9px;
+}
+.pickupDate .ant-calendar-picker {
+  width: 165px;
+}
+.ordcnclimg {
+  width: 19px;
+  height: 19px;
+  z-index: 6;
+  position: absolute;
+  right: 2px;
+  top: 13px;
+  cursor: pointer;
+}
+.shopBagAblQty {
+  background: #fff url("./../Images/table-arr.png") no-repeat right 8px center !important;
+  background-size: 9px !important;
+  margin: 0 !important;
+  border: 1px solid #d6d3d3 !important;
+  border-radius: 4px !important;
+  height: 33px;
+  padding: 7px 18px 8px 8px !important;
+  width: 44px;
+  cursor: pointer;
+}
+.btn-updateShopBg {
+  background-color: #2561a8;
+  border: 0px solid #2561a8;
+  border-radius: 3px;
+  min-width: 70px;
+  height: 25px;
+  color: #ffff;
+  font-family: Lato;
+  font-size: 14px;
+  line-height: 7px;
+  text-align: center;
+  text-transform: none;
+  cursor: pointer;
+  float: right;
+}
+.popShpBagDiv {
+  padding: 10px 15px 10px 15px;
+}
+.editShippingTemp {
+  width: 350px;
+  min-width: 350px;
+  box-shadow: 0 0 15px 0 #ddd;
+}

@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
@@ -190,16 +190,12 @@ class StoreMaster extends Component {
         const formData = new FormData();
 
         formData.append("file", this.state.fileN[0]);
-        // this.setState({ showProgress: true });
+
         axios({
           method: "post",
           url: config.apiUrl + "/Store/BulkUploadStore",
           headers: authHeader(),
           data: formData,
-          // onUploadProgress: (ev = ProgressEvent) => {
-          //   const progress = (ev.loaded / ev.total) * 100;
-          //   this.updateUploadProgress(Math.round(progress));
-          // }
         })
           .then(function(res) {
             let status = res.data.message;
@@ -219,9 +215,6 @@ class StoreMaster extends Component {
             } else {
               self.setState({
                 bulkuploadLoading: false,
-                // showProgress: false,
-                // isFileUploadFail: true,
-                // progressValue: 0
               });
               NotificationManager.error(
                 TranslationContext !== undefined
@@ -1608,9 +1601,11 @@ class StoreMaster extends Component {
         }
       }
     }
+
     this.setState({
       tempstoreData: itemsArray,
     });
+    // this.StatusCloseModel();
   };
 
   handleGetStoreMasterData() {
@@ -2404,6 +2399,7 @@ class StoreMaster extends Component {
     if ((name = "state_ID")) {
       this.handleGetCityList(value);
     }
+    // Email validation
     if (name === "email_") {
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value == "") {
@@ -2660,7 +2656,6 @@ class StoreMaster extends Component {
               </a>
               <div className="filter-type">
                 <p>
-                  {" "}
                   {TranslationContext !== undefined
                     ? TranslationContext.p.filterbytype
                     : "FILTER BY TYPE"}
@@ -3360,7 +3355,6 @@ class StoreMaster extends Component {
                                           </p>
                                           <div className="del-can">
                                             <a href={Demo.BLANK_LINK}>
-                                              {" "}
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.a.cancel
                                                 : "CANCEL"}
@@ -3549,7 +3543,6 @@ class StoreMaster extends Component {
                         onChange={this.handleCityChange}
                       >
                         <option value="0">
-                          {" "}
                           {TranslationContext !== undefined
                             ? TranslationContext.option.select
                             : "Select"}
@@ -3908,7 +3901,6 @@ class StoreMaster extends Component {
                                   </p>
                                   <div className="del-can">
                                     <a href={Demo.BLANK_LINK}>
-                                      {" "}
                                       {TranslationContext !== undefined
                                         ? TranslationContext.a.cancel
                                         : "CANCEL"}
@@ -4005,7 +3997,6 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="div-padding-1">
                     <label className="edit-label-1">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.label.brand
                         : "Brand"}
@@ -4019,10 +4010,8 @@ class StoreMaster extends Component {
                           ? TranslationContext.placeholder.select
                           : "Select"
                       }
-                      // menuIsOpen={true}
                       name="brand_IDs"
                       closeMenuOnSelect={false}
-                      // onChange={e => {setBrand(e)}}
                       onChange={this.handleModalBrandChange}
                       value={this.state.modalSelectedBrand}
                       showNewOptionAtTop={false}
@@ -4038,7 +4027,6 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.label.storecode
                         : "Store Code"}
@@ -4193,7 +4181,6 @@ class StoreMaster extends Component {
                 <div className="col-md-6">
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.label.status
                         : "Status"}
@@ -4310,7 +4297,6 @@ class StoreMaster extends Component {
                       onChange={this.handleModalEditData}
                     >
                       <option value={0}>
-                        {" "}
                         {TranslationContext !== undefined
                           ? TranslationContext.option.select
                           : "Select"}
@@ -4383,7 +4369,10 @@ class StoreMaster extends Component {
                     />
                     {this.state.EditPhoneFlag === false && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
-                        Please enter valid Phone Number.
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .pleaseentervalidphonenumber
+                          : "Please enter valid Phone Number."}
                       </p>
                     )}
                     {this.state.userEditData.phoneNumber_ === "" && (

@@ -65,9 +65,8 @@ class BlockEmail extends Component {
       this.state.translateLanguage = {};
     }
   }
-
+  /// add new mail id
   AddNewEmailID = () => {
-    
     this.setState({
       AddBlockEmailPopup: true,
       errors: {},
@@ -76,11 +75,11 @@ class BlockEmail extends Component {
       Reason: "",
     });
   };
-
+  /// closed mail
   handleAddEmailClose = () => {
     this.setState({ AddBlockEmailPopup: false });
   };
-
+  /// vaidation function
   handleValidation() {
     const TranslationContext = this.state.translateLanguage.default;
     let errors = this.state.errors;
@@ -115,7 +114,7 @@ class BlockEmail extends Component {
     this.setState({ errors: errors });
     return formIsValid;
   }
-
+  /// handle get block mail list
   handleBlockEmailList = () => {
     let self = this;
     this.setState({ loading: true });
@@ -125,7 +124,6 @@ class BlockEmail extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        
         var status = res.data.message;
         var data = res.data.responseData;
         if (status === "Success") {
@@ -195,11 +193,11 @@ class BlockEmail extends Component {
         console.log(data);
       });
   };
-
+  /// handle onchange
   handleChange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
-
+  //// save block mail data
   handleSaveBlockEmail = () => {
     const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
@@ -239,7 +237,7 @@ class BlockEmail extends Component {
     this.state.Reason = row["reason"];
     this.setState({ AddBlockEmailPopup: true, errors: {} });
   }
-
+  //// update mail data
   handleUpdateBlockEmail = () => {
     const TranslationContext = this.state.translateLanguage.default;
     if (this.handleValidation()) {
@@ -285,7 +283,6 @@ class BlockEmail extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        
         if (res.data.message === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -302,7 +299,6 @@ class BlockEmail extends Component {
       });
   }
   sortStatusZtoA() {
-    
     var itemsArray = [];
     itemsArray = this.state.BlockEmailData;
 
@@ -345,8 +341,6 @@ class BlockEmail extends Component {
   }
 
   sortStatusAtoZ() {
-    
-
     var itemsArray = [];
     itemsArray = this.state.BlockEmailData;
 
@@ -389,8 +383,6 @@ class BlockEmail extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    
-
     var itemsArray = [];
 
     var semailIDFilterCheckbox = this.state.semailIDFilterCheckbox;
@@ -595,11 +587,9 @@ class BlockEmail extends Component {
     this.setState({
       tempdatablockemail: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   StatusCloseModel() {
-    
     if (this.state.tempdatablockemail.length > 0) {
       this.setState({
         StatusModel: false,
@@ -659,7 +649,6 @@ class BlockEmail extends Component {
     }
   }
   StatusOpenModel(data, header) {
-    
     if (
       this.state.sortFilteremailID.length === 0 ||
       this.state.sortFilterreason.length === 0 ||
@@ -761,7 +750,6 @@ class BlockEmail extends Component {
   }
 
   filteTextChange(e) {
-    
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "emailID") {
       var sortFilteremailID = matchSorter(
@@ -1129,7 +1117,6 @@ class BlockEmail extends Component {
                     {TranslationContext !== undefined
                       ? TranslationContext.label.save
                       : "SAVE"}
-                   
                   </button>
                 </div>
               </div>
@@ -1223,7 +1210,6 @@ class BlockEmail extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-
                         accessor: "blockedBy",
                         sortable: false,
                         Cell: (row) => {

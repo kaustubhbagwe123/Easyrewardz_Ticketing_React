@@ -146,12 +146,7 @@ class TicketingLanguageSelection extends Component {
           <div className="card">
             <div className="card-body text-center">
               <div className="mb-4">
-                <img
-                  src={Logo}
-                  alt="logo"
-                  className="main-logo"
-                  style={{ width: "210px" }}
-                />
+                <img src={Logo} alt="logo" className="main-logo initial-logo" />
               </div>
               <label
                 className="sign-in"

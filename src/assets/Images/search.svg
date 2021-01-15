@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 8</title>
+    <g id="New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-1669.000000, -369.000000)">
+            <g id="Group-8" transform="translate(1669.000000, 369.000000)">
+                <g id="Group-3" fill="#FFFFFF">
+                    <circle id="Oval" cx="17" cy="17" r="17"></circle>
+                </g>
+                <g id="Group" transform="translate(6.000000, 6.000000)">
+                    <polygon id="Path" points="0 0 21 0 21 21 0 21"></polygon>
+                    <path d="M9.625,1.75 C13.972,1.75 17.5,5.278 17.5,9.625 C17.5,13.972 13.972,17.5 9.625,17.5 C5.278,17.5 1.75,13.972 1.75,9.625 C1.75,5.278 5.278,1.75 9.625,1.75 Z M9.625,15.75 C13.008625,15.75 15.75,13.008625 15.75,9.625 C15.75,6.2405 13.008625,3.5 9.625,3.5 C6.2405,3.5 3.5,6.2405 3.5,9.625 C3.5,13.008625 6.2405,15.75 9.625,15.75 Z M17.049375,15.812125 L19.52475,18.286625 L18.286625,19.52475 L15.812125,17.049375 L17.049375,15.812125 L17.049375,15.812125 Z" id="Shape" fill="#000000" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

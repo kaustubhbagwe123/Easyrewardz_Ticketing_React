@@ -23,11 +23,12 @@ class ChatSettings extends Component {
     super(props);
 
     this.state = {
-      chatSessionValue: "",
-      chatSessionDuration: "M",
+      agentChatSessionDuration: "M",
+      agentChatSessionValue: "",
       chatDisplayValue: "",
       chatDisplayDurationHour: "D",
-      isChatSessionValue: "",
+      isAgentChatSessionValue: "",
+      isCustomerChatSessionValue: "",
       isChatDisplayValue: "",
       programCode: "",
       translateLanguage: {},
@@ -63,10 +64,25 @@ class ChatSettings extends Component {
       isPaymentLinkTabActive: false,
       isCustomerProfile: false,
       isCustomerProduct: false,
+      customerChatSessionValue: "",
+      customerChatSessionDuration: "M",
+      cardSearchStoreCode: false,
+      // isgrammarlyCheck:false
     };
   }
 
   componentDidMount() {
+    if (window.localStorage.getItem("module")) {
+      var moduleData = JSON.parse(window.localStorage.getItem("module"));
+      if (moduleData) {
+        var campModule = moduleData.filter(
+          (x) => x.moduleName === "Settings" && x.modulestatus === true
+        );
+        if (campModule.length === 0) {
+          this.props.history.push("/store/404notfound");
+        }
+      }
+    }
     this.handleGetChatSession();
     this.handleGetCardConfiguration();
     this.handleGetCardImageApproval();
@@ -80,22 +96,24 @@ class ChatSettings extends Component {
     }
   }
 
-  ////handle get chat session
+  //handle get chat session
   handleGetChatSession() {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/GetChatSession",
+      // url: config.apiUrl + "/CustomerChat/GetChatSession",
+      url: config.apiUrl + "/CustomerChat/GetChatSessionNew",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
 
         if (message === "Success" && data) {
+          window.localStorage.setItem("ChatSession", JSON.stringify(data));
           self.setState({
-            chatSessionValue: data.chatSessionValue,
-            chatSessionDuration: data.chatSessionDuration,
+            agentChatSessionDuration: data.agentChatSessionDuration,
+            agentChatSessionValue: data.agentChatSessionValue,
             chatDisplayValue: data.chatDisplayValue,
             chatDisplayDurationHour: data.chatDisplayDuration,
             programCode: data.programCode,
@@ -107,11 +125,17 @@ class ChatSettings extends Component {
             isPaymentLinkTabActive: data.paymentLink,
             isCustomerProfile: data.customerProfile,
             isCustomerProduct: data.customerProduct,
+            customerChatSessionDuration: data.customerChatSessionDuration,
+            customerChatSessionValue: data.customerChatSessionValue,
+            cardSearchStoreCode: data.cardSearchStoreCode,
+            // isgrammarlyCheck: data.grammarlyCheck,
           });
         } else {
           self.setState({
-            chatSessionValue: "",
-            chatSessionDuration: "",
+            agentChatSessionDuration: "",
+            agentChatSessionValue: "",
+            customerChatSessionValue: "",
+            customerChatSessionDuration: "",
             chatDisplayValue: "",
             chatDisplayDurationHour: "",
             limitText: "",
@@ -123,21 +147,23 @@ class ChatSettings extends Component {
       });
   }
 
-  ////handle update chate session
+  //handle update chate session
   handleUpdateChatSession() {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (
       this.state.isChatDisplayValue === "" &&
-      this.state.isChatSessionValue === ""
+      this.state.isAgentChatSessionValue === "" &&
+      this.state.isCustomerChatSessionValue === ""
     ) {
       axios({
         method: "post",
-        url: config.apiUrl + "/CustomerChat/UpdateChatSession",
+        // url: config.apiUrl + "/CustomerChat/UpdateChatSession",
+        url: config.apiUrl + "/CustomerChat/UpdateChatSessionNew",
         headers: authHeader(),
         data: {
-          ChatSessionValue: Number(this.state.chatSessionValue),
-          ChatSessionDuration: this.state.chatSessionDuration,
+          CustomerChatSessionValue: Number(this.state.customerChatSessionValue),
+          CustomerChatSessionDuration: this.state.customerChatSessionDuration,
           ChatDisplayValue: Number(this.state.chatDisplayValue),
           ChatDisplayDuration: this.state.chatDisplayDurationHour,
           ChatCharLimit: Number(this.state.limitText),
@@ -148,6 +174,10 @@ class ChatSettings extends Component {
           PaymentLink: this.state.isPaymentLinkTabActive,
           CustomerProfile: this.state.isCustomerProfile,
           CustomerProduct: this.state.isCustomerProduct,
+          AgentChatSessionValue: Number(this.state.agentChatSessionValue),
+          AgentChatSessionDuration: this.state.agentChatSessionDuration,
+          CardSearchStoreCode: this.state.cardSearchStoreCode,
+          // GrammarlyCheck: this.state.isgrammarlyCheck,
         },
       })
         .then((response) => {
@@ -158,6 +188,9 @@ class ChatSettings extends Component {
                 ? TranslationContext.alertmessage.recordupdatedsuccessfully
                 : "Record Updated Successfully"
             );
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           } else {
             NotificationManager.console.error(
               TranslationContext !== undefined
@@ -171,15 +204,24 @@ class ChatSettings extends Component {
         });
     }
   }
-  ////handle submit button
+  //handle submit button
   handleSubmit() {
-    if (this.state.chatSessionValue === "") {
+    if (this.state.agentChatSessionValue === "") {
       this.setState({
-        isChatSessionValue: "Please Enter Value",
+        isAgentChatSessionValue: "Please Enter Value",
       });
     } else {
       this.setState({
-        isChatSessionValue: "",
+        isAgentChatSessionValue: "",
+      });
+    }
+    if (this.state.customerChatSessionValue === "") {
+      this.setState({
+        isCustomerChatSessionValue: "Please Enter Value",
+      });
+    } else {
+      this.setState({
+        isCustomerChatSessionValue: "",
       });
     }
     if (this.state.chatDisplayValue === "") {
@@ -197,7 +239,7 @@ class ChatSettings extends Component {
     }, 10);
   }
 
-  ////handle change textbox
+  //handle change textbox
   handleOnChange(e) {
     const { name, value } = e.target;
     if (!isNaN(value)) {
@@ -206,19 +248,23 @@ class ChatSettings extends Component {
       });
     } else {
       this.setState({
-        [name]: value,
+        [name]: "",
       });
     }
   }
-  ////handle on change drop-dow
-  handleSessionDuration(e) {
-    this.setState({ chatSessionDuration: e });
+  //handle on change drop-dow
+  handleAgentSessionDuration(e) {
+    this.setState({ agentChatSessionDuration: e });
   }
-  ///handle chat display duration hour
+  // handle customer session duration change
+  handleCustomerSessionDuration(e) {
+    this.setState({ customerChatSessionDuration: e });
+  }
+  //handle chat display duration hour
   handleChatDisplayDurationHour(e) {
     this.setState({ chatDisplayDurationHour: e });
   }
-  /////handle chack radio button
+  ///handle chack radio button
   checkModule = (id) => {
     for (let i = 0; i < this.state.cardConfigData.length; i++) {
       if (this.state.cardConfigData[i].cardItemID === id) {
@@ -230,7 +276,7 @@ class ChatSettings extends Component {
       cardConfigData: this.state.cardConfigData,
     });
   };
-  ////handle get card configuration
+  //handle get card configuration
   handleGetCardConfiguration() {
     let self = this;
     axios({
@@ -238,10 +284,19 @@ class ChatSettings extends Component {
       url: config.apiUrl + "/CustomerChat/GetCardConfiguration",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
+          var cardConfigData = {};
+          responseData.forEach((element) => {
+            cardConfigData[element.cardItem] = element.isEnabled;
+          });
+
+          window.localStorage.setItem(
+            "cardConfigData",
+            JSON.stringify(cardConfigData)
+          );
           self.setState({ cardConfigData: responseData });
         } else {
           self.setState({ cardConfigData: [] });
@@ -251,7 +306,7 @@ class ChatSettings extends Component {
         console.log(response, "---handleGetCardConfiguration");
       });
   }
-  ////handle update card item configuration
+  //handle update card item configuration
   handleUpdateCardItemConfiguration() {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -274,7 +329,7 @@ class ChatSettings extends Component {
         DisabledCardItems: disabledCardItems,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -285,6 +340,8 @@ class ChatSettings extends Component {
           );
           self.setState({ isLoadingUpdate: false });
           self.handleGetCardConfiguration();
+          debugger
+          window.location.reload();
         } else {
           self.setState({ isLoadingUpdate: false });
           NotificationManager.error(
@@ -299,7 +356,7 @@ class ChatSettings extends Component {
       });
   }
 
-  ////handle card item insert configuration
+  //handle card item insert configuration
   handleInsertCardItemConfiguration() {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -316,17 +373,20 @@ class ChatSettings extends Component {
           IsEnabled: isEnabled,
         },
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage
-                  .carditemconfigurationaddsuccessfully
+                    .carditemconfigurationaddsuccessfully
                 : "Card item configuration add successfully!"
             );
             self.setState({ isLoadingAdd: false });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
             self.handleGetCardConfiguration();
           } else {
             NotificationManager.error(
@@ -342,7 +402,7 @@ class ChatSettings extends Component {
         });
     }
   }
-  ////handle on change of input fild
+  //handle on change of input fild
   handleOnChangeCardItem = (e) => {
     const { name, value } = e.target;
     this.setState({
@@ -350,7 +410,7 @@ class ChatSettings extends Component {
     });
   };
 
-  ////handle change type
+  //handle change type
   handleTypeChange = (e) => {
     var id = e.target.id;
 
@@ -372,7 +432,7 @@ class ChatSettings extends Component {
     this.setState({ approvalTypeData: this.state.approvalTypeData });
   };
 
-  ////handle get card =image approval
+  //handle get card =image approval
   handleGetCardImageApproval() {
     let self = this;
     axios({
@@ -394,7 +454,7 @@ class ChatSettings extends Component {
       });
   }
 
-  ////handle update card image approval
+  //handle update card image approval
   handleUpdateCardImageApproval() {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -418,6 +478,9 @@ class ChatSettings extends Component {
               ? TranslationContext.alertmessage.recordupdatedsuccessfully
               : "Record Updated Successfully"
           );
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
@@ -432,7 +495,7 @@ class ChatSettings extends Component {
         console.log(response, "---handleGetCardImageApproval");
       });
   }
-  ////handle tab change
+  //handle tab change
   handleTabChange = (lable) => {
     this.setState({
       selectedTab: lable,
@@ -443,7 +506,7 @@ class ChatSettings extends Component {
     }
   };
 
-  ////handle get chat sound list data
+  //handle get chat sound list data
   handleGetChatSoundList = () => {
     let self = this;
     axios({
@@ -464,7 +527,7 @@ class ChatSettings extends Component {
         console.log(response, "---handleGetChatSoundList");
       });
   };
-  ////handle get chat sound notification setting
+  //handle get chat sound notification setting
   handleGetChatSoundNotiSetting = () => {
     let self = this;
     axios({
@@ -476,7 +539,37 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          debugger;
+          var reader = new FileReader();
+          var reader1 = new FileReader();
+          fetch(responseData.newMessageSoundFile).then(function(res) {
+            res.blob().then(function(blob) {
+              reader.addEventListener("loadend", function() {
+                var base64FileData = reader.result.toString();
+                localStorage.setItem(
+                  "newMessageSoundFile",
+                  JSON.stringify(base64FileData)
+                );
+              });
+              reader.readAsDataURL(blob);
+            });
+          });
+
+          fetch(responseData.newChatSoundFile).then(function(res) {
+            res.blob().then(function(blob) {
+              reader1.addEventListener("loadend", function() {
+                var base64FileData = reader1.result.toString();
+                localStorage.setItem(
+                  "newChatSoundFile",
+                  JSON.stringify(base64FileData)
+                );
+              });
+              reader1.readAsDataURL(blob);
+            });
+          });
+          window.localStorage.setItem(
+            "ChatSoundNotiSetting",
+            JSON.stringify(responseData)
+          );
           self.setState({
             newChatSoundID: responseData.newChatSoundID || 0,
             newMessageSoundID: responseData.newMessageSoundID || 0,
@@ -493,7 +586,7 @@ class ChatSettings extends Component {
         console.log(response, "---handleGetChatSoundNotiSetting");
       });
   };
-  ////handle update chat notification settings
+  //handle update chat notification settings
   handleUpdateChatSoundNotiSetting = (isDefualt) => {
     let self = this;
     this.setState({ isloading: true });
@@ -516,9 +609,12 @@ class ChatSettings extends Component {
       .then((response) => {
         var message = response.data.message;
         var responseData = response.data.responseData;
-        debugger;
+
         if (message === "Success" && responseData) {
           NotificationManager.success("Record Updated Successfully");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
           self.handleGetChatSoundNotiSetting();
           self.setState({ isloading: false });
         } else {
@@ -531,7 +627,7 @@ class ChatSettings extends Component {
         self.setState({ isloading: false });
       });
   };
-  ////handle chat assinged volumn change
+  //handle chat assinged volumn change
   handleChatAssingedVolumnChange = (e) => {
     this.setState({
       newChatSoundVolume: e,
@@ -546,9 +642,8 @@ class ChatSettings extends Component {
       Sound1Play.play();
     }
   };
-  ////handle new message volumn change
+  //handle new message volumn change
   handleNewMessageVolumnChange = (e) => {
-    debugger;
     this.setState({ newMessageSoundVolume: e });
     if (Number(this.state.newMessageSoundID)) {
       var soundName = this.state.chatSoundData.filter(
@@ -559,7 +654,7 @@ class ChatSettings extends Component {
       Sound1Play.play();
     }
   };
-  ////handle button click to set css
+  //handle button click to set css
   handleButtonClick = (no) => {
     this.setState({ buttonClickCSS: no });
     if (no === 3) {
@@ -572,7 +667,7 @@ class ChatSettings extends Component {
       this.props.history.push("/store/settings");
     }
   };
-  ////handle sound dropdown change
+  //handle sound dropdown change
   handleSoundDropdownChange = (e) => {
     var value = e.target.value;
     var name = e.target.name;
@@ -583,9 +678,8 @@ class ChatSettings extends Component {
     }
   };
 
-  ////handle notification checkbox change
+  //handle notification checkbox change
   handleNotificationCheckboxChange = (e) => {
-    debugger;
     var name = e.target.name;
     if (name === "isNotiNewChat") {
       this.setState({ isNotiNewChat: e.target.checked });
@@ -594,7 +688,7 @@ class ChatSettings extends Component {
     }
   };
 
-  ////handle reset defualt click
+  //handle reset defualt click
   handleRestDefualtButtonClick = () => {
     var newChatSoundID = 0;
     var newMessageSoundID = 0;
@@ -612,7 +706,7 @@ class ChatSettings extends Component {
       this.handleUpdateChatSoundNotiSetting(true);
     }, 10);
   };
-  ////handle chat tab radio button change
+  //handle chat tab radio button change
   handleRadioButtonChange = (e) => {
     var name = e.target.name;
 
@@ -637,6 +731,12 @@ class ChatSettings extends Component {
     if (name === "isCustomerProduct") {
       this.setState({ isCustomerProduct: e.target.checked });
     }
+    if (name === "cardSearchStoreCode") {
+      this.setState({ cardSearchStoreCode: e.target.checked });
+    }
+    // if (name === "isgrammarlyCheck") {
+    //   this.setState({ isgrammarlyCheck: e.target.checked });
+    // }
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -706,7 +806,7 @@ class ChatSettings extends Component {
                                 placeholder={
                                   TranslationContext !== undefined
                                     ? TranslationContext.placeholder
-                                      .selectprogramcode
+                                        .selectprogramcode
                                     : "Select program code"
                                 }
                                 value={this.state.programCode}
@@ -728,8 +828,8 @@ class ChatSettings extends Component {
                         >
                           <div className="col-md-3">
                             {TranslationContext !== undefined
-                              ? TranslationContext.div.chatsessiontimeout
-                              : "Chat Session Time Out"}
+                              ? TranslationContext.div.agentchatsessiontimeout
+                              : "Agent Chat Session Time Out"}
                           </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
@@ -741,18 +841,84 @@ class ChatSettings extends Component {
                                     ? TranslationContext.placeholder.entervalue
                                     : "Enter value"
                                 }
-                                name="chatSessionValue"
+                                name="agentChatSessionValue"
                                 onChange={this.handleOnChange.bind(this)}
-                                value={this.state.chatSessionValue}
+                                value={this.state.agentChatSessionValue}
                                 maxLength={2}
                               />
                               <Select
                                 showArrow={true}
                                 defaultValue="M"
                                 style={{ marginLeft: "10px" }}
-                                name="chatSessionDuration"
-                                onChange={this.handleSessionDuration.bind(this)}
-                                value={this.state.chatSessionDuration}
+                                name="agentChatSessionDuration"
+                                onChange={this.handleAgentSessionDuration.bind(
+                                  this
+                                )}
+                                value={this.state.agentChatSessionDuration}
+                              >
+                                <Option value="M">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.m
+                                    : "M"}
+                                </Option>
+                                <Option value="H">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.h
+                                    : "H"}
+                                </Option>
+                                <Option value="D">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.d
+                                    : "D"}
+                                </Option>
+                              </Select>
+                              <Popover content={<></>} placement="bottom">
+                                <img
+                                  className="info-icon-cp"
+                                  style={{ visibility: "hidden" }}
+                                  src={BlackInfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div
+                                  .customerchatsessiontimeout
+                              : "Customer Chat Session Time Out"}
+                          </div>
+                          <div className="col-md-3">
+                            <div className="chattxtdivcus">
+                              <input
+                                type="text"
+                                className="chatsetngtxt"
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder.entervalue
+                                    : "Enter value"
+                                }
+                                name="customerChatSessionValue"
+                                onChange={this.handleOnChange.bind(this)}
+                                value={this.state.customerChatSessionValue}
+                                maxLength={2}
+                              />
+                              <Select
+                                showArrow={true}
+                                defaultValue="M"
+                                style={{ marginLeft: "10px" }}
+                                name="customerChatSessionDuration"
+                                onChange={this.handleCustomerSessionDuration.bind(
+                                  this
+                                )}
+                                value={this.state.customerChatSessionDuration}
                               >
                                 <Option value="M">
                                   {TranslationContext !== undefined
@@ -776,7 +942,7 @@ class ChatSettings extends Component {
                                     {" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.content
-                                        .howmanydaystoshowchathistory
+                                          .howmanydaystoshowchathistory
                                       : "How many days to show chat history."}
                                   </>
                                 }
@@ -849,7 +1015,7 @@ class ChatSettings extends Component {
                                   <>
                                     {TranslationContext !== undefined
                                       ? TranslationContext.content
-                                        .howmanydaystoshowchathistory
+                                          .howmanydaystoshowchathistory
                                       : "How many days to show chat history."}
                                   </>
                                 }
@@ -874,7 +1040,7 @@ class ChatSettings extends Component {
                           <div className="col-md-3">
                             {TranslationContext !== undefined
                               ? TranslationContext.div
-                                .setlimittypeboxofchatwindow
+                                  .setlimittypeboxofchatwindow
                               : "Set Limit Type box of Chat Window"}
                           </div>
                           <div className="col-md-3">
@@ -889,7 +1055,7 @@ class ChatSettings extends Component {
                               name="limitText"
                               onChange={this.handleOnChange.bind(this)}
                               value={this.state.limitText}
-                            // maxLength={3}
+                              // maxLength={3}
                             />
                           </div>
                           <div className="col-md-3"></div>
@@ -992,7 +1158,7 @@ class ChatSettings extends Component {
                           <div className="col-md-3">
                             Card Tab in Chat Window
                           </div>
-                          <div className="col-md-3">
+                          <div className="col-md-1">
                             <div className="module-switch crm-margin-div crm-padding-div">
                               <div className="switch switch-primary d-inline m-r-10">
                                 <input
@@ -1011,8 +1177,28 @@ class ChatSettings extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="col-md-3"></div>
-                          <div className="col-md-3"></div>
+                          <div className="col-md-3">
+                            Card Search With Store Code
+                          </div>
+                          <div className="col-md-5">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="cardSearchStoreCode"
+                                  name="cardSearchStoreCode"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.cardSearchStoreCode}
+                                />
+                                <label
+                                  htmlFor="cardSearchStoreCode"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         <div
                           className="row"
@@ -1103,6 +1289,33 @@ class ChatSettings extends Component {
                           <div className="col-md-3"></div>
                           <div className="col-md-3"></div>
                         </div>
+                        {/* <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">Grammarly Check</div>
+                          <div className="col-md-3">
+                            <div className="module-switch crm-margin-div crm-padding-div">
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id="isgrammarlyCheck"
+                                  name="isgrammarlyCheck"
+                                  onChange={this.handleRadioButtonChange.bind(
+                                    this
+                                  )}
+                                  checked={this.state.isgrammarlyCheck}
+                                />
+                                <label
+                                  htmlFor="isgrammarlyCheck"
+                                  className="cr cr-float-right"
+                                ></label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div> */}
 
                         <div
                           className="row"
@@ -1150,73 +1363,7 @@ class ChatSettings extends Component {
                                   ? TranslationContext.h3.charditemconfiguration
                                   : "CARD ITEM CONFIGURATION"}
                               </h3>
-                              {/* <div className="cmpaign-channel-table slot-setting-options">
-                                <div className="w-100">
-                                  <input
-                                    type="text"
-                                    placeholder="Enter the name"
-                                    style={{ width: "100%" }}
-                                    name="cardConfigName"
-                                    onChange={this.handleOnChangeCardItem.bind(
-                                      this
-                                    )}
-                                    value={this.state.cardConfigName}
-                                  />
-                                </div>
-                                <div className="w-100">
-                                  <select
-                                    name="selectLanguage"
-                                    name="cardConfigStatus"
-                                    onChange={this.handleOnChangeCardItem.bind(
-                                      this
-                                    )}
-                                    value={this.state.cardConfigStatus}
-                                  >
-                                    <option
-                                      value={""}
-                                      className="select-category-placeholder"
-                                    >
-                                      select
-                                    </option>
-                                    <option
-                                      value={true}
-                                      className="select-category-placeholder"
-                                    >
-                                      Active
-                                    </option>
-                                    <option
-                                      value={false}
-                                      className="select-category-placeholder"
-                                    >
-                                      Inactive
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-                              <button
-                                className="Schedulenext1 w-100 mt-4"
-                                type="button"
-                                style={{
-                                  marginBottom: "20px",
-                                  cursor: "pointer",
-                                }}
-                                onClick={this.handleInsertCardItemConfiguration.bind(
-                                  this
-                                )}
-                                disabled={this.state.isLoadingAdd}
-                              >
-                                ADD
-                                {this.state.isLoadingAdd ? (
-                                  <FontAwesomeIcon
-                                    className="circular-loader chatsettingload"
-                                    icon={faCircleNotch}
-                                    spin
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                              </button>
-                              */}
+
                               {this.state.cardConfigData !== null &&
                                 this.state.cardConfigData.map((item, i) => (
                                   <div
@@ -1266,8 +1413,8 @@ class ChatSettings extends Component {
                                     spin
                                   />
                                 ) : (
-                                    ""
-                                  )}
+                                  ""
+                                )}
                               </button>
                             </div>
                           </div>
@@ -1292,39 +1439,39 @@ class ChatSettings extends Component {
                               <h3>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.h3
-                                    .cardassestsconfiguration
+                                      .cardassestsconfiguration
                                   : "CARD ASSETS CONFIGURATION"}
                               </h3>
                               <div className="module-switch crm-margin-div crm-padding-div">
                                 <div className="switch switch-primary d-inline m-r-10">
                                   {this.state.approvalTypeData != null
                                     ? this.state.approvalTypeData.map(
-                                      (item, i) => {
-                                        return (
-                                          <div key={i}>
-                                            <label
-                                              className="storeRole-name-text"
-                                              style={{ width: "70%" }}
-                                            >
-                                              {item.approvalType}
-                                            </label>
-                                            <input
-                                              type="checkbox"
-                                              id={item.approvalType}
-                                              name="allModules"
-                                              checked={item.isEnabled}
-                                              onChange={this.handleTypeChange.bind(
-                                                this
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={item.approvalType}
-                                              className="cr cr-float-auto"
-                                            ></label>
-                                          </div>
-                                        );
-                                      }
-                                    )
+                                        (item, i) => {
+                                          return (
+                                            <div key={i}>
+                                              <label
+                                                className="storeRole-name-text"
+                                                style={{ width: "70%" }}
+                                              >
+                                                {item.approvalType}
+                                              </label>
+                                              <input
+                                                type="checkbox"
+                                                id={item.approvalType}
+                                                name="allModules"
+                                                checked={item.isEnabled}
+                                                onChange={this.handleTypeChange.bind(
+                                                  this
+                                                )}
+                                              />
+                                              <label
+                                                htmlFor={item.approvalType}
+                                                className="cr cr-float-auto"
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
+                                      )
                                     : null}
                                 </div>
                               </div>
@@ -1347,8 +1494,8 @@ class ChatSettings extends Component {
                                     spin
                                   />
                                 ) : (
-                                    ""
-                                  )}
+                                  ""
+                                )}
                               </button>
                             </div>
                           </div>
@@ -1357,9 +1504,13 @@ class ChatSettings extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={TranslationContext !== undefined
-                  ? TranslationContext.tab.notificationsandsounds
-                  : "Notifications & Sounds"}>
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.tab.notificationsandsounds
+                      : "Notifications & Sounds"
+                  }
+                >
                   <div
                     className="row chattab-card"
                     style={{ marginBottom: "15px" }}
@@ -1375,14 +1526,12 @@ class ChatSettings extends Component {
                             : "Notification"}
                         </label>
                         <hr className="sn-hr" />
-                        {/* <p className="sn-p">
-                          Set your notification preference for when you are in
-                          or away from the system.You will need to configure
-                          your browser setting to allow notification
-                        </p> */}
-                        <label className="sns-lbl">{TranslationContext !== undefined
+
+                        <label className="sns-lbl">
+                          {TranslationContext !== undefined
                             ? TranslationContext.label.newchatassigned
-                            : "New Chat Assigned"}</label>
+                            : "New Chat Assigned"}
+                        </label>
                         <Checkbox
                           name="isNotiNewChat"
                           checked={this.state.isNotiNewChat}
@@ -1391,12 +1540,15 @@ class ChatSettings extends Component {
                           )}
                         >
                           {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.shownotificationsfornewchatassigned
+                            ? TranslationContext.checkbox
+                                .shownotificationsfornewchatassigned
                             : "Show notifications for new chat assigned"}
                         </Checkbox>
-                        <label className="sns-lbl">{TranslationContext !== undefined
+                        <label className="sns-lbl">
+                          {TranslationContext !== undefined
                             ? TranslationContext.label.newmessages
-                            : "New Messages"}</label>
+                            : "New Messages"}
+                        </label>
                         <Checkbox
                           name="isNotiNewMessage"
                           checked={this.state.isNotiNewMessage}
@@ -1405,14 +1557,15 @@ class ChatSettings extends Component {
                           )}
                         >
                           {TranslationContext !== undefined
-                            ? TranslationContext.checkbox.shownotificationfornewmessageinongoing
-                            : "Show notification for new message in ongoing"}                         
+                            ? TranslationContext.checkbox
+                                .shownotificationfornewmessageinongoing
+                            : "Show notification for new message in ongoing"}
                         </Checkbox>
                         <div style={{ display: "inherit" }}>
                           <label className="sns-lbl" style={{ width: "150px" }}>
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.notificationtime
-                            : "Notification Time"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.notificationtime
+                              : "Notification Time"}
                           </label>
                           <input
                             type="text"
@@ -1426,9 +1579,10 @@ class ChatSettings extends Component {
                             style={{ marginLeft: "5px", marginTop: "10px" }}
                           >
                             {" "}
-                            / {TranslationContext !== undefined
-                            ? TranslationContext.small.sec
-                            : "Sec"}
+                            /{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.small.sec
+                              : "Sec"}
                           </span>
                         </div>
                       </div>
@@ -1441,16 +1595,18 @@ class ChatSettings extends Component {
                         }}
                       >
                         <label className="snlbl-nlbl">
-                        {TranslationContext !== undefined
+                          {TranslationContext !== undefined
                             ? TranslationContext.label.sounds
                             : "Sounds"}
-                            </label>
+                        </label>
                         <hr className="sn-hr" />
                         <div className="row">
                           <div className="col-md-3">
-                            <label className="sns-lbl">{TranslationContext !== undefined
-                            ? TranslationContext.label.newchatassigned
-                            : "New Chat Assigned"}</label>
+                            <label className="sns-lbl">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.newchatassigned
+                                : "New Chat Assigned"}
+                            </label>
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
@@ -1463,20 +1619,20 @@ class ChatSettings extends Component {
                               <option>Select</option>
                               {this.state.chatSoundData
                                 ? this.state.chatSoundData.map((item, i) => {
-                                  return (
-                                    <option key={i} value={item.soundID}>
-                                      {item.soundFileName}
-                                    </option>
-                                  );
-                                })
+                                    return (
+                                      <option key={i} value={item.soundID}>
+                                        {item.soundFileName}
+                                      </option>
+                                    );
+                                  })
                                 : null}
                             </select>
                           </div>
                           <div className="col-md-4 vlm-ctrl">
                             <label style={{ paddingLeft: "" }}>
-                            {TranslationContext !== undefined
-                            ? TranslationContext.label.soundcontroller
-                            : "Sound Controller"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.soundcontroller
+                                : "Sound Controller"}
                             </label>
                             <div className="row">
                               <div
@@ -1519,9 +1675,11 @@ class ChatSettings extends Component {
                         </div>
                         <div className="row">
                           <div className="col-md-3">
-                            <label className="sns-lbl">{TranslationContext !== undefined
-                            ? TranslationContext.label.newmessage
-                            : "New Message"}</label>
+                            <label className="sns-lbl">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.newmessage
+                                : "New Message"}
+                            </label>
                             <select
                               className="form-control dropdown-setting"
                               style={{ marginBottom: "10px" }}
@@ -1534,20 +1692,20 @@ class ChatSettings extends Component {
                               <option>Select</option>
                               {this.state.chatSoundData
                                 ? this.state.chatSoundData.map((item, i) => {
-                                  return (
-                                    <option key={i} value={item.soundID}>
-                                      {item.soundFileName}
-                                    </option>
-                                  );
-                                })
+                                    return (
+                                      <option key={i} value={item.soundID}>
+                                        {item.soundFileName}
+                                      </option>
+                                    );
+                                  })
                                 : null}
                             </select>
                           </div>
                           <div className="col-md-4 vlm-ctrl">
                             <label style={{ paddingLeft: "" }}>
-                            {TranslationContext !== undefined
-                            ? TranslationContext.label.soundcontroller
-                            : "Sound Controller"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.soundcontroller
+                                : "Sound Controller"}
                             </label>
                             <div className="row">
                               <div
@@ -1608,8 +1766,8 @@ class ChatSettings extends Component {
                             type="button"
                           >
                             {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "CANCEL"}
+                              ? TranslationContext.button.cancel
+                              : "CANCEL"}
                           </button>
                           <button
                             onClick={this.handleButtonClick.bind(this, 2)}
@@ -1622,8 +1780,8 @@ class ChatSettings extends Component {
                             disabled={this.state.isloading}
                           >
                             {TranslationContext !== undefined
-                            ? TranslationContext.button.resetdefault
-                            : "REST DEFAULT"}
+                              ? TranslationContext.button.resetdefault
+                              : "RESET DEFAULT"}
                           </button>
                           <button
                             onClick={this.handleButtonClick.bind(this, 3)}
@@ -1636,8 +1794,8 @@ class ChatSettings extends Component {
                             disabled={this.state.isloading}
                           >
                             {TranslationContext !== undefined
-                            ? TranslationContext.button.savechanges
-                            : "SAVE CHANGES"}
+                              ? TranslationContext.button.savechanges
+                              : "SAVE CHANGES"}
                           </button>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import ProfileImg from "./../../assets/Images/UserIcon.png";
+import ProfileImg from "./../../assets/Images/UserLogin.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../../assets/Images/Circle-cancel.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
@@ -27,13 +27,15 @@ class UserProfile extends Component {
       DesignationData: [],
       ProfileData: [],
       fileNameCompulsion: "",
+      FirstNameCompulsion: "",
+      LastNameCompulsion: "",
       MobileCompulsion: "",
+      EmailIDCompulsion: "",
+      DesignationCompulsion: "",
       imgFlag: "",
       loading: true,
     };
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
-    this.handleEditUserProfile = this.handleEditUserProfile.bind(this);
-    this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
     this.handleDeleteProfilePic = this.handleDeleteProfilePic.bind(this);
     this.redirectToChangePassword = this.redirectToChangePassword.bind(this);
     this.handleCRMRole = this.handleCRMRole.bind(this);
@@ -53,7 +55,6 @@ class UserProfile extends Component {
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
     this.setState({
-      //fileName: e.target.files[0].name
       fileName: allFiles,
     });
   }
@@ -94,9 +95,11 @@ class UserProfile extends Component {
       });
   }
 
-  setGetProfileData = (data) => {
+  handleGetUserProfileData() {
     let self = this;
-    var userData = data[0];
+
+    var userData = JSON.parse(window.localStorage.getItem("UserData"));
+
     this.state.selectedUserID = userData.userId;
     this.state.selectedFirstName = userData.firstName;
     this.state.selectedLastName = userData.lastName;
@@ -116,34 +119,7 @@ class UserProfile extends Component {
       selectedDesignation: userData.designationID,
       imgFlag,
       loading: false,
-      //fileName:array
     });
-  };
-
-  handleGetUserProfileData() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreUser/GetStoreUserProfileDetail",
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        var status = res.data.message;
-        var userdata = res.data.responseData;
-        if (status === "Success") {
-          self.setState({
-            ProfileData: userdata,
-          });
-          self.setGetProfileData(userdata);
-        } else {
-          self.setState({
-            ProfileData: [],
-          });
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-      });
   }
 
   handleDeleteProfilePic() {
@@ -180,7 +156,14 @@ class UserProfile extends Component {
   }
 
   handleEditUserProfile() {
-    if (this.state.selectedMobile.length > 0) {
+    if (
+      // this.state.fileName.length > 0 &&
+      // this.state.selectedFirstName.length > 0 &&
+      // this.state.selectedLastName.length > 0 &&
+      this.state.selectedMobile.length > 0
+      // this.state.selectedEmailID.length > 0 &&
+      // this.state.selectedDesignation > 0
+    ) {
       let self = this;
       var json = {
         UserId: this.state.selectedUserID,
@@ -194,6 +177,8 @@ class UserProfile extends Component {
 
       formData.append("UpdateUserProfiledetailsModel", JSON.stringify(json));
       formData.append("file", this.state.fileName[0]);
+
+      // update user profile
       axios({
         method: "post",
         url: config.apiUrl + "/StoreUser/UpdateStoreUserProfileDetails",
@@ -214,7 +199,12 @@ class UserProfile extends Component {
         });
     } else {
       this.setState({
+        // fileNameCompulsion: "Please select profile picture.",
+        // FirstNameCompulsion: "Please enter first name.",
+        // LastNameCompulsion: "Please enter last name.",
         MobileCompulsion: "Please enter mobile number.",
+        // EmailIDCompulsion: "Please enter emailID.",
+        // DesignationCompulsion: "Please select designation."
       });
     }
   }
@@ -308,7 +298,7 @@ class UserProfile extends Component {
   render() {
     return (
       <Fragment>
-        <div className="container-fluid">
+        <div className="container-fluid mobprofile">
           {this.state.loading && (
             <div className="loader-icon-cntr-ovrlay">
               <div className="loader-icon"></div>
@@ -316,7 +306,7 @@ class UserProfile extends Component {
           )}
           <div className="profile-settings-cntr">
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-12 col-md-12">
                 <div className="profilemain">
                   <div className="half-circle">
                     <div className="imguserupload">
@@ -326,8 +316,8 @@ class UserProfile extends Component {
                             ? ProfileImg
                             : this.state.selectedProfilePicture
                         }
-                        alt=""
-                        className="profimg"
+                        alt="UserProfile"
+                        className="userProfile"
                       />
 
                       <div className="uploadtextprofile">
@@ -346,13 +336,13 @@ class UserProfile extends Component {
                           onDragEnter={this.fileDragEnter}
                           onChange={this.fileUpload.bind(this)}
                         >
-                          {this.state.imgFlag === "" ? "Upload" : "Change"}{" "}
+                          {this.state.imgFlag === "" ? "Upload" : "Change"}&nbsp;
                           Photo
                         </label>
 
                         {this.state.fileName[0] && (
                           <div className="file-info pb-0">
-                            <div className="">
+                            <div>
                               <div className="user-profile-file-dtls">
                                 <p className="mb-0">
                                   {this.state.fileName[0].name}
@@ -380,16 +370,16 @@ class UserProfile extends Component {
 
                   <div className="centerprofile col-md-5">
                     <div className="divSpace">
-                      <div className="">
+                      <div>
                         <label className="designation-name">First Name</label>
                         <input
                           type="text"
-                          className="txt-1 cursor-disabled"
-                          placeholder="Enter Name"
+                          className="txt-1"
+                          placeholder="Enter First Name"
                           name="selectedFirstName"
+                          autoComplete="off"
                           value={this.state.selectedFirstName}
                           onChange={this.setUserData.bind(this)}
-                          disabled
                         />
                         {this.state.selectedFirstName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -399,29 +389,36 @@ class UserProfile extends Component {
                       </div>
                     </div>
                     <div className="divSpace">
-                      <div className="">
+                      <div>
                         <label className="designation-name">Last Name</label>
                         <input
                           type="text"
-                          className="txt-1 cursor-disabled"
-                          placeholder="Enter Name"
+                          className="txt-1"
+                          placeholder="Enter Last Name"
                           name="selectedLastName"
+                          autoComplete="off"
                           value={this.state.selectedLastName}
                           onChange={this.setUserData.bind(this)}
-                          disabled
                         />
+                        {this.state.selectedLastName.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.LastNameCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="divSpace">
-                      <div className="">
+                      <div>
                         <label className="reports-to">Mobile No.</label>
                         <input
                           type="text"
-                          className="txt-1"
+                          className="txt-1 cursor-disabled"
                           placeholder="Enter Mobile Number"
                           name="selectedMobile"
+                          autoComplete="off"
                           value={this.state.selectedMobile}
                           onChange={this.setUserData.bind(this)}
+                          disabled
                         />
                         {this.state.selectedMobile.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -432,7 +429,7 @@ class UserProfile extends Component {
                     </div>
 
                     <div className="divSpace">
-                      <div className="">
+                      <div>
                         <label className="reports-to">Email ID</label>
                         <input
                           type="text"
@@ -443,11 +440,16 @@ class UserProfile extends Component {
                           onChange={this.setUserData.bind(this)}
                           disabled
                         />
+                        {this.state.selectedEmailID.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.EmailIDCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="divSpace">
-                      <div className="">
+                      <div>
                         <label className="reports-to">Designation</label>
                         <select
                           className="add-select-category cursor-disabled"
@@ -464,6 +466,11 @@ class UserProfile extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectedDesignation === "" && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.DesignationCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -477,7 +484,7 @@ class UserProfile extends Component {
                     </div>
                   </div>
                   <div className="userChangePW">
-                    <Link to="/storeChangePassword">Change Password</Link>
+                    <Link to="/store/storeChangePassword">Change Password</Link>
                   </div>
 
                   <Modal
@@ -501,7 +508,7 @@ class UserProfile extends Component {
                       </div>
 
                       <div className="divSpace">
-                        <div className="">
+                        <div>
                           <label className="designation-name">
                             Current Password
                           </label>
@@ -513,7 +520,7 @@ class UserProfile extends Component {
                         </div>
                       </div>
                       <div className="divSpace">
-                        <div className="">
+                        <div>
                           <label className="reports-to">New Password</label>
                           <img
                             className="info-icon-cp"

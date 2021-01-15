@@ -68,9 +68,11 @@ const rowTarget = {
   drop(props, monitor) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
+
     if (dragIndex === hoverIndex) {
       return;
     }
+
     props.moveRow(dragIndex, hoverIndex);
     monitor.getItem().index = hoverIndex;
   },
@@ -173,7 +175,7 @@ class CreatePriority extends Component {
     },
   };
   componentDidMount() {
-    this.handleGetPriorityList();
+     this.handleGetPriorityList();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -505,7 +507,6 @@ class CreatePriority extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-    debugger;
     var spriortyNameFilterCheckbox = this.state.spriortyNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var screatedDateFilterCheckbox = this.state.screatedDateFilterCheckbox;
@@ -750,7 +751,6 @@ class CreatePriority extends Component {
       isATOZ: true,
       temppriorityData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   ////move row info
@@ -1057,21 +1057,6 @@ class CreatePriority extends Component {
   // }
 
   handleUpdateData() {
-    debugger;
-    // if (this.state.rowData.priortyName == "") {
-    //   this.setState({
-    //     editpriorityNameCompulsion: "Please enter priority name",
-    //   });
-    // } else {
-    //   // if (this.state.isprority == true) {
-    //   //   this.setState({
-    //   //     editpriorityNameCompulsion: "Priority already exist!",
-    //   //   });
-    //   // } else {
-    //   //   this.setState({ editpriorityNameCompulsion: "" });
-    //   // }
-    //   this.setState({ editpriorityNameCompulsion: "" });
-    // }
     const TranslationContext = this.state.translateLanguage.default;
     if (this.state.rowData.isActive === "") {
       this.setState({ editstatusCompulsion: "Please select status" });
@@ -1082,7 +1067,6 @@ class CreatePriority extends Component {
       if (
         this.state.rowData.priortyName !== "" &&
         this.state.editpriorityNameCompulsion == "" &&
-        // this.state.isprority == false &&
         this.state.editstatusCompulsion === "" &&
         this.state.isEditBtn === true
       ) {
@@ -1768,7 +1752,6 @@ class CreatePriority extends Component {
                           },
 
                           render: (text, record) => {
-                            //
                             return (
                               <div className="priority-one-liner store-one-liner">
                                 <Popover
@@ -1973,10 +1956,7 @@ class CreatePriority extends Component {
                                   content={
                                     <div>
                                       <div className="del-big-icon">
-                                        <img
-                                          src={BlackDeleteIcon}
-                                          alt="del-icon"
-                                        />
+                                        <img src={BlackDeleteIcon} alt="del-icon" />
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
@@ -1987,7 +1967,8 @@ class CreatePriority extends Component {
                                         </p>
                                         <p className="mt-1 fs-12">
                                           {TranslationContext !== undefined
-                                            ? TranslationContext.p.deletefile
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
                                             : "Are you sure you want to delete this file"}
                                           ?
                                         </p>
@@ -2057,11 +2038,10 @@ class CreatePriority extends Component {
                     />
                   </DndProvider>
                 </div>
-                {/* // )} */}
               </div>
               <div className="col-md-4">
                 <div className="createHierarchyMask">
-                  <div className="createSpace">
+                  <div className="storeSettingcreateDiv">
                     <label className="create-department" id="createId">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.createpriority

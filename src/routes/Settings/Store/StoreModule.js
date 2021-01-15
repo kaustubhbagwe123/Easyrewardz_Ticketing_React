@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Popover, Radio, Spin } from "antd";
+import { Popover, Radio, Spin, Popconfirm } from "antd";
 import ReactTable from "react-table";
+import SearchIcon from "./../../../assets/Images/search-icon.png";
+import { Collapse, CardBody, Card } from "reactstrap";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DelBlack from "./../../../assets/Images/del-black.png";
@@ -203,6 +205,7 @@ class StoreModule extends Component {
       editTotalSlot: "",
       editOperationalDays: "",
       editSlotTemplateName: "",
+      editSlotTemplateId: 0,
       storeTimimg: "",
       mimSlotStartTimeChck: "",
       finalSlotTemplateId: 0,
@@ -225,6 +228,44 @@ class StoreModule extends Component {
       isSlotSaveClick: false,
       bulkuploadLoading: false,
       isSlotDaysDisplay: "",
+      AppointMessageTagsData: [],
+      isCreateTampleteLoading: false,
+      isGenrateSlotLoading: false,
+      isSlotEditLoading: false,
+      manualSlotTblData: [],
+      editMaxCapacity: "",
+      isSubmit: false,
+      editOperationalDaysName: "",
+      filterOptions: [
+        { value: 1, label: "By Store Code" },
+        { value: 2, label: "By Operational Days" },
+        { value: 3, label: "By Slot Template" },
+      ],
+      filterOptionSelected: {},
+      FilterCollapse: false,
+      onLoadSlotStores: [],
+      onLoadOperationalDays: [],
+      onLoadSlotTemplate: [],
+      filterChooseStoreModal: false,
+      filterSlotStoreSearch: "",
+      tempOnLoadSlotStores: [],
+      filterSelectedStoreId: "",
+      filterSelectedStoreCode: "",
+      isFilterSearch: false,
+      isTimeSlotGridLoader: false,
+      filterOperationalDaysModal: false,
+      filterOperationalDays: {},
+      filterSelectedOperationalDays: [],
+      filterTampleteModal: false,
+      filterSlotTemplate: 0,
+      filterSlotTemplateGridData: [],
+      selectedFilterSlotTemplate: 0,
+      filterSlotTempLoading: false,
+      operationalDaysList: [],
+      WebBotData: [],
+      campaignUploadFile: {},
+      campaignUploadName: "",
+      remindBeforeValueValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -239,7 +280,23 @@ class StoreModule extends Component {
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
 
+  handleFilterCollapse() {
+    this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
+  }
+
   componentDidMount() {
+    // if (window.localStorage.getItem("module")) {
+    //   var moduleData = JSON.parse(window.localStorage.getItem("module"));
+    //   if (moduleData) {
+    //     ;
+    //     var campModule = moduleData.filter(
+    //       (x) => x.moduleName === "Settings" && x.modulestatus === true
+    //     );
+    //     if (campModule.length === 0) {
+    //       this.props.history.push("/store/404notfound");
+    //     }
+    //   }
+    // }
     this.handleClaimTabData();
     this.handleCampaignNameList();
     this.handleCampaignScriptGridData();
@@ -252,6 +309,7 @@ class StoreModule extends Component {
     this.handleGetLanguageGridData();
     this.handleGetOperationalDays();
     this.handleGetSlotTemplate();
+    this.handleGetAppointmentMessageTagsData();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -298,7 +356,6 @@ class StoreModule extends Component {
       })
         .then((response) => {
           var status = response.data.message;
-          var itemData = response.data.responseData;
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -399,7 +456,6 @@ class StoreModule extends Component {
     var separator = ",";
     var values = indiCampaign.split(separator);
     if (event.target.checked) {
-      // indiCampaign += issueId + ",";
       var flag = values.includes(issueId.toString());
       if (!flag) {
         values.unshift(issueId);
@@ -825,6 +881,7 @@ class StoreModule extends Component {
     });
 
     var self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/DeleteSelectedLanguage",
@@ -856,14 +913,31 @@ class StoreModule extends Component {
       });
   };
   //// Handle get time slot grid data
-  handleGetTimeslotGridData(slotID, storeId) {
+  handleGetTimeslotGridData(
+    slotID,
+    storeId,
+    opdays,
+    slotTemplateID,
+    isFilterSearch
+  ) {
     let self = this;
     this.setState({ isSlotLoading: true });
+    if (isFilterSearch) {
+      this.setState({ isFilterSearch: true });
+    } else {
+      this.setState({ isFilterSearch: false });
+    }
+
     axios({
       method: "post",
-      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
+      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlotNew",
       headers: authHeader(),
-      params: { SlotID: slotID ? slotID : 0, StoreID: storeId ? storeId : 0 },
+      params: {
+        SlotID: slotID ? slotID : 0,
+        StoreID: storeId || "",
+        Opdays: opdays ? opdays : "",
+        SlotTemplateID: slotTemplateID ? slotTemplateID : 0,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -881,6 +955,9 @@ class StoreModule extends Component {
         }
       })
       .catch((data) => {
+        self.setState({
+          isSlotLoading: false,
+        });
         console.log(data);
       });
   }
@@ -893,6 +970,7 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -998,6 +1076,36 @@ class StoreModule extends Component {
               self.state.sortFilteristatus.push({ status: distinct[i] });
             }
           }
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleLoadSlotData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetSlotFilterDetails",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let response = res.data.responseData;
+        let onLoadSlotStores = response.slotStores;
+        let onLoadOperationalDays = response.operationalDays;
+        let onLoadSlotTemplate = response.slotTemplate;
+        if (status === "Success") {
+          onLoadSlotStores.forEach((element) => {
+            element.isChecked = false;
+          });
+          self.setState({
+            tempOnLoadSlotStores: onLoadSlotStores,
+            onLoadSlotStores,
+            onLoadOperationalDays,
+            onLoadSlotTemplate,
+          });
         }
       })
       .catch((data) => {
@@ -1148,7 +1256,6 @@ class StoreModule extends Component {
                 : "Campaign updated successfully."
             );
             self.setState({
-              // campaignCompulsion: "",
               updateScriptDetailsCompulsion: "",
               updateCampaignLoading: false,
               editModal: false,
@@ -1238,8 +1345,6 @@ class StoreModule extends Component {
   }
 
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
-
     if (
       this.state.sortFiltercampaignName.length === 0 ||
       this.state.sortFiltercreatedBy.length === 0 ||
@@ -1589,16 +1694,34 @@ class StoreModule extends Component {
     } else if (CampId === "ckEmailCamp4") {
       this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
         .emailFlag;
-    } else if(CampId === "ckCmpAutoAssignedCamp5"){
-      this.state.campaignChannelData.campaignAutoAssigned = !this.state.campaignChannelData
-      .campaignAutoAssigned;
+    } else if (CampId === "ckCmpAutoAssignedCamp5") {
+      this.state.campaignChannelData.campaignAutoAssigned = !this.state
+        .campaignChannelData.campaignAutoAssigned;
+    } else if (CampId === "ckCmpAutoAssignedCamp6") {
+      this.state.campaignChannelData.raiseTicketFlag = !this.state
+        .campaignChannelData.raiseTicketFlag;
+    } else if (CampId === "ckCmpAutoAssignedCamp7") {
+      this.state.campaignChannelData.addCommentFlag = !this.state
+        .campaignChannelData.addCommentFlag;
+    } else if (CampId === "ckStoreFilter") {
+      this.state.campaignChannelData.storeFlag = !this.state.campaignChannelData
+        .storeFlag;
+    } else if (CampId === "ckZoneFilter") {
+      this.state.campaignChannelData.zoneFlag = !this.state.campaignChannelData
+        .zoneFlag;
+    } else if (CampId === "ckUserData") {
+      this.state.campaignChannelData.userProductivityReport = !this.state
+        .campaignChannelData.userProductivityReport;
+    } else if (CampId === "ckStoreData") {
+      this.state.campaignChannelData.storeProductivityReport = !this.state
+        .campaignChannelData.storeProductivityReport;
     }
-
     this.setState({ campaignChannelData: this.state.campaignChannelData });
   };
 
   /// handle Appointment configuration toggle change
   AppoinmentConfigFlageChange = (id) => {
+    debugger;
     var AppointConfig = id.target.id;
     if (AppointConfig === "ckAppconfigOTP") {
       this.state.AppointConfigData.generateOTP = !this.state.AppointConfigData
@@ -1615,9 +1738,27 @@ class StoreModule extends Component {
     } else if (AppointConfig === "ckAppconfigWhatsApp") {
       this.state.AppointConfigData.viaWhatsApp = !this.state.AppointConfigData
         .viaWhatsApp;
+      if (this.state.AppointConfigData.viaWhatsApp === true) {
+        this.state.AppointConfigData.viaSMS = false;
+      }
     } else if (AppointConfig === "ckAppconfigSMS") {
       this.state.AppointConfigData.viaSMS = !this.state.AppointConfigData
         .viaSMS;
+      if (this.state.AppointConfigData.viaSMS === true) {
+        this.state.AppointConfigData.viaWhatsApp = false;
+      }
+    } else if (AppointConfig === "ckReminderViaWhapp") {
+      this.state.AppointConfigData.reminderViaWhatsApp = !this.state
+        .AppointConfigData.reminderViaWhatsApp;
+      if (this.state.AppointConfigData.reminderViaWhatsApp === true) {
+        this.state.AppointConfigData.reminderViaSMS = false;
+      }
+    } else if (AppointConfig === "ckReminderViaSMS") {
+      this.state.AppointConfigData.reminderViaSMS = !this.state
+        .AppointConfigData.reminderViaSMS;
+      if (this.state.AppointConfigData.reminderViaSMS === true) {
+        this.state.AppointConfigData.reminderViaWhatsApp = false;
+      }
     }
 
     this.setState({ AppointConfigData: this.state.AppointConfigData });
@@ -1715,6 +1856,13 @@ class StoreModule extends Component {
       this.setState({ BroadCastConfigData });
     }
   }
+  handleAppointmentReminder(e){
+    const { name, value } = e.target;
+    var AppointConfigData = this.state.AppointConfigData;
+
+    AppointConfigData[name] = value;
+    this.setState({ AppointConfigData });
+  }
   /// handle camapign validation
   handleCheckCampaignValidation() {
     if (this.state.campaignChannelData.smsFlag) {
@@ -1736,6 +1884,8 @@ class StoreModule extends Component {
       this.state.campaignChannelData.maxClickAllowed !== "" &&
       this.state.campaignChannelData.enableClickAfterValue !== ""
     ) {
+      this.setState({ isSubmit: true });
+      let self = this;
       axios({
         method: "post",
         url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
@@ -1749,17 +1899,27 @@ class StoreModule extends Component {
             .enableClickAfterDuration,
           SmsFlag: this.state.campaignChannelData.smsFlag,
           EmailFlag: this.state.campaignChannelData.emailFlag,
-          CampaignAutoAssigned: this.state.campaignChannelData.campaignAutoAssigned,
+          CampaignAutoAssigned: this.state.campaignChannelData
+            .campaignAutoAssigned,
           MessengerFlag: this.state.campaignChannelData.messengerFlag,
           BotFlag: this.state.campaignChannelData.botFlag,
           ProviderName:
             this.state.campaignChannelData.providerName !== ""
               ? this.state.campaignChannelData.providerName
               : "",
+          RaiseTicketFlag: this.state.campaignChannelData.raiseTicketFlag,
+          AddCommentFlag: this.state.campaignChannelData.addCommentFlag,
+          StoreFlag: this.state.campaignChannelData.storeFlag,
+          ZoneFlag: this.state.campaignChannelData.zoneFlag,
+          UserProductivityReport: this.state.campaignChannelData
+            .userProductivityReport,
+          StoreProductivityReport: this.state.campaignChannelData
+            .storeProductivityReport,
         },
       })
         .then(function(res) {
           let status = res.data.message;
+          self.setState({ isSubmit: false });
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -1769,6 +1929,7 @@ class StoreModule extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
@@ -1781,36 +1942,53 @@ class StoreModule extends Component {
   /// handle Appointment Configuration update data
   handleUpdateAppointmentConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/UpdateAppointmentConfiguration",
-      headers: authHeader(),
-      data: {
-        ID: this.state.AppointConfigData.id,
-        GenerateOTP: this.state.AppointConfigData.generateOTP,
-        CardQRcode: this.state.AppointConfigData.cardQRcode,
-        CardBarcode: this.state.AppointConfigData.cardBarcode,
-        OnlyCard: this.state.AppointConfigData.onlyCard,
-        ViaWhatsApp: this.state.AppointConfigData.viaWhatsApp,
-        ViaSMS: this.state.AppointConfigData.viaSMS,
-        IsMsgWithin24Hrs: this.state.AppointConfigData.isMsgWithin24Hrs,
-        MessageViaWhatsApp: this.state.AppointConfigData.messageViaWhatsApp,
-        MessageViaSMS: this.state.AppointConfigData.messageViaSMS,
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success(
-            TranslationContext !== undefined
-              ? TranslationContext.alertmessage.appointmentupdatedsuccessfully
-              : "Appointment Updated Successfully."
-          );
-        }
+    let self = this;
+    if (this.state.AppointConfigData.remindBeforeValue !== "") {
+      this.setState({ isSubmit: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/UpdateAppointmentConfiguration",
+        headers: authHeader(),
+        data: {
+          ID: this.state.AppointConfigData.id,
+          GenerateOTP: this.state.AppointConfigData.generateOTP,
+          CardQRcode: this.state.AppointConfigData.cardQRcode,
+          CardBarcode: this.state.AppointConfigData.cardBarcode,
+          OnlyCard: this.state.AppointConfigData.onlyCard,
+          ViaWhatsApp: this.state.AppointConfigData.viaWhatsApp,
+          ViaSMS: this.state.AppointConfigData.viaSMS,
+          IsMsgWithin24Hrs: this.state.AppointConfigData.isMsgWithin24Hrs,
+          MessageViaWhatsApp: this.state.AppointConfigData.messageViaWhatsApp,
+          MessageViaSMS: this.state.AppointConfigData.messageViaSMS,
+          ReminderViaWhatsApp: this.state.AppointConfigData.reminderViaWhatsApp,
+          ReminderViaSMS: this.state.AppointConfigData.reminderViaSMS,
+          ReminderMessageViaSMS: this.state.AppointConfigData
+            .reminderMessageViaSMS,
+          // RemindBeforeValue: this.state.AppointConfigData.remindBeforeValue,
+          RemindBeforeDuration: this.state.AppointConfigData
+            .remindBeforeDuration,
+        },
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          let status = res.data.message;
+          self.setState({ isSubmit: false });
+          if (status === "Success") {
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.appointmentupdatedsuccessfully
+                : "Appointment Updated Successfully."
+            );
+          }
+        })
+        .catch((data) => {
+          self.setState({ isSubmit: false });
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        remindBeforeValueValidation: "Required",
       });
+    }
   }
   CheckBroadCastValidation() {
     if (this.state.BroadCastConfigData.smsFlag) {
@@ -1828,6 +2006,8 @@ class StoreModule extends Component {
   /// handle Broad cast Configuration update data
   handleUpdateBroadCastConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({ isSubmit: true });
     if (
       this.state.BroadCastConfigData.maxClickAllowed !== "" &&
       this.state.BroadCastConfigData.enableClickAfterValue !== ""
@@ -1851,6 +2031,7 @@ class StoreModule extends Component {
       })
         .then(function(res) {
           let status = res.data.message;
+          self.setState({ isSubmit: false });
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -1860,6 +2041,7 @@ class StoreModule extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
@@ -1872,62 +2054,87 @@ class StoreModule extends Component {
 
   /// handle insert and update slot setting
   handleInsertUpdateTimeSlotSetting(isInsert, e) {
-    debugger;
-    e.preventDefault();
-
     const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     var isSubmit = false;
     var inputParam = {};
-
     if (isInsert) {
-      if (this.state.SlotDisplayCode == 0) {
+      var SlotTemplateGridData = this.state.SlotTemplateGridData;
+      if (
+        this.state.SlotDisplayCode == "0" ||
+        this.state.SlotDisplayCode == ""
+      ) {
         this.setState({
-          isSlotDisplayCode: "Please Select Slot Display Code.",
+          isSlotDisplayCode:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectslotdisplaycode
+              : "Please Select Slot Display Code.",
         });
       } else {
         this.setState({ isSlotDisplayCode: "" });
       }
-      if (this.state.maxPeopleAppointment == 0) {
+      if (parseInt(this.state.maxPeopleAppointment) == 0) {
         this.setState({
-          isMaxPeople: "Please Select Max People on Appointment.",
+          isMaxPeople:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectmaxpeopleonappointment
+              : "Please Select Max People on Appointment.",
         });
       } else {
         this.setState({ isMaxPeople: "" });
       }
-      if (this.state.slotDaysDisplay == 0) {
+      if (parseInt(this.state.slotDaysDisplay) == 0) {
         this.setState({
-          isSlotDaysDisplay: "Please Select Slot Days Display.",
+          isSlotDaysDisplay:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectslotdaysdisplay
+              : "Please Select Slot Days Display.",
         });
       } else {
         this.setState({ isSlotDaysDisplay: "" });
       }
       if (this.state.shoreSelectedCount == 0) {
         this.setState({
-          isChooseStore: "Please Select Store.",
+          isChooseStore:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectstore
+              : "Please Select Store.",
         });
       } else {
         this.setState({ isChooseStore: "" });
       }
       if (this.state.operationalDays.length === 0) {
-        this.setState({ isoperationalDay: "Please Select Operational Days." });
+        this.setState({
+          isoperationalDay:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectoperationaldays
+              : "Please Select Operational Days.",
+        });
       } else {
         this.setState({ isoperationalDay: "" });
       }
-      if (this.state.selectedSlotTemplate == 0) {
-        this.setState({ isSlotTemplete: "Please Select Slot Template." });
+      if (parseInt(this.state.selectedSlotTemplate) == 0) {
+        this.setState({
+          isSlotTemplete:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectslottemplate
+              : "Please Select Slot Template.",
+        });
       } else {
         this.setState({ isSlotTemplete: "" });
       }
-      if (
-        this.state.isSlotDisplayCode === "" &&
-        this.state.isMaxPeople === "" &&
-        this.state.isSlotDaysDisplay === "" &&
-        this.state.isChooseStore === "" &&
-        this.state.isoperationalDay === "" &&
-        this.state.isSlotTemplete === ""
-      ) {
-        isSubmit = true;
+
+      if (SlotTemplateGridData.length > 0) {
+        for (var i = 0; i < SlotTemplateGridData.length; i++) {
+          if (
+            SlotTemplateGridData[i].slotOccupancy === 0 ||
+            SlotTemplateGridData[i].slotOccupancy === "0" ||
+            SlotTemplateGridData[i].slotOccupancy === ""
+          ) {
+            NotificationManager.error("Please enter slot occupancy.");
+            return false;
+          }
+        }
       }
 
       var StoreIds = "";
@@ -1952,17 +2159,80 @@ class StoreModule extends Component {
       inputParam.IsActive = this.state.slotStatus === 1 ? true : false;
       inputParam.TemplateSlots = this.state.SlotTemplateGridData;
       inputParam.SlotDisplayCode = this.state.SlotDisplayCode;
-      this.setState({ isSlotSaveClick: true });
     } else {
+      var editSlotTemplateGridData = this.state.editSlotTemplateGridData;
+
+      if (parseInt(this.state.editSlotDisplayCode) == 0) {
+        this.setState({
+          isEditSlotDisplayCode:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectslotdisplaycode
+              : "Please Select Slot Display Code.",
+        });
+      } else {
+        this.setState({ isEditSlotDisplayCode: "" });
+      }
+      if (parseInt(this.state.editMaxCapacity) == 0) {
+        this.setState({
+          isEditMaxPeople:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectmaxpeopleonappointment
+              : "Please Select Max People on Appointment.",
+        });
+      } else {
+        this.setState({ isEditMaxPeople: "" });
+      }
+      if (parseInt(this.state.editAppointmentDays) == 0) {
+        this.setState({
+          isEditSlotDaysDisplay:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectslotdaysdisplay
+              : "Please Select Slot Days Display.",
+        });
+      } else {
+        this.setState({ isEditSlotDaysDisplay: "" });
+      }
+
+      if (editSlotTemplateGridData.length > 0) {
+        for (var i = 0; i < editSlotTemplateGridData.length; i++) {
+          if (
+            editSlotTemplateGridData[i].slotOccupancy === 0 ||
+            editSlotTemplateGridData[i].slotOccupancy === "0" ||
+            editSlotTemplateGridData[i].slotOccupancy === ""
+          ) {
+            NotificationManager.error("Please enter slot occupancy.");
+            return false;
+          }
+        }
+      }
+
+      this.state.operationalDaysList.sort((a, b) => a.dayID - b.dayID);
+      var storeOpdays = "";
+      this.state.operationalDaysList.forEach((element) => {
+        storeOpdays += element.dayID + ",";
+      });
+
       inputParam.SlotId = this.state.slotId;
       inputParam.AppointmentDays = Number(this.state.editAppointmentDays);
       inputParam.IsActive =
         this.state.editSlotStatus === "Active" ? true : false;
       inputParam.SlotDisplayCode = this.state.editSlotDisplayCode;
+      inputParam.SlotMaxCapacity = this.state.editMaxCapacity;
       inputParam.TemplateSlots = this.state.editSlotTemplateGridData;
+      inputParam.SlotTemplateID = this.state.editSlotTemplateId;
+      inputParam.StoreOpdays = storeOpdays;
     }
 
-    if (isInsert && isSubmit) {
+    if (
+      isInsert &&
+      parseInt(this.state.SlotDisplayCode) !== 0 &&
+      parseInt(this.state.editMaxCapacity) !== 0 &&
+      parseInt(this.state.slotDaysDisplay) !== 0 &&
+      this.state.shoreSelectedCount !== 0 &&
+      this.state.operationalDays.length !== 0 &&
+      parseInt(this.state.selectedSlotTemplate) !== 0
+    ) {
+      this.setState({ isSlotSaveClick: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
@@ -1977,7 +2247,19 @@ class StoreModule extends Component {
               self.state.storeCodeData.forEach((element) => {
                 element.isChecked = false;
               });
+              self.state.onLoadSlotStores.forEach((element) => {
+                element.isChecked = false;
+              });
+
+              self.handleLoadSlotData();
               self.setState({
+                onLoadSlotStores: self.state.onLoadSlotStores,
+                filterOptionSelected: {},
+                filterOperationalDays: {},
+                filterSelectedStoreCode: "",
+                filterSlotTemplate: 0,
+                isFilterSearch: false,
+                showApplyStoreData: false,
                 SlotDisplayCode: 0,
                 SlotTemplateGridData: [],
                 slotStatus: 1,
@@ -1992,13 +2274,23 @@ class StoreModule extends Component {
                 selectedStoreValues: "",
                 isSlotSaveClick: false,
               });
+
               NotificationManager.success(
                 TranslationContext !== undefined
                   ? TranslationContext.alertmessage.timeslotaddedsuccessfully
                   : "Time Slot Added Successfully."
               );
             } else {
+              self.state.onLoadSlotStores.forEach((element) => {
+                element.isChecked = false;
+              });
               self.setState({
+                onLoadSlotStores: self.state.onLoadSlotStores,
+                filterOptionSelected: {},
+                filterOperationalDays: {},
+                filterSelectedStoreCode: "",
+                filterSlotTemplate: 0,
+                isFilterSearch: false,
                 editSlotModal: false,
               });
               NotificationManager.success("Time Slot Updated Successfully.");
@@ -2011,28 +2303,50 @@ class StoreModule extends Component {
                 ? TranslationContext.alertmessage.timeslotnotadded
                 : "Time Slot Not Added."
             );
+
+            self.setState({
+              isSlotSaveClick: false,
+            });
           }
         })
         .catch((data) => {
           console.log(data);
         });
     }
-    if (isInsert === false && isSubmit === false) {
+    if (
+      isInsert === false &&
+      parseInt(this.state.editSlotDisplayCode) !== 0 &&
+      parseInt(this.state.editMaxCapacity) !== 0 &&
+      parseInt(this.state.editAppointmentDays) !== 0
+    ) {
+      this.setState({ isSlotEditLoading: true });
       axios({
         method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
+        url: config.apiUrl + "/Appointment/UpdateTimeSlotSettingNew",
         headers: authHeader(),
         data: inputParam,
       })
         .then(function(res) {
           let status = res.data.message;
-
+          self.setState({ isSlotEditLoading: false });
           if (status === "Success") {
             if (isInsert) {
               self.state.storeCodeData.forEach((element) => {
                 element.isChecked = false;
               });
+              self.state.onLoadSlotStores.forEach((element) => {
+                element.isChecked = false;
+              });
+              self.handleLoadSlotData();
+
               self.setState({
+                onLoadSlotStores: self.state.onLoadSlotStores,
+                filterOptionSelected: {},
+                filterOperationalDays: {},
+                filterSelectedStoreCode: "",
+                filterSlotTemplate: 0,
+                isFilterSearch: false,
+                isSlotEditLoading: false,
                 SlotDisplayCode: 0,
                 SlotTemplateGridData: [],
                 slotStatus: 1,
@@ -2053,12 +2367,23 @@ class StoreModule extends Component {
                   : "Time Slot Added Successfully."
               );
             } else {
+              self.state.onLoadSlotStores.forEach((element) => {
+                element.isChecked = false;
+              });
               self.setState({
+                isSlotEditLoading: false,
                 editSlotModal: false,
+                onLoadSlotStores: self.state.onLoadSlotStores,
+                filterOptionSelected: {},
+                filterOperationalDays: {},
+                filterSelectedStoreCode: "",
+                filterSlotTemplate: 0,
+                isFilterSearch: false,
               });
               NotificationManager.success("Time Slot Updated Successfully.");
             }
 
+            self.handleLoadSlotData();
             self.handleGetTimeslotGridData();
           } else {
             NotificationManager.error(
@@ -2069,6 +2394,7 @@ class StoreModule extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isSlotEditLoading: false });
           console.log(data);
         });
     }
@@ -2078,6 +2404,7 @@ class StoreModule extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (parseInt(this.state.selectLanguage) !== 0) {
+      this.setState({ isSubmit: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreCampaign/InsertLanguageDetails",
@@ -2088,6 +2415,7 @@ class StoreModule extends Component {
       })
         .then(function(res) {
           let status = res.data.message;
+          this.setState({ isSubmit: false });
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -2107,6 +2435,7 @@ class StoreModule extends Component {
           }
         })
         .catch((data) => {
+          this.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
@@ -2129,13 +2458,17 @@ class StoreModule extends Component {
     this.setState({ editSlotModal: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
+      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlotNew",
       headers: authHeader(),
-      params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
+      params: {
+        SlotID: slotId ? slotId : 0,
+        StoreID: storeId,
+      },
     })
       .then(function(res) {
         var message = res.data.message;
         var data = res.data.responseData;
+
         if (message === "Success") {
           var slotId = data[0].slotSettingID;
           var editstoreCode = data[0].storeCode;
@@ -2148,12 +2481,26 @@ class StoreModule extends Component {
           var editSlotDuration = data[0].storeSlotDuration.split(" ")[0];
           var editTotalSlot = data[0].totalSlot;
           var editOperationalDays = data[0].operationalDaysCount;
+          var editOperationalDaysName = data[0].operationalDays;
           var editSlotTemplateName = data[0].slotTemplateName;
+          var editSlotTemplateId = data[0].slotTemplateID;
           var editSlotTemplateGridData = data[0].templateSlots;
           var editSlotStatus = data[0].status;
           var editSlotDisplayCode = data[0].slotDisplayCode;
+          var editMaxCapacity = data[0].maxCapacity;
+          var operationalDaysList = [];
+
+          if (data[0].operationalDaysList) {
+            data[0].operationalDaysList.forEach((element) => {
+              var objDaysList = {};
+              objDaysList.dayID = Number(element.dayIDs);
+              objDaysList.dayName = element.dayNames;
+              operationalDaysList.push(objDaysList);
+            });
+          }
 
           self.setState({
+            operationalDaysList,
             editSlotModal: true,
             slotId,
             editstoreCode,
@@ -2161,11 +2508,14 @@ class StoreModule extends Component {
             editAppointmentDays,
             editSlotDuration,
             editTotalSlot,
+            editOperationalDaysName,
             editOperationalDays,
             editSlotTemplateName,
+            editSlotTemplateId,
             editSlotTemplateGridData,
             editSlotStatus,
             editSlotDisplayCode,
+            editMaxCapacity,
           });
         }
       })
@@ -2220,6 +2570,7 @@ class StoreModule extends Component {
   };
   /////handle next button press to show
   handleNextButtonOpen = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.shoreSelectedCount > 0 &&
       this.state.operationalDays.length > 0 &&
@@ -2229,17 +2580,32 @@ class StoreModule extends Component {
       this.handleGetSlotsByTemplateID();
     } else {
       if (this.state.shoreSelectedCount === 0) {
-        this.setState({ isChooseStore: "Please Select Store." });
+        this.setState({
+          isChooseStore:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectstore
+              : "Please Select Store.",
+        });
       } else {
         this.setState({ isChooseStore: "" });
       }
       if (this.state.operationalDays.length === 0) {
-        this.setState({ isoperationalDay: "Please Select Operational Days." });
+        this.setState({
+          isoperationalDay:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectoperationaldays
+              : "Please Select Operational Days.",
+        });
       } else {
         this.setState({ isoperationalDay: "" });
       }
       if (this.state.selectedSlotTemplate === 0) {
-        this.setState({ isSlotTemplete: "Please Select Slot Template." });
+        this.setState({
+          isSlotTemplete:
+            TranslationContext !== undefined
+              ? TranslationContext.validation.pleaseselectslottemplate
+              : "Please Select Slot Template.",
+        });
       } else {
         this.setState({ isSlotTemplete: "" });
       }
@@ -2257,6 +2623,15 @@ class StoreModule extends Component {
   ////handle choose store modal close
   handleChooseStoreCloseModal = () => {
     this.setState({ chooseStoreModal: false });
+  };
+
+  ////handle choose store modal open on filter
+  handleFilterChooseStoreOpenModal = () => {
+    this.setState({ filterChooseStoreModal: true });
+  };
+  ////handle choose store modal close on filter
+  handleFilterChooseStoreCloseModal = () => {
+    this.setState({ filterChooseStoreModal: false });
   };
 
   ////handle choose store modal open
@@ -2286,6 +2661,9 @@ class StoreModule extends Component {
     const { name, value } = e.target;
     this.setState({
       [name]: value,
+      isEditSlotDisplayCode: "",
+      isEditMaxPeople: "",
+      isEditSlotDaysDisplay: "",
     });
   };
   /// handle Select Store Individual
@@ -2301,7 +2679,7 @@ class StoreModule extends Component {
 
     this.state.storeCodeData.forEach((element) => {
       if (element.isChecked) {
-        values += element.storeName + ",";
+        values += element.storeCode + ", ";
         storeCount += 1;
       }
     });
@@ -2337,9 +2715,13 @@ class StoreModule extends Component {
 
   /// handle apply selected store data
   handleApplySelectedStore() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.shoreSelectedCount == 0) {
       this.setState({
-        isChooseStore: "please Select Store.",
+        isChooseStore:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectstore
+            : "please Select Store.",
       });
     } else {
       this.setState({
@@ -2354,8 +2736,11 @@ class StoreModule extends Component {
   /// handle filter store data
   handleStoreFilterData(filterData) {
     var tempstore = this.state.tempStoreCodeData;
+    tempstore.forEach((element) => {
+      element.isChecked = false;
+    });
     var finalStore = tempstore.filter((item) =>
-      item.storeName.startsWith(filterData)
+      item.storeCode.startsWith(filterData)
     );
     this.setState({
       storeCodeData: finalStore,
@@ -2370,9 +2755,11 @@ class StoreModule extends Component {
     e.preventDefault();
     var tempstore = this.state.tempStoreCodeData;
     var Value = this.state.slotStoreSearch;
-
+    tempstore.forEach((element) => {
+      element.isChecked = false;
+    });
     var FinalstoreList = tempstore.filter((item) =>
-      item.storeName.toLowerCase().includes(Value.toLowerCase())
+      item.storeCode.toLowerCase().includes(Value.toLowerCase())
     );
 
     if (FinalstoreList.length > 0) {
@@ -2429,6 +2816,16 @@ class StoreModule extends Component {
       selectedStoreValues: finalValue,
     });
   }
+  handleRemoveOperationalDay(dayIndex) {
+    let editOperationalDaysArray = this.state.editOperationalDaysName.split(
+      ","
+    );
+    editOperationalDaysArray.splice(dayIndex, 1);
+    let editOperationalDaysName = editOperationalDaysArray.join(",");
+    this.setState({
+      editOperationalDaysName,
+    });
+  }
   handleGetSlotTemplate() {
     let self = this;
     axios({
@@ -2452,6 +2849,7 @@ class StoreModule extends Component {
 
   /// handle Submit automatica data
   handleSubmitAutomaticData() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.autoTempName !== "" &&
       this.state.AutoSlotDuration !== 0 &&
@@ -2461,6 +2859,7 @@ class StoreModule extends Component {
       this.state.autoNonOptFrom !== "" &&
       this.state.autoNonOptTo !== ""
     ) {
+      this.setState({ isGenrateSlotLoading: true });
       let self = this;
       axios({
         method: "post",
@@ -2482,6 +2881,7 @@ class StoreModule extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             self.setState({
+              isGenrateSlotLoading: false,
               autoTempNameCompulsory: "",
               AutoSlotDurationCompulsory: "",
               AutoSlotGapCompulsory: "",
@@ -2495,20 +2895,43 @@ class StoreModule extends Component {
             NotificationManager.success("Slot Generated.");
           } else {
             NotificationManager.error("Slot Generated failed.");
+            self.setState({ isGenrateSlotLoading: false });
           }
         })
         .catch((response) => {
+          self.setState({ isGenrateSlotLoading: false });
           console.log(response);
         });
     } else {
       this.setState({
-        autoTempNameCompulsory: "Please Enter Template Name.",
-        AutoSlotDurationCompulsory: "Please Select Slot Duration.",
-        AutoSlotGapCompulsory: "Please Select Slot Gap.",
-        autoStoreFromCompulsory: "Please Select From Time.",
-        autoStoreToCompulsory: "Please Select To Time.",
-        autoNonOptFromCompulsory: "Please Select From Time.",
-        autoNonOptToCompulsory: "Please Select To Time.",
+        autoTempNameCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseentertemplatename
+            : "Please Enter Template Name.",
+        AutoSlotDurationCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectslotduration
+            : "Please Select Slot Duration.",
+        AutoSlotGapCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectslotgap
+            : "Please Select Slot Gap.",
+        autoStoreFromCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfromtime
+            : "Please Select From Time.",
+        autoStoreToCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselecttotime
+            : "Please Select To Time.",
+        autoNonOptFromCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfromtime
+            : "Please Select From Time.",
+        autoNonOptToCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselecttotime
+            : "Please Select To Time.",
       });
     }
   }
@@ -2570,7 +2993,7 @@ class StoreModule extends Component {
       });
       inputParam.TemplateSlots = this.state.manualStoreTblData;
     }
-
+    this.setState({ isCreateTampleteLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/CreateSlotTemplate",
@@ -2595,6 +3018,7 @@ class StoreModule extends Component {
             ManualSlotDuration: 0,
             createTampleteModal: false,
             finalSlotTemplateId: data,
+            isCreateTampleteLoading: false,
           });
           if (check === "Automatic") {
             NotificationManager.success("Automatic Template Created.");
@@ -2608,9 +3032,11 @@ class StoreModule extends Component {
           } else {
             NotificationManager.error("Manual Template Not Created..");
           }
+          self.setState({ isCreateTampleteLoading: false });
         }
       })
       .catch((response) => {
+        self.setState({ isCreateTampleteLoading: false });
         console.log(response);
       });
   }
@@ -2681,16 +3107,17 @@ class StoreModule extends Component {
   };
   /// handle Create Manualy create slot
   handleAddManualySlot() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.manualTempName !== "" &&
       this.state.manualStoreFrom !== "" &&
       this.state.manualStoreTo !== "" &&
       this.state.ManualSlotDuration !== 0 &&
       this.state.manualStoreData.slotEndTime !== ""
-      // && this.state.manualStoreData.slotStartTime !== ""
     ) {
       var manualStoreTblData = [];
       manualStoreTblData = this.state.manualStoreTblData;
+
       var start = this.state.manualStoreData["slotStartTime"];
       var end = this.state.manualStoreData["slotEndTime"];
 
@@ -2699,19 +3126,52 @@ class StoreModule extends Component {
       ObjData.slotEndTime = moment(end).format("LT");
 
       manualStoreTblData.push(ObjData);
+
+      var manualSlotTblData = [];
+      manualSlotTblData = this.state.manualSlotTblData;
+
+      var slotData = {};
+      slotData.slotStartTime = moment(start);
+      slotData.slotEndTime = moment(end);
+
+      manualSlotTblData.push(slotData);
+
+      this.state.manualStoreData["slotStartTime"] = "";
+      this.state.manualStoreData["slotEndTime"] = "";
+
       this.setState({
         manualStoreTblData,
         mimSlotStartTimeChck: this.state.manualStoreData.slotEndTime,
+        manualSlotTblData,
+        manualStoreData: this.state.manualStoreData,
       });
       NotificationManager.success("Manual Slot Created.");
     } else {
       this.setState({
-        manualTempNameCompulsory: "Please Enter Template Name.",
-        manualStoreFromCompulsory: "Please Select From Time.",
-        manualStoreToCompulsory: "Please Select To Time.",
-        ManualSlotDurationCompulsory: "Please Select Slot Duration.",
-        manualSlotStartCompulsory: "Please Select Start Time.",
-        manualSlotEndCompulsory: "Please Select End Time.",
+        manualTempNameCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseentertemplatename
+            : "Please Enter Template Name.",
+        manualStoreFromCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectfromtime
+            : "Please Select From Time.",
+        manualStoreToCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselecttotime
+            : "Please Select To Time.",
+        ManualSlotDurationCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectslotduration
+            : "Please Select Slot Duration.",
+        manualSlotStartCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectstarttime
+            : "Please Select Start Time.",
+        manualSlotEndCompulsory:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectendtime
+            : "Please Select End Time.",
       });
     }
   }
@@ -2723,24 +3183,52 @@ class StoreModule extends Component {
     NotificationManager.success("Slot Deleted.");
   }
   /// handle Get Slots By TemplateID
-  handleGetSlotsByTemplateID() {
+  handleGetSlotsByTemplateID(isFilterEdit) {
     let self = this;
-    this.setState({ slotTempLoading: true });
+
+    var slotTemplateID = 0;
+    if (isFilterEdit) {
+      slotTemplateID = this.state.selectedFilterSlotTemplate;
+      this.setState({ filterSlotTempLoading: true });
+    } else {
+      slotTemplateID = this.state.selectedSlotTemplate;
+      this.setState({ slotTempLoading: true });
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetSlotsByTemplateID",
       headers: authHeader(),
       params: {
-        SlotTemplateID: this.state.selectedSlotTemplate,
+        SlotTemplateID: slotTemplateID,
       },
     })
       .then((res) => {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ SlotTemplateGridData: data, slotTempLoading: false });
+          if (isFilterEdit) {
+            self.setState({
+              filterSlotTemplateGridData: data,
+              filterSlotTempLoading: false,
+            });
+          } else {
+            self.setState({
+              SlotTemplateGridData: data,
+              slotTempLoading: false,
+            });
+          }
         } else {
-          self.setState({ SlotTemplateGridData: [], slotTempLoading: false });
+          if (isFilterEdit) {
+            self.setState({
+              filterSlotTemplateGridData: [],
+              filterSlotTempLoading: false,
+            });
+          } else {
+            self.setState({
+              SlotTemplateGridData: [],
+              slotTempLoading: false,
+            });
+          }
         }
       })
       .catch((response) => {
@@ -2773,7 +3261,8 @@ class StoreModule extends Component {
     formData.append("file", this.state.SlotFile);
     axios({
       method: "post",
-      url: config.apiUrl + "/Appointment/BulkUploadSlot",
+      // url: config.apiUrl + "/Appointment/BulkUploadSlot",
+      url: config.apiUrl + "/Appointment/BulkUploadSlotNew",
       headers: authHeader(),
       data: formData,
     })
@@ -2790,6 +3279,8 @@ class StoreModule extends Component {
             SlotFileName: "",
             bulkuploadLoading: false,
           });
+          self.handleGetTimeslotGridData();
+          self.handleLoadSlotData();
         } else {
           self.setState({
             bulkuploadLoading: false,
@@ -2858,6 +3349,7 @@ class StoreModule extends Component {
   };
   ////handle change operational days
   handleChangeOperationalDays = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (e) {
       this.setState({
         operationalDays: e,
@@ -2866,7 +3358,10 @@ class StoreModule extends Component {
     } else {
       this.setState({
         operationalDays: e,
-        isoperationalDay: "Please Select Operational Days.",
+        isoperationalDay:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectoperationaldays
+            : "Please Select Operational Days.",
       });
     }
   };
@@ -2892,6 +3387,7 @@ class StoreModule extends Component {
   };
   ////handle slot template change.
   handleSlotTemplateChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     if (e.target.value > 0) {
       this.setState({
         selectedSlotTemplate: e.target.value,
@@ -2900,12 +3396,42 @@ class StoreModule extends Component {
     } else {
       this.setState({
         selectedSlotTemplate: e.target.value,
-        isSlotTemplete: "Please Select Slot Template.",
+        isSlotTemplete:
+          TranslationContext !== undefined
+            ? TranslationContext.validation.pleaseselectslottemplate
+            : "Please Select Slot Template.",
       });
     }
   };
+  handleEditSlotTemplateChange = (e) => {
+    this.setState({
+      editSlotTemplateId: e.target.value,
+    });
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetSlotsByTemplateID",
+      headers: authHeader(),
+      params: {
+        SlotTemplateID: e.target.value,
+      },
+    })
+      .then((res) => {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ editSlotTemplateGridData: data });
+        } else {
+          self.setState({ editSlotTemplateGridData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  };
   ////handle get appointment count on slot id
   handleGetAppointmentCountOnSlotID = (slotId) => {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -2918,11 +3444,19 @@ class StoreModule extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           confirm({
-            title: "Do you Want to delete these slot ?",
-            // icon: <ExclamationCircleOutlined />,
-            content: "This slot already created Appointment.",
+            title:
+              TranslationContext !== undefined
+                ? TranslationContext.title.doyouwanttodeletetheseslot
+                : "Do you Want to delete these slot ?",
+            content:
+              TranslationContext !== undefined
+                ? TranslationContext.title.thisslotalreadycreatedappointment
+                : "This slot already created Appointment.",
             onOk() {
               self.handleDeleteTimeSlot(slotId);
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
             },
             onCancel() {},
           });
@@ -2953,8 +3487,515 @@ class StoreModule extends Component {
       AppointConfigData: this.state.AppointConfigData,
     });
   }
+
+  handleGetAppointmentMessageTagsData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/AppointmentMessageTags",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AppointMessageTagsData: data,
+          });
+        } else {
+          self.setState({
+            AppointMessageTagsData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handlePlaceholdersOnChange(type, e) {
+    if (type === "WhatsApp" && e.target.value !== "Select") {
+      if (this.state.AppointConfigData.messageViaWhatsApp) {
+        this.state.AppointConfigData.messageViaWhatsApp =
+          this.state.AppointConfigData.messageViaWhatsApp +
+          " " +
+          e.target.value;
+      } else {
+        this.state.AppointConfigData.messageViaWhatsApp =
+          this.state.AppointConfigData.messageViaWhatsApp ||
+          "" + " " + e.target.value;
+      }
+    } else if (type === "SMS" && e.target.value !== "Select") {
+      if (this.state.AppointConfigData.messageViaSMS) {
+        this.state.AppointConfigData.messageViaSMS =
+          this.state.AppointConfigData.messageViaSMS + " " + e.target.value;
+      } else {
+        this.state.AppointConfigData.messageViaSMS =
+          this.state.AppointConfigData.messageViaSMS ||
+          "" + " " + e.target.value;
+      }
+    } else if (type === "RemindSMS" && e.target.select !== "Select") {
+      if (this.state.AppointConfigData.reminderMessageViaSMS) {
+        this.state.AppointConfigData.reminderMessageViaSMS =
+          this.state.AppointConfigData.reminderMessageViaSMS +
+          " " +
+          e.target.value;
+      } else {
+        this.state.AppointConfigData.reminderMessageViaSMS =
+          this.state.AppointConfigData.reminderMessageViaSMS ||
+          "" + " " + e.target.value;
+      }
+    }
+
+    this.setState({
+      AppointConfigData: this.state.AppointConfigData,
+    });
+  }
+  //handle slot table modal close
+  handleSlotTableModalClose = (id) => {
+    document.getElementById(id).click();
+  };
+  handleFilterChange = (e) => {
+    this.setState({ filterOptionSelected: e });
+    if (e.value === 1) {
+      this.setState({
+        // chooseStoreModal: true,
+        selectedSlotTemplate: 0,
+        operationalDays: [],
+        filterOperationalDays: {},
+        filterSlotTemplate: 0,
+      });
+      this.handleFilterOperationalDaysModalClose();
+    } else {
+      this.state.storeCodeData.forEach((element) => {
+        element.isChecked = false;
+      });
+      this.setState({
+        storeCodeData: this.state.storeCodeData,
+        showApplyStoreData: false,
+        selectedStoreValues: "",
+        shoreSelectedCount: 0,
+        filterSelectedStoreId: "",
+        filterSelectedStoreCode: "",
+      });
+      if (e.value === 2) {
+        this.setState({
+          selectedSlotTemplate: 0,
+          filterSelectedStoreId: "",
+          filterSelectedStoreCode: "",
+          filterSlotTemplate: 0,
+        });
+      } else {
+        this.setState({
+          operationalDays: [],
+          filterSelectedStoreId: "",
+          filterSelectedStoreCode: "",
+        });
+        this.handleFilterOperationalDaysModalClose();
+      }
+    }
+  };
+  handleFilterChooseStoreChange = (item, e) => {
+    this.state.onLoadSlotStores.filter(
+      (x) => x.storeID === item.storeID
+    )[0].isChecked = e.target.checked;
+    this.setState({ onLoadSlotStores: this.state.onLoadSlotStores });
+  };
+  /// handle Filter store search
+  handleFilterStoreSearch = (e) => {
+    e.preventDefault();
+    var tempstore = this.state.tempOnLoadSlotStores;
+    var Value = this.state.filterSlotStoreSearch;
+    tempstore.forEach((element) => {
+      element.isChecked = false;
+    });
+    var FinalstoreList = tempstore.filter((item) =>
+      item.storeCode.toLowerCase().includes(Value.toLowerCase())
+    );
+
+    if (FinalstoreList.length > 0) {
+      this.setState({ onLoadSlotStores: FinalstoreList });
+    } else {
+      this.setState({
+        onLoadSlotStores: [],
+      });
+    }
+  };
+  handleFilterSelectAllStore = (isSelectAll, e) => {
+    this.state.onLoadSlotStores.forEach((element) => {
+      element.isChecked = isSelectAll;
+    });
+    if (isSelectAll) {
+      this.setState({ onLoadSlotStores: this.state.onLoadSlotStores });
+    } else {
+      this.setState({
+        onLoadSlotStores: this.state.onLoadSlotStores,
+        filterSelectedStoreCode: "",
+        filterSelectedStoreId: "",
+      });
+    }
+  };
+  /// handle filter store data
+  handleFilterStoreData(filterData) {
+    var tempstore = this.state.tempOnLoadSlotStores;
+    tempstore.forEach((element) => {
+      element.isChecked = false;
+    });
+    var finalStore = tempstore.filter((item) =>
+      item.storeCode.startsWith(filterData)
+    );
+    this.setState({
+      onLoadSlotStores: finalStore,
+    });
+  }
+  handleFilterApplySelectedStore() {
+    var filterSelectedStoreCode = "";
+    var filterSelectedStoreId = "";
+    this.state.onLoadSlotStores.forEach((element) => {
+      if (element.isChecked) {
+        filterSelectedStoreId += element.storeID + ",";
+        filterSelectedStoreCode += element.storeCode + ",";
+      }
+    });
+    this.setState({
+      filterSelectedStoreId,
+      filterSelectedStoreCode,
+      filterChooseStoreModal: false,
+    });
+  }
+  handleFilterOperationalDaysModalOpen = () => {
+    if (this.state.filterOperationalDays) {
+      var oprId = this.state.filterOperationalDays.dayIDs.split(",");
+      var oprName = this.state.filterOperationalDays.dayNames.split(",");
+      var filterSelectedOperationalDays = [];
+      for (let i = 0; i < oprId.length; i++) {
+        var objData = {};
+        objData.dayID = Number(oprId[i]);
+        objData.dayName = oprName[i];
+        filterSelectedOperationalDays.push(objData);
+      }
+    }
+    this.setState({
+      filterOperationalDaysModal: true,
+      filterSelectedOperationalDays,
+    });
+  };
+  handleFilterOperationalDaysModalClose = () => {
+    this.setState({ filterOperationalDaysModal: false });
+  };
+  handleFilterChangeOperationalDays = (e) => {
+    this.setState({ filterOperationalDays: e });
+    // if (e) {
+    //   setTimeout(() => {
+    //     this.handleFilterOperationalDaysModalOpen();
+    //   }, 300);
+    // }
+  };
+  handleEditAllData = () => {
+    if (this.state.filterOptionSelected.value === 2) {
+      this.handleFilterOperationalDaysModalOpen();
+    }
+    if (this.state.filterOptionSelected.value === 3) {
+      this.handleFilterTampleteModalModalOpen();
+      this.handleGetSlotsByTemplateID(true);
+    }
+  };
+  //handle filter delete all slot data
+  handleFilterDeleteALLSlotData = () => {
+    let self = this;
+    var slotIDs = "";
+    this.state.TimeSlotGridData.forEach((element) => {
+      slotIDs += element.slotSettingID + ",";
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/BulkDeleteTimeSlotMaster",
+      headers: authHeader(),
+      params: {
+        SlotIDs: slotIDs,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetTimeslotGridData(0, "", "", 0);
+
+          self.setState({
+            filterOptionSelected: {},
+            filterOperationalDays: {},
+            filterSelectedStoreCode: "",
+            filterSlotTemplate: 0,
+          });
+          self.handleLoadSlotData();
+          NotificationManager.success("Slots Delete Successfully.");
+        } else {
+          NotificationManager.error("Slots Not Delete Successfully.");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---BulkDeleteTimeSlotMaster");
+      });
+  };
+  //handle filter delete all slot data
+  handleFilterEditALLSlotData = () => {
+    let self = this;
+    var slotIDs = "";
+    var slotTemplateID = 0;
+    var storeOpdays = "";
+    var templateSlots = [];
+    this.state.TimeSlotGridData.forEach((element) => {
+      slotIDs += element.slotSettingID + ",";
+    });
+    if (this.state.filterOptionSelected.value === 2) {
+      this.state.filterSelectedOperationalDays.sort(
+        (a, b) => a.dayID - b.dayID
+      );
+
+      this.state.filterSelectedOperationalDays.forEach((element) => {
+        storeOpdays += element.dayID + ",";
+      });
+      this.setState({ filterEditLoader: true });
+    } else {
+      var checkSlotOccupancy = [];
+      if (this.state.filterSlotTemplateGridData.length > 0) {
+        checkSlotOccupancy = this.state.filterSlotTemplateGridData.filter(
+          (x) => x.slotOccupancy == 0
+        );
+      }
+      if (checkSlotOccupancy.length > 0) {
+        NotificationManager.error("Please Enter Slot Occupancy.");
+        return false;
+      }
+      slotTemplateID = this.state.selectedFilterSlotTemplate;
+      templateSlots = this.state.filterSlotTemplateGridData;
+      this.setState({ filterEditLoader: true });
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/BulkUpdateSlots",
+      headers: authHeader(),
+      data: {
+        SlotSettingIds: slotIDs,
+        StoreOpdays: storeOpdays,
+        SlotTemplateID: slotTemplateID,
+        TemplateSlots: templateSlots,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.handleGetTimeslotGridData(0, "", "", 0);
+          NotificationManager.success("Slots Update Successfully.");
+          self.setState({
+            filterOperationalDaysModal: false,
+            filterOptionSelected: {},
+            filterOperationalDays: {},
+            filterTampleteModal: false,
+            filterEditLoader: false,
+            filterSlotTemplate: 0,
+          });
+          self.handleLoadSlotData();
+        } else {
+          NotificationManager.error("Slots Not Update Successfully.");
+          self.setState({ filterEditLoader: false });
+        }
+      })
+      .catch((response) => {
+        self.setState({ filterEditLoader: false });
+        console.log(response, "---BulkUpdateSlots");
+      });
+  };
+  handleSelectFilterChangeOperationalDays = (e) => {
+    this.setState({ filterSelectedOperationalDays: e });
+  };
+  handleFilterTampleteModalModalOpen = () => {
+    this.setState({
+      filterTampleteModal: true,
+    });
+  };
+  handleFilterTampleteModalModalClose = () => {
+    this.setState({
+      filterTampleteModal: false,
+    });
+  };
+  handleFilterSlotTemplateChange = (e) => {
+    this.setState({
+      filterSlotTemplate: e.target.value,
+      selectedFilterSlotTemplate: e.target.value,
+    });
+  };
+  handleSelectedFilterSlotTemplate = (e) => {
+    this.setState({
+      selectedFilterSlotTemplate: e.target.value,
+    });
+    setTimeout(() => {
+      this.handleGetSlotsByTemplateID(true);
+    }, 1000);
+  };
+  handleFilterEnableDisableOnChange(i, e) {
+    var name = e.target.name;
+    var value = e.target.value;
+    if (name === "isSlotEnabled") {
+      value = e.target.checked;
+    }
+    let filterSlotTemplateGridData = [...this.state.filterSlotTemplateGridData];
+    filterSlotTemplateGridData[i] = {
+      ...filterSlotTemplateGridData[i],
+      [name]: value,
+    };
+    this.setState({
+      filterSlotTemplateGridData,
+    });
+  }
+  handleSelectEditChangeOperationalDays = (e) => {
+    this.setState({ operationalDaysList: e });
+  };
+
+  handleFilterClear = () => {
+    this.state.onLoadSlotStores.forEach((element) => {
+      element.isChecked = false;
+    });
+    this.setState({
+      onLoadSlotStores: this.state.onLoadSlotStores,
+      filterOptionSelected: {},
+      filterOperationalDays: {},
+      filterSelectedStoreCode: "",
+      filterSlotTemplate: 0,
+      isFilterSearch: false,
+    });
+    this.handleGetTimeslotGridData(0, "", "", 0);
+  };
+  //handle get web bot select option data
+  handleGetWebBotOption = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/WebBot/GetWebBotOption",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.setState({ WebBotData: responseData });
+        } else {
+          self.setState({ WebBotData: [] });
+        }
+      })
+      .catch((error) => {
+        console.log(error, "----handleGetWebBotOption");
+      });
+  };
+  handleHSMOptionChange = (optionId) => {
+    this.state.WebBotData.filter(
+      (x) => x.id === optionId
+    )[0].isActive = !this.state.WebBotData.filter((x) => x.id === optionId)[0]
+      .isActive;
+    this.setState({ WebBotData: this.state.WebBotData });
+  };
+  handleHSMUpdate = () => {
+    var activeOptions = "";
+    var inActiveOptions = "";
+
+    this.state.WebBotData.forEach((element) => {
+      if (element.isActive) {
+        activeOptions += element.id + ",";
+      } else {
+        inActiveOptions += element.id + ",";
+      }
+    });
+    this.setState({ isSubmit: true });
+    let self = this;
+    const TranslationContext = this.state.translateLanguage.default;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/WebBot/UpdateHSMOptions",
+      params: {
+        ActiveOptions: activeOptions,
+        InActiveOptions: inActiveOptions,
+      },
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({ isSubmit: false });
+        if (message === "Success" && responseData) {
+          self.handleGetWebBotOption();
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully."
+          );
+        } else {
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Not Updated."
+          );
+        }
+      })
+      .catch((error) => {
+        self.setState({ isSubmit: false });
+        console.log(error, "----handleHSMUpdate");
+      });
+  };
+  /// handle Campaign upload
+  handleCampaignFileUpload = (file) => {
+    var imageFile = file[0];
+    var campaignUploadName = file[0].name;
+    if (!imageFile.name.match(/\.(csv)$/)) {
+      alert("Only csv file allowed.");
+      return false;
+    } else {
+      this.setState({
+        campaignUploadName,
+        campaignUploadFile: imageFile,
+      });
+      // this.handleSlotBulkUpload();
+    }
+  };
+ 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
+    var manualSlotData = this.state.manualSlotTblData;
+    var excludeTimes = [];
+    for (var i = 0; i < manualSlotData.length; i++) {
+      var startTime = new Date(manualSlotData[i].slotStartTime);
+      var endTime = new Date(manualSlotData[i].slotEndTime);
+      for (var slotdate = startTime; slotdate < endTime; ) {
+        var hourGet = slotdate.getHours();
+        var minuteGet = slotdate.getMinutes();
+
+        var date = new Date();
+        date.setMinutes(minuteGet);
+        date.setHours(hourGet);
+        excludeTimes.push(date);
+
+        slotdate = new Date(slotdate.setMinutes(slotdate.getMinutes() + 15));
+      }
+    }
+
+    const CustomInput = (props) => {
+      return (
+        <input
+          className="form-control"
+          placeholder={
+            TranslationContext !== undefined
+              ? TranslationContext.option.selecttiming
+              : "Select Timing"
+          }
+          onClick={props.onClick}
+          value={props.value}
+          type="text"
+          readOnly={true}
+        />
+      );
+    };
+
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -3222,6 +4263,7 @@ class StoreModule extends Component {
                         : "Appointment Configuration"}
                     </a>
                   </li>
+
                   <li
                     className={
                       config.isHomeShope ? "nav-item" : "nav-item displayNn"
@@ -3252,6 +4294,7 @@ class StoreModule extends Component {
                       role="tab"
                       aria-controls="Module-SlotSetting-Tab"
                       aria-selected="false"
+                      onClick={this.handleLoadSlotData.bind(this)}
                     >
                       {TranslationContext !== undefined
                         ? TranslationContext.a.slotsettings
@@ -3276,6 +4319,61 @@ class StoreModule extends Component {
                         : "Language Settings"}
                     </a>
                   </li>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
+                    <a
+                      onClick={this.handleGetWebBotOption.bind(this)}
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#HSM-Setting"
+                      role="tab"
+                      aria-controls="HSM-Setting"
+                      aria-selected="false"
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.tab.hsmsettings
+                        : "HSM Settings"}
+                    </a>
+                  </li>
+                  <li
+                    className={
+                      !config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-DashboardSetting-Tab"
+                      role="tab"
+                      aria-controls="Module-DashboardSetting-Tab"
+                      aria-selected="false"
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.tab.dashboardsettings
+                        : "Dashboard Settings"}
+                    </a>
+                  </li>
+                  {/* <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-CampaignUpload-Tab"
+                      role="tab"
+                      aria-controls="Module-CampaignUpload-Tab"
+                      aria-selected="false"
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.tab.campaignupload
+                        : "Campaign Upload"}
+                    </a>
+                  </li> */}
                 </ul>
               </div>
               <div className="tab-content p-0">
@@ -3533,7 +4631,6 @@ class StoreModule extends Component {
                                     </div>
                                   );
                                 },
-                                // accessor: "createdBy"
                               },
                               {
                                 Header: (
@@ -3571,7 +4668,6 @@ class StoreModule extends Component {
                               },
                               {
                                 Header: "Actions",
-                                // accessor: "action",
                                 sortable: false,
                                 Cell: (row) => {
                                   var ids = row.original["id"];
@@ -3654,7 +4750,6 @@ class StoreModule extends Component {
                               <button
                                 className="btn issuesladrop"
                                 type="button"
-                                // data-toggle="dropdown"
                                 id="campaignNameValue"
                                 onClick={this.handleCampaignButton}
                               >
@@ -3827,7 +4922,7 @@ class StoreModule extends Component {
                                   <span className={"fileupload-span"}>
                                     Add File
                                   </span>
-                                  or Drop File here
+                                  or &nbsp; Drop File here
                                 </div>
                               )}
                             </Dropzone>
@@ -4094,7 +5189,9 @@ class StoreModule extends Component {
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
                                         {TranslationContext !== undefined
-                                          ? TranslationContext.ticketingDashboard.campaignautoassigned
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .campaignautoassigned
                                           : "Campaign Auto Assigned"}
                                       </label>
                                       <input
@@ -4111,6 +5208,60 @@ class StoreModule extends Component {
                                       />
                                       <label
                                         htmlFor="ckCmpAutoAssignedCamp5"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .campaignraiseticket
+                                          : "Campaign Raise Ticket"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckCmpAutoAssignedCamp6"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .raiseTicketFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckCmpAutoAssignedCamp6"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .campaigncomment
+                                          : "Campaign Comment"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckCmpAutoAssignedCamp7"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .addCommentFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckCmpAutoAssignedCamp7"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
@@ -4217,10 +5368,18 @@ class StoreModule extends Component {
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
+                                  disabled={this.state.isSubmit}
                                   onClick={this.handleCheckCampaignValidation.bind(
                                     this
                                   )}
                                 >
+                                  {this.state.isSubmit ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.update
                                     : "UPDATE"}
@@ -4256,14 +5415,20 @@ class StoreModule extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Appointment Cancellation
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .appointmentcancellation
+                                          : "Appointment Cancellation"}
                                       </label>
                                     </div>
                                   </div>
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Communication via Whatsapp
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .communicationviawhatsapp
+                                          : "Communication via Whatsapp"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -4297,11 +5462,16 @@ class StoreModule extends Component {
                                             }
                                           >
                                             <Radio value={1}>
-                                              Check customer last received
-                                              message with in 24 Hrs
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .checkcustomerlastreceivedmessagewithin24hrs
+                                                : "Check customer last received message with in 24 Hrs"}
                                             </Radio>
                                             <Radio value={2}>
-                                              Do not check for any time
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .donotcheckforanytime
+                                                : "Do not check for any time"}
                                             </Radio>
                                           </Radio.Group>
                                         </div>
@@ -4309,9 +5479,49 @@ class StoreModule extends Component {
                                       <div className="module-switch ord-m-t20">
                                         <div className="switch switch-primary">
                                           <label className="storeRole-name-text m-0 ordSttd-store">
-                                            Message via Whatsapp
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .messageviawhatsapp
+                                              : "Message via Whatsapp"}
                                           </label>
+                                          <div className="row">
+                                            <div className="col-md-4 strm-d-8">
+                                              <label className="storeRole-name-text m-0 ordSttd-store">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .placeholders
+                                                  : "Placeholders"}
+                                              </label>
+                                            </div>
+                                            <div className="col-md-8">
+                                              <select
+                                                className="form-control"
+                                                name="selectedSlotTemplate"
+                                                onChange={this.handlePlaceholdersOnChange.bind(
+                                                  this,
+                                                  "WhatsApp"
+                                                )}
+                                              >
+                                                <option>Select</option>
+                                                {this.state
+                                                  .AppointMessageTagsData !==
+                                                  null &&
+                                                  this.state.AppointMessageTagsData.map(
+                                                    (item, s) => (
+                                                      <option
+                                                        key={s}
+                                                        value={item.placeHolder}
+                                                      >
+                                                        {item.placeHolder}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
+                                          </div>
                                           <textarea
+                                            rows="5"
                                             className="appoint-txtarea"
                                             name="messageViaWhatsApp"
                                             value={
@@ -4329,7 +5539,10 @@ class StoreModule extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Communication via SMS
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .communicationviasms
+                                          : "Communication via SMS"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -4349,22 +5562,290 @@ class StoreModule extends Component {
                                     </div>
                                   </div>
                                   {this.state.AppointConfigData.viaSMS ? (
-                                    <div className="module-switch ord-m-t20">
-                                      <div className="switch switch-primary">
-                                        <label className="storeRole-name-text m-0 ordSttd-store">
-                                          Message via SMS
-                                        </label>
-                                        <textarea
-                                          className="appoint-txtarea"
-                                          name="messageViaSMS"
+                                    <div className="appoint-conf-dv">
+                                      <div className="module-switch ord-m-t20">
+                                        <div className="switch switch-primary">
+                                          <label className="storeRole-name-text m-0 ordSttd-store">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .messageviasms
+                                              : "Message via SMS"}
+                                          </label>
+                                          <div className="row">
+                                            <div className="col-md-4 strm-d-8">
+                                              <label className="storeRole-name-text m-0 ordSttd-store">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .placeholders
+                                                  : "Placeholders"}
+                                              </label>
+                                            </div>
+                                            <div className="col-md-8">
+                                              <select
+                                                className="form-control"
+                                                name="selectedSlotTemplate"
+                                                onChange={this.handlePlaceholdersOnChange.bind(
+                                                  this,
+                                                  "SMS"
+                                                )}
+                                              >
+                                                <option>Select</option>
+                                                {this.state
+                                                  .AppointMessageTagsData !==
+                                                  null &&
+                                                  this.state.AppointMessageTagsData.map(
+                                                    (item, s) => (
+                                                      <option
+                                                        key={s}
+                                                        value={item.placeHolder}
+                                                      >
+                                                        {item.placeHolder}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <textarea
+                                            rows="5"
+                                            className="appoint-txtarea"
+                                            name="messageViaSMS"
+                                            value={
+                                              this.state.AppointConfigData
+                                                .messageViaSMS
+                                            }
+                                            onChange={this.AppoinmentConfigTextChange.bind(
+                                              this
+                                            )}
+                                          ></textarea>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                </div>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .appointmentreminder
+                                          : "Appointment Reminder"}
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <table className="cmpaign-channel-table">
+                                    <tr>
+                                      <td>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.panel
+                                              .appointmentreminderbefore
+                                          : "Appointment reminder before"}
+                                      </td>
+                                      
+                                      <td>
+                                        <select
                                           value={
                                             this.state.AppointConfigData
-                                              .messageViaSMS
+                                              .remindBeforeDuration
                                           }
-                                          onChange={this.AppoinmentConfigTextChange.bind(
+                                          name="remindBeforeDuration"
+                                          onChange={this.handleAppointmentReminder.bind(
                                             this
                                           )}
-                                        ></textarea>
+                                        >
+                                          <option value="1H">1 Hr</option>
+                                          <option value="2H">2 Hr</option>
+                                          <option value="3H">3 Hr</option>
+                                          <option value="4H">4 Hr</option>
+                                          <option value="5H">5 Hr</option>
+                                          <option value="6H">6 Hr</option>
+                                          <option value="7H">7 Hr</option>
+                                          <option value="8H">8 Hr</option>
+                                          <option value="9H">9 Hr</option>
+                                          <option value="10H">10 Hr</option>
+                                          <option value="11H">11 Hr</option>
+                                          <option value="12H">12 Hr</option>
+                                          <option value="13H">13 Hr</option>
+                                          <option value="14H">14 Hr</option>
+                                          <option value="15H">15 Hr</option>
+                                          <option value="16H">16 Hr</option>
+                                          <option value="17H">17 Hr</option>
+                                          <option value="18H">18 Hr</option>
+                                          <option value="19H">19 Hr</option>
+                                          <option value="20H">20 Hr</option>
+                                          <option value="21H">21 Hr</option>
+                                          <option value="22H">22 Hr</option>
+                                          <option value="23H">23 Hr</option>
+                                          <option value="24H">24 Hr</option>
+                                        </select>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .communicationviawhatsapp
+                                          : "Communication via Whatsapp"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckReminderViaWhapp"
+                                        name="allModules"
+                                        checked={
+                                          this.state.AppointConfigData
+                                            .reminderViaWhatsApp
+                                        }
+                                        onChange={this.AppoinmentConfigFlageChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckReminderViaWhapp"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  {/* {this.state.AppointConfigData
+                                    .reminderViaWhatsApp ? (
+                                    <div className="appoint-conf-dv">
+                                      <div className="module-switch">
+                                        <div className="switch switch-primary">
+                                          <div className="row">
+                                            <div className="col-md-4 strm-d-8">
+                                              <label className="storeRole-name-text m-0 ordSttd-store">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .placeholders
+                                                  : "Placeholders"}
+                                              </label>
+                                            </div>
+                                            <div className="col-md-8">
+                                              <select
+                                                className="form-control"
+                                                name="selectedSlotTemplate"
+                                                onChange={this.handlePlaceholdersOnChange.bind(
+                                                  this,
+                                                  "WhatsApp"
+                                                )}
+                                              >
+                                                <option>Select</option>
+                                                {this.state
+                                                  .AppointMessageTagsData !==
+                                                  null &&
+                                                  this.state.AppointMessageTagsData.map(
+                                                    (item, s) => (
+                                                      <option
+                                                        key={s}
+                                                        value={item.placeHolder}
+                                                      >
+                                                        {item.placeHolder}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <textarea
+                                            rows="5"
+                                            className="appoint-txtarea"
+                                            name="reminderMessageViaWhatsApp"
+                                            value={
+                                              this.state.AppointConfigData
+                                                .reminderMessageViaWhatsApp
+                                            }
+                                            onChange={this.AppoinmentConfigTextChange.bind(
+                                              this
+                                            )}
+                                          ></textarea>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : null} */}
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .communicationviasms
+                                          : "Communication via SMS"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckReminderViaSMS"
+                                        name="allModules"
+                                        checked={
+                                          this.state.AppointConfigData
+                                            .reminderViaSMS
+                                        }
+                                        onChange={this.AppoinmentConfigFlageChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckReminderViaSMS"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  {this.state.AppointConfigData
+                                    .reminderViaSMS ? (
+                                    <div className="appoint-conf-dv">
+                                      <div className="module-switch">
+                                        <div className="switch switch-primary">
+                                          <div className="row">
+                                            <div className="col-md-4 strm-d-8">
+                                              <label className="storeRole-name-text m-0 ordSttd-store">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .placeholders
+                                                  : "Placeholders"}
+                                              </label>
+                                            </div>
+                                            <div className="col-md-8">
+                                              <select
+                                                className="form-control"
+                                                name="selectedSlotTemplate"
+                                                onChange={this.handlePlaceholdersOnChange.bind(
+                                                  this,
+                                                  "RemindSMS"
+                                                )}
+                                              >
+                                                <option>Select</option>
+                                                {this.state
+                                                  .AppointMessageTagsData !==
+                                                  null &&
+                                                  this.state.AppointMessageTagsData.map(
+                                                    (item, s) => (
+                                                      <option
+                                                        key={s}
+                                                        value={item.placeHolder}
+                                                      >
+                                                        {item.placeHolder}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <textarea
+                                            rows="5"
+                                            className="appoint-txtarea"
+                                            name="reminderMessageViaSMS"
+                                            value={
+                                              this.state.AppointConfigData
+                                                .reminderMessageViaSMS
+                                            }
+                                            onChange={this.AppoinmentConfigTextChange.bind(
+                                              this
+                                            )}
+                                          ></textarea>
+                                        </div>
                                       </div>
                                     </div>
                                   ) : null}
@@ -4375,7 +5856,15 @@ class StoreModule extends Component {
                                   onClick={this.handleUpdateAppointmentConfigData.bind(
                                     this
                                   )}
+                                  disabled={this.state.isSubmit}
                                 >
+                                  {this.state.isSubmit ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.update
                                     : "UPDATE"}
@@ -4388,6 +5877,7 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </div>
+
                 <div
                   className="tab-pane fade"
                   id="Module-BroadcastConfig-Tab"
@@ -4624,7 +6114,15 @@ class StoreModule extends Component {
                                   onClick={this.CheckBroadCastValidation.bind(
                                     this
                                   )}
+                                  disabled={this.state.isSubmit}
                                 >
+                                  {this.state.isSubmit ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.update
                                     : "UPDATE"}
@@ -4664,7 +6162,9 @@ class StoreModule extends Component {
                                         aria-controls="Slot-Manual-Tab"
                                         aria-selected="true"
                                       >
-                                        Manual
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.manual
+                                          : "Manual"}
                                       </a>
                                     </li>
 
@@ -4677,7 +6177,9 @@ class StoreModule extends Component {
                                         aria-controls="Slot-bulkUpl-Tab"
                                         aria-selected="false"
                                       >
-                                        Bulk Upload
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.bulkupload
+                                          : "Bulk Upload"}
                                       </a>
                                     </li>
                                   </ul>
@@ -4708,7 +6210,13 @@ class StoreModule extends Component {
                                               <input
                                                 type="text"
                                                 className="form-control"
-                                                placeholder="Search"
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .placeholder.search
+                                                    : "Search"
+                                                }
                                                 value={
                                                   this.state.showApplyStoreData
                                                     ? this.state
@@ -4724,34 +6232,44 @@ class StoreModule extends Component {
                                                 />
                                               </span>
                                             </div>
-                                            {this.state.showApplyStoreData && (
-                                              <a
-                                                style={{ float: "left" }}
-                                                onClick={this.handleSelectedStoreOpenModal.bind(
-                                                  this
-                                                )}
-                                              >
-                                                {this.state.shoreSelectedCount}
-                                                &nbsp;{" "}
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.a
-                                                      .storeselected
-                                                  : "Store Selected"}{" "}
-                                                {">"}
-                                              </a>
-                                            )}
-                                            {this.state.isChooseStore ? (
-                                              <p
-                                                className="non-deliverable"
-                                                style={{
-                                                  marginTop: "0",
-                                                  textAlign: "left",
-                                                }}
-                                              >
-                                                {this.state.isChooseStore}
-                                              </p>
-                                            ) : null}
+                                            <div
+                                              style={{
+                                                display: "inline-block",
+                                              }}
+                                            >
+                                              {this.state
+                                                .showApplyStoreData && (
+                                                <a
+                                                  style={{ float: "left" }}
+                                                  onClick={this.handleSelectedStoreOpenModal.bind(
+                                                    this
+                                                  )}
+                                                >
+                                                  {
+                                                    this.state
+                                                      .shoreSelectedCount
+                                                  }
+                                                  &nbsp;
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.a
+                                                        .storeselected
+                                                    : "Store Selected"}
+                                                  {">"}
+                                                </a>
+                                              )}
+                                              {this.state.isChooseStore ? (
+                                                <p
+                                                  className="non-deliverable"
+                                                  style={{
+                                                    marginTop: "0",
+                                                    textAlign: "left",
+                                                  }}
+                                                >
+                                                  {this.state.isChooseStore}
+                                                </p>
+                                              ) : null}
+                                            </div>
                                           </li>
                                           <li>
                                             <label>
@@ -4776,7 +6294,13 @@ class StoreModule extends Component {
                                                 this
                                               )}
                                               value={this.state.operationalDays}
-                                              placeholder="Please Select Operational Days"
+                                              placeholder={
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext
+                                                      .validation
+                                                      .pleaseselectoperationaldays
+                                                  : "Please Select Operational Days"
+                                              }
                                               closeMenuOnSelect={false}
                                               isMulti
                                             />
@@ -4784,7 +6308,7 @@ class StoreModule extends Component {
                                               <p
                                                 className="non-deliverable"
                                                 style={{
-                                                  marginTop: "0",
+                                                  marginTop: "3px",
                                                   textAlign: "left",
                                                 }}
                                               >
@@ -4825,28 +6349,36 @@ class StoreModule extends Component {
                                                   )
                                                 )}
                                             </select>
-                                            <a
-                                              onClick={this.handleCreateTempletetOpenModal.bind(
-                                                this
-                                              )}
+                                            <div
+                                              style={{
+                                                display: "inline-block",
+                                                float: "right",
+                                              }}
                                             >
-                                              +
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.a
-                                                    .createnewtemplate
-                                                : "Create New Template"}
-                                            </a>
-                                            {this.state.isSlotTemplete ? (
-                                              <p
-                                                className="non-deliverable"
-                                                style={{
-                                                  marginTop: "0",
-                                                  textAlign: "left",
-                                                }}
+                                              <a
+                                                onClick={this.handleCreateTempletetOpenModal.bind(
+                                                  this
+                                                )}
                                               >
-                                                {this.state.isSlotTemplete}
-                                              </p>
-                                            ) : null}
+                                                +
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a
+                                                      .createnewtemplate
+                                                  : "Create New Template"}
+                                              </a>
+                                              {this.state.isSlotTemplete ? (
+                                                <p
+                                                  className="non-deliverable"
+                                                  style={{
+                                                    marginTop: "0",
+                                                    textAlign: "left",
+                                                  }}
+                                                >
+                                                  {this.state.isSlotTemplete}
+                                                </p>
+                                              ) : null}
+                                            </div>
                                           </li>
                                           <li>
                                             {!this.state.isNextClick && (
@@ -4856,7 +6388,11 @@ class StoreModule extends Component {
                                                   this
                                                 )}
                                               >
-                                                {"Next" + ">>"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .next
+                                                  : "Next" + ">>"}
                                               </button>
                                             )}
                                           </li>
@@ -4877,19 +6413,41 @@ class StoreModule extends Component {
                                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                               columns={[
                                                 {
-                                                  title: "S.No.",
-                                                  dataIndex: "slotID",
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.span
+                                                          .srno
+                                                      : "S.No.",
+                                                  render: (row, rowData, i) => {
+                                                    return <>{i + 1}</>;
+                                                  },
                                                 },
                                                 {
-                                                  title: "Slot Start Time",
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .slotstarttime
+                                                      : "Slot Start Time",
                                                   dataIndex: "slotStartTime",
                                                 },
                                                 {
-                                                  title: "Slot End Time",
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .slotendtime
+                                                      : "Slot End Time",
                                                   dataIndex: "slotEndTime",
                                                 },
                                                 {
-                                                  title: "Slot Occupancy",
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .slotoccupancy
+                                                      : "Slot Occupancy",
                                                   dataIndex: "slotOccupancy",
                                                   render: (row, rowData) => {
                                                     return (
@@ -4911,7 +6469,11 @@ class StoreModule extends Component {
                                                 },
                                                 {
                                                   title:
-                                                    "Slot Status(Unable/Disable)",
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .slotstatusunabledisable
+                                                      : "Slot Status(Enable/Disable)",
                                                   render: (row, rowData) => {
                                                     return (
                                                       <div className="chrdioclr switch switch-primary d-inline m-r-10 slotcheck">
@@ -5079,7 +6641,13 @@ class StoreModule extends Component {
                                           </ul>
                                           <div className="row">
                                             <div className="col-md-4">
-                                              <label>Slot Display Code</label>
+                                              <label>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .slotdisplay
+                                                  : "Slot Display Code"}
+                                              </label>
                                               <select
                                                 name=""
                                                 className="form-control"
@@ -5092,23 +6660,43 @@ class StoreModule extends Component {
                                                       e.target.value,
                                                     isSlotDisplayCode:
                                                       e.target.value === 0
-                                                        ? "Please Select Slot Display Code."
+                                                        ? TranslationContext !==
+                                                          undefined
+                                                          ? TranslationContext
+                                                              .validation
+                                                              .pleaseselectslotdisplaycode
+                                                          : "Please Select Slot Display Code."
                                                         : "",
                                                   });
                                                 }}
                                               >
                                                 <option value={0}>
-                                                  Select
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.option
+                                                        .select
+                                                    : "Select"}
                                                 </option>
                                                 <option value={301}>
-                                                  Current Slot
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.option
+                                                        .currentslot
+                                                    : "Current Slot"}
                                                 </option>
                                                 <option value={302}>
-                                                  Skip Current Slot & Show Next
-                                                  Slot
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.option
+                                                        .skipcurrentslotshownextslot
+                                                    : "Skip Current Slot & Show Next Slot"}
                                                 </option>
                                                 <option value={303}>
-                                                  Skip Current & Next Slot
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.option
+                                                        .skipcurrentnextslot
+                                                    : "Skip Current & Next Slot"}
                                                 </option>
                                               </select>
                                               {this.state.isSlotDisplayCode ? (
@@ -5150,10 +6738,18 @@ class StoreModule extends Component {
                                                     }
                                                   >
                                                     <Radio value={1}>
-                                                      Active
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .label.active
+                                                        : "Active"}
                                                     </Radio>
                                                     <Radio value={0}>
-                                                      Inactive
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext
+                                                            .label.inactive
+                                                        : "Inactive"}
                                                     </Radio>
                                                   </Radio.Group>
                                                 </div>
@@ -5181,10 +6777,20 @@ class StoreModule extends Component {
                                                 true
                                               )}
                                             >
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.button
-                                                    .delete
-                                                : "Save"}
+                                              <label className="sltsave-btn">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .delete
+                                                  : "Save"}
+                                              </label>
+                                              {this.state.isSlotSaveClick ? (
+                                                <FontAwesomeIcon
+                                                  className="circular-loader"
+                                                  icon={faCircleNotch}
+                                                  spin
+                                                />
+                                              ) : null}
                                             </button>
                                           </div>
                                         </div>
@@ -5238,6 +6844,7 @@ class StoreModule extends Component {
                                                   undefined
                                                     ? TranslationContext.div.or
                                                     : "or"}
+                                                  &nbsp;
                                                   {TranslationContext !==
                                                   undefined
                                                     ? TranslationContext.div
@@ -5262,8 +6869,8 @@ class StoreModule extends Component {
                                             : "Sample Template"}
                                         </p>
                                         <CSVLink
-                                          filename={"OrderTemplate.csv"}
-                                          data={config.storeOrder_Template}
+                                          filename={"SlotTemplate.csv"}
+                                          data={config.slot_Template}
                                         >
                                           <img
                                             src={DownExcel}
@@ -5278,10 +6885,280 @@ class StoreModule extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="row">
+                          <div className="col-auto d-flex align-items-center mb-2">
+                            {this.state.isFilterSearch &&
+                            this.state.FilterCollapse ? (
+                              <>
+                                <p class="font-weight-bold mr-3">
+                                  <span class="blue-clr">
+                                    {this.state.TimeSlotGridData.length}{" "}
+                                  </span>
+                                  Results
+                                </p>
+                                {this.state.filterOptionSelected.value != 1 ? (
+                                  <a
+                                    href="#!"
+                                    class="blue-clr fs-14"
+                                    onClick={this.handleEditAllData.bind(this)}
+                                  >
+                                    EDIT ALL
+                                  </a>
+                                ) : null}
+                                &nbsp; &nbsp; &nbsp;
+                                <div className="deleteConfirm">
+                                  <Popconfirm
+                                    title="Are you sure delete all slot ?"
+                                    onConfirm={this.handleFilterDeleteALLSlotData.bind(
+                                      this
+                                    )}
+                                    overlayClassName="deleteConfirm"
+                                    // onCancel={cancel}
+                                    okText="Yes"
+                                    cancelText="No"
+                                    icon={<></>}
+                                  >
+                                    <a href="#!" class="blue-clr fs-14">
+                                      DELETE ALL
+                                    </a>
+                                  </Popconfirm>
+                                </div>
+                              </>
+                            ) : null}
+                          </div>
+                          <div className="row slottbl">
                             <div className="col-md-12">
+                              <Collapse isOpen={this.state.FilterCollapse}>
+                                <Card>
+                                  <CardBody>
+                                    <div class="table-expandable-sctn1">
+                                      <div className="filter-btn-slot">
+                                        {this.state.isFilterSearch ? (
+                                          <button
+                                            className="btn-inv"
+                                            type="button"
+                                            onClick={this.handleFilterClear.bind(
+                                              this
+                                            )}
+                                          >
+                                            CLEAR
+                                          </button>
+                                        ) : null}
+                                        <button
+                                          className="btn-inv"
+                                          type="button"
+                                          onClick={this.handleGetTimeslotGridData.bind(
+                                            this,
+                                            0,
+                                            this.state.filterSelectedStoreId,
+                                            this.state.filterOperationalDays
+                                              .dayIDs || "",
+                                            this.state.filterSlotTemplate || 0,
+                                            true
+                                          )}
+                                        >
+                                          FILTER
+                                        </button>
+                                      </div>
+                                      <div className="container-fluid">
+                                        <div className="row manualbox py-3">
+                                          <div className="col-md-3">
+                                            <label>Filter</label>
+                                            <Select
+                                              placeholder={"Select Filter"}
+                                              className="select-oper"
+                                              onChange={this.handleFilterChange.bind(
+                                                this
+                                              )}
+                                              value={
+                                                Object.keys(
+                                                  this.state
+                                                    .filterOptionSelected
+                                                ).length === 0 &&
+                                                this.state.filterOptionSelected
+                                                  .constructor === Object
+                                                  ? null
+                                                  : this.state
+                                                      .filterOptionSelected
+                                              }
+                                              defaultOptions={false}
+                                              options={this.state.filterOptions}
+                                              placeholder={
+                                                "Please Select Filter Options"
+                                              }
+                                            />
+                                          </div>
+                                          {this.state.filterOptionSelected
+                                            .value === 1 && (
+                                            <div className="col-md-3">
+                                              <label>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .choosestore
+                                                  : "Choose Store"}
+                                              </label>
+                                              <div
+                                                className="input-group"
+                                                style={{ flexWrap: "nowrap" }}
+                                                onClick={this.handleFilterChooseStoreOpenModal.bind(
+                                                  this
+                                                )}
+                                              >
+                                                <input
+                                                  type="text"
+                                                  className="form-control"
+                                                  placeholder={
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .placeholder.search
+                                                      : "Search"
+                                                  }
+                                                  value={
+                                                    this.state
+                                                      .filterSelectedStoreCode
+                                                  }
+                                                />
+                                                <span className="input-group-append">
+                                                  <img
+                                                    src={searchico}
+                                                    alt="search-icon"
+                                                    className="cr-pnt"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          {this.state.filterOptionSelected
+                                            .value === 2 && (
+                                            <div className="col-md-3">
+                                              <label>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .operationaldays
+                                                  : "Operational Days"}
+                                              </label>
+
+                                              <Select
+                                                placeholder={
+                                                  "Select Operational Days"
+                                                }
+                                                className="select-oper"
+                                                getOptionLabel={(option) =>
+                                                  option.dayNames
+                                                }
+                                                getOptionValue={(option) =>
+                                                  option.dayIDs
+                                                }
+                                                options={
+                                                  this.state
+                                                    .onLoadOperationalDays
+                                                }
+                                                onChange={this.handleFilterChangeOperationalDays.bind(
+                                                  this
+                                                )}
+                                                value={
+                                                  Object.keys(
+                                                    this.state
+                                                      .filterOperationalDays
+                                                  ).length === 0 &&
+                                                  this.state
+                                                    .filterOperationalDays
+                                                    .constructor === Object
+                                                    ? null
+                                                    : this.state
+                                                        .filterOperationalDays
+                                                }
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext
+                                                        .validation
+                                                        .pleaseselectoperationaldays
+                                                    : "Please Select Operational Days"
+                                                }
+                                              />
+                                              {this.state.isoperationalDay ? (
+                                                <p
+                                                  className="non-deliverable"
+                                                  style={{
+                                                    marginTop: "3px",
+                                                    textAlign: "left",
+                                                  }}
+                                                >
+                                                  {this.state.isoperationalDay}
+                                                </p>
+                                              ) : null}
+                                            </div>
+                                          )}
+                                          {this.state.filterOptionSelected
+                                            .value === 3 && (
+                                            <div className="col-md-3">
+                                              <label>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .selectslottemplete
+                                                  : "Select Slot Template"}
+                                              </label>
+                                              <select
+                                                className="form-control"
+                                                name="selectedSlotTemplate"
+                                                value={
+                                                  this.state.filterSlotTemplate
+                                                }
+                                                onChange={this.handleFilterSlotTemplateChange.bind(
+                                                  this
+                                                )}
+                                              >
+                                                <option hidden value={0}>
+                                                  Select
+                                                </option>
+                                                {this.state
+                                                  .onLoadSlotTemplate !==
+                                                  null &&
+                                                  this.state.onLoadSlotTemplate.map(
+                                                    (item, s) => (
+                                                      <option
+                                                        key={s}
+                                                        value={
+                                                          item.slotTemplateID
+                                                        }
+                                                      >
+                                                        {item.slotTemplateName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                              <div
+                                                style={{
+                                                  display: "inline-block",
+                                                  float: "right",
+                                                }}
+                                              ></div>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CardBody>
+                                </Card>
+                              </Collapse>
+                              <div
+                                className="float-search"
+                                style={{ border: "1px solid #ddd", zIndex: 0 }}
+                                onClick={this.handleFilterCollapse.bind(this)}
+                              >
+                                <small>Filter</small>
+                                {/* <img
+                                  className="search-icon"
+                                  src={SearchIcon}
+                                  alt="search-icon"
+                                /> */}
+                              </div>
                               <Table
-                                loading={this.state.loading}
+                                loading={this.state.isSlotLoading}
                                 noDataContent="No Record Found"
                                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                 columns={[
@@ -5300,7 +7177,11 @@ class StoreModule extends Component {
                                     dataIndex: "storeTimimg",
                                   },
                                   {
-                                    title: "Operational Days",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .operationaldays
+                                        : "Operational Days",
                                     dataIndex: "operationalDaysCount",
                                     render: (row, item) => {
                                       return (
@@ -5312,6 +7193,10 @@ class StoreModule extends Component {
                                                 src={CancelIcon}
                                                 alt="cancel-icone"
                                                 className="cust-icon2"
+                                                onClick={this.handleSlotTableModalClose.bind(
+                                                  this,
+                                                  "o" + item.slotSettingID
+                                                )}
                                               />
                                               <div className="operationaldays">
                                                 <div className="row">
@@ -5345,6 +7230,7 @@ class StoreModule extends Component {
                                           <div className="broadcast-icon">
                                             {item.operationalDaysCount}
                                             <img
+                                              id={"o" + item.slotSettingID}
                                               className="info-icon-cp"
                                               src={BlackInfoIcon}
                                               alt="info-icon"
@@ -5355,7 +7241,10 @@ class StoreModule extends Component {
                                     },
                                   },
                                   {
-                                    title: "Slot Template",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.slottemplate
+                                        : "Slot Template",
                                     dataIndex: "slotTemplateName",
                                   },
                                   {
@@ -5374,6 +7263,10 @@ class StoreModule extends Component {
                                                 src={CancelIcon}
                                                 alt="cancel-icone"
                                                 className="cust-icon2"
+                                                onClick={this.handleSlotTableModalClose.bind(
+                                                  this,
+                                                  "s" + item.slotSettingID
+                                                )}
                                               />
                                               <div className="appointmentdays">
                                                 <div className="row">
@@ -5395,7 +7288,12 @@ class StoreModule extends Component {
                                                         className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                                         columns={[
                                                           {
-                                                            title: "S.No.",
+                                                            title:
+                                                              TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .span.srno
+                                                                : "S.No.",
                                                             render: (
                                                               row,
                                                               rowData,
@@ -5408,25 +7306,45 @@ class StoreModule extends Component {
                                                           },
                                                           {
                                                             title:
-                                                              "Slot Start Time",
+                                                              TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .slotstarttime
+                                                                : "Slot Start Time",
                                                             dataIndex:
                                                               "slotStartTime",
                                                           },
                                                           {
                                                             title:
-                                                              "Slot End Time",
+                                                              TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .slotendtime
+                                                                : "Slot End Time",
                                                             dataIndex:
                                                               "slotEndTime",
                                                           },
                                                           {
                                                             title:
-                                                              "Slot Occupancy",
+                                                              TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .slotoccupancy
+                                                                : "Slot Occupancy",
                                                             dataIndex:
                                                               "slotOccupancy",
                                                           },
                                                           {
                                                             title:
-                                                              "Slot Status(Unable/Disable)",
+                                                              TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .slotstatusunabledisable
+                                                                : "Slot Status(Enable/Disable)",
                                                             render: (
                                                               row,
                                                               rowData
@@ -5435,7 +7353,7 @@ class StoreModule extends Component {
                                                                 <>
                                                                   {rowData.isSlotEnabled ===
                                                                   true
-                                                                    ? "Unable"
+                                                                    ? "Enable"
                                                                     : "Disable"}
                                                                 </>
                                                               );
@@ -5456,6 +7374,7 @@ class StoreModule extends Component {
                                             {item.totalSlot}
                                             <img
                                               className="info-icon-cp"
+                                              id={"s" + item.slotSettingID}
                                               src={BlackInfoIcon}
                                               alt="info-icon"
                                             />
@@ -5473,7 +7392,10 @@ class StoreModule extends Component {
                                     dataIndex: "appointmentDays",
                                   },
                                   {
-                                    title: "Status",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.status
+                                        : "Status",
                                     render: (row, item) => {
                                       return (
                                         <div className="tabactive">
@@ -5518,17 +7440,16 @@ class StoreModule extends Component {
                                                       {TranslationContext !==
                                                       undefined
                                                         ? TranslationContext.p
-                                                            .deletefile
-                                                        : "Delete file"}
+                                                            .deleterecord
+                                                        : "Delete Record"}
                                                       ?
                                                     </p>
                                                     <p className="mt-1 fs-12">
                                                       {TranslationContext !==
                                                       undefined
                                                         ? TranslationContext.p
-                                                            .areyousureyouwanttodeletethisfile
-                                                        : "Are you sure you want to delete this file"}
-                                                      ?
+                                                            .areyousurewanttodeletethisrecord
+                                                        : "Are you sure you want to delete this record?"}
                                                     </p>
                                                     <div className="del-can">
                                                       <a href={Demo.BLANK_LINK}>
@@ -5653,7 +7574,15 @@ class StoreModule extends Component {
                                   onClick={this.handleSubmitLanguageDate.bind(
                                     this
                                   )}
+                                  disabled={this.state.isSubmit}
                                 >
+                                  {this.state.isSubmit ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.submit
                                     : "SUBMIT"}
@@ -5754,13 +7683,309 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </div>
+                <div
+                  className="tab-pane fade"
+                  id="HSM-Setting"
+                  role="tabpanel"
+                  aria-labelledby="HSM-Setting"
+                >
+                  <div className="backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>HSM Settings</h3>
+                                <div className="module-switch-cntr">
+                                  {this.state.WebBotData.length > 0
+                                    ? this.state.WebBotData.map((item, i) => {
+                                        return (
+                                          <div className="module-switch">
+                                            <div className="switch switch-primary">
+                                              <label className="storeRole-name-text m-0">
+                                                {item.option}
+                                              </label>
+                                              <input
+                                                type="checkbox"
+                                                id={"ckWhatCamp2" + item.id}
+                                                name="allModules"
+                                                checked={item.isActive}
+                                                onChange={this.handleHSMOptionChange.bind(
+                                                  this,
+                                                  item.id
+                                                )}
+                                              />
+                                              <label
+                                                htmlFor={
+                                                  "ckWhatCamp2" + item.id
+                                                }
+                                                className="cr cr-float-auto"
+                                              ></label>
+                                            </div>
+                                          </div>
+                                        );
+                                      })
+                                    : null}
+                                </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleHSMUpdate.bind(this)}
+                                >
+                                  {this.state.isSubmit ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-DashboardSetting-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-DashboardSetting-Tab"
+                >
+                  <div className="backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>DASHBOARD SETTING</h3>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Store Filter
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckStoreFilter"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .storeFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckStoreFilter"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Zone Filter
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckZoneFilter"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .zoneFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckZoneFilter"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        User Wise Data
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckUserData"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .userProductivityReport
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckUserData"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Store Wise Data
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckStoreData"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .storeProductivityReport
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckStoreData"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  disabled={this.state.isSubmit}
+                                  onClick={this.handleCheckCampaignValidation.bind(
+                                    this
+                                  )}
+                                >
+                                  {this.state.isSubmit ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-CampaignUpload-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-CampaignUpload-Tab"
+                >
+                  <div className="backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-6 m-auto">
+                              <div className="right-sect-div">
+                                <h3>Campaign Upload</h3>
+                                <div
+                                  className="bulkuploadbox"
+                                  style={{
+                                    marginTop: "25px",
+                                    marginBottom: "15px",
+                                  }}
+                                >
+                                  <Spin
+                                    tip="Please wait..."
+                                    spinning={this.state.bulkuploadLoading}
+                                  >
+                                    <div className="addfilebox">
+                                      <Dropzone
+                                        onDrop={this.handleCampaignFileUpload}
+                                      >
+                                        {({ getRootProps, getInputProps }) => (
+                                          <>
+                                            <div {...getRootProps()}>
+                                              <input
+                                                {...getInputProps()}
+                                                className="file-upload d-none"
+                                              />
+                                              <img
+                                                src={FileUpload}
+                                                alt="file-upload"
+                                              />
+                                              <span
+                                                className={"fileupload-span"}
+                                              >
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.span
+                                                      .addfile
+                                                  : "Add File"}
+                                              </span>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.div.or
+                                                : "or"}
+                                              &nbsp;
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.div
+                                                    .dropfilehere
+                                                : "Drop File here"}
+                                            </div>
+                                            <div>
+                                              <p>{this.state.SlotFileName}</p>
+                                            </div>
+                                          </>
+                                        )}
+                                      </Dropzone>
+                                    </div>
+                                  </Spin>
+                                  <div className="campaign-excellbl mr-3">
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.sampletemplate
+                                        : "Sample Template"}
+                                    </p>
+                                    <CSVLink
+                                      filename={"SlotTemplate.csv"}
+                                      data={config.slot_Template}
+                                    >
+                                      <img
+                                        src={DownExcel}
+                                        alt="download icon"
+                                        style={{ marginLeft: "5px" }}
+                                      />
+                                    </CSVLink>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
             {/* edit slot starts */}
             <Modal
               show={this.state.editSlotModal}
-              onHide={this.closeSlotEditModal}
               dialogClassName="slotEditModal"
+              onHide={this.closeSlotEditModal.bind(this)}
             >
               <img
                 src={CancelIcon}
@@ -5807,14 +8032,30 @@ class StoreModule extends Component {
                       </ul>
                     </div>
                     <div className="col-12 col-md-6">
-                      <ul>
-                        <li>
-                          <label>
+                      <ul className="edit-slot-right">
+                        <li className="d-flex">
+                          <label className="mt-1">
                             {TranslationContext !== undefined
                               ? TranslationContext.label.slottemplate
                               : "Slot Template"}
                           </label>
-                          <span>{this.state.editSlotTemplateName}</span>
+                          {/* <span>{this.state.editSlotTemplateName}</span> */}
+                          <select
+                            className="form-control edit-slot-temp"
+                            // name="selectedSlotTemplate"
+                            value={this.state.editSlotTemplateId}
+                            onChange={this.handleEditSlotTemplateChange.bind(
+                              this
+                            )}
+                          >
+                            {/* <option value={0}>Select</option> */}
+                            {this.state.slotTemplateData !== null &&
+                              this.state.slotTemplateData.map((item, s) => (
+                                <option key={s} value={item.slotTemplateID}>
+                                  {item.slotTemplateName}
+                                </option>
+                              ))}
+                          </select>
                         </li>
                         <li>
                           <label>
@@ -5837,21 +8078,33 @@ class StoreModule extends Component {
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
                           columns={[
                             {
-                              title: "S.No.",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.srno
+                                  : "S.No.",
                               render: (row, rowData, i) => {
                                 return <>{i + 1}</>;
                               },
                             },
                             {
-                              title: "Slot Start Time",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotstarttime
+                                  : "Slot Start Time",
                               dataIndex: "slotStartTime",
                             },
                             {
-                              title: "Slot End Time",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotendtime
+                                  : "Slot End Time",
                               dataIndex: "slotEndTime",
                             },
                             {
-                              title: "Slot Occupancy",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotoccupancy
+                                  : "Slot Occupancy",
                               dataIndex: "slotOccupancy",
                               render: (row, rowData, i) => {
                                 return (
@@ -5871,7 +8124,11 @@ class StoreModule extends Component {
                               },
                             },
                             {
-                              title: "Slot Status(Unable/Disble)",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label
+                                      .slotstatusunabledisable
+                                  : "Slot Status(Enable/Disable)",
                               render: (row, rowData, i) => {
                                 return (
                                   <div className="module-switch">
@@ -5913,6 +8170,7 @@ class StoreModule extends Component {
                         className="form-control"
                         value={this.state.editAppointmentDays}
                         onChange={this.handleSlotOnChange}
+                        style={{ padding: 0, paddingLeft: "15px" }}
                       >
                         <option value={0}>Select</option>
                         {Array(31)
@@ -5921,6 +8179,17 @@ class StoreModule extends Component {
                             return <option value={i + 1}>{i + 1}</option>;
                           })}
                       </select>
+                      {this.state.isEditSlotDaysDisplay ? (
+                        <p
+                          className="non-deliverable"
+                          style={{
+                            marginTop: "0",
+                            textAlign: "left",
+                          }}
+                        >
+                          {this.state.isEditSlotDaysDisplay}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="col-12 col-md-6">
                       <label>
@@ -5934,8 +8203,16 @@ class StoreModule extends Component {
                           name="editSlotStatus"
                           value={this.state.editSlotStatus}
                         >
-                          <Radio value="Active">Active</Radio>
-                          <Radio value="InActive">Inactive</Radio>
+                          <Radio value="Active">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.active
+                              : "Active"}
+                          </Radio>
+                          <Radio value="InActive">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.inactive
+                              : "Inactive"}
+                          </Radio>
                         </Radio.Group>
                       </div>
                     </div>
@@ -5952,14 +8229,98 @@ class StoreModule extends Component {
                         className="form-control"
                         value={this.state.editSlotDisplayCode}
                         onChange={this.handleSlotOnChange}
+                        style={{ padding: 0, paddingLeft: "15px" }}
+                      >
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "Select"}
+                        </option>
+                        <option value={301}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.currentslot
+                            : "Current Slot"}
+                        </option>
+                        <option value={302}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option
+                                .skipcurrentslotshownextslot
+                            : "Skip Current Slot & Show Next Slot"}
+                        </option>
+                        <option value={303}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.skipcurrentnextslot
+                            : "Skip Current & Next Slot"}
+                        </option>
+                      </select>
+                      {this.state.isEditSlotDisplayCode ? (
+                        <p
+                          className="non-deliverable"
+                          style={{
+                            marginTop: "0",
+                            textAlign: "left",
+                          }}
+                        >
+                          {this.state.isEditSlotDisplayCode}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="col-12 col-md-6">
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.maxpeopleallowed
+                          : "Max People allowed in one Appointment"}
+                      </label>
+                      <select
+                        name="editMaxCapacity"
+                        className="form-control"
+                        value={this.state.editMaxCapacity}
+                        onChange={this.handleSlotOnChange}
                       >
                         <option value={0}>Select</option>
-                        <option value={301}>Current Slot</option>
-                        <option value={302}>
-                          Skip Current Slot & Show Next Slot
-                        </option>
-                        <option value={303}>Skip Current & Next Slot</option>
+                        {Array(50)
+                          .fill(0)
+                          .map((e, i) => {
+                            return <option value={i + 1}>{i + 1}</option>;
+                          })}
                       </select>
+                      {this.state.isEditMaxPeople ? (
+                        <p
+                          className="non-deliverable"
+                          style={{
+                            marginTop: "0",
+                            textAlign: "left",
+                          }}
+                        >
+                          {this.state.isEditMaxPeople}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>Operational Days</label>
+                      <div className="selectstores-box oper-days-edit selectOPRFilterModal">
+                        <Select
+                          placeholder={"Select Operational Days"}
+                          className="selectOPRFilterModal select-oper"
+                          getOptionLabel={(option) => option.dayName}
+                          getOptionValue={(option) => option.dayID}
+                          options={this.state.operationalDaysData}
+                          onChange={this.handleSelectEditChangeOperationalDays.bind(
+                            this
+                          )}
+                          value={this.state.operationalDaysList}
+                          closeMenuOnSelect={false}
+                          isMulti
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.validation
+                                  .pleaseselectoperationaldays
+                              : "Please Select Operational Days"
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5980,11 +8341,18 @@ class StoreModule extends Component {
                       false
                     )}
                   >
-                    <label className="pop-over-btnsave-text">
+                    <label className="pop-over-btnsave-text sltsave-btn">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.save
                         : "SAVE"}
                     </label>
+                    {this.state.isSlotEditLoading ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : null}
                   </button>
                 </div>
               </div>
@@ -6012,10 +8380,8 @@ class StoreModule extends Component {
                   </label>
                   <select
                     className="pop-over-select w-100 disabled-input"
-                    // name="selectedMaxAttachSize"
                     value={this.state.updateIndiCampaignId}
                     disabled
-                    // onChange={this.setClaimTabData}
                   >
                     <option value={0}>Select</option>
                     {this.state.campaignName !== null &&
@@ -6147,7 +8513,6 @@ class StoreModule extends Component {
             {/* Choose Store Modal */}
             <Modal
               show={this.state.chooseStoreModal}
-              onHide={this.handleChooseStoreCloseModal.bind(this)}
               dialogClassName="choosestorebox"
             >
               <img
@@ -6169,7 +8534,11 @@ class StoreModule extends Component {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Search"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.search
+                              : "Search"
+                          }
                           autoComplete="off"
                           value={this.state.slotStoreSearch}
                           onChange={this.handleSlotStoreSearchOnchange.bind(
@@ -6308,7 +8677,7 @@ class StoreModule extends Component {
                                   htmlFor={item.storeID + "_" + s}
                                   title={item.storeName}
                                 >
-                                  {item.storeName}
+                                  {item.storeCode}
                                 </label>
                               </div>
                             </div>
@@ -6342,11 +8711,216 @@ class StoreModule extends Component {
                 </div>
               </div>
             </Modal>
+            {/* Choose store popup on filter */}
+            <Modal
+              show={this.state.filterChooseStoreModal}
+              dialogClassName="choosestorebox"
+            >
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon2"
+                onClick={this.handleFilterChooseStoreCloseModal.bind(this)}
+              />
+              <div className="choosestore">
+                <div className="row">
+                  <div className="col-12 col-md-6">
+                    <label>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.choosestore
+                        : "Choose Store"}
+                    </label>
+                    <form name="form" onSubmit={this.handleFilterStoreSearch}>
+                      <div className="input-group form-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.search
+                              : "Search"
+                          }
+                          autoComplete="off"
+                          value={this.state.filterSlotStoreSearch}
+                          onChange={(e) => {
+                            this.setState({
+                              filterSlotStoreSearch: e.target.value,
+                            });
+                          }}
+                        />
+                        <span className="input-group-append">
+                          <img
+                            src={searchico}
+                            alt="search-icon"
+                            className="cr-pnt"
+                            onClick={this.handleFilterStoreSearch}
+                          />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-3">
+                    <button
+                      className="butn-selectall"
+                      onClick={this.handleFilterSelectAllStore.bind(this, true)}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.selectall
+                        : "Select All"}
+                    </button>
+                  </div>
+                  <div className="col-12 col-md-9">
+                    <ul className="atoz">
+                      <li onClick={this.handleFilterStoreData.bind(this, "")}>
+                        #
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "A")}>
+                        A
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "B")}>
+                        B
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "C")}>
+                        C
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "D")}>
+                        D
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "E")}>
+                        E
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "F")}>
+                        F
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "G")}>
+                        G
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "H")}>
+                        H
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "I")}>
+                        I
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "J")}>
+                        J
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "K")}>
+                        K
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "L")}>
+                        L
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "M")}>
+                        M
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "N")}>
+                        N
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "O")}>
+                        O
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "P")}>
+                        P
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "Q")}>
+                        Q
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "R")}>
+                        R
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "S")}>
+                        S
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "T")}>
+                        T
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "U")}>
+                        U
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "V")}>
+                        V
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "W")}>
+                        W
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "Y")}>
+                        Y
+                      </li>
+                      <li onClick={this.handleFilterStoreData.bind(this, "Z")}>
+                        Z
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="storetabl">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="row">
+                        {this.state.onLoadSlotStores !== null &&
+                          this.state.onLoadSlotStores.map((item, f) => (
+                            <div
+                              className="col-12 col-sm-4 col-md-3 col-lg-3"
+                              key={f}
+                            >
+                              <div className="slotchckhceck">
+                                <input
+                                  type="checkbox"
+                                  className="form-control"
+                                  name="allStore"
+                                  id={item.storeID + "_" + f}
+                                  checked={item.isChecked}
+                                  onChange={this.handleFilterChooseStoreChange.bind(
+                                    this,
+                                    item
+                                  )}
+                                />
+                                <label
+                                  htmlFor={item.storeID + "_" + f}
+                                  title={item.storeName}
+                                >
+                                  {item.storeCode}
+                                </label>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-md-12">
+                    <div style={{ float: "right" }}>
+                      <a
+                        style={{ color: "#666", marginRight: "30px" }}
+                        href={Demo.BLANK_LINK}
+                        onClick={this.handleFilterSelectAllStore.bind(
+                          this,
+                          false
+                        )}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.clear
+                          : "Clear"}
+                      </a>
+                      <button
+                        className="butn"
+                        onClick={this.handleFilterApplySelectedStore.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.apply
+                          : "Apply"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Modal>
             {/* Create tamplete Modal */}
             <Modal
               overlayId="chooseslot-main"
               show={this.state.createTampleteModal}
-              onHide={this.handleCreateTempletetCloseModal.bind(this)}
               dialogClassName="chooseslot-main"
             >
               <img
@@ -6372,8 +8946,16 @@ class StoreModule extends Component {
                         onChange={this.handleSlotRadioChange}
                         value={this.state.slotAutomaticRadio}
                       >
-                        <Radio value={1}>Automatic</Radio>
-                        <Radio value={2}>Manual</Radio>
+                        <Radio value={1}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.automatic
+                            : "Automatic"}
+                        </Radio>
+                        <Radio value={2}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.manual
+                            : "Manual"}
+                        </Radio>
                       </Radio.Group>
                     </div>
                   </div>
@@ -6395,7 +8977,12 @@ class StoreModule extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="Enter Template Name"
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard
+                                .entertemplatename
+                            : "Enter Template Name"
+                        }
                         autoComplete="off"
                         maxLength={200}
                         name="autoTempName"
@@ -6426,13 +9013,47 @@ class StoreModule extends Component {
                           })
                         }
                       >
-                        <option value={0}>Select Timing</option>
-                        <option value={0.25}>15 Minutes</option>
-                        <option value={0.5}>30 Minutes</option>
-                        <option value={0.75}>45 Minutes</option>
-                        <option value={1}>1 Hours</option>
-                        <option value={1.5}>1.5 Hour</option>
-                        <option value={2}>2 Hour</option>
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"}
+                        </option>
+                        <option value={0.25}>
+                          15
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={0.5}>
+                          30
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={0.75}>
+                          45
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={1}>
+                          1
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hour
+                            : "Hour"}
+                        </option>
+                        <option value={1.5}>
+                          1.5
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hour
+                            : "Hour"}
+                        </option>
+                        <option value={2}>
+                          2
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hours
+                            : "Hours"}
+                        </option>
                       </select>
                       {this.state.AutoSlotDuration === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6456,13 +9077,47 @@ class StoreModule extends Component {
                           })
                         }
                       >
-                        <option value={0}>Select Timing</option>
-                        <option value={0.25}>15 Minutes</option>
-                        <option value={0.5}>30 Minutes</option>
-                        <option value={0.75}>45 Minutes</option>
-                        <option value={1}>1 Hours</option>
-                        <option value={1.5}>1.5 Hour</option>
-                        <option value={2}>2 Hour</option>
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"}
+                        </option>
+                        <option value={0.25}>
+                          15
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={0.5}>
+                          30
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={0.75}>
+                          45
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={1}>
+                          1
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hour
+                            : "Hour"}
+                        </option>
+                        <option value={1.5}>
+                          1.5
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hour
+                            : "Hour"}
+                        </option>
+                        <option value={2}>
+                          2
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hours
+                            : "Hours"}
+                        </option>
                       </select>
                       {this.state.AutoSlotGap === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6488,13 +9143,18 @@ class StoreModule extends Component {
                           : "From"}
                       </label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.autoStoreFrom}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={15}
                         timeCaption="Time"
                         dateFormat="hh:mm aa"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
                         onChange={(time) =>
                           this.setState({
@@ -6515,22 +9175,22 @@ class StoreModule extends Component {
                           : "To"}
                       </label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.autoStoreTo}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={15}
                         timeCaption="Time"
                         dateFormat="h:mm aa"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
                         onChange={(time) =>
                           this.handleSelectAutomaticStoreToDate(time)
                         }
-                        // onChange={(time) =>
-                        //   this.setState({
-                        //     autoStoreTo: time,
-                        //   })
-                        // }
                       />
                       {this.state.autoStoreTo === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6556,19 +9216,32 @@ class StoreModule extends Component {
                           : "From"}
                       </label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.autoNonOptFrom}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={15}
                         timeCaption="Time"
                         dateFormat="h:mm aa"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
                         onChange={(time) =>
                           this.setState({
                             autoNonOptFrom: time,
                           })
                         }
+                        minTime={setHours(
+                          setMinutes(new Date(), 0),
+                          new Date(this.state.autoStoreFrom).getHours()
+                        )}
+                        maxTime={setHours(
+                          setMinutes(new Date(), 0),
+                          new Date(this.state.autoStoreTo).getHours()
+                        )}
                       />
                       {this.state.autoNonOptFrom === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6583,17 +9256,55 @@ class StoreModule extends Component {
                           : "To"}
                       </label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.autoNonOptTo}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={15}
                         timeCaption="Time"
                         dateFormat="h:mm aa"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
                         onChange={(time) =>
                           this.handleSelectAutomaticToDates(time)
                         }
+                        minTime={setHours(
+                          setMinutes(
+                            new Date(),
+                            this.state.autoNonOptFrom !== ""
+                              ? new Date(
+                                  this.state.autoNonOptFrom
+                                ).getMinutes() +
+                                  15 ==
+                                60
+                                ? 0
+                                : new Date(
+                                    this.state.autoNonOptFrom
+                                  ).getMinutes() + 15
+                              : 0
+                          ),
+                          new Date(
+                            this.state.autoNonOptFrom !== ""
+                              ? new Date(
+                                  new Date(
+                                    this.state.autoNonOptFrom
+                                  ).setMinutes(
+                                    new Date(
+                                      this.state.autoNonOptFrom
+                                    ).getMinutes() + 15
+                                  )
+                                )
+                              : this.state.autoStoreFrom
+                          ).getHours()
+                        )}
+                        maxTime={setHours(
+                          setMinutes(new Date(), 0),
+                          new Date(this.state.autoStoreTo).getHours()
+                        )}
                       />
                       {this.state.autoNonOptTo === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6605,9 +9316,10 @@ class StoreModule extends Component {
                       <button
                         className="tabbutn cr-pnt"
                         onClick={this.handleSubmitAutomaticData.bind(this)}
+                        disabled={this.state.isGenrateSlotLoading}
                       >
                         {TranslationContext !== undefined
-                          ? TranslationContext.button.delete
+                          ? TranslationContext.button.generateslot
                           : "Generate Slot"}
                       </button>
                     </div>
@@ -6619,18 +9331,30 @@ class StoreModule extends Component {
                           dataSource={this.state.automaticaSlotTblData}
                           noDataContent="No Record Found"
                           pagination={false}
+                          loading={this.state.isGenrateSlotLoading}
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
                           columns={[
                             {
-                              title: "S.No.",
-                              dataIndex: "slotID",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.srno
+                                  : "S.No.",
+                              render: (row, rowData, i) => {
+                                return <>{i + 1}</>;
+                              },
                             },
                             {
-                              title: "Slot Start Time",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotstarttime
+                                  : "Slot Start Time",
                               dataIndex: "slotStartTime",
                             },
                             {
-                              title: "Slot End Time",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotendtime
+                                  : "Slot End Time",
                               dataIndex: "slotEndTime",
                             },
                           ]}
@@ -6641,21 +9365,37 @@ class StoreModule extends Component {
                   <div className="row">
                     <div className="col-12 col-md-10">
                       <div className="del-can">
-                        <a href={Demo.BLANK_LINK}>
+                        <a
+                          href={Demo.BLANK_LINK}
+                          onClick={this.handleCreateTempletetCloseModal.bind(
+                            this
+                          )}
+                        >
                           {TranslationContext !== undefined
                             ? TranslationContext.a.cancel
                             : "CANCEL"}
                         </a>
                         <button
+                          disabled={this.state.isCreateTampleteLoading}
                           className="butn"
                           onClick={this.handleFinalSaveTemplateData.bind(
                             this,
                             "Automatic"
                           )}
                         >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.save
-                            : "Save"}
+                          <label className="sltsave-btn">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "Save "}
+                          </label>
+
+                          {this.state.isCreateTampleteLoading ? (
+                            <FontAwesomeIcon
+                              className="circular-loader"
+                              icon={faCircleNotch}
+                              spin
+                            />
+                          ) : null}
                         </button>
                       </div>
                     </div>
@@ -6709,13 +9449,13 @@ class StoreModule extends Component {
                           : "From"}
                       </label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.manualStoreFrom}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={30}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
-                        placeholderText="Select Timing"
                         className="form-control"
                         onChange={(time) =>
                           this.setState({
@@ -6732,13 +9472,18 @@ class StoreModule extends Component {
                     <div className="col-12 col-md-5 slotFrm">
                       <label>To</label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.manualStoreTo}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={30}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
                         onChange={(time) =>
                           this.handleSelectManualStoreTodate(time)
@@ -6764,13 +9509,47 @@ class StoreModule extends Component {
                         value={this.state.ManualSlotDuration}
                         onChange={this.handleManualSelectDuration}
                       >
-                        <option value={0}>Select Timing</option>
-                        <option value={15}>15 Minutes</option>
-                        <option value={30}>30 Minutes</option>
-                        <option value={45}>45 Minutes</option>
-                        <option value={60}>1 Hours</option>
-                        <option value={90}>1.5 Hour</option>
-                        <option value={120}>2 Hour</option>
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"}
+                        </option>
+                        <option value={15}>
+                          15
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={30}>
+                          30
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={45}>
+                          45
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.minutes
+                            : "Minutes"}
+                        </option>
+                        <option value={60}>
+                          1
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hour
+                            : "Hour"}
+                        </option>
+                        <option value={90}>
+                          1.5
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hour
+                            : "Hour"}
+                        </option>
+                        <option value={120}>
+                          2
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.hours
+                            : "Hours"}
+                        </option>
                       </select>
                       {this.state.ManualSlotDuration === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6787,29 +9566,32 @@ class StoreModule extends Component {
                           : "Slot Start Time"}
                       </label>
                       <DatePicker
+                        customInput={<CustomInput />}
                         selected={this.state.manualStoreData.slotStartTime}
                         showTimeSelect
                         showTimeSelectOnly
                         timeIntervals={15}
+                        // timeIntervals={Number(this.state.ManualSlotDuration)}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
+                        onChange={(time) =>
+                          this.handleManualTimeOnchange(time, "slotStartTime")
+                        }
                         minTime={setHours(
                           setMinutes(new Date(), 0),
-                          new Date(
-                            this.state.mimSlotStartTimeChck
-                              ? this.state.manualStoreData.slotEndTime
-                              : this.state.manualStoreFrom
-                          ).getHours()
+                          new Date(this.state.manualStoreFrom).getHours()
                         )}
                         maxTime={setHours(
                           setMinutes(new Date(), 0),
                           new Date(this.state.manualStoreTo).getHours()
                         )}
-                        onChange={(time) =>
-                          this.handleManualTimeOnchange(time, "slotStartTime")
-                        }
+                        excludeTimes={excludeTimes}
                       />
                       {this.state.manualStoreData.slotStartTime === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -6830,7 +9612,11 @@ class StoreModule extends Component {
                         timeIntervals={15}
                         timeCaption="Time"
                         dateFormat="hh:mm a"
-                        placeholderText="Select Timing"
+                        placeholderText={
+                          TranslationContext !== undefined
+                            ? TranslationContext.option.selecttiming
+                            : "Select Timing"
+                        }
                         className="form-control"
                         disabled
                         onChange={(time) =>
@@ -6864,16 +9650,25 @@ class StoreModule extends Component {
                           className="components-table-demo-nested antd-table-campaign custom-antd-table"
                           columns={[
                             {
-                              title: "S.No.",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.srno
+                                  : "S.No.",
                               dataIndex: "slotID",
                               render: (text, record, index) => index + 1,
                             },
                             {
-                              title: "Slot Start Time",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotstarttime
+                                  : "Slot Start Time",
                               dataIndex: "slotStartTime",
                             },
                             {
-                              title: "Slot End Time",
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotendtime
+                                  : "Slot End Time",
                               dataIndex: "slotEndTime",
                             },
                             {
@@ -6902,21 +9697,37 @@ class StoreModule extends Component {
                   <div className="row">
                     <div className="col-12 col-md-10">
                       <div className="del-can">
-                        <a href={Demo.BLANK_LINK}>
+                        <a
+                          href={Demo.BLANK_LINK}
+                          onClick={this.handleCreateTempletetCloseModal.bind(
+                            this
+                          )}
+                        >
                           {TranslationContext !== undefined
                             ? TranslationContext.a.cancel
                             : "CANCEL"}
                         </a>
                         <button
+                          disabled={this.state.isCreateTampleteLoading}
                           className="butn"
                           onClick={this.handleFinalSaveTemplateData.bind(
                             this,
                             "Manual"
                           )}
                         >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.save
-                            : "Save"}
+                          <label className="sltsave-btn">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "Save"}
+                          </label>
+
+                          {this.state.isCreateTampleteLoading ? (
+                            <FontAwesomeIcon
+                              className="circular-loader"
+                              icon={faCircleNotch}
+                              spin
+                            />
+                          ) : null}
                         </button>
                       </div>
                     </div>
@@ -6928,13 +9739,12 @@ class StoreModule extends Component {
             {/* Selected Store Modal  */}
             <Modal
               show={this.state.selectedStoreModal}
-              onHide={this.handleSelectedStoreCloseModal.bind(this)}
               dialogClassName="selectstores-main"
             >
               <img
                 src={CancelIcon}
                 alt="cancel-icone"
-                className="cust-icon2"
+                className="selected-store-cancel"
                 onClick={this.handleSelectedStoreCloseModal.bind(this)}
               />
               <div className="selectstores-box">
@@ -6953,7 +9763,7 @@ class StoreModule extends Component {
                               {item.isChecked && (
                                 <li key={s}>
                                   <div className="input-group">
-                                    <label>{item.storeName}</label>
+                                    <label>{item.storeCode}</label>
                                     <span className="input-group-append">
                                       <img
                                         src={CancelIcon}
@@ -6973,6 +9783,255 @@ class StoreModule extends Component {
                         })}
                     </ul>
                   </div>
+                </div>
+              </div>
+            </Modal>
+            {/* ----- filter Operational Days Modal-----*/}
+            <Modal
+              show={this.state.filterOperationalDaysModal}
+              dialogClassName="chooseopreationbox"
+              onHide={this.handleFilterOperationalDaysModalClose.bind(this)}
+            >
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon2"
+                onClick={this.handleFilterOperationalDaysModalClose.bind(this)}
+              />
+              <div className="choosestore selectOPRFilterModal">
+                <div className="">
+                  <label>Operational Days</label>
+                  <Select
+                    classNamePrefix="select"
+                    placeholder={"Select Operational Days"}
+                    className="selectOPRFilterModal select-oper"
+                    getOptionLabel={(option) => option.dayName}
+                    getOptionValue={(option) => option.dayID}
+                    options={this.state.operationalDaysData}
+                    onChange={this.handleSelectFilterChangeOperationalDays.bind(
+                      this
+                    )}
+                    value={this.state.filterSelectedOperationalDays}
+                    closeMenuOnSelect={false}
+                    isMulti
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.validation
+                            .pleaseselectoperationaldays
+                        : "Please Select Operational Days"
+                    }
+                  />
+                  <div className="opreditSelect">
+                    <a
+                      className="pop-over-cancle"
+                      onClick={this.handleFilterOperationalDaysModalClose.bind(
+                        this
+                      )}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.cancel
+                        : "CANCEL"}
+                    </a>
+                    <button
+                      className="pop-over-button FlNone"
+                      onClick={this.handleFilterEditALLSlotData.bind(this)}
+                      disabled={this.state.filterEditLoader}
+                    >
+                      <label className="pop-over-btnsave-text sltsave-btn">
+                        {this.state.filterEditLoader ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : null}
+                        Apply
+                      </label>
+                      {this.state.isSlotEditLoading ? (
+                        <FontAwesomeIcon
+                          className="circular-loader"
+                          icon={faCircleNotch}
+                          spin
+                        />
+                      ) : null}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Modal>
+            {/* ----- filter tamplete Modal-----*/}
+            <Modal
+              show={this.state.filterTampleteModal}
+              dialogClassName="slotEditModal"
+              onHide={this.handleFilterTampleteModalModalClose.bind(this)}
+            >
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon2"
+                onClick={this.handleFilterTampleteModalModalClose.bind(this)}
+              />
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.editslotsettings
+                      : "Edit"}
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot">
+                  <div className="row">
+                    <div className="col-12 col-md-6">
+                      <label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.selectslottemplete
+                          : "Select Slot Template"}
+                      </label>
+                      <select
+                        className="form-control mb-4"
+                        name="selectedSlotTemplate"
+                        value={this.state.selectedFilterSlotTemplate}
+                        onChange={this.handleSelectedFilterSlotTemplate.bind(
+                          this
+                        )}
+                      >
+                        <option value={0}>Select</option>
+                        {this.state.slotTemplateData !== null &&
+                          this.state.slotTemplateData.map((item, s) => (
+                            <option key={s} value={item.slotTemplateID}>
+                              {item.slotTemplateName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="edittabs">
+                        <Table
+                          loading={this.state.filterSlotTempLoading}
+                          dataSource={this.state.filterSlotTemplateGridData}
+                          noDataContent="No Record Found"
+                          pagination={false}
+                          className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                          columns={[
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.srno
+                                  : "S.No.",
+                              render: (row, rowData, i) => {
+                                return <>{i + 1}</>;
+                              },
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotstarttime
+                                  : "Slot Start Time",
+                              dataIndex: "slotStartTime",
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotendtime
+                                  : "Slot End Time",
+                              dataIndex: "slotEndTime",
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label.slotoccupancy
+                                  : "Slot Occupancy",
+                              dataIndex: "slotOccupancy",
+                              render: (row, rowData, i) => {
+                                return (
+                                  <>
+                                    <input
+                                      type="text"
+                                      className="form-control value"
+                                      name="slotOccupancy"
+                                      value={rowData.slotOccupancy}
+                                      onChange={this.handleFilterEnableDisableOnChange.bind(
+                                        this,
+                                        i
+                                      )}
+                                    />
+                                  </>
+                                );
+                              },
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.label
+                                      .slotstatusunabledisable
+                                  : "Slot Status(Enable/Disable)",
+                              render: (row, rowData, i) => {
+                                return (
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <input
+                                        type="checkbox"
+                                        id={"ckStatus" + i}
+                                        name="isSlotEnabled"
+                                        checked={rowData.isSlotEnabled}
+                                        value={rowData.isSlotEnabled}
+                                        onChange={this.handleFilterEnableDisableOnChange.bind(
+                                          this,
+                                          i
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor={"ckStatus" + i}
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                );
+                              },
+                            },
+                          ]}
+                        ></Table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div style={{ float: "right" }}>
+                  <a
+                    className="pop-over-cancle"
+                    onClick={this.handleFilterTampleteModalModalClose.bind(
+                      this
+                    )}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.cancel
+                      : "CANCEL"}
+                  </a>
+                  <button
+                    className="pop-over-button FlNone"
+                    onClick={this.handleFilterEditALLSlotData.bind(this)}
+                    disabled={this.state.filterEditLoader}
+                  >
+                    <label className="pop-over-btnsave-text sltsave-btn">
+                      {this.state.filterEditLoader ? (
+                        <FontAwesomeIcon
+                          className="circular-loader"
+                          icon={faCircleNotch}
+                          spin
+                        />
+                      ) : null}
+                      Apply
+                    </label>
+                    {this.state.isSlotEditLoading ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : null}
+                  </button>
                 </div>
               </div>
             </Modal>

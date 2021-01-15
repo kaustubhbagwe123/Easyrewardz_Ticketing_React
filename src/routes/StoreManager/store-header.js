@@ -1,8 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import DashboardLogo from "./../../assets/Images/store-black.png";
 import TicketLogo from "./../../assets/Images/ticket.png";
+import CancelIcon from "./../../assets/Images/cancel.png";
 import ChatLogo from "./../../assets/Images/chat.png";
+import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
+import MobileChatIcon from "./../../assets/Images/MobileChatIcon.svg";
 import ChatLogow from "./../../assets/Images/chatw.png";
+import Blub from "./../../assets/Images/bulb.svg";
+import DownArrowChat from "./../../assets/Images/down-arrow-chat.svg";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
@@ -14,13 +19,16 @@ import Dots from "./../../assets/Images/dotsw.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
+import AddWh from "./../../assets/Images/AddWh.svg";
 import Arwdown from "./../../assets/Images/arwdwn.png";
 import BackArw from "./../../assets/Images/left-white.png";
 import Arwup from "./../../assets/Images/arwup.png";
 import Pin from "./../../assets/Images/pin.png";
 import Chatw from "./../../assets/Images/chatw.png";
 import Pin2 from "./../../assets/Images/pin2.png";
-import Ladyimg from "./../../assets/Images/ladyimg.png";
+import CancelImg from "./../../assets/Images/cancel.png";
+import BackIcon from "./../../assets/Images/black-left-arrow.png";
+import WhiteIcon from "./../../assets/Images/white-left-arrow.png";
 import Cancelico from "./../../assets/Images/cancel.png";
 import CampaignLogo from "./../../assets/Images/campaign.svg";
 import CampaignLogoBlue from "./../../assets/Images/campaign.svg";
@@ -28,26 +36,34 @@ import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 import OrderLogoBlue from "./../../assets/Images/order-icon-blue.png";
-import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
+import OrderLogoBlack from "./../../assets/Images/order.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import SendUp from "./../../assets/Images/send-up.png";
 import DownWhiteImg from "./../../assets/Images/down-white.png";
 import Logout from "./../../assets/Images/logout.png";
-import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/mobile-back.svg";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
 import PencilImg from "./../../assets/Images/pencil.png";
-import ProfileImg from "./../../assets/Images/UserIcon.png";
+import ProfileImg from "./../../assets/Images/UserLogin.png";
+import SmartMessageWeb from "./../../assets/Images/Smart-Message-Web.svg";
 import config from "../../helpers/config";
 import axios from "axios";
-import { Popover, Collapse, Checkbox, Empty, Popconfirm } from "antd";
+import {
+  Popover,
+  Collapse,
+  Checkbox,
+  Empty,
+  Spin,
+  Card,
+  Pagination,
+} from "antd";
 import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
-import "./../../assets/css/store-chat.css";
+// import "./../../assets/css/store-chat.css";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
 import SchRight from "./../../assets/Images/sch-right.png";
 import CardTick from "./../../assets/Images/card-tick.png";
@@ -65,9 +81,9 @@ import { Tooltip } from "antd";
 import CancelBlueImg from "./../../assets/Images/CancelBlue.png";
 import CancelBlack from "./../../assets/Images/cancel.png";
 import moment from "moment";
-import io from "socket.io-client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNotch, faDemocrat } from "@fortawesome/free-solid-svg-icons";
 import { Table, Select, notification, Menu, Dropdown } from "antd";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
@@ -75,12 +91,199 @@ import * as translationMA from "../../translations/marathi";
 import Dropzone from "react-dropzone";
 import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
+import "./../../assets/css/store-chat.css";
 import DatePicker from "react-datepicker";
+import NoImage from "./../../assets/Images/No-Image.png";
+import RightShape from "./../../assets/Images/RightShape.png";
+import RightBlue from "./../../assets/Images/blueRight.svg";
+import Shoppingbag from "./../../assets/Images/Shoppingbag.png";
+import Blueplus from "./../../assets/Images/blueplus.png";
+import SearchWh from "./../../assets/Images/search.svg";
+import WebBotLink from "./../../assets/Images/WebBotLink.png";
+import AttachmentIcon from "./../../assets/Images/attachmentIcon.png";
+import EditIcon from "./../../assets/Images/edit.png";
+
 const { Option } = Select;
 const { Panel } = Collapse;
-const CheckboxGroup = Checkbox.Group;
+
 var uid = 0;
 var i = 0;
+
+class ChatNotificationComponent extends PureComponent {
+  handleChatNotificationClick = () => {
+    if (this.props.notitficationType === "NewChat") {
+      this.props.handleChatNotificationClick(this.props.chatData);
+    } else {
+      this.props.handleChatNotificationClick(this.props.chatData);
+    }
+  };
+  render() {
+    return (
+      <div
+        className="row"
+        style={{
+          cursor: "pointer",
+        }}
+        onClick={this.handleChatNotificationClick}
+      >
+        <div className="col-3">
+          <div class="chat-trail-img">
+            <span
+              class="chat-initial"
+              alt="face image"
+              title={this.props.chatData[0].customerName}
+            >
+              {this.props.chatData[0].customerName
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()}
+            </span>
+          </div>
+        </div>
+        <div className="col-9">
+          <h5 title="Customer Name">{this.props.chatData[0].customerName}</h5>
+          <p
+            style={{
+              wordBreak: "break-word",
+            }}
+          >
+            {this.props.msgData}
+          </p>
+        </div>
+      </div>
+    );
+  }
+}
+const ProductHoverItem = (props) => {
+  const TranslationContext = props.TranslationContext;
+  const item = props.item;
+  const cardConfigData = props.cardConfigData;
+  return (
+    <div className="productdesc">
+      {cardConfigData.ItemName ? <h4>{item.productName}</h4> : null}
+      {cardConfigData.ItemCode ? (
+        <p>
+          {TranslationContext !== undefined
+            ? TranslationContext.p.lasttransaction
+            : "Item Code "}
+          - {item.uniqueItemCode}
+        </p>
+      ) : null}
+      <table>
+        <tbody>
+          {item.color !== "" && cardConfigData.Color ? (
+            <>
+              <tr>
+                <td
+                  style={{
+                    width: "50px",
+                  }}
+                >
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.colors
+                      : "Colors"}
+                    :
+                  </label>
+                </td>
+                <td>
+                  <ul>
+                    {item.color === "Blue" ? (
+                      <li>
+                        <a className="colorblue">
+                          <span>1</span>
+                        </a>
+                      </li>
+                    ) : null}
+
+                    {item.color === "Black" ? (
+                      <li>
+                        <a className="colorblack">
+                          <span>1</span>
+                        </a>
+                      </li>
+                    ) : null}
+
+                    {item.color === "Grey" ? (
+                      <li>
+                        <a className="colorgrey">
+                          <span>1</span>
+                        </a>
+                      </li>
+                    ) : null}
+
+                    {item.color === "Red" ? (
+                      <li>
+                        <a className="colorRed">
+                          <span>1</span>
+                        </a>
+                      </li>
+                    ) : null}
+                    {item.color === "Yellow" ? (
+                      <li>
+                        <a className="colorYellow">
+                          <span>1</span>
+                        </a>
+                      </li>
+                    ) : null}
+                    {item.color === "Green" ? (
+                      <li>
+                        <a className="colorGreen">
+                          <span>1</span>
+                        </a>
+                      </li>
+                    ) : null}
+                  </ul>
+                </td>
+              </tr>
+            </>
+          ) : null}
+
+          {item.size !== "" && cardConfigData.Size ? (
+            <>
+              <tr>
+                <td>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.sizes
+                      : "Sizes"}
+                    :
+                  </label>
+                </td>
+                <td>
+                  {isNaN(parseInt(item.size)) === false ? (
+                    <ul className="sizes">
+                      <li>
+                        <a>{item.size}</a>
+                      </li>
+                    </ul>
+                  ) : (
+                    <ul>
+                      <li>
+                        <a>{item.size}</a>
+                      </li>
+                    </ul>
+                  )}
+                </td>
+              </tr>
+            </>
+          ) : null}
+        </tbody>
+      </table>
+      {cardConfigData.Price ? (
+        <h3>
+          {TranslationContext !== undefined
+            ? TranslationContext.h3.inr
+            : "INR "}
+          {item.price}
+          /-
+        </h3>
+      ) : null}
+    </div>
+  );
+};
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -208,7 +411,7 @@ class Header extends Component {
       wishListData: [],
       recommendedData: [],
       ProfileProductTab: 0,
-      activeCollpse: [1],
+      activeCollpse: [0],
       productTypeTab: 0,
       selectedRecommended: [],
       selectedShoppingBag: [],
@@ -247,6 +450,69 @@ class Header extends Component {
       isCountry: "",
       isPinCodeCheck: "",
       maxPeopleAllow: 0,
+      itemDetails: [],
+      isCustTimeout: false,
+      customerChatSessionValue: "",
+      customerChatSessionDuration: "",
+      agentChatSessionValue: "",
+      agentChatSessionDuration: "",
+      isEmptyArray: false,
+      tmpOngoingChatsData: [],
+      sourceType: "",
+      pastChatCount: 0,
+      pageNumberCurrentChat: 1,
+      pastChatPageNo: 1,
+      historyPage: 1,
+      isProductLoading: false,
+      isScrollMessage: false,
+      isCallChatMessgaeApi: false,
+      tenantID: 0,
+      isProfileLoading: false,
+      cardSearchStoreCode: false,
+      isAddressName: "",
+      isAddressMobileNo: "",
+      addressMobileNo: "",
+      addressName: "",
+      oldScrollHeight: 0,
+      alertMessageModal: false,
+      alertMessageContent: "",
+      storeDetails: "",
+      insightsLoader: false,
+      lasttransactionLoader: false,
+      cardConfigData: {},
+      isCardSearch: false,
+      orderDetailsLoader: false,
+      suggestionTagModal: false,
+      ticketIds: false,
+      ticketNo: "",
+      AddWhite: false,
+      isCardMobileUp: false,
+      totalShoppingBag: 0,
+      totalWishList: 0,
+      totalRecommend: 0,
+      mobileCollpseActive: [1],
+      mobileShopBagProcessMdl: false,
+      mobileWishProcessMdl: false,
+      mobileRecommendProcessMdl: false,
+      mobileChatActive: 0,
+      uniqueItemID: 0,
+      mobileprofilePic: "",
+      NotificationPage: 1,
+      chatNotificationModal: false,
+      chatNotificationData: [],
+      showSearch: false,
+      chatNotificationMomCount: 0,
+      userLoginMobileNo: "",
+      isHSMShow: false,
+      AttachementFiles: [],
+      fileShowMdl: false,
+      fileAttachDocWeb: "",
+      isAttachmentMainLoader: false,
+      isCheckSuggetion: false,
+      isSelectedCard: false,
+      mobileFileupload: false,
+      customerNameProfile: "",
+      attachmentSendCount: 0,
     };
 
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
@@ -281,10 +547,50 @@ class Header extends Component {
     });
     var _token = window.localStorage.getItem("token");
     if (_token === null) {
-      window.location.href = "/";
+      this.props.history.push("/");
     } else {
-      this.handleGetUserProfileData();
       this.handleLoggedInUserDetails();
+      this.handleGetUserProfileData();
+
+      var userProfile = JSON.parse(window.localStorage.getItem("UserProfile"));
+      if (userProfile !== null && userProfile.agentName) {
+        var strTag = userProfile.agentName.split(" ");
+        var nameTag = strTag[0].charAt(0).toUpperCase();
+        if (strTag.length > 0) {
+          nameTag += strTag[1].charAt(0).toUpperCase();
+        }
+        let nume =
+          userProfile.loggedInDurationInHours * 60 +
+          userProfile.loggedInDurationInMinutes;
+        let deno =
+          userProfile.shiftDurationInHour * 60 +
+          userProfile.shiftDurationInMinutes;
+        let percentLog = ((nume / deno) * 100).toFixed(2);
+        var profile = userProfile.profilePicture;
+        var finalPath = profile.substring(
+          profile.lastIndexOf("\\") + 1,
+          profile.length
+        );
+
+        this.setState({
+          AgentID: userProfile.agentId,
+          Email: userProfile.agentEmailId,
+          UserName: userProfile.agentName,
+          LoginTime: userProfile.loginTime,
+          LoggedInDuration: userProfile.loggedInDuration,
+          SLAScore: userProfile.slaScore,
+          CSatScore: userProfile.csatScore,
+          AvgResponse: userProfile.avgResponseTime,
+          LogoutTime: userProfile.logoutTime,
+          NameTag: nameTag,
+          userProfile: finalPath,
+          percentLog,
+          workTime: userProfile.workTimeInPercentage,
+          workTimeHours: userProfile.totalWorkingTime,
+          programCode: userProfile.programCode ? userProfile.programCode : "",
+          storeCode: userProfile.storeCode ? userProfile.storeCode : "",
+        });
+      }
 
       let pageName, lastOne, lastValue, arr;
       arr = [...this.state.cont];
@@ -303,12 +609,12 @@ class Header extends Component {
         1
       );
     }
+    window.addEventListener("resize", this.handleCheckView.bind(this));
+
     this.handleCheckView();
 
-    this.handleGetNotigfication();
-    this.handleGetChatNotificationCount();
-    this.handleGetChatSession();
-    this.handleGetChatSoundNotiSetting();
+    // this.handleGetNotigfication();
+
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -316,33 +622,59 @@ class Header extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+
+    if (document.getElementById("chatMessageCount")) {
+      document.getElementById("chatMessageCount").innerText = 0;
+    }
+    if (document.getElementById("chatMessageCountMobile")) {
+      document.getElementById("chatMessageCountMobile").innerText = 0;
+    }
+    if (document.getElementById("chatNotificationMomCount")) {
+      document.getElementById("chatNotificationMomCount").innerText = 0;
+    }
   }
-  ////handle scroll right
+
+  //handle scroll right
   handleScrollRight(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft += 20;
   }
-  ////handle scroll left
+  //handle scroll left
   handleScrollLeft(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
-  ////handle show menu
+  //handle show menu
   handleShowMenu() {
     this.setState({
       visible: true,
     });
   }
-  ////handle close manu
+  //handle close manu
   handleCloseManu() {
     this.setState({
       visible: false,
     });
   }
 
-  ////handle set access user
+  //handle set access user
   setAccessUser(data) {
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
+    var chatBot = {
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.label.chat
+          : "Chat",
+      urls: "Chatbot",
+      logoBlack: ChatLogo,
+      logoBlue: ChatLogoBlue,
+      imgAlt: "Chatbot icon",
+      imgClass: "storeChatbt",
+      activeClass:
+        page.toLowerCase() === "Chatbot".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
+    };
     var dashboard = {
       data: "Dashboard",
       urls: "storedashboard",
@@ -463,7 +795,12 @@ class Header extends Component {
 
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
-        if (
+        if (data[i].moduleName === "Chat" && data[i].modulestatus === true) {
+          this.setState({
+            chatAccess: "block",
+          });
+          accessdata.push(chatBot);
+        } else if (
           data[i].moduleName === "Dashboard" &&
           data[i].modulestatus === true
         ) {
@@ -532,6 +869,11 @@ class Header extends Component {
         ) {
           accessdata.push(storePay);
           // this.handleGenerateStorePayLink();
+        } else if (
+          data[i].moduleName === "HSM" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({ isHSMShow: true });
         }
       }
     }
@@ -551,6 +893,7 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     // this.subscription.unsubscribe();
+    window.removeEventListener("resize", this.handleCheckView.bind(this));
   }
   componentDidUpdate() {
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
@@ -561,8 +904,39 @@ class Header extends Component {
     if (this.state.showHistoricalChat) {
       this.historyMessageScrollToBottom();
     }
+    var mobileHeading = window.location.pathname.split("/")[2];
+    var ticketNo = "";
+    var ticketIds = false;
+    if (mobileHeading === "campaign") {
+      mobileHeading = "Campaign";
+      localStorage.removeItem("ticketNo");
+    }
+    if (mobileHeading === "appointment") {
+      mobileHeading = "Appointment";
+      localStorage.removeItem("ticketNo");
+    }
+    if (mobileHeading === "myTicketList") {
+      mobileHeading = "Ticket";
+      localStorage.removeItem("ticketNo");
+    }
+    if (mobileHeading === "notification") {
+      mobileHeading = "Notification";
+      localStorage.removeItem("ticketNo");
+    }
+    if (mobileHeading === "myTicket") {
+      mobileHeading = "ID:";
+      ticketIds = true;
+      ticketNo = localStorage.getItem("ticketNo");
+    }
+    if (mobileHeading === "orders") {
+      mobileHeading = "Orders";
+      localStorage.removeItem("ticketNo");
+    }
+    if (this.state.isMobileView && this.state.mobileHeading !== mobileHeading) {
+      this.setState({ mobileHeading, ticketIds, ticketNo });
+    }
   }
-  ////handle crm role data
+  //handle crm role data
   handleCRMRole() {
     let self = this;
     axios({
@@ -581,7 +955,7 @@ class Header extends Component {
         console.log(data);
       });
   }
-  ////handle get user profile data
+  //handle get user profile data
   handleGetUserProfileData() {
     let self = this;
     axios({
@@ -591,9 +965,17 @@ class Header extends Component {
     })
       .then(function(res) {
         var status = res.data.message;
+        var data = res.data.responseData[0];
         if (status === "Success") {
-          var id = res.data.responseData[0].userId;
+          window.localStorage.setItem("UserData", JSON.stringify(data));
+          // window.localStorage.setItem(
+          //   "UserData",
+          //   encryption(JSON.stringify(data)),"enc");
+
           var userdata = res.data.responseData[0].profilePicture;
+          var mobileprofilePic = res.data.responseData[0].profilePicture;
+          var userLoginMobileNo = res.data.responseData[0].mobileNo;
+          self.setState({ mobileprofilePic, userLoginMobileNo });
           var image = userdata.split("/");
           if (image[image.length - 1] == "") {
             self.setState({
@@ -615,32 +997,32 @@ class Header extends Component {
         console.log(data);
       });
   }
-  ////handle opne modal
+  //handle opne modal
   onOpenModal = () => {
     this.setState({ open: true });
   };
-  ////handle close modal
+  //handle close modal
   onCloseModal = () => {
     this.setState({ open: false });
   };
-  ////handle opne modal
+  //handle opne modal
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-  ////handle close modal
+  //handle close modal
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  ////handle notification modal open
+  //handle notification modal open
   handleNotificationModalOpen() {
     this.setState({ notificationModal: true });
   }
-  ////handle notification modal close
+  //handle notification modal close
   handleNotificationModalClose(typeId, type) {
     this.setState({ notificationModal: false });
     this.handleGetReadStoreNotification(typeId, type);
   }
-  ////handle logged in user deatils
+  //handle logged in user deatils
   handleLoggedInUserDetails = () => {
     let self = this;
     axios({
@@ -652,6 +1034,8 @@ class Header extends Component {
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
+          window.localStorage.setItem("UserProfile", JSON.stringify(data));
+
           var strTag = data.agentName.split(" ");
           var nameTag = strTag[0].charAt(0).toUpperCase();
           if (strTag.length > 0) {
@@ -667,6 +1051,7 @@ class Header extends Component {
             profile.lastIndexOf("\\") + 1,
             profile.length
           );
+
           self.setState({
             AgentID: data.agentId,
             Email: data.agentEmailId,
@@ -685,42 +1070,52 @@ class Header extends Component {
             programCode: data.programCode ? data.programCode : "",
             storeCode: data.storeCode ? data.storeCode : "",
           });
-          if (data.programCode !== "" && data.storeCode !== "") {
-            self.handleCreateSocketConnection(data.programCode, data.storeCode);
-          }
         }
       })
       .catch((data) => {
         console.log(data);
       });
   };
-  ////handle get store agent details by agent id
+  //handle get store agent details by agent id
   handleGetStoreAgentDetailsById(agentID) {
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSSetting/GetStoreAgentDetailsById",
-      headers: authHeader(),
-      params: {
-        AgentID: agentID,
-      },
-    })
-      .then((res) => {
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          self.setState({ storeAgentDetail: data });
-        } else {
-          self.setState({ storeAgentDetail: [] });
-        }
+    var checkStoreAgentData =
+      window.localStorage.getItem("StoreAgentDetails") || "";
+    if (checkStoreAgentData === "" || checkStoreAgentData === null) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSSetting/GetStoreAgentDetailsById",
+        headers: authHeader(),
+        params: {
+          AgentID: agentID,
+        },
       })
-      .catch((response) => {
-        console.log(response);
-      });
+        .then((res) => {
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            window.localStorage.setItem(
+              "StoreAgentDetails",
+              JSON.stringify(data)
+            );
+            self.setState({ storeAgentDetail: data });
+          } else {
+            self.setState({ storeAgentDetail: [] });
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    } else {
+      var checkStoreAgentData =
+        window.localStorage.getItem("StoreAgentDetails") || "";
+      self.setState({ storeAgentDetail: JSON.parse(checkStoreAgentData) });
+    }
   }
 
-  ////handle logout method
+  //handle logout method
   handleLogoutMethod() {
+    var self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreAccount/Logout",
@@ -729,22 +1124,28 @@ class Header extends Component {
       .then(function(res) {
         var status = res.data.status;
         if (status === true) {
-          localStorage.clear();
-
-          window.location.href = "/";
+          if (self.state.isMobileView) {
+            window.location.href = "/logout";
+            // self.props.history.push("/logout");
+          } else {
+            localStorage.clear();
+            window.location.href = "/";
+            // self.props.history.push("");
+          }
         }
       })
       .catch((data) => {
         console.log(data);
       });
   }
-  ////handle get notification
+  //handle get notification
   handleGetNotigfication() {
     let self = this;
 
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
+      // url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
+      url: config.apiUrl + "/StoreNotification/GetStoreNotificationsNew",
       headers: authHeader(),
     })
       .then(function(response) {
@@ -758,7 +1159,8 @@ class Header extends Component {
           });
         } else {
           self.setState({
-            notificationData: responseData.storeNotificationModel,
+            notificationData: [],
+            notificationCount: 0,
           });
         }
       })
@@ -766,7 +1168,7 @@ class Header extends Component {
         console.log(response, "---handleGetNotigfication");
       });
   }
-  ////handle get read store notification
+  //handle get read store notification
   handleGetReadStoreNotification = (typeId, type) => {
     let self = this;
     axios({
@@ -791,48 +1193,71 @@ class Header extends Component {
   };
 
   actives = (e) => {
+    var pageName = "";
     const contDummy = [...this.state.cont];
     contDummy.forEach((i) => {
       i.activeClass = "single-menu";
-      if (i.data === e.target.textContent) i.activeClass = "active single-menu";
+      if (i.data === e.target.textContent) {
+        i.activeClass = "active single-menu";
+        pageName = i.urls;
+      }
     });
+
+    if (this.state.chatModal && !this.state.isMobileView) {
+      this.setState({ chatModal: false });
+    }
     this.setState({
       cont: contDummy,
       visible: false,
       mobileHeading: e.target.textContent,
     });
+
+    if (pageName === "Chatbot") {
+      this.props.history.push({
+        pathname: "Chatbot",
+        state: {
+          programCode: this.state.programCode,
+          storeCode: this.state.storeCode,
+          agentId: this.state.AgentID,
+          tenantID: this.state.tenantID,
+          UserName: this.state.UserName,
+        },
+      });
+    }
   };
 
-  ////handle chat modal close
+  //handle chat modal close
   handleChatModalClose() {
-    this.setState({
-      chatModal: false,
-      searchCardData: [],
-      searchItem: "",
-      showHistoricalChat: false,
-      isDownbtn: true,
-      message: "",
-      messageSuggestionData: [],
-      messageSuggestionTagsData: [],
-    });
+    setTimeout(() => {
+      this.setState({
+        chatModal: false,
+        searchCardData: [],
+        searchItem: "",
+        showHistoricalChat: false,
+        isDownbtn: true,
+        message: "",
+        messageSuggestionData: [],
+        messageSuggestionTagsData: [],
+      });
+    }, 50);
   }
-  ////handle chat modal open
+  //handle chat modal open
   handleChatModalOpen() {
     var activeTab = 1;
-    if (this.state.isMessageTabActive === false) {
+    if (this.state.isMessageTabActive === true) {
+      activeTab = 1;
+    } else if (this.state.isCardTabActive === true) {
       activeTab = 2;
-    } else if (this.state.isCardTabActive === false) {
+    } else if (this.state.isRecommendedTabActive === true) {
       activeTab = 3;
-    } else if (this.state.isRecommendedTabActive === false) {
+    } else if (this.state.isSchedualTabActive === true) {
       activeTab = 4;
-    } else if (this.state.isSchedualTabActive === false) {
-      activeTab = 5;
-    } else if (this.state.isGeneratePaymentTabActive === false) {
+    } else if (this.state.isGeneratePaymentTabActive === true) {
       activeTab = 1;
     } else {
       activeTab = 1;
     }
-
+    this.handleCheckView();
     this.setState({
       newTicketChatId:
         Number(document.getElementById("newTicketChatId").value) || 0,
@@ -844,220 +1269,74 @@ class Header extends Component {
       mainTabSelect: 1,
       activeTab,
       isScroll: true,
+      showSearch: false,
     });
+    var cardConfigData = window.localStorage.getItem("cardConfigData") || "";
+    if (cardConfigData !== "" || cardConfigData !== null) {
+      this.handleGetCardConfiguration();
+    } else {
+      this.setState({ cardConfigData });
+    }
+
+    var OrderShipmentData = "";
+    if (
+      window.localStorage.getItem("AgentList") === "" ||
+      window.localStorage.getItem("AgentList") === null
+    ) {
+      OrderShipmentData = JSON.parse(window.localStorage.getItem("AgentList"));
+    } else {
+      OrderShipmentData = JSON.parse(window.localStorage.getItem("AgentList"));
+    }
+    var checkChatSession = window.localStorage.getItem("ChatSession") || "";
+
+    if (checkChatSession === "" || checkChatSession === null) {
+      this.handleGetChatSession();
+    } else {
+      var data = JSON.parse(window.localStorage.getItem("ChatSession"));
+      this.setState({
+        tempRemainingCount: data.chatCharLimit,
+        remainingCount: data.chatCharLimit,
+        isMessageTabActive: data.message,
+        isCardTabActive: data.card,
+        isRecommendedTabActive: data.recommendedList,
+        isSchedualTabActive: data.scheduleVisit,
+        isGeneratePaymentTabActive: data.paymentLink,
+        isCustomerProfile: data.customerProfile,
+        isCustomerProduct: data.customerProduct,
+        agentChatSessionValue: data.agentChatSessionValue,
+        agentChatSessionDuration: data.agentChatSessionDuration,
+        customerChatSessionValue: data.customerChatSessionValue,
+        customerChatSessionDuration: data.customerChatSessionDuration,
+        cardSearchStoreCode: data.cardSearchStoreCode,
+      });
+      if (data.customerProfile) {
+        this.setState({ ProfileProductTab: 0 });
+      } else {
+        this.setState({ ProfileProductTab: 1 });
+      }
+    }
 
     this.handleCheckView();
-    this.handleGetNewChat();
-    this.handleGetOngoingChat();
-    this.handleGetStoreAgentDetailsById(this.state.AgentID);
+
+    // this.handleGetStoreAgentDetailsById(this.state.AgentID);
     this.handleGetAgentList();
-    this.handleGetChatNotificationCount();
 
     if (this.state.rowChatId > 0) {
       this.handleGetChatMessagesList(this.state.chatId);
     }
+    // if (OrderShipmentData === null) {
+    //   this.handleGetAgentList();
+    // } else {
+    //   this.setState({ agentData: OrderShipmentData });
+    // }
   }
 
-  ////handleGet Ongoing Chat
-  async handleGetOngoingChat(event) {
-    let self = this;
-    var search = "";
-    if (event !== undefined) {
-      search = event.target.value;
-      this.setState({ searchChat: event.target.value, noRecommendedFound: "" });
-    } else {
-      search = this.state.searchChat;
-    }
-    this.setState({ isMainLoader: true });
-    await axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/GetOngoingChat",
-      headers: authHeader(),
-      params: { Search: search, StoreManagerID: this.state.sAgentId },
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var ongoingChatsData = response.data.responseData;
-        if (message === "Success") {
-          if (ongoingChatsData) {
-            var chatData = ongoingChatsData.filter(
-              (x) => x.chatID === self.state.chatId
-            );
-            if (chatData.length == 0) {
-              self.setState({
-                customerName: "",
-                messageData: [],
-                isMainLoader: false,
-                isPinClick: false,
-                onHoverName: false,
-              });
-            }
-            for (let i = 0; i < ongoingChatsData.length; i++) {
-              ongoingChatsData[i].initialColor =
-                self.state.colorCode[Math.floor(Math.random() * 6)];
-            }
-
-            if (self.state.newTicketChatId > 0) {
-              var chatData = ongoingChatsData.filter(
-                (x) => x.chatID === self.state.newTicketChatId
-              );
-              self.setState({
-                ongoingChatsData,
-                newTicketChatId: 0,
-              });
-              self.handleOngoingChatClick(
-                chatData[0].chatID,
-                chatData[0].cumtomerName,
-                chatData[0].messageCount,
-                chatData[0].mobileNo,
-                chatData[0].customerID,
-                chatData[0].programCode,
-                chatData[0].storeID,
-                chatData[0].isCustEndChat,
-                chatData[0].storeManagerId,
-                chatData[0].initialColor
-              );
-            } else {
-              var selectedColor = "";
-              if (self.state.chatId > 0) {
-                var selectedColor = ongoingChatsData.filter(
-                  (x) => x.chatID === self.state.chatId
-                )[0].initialColor;
-              }
-
-              self.setState({
-                selectedColor,
-                ongoingChatsData,
-              });
-            }
-          } else {
-            self.setState({
-              isPinClick: false,
-              onHoverName: false,
-              customerName: "",
-              messageData: [],
-              isMainLoader: false,
-            });
-            self.setState({
-              ongoingChatsData: [],
-            });
-          }
-        } else {
-          self.setState({
-            isPinClick: false,
-            ongoingChatsData: [],
-            customerName: "",
-            messageData: [],
-            onHoverName: false,
-            isMainLoader: false,
-          });
-        }
-      })
-      .catch((response) => {
-        self.setState({ isMainLoader: false });
-        console.log(response, "---handleGetOngoingChat");
-      });
-  }
-  ////handle clear chat search
+  //handle clear chat search
   handleClearChatSearch = async () => {
-    await this.setState({ searchChat: "" });
-    this.handleGetOngoingChat();
+    await this.setState({ searchChat: "", showSearch: false });
   };
 
-  ////handle Get New Chat
-  async handleGetNewChat(mobileNo, msgData) {
-    this.setState({ isMainLoader: true });
-    let self = this;
-    await axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/GetNewChat",
-      headers: authHeader(),
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var newChatsData = response.data.responseData;
-
-        if (message === "Success" && newChatsData) {
-          for (let i = 0; i < newChatsData.length; i++) {
-            newChatsData[i].initialColor =
-              self.state.colorCode[Math.floor(Math.random() * 6)];
-          }
-          self.setState({ newChatsData, isMainLoader: false });
-          if (self.state.newTicketChatId > 0) {
-            var chatData = newChatsData.filter(
-              (x) => x.chatID === self.state.newTicketChatId
-            );
-            self.handleNewChatNotification(chatData);
-          }
-          if (self.state.isNotiNewChat && mobileNo && msgData) {
-            const Sound1Play = new Audio(self.state.newChatSoundFile);
-            Sound1Play.volume =
-              Math.round(self.state.newChatSoundVolume / 10) / 10;
-            Sound1Play.play();
-            var chatData = newChatsData.filter((x) => x.mobileNo === mobileNo);
-            if (chatData.length > 0) {
-              notification.open({
-                key: chatData[0].chatID,
-                duration: self.state.notificationTime,
-                placement: "bottomRight",
-                // message: "Notification Title",
-                className: "hide-message-title",
-                description: (
-                  <>
-                    <div
-                      className="row"
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      onClick={self.handleNewChatNotification.bind(
-                        this,
-                        chatData,
-                        chatData[0].chatID
-                      )}
-                    >
-                      <div className="col-3">
-                        <div class="chat-trail-img">
-                          <span
-                            class="chat-initial"
-                            alt="face image"
-                            title="Shalini Chandra "
-                          >
-                            {chatData[0].cumtomerName
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                              .toUpperCase()}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="col-9">
-                        <h5 title="Customer Name">
-                          {chatData[0].cumtomerName}
-                        </h5>
-                        <p
-                          style={{
-                            wordBreak: "break-word",
-                          }}
-                        >
-                          {msgData}
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                ),
-              });
-            }
-          }
-        } else {
-          self.setState({ newChatsData: [], isMainLoader: false });
-        }
-      })
-      .catch((response) => {
-        self.setState({ isMainLoader: false });
-        console.log(response, "---handleGetNewChat");
-      });
-  }
-  ////handle Make As Read On Going Chat
+  //handle Make As Read On Going Chat
   async handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
@@ -1073,9 +1352,6 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.handleGetOngoingChat();
-          self.handleGetChatMessagesList(id);
-          self.handleGetChatNotificationCount();
         } else {
         }
       })
@@ -1083,240 +1359,78 @@ class Header extends Component {
         console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
-  ////handle update customer chat status
-  handleUpdateCustomerChatStatus(
-    id,
-    storeManagerId,
-    StoreID,
-    name,
-    mobileNo,
-    customerId,
-    ProgramCode
-  ) {
-    let self = this;
 
-    this.setState({
-      chatModal: true,
-      isMainLoader: true,
-      isCustEndChat: false,
-      storeManagerId,
-      rowChatId: 0,
-      agentRecentChatData: [],
-      showHistoricalChat: false,
-      mainTabSelect: 1,
-      storeID: StoreID,
-      customerName: name,
-      mobileNo: mobileNo,
-      customerId: customerId,
-      programCode: ProgramCode,
-      message: "",
-      messageSuggestionData: [],
-      messageSuggestionTagsData: [],
-      selectedTags: 0,
-      chkSuggestion: 0,
-      toggle: {
-        one: true,
-        two: false,
-        three: false,
-        four: false,
-        five: false,
-      },
-      noOfPeople: "",
-      selectSlot: {},
-      scheduleModal: false,
-      selectedSlot: {},
-      activeTab: 1,
-      timeSlotData: [],
-      searchItem: "",
-      searchCardData: [],
-      messageData: [],
-      isSendClick: false,
-      isHistoricalChat: false,
-      isDownbtn: true,
-    });
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
-      headers: authHeader(),
-      params: {
-        chatID: id,
-      },
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var responseData = response.data.responseData;
-        if (message === "Success" && responseData) {
-          self.handleGetAgentRecentChat(customerId);
-          self.handleMakeAsReadOnGoingChat(id);
-          self.handleGetNewChat();
-        }
-      })
-      .catch((response) => {
-        self.setState({ isMainLoader: false });
-        console.log(response, "---handleUpdateCustomerChatStatus");
-      });
-  }
-  ////handle get chat messgae by chat id
-  handleGetChatMessagesList(id, RecentChat) {
-    let self = this;
-    var forRecentChat = 0;
-    if (RecentChat) {
-      forRecentChat = 1;
-    }
-    this.setState({ isMainLoader: true });
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/getChatMessagesList",
-      headers: authHeader(),
-      params: {
-        chatID: id,
-        ForRecentChat: forRecentChat,
-      },
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var messageData = response.data.responseData;
-        if (message === "Success" && messageData) {
-          if (self.state.showHistoricalChat) {
-            self.setState({
-              messageHistoryChatData: messageData,
-              isMainLoader: false,
-            });
-          } else {
-            self.setState({
-              ...messageData,
-              messageData,
-              isScroll: true,
-              isMainLoader: false,
-            });
-          }
-        } else {
-          self.setState({ messageData: [] });
-        }
-      })
-      .catch((response) => {
-        self.setState({ isMainLoader: false });
-        console.log(response, "---handleGetChatMessagesList");
-      });
-  }
-  ////handle save chat messgae
-  handleSaveChatMessages(
-    messageStringData,
-    messagewhatsAppContent,
-    imageURL,
-    isCard
-  ) {
-    let self = this;
-
-    var messagecontent = "";
-    if (messageStringData) {
-      messagecontent = messageStringData;
-    } else {
-      messagecontent = this.state.message;
-    }
-    if (messagecontent !== "" && this.state.chatId > 0) {
-      var inputParam = {};
-      inputParam.chatID = this.state.chatId;
-      inputParam.message = messagecontent;
-      inputParam.attachment = null;
-      inputParam.byCustomer = false;
-      inputParam.chatStatus = 0;
-      inputParam.storeManagerId = this.state.storeManagerId;
-
-      this.setState({
-        message: "",
-        isMainLoader: true,
-      });
-
-      axios({
-        method: "post",
-        url: config.apiUrl + "/CustomerChat/saveChatMessages",
-        headers: authHeader(),
-        data: inputParam,
-      })
-        .then(function(response) {
-          var message = response.data.message;
-          var responseData = response.data.responseData;
-          if (message === "Success" && responseData) {
-            self.setState({
-              isSendRecomended: false,
-              message: "",
-              messageSuggestionData: [],
-              messageSuggestionTagsData: [],
-              selectedTags: 0,
-              cardModal: false,
-              remainingCount: self.state.tempRemainingCount,
-              suggestionModal: false,
-              suggestionModalMob: false,
-              isMainLoader: false,
-            });
-            self.handleGetChatMessagesList(self.state.chatId);
-            self.handleGetOngoingChat();
-            if (isCard) {
-              self.handleSendProductsOnChat(true);
-            } else {
-              self.handleSendMessageToCustomer(
-                messagecontent,
-                0,
-                messagewhatsAppContent,
-                imageURL
-              );
-            }
-          } else {
-            self.setState({ isSendRecomended: false, isMainLoader: false });
-          }
-        })
-        .catch((response) => {
-          self.setState({ isMainLoader: false });
-          console.log(response, "---saveChatMessages");
-        });
-    }
-  }
-  ////handle get chat notification count
-  async handleGetChatNotificationCount() {
-    let self = this;
-    await axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/GetChatNotificationCount",
-      headers: authHeader(),
-    })
-      .then(function(response) {
-        var chatMessageCount = response.data.responseData;
-        if (chatMessageCount) {
-          self.setState({ chatMessageCount });
-        } else {
-          self.setState({ chatMessageCount: chatMessageCount || 0 });
-        }
-      })
-      .catch((response) => {
-        console.log(response, "---handleGetChatNotificationCount");
-      });
-  }
-
-  ////handle get chat notification count
+  //handle get chat notification count
   handleSearchChatItemDetails() {
     let self = this;
+    var inputParam = {};
+    if (this.state.cardSearchStoreCode) {
+      inputParam.SearchText = this.state.searchItem;
+      inputParam.ProgramCode = this.state.programCode;
+      inputParam.StoreCode = this.state.storeCode;
+    } else {
+      inputParam.SearchText = this.state.searchItem;
+      inputParam.ProgramCode = this.state.programCode;
+    }
+    this.setState({ isCardSearch: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/searchChatItemDetails",
+      // url: config.apiUrl + "/CustomerChat/searchChatItemDetails",
+      url: config.apiUrl + "/CustomerChat/searchChatItemDetailsNew",
       headers: authHeader(),
-      params: {
-        SearchText: this.state.searchItem,
-        ProgramCode: this.state.programCode,
-      },
+      params: inputParam,
     })
       .then(function(response) {
         var message = response.data.message;
         var searchCardData = response.data.responseData;
+        self.setState({ isCardSearch: false });
         if (message == "Success" && searchCardData) {
           searchCardData.forEach((element, i) => {
             element["itemID"] = i + 1;
+
+            if (!self.state.cardConfigData.Brand) {
+              element.brandName = "";
+            }
+            if (!self.state.cardConfigData.Category) {
+              element.categoryName = "";
+            }
+            if (!self.state.cardConfigData.Color) {
+              element.color = "";
+            }
+            if (!self.state.cardConfigData.ColorCode) {
+              element.colorCode = "";
+            }
+            if (!self.state.cardConfigData.ImageURL) {
+              element.imageURL = "";
+            }
+            if (!self.state.cardConfigData.ItemCode) {
+              element.uniqueItemCode = "";
+            }
+            if (!self.state.cardConfigData.ItemName) {
+              element.productName = "";
+            }
+            if (!self.state.cardConfigData.Price) {
+              element.price = "";
+            }
+            if (!self.state.cardConfigData.Size) {
+              element.size = "";
+            }
+            if (!self.state.cardConfigData.SubCategory) {
+              element.subCategoryName = "";
+            }
+            if (!self.state.cardConfigData.Url) {
+              element.url = "";
+            }
+            if (!self.state.cardConfigData.discount) {
+              element.discount = "";
+            }
           });
           self.setState({
+            isCardMobileUp: self.state.isMobileView ? true : false,
             searchCardData,
             noProductFound: "",
             tempCardSearch: self.state.searchItem,
+            isDownbtn: self.state.isMobileView === false ? false : true,
           });
         } else {
           self.setState({
@@ -1326,10 +1440,11 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isCardSearch: false });
         console.log(response, "---handleSearchChatItemDetails");
       });
   }
-  ////handle get time slot by store id
+  //handle get time slot by store id
   handleGetTimeSlot() {
     let self = this;
     axios({
@@ -1364,7 +1479,7 @@ class Header extends Component {
       });
   }
 
-  ////handle send schedual visit
+  //handle send schedual visit
   handleScheduleVisit() {
     let self = this;
 
@@ -1432,6 +1547,18 @@ class Header extends Component {
                 : "+91" + timeSlotData[0].storeManagerMobile) +
               " \n Number Of People : " +
               timeSlotData[0].noOfPeople;
+            var appointmentSendWB = {};
+            appointmentSendWB.Date = self.state.selectedDate;
+            appointmentSendWB.Slot = self.state.selectedSlot.timeSlot;
+            appointmentSendWB.AppointmentID = timeSlotData[0].appointmentID;
+            appointmentSendWB.CustomerName = timeSlotData[0].customerName;
+            appointmentSendWB.CustomerMobileNo = self.state.selectedDate;
+            appointmentSendWB.StoreName = timeSlotData[0].storeName;
+            appointmentSendWB.StoreAddress = timeSlotData[0].storeAddress;
+            appointmentSendWB.StoreMobileNo =
+              timeSlotData[0].storeManagerMobile;
+            appointmentSendWB.NoOfPeople = timeSlotData[0].noOfPeople;
+
             self.setState({
               noOfPeople: "",
               selectSlot: {},
@@ -1440,9 +1567,14 @@ class Header extends Component {
               message: messagedata,
               isSendRecomended: false,
             });
-            self.handleGetTimeSlot();
 
-            self.handleSaveChatMessages("", "", "");
+            self.handleGetTimeSlot();
+            self.handleSendMessageToCustomer(
+              messagedata,
+              "",
+              "",
+              appointmentSendWB
+            );
           } else {
             self.setState({ isSendRecomended: false });
           }
@@ -1452,73 +1584,26 @@ class Header extends Component {
         });
     }
   }
-  ////handle send message to customer
-  handleSendMessageToCustomer(
-    Message,
-    index,
-    messagewhatsAppContent,
-    imageURL
-  ) {
-    let self = this;
-    var inputParam = {};
-    if (Message.trim() !== "") {
-      if (index > 0) {
-        this.setState({
-          chkSuggestion: 0,
-        });
-      }
-      inputParam.ChatID = this.state.chatId;
-      inputParam.MobileNo =
-        this.state.mobileNo.length > 10
-          ? this.state.mobileNo
-          : "91" + this.state.mobileNo;
-      inputParam.ProgramCode = this.state.programCode;
-      inputParam.Message = Message;
-      inputParam.WhatsAppMessage = messagewhatsAppContent;
-      inputParam.ImageURL = imageURL;
-      inputParam.InsertChat = 1;
-      if (this.state.chatId > 0) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
-          headers: authHeader(),
-          params: inputParam,
-        })
-          .then(function(response) {
-            var message = response.data.message;
-            if (message == "Success") {
-              self.setState({
-                chkSuggestion: [],
-                message: "",
-                messageSuggestionData: [],
-                messageSuggestionTagsData: [],
-                selectedTags: 0,
-              });
-              self.handleGetChatMessagesList(self.state.chatId);
-            }
-          })
-          .catch((response) => {
-            console.log(response, "---handleSendMessageToCustomer");
-          });
-      }
-    }
-  }
 
-  ////handlecselect card in card tab
+  //handlecselect card in card tab
   handleSelectCard(id, imageUrl) {
     if (imageUrl) {
-      this.setState({ selectedCard: id });
+      this.setState({
+        selectedCard: id,
+        isSelectedCard: false,
+        isCardSend: false,
+      });
     } else {
       NotificationManager.error(
         "Image is not available so,not select the card"
       );
     }
   }
-  ////handle button down click
+  //handle button down click
   handleDownButtonClick() {
     this.setState({ isDownbtn: !this.state.isDownbtn });
   }
-  ////handle on change ck editor
+  //handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
     var message = evt.target.value;
     var remLength = 0;
@@ -1533,24 +1618,37 @@ class Header extends Component {
       remainingCount: remLength,
     });
   };
-  ////handle message suggestion
+  //handle message suggestion
   handleMessageSuggestion = () => {
-    setTimeout(() => {
-      if (this.state.message.length > 0) {
-        this.handleGetMessageSuggestionList();
+    // setTimeout(() => {
+    if (this.state.message.length > 0) {
+      if (this.state.isMobileView) {
+        this.setState({ suggestionTagModal: true });
       } else {
-        this.setState({
-          messageSuggestionData: [],
-          messageSuggestionTagsData: [],
-          selectedTags: 0,
-          chkSuggestion: [],
-        });
+        this.setState({ isCheckSuggetion: true });
       }
-    }, 1);
+
+      this.setState({
+        onHoverName: false,
+        isPinClick: false,
+      });
+      this.handleGetMessageSuggestionList();
+    } else {
+      this.setState({
+        messageSuggestionData: [],
+        messageSuggestionTagsData: [],
+        selectedTags: 0,
+        chkSuggestion: 0,
+      });
+    }
+    // }, 1);
   };
-  ////handle get message suggestion list
+  //handle get message suggestion list
   handleGetMessageSuggestionList() {
     let self = this;
+    // if (this.state.isMobileView) {
+    this.setState({ isSuggestionLoad: true });
+    // }
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/getChatSuggestions",
@@ -1562,239 +1660,35 @@ class Header extends Component {
       .then(function(res) {
         let status = res.data.message;
         let responseData = res.data.responseData;
+        self.setState({ isSuggestionLoad: false });
         if (status === "Success") {
           self.setState({
             messageSuggestionTagsData: responseData[0],
             selectedTags:
               responseData[0].length > 0 ? responseData[0][0].tagID : 0,
             messageSuggestionData: responseData[1],
-            chkSuggestion: [],
+            chkSuggestion: 0,
           });
         } else {
           self.setState({
             messageSuggestionData: [],
-            chkSuggestion: [],
+            chkSuggestion: 0,
             messageSuggestionTagsData: [],
             selectedTags: 0,
           });
         }
       })
       .catch((res) => {
+        self.setState({ isSuggestionLoad: false });
         console.log(res);
       });
   }
-  ////handle appand message suggestion
-  handleAppendMessageSuggestion = (e) => {
-    this.setState({ toggleTitle: true });
-    var startPoint = this.state.message.length;
-    var textLength = this.state.message.length;
-    var textBefore = this.state.message.substring(0, startPoint);
-    var textBeforeArr = textBefore.split(" ");
-    textBeforeArr.pop();
-    textBeforeArr.push(e.currentTarget.textContent);
-    textBefore = textBeforeArr.join(" ");
-    var textAfter = this.state.message.substring(startPoint, textLength);
-    let message = this.state.message;
-    message = "<p>" + textBefore + " " + textAfter + "</p>";
 
-    this.setState({ message });
-  };
-  ////handle on change message text
-  handleSetMessage = (messageData) => {
-    this.setState({ messageData });
-  };
-
-  ////handle on going chat click
-  handleOngoingChatClick = (
-    id,
-    name,
-    count,
-    mobileNo,
-    customerId,
-    ProgramCode,
-    StoreID,
-    isCustEndChat,
-    storeManagerId,
-    selectedColor
-  ) => {
-    var activeTab = 1;
-    if (this.state.isMessageTabActive === false) {
-      activeTab = 2;
-    } else if (this.state.isCardTabActive === false) {
-      activeTab = 3;
-    } else if (this.state.isRecommendedTabActive === false) {
-      activeTab = 4;
-    } else if (this.state.isSchedualTabActive === false) {
-      activeTab = 5;
-    } else if (this.state.isGeneratePaymentTabActive === false) {
-      activeTab = 1;
-    } else {
-      activeTab = 1;
-    }
-
-    if (this.state.messageData.length == 0 || this.state.chatId != id) {
-      if (this.state.chatId === id) {
-        this.setState({
-          messageSuggestionTagsData: [],
-          activeTab,
-          selectedColor,
-          chatModal: true,
-          productTypeTab: 0,
-          selectedWishList: [],
-          selectedShoppingBag: [],
-          selectedRecommended: [],
-          shoppingBagData: [],
-          wishListData: [],
-          recommendedData: [],
-          storeManagerId,
-          showHistoricalChat: false,
-          rowChatId: 0,
-          agentRecentChatData: [],
-          mainTabSelect: 1,
-          isCustEndChat,
-          storeID: StoreID,
-          chatId: id,
-          customerName: name,
-          mobileNo: mobileNo,
-          customerId: customerId,
-          programCode: ProgramCode,
-          mobileNo: mobileNo,
-          message: "",
-          messageSuggestionData: [],
-          chkSuggestion: [],
-          noOfPeople: "",
-          selectSlot: {},
-          scheduleModal: false,
-          selectedSlot: {},
-          timeSlotData: [],
-          searchItem: "",
-          searchCardData: [],
-          messageData: [],
-          isSendClick: false,
-          isHistoricalChat: false,
-          isDownbtn: true,
-        });
-        this.handleGetChatMessagesList(id);
-        this.handleGetAgentRecentChat(customerId);
-        this.handleGetChatCustomerProfile(customerId);
-      } else {
-        this.setState({
-          messageSuggestionTagsData: [],
-          activeTab,
-          selectedColor,
-          chatModal: true,
-          productTypeTab: 0,
-          selectedWishList: [],
-          selectedShoppingBag: [],
-          selectedRecommended: [],
-          shoppingBagData: [],
-          wishListData: [],
-          recommendedData: [],
-          storeManagerId,
-          rowChatId: 0,
-          agentRecentChatData: [],
-          showHistoricalChat: false,
-          mainTabSelect: 1,
-          isCustEndChat,
-          storeID: StoreID,
-          chatId: id,
-          customerName: name,
-          mobileNo: mobileNo,
-          customerId: customerId,
-          programCode: ProgramCode,
-          mobileNo: mobileNo,
-          message: "",
-          messageSuggestionData: [],
-          chkSuggestion: [],
-          noOfPeople: "",
-          selectSlot: {},
-          scheduleModal: false,
-          selectedSlot: {},
-          timeSlotData: [],
-          searchItem: "",
-          searchCardData: [],
-          messageData: [],
-          isSendClick: false,
-          isHistoricalChat: false,
-          isDownbtn: true,
-        });
-        if (count === 0) {
-          this.handleGetChatMessagesList(id);
-          this.handleGetAgentRecentChat(customerId);
-        } else {
-          this.handleMakeAsReadOnGoingChat(id);
-          this.handleGetAgentRecentChat(customerId);
-        }
-      }
-    } else {
-      this.setState({
-        messageSuggestionTagsData: [],
-        activeTab,
-        selectedColor,
-        chatModal: true,
-        productTypeTab: 0,
-        selectedWishList: [],
-        selectedShoppingBag: [],
-        selectedRecommended: [],
-        shoppingBagData: [],
-        wishListData: [],
-        recommendedData: [],
-        storeManagerId,
-        rowChatId: 0,
-        agentRecentChatData: [],
-        showHistoricalChat: false,
-        mainTabSelect: 1,
-        isCustEndChat,
-        storeID: StoreID,
-        chatId: id,
-        customerName: name,
-        mobileNo: mobileNo,
-        customerId: customerId,
-        programCode: ProgramCode,
-        mobileNo: mobileNo,
-        message: "",
-        messageSuggestionData: [],
-        chkSuggestion: [],
-        noOfPeople: "",
-        selectSlot: {},
-        scheduleModal: false,
-        selectedSlot: {},
-        activeTab: 1,
-        timeSlotData: [],
-        searchItem: "",
-        searchCardData: [],
-        messageData: [],
-        isSendClick: false,
-        isHistoricalChat: false,
-        isDownbtn: true,
-      });
-      this.handleGetChatMessagesList(id);
-      this.handleGetAgentRecentChat(customerId);
-    }
-    this.setState({ isHistoricalChat: false, isDownbtn: true });
-    if (this.state.isCustomerProfile) {
-      this.setState({ ProfileProductTab: 0 });
-      this.handleGetChatCustomerProfile(customerId);
-    } else {
-      if (this.state.isCustomerProduct) {
-        this.setState({ ProfileProductTab: 1 });
-        this.handleGetChatCustomerProducts();
-      }
-    }
-  };
-  ////handle close card modal
-  onCloseCardModal = () => {
-    this.setState({ cardModal: false, searchCardData: [], selectedCard: 0 });
-  };
-  ////handle opne card modal
-  onOpenCardModal = () => {
-    this.setState({ cardModal: true });
-  };
-  ////handle search item text change
+  //handle search item text change
   handleSearchItemChange = (e) => {
     this.setState({ searchItem: e.target.value, noProductFound: "" });
   };
-  ////handle got to message scroll down
+  //handle got to message scroll down
   scrollToBottom() {
     if (this.messageList) {
       const scrollHeight = this.messageList.scrollHeight;
@@ -1803,26 +1697,34 @@ class Header extends Component {
       this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
   }
-  ////handle no of people text change
+  //handle no of people text change
   handleNoOfPeopleChange = (e) => {
     if (Object.keys(this.state.selectedSlot).length !== 0) {
-      if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
-        if (Number(e.target.value) <= this.state.maxPeopleAllow) {
-          this.setState({
-            noOfPeople: e.target.value,
-            noOfPeopleMax: "",
-          });
+      if (Number(e.target.value) > 0) {
+        if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
+          if (Number(e.target.value) <= this.state.maxPeopleAllow) {
+            this.setState({
+              noOfPeople: e.target.value,
+              noOfPeopleMax: "",
+            });
+          } else {
+            this.setState({
+              noOfPeople: "",
+              noOfPeopleMax:
+                "Maximum capacity are " + this.state.maxPeopleAllow,
+            });
+          }
         } else {
           this.setState({
             noOfPeople: "",
-            noOfPeopleMax: "Maximum capacity are " + this.state.maxPeopleAllow,
+            noOfPeopleMax:
+              "Remaining capacity are " + this.state.selectedSlot.remaining,
           });
         }
       } else {
         this.setState({
           noOfPeople: "",
-          noOfPeopleMax:
-            "Remaining capacity are " + this.state.selectedSlot.remaining,
+          noOfPeopleMax: "No. of people should be greater than 0",
         });
       }
     } else {
@@ -1831,7 +1733,7 @@ class Header extends Component {
       });
     }
   };
-  ////handle select slot button
+  //handle select slot button
   handleSelectSlot = (data, selectedDate, isDisabled) => {
     if (isDisabled) {
     } else {
@@ -1844,144 +1746,144 @@ class Header extends Component {
       });
     }
   };
-  ////handle close schedule modal
-  onCloseScheduleModal = () => {
-    this.setState({
-      scheduleModal: false,
-      selectedSlot: {},
-      selectedDate: "",
-      isSelectSlot: "",
-      noOfPeople: "",
-      noOfPeopleMax: "",
-    });
-  };
-  ////handle open chedule modal
-  onOpenScheduleModal = () => {
-    this.setState({ scheduleModal: true });
-    this.handleGetTimeSlot();
-  };
-  ////handle close recommended list modal
-  onCloseRecommendedModal = () => {
-    this.setState({ recommendedModal: false });
-  };
-  ////handle open recommended list modal
-  onOpenRecommendedModal = () => {
-    this.setState({ recommendedModal: true });
-  };
-  ////handle close payment modal
-  onClosePaymentModal = () => {
-    this.setState({ paymentModal: false });
-  };
-  ////handle open payment modal
-  onOpenPaymentModal = () => {
-    this.setState({ paymentModal: true });
-  };
-  ////handel enter pressed event in card
+  //handel enter pressed event in card
   enterPressed(event) {
     var code = event.keyCode || event.which;
     if (code === 13) {
-      this.handleSearchChatItemDetails();
+      if (this.state.sourceType === "cb") {
+        this.handleSearchChatItemDetails();
+      } else {
+        // this.handleSearchChatItemDetails();
+
+        this.handleSearchChatItemDetailsWB();
+      }
     }
   }
-  ////handle card send button
+  //handle card send button
   handleSendCard() {
     if (this.state.selectedCard > 0) {
       var messageStringData = document.getElementById(
         "card" + this.state.selectedCard
       ).innerHTML;
-
+      this.setState({ isSelectedCard: false });
       var messagewhatsAppData = this.state.searchCardData.filter(
         (x) => x.itemID === this.state.selectedCard
       );
 
-      var messagewhatsAppContent =
-        messagewhatsAppData[0].productName +
-        (messagewhatsAppData[0].brandName !== "" &&
-        messagewhatsAppData[0].brandName !== null
-          ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
-          : "") +
-        (messagewhatsAppData[0].categoryName !== "" &&
-        messagewhatsAppData[0].categoryName !== null
-          ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
-          : "") +
-        (messagewhatsAppData[0].subCategoryName !== "" &&
-        messagewhatsAppData[0].subCategoryName !== null
-          ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
-          : "") +
-        (messagewhatsAppData[0].color !== "" &&
-        messagewhatsAppData[0].color !== null
-          ? ", Color: " + messagewhatsAppData[0].color.trim()
-          : "") +
-        (messagewhatsAppData[0].size !== "" &&
-        messagewhatsAppData[0].size !== null
-          ? ", Size: " + messagewhatsAppData[0].size.trim()
-          : "") +
-        (messagewhatsAppData[0].uniqueItemCode !== "" &&
-        messagewhatsAppData[0].uniqueItemCode !== null
-          ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
-          : "") +
-        (messagewhatsAppData[0].discount !== "" &&
-        parseFloat(messagewhatsAppData[0].discount) !== 0 &&
-        messagewhatsAppData[0].discount !== null
-          ? ", Discount: " + messagewhatsAppData[0].discount.trim()
-          : "") +
-        (messagewhatsAppData[0].price !== "" &&
-        parseFloat(messagewhatsAppData[0].price) !== 0 &&
-        messagewhatsAppData[0].price !== null
-          ? ", Price: " + messagewhatsAppData[0].price.trim()
-          : "") +
-        "\n" +
-        (messagewhatsAppData[0].url !== null ? messagewhatsAppData[0].url : "");
+      if (this.state.sourceType === "cb") {
+        var messagewhatsAppContent =
+          messagewhatsAppData[0].productName +
+          (messagewhatsAppData[0].brandName !== "" &&
+          messagewhatsAppData[0].brandName !== null
+            ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
+            : "") +
+          (messagewhatsAppData[0].categoryName !== "" &&
+          messagewhatsAppData[0].categoryName !== null
+            ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
+            : "") +
+          (messagewhatsAppData[0].subCategoryName !== "" &&
+          messagewhatsAppData[0].subCategoryName !== null
+            ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
+            : "") +
+          (messagewhatsAppData[0].color !== "" &&
+          messagewhatsAppData[0].color !== null
+            ? ", Color: " + messagewhatsAppData[0].color.trim()
+            : "") +
+          (messagewhatsAppData[0].size !== "" &&
+          messagewhatsAppData[0].size !== null
+            ? ", Size: " + messagewhatsAppData[0].size.trim()
+            : "") +
+          (messagewhatsAppData[0].uniqueItemCode !== "" &&
+          messagewhatsAppData[0].uniqueItemCode !== null
+            ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
+            : "") +
+          (messagewhatsAppData[0].discount !== "" &&
+          parseFloat(messagewhatsAppData[0].discount) !== 0 &&
+          messagewhatsAppData[0].discount !== null
+            ? ", Discount: " + messagewhatsAppData[0].discount.trim()
+            : "") +
+          (messagewhatsAppData[0].price !== "" &&
+          parseFloat(messagewhatsAppData[0].price) !== 0 &&
+          messagewhatsAppData[0].price !== null
+            ? ", Price: " + messagewhatsAppData[0].price.trim()
+            : "") +
+          "\n" +
+          (messagewhatsAppData[0].url !== null
+            ? messagewhatsAppData[0].url
+            : "");
 
-      var imageURL = messagewhatsAppData[0].imageURL;
+        var imageURL = messagewhatsAppData[0].imageURL;
+      }
       this.setState({ isSendRecomended: true });
-      this.handleSaveChatMessages(
+
+      this.handleSendProductsOnChat(
+        true,
         messageStringData,
         messagewhatsAppContent,
-        imageURL,
-        true
+        imageURL
       );
+    } else {
+      this.setState({ isSelectedCard: true, isCardSend: false });
     }
   }
-  ////handle tabl click
+  //handle tabl click
   handleTabClick = (tabIndex, e) => {
     if (tabIndex == 1) {
-      this.setState({ isDownbtn: true, activeTab: 1 });
+      this.setState({ isDownbtn: true, activeTab: 1, isScroll: true });
     }
 
     if (tabIndex == 2) {
-      this.setState({ isDownbtn: true, activeTab: 2 });
+      this.setState({ isDownbtn: true, activeTab: 2, isScroll: true });
     }
     if (tabIndex == 3) {
-      this.setState({ isDownbtn: true, activeTab: 3 });
+      this.setState({ isDownbtn: true, activeTab: 3, isScroll: true });
     }
 
     if (tabIndex == 4) {
-      this.setState({ isDownbtn: true, activeTab: 4 });
+      this.setState({ isDownbtn: true, activeTab: 4, isScroll: true });
       this.handleGetTimeSlot();
     }
     if (tabIndex == 5) {
-      this.setState({ isDownbtn: true, activeTab: 5 });
+      this.setState({ isDownbtn: true, activeTab: 5, isScroll: true });
     }
+    this.AddWhiteIconClose();
 
     this.setState({
+      isCardSend: false,
+      isSelectedCard: false,
+      selectedCard: 0,
+      message: "",
+      AttachementFiles: [],
+      isCardMobileUp: false,
+      isCardSearch: false,
+      searchCardData: [],
+      searchItem: "",
       noRecommendedFound: "",
       noOfPeopleMax: "",
       noProductFound: "",
       isSelectSlot: "",
     });
   };
-  ////handle send recommended list
+  //handle send recommended list
   handleSendRecommendedList() {
     let self = this;
     this.setState({ isSendRecomended: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
+      // url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
+      url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomerNew",
       headers: authHeader(),
+      // params: {
+      //   CustomerID: this.state.customerId,
+      //   MobileNumber: this.state.mobileNo,
+      //   ChatID: this.state.chatId
+      // },
       params: {
         CustomerID: this.state.customerId,
         MobileNumber: this.state.mobileNo,
+        ChatID: this.state.chatId,
+        Source: this.state.sourceType,
+        // Source: this.state.sourceType || "WT",
       },
     })
       .then(function(res) {
@@ -1989,14 +1891,13 @@ class Header extends Component {
         if (status === "Success") {
           self.setState({ isSendRecomended: false, noRecommendedFound: "" });
           self.handleGetChatMessagesList(self.state.chatId);
-          self.onCloseRecommendedModal();
         } else {
           self.setState({ isSendRecomended: false });
           self.setState({
             messageSuggestionData: [],
             messageSuggestionTagsData: [],
             selectedTags: 0,
-            chkSuggestion: [],
+            chkSuggestion: 0,
             noRecommendedFound: "No Record Found",
           });
         }
@@ -2005,19 +1906,8 @@ class Header extends Component {
         console.log(res);
       });
   }
-  ////handle open suggestion list modal
-  onOpenSuggestionModal(suggestionText, index) {
-    if (index > 0) {
-      this.state.chkSuggestion = [];
-      this.state.chkSuggestion[index] = 1;
-      this.setState({
-        suggestionModal: true,
-        chkSuggestion: this.state.chkSuggestion,
-        suggestionText: suggestionText,
-      });
-    }
-  }
-  ////handle opne mobile suggestion list modal
+
+  //handle opne mobile suggestion list modal
   onOpenMobSuggestionModal(suggestionText, index) {
     if (index > 0) {
       this.setState({
@@ -2027,15 +1917,20 @@ class Header extends Component {
       });
     }
   }
-  ////handle close suggestion list modal
-  onCloseSuggestionModal = () => {
-    this.setState({ suggestionModal: false });
-  };
-  ////handle close mobile suggestion list modal
+  onOpenMobSuggestionModalNew(suggestionText, index) {
+    if (index > 0) {
+      this.setState({
+        chkSuggestion: index,
+        suggestionText: suggestionText,
+      });
+    }
+  }
+
+  //handle close mobile suggestion list modal
   onCloseMobSuggestionModal = () => {
     this.setState({ suggestionModalMob: false });
   };
-  ////handle change tab click
+  //handle change tab click
   handleHistTabClick = () => {
     this.setState({
       isHistoricalChat: true,
@@ -2048,15 +1943,16 @@ class Header extends Component {
     });
     this.handleGetAgentChatHistory();
   };
-  ////handle get agent recent chat data
+  //handle get agent recent chat data
   handleGetAgentRecentChat(customerId) {
     let self = this;
     this.setState({ isPastChatLoading: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/GetAgentRecentChat",
+      // url: config.apiUrl + "/CustomerChat/GetAgentRecentChat",
+      url: config.apiUrl + "/CustomerChat/GetAgentRecentChatNew",
       headers: authHeader(),
-      params: { CustomerID: customerId },
+      params: { CustomerID: customerId, PageNo: this.state.pastChatPageNo },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -2074,7 +1970,7 @@ class Header extends Component {
         console.log(response, "---handleGetAgentRecentChat");
       });
   }
-  ////handle get agent list
+  //handle get agent list
   handleGetAgentList() {
     let self = this;
     axios({
@@ -2086,6 +1982,12 @@ class Header extends Component {
         var message = response.data.message;
         var agentData = response.data.responseData;
         if (message === "Success" && agentData) {
+          // window.localStorage.setItem(
+          //   "AgentList",
+          //   encryption(JSON.stringify(agentData)),
+          //   "enc"
+          // );
+          window.localStorage.setItem("AgentList", JSON.stringify(agentData));
           self.setState({ agentData });
         } else {
           self.setState({ agentData });
@@ -2095,7 +1997,8 @@ class Header extends Component {
         console.log(response, "---handleGetAgentList");
       });
   }
-  ////handle change main tabs
+  //handle change main tabs
+
   handleMainTabChange(e) {
     this.setState({ mainTabSelect: e });
     if (e === 2) {
@@ -2112,21 +2015,21 @@ class Header extends Component {
       });
       this.handleGetChatMessagesList(this.state.chatId);
     }
+    this.handleGetAgentRecentChat(this.state.customerId);
   }
-  ////handle change agent dropdown
+  //handle change agent dropdown
   handleChangeAgentDropdown(e) {
     this.setState({ sAgentId: e });
-    setTimeout(() => {
-      this.handleGetOngoingChat();
-    }, 10);
+    setTimeout(() => {}, 10);
   }
-  ////handle get agent chat history
+  //handle get agent chat history
   handleGetAgentChatHistory() {
     let self = this;
     this.setState({ isHistoricalChatLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetAgentChatHistory",
+      // url: config.apiUrl + "/CustomerChat/GetAgentChatHistoryNew",
       headers: authHeader(),
     })
       .then(function(response) {
@@ -2146,193 +2049,7 @@ class Header extends Component {
       });
   }
 
-  ////handle create socket connection
-  handleCreateSocketConnection(programCode, storeCode) {
-    let self = this;
-    var socket = io.connect(config.socketUrl, {
-      transports: ["polling"],
-      upgrade: false,
-    });
-
-    socket.on("connect", () => {
-      socket.send("hi");
-      if (programCode !== "" && programCode !== "") {
-        socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
-          data
-        ) {
-          if (self.state.storeCode !== "" && data[5] !== "") {
-            if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
-              var isMobileNoExist = self.state.ongoingChatsData.filter(
-                (x) =>
-                  x.mobileNo === data[3].substring(2) &&
-                  x.isCustEndChat === false
-              );
-
-              if (isMobileNoExist.length > 0) {
-                if ("91" + self.state.mobileNo === data[3]) {
-                  ////for current chat message
-                  var chatId = 0;
-                  const Sound1Play = new Audio(self.state.newMessageSoundFile);
-                  Sound1Play.volume =
-                    Math.round(self.state.newMessageSoundVolume / 10) / 10;
-                  Sound1Play.play();
-                  // self.setState({
-                  //   isCustEndChat: data[6],
-                  // });
-                  var chatData = self.state.ongoingChatsData.filter(
-                    (x) => x.mobileNo === data[3].substr(2)
-                  );
-                  if (!self.state.chatModal) {
-                    notification.open({
-                      key: chatData[0].chatID,
-                      duration: self.state.notificationTime,
-                      placement: "bottomRight",
-                      // message: "Notification Title",
-                      className: "hide-message-title",
-                      description: (
-                        <>
-                          <div
-                            className="row"
-                            style={{
-                              cursor: "pointer",
-                            }}
-                            onClick={self.handleNotificationClick.bind(
-                              this,
-                              chatData,
-                              chatData[0].chatID
-                            )}
-                          >
-                            <div className="col-3">
-                              <div className="chat-trail-img">
-                                <span
-                                  class="chat-initial"
-                                  alt="face image"
-                                  title="Shalini Chandra "
-                                >
-                                  {chatData[0].cumtomerName
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")
-                                    .toUpperCase()}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="col-9">
-                              <h5 title="Customer Name">
-                                {chatData[0].cumtomerName}
-                              </h5>
-                              <p
-                                style={{
-                                  wordBreak: "break-word",
-                                }}
-                              >
-                                {data[0]}
-                              </p>
-                            </div>
-                          </div>
-                        </>
-                      ),
-                    });
-                  }
-                  if (self.state.ongoingChatsData.length > 0) {
-                    chatId = self.state.ongoingChatsData.filter(
-                      (x) => x.mobileNo === self.state.mobileNo
-                    )[0].chatID;
-                  }
-                  if (data[6]) {
-                    self.handleEndCustomerChat(chatId, data[0]);
-                  } else {
-                    self.handleGetOngoingChat();
-                    self.handleGetNewChat();
-                  }
-
-                  self.handleGetChatMessagesList(chatId);
-                } else {
-                  /////for new ongoing message
-
-                  const Sound1Play = new Audio(self.state.newMessageSoundFile);
-                  Sound1Play.volume =
-                    Math.round(self.state.newMessageSoundVolume / 10) / 10;
-                  Sound1Play.play();
-
-                  if (self.state.isNotiNewMessage) {
-                    var chatData = self.state.ongoingChatsData.filter(
-                      (x) => x.mobileNo === data[3].substr(2)
-                    );
-
-                    notification.open({
-                      key: chatData[0].chatID,
-                      duration: self.state.notificationTime,
-                      placement: "bottomRight",
-                      // message: "Notification Title",
-                      className: "hide-message-title",
-                      description: (
-                        <>
-                          <div
-                            className="row"
-                            style={{
-                              cursor: "pointer",
-                            }}
-                            onClick={self.handleNotificationClick.bind(
-                              this,
-                              chatData,
-                              chatData[0].chatID
-                            )}
-                          >
-                            <div className="col-3">
-                              <div className="chat-trail-img">
-                                <span
-                                  class="chat-initial"
-                                  alt="face image"
-                                  title="Shalini Chandra "
-                                >
-                                  {chatData[0].cumtomerName
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")
-                                    .toUpperCase()}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="col-9">
-                              <h5 title="Customer Name">
-                                {chatData[0].cumtomerName}
-                              </h5>
-                              <p
-                                style={{
-                                  wordBreak: "break-word",
-                                }}
-                              >
-                                {data[0]}
-                              </p>
-                            </div>
-                          </div>
-                        </>
-                      ),
-                    });
-                  }
-
-                  self.handleGetOngoingChat();
-                  self.handleGetNewChat();
-                  self.handleGetChatNotificationCount();
-                }
-              } else {
-                ////new chat message
-
-                setTimeout(() => {
-                  self.handleGetChatNotificationCount();
-                  self.handleGetNewChat(data[3].substr(2), data[0]);
-                }, 5000);
-
-                // self.handleGetNewChat();
-              }
-            }
-          }
-        });
-      }
-    });
-  }
-  ////handle insert card image upload
+  //handle insert card image upload
   handleInsertCardImageUpload(itemcode, e) {
     if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
       NotificationManager.error("Please select valid image file JPG,JPEG,PNG,");
@@ -2355,27 +2072,27 @@ class Header extends Component {
       .then(function(response) {
         var messgae = response.data.message;
         if (messgae === "Success") {
-          NotificationManager.success("Add image successfully.");
+          NotificationManager.success("Image Upload Successfully.");
         } else {
-          NotificationManager.error("Not add image successfully.");
+          NotificationManager.error("Image Not Uploaded.");
         }
       })
       .catch((response) => {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
-  ////handle open action modal pop up
+  //handle open action modal pop up
   handleActionOpen = () => {
     this.setState({ actionBtn: true });
     // this.setState({ actionBtn: !this.state.actionBtn });
   };
-  ////handle close action modal pop up
+  //handle close action modal pop up
   handleActionClose = () => {
     this.setState({ actionBtn: false });
   };
-  ////handle update store manage chat status
+  //handle update store manage chat status
   handleUpdateStoreManagerChatStatus(id) {
-    if (this.state.isCustEndChat) {
+    if (this.state.isCustEndChat || this.state.isCustTimeout) {
       let self = this;
       axios({
         method: "post",
@@ -2391,8 +2108,8 @@ class Header extends Component {
               customerName: "",
               messageData: [],
               isCustEndChat: false,
+              isCustTimeout: false,
             });
-            self.handleGetOngoingChat();
             self.handleActionClose();
           }
         })
@@ -2401,12 +2118,13 @@ class Header extends Component {
         });
     }
   }
-  ////handle historical table row click
+  //handle historical table row click
   handleHistoricalTableRow = (e) => {
     this.setState({
       rowChatId: e.chatID,
       showHistoricalChat: true,
       chatTimeAgo: e.timeAgo,
+      historyPage: 1,
     });
     this.handleGetChatMessagesList(e.chatID, 1);
   };
@@ -2414,7 +2132,7 @@ class Header extends Component {
   setRowClassName = (record) => {
     return record.chatID === this.state.rowChatId ? "clickRowStyl" : "";
   };
-  ////handle history messge scrool to bottom
+  //handle history messge scrool to bottom
   historyMessageScrollToBottom() {
     if (this.historyMessageList) {
       const scrollHeight = this.historyMessageList.scrollHeight;
@@ -2423,7 +2141,7 @@ class Header extends Component {
       this.historyMessageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
   }
-  ////handle history chat close
+  //handle history chat close
   handleHistoryChatClose() {
     this.setState({
       rowChatId: 0,
@@ -2432,12 +2150,13 @@ class Header extends Component {
     });
   }
 
-  ////handle get chat session
+  //handle get chat session
   handleGetChatSession() {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/GetChatSession",
+      // url: config.apiUrl + "/CustomerChat/GetChatSession",
+      url: config.apiUrl + "/CustomerChat/GetChatSessionNew",
       headers: authHeader(),
     })
       .then(function(response) {
@@ -2445,6 +2164,7 @@ class Header extends Component {
         var data = response.data.responseData;
 
         if (message === "Success" && data) {
+          window.localStorage.setItem("ChatSession", JSON.stringify(data));
           self.setState({
             tempRemainingCount: data.chatCharLimit,
             remainingCount: data.chatCharLimit,
@@ -2455,6 +2175,11 @@ class Header extends Component {
             isGeneratePaymentTabActive: data.paymentLink,
             isCustomerProfile: data.customerProfile,
             isCustomerProduct: data.customerProduct,
+            agentChatSessionValue: data.agentChatSessionValue,
+            agentChatSessionDuration: data.agentChatSessionDuration,
+            customerChatSessionValue: data.customerChatSessionValue,
+            customerChatSessionDuration: data.customerChatSessionDuration,
+            cardSearchStoreCode: data.cardSearchStoreCode,
           });
           if (data.message === false) {
             self.setState({
@@ -2498,7 +2223,7 @@ class Header extends Component {
         console.log(response, "---handleGetChatSession");
       });
   }
-  ////handle end customer chat
+  //handle end customer chat
   handleEndCustomerChat(chatId, message) {
     let self = this;
     axios({
@@ -2514,8 +2239,6 @@ class Header extends Component {
           self.setState({
             isCustEndChat: true,
           });
-          self.handleGetOngoingChat();
-          self.handleGetNewChat();
         } else {
           self.setState({
             isCustEndChat: false,
@@ -2526,11 +2249,11 @@ class Header extends Component {
         console.log(response, "---handleEndCustomerChat");
       });
   }
-  ////handle tag button click
+  //handle tag button click
   handleTagsButtonClick = (tagsId) => {
     this.setState({ selectedTags: tagsId });
   };
-  ////handle get chat sound notification setting
+  //handle get chat sound notification setting
   handleGetChatSoundNotiSetting = () => {
     let self = this;
     axios({
@@ -2542,22 +2265,45 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          var index = responseData.newMessageSoundFile.lastIndexOf("/") + 1;
-          var index1 = responseData.newChatSoundFile.lastIndexOf("/") + 1;
+          var reader = new FileReader();
+          var reader1 = new FileReader();
+
+          fetch(responseData.newMessageSoundFile).then(function(res) {
+            res.blob().then(function(blob) {
+              reader.addEventListener("loadend", function() {
+                var base64FileData = reader.result.toString();
+                localStorage.setItem(
+                  "newMessageSoundFile",
+                  JSON.stringify(base64FileData)
+                );
+              });
+              reader.readAsDataURL(blob);
+            });
+          });
+
+          fetch(responseData.newChatSoundFile).then(function(res) {
+            res.blob().then(function(blob) {
+              reader1.addEventListener("loadend", function() {
+                var base64FileData = reader1.result.toString();
+                localStorage.setItem(
+                  "newChatSoundFile",
+                  JSON.stringify(base64FileData)
+                );
+              });
+              reader1.readAsDataURL(blob);
+            });
+          });
+          window.localStorage.setItem(
+            "ChatSoundNotiSetting",
+            JSON.stringify(responseData)
+          );
           self.setState({
-            // newChatSoundFile: responseData.newChatSoundFile || "",
-            newChatSoundFile:
-              config.soundURL + responseData.newChatSoundFile.substr(index1) ||
-              "",
-            // newMessageSoundFile: responseData.newMessageSoundFile || "",
-            newMessageSoundFile:
-              config.soundURL +
-                responseData.newMessageSoundFile.substr(index) || "",
             newChatSoundVolume: responseData.newChatSoundVolume || 0,
             newMessageSoundVolume: responseData.newMessageSoundVolume || 0,
             isNotiNewChat: responseData.isNotiNewChat || false,
             isNotiNewMessage: responseData.isNotiNewMessage || false,
             notificationTime: responseData.notificationTime,
+            tenantID: responseData.tenantID,
           });
         }
       })
@@ -2566,48 +2312,183 @@ class Header extends Component {
       });
   };
 
-  ////handle get chat customer profile details
-  handleGetChatCustomerProfile = (customerId) => {
+  //handle get chat customer profile details
+  handleGetChatCustomerProfile = (mobileNo) => {
     let self = this;
-    if (customerId > 0) {
+
+    if (mobileNo) {
+      this.setState({ isProfileLoading: true });
       axios({
         method: "post",
+        // url: config.apiUrl + "/CustomerChat/ChatProfileATVDetails",
         url: config.apiUrl + "/CustomerChat/GetChatCustomerProfile",
         headers: authHeader(),
-        params: { CustomerID: customerId },
+        params: { MobileNo: mobileNo },
+        timeout: 1000 * 20,
       })
         .then((response) => {
-          var messgae = response.data.message;
+          var message = response.data.message;
           var responseData = response.data.responseData;
+          self.setState({ isProfileLoading: false });
+          if (message === "Success" && responseData) {
+            window.localStorage.setItem(
+              "CustomerProfile",
+              JSON.stringify(responseData)
+            );
+            window.localStorage.setItem("IsCustomerProfile", false);
+            var customerNameProfile = "";
+            var customerMobileNo = "";
+            if (responseData.mobileNumber) {
+              customerMobileNo = responseData.mobileNumber;
+            } else {
+              customerMobileNo = self.state.mobileNo;
+            }
+            if (responseData.name) {
+              customerNameProfile = responseData.name;
+            } else {
+              customerNameProfile = self.state.customerName;
+            }
 
-          if (messgae === "Success" && responseData) {
             self.setState({
-              customerName: responseData.customerName,
-              customerTier: responseData.customerTier,
-              customerMobileNo: responseData.customerMobileNo,
-              customerEmailID: responseData.customerEmailID,
-              totalPoints: responseData.totalPoints,
-              lifetimeValue: responseData.lifetimeValue,
-              visitCount: responseData.visitCount,
-              billNumber: responseData.billNumber || "",
-              billAmount: responseData.billAmount,
-              transactionDate: responseData.transactionDate,
-              insights: responseData.insights || [],
-              orderDelivered: responseData.orderDelivered,
-              orderShoppingBag: responseData.orderShoppingBag,
-              orderReadyToShip: responseData.orderReadyToShip,
-              orderReturns: responseData.orderReturns,
+              customerNameProfile,
+              customerTier: responseData.tiername || "",
+              customerMobileNo: customerMobileNo,
+              customerEmailID: responseData.email || "",
+              totalPoints: responseData.availablePoints || 0,
+              lifetimeValue: responseData.lifeTimeValue || 0,
+              visitCount: responseData.visitCount || 0,
             });
+          } else {
+            window.localStorage.setItem("CustomerProfile", {});
+            window.localStorage.setItem("IsCustomerProfile", true);
           }
         })
         .catch((response) => {
+          self.setState({ isProfileLoading: false });
           console.log(response);
         });
     }
   };
-  ////handle genrate store pay link
+  /// handle get customer profile order details
+  handleChatCustomerProfileOrderDetails = () => {
+    let self = this;
+    this.setState({ orderDetailsLoader: true });
+    axios({
+      method: "post",
+      // url: config.apiUrl + "/CustomerChat/GetChatCustomerProfile",
+      url: config.apiUrl + "/CustomerChat/ChatCustomerProfileOrderDetails",
+      headers: authHeader(),
+      params: {
+        CustomerID: this.state.customerId,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({ orderDetailsLoader: false });
+        if (message === "Success" && responseData) {
+          window.localStorage.setItem("OrderDetails", responseData);
+          window.localStorage.setItem("IsOrderDetails", false);
+          self.setState({
+            orderDelivered: responseData.orderDelivered,
+            orderShoppingBag: responseData.orderShoppingBag,
+            orderReadyToShip: responseData.orderReadyToShip,
+            orderReturns: responseData.orderReturns,
+          });
+        } else {
+          window.localStorage.setItem("OrderDetails", {});
+          window.localStorage.setItem("IsOrderDetails", true);
+        }
+      })
+      .catch((response) => {
+        self.setState({ orderDetailsLoader: false });
+        console.log(response);
+      });
+  };
+  /// handle get profile last transcation data
+  handleChatProfileLastTransactionData = (mobileNo) => {
+    let self = this;
+    this.setState({ lasttransactionLoader: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/ChatProfileLastTransactionDetails",
+      headers: authHeader(),
+      timeout: 1000 * 20,
+      params: {
+        MobileNo: mobileNo,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({ lasttransactionLoader: false });
+        if (message === "Success" && responseData) {
+          window.localStorage.setItem(
+            "LastTransaction",
+            JSON.stringify(responseData)
+          );
+          window.localStorage.setItem("IsLastTransaction", false);
+          self.setState({
+            billNumber: responseData.billNumber || "",
+            billAmount: responseData.billAmount,
+            transactionDate: responseData.transactionDate,
+            itemDetails: responseData.itemDetails || [],
+            storeDetails: responseData.storeDetails,
+          });
+        } else {
+          window.localStorage.setItem("LastTransaction", []);
+          window.localStorage.setItem("IsLastTransaction", true);
+        }
+      })
+      .catch((response) => {
+        self.setState({ lasttransactionLoader: false });
+        console.log(response);
+      });
+  };
+  /// handle get profile customer insight
+  handleChatProfileCustomerInsightData = (mobileNo) => {
+    let self = this;
+    this.setState({ insightsLoader: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/ChatProfileCustomerInsights",
+      headers: authHeader(),
+      params: {
+        MobileNo: mobileNo,
+      },
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+
+        self.setState({ insightsLoader: false });
+        if (message === "Success" && responseData) {
+          window.localStorage.setItem(
+            "CustomerInsights",
+            JSON.stringify(responseData)
+          );
+          window.localStorage.setItem("IsCustomerInsights", false);
+
+          self.setState({
+            insights: responseData || [],
+          });
+        } else {
+          window.localStorage.setItem("CustomerInsights", responseData);
+          window.localStorage.setItem("IsCustomerInsights", true);
+        }
+      })
+      .catch((response) => {
+        self.setState({ insightsLoader: false });
+        console.log(response);
+      });
+  };
+  //handle genrate store pay link
   handleGenerateStorePayLink = () => {
     let self = this;
+    if (this.state.chatModal && !this.state.isMobileView) {
+      this.setState({ chatModal: false });
+    }
+
     axios({
       method: "post",
       url: config.apiUrl + "/StorePay/GenerateStorePayLink",
@@ -2617,7 +2498,10 @@ class Header extends Component {
         var message = response.data.message;
         var storePayURL = response.data.responseData;
         if (message === "Success" && storePayURL) {
-          self.setState({ storePayURL });
+          self.setState({
+            storePayURL,
+          });
+          window.open(storePayURL, "blank");
         }
       })
       .catch((response) => {
@@ -2625,15 +2509,60 @@ class Header extends Component {
       });
   };
 
-  ////handle name mouse enter
+  //handle name mouse enter
   handleNameHover = () => {
     if (!this.state.onHoverName) {
       this.setState({
         onHoverName: !this.state.onHoverName,
       });
     }
+    this.setState({ isCheckSuggetion: false });
+
+    if (this.state.isCustomerProfile) {
+      this.setState({ ProfileProductTab: 0 });
+      if (!this.state.onHoverName) {
+        if (this.state.customerMobileNo !== this.state.mobileNo) {
+          this.handleGetChatCustomerProfile(this.state.mobileNo);
+        } else {
+          var responseData = JSON.parse(
+            window.localStorage.getItem("CustomerProfile")
+          );
+          var IsCustomerProfile = window.localStorage.getItem(
+            "IsCustomerProfile"
+          );
+          if (IsCustomerProfile === "true") {
+            this.setState({
+              customerTier: "",
+              customerEmailID: "",
+              totalPoints: 0,
+              lifetimeValue: 0,
+              visitCount: 0,
+            });
+          } else {
+            if (IsCustomerProfile === "false") {
+              this.setState({
+                customerTier: responseData.customerTier || "",
+                customerEmailID: responseData.email || "",
+                totalPoints: responseData.availablePoints || 0,
+                lifetimeValue: responseData.lifeTimeValue || 0,
+                visitCount: responseData.visitCount || 0,
+              });
+            } else {
+              this.handleGetChatCustomerProfile(this.state.mobileNo);
+            }
+          }
+        }
+      }
+    } else {
+      if (this.state.isCustomerProduct) {
+        this.setState({ ProfileProductTab: 1 });
+        if (!this.state.onHoverName) {
+          this.handleGetChatCustomerProducts();
+        }
+      }
+    }
   };
-  ////handle name hover leave
+  //handle name hover leave
   handleNameHoverLeave = () => {
     if (this.state.onHoverName && !this.state.isPinClick) {
       this.setState({
@@ -2646,13 +2575,13 @@ class Header extends Component {
       }
     }
   };
-  ////handle pin click
+  //handle pin click
   handlePinClick = () => {
     this.setState({
       isPinClick: !this.state.isPinClick,
     });
   };
-  ////handle change shutter windows in mobile view
+  //handle change shutter windows in mobile view
   handleChangeShutterWindow = (isOpne) => {
     this.setState({
       isShutterOpen: isOpne,
@@ -2663,21 +2592,96 @@ class Header extends Component {
       this.setState({ ProfileProductTab: 1 });
     }
   };
-  ////handle profile product tab change
+  //handle profile product tab change
   handleProfileProductTabChange = (index) => {
-    this.setState({ ProfileProductTab: index });
+    this.setState({
+      ProfileProductTab: index,
+      totalShoppingBag: 0,
+      totalWishList: 0,
+      totalRecommend: 0,
+    });
     if (index === 1) {
       this.handleGetChatCustomerProducts();
     }
   };
-  ////handle collpse change
+  //handle collpse change
   handleCollpseChange = (e) => {
     this.state.activeCollpse = e[e.length - 1];
-    this.setState({ activeCollpse: this.state.activeCollpse });
+    this.setState({
+      activeCollpse: this.state.activeCollpse,
+    });
+
+    if (Number(this.state.activeCollpse) === 1) {
+      var InsightData = window.localStorage.getItem("CustomerInsights");
+
+      if (InsightData) {
+        this.setState({
+          // insights:JSON.parse(InsightData.insights),
+          insights: JSON.parse(InsightData),
+        });
+      } else {
+        this.handleChatProfileCustomerInsightData(this.state.mobileNo);
+      }
+    }
+
+    if (Number(this.state.activeCollpse) === 2) {
+      var responseData = {};
+      if (window.localStorage.getItem("OrderDetails")) {
+        var responseData = JSON.parse(
+          window.localStorage.getItem("OrderDetails")
+        );
+      }
+
+      var IsOrderDetails = window.localStorage.getItem("IsOrderDetails");
+      if (
+        IsOrderDetails === "true" ||
+        (IsOrderDetails !== null && IsOrderDetails !== "")
+      ) {
+        this.setState({
+          orderDelivered: "",
+          orderShoppingBag: "",
+          orderReadyToShip: "",
+          orderReturns: "",
+        });
+      } else {
+        if (IsOrderDetails === "false") {
+          this.setState({
+            orderDelivered: responseData.orderDelivered,
+            orderShoppingBag: responseData.orderShoppingBag,
+            orderReadyToShip: responseData.orderReadyToShip,
+            orderReturns: responseData.orderReturns,
+          });
+        } else {
+          this.handleChatCustomerProfileOrderDetails();
+        }
+      }
+    }
+
+    if (Number(this.state.activeCollpse) === 3) {
+      var responseDatavar = null;
+      if (window.localStorage.getItem("LastTransaction")) {
+        responseDatavar = window.localStorage.getItem("LastTransaction");
+      }
+
+      if (responseDatavar) {
+        var responseData = JSON.parse(responseDatavar);
+        this.setState({
+          billNumber: responseData.billNumber || "",
+          billAmount: responseData.billAmount,
+          transactionDate: responseData.transactionDate,
+          itemDetails: responseData.itemDetails || [],
+          storeDetails: responseData.storeDetails,
+        });
+      } else {
+        this.handleChatProfileLastTransactionData(this.state.mobileNo);
+      }
+    }
   };
-  ////handle get chat customer products
+
+  //handle get chat customer products
   handleGetChatCustomerProducts = () => {
     let self = this;
+    this.setState({ isProductLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetChatCustomerProducts",
@@ -2693,38 +2697,91 @@ class Header extends Component {
         var shoppingBagData = [];
         var wishListData = [];
         var recommendedData = [];
+        var totalShoppingBag = 0;
+        var totalWishList = 0;
+        var totalRecommend = 0;
+        self.setState({ isProductLoading: false });
         if (message === "Success" && responseData) {
+          responseData.forEach((element) => {
+            if (!self.state.cardConfigData.Brand) {
+              element.brandName = "";
+            }
+            if (!self.state.cardConfigData.Category) {
+              element.categoryName = "";
+            }
+            if (!self.state.cardConfigData.Color) {
+              element.color = "";
+            }
+            if (!self.state.cardConfigData.ColorCode) {
+              element.colorCode = "";
+            }
+            if (!self.state.cardConfigData.ImageURL) {
+              element.imageURL = "";
+            }
+            if (!self.state.cardConfigData.ItemCode) {
+              element.uniqueItemCode = "";
+            }
+            if (!self.state.cardConfigData.ItemName) {
+              element.productName = "";
+            }
+            if (!self.state.cardConfigData.Price) {
+              element.price = "";
+            }
+            if (!self.state.cardConfigData.Size) {
+              element.size = "";
+            }
+            if (!self.state.cardConfigData.SubCategory) {
+              element.subCategoryName = "";
+            }
+            if (!self.state.cardConfigData.Url) {
+              element.url = "";
+            }
+            if (!self.state.cardConfigData.discount) {
+              element.discount = "";
+            }
+          });
           for (let i = 0; i < responseData.length; i++) {
             if (responseData[i].isShoppingBag) {
               responseData[i].isCheck = false;
               shoppingBagData.push(responseData[i]);
+              totalShoppingBag += Number(responseData[i].price);
             }
             if (responseData[i].isWishList) {
               responseData[i].isCheck = false;
               wishListData.push(responseData[i]);
+              totalWishList += Number(responseData[i].price);
             }
             if (responseData[i].isRecommended) {
               responseData[i].isCheck = false;
+              totalRecommend += Number(responseData[i].price);
               recommendedData.push(responseData[i]);
             }
           }
 
           self.setState({
             shoppingBagData,
+            totalShoppingBag,
+            totalWishList,
             wishListData,
             recommendedData,
+            totalRecommend,
             mainProductsData: responseData,
           });
         }
       })
       .catch((response) => {
+        self.setState({ isProductLoading: false });
         console.log(response, "---handleGetChatCustomerProducts");
       });
   };
 
-  ////handle shopping bag ,wishlist & recommended product select
-  handleProductTabsChange = (tabIndex, itemIndex) => {
-    ////for Shopping Bag list
+  //handle shopping bag ,wishlist & recommended product select
+  handleProductTabsChange = (tabIndex, itemIndex, uniqueItemID) => {
+    if (this.state.isCustTimeout || this.state.isCustEndChat) {
+      return false;
+    }
+
+    //for Shopping Bag list
     if (tabIndex === 1) {
       this.state.shoppingBagData[itemIndex].isCheck = !this.state
         .shoppingBagData[itemIndex].isCheck;
@@ -2737,9 +2794,10 @@ class Header extends Component {
       this.setState({
         shoppingBagData: this.state.shoppingBagData,
         selectedShoppingBag,
+        uniqueItemID,
       });
     }
-    //// for Wish List
+    // for Wish List
     if (tabIndex === 2) {
       this.state.wishListData[itemIndex].isCheck = !this.state.wishListData[
         itemIndex
@@ -2753,9 +2811,10 @@ class Header extends Component {
       this.setState({
         wishListData: this.state.wishListData,
         selectedWishList,
+        uniqueItemID,
       });
     }
-    ////for Recommended list
+    //for Recommended list
     if (tabIndex === 3) {
       this.state.recommendedData[itemIndex].isCheck = !this.state
         .recommendedData[itemIndex].isCheck;
@@ -2768,10 +2827,11 @@ class Header extends Component {
       this.setState({
         recommendedData: this.state.recommendedData,
         selectedRecommended,
+        uniqueItemID,
       });
     }
   };
-  ////handle product type tab change
+  //handle product type tab change
   handleProductTypeTabChange = (index) => {
     this.state.shoppingBagData.forEach((element) => {
       element.isCheck = false;
@@ -2795,7 +2855,10 @@ class Header extends Component {
 
   ///handle select all product base on tab index
   handleSelectAllProduct = (tabIndex) => {
-    ////for shopping bag list tab select all
+    if (this.state.isCustEndChat || this.state.isCustTimeout) {
+      return false;
+    }
+    //for shopping bag list tab select all
     if (tabIndex === 1) {
       for (let i = 0; i < this.state.shoppingBagData.length; i++) {
         this.state.shoppingBagData[i].isCheck = true;
@@ -2811,7 +2874,7 @@ class Header extends Component {
         selectedShoppingBag,
       });
     }
-    ////for wish list tab select all
+    //for wish list tab select all
     if (tabIndex === 2) {
       for (let i = 0; i < this.state.wishListData.length; i++) {
         this.state.wishListData[i].isCheck = true;
@@ -2827,7 +2890,7 @@ class Header extends Component {
         selectedWishList,
       });
     }
-    ////for recommended tab select all
+    //for recommended tab select all
     if (tabIndex === 3) {
       for (let i = 0; i < this.state.recommendedData.length; i++) {
         this.state.recommendedData[i].isCheck = true;
@@ -2844,7 +2907,7 @@ class Header extends Component {
       });
     }
   };
-  ////handle remove product
+  //handle remove product
   handleRemoveProduct = (itemCode, fromType) => {
     let self = this;
     axios({
@@ -2863,33 +2926,58 @@ class Header extends Component {
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           self.handleGetChatCustomerProducts();
+          self.setState({
+            mobileWishProcessMdl: false,
+            mobileRecommendProcessMdl: false,
+            mobileShopBagProcessMdl: false,
+          });
         }
       })
       .catch((response) => {
         console.log(response, "---handleRemoveProduct");
       });
   };
-  ////handle add products to shopping bag
-  handleAddProductsToShoppingBag = () => {
+  //handle add products to shopping bag
+
+  handleAddProductsToBagOrWishlist = (type) => {
     let self = this;
     var itemCode = "";
-    if (this.state.selectedWishList.length > 0) {
-      for (let i = 0; i < this.state.selectedWishList.length; i++) {
-        if (this.state.selectedWishList[i].isCheck) {
-          itemCode += this.state.selectedWishList[i].uniqueItemCode + ",";
+
+    if (type === "shoppingbag") {
+      if (this.state.selectedShoppingBag.length > 0) {
+        for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
+          if (this.state.selectedShoppingBag[i].isCheck) {
+            itemCode += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
+          }
+        }
+      }
+    } else if (type === "wishlist") {
+      if (this.state.selectedWishList.length > 0) {
+        for (let i = 0; i < this.state.selectedWishList.length; i++) {
+          if (this.state.selectedWishList[i].isCheck) {
+            itemCode += this.state.selectedWishList[i].uniqueItemCode + ",";
+          }
+        }
+      }
+    } else if (type === "recommended") {
+      if (this.state.selectedRecommended.length > 0) {
+        for (let i = 0; i < this.state.selectedRecommended.length; i++) {
+          if (this.state.selectedRecommended[i].isCheck) {
+            itemCode += this.state.selectedRecommended[i].uniqueItemCode + ",";
+          }
         }
       }
     }
     this.setState({ isButtonClick: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/AddProductsToShoppingBag",
+      url: config.apiUrl + "/CustomerChat/AddProductsToBagOrWishlist",
       headers: authHeader(),
       params: {
         CustomerID: this.state.customerId,
         MobileNo: this.state.mobileNo,
         ItemCodes: itemCode,
-        IsFromRecommendation: false,
+        Action: type,
       },
     })
       .then((response) => {
@@ -2897,45 +2985,72 @@ class Header extends Component {
         var responseData = response.data.responseData;
 
         if (message === "Success" && responseData) {
-          self.setState({ selectedWishList: [], isButtonClick: false });
+          if (type === "wishlist") {
+            self.setState({
+              selectedWishList: [],
+              isButtonClick: false,
+              mobileWishProcessMdl: false,
+              mobileShopBagProcessMdl: false,
+              mobileRecommendProcessMdl: false,
+            });
+          } else if (type === "shoppingbag") {
+            self.setState({
+              selectedShoppingBag: [],
+              isButtonClick: false,
+              mobileWishProcessMdl: false,
+              mobileShopBagProcessMdl: false,
+              mobileRecommendProcessMdl: false,
+            });
+          } else {
+            self.setState({
+              selectedRecommended: [],
+              isButtonClick: false,
+              mobileRecommendProcessMdl: false,
+              mobileWishProcessMdl: false,
+              mobileShopBagProcessMdl: false,
+            });
+          }
           self.handleGetChatCustomerProducts();
         } else {
-          self.setState({ isButtonClick: false });
+          self.setState({
+            isButtonClick: false,
+            mobileWishProcessMdl: false,
+            mobileShopBagProcessMdl: false,
+          });
         }
       })
       .catch((response) => {
         console.log(response, "---AddProductsToShoppingBag");
       });
   };
-  ////handle add products to wish list
-  handleAddProductsToWishlist = (formType) => {
+  //handle add products to wish list
+  handleAddRecommendationToWishlist = () => {
     let self = this;
     var itemCode = "";
-    if (this.state.selectedRecommended.length > 0 && formType) {
+    if (this.state.selectedRecommended.length > 0) {
       for (let i = 0; i < this.state.selectedRecommended.length; i++) {
         if (this.state.selectedRecommended[i].isCheck) {
           itemCode += this.state.selectedRecommended[i].uniqueItemCode + ",";
         }
       }
     }
-    if (this.state.selectedShoppingBag.length > 0 && !formType) {
-      for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
-        if (this.state.selectedShoppingBag[i].isCheck) {
-          itemCode += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
-        }
-      }
-    }
+    // if (this.state.selectedShoppingBag.length > 0 && !formType) {
+    //   for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
+    //     if (this.state.selectedShoppingBag[i].isCheck) {
+    //       itemCode += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
+    //     }
+    //   }
+    // }
 
     this.setState({ isButtonClick: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/CustomerChat/AddProductsToWishlist",
+      url: config.apiUrl + "/CustomerChat/AddRecommendationToWishlist",
       headers: authHeader(),
       params: {
         CustomerID: this.state.customerId,
         MobileNo: this.state.mobileNo,
         ItemCodes: itemCode,
-        IsFromRecommendation: formType || false,
       },
     })
       .then((response) => {
@@ -2943,11 +3058,7 @@ class Header extends Component {
         var responseData = response.data.responseData;
 
         if (message === "Success" && responseData) {
-          if (formType) {
-            self.setState({ selectedRecommended: [], isButtonClick: false });
-          } else {
-            self.setState({ selectedShoppingBag: [], isButtonClick: false });
-          }
+          self.setState({ selectedRecommended: [], isButtonClick: false });
           self.handleGetChatCustomerProducts();
         } else {
           self.setState({ isButtonClick: false });
@@ -2957,56 +3068,90 @@ class Header extends Component {
         console.log(response, "---AddProductsToShoppingBag");
       });
   };
-  ////handle mobile view back button
+  //handle mobile view back button
   handleBackButton = () => {
     this.setState({ customerName: "", isHistoricalChat: false });
   };
-  ////handle notification click
-  handleNotificationClick = (chatData, notificationKey) => {
-    notification.close(notificationKey);
-    this.handleOngoingChatClick(
-      chatData[0].chatID,
-      chatData[0].cumtomerName,
-      chatData[0].messageCount,
-      chatData[0].mobileNo,
-      chatData[0].customerID,
-      chatData[0].programCode,
-      chatData[0].storeID,
-      chatData[0].isCustEndChat,
-      chatData[0].storeManagerId,
-      chatData[0].initialColor
-    );
+  //handle notification click
+  handleNotificationClick = (chatData, isCurrenctChat) => {
+    notification.close(chatData[0].chatID);
+    if (!isCurrenctChat) {
+      this.props.history.push({
+        pathname: "chatbot",
+        state: {
+          programCode: this.state.programCode,
+          storeCode: this.state.storeCode,
+          tenantID: this.state.tenantID,
+          agentId: this.state.AgentID,
+          UserName: this.state.UserName,
+          chatId: chatData[0].chatID,
+        },
+      });
+      // this.handleOngoingChatClick(
+      //   chatData[0].chatID,
+      //   chatData[0].customerName,
+      //   chatData[0].messageCount,
+      //   chatData[0].mobileNo,
+      //   chatData[0].customerID,
+      //   chatData[0].programCode,
+      //   chatData[0].storeID,
+      //   chatData[0].isCustEndChat,
+      //   chatData[0].storeManagerId,
+      //   chatData[0].initialColor,
+      //   chatData[0].isCustTimeout,
+      //   chatData[0].sourceAbbr
+      // );
+    }
   };
-  ////handle check is mobile view active or not
+  //handle check is mobile view active or not
   handleCheckView() {
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (isMobile) {
       this.setState({ isMobileView: true });
     } else {
-      this.setState({ isMobileView: false });
+      this.setState({ isMobileView: false, suggestionTagModal: false });
     }
   }
-  ////handle new chat notification click
-  handleNewChatNotification = (chatData, notificationKey) => {
-    if (notificationKey) {
-      notification.close(notificationKey);
+  //handle new chat notification click
+  handleNewChatNotification = (chatData) => {
+    notification.close(chatData[0].chatID);
+
+    this.setState({
+      newTicketChatId: 0,
+    });
+    if (
+      window.location.pathname.toLowerCase() !== "/store/Chatbot".toLowerCase()
+    ) {
+      this.props.history.push({
+        pathname: "chatbot",
+        state: {
+          programCode: this.state.programCode,
+          storeCode: this.state.storeCode,
+          tenantID: this.state.tenantID,
+          agentId: this.state.AgentID,
+          UserName: this.state.UserName,
+          chatId: chatData[0].chatID,
+          isNewChat: true,
+        },
+      });
     }
-    this.setState({ newTicketChatId: 0 });
-    this.handleUpdateCustomerChatStatus(
-      chatData[0].chatID,
-      chatData[0].storeManagerId,
-      chatData[0].storeID,
-      chatData[0].cumtomerName,
-      chatData[0].mobileNo,
-      chatData[0].customerID,
-      chatData[0].programCode
-    );
+
+    // this.handleUpdateCustomerChatStatus(
+    //   chatData[0].chatID,
+    //   chatData[0].storeManagerId,
+    //   chatData[0].storeID,
+    //   chatData[0].customerName,
+    //   chatData[0].mobileNo,
+    //   chatData[0].customerID,
+    //   chatData[0].programCode,
+    //   chatData[0].sourceAbbr
+    // );
   };
-  ////handle buy now button
+  //handle buy now button
   handleBuyNowButtonClick = () => {
     this.setState({ buyNowClick: !this.state.buyNowClick });
   };
-  ////handle address modal close
+  //handle address modal close
   handleAddressModalClose = () => {
     this.setState({
       addressModal: false,
@@ -3024,12 +3169,16 @@ class Header extends Component {
       shippingCountry: "",
     });
   };
-  ////handle address modal open
+  //handle address modal open
   handleAddressModalOpen = () => {
-    this.setState({ addressModal: true });
+    this.setState({
+      addressModal: true,
+      addressMobileNo: this.state.mobileNo,
+      addressName: this.state.customerName,
+    });
     this.handleGetCheckServiceData();
   };
-  ////handle modal text on change
+  //handle modal text on change
   handleTextOnchage = (e) => {
     const { name, value } = e.target;
 
@@ -3070,11 +3219,39 @@ class Header extends Component {
         this.setState({ [name]: value, isCountry: "Please Enter Country." });
       }
     }
+    if (name === "addressName") {
+      if (value) {
+        this.setState({ [name]: value, isName: "" });
+      } else {
+        this.setState({ [name]: value, isName: "Please Enter Name." });
+      }
+    }
+    if (name === "addressMobileNo") {
+      if (value) {
+        if (value.length <= 10) {
+          this.setState({
+            [name]: value,
+            isAddressMobileNo: "",
+            isAddressMobileNoValid: "",
+          });
+        } else {
+          this.setState({
+            [name]: "",
+            isAddressMobileNoValid: "Please Enter Valid Mobile No.",
+          });
+        }
+      } else {
+        this.setState({
+          [name]: value,
+          isAddressMobileNo: "Please Enter Mobile No.",
+        });
+      }
+    }
     if (name === "shippingLandmark") {
       this.setState({ [name]: value });
     }
   };
-  ////handle buy products on chat
+  //handle buy products on chat
   handleBuyProductsOnChat = (isFromRecommendation, isDirectBuy) => {
     let self = this;
 
@@ -3103,13 +3280,25 @@ class Header extends Component {
     } else {
       this.setState({ isCountry: "" });
     }
+    if (!this.state.addressName) {
+      this.setState({ isAddressName: "Please Enter Name." });
+    } else {
+      this.setState({ isAddressName: "" });
+    }
+    if (!this.state.addressMobileNo) {
+      this.setState({ isAddressMobileNo: "Please Enter Mobile No." });
+    } else {
+      this.setState({ isAddressMobileNo: "" });
+    }
     if (
       this.state.isAddress === "" &&
       this.state.isPinCode === "" &&
       this.state.isCity === "" &&
       this.state.isState === "" &&
       this.state.isCountry === "" &&
-      this.state.isPinCodeCheck === ""
+      // this.state.isPinCodeCheck === "" &&
+      this.state.isAddressMobileNo === "" &&
+      this.state.isAddressName === ""
     ) {
       var addressDetails = {};
       addressDetails.address = this.state.shippingAddress || "";
@@ -3119,19 +3308,19 @@ class Header extends Component {
       addressDetails.state = this.state.shippingState || "";
       addressDetails.country = this.state.shippingCountry || "";
       var itemCodes = "";
-      /////for recommendation
+      ///for recommendation
       if (isFromRecommendation) {
         for (let i = 0; i < this.state.selectedRecommended.length; i++) {
           itemCodes += this.state.selectedRecommended[i].uniqueItemCode + ",";
         }
       }
-      /////for wish list
+      ///for wish list
       if (this.state.productTypeTab == 1 && isFromRecommendation === false) {
         for (let i = 0; i < this.state.selectedWishList.length; i++) {
           itemCodes += this.state.selectedWishList[i].uniqueItemCode + ",";
         }
       }
-      /////for shopping bag list
+      ///for shopping bag list
       if (this.state.productTypeTab == 0 && isFromRecommendation === false) {
         for (let i = 0; i < this.state.selectedShoppingBag.length; i++) {
           itemCodes += this.state.selectedShoppingBag[i].uniqueItemCode + ",";
@@ -3139,25 +3328,29 @@ class Header extends Component {
       }
       var inputParam = {};
       inputParam.CustomerID = this.state.customerId;
-      inputParam.CustomerMobile = this.state.mobileNo;
+      inputParam.CustomerMobile = this.state.addressMobileNo;
       inputParam.IsFromRecommendation = isFromRecommendation;
       inputParam.IsDirectBuy = isDirectBuy;
       inputParam.ItemCodes = itemCodes;
+      inputParam.CustomerName = this.state.addressName;
+
       if (isDirectBuy === false) {
         inputParam.CustomerAddress = addressDetails;
       }
-
       axios({
         method: "post",
-        url: config.apiUrl + "/CustomerChat/BuyProductsOnChat",
+        // url: config.apiUrl + "/CustomerChat/BuyProductsOnChat",
+        url: config.apiUrl + "/CustomerChat/BuyProductsOnChatNew",
         headers: authHeader(),
         data: inputParam,
       })
         .then((response) => {
-          var message = response.data.response;
+          var message = response.data.message;
           var responseData = response.data.responseData;
+          var statusCode = response.data.statusCode;
 
-          if (message === "Success" && responseData) {
+          if (statusCode === 200) {
+            NotificationManager.success("Products Buy Successfully.");
             self.setState({
               selectedRecommended: [],
               selectedShoppingBag: [],
@@ -3169,9 +3362,17 @@ class Header extends Component {
               shippingPinCode: "",
               shippingState: "",
               shippingLandmark: "",
+              addressModal: false,
+              addressMobileNo: "",
+              addressName: "",
+              mobileWishProcessMdl: false,
+              mobileRecommendProcessMdl: false,
+              mobileShopBagProcessMdl: false,
             });
-            NotificationManager.success("Products Buy Successfully.");
+
             self.handleGetChatCustomerProducts();
+          } else {
+            NotificationManager.error("Products Not Bought Successfully.");
           }
         })
         .catch((response) => {
@@ -3180,70 +3381,7 @@ class Header extends Component {
     }
   };
 
-  handleSendProductsOnChat = (isCard) => {
-    var selectedProduct = [];
-    if (isCard) {
-      selectedProduct = this.state.searchCardData.filter(
-        (x) => x.itemID === this.state.selectedCard
-      );
-      selectedProduct.forEach((element) => {
-        element.IsCard = true;
-      });
-    } else {
-      if (this.state.productTypeTab == 0) {
-        this.state.selectedShoppingBag.forEach((element) => {
-          var finleData = this.state.mainProductsData.filter(
-            (x) => x.uniqueItemCode === element.uniqueItemCode
-          )[0];
-          selectedProduct.push(finleData);
-        });
-      }
-
-      if (this.state.productTypeTab == 1) {
-        this.state.selectedWishList.forEach((element) => {
-          var finleData = this.state.mainProductsData.filter(
-            (x) => x.uniqueItemCode === element.uniqueItemCode
-          )[0];
-          selectedProduct.push(finleData);
-        });
-      }
-      if (this.state.productTypeTab == 2) {
-        this.state.selectedRecommended.forEach((element) => {
-          var finleData = this.state.mainProductsData.filter(
-            (x) => x.uniqueItemCode === element.uniqueItemCode
-          )[0];
-          selectedProduct.push(finleData);
-        });
-      }
-    }
-
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/SendProductsOnChat",
-      headers: authHeader(),
-      data: {
-        ChatID: this.state.chatId,
-        Products: selectedProduct,
-        CustomerMobile: this.state.customerMobileNo,
-      },
-    })
-      .then((response) => {
-        var message = response.data.message;
-        var responseData = response.data.responseData;
-
-        if (message === "Success" && responseData) {
-          if (!isCard) {
-            self.setState({ selectedCard: 0 });
-            self.handleGetChatMessagesList(self.state.chatId);
-          }
-        }
-      })
-      .catch((response) => {
-        console.log(response, "----handleSendProductsOnChat");
-      });
-  };
-  ////handle mobile action menu click
+  //handle mobile action menu click
   handleMobileActionMenuClick = (e) => {
     if (e.key == 1) {
       this.handleUpdateStoreManagerChatStatus(3);
@@ -3266,7 +3404,7 @@ class Header extends Component {
       this.setState({ shippingPinCode: "", isPinCode: "", isPinCodeCheck: "" });
     }
   }
-  ////handle get check server data
+  //handle get check server data
   handleGetCheckServiceData() {
     let self = this;
     if (!this.state.storePinCode) {
@@ -3326,9 +3464,486 @@ class Header extends Component {
         console.log(response, "---handleCheckCourierAvailibilty");
       });
   };
+  //handle chat modal close on header mane click
+  handleChatModalCloseManuClick = () => {
+    if (this.state.chatModal) {
+      this.setState({ chatModal: false });
+    }
+  };
+  //handle product no image
+  handleProductNoImage = (e) => {
+    return (e.target.src = NoImage);
+  };
+  handlePastChatPageChange = (e) => {
+    this.setState({ pastChatPageNo: e });
+    setTimeout(() => {
+      this.handleGetAgentRecentChat(this.state.customerId);
+    }, 10);
+  };
+  handleMessageDivScroll = (element) => {
+    let topOff = document.getElementsByClassName("chatcontentDiv")[0].scrollTop;
+    let heightOffvar = document.getElementsByClassName("chatcontentDiv")[0]
+      .scrollHeight;
+    let heightPrent = (topOff / heightOffvar) * 100;
+
+    if (topOff === 0) {
+      if (this.state.isScrollMessage === true) {
+        if (this.state.isCallChatMessgaeApi === false) {
+          this.setState({
+            isCallChatMessgaeApi: true,
+            oldScrollHeight: heightOffvar,
+          });
+
+          this.handleGetChatMessagesList(this.state.chatId, 0, true);
+          if (document.getElementsByClassName("chatcontentDiv")) {
+            document.getElementsByClassName(
+              "chatcontentDiv"
+            )[0].scrollTop += 3500;
+          }
+        }
+      }
+    }
+  };
+
+  handlealertMessageModalOpen = (followUpID) => {
+    // this.setState({
+    //   alertMessageModal: true,
+    // });
+    this.handleGetCampaignFollowupNotifications(followUpID);
+    this.handleGetNotigfication();
+  };
+  handlealertMessageModalClose = () => {
+    this.setState({
+      alertMessageModal: false,
+    });
+  };
+  handleGetCampaignFollowupNotifications = (followUpID) => {
+    let self = this;
+    axios({
+      method: "post",
+      url:
+        config.apiUrl + "/StoreNotification/GetCampaignFollowupNotifications",
+      headers: authHeader(),
+      params: { FollowUpID: followUpID },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.setState({
+            alertMessageModal: true,
+            notificationModal: false,
+            alertMessageContent: responseData[0].notificationContent,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "----handleGetCampaignFollowupNotifications");
+      });
+  };
+  //handle get card configuration
+  handleGetCardConfiguration() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetCardConfiguration",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success") {
+          var cardConfigData = {};
+
+          responseData.forEach((element) => {
+            cardConfigData[element.cardItem] = element.isEnabled;
+          });
+
+          window.localStorage.setItem(
+            "cardConfigData",
+            JSON.stringify(cardConfigData)
+          );
+          self.setState({ cardConfigData });
+        } else {
+          self.setState({ cardConfigData: {} });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetCardConfiguration");
+      });
+  }
+  handleSearchChatItemDetailsWB = () => {
+    let self = this;
+    var inputParam = {};
+    if (this.state.cardSearchStoreCode) {
+      inputParam.SearchText = this.state.searchItem;
+      inputParam.ProgramCode = this.state.programCode;
+      inputParam.StoreCode = this.state.storeCode;
+    } else {
+      inputParam.SearchText = this.state.searchItem;
+      inputParam.ProgramCode = this.state.programCode;
+    }
+    this.setState({ isCardSearch: true });
+    axios({
+      method: "post",
+      // url: config.apiUrl + "/CustomerChat/searchChatItemDetails",
+      url: config.apiUrl + "/CustomerChat/searchChatItemDetailsWB",
+      headers: authHeader(),
+      params: inputParam,
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var searchCardData = response.data.responseData.items;
+        self.setState({ isCardSearch: false });
+        if (message == "Success" && searchCardData) {
+          searchCardData.forEach((element, i) => {
+            element["itemID"] = i + 1;
+
+            // if (!self.state.cardConfigData.Brand) {
+            //   element.brandName = "";
+            // }
+            // if (!self.state.cardConfigData.Color) {
+            //   element.availableColor = [];
+            // }
+            // if (!self.state.cardConfigData.Category) {
+            //   element.categoryName = "";
+            // }
+
+            // if (!self.state.cardConfigData.ImageURL) {
+            //   element.imageUrl = "";
+            // }
+            // if (!self.state.cardConfigData.ItemCode) {
+            //   element.itemCode = "";
+            // }
+            // if (!self.state.cardConfigData.ItemName) {
+            //   element.name = "";
+            // }
+            // if (!self.state.cardConfigData.Price) {
+            //   element.price = "";
+            // }
+            // if (!self.state.cardConfigData.Size) {
+            //   element.sizeAvailability = [];
+            // }
+            // if (!self.state.cardConfigData.discount) {
+            //   element.discount = "";
+            // }
+          });
+          self.setState({
+            isCardMobileUp: self.state.isMobileView ? true : false,
+            searchCardData,
+            noProductFound: "",
+            tempCardSearch: self.state.searchItem,
+            isDownbtn: self.state.isMobileView === false ? false : true,
+          });
+        } else {
+          self.setState({
+            searchCardData: [],
+            noProductFound: "No Product Found",
+          });
+        }
+      })
+      .catch((response) => {
+        self.setState({ isCardSearch: false });
+        console.log(response, "---handleSearchChatItemDetails");
+      });
+  };
+  handleSearchChatItemDetailsButton = () => {
+    if (this.state.sourceType === "cb") {
+      this.handleSearchChatItemDetails();
+    } else {
+      // this.handleSearchChatItemDetails();
+
+      this.handleSearchChatItemDetailsWB();
+    }
+  };
+  handleSuggestionTagModalClose = () => {
+    this.setState({ suggestionTagModal: false });
+  };
+  handleRedireactToTicket = () => {
+    document.getElementById("MobTicket").click();
+  };
+  AddWhiteIconOpen = () => {
+    this.setState({ AddWhite: true });
+  };
+  AddWhiteIconClose = () => {
+    this.setState({ AddWhite: false });
+  };
+  handlesuggestionConfModalOpen = () => {
+    this.setState({ suggestionModalMob: true });
+  };
+  handleCloseProcessModal() {
+    this.setState({
+      mobileShopBagProcessMdl: false,
+    });
+  }
+  handleOpenProcessModal(e) {
+    e.stopPropagation();
+    if (this.state.selectedShoppingBag.length > 0) {
+      this.setState({
+        mobileShopBagProcessMdl: true,
+      });
+    } else {
+      return false;
+    }
+  }
+  handleCloseWishListModal() {
+    this.setState({
+      mobileWishProcessMdl: false,
+    });
+  }
+  handleOpenWishListModal(e) {
+    e.stopPropagation();
+    if (this.state.selectedWishList.length > 0) {
+      this.setState({
+        mobileWishProcessMdl: true,
+      });
+    } else {
+      return false;
+    }
+  }
+  handleCloseRecommendedListModal() {
+    this.setState({
+      mobileRecommendProcessMdl: false,
+      mobileChatActive: 0,
+    });
+  }
+  handleOpenRecommendedListModal(e) {
+    e.stopPropagation();
+    if (this.state.selectedRecommended.length > 0) {
+      this.setState({
+        mobileRecommendProcessMdl: true,
+      });
+    } else {
+      return false;
+    }
+  }
+  //handle product type tab change for mobile
+  handleMobileCollpseChange(key) {
+    this.state.shoppingBagData.forEach((element) => {
+      element.isCheck = false;
+    });
+    this.state.wishListData.forEach((element) => {
+      element.isCheck = false;
+    });
+    this.state.recommendedData.forEach((element) => {
+      element.isCheck = false;
+    });
+    this.setState({
+      shoppingBagData: this.state.shoppingBagData,
+      recommendedData: this.state.recommendedData,
+      wishListData: this.state.wishListData,
+      selectedShoppingBag: [],
+      selectedWishList: [],
+      selectedRecommended: [],
+      mobileCollpseActive: [key],
+    });
+    if (key) {
+      if (Number(key) === 1) {
+        this.setState({ productTypeTab: 0 });
+      }
+      if (Number(key) === 2) {
+        this.setState({ productTypeTab: 1 });
+      }
+      if (Number(key) === 3) {
+        this.setState({ productTypeTab: 2 });
+      }
+    } else {
+      this.setState({ productTypeTab: 0 });
+    }
+  }
+  /// handle product no image
+  handleMobileProductNoImage = (e) => {
+    return (e.target.src = Shoppingbag);
+  };
+  /// handle check tab for mobile
+  handleCheckTabMobile(tab) {
+    this.setState({
+      mobileChatActive: tab,
+    });
+  }
+  /// handle FinalProcess submit data
+  handleFinalProcessToOrder(tab) {
+    if (tab === "shoppingbag") {
+      if (this.state.mobileChatActive === 1) {
+        this.handleSendProductsOnChat(false, "", "", "");
+      } else if (this.state.mobileChatActive === 2) {
+        this.handleRemoveProduct(Number(this.state.uniqueItemID), "S");
+      } else if (this.state.mobileChatActive === 3) {
+        this.handleAddProductsToBagOrWishlist("shoppingbag");
+      }
+    } else if (tab === "wishlist") {
+      if (this.state.mobileChatActive === 1) {
+        this.handleSendProductsOnChat(false, "", "", "");
+      } else if (this.state.mobileChatActive === 2) {
+        this.handleRemoveProduct(Number(this.state.uniqueItemID), "W");
+      } else if (this.state.mobileChatActive === 3) {
+        this.handleAddProductsToBagOrWishlist("wishlist");
+      }
+    } else {
+      if (this.state.mobileChatActive === 1) {
+        this.handleSendProductsOnChat(false, "", "", "");
+      } else if (this.state.mobileChatActive === 2) {
+        // this.handleRemoveProduct(Number(this.state.uniqueItemID), "R");
+      } else if (this.state.mobileChatActive === 3) {
+        this.handleAddProductsToBagOrWishlist("recommended");
+      }
+    }
+  }
+
+  handleShowSearch = () => {
+    this.setState({ showSearch: true });
+  };
+  handleChatMobileWindows() {
+    this.setState({
+      chatModal: true,
+    });
+  }
+  handleGetChatCountForMobile() {
+    // this.handleChatNotificationDetails();
+    if (document.getElementById("chatBackIcon")) {
+      document.getElementById("chatBackIcon").style.display = "none";
+    }
+    if (document.getElementById("store-footre-main")) {
+      document.getElementById("store-footre-main").style.display = "block";
+    }
+  }
+  handleUpdateChatMessageCount(count) {
+    this.setState({
+      chatNotificationMomCount: count || 0,
+    });
+  }
+  handleFileUploading(e) {
+    var fileArray = this.state.AttachementFiles;
+    var selectedFiles = e;
+    var fileSize = e;
+    if (e.length === 0) {
+      NotificationManager.error(
+        "Only JPG, JPEG, PNG, PDF & DOC files are allowed."
+      );
+    }
+    for (let i = 0; i < selectedFiles.length; i++) {
+      if (
+        !selectedFiles[i].name.match(
+          /(\.jpg|\.jpeg|\.png|\.webp|\.pdf|\.doc|\.docx|\.JPG)$/
+        )
+      ) {
+        NotificationManager.error(
+          "Only jpeg, jpg, png, webp,pdf, doc,docx is allowed."
+        );
+      } else {
+        var Maxsize = 1024 * 5;
+        if (Maxsize * 1000 < fileSize[i].size) {
+          NotificationManager.error(
+            "File too Big, please select a file less than 5MB."
+          );
+        } else {
+          fileArray.push(selectedFiles[i]);
+          this.setState({
+            AttachementFiles: fileArray,
+          });
+        }
+      }
+    }
+  }
+  handleFileUploadingMobile(e) {
+    var fileArray = this.state.AttachementFiles;
+    var selectedFiles = e.target.files;
+    var fileSize = e.target.files;
+    this.setState({ mobileFileupload: false });
+    for (let i = 0; i < selectedFiles.length; i++) {
+      if (
+        !selectedFiles[i].name.match(
+          /(\.jpg|\.jpeg|\.png|\.webp|\.pdf|\.doc|\.docx|\.JPG)$/
+        )
+      ) {
+        NotificationManager.error(
+          "Only jpeg, jpg, png, webp,pdf, doc,docx is allowed."
+        );
+      } else {
+        var Maxsize = 1024 * 5;
+        if (Maxsize * 1000 < fileSize[i].size) {
+          NotificationManager.error(
+            "File too Big, please select a file less than 5MB."
+          );
+        } else {
+          fileArray.push(selectedFiles[i]);
+          this.setState({
+            AttachementFiles: fileArray,
+          });
+        }
+      }
+    }
+    e.target.value = "";
+  }
+
+  handleOpenFileShow() {
+    this.setState({
+      fileShowMdl: true,
+    });
+  }
+
+  handleFileClose() {
+    this.setState({
+      fileShowMdl: false,
+    });
+  }
+  handleCancelFile(i) {
+    if (this.state.AttachementFiles.length > 1) {
+      let AttachementFiles = [...this.state.AttachementFiles];
+      AttachementFiles.splice(i, 1);
+      this.setState({ AttachementFiles });
+    } else {
+      this.setState({
+        fileShowMdl: false,
+        AttachementFiles: [],
+      });
+    }
+  }
+
+  handleHideSuggetionWeb = () => {
+    this.setState({
+      isCheckSuggetion: false,
+      messageSuggestionData: [],
+      messageSuggestionTagsData: [],
+    });
+  };
+  handleOpenChatbotPage = (isBack) => {
+    if (isBack) {
+      document.getElementById("chatBackIcon").style.display = "none";
+      document.getElementById("store-footre-main").style.display = "block";
+      document.getElementById("backButtonClick").click();
+    }
+    this.props.history.push({
+      pathname: "Chatbot",
+      state: {
+        programCode: this.state.programCode,
+        storeCode: this.state.storeCode,
+        agentId: this.state.AgentID,
+        tenantID: this.state.tenantID,
+        UserName: this.state.UserName,
+      },
+    });
+  };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    const PaginationButton = (current, type, originalElement) => {
+      if (type === "prev") {
+        return (
+          <a>
+            <button className="butn">Previous</button>
+          </a>
+        );
+      }
+      if (type === "next") {
+        return (
+          <a>
+            <button className="butn">Next</button>
+          </a>
+        );
+      }
+      return originalElement;
+    };
     return (
       <React.Fragment>
         <div
@@ -3339,18 +3954,15 @@ class Header extends Component {
             <div className="er bell-icon">
               <img src={BellIcon} alt="bell icon" />
             </div>
-            <div className="hamb-menu">
-              <img
-                src={Hamb}
-                onClick={this.handleShowMenu.bind(this)}
-                alt="hamburger icon"
-              />
-            </div>
             <div className="headers-menu">
               {this.state.cont.map((item) => {
                 if (item.data === "Store Pay" || item.data === "स्टोर पे") {
                   return (
-                    <a key={item.data} className="storepay-a single-menu">
+                    <a
+                      key={item.data}
+                      className="storepay-a single-menu"
+                      onClick={this.handleGenerateStorePayLink.bind(this)}
+                    >
                       {item.logoBlack ? (
                         <div className="header-icons-cntr">
                           <img
@@ -3365,11 +3977,36 @@ class Header extends Component {
                           />
                         </div>
                       ) : null}
-                      <label
-                        onClick={this.handleGenerateStorePayLink.bind(this)}
-                      >
-                        {item.data}
-                      </label>
+                      <label>{item.data}</label>
+                    </a>
+                  );
+                } else if (item.data === "Chat") {
+                  return (
+                    <a
+                      onClick={this.actives}
+                      key={item.data}
+                      className={
+                        window.location.pathname
+                          .split("/")
+                          .pop()
+                          .toLowerCase() === item.urls.toLowerCase()
+                          ? "active single-menu"
+                          : "single-menu"
+                      }
+                    >
+                      <div className="header-icons-cntr">
+                        <img
+                          src={item.logoBlack}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                        <img
+                          src={item.logoBlue}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                      </div>
+                      <label className="cusheade">{item.data}</label>
                     </a>
                   );
                 } else {
@@ -3377,8 +4014,24 @@ class Header extends Component {
                     <Link
                       onClick={this.actives}
                       key={item.data}
-                      to={item.urls}
-                      className={item.activeClass}
+                      to={{
+                        pathname: item.urls,
+                        state: {
+                          userMaster_ID: this.state.userMaster_ID,
+                          tenant_ID: this.state.tenant_ID,
+                          ProgramCode: this.state.ProgramCode,
+                          StoreCode: this.state.StoreCode,
+                        },
+                      }}
+                      // className={item.activeClass}
+                      className={
+                        window.location.pathname
+                          .split("/")
+                          .pop()
+                          .toLowerCase() === item.urls.toLowerCase()
+                          ? "active single-menu"
+                          : "single-menu"
+                      }
                     >
                       <div className="header-icons-cntr">
                         <img
@@ -3400,21 +4053,39 @@ class Header extends Component {
             </div>
           </div>
 
-          <div className="header-right-icons">
+          <div className="header-right-icons" id="mobileHederIcon">
+            {this.state.isHSMShow ? (
+              <Link
+                to="/store/WebBotLink"
+                onClick={this.handleChatModalCloseManuClick.bind(this)}
+              >
+                <img
+                  src={WebBotLink}
+                  alt="WebBotLink"
+                  className="setting"
+                  style={{ width: "28px" }}
+                />
+              </Link>
+            ) : null}
             <a
-              onClick={this.handleChatModalOpen.bind(this)}
+              // onClick={this.handleChatModalOpen.bind(this)}
+              onClick={this.handleOpenChatbotPage.bind(this, false)}
               style={{ display: this.state.chatAccess }}
             >
               <div className="position-relative">
-                <img src={ChatLogo} alt="logo" className="chatImg" />
+                {this.state.isMobileView ? (
+                  <img src={MobileChatIcon} alt="logo" className="chatImg" />
+                ) : (
+                  <img src={ChatLogo} alt="logo" className="chatImg" />
+                )}
                 <img
                   src={ChatLogoBlue}
                   alt="logo"
                   className="chatImg"
                   style={{ display: "none" }}
                 />
-                <span className="message-icon-cnt">
-                  {this.state.chatMessageCount || 0}
+                <span id="chatMessageCount" className="message-icon-cnt">
+                  {/* {this.state.chatMessageCount || 0} */}
                 </span>
               </div>
             </a>
@@ -3442,7 +4113,12 @@ class Header extends Component {
               to="/store/settings"
               style={{ display: this.state.settingAccess }}
             >
-              <img src={SettingLogo} alt="logo" className="setting" />
+              <img
+                src={SettingLogo}
+                alt="logo"
+                className="setting"
+                onClick={this.handleChatModalCloseManuClick.bind(this)}
+              />
               <img
                 src={SettingLogoBlue}
                 alt="logo"
@@ -3463,7 +4139,7 @@ class Header extends Component {
               value={this.state.newTicketChatId}
               id="newTicketChatId"
             />
-            <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
+            <a href="#!" className="bitmap5 useric" onClick={this.onOpenModal}>
               {this.state.UserName.split(" ")
                 .map((n) => n[0])
                 .join("")
@@ -3472,41 +4148,184 @@ class Header extends Component {
           </div>
         </div>
         <div className="mob-header">
-          <div className="hamb-menu">
-            <img
-              src={Hambw}
-              onClick={this.handleShowMenu.bind(this)}
-              alt="hamburger icon"
-            />
-          </div>
           <label className="cusheadermob">
-            {this.state.mobileHeading === "Task"
-              ? "Campaign"
+            <img
+              id="chatBackIcon"
+              src={WhiteIcon}
+              alt="back"
+              style={{
+                display: "none",
+                width: "26px",
+                marginRight: "10px",
+                marginBottom: "5px",
+              }}
+              onClick={this.handleOpenChatbotPage.bind(this, true)}
+            />
+            {this.state.ticketIds ? (
+              <img
+                src={BackIcon}
+                alt="back"
+                style={{ width: "15px", marginRight: "10px" }}
+                onClick={this.handleRedireactToTicket.bind(this)}
+              />
+            ) : null}
+            {this.state.ticketIds
+              ? "ID :" + this.state.ticketNo
               : this.state.mobileHeading}
           </label>
-          <div className="header-right-icons">
+          {/* {!this.state.ticketNo ? ( */}
+          <div
+            className="header-right-icons"
+            style={{
+              display:
+                this.state.isMobileView && this.state.ticketNo ? "none" : "",
+            }}
+          >
+            {this.state.isHSMShow ? (
+              <Link
+                to="/store/WebBotLink"
+                onClick={this.handleGetChatCountForMobile.bind(this)}
+              >
+                <div className="position-relative backnotifi">
+                  <img
+                    src={WebBotLink}
+                    alt="WebBotLink"
+                    className="webbotImg"
+                  />
+                </div>
+              </Link>
+            ) : null}
+
+            <a
+              href="#!"
+              style={{
+                display: this.state.notificationAccess,
+              }}
+            >
+              <div
+                className="position-relative backnotifi"
+                onClick={this.handleNotificationModalOpen.bind(this)}
+              >
+                <img
+                  src={NotificationLogo}
+                  alt="logo"
+                  className="notifi"
+                  style={{ width: "15px" }}
+                />
+                <span style={{ display: "none" }} className="icon-fullname">
+                  Notifications
+                </span>
+
+                <span className="upper-noti-count">
+                  {this.state.notificationCount}
+                </span>
+
+                <span style={{ display: "none" }} className="icon-fullname">
+                  Notifications
+                </span>
+              </div>
+            </a>
+            {/* -------------------------Mobile chat notification ---------------*/}
+            {this.state.isMobileView ? (
+              <Link
+                to={{
+                  pathname: "notification",
+                  state: {
+                    programCode: this.state.programCode,
+                    storeCode: this.state.storeCode,
+                    tenantID: this.state.tenantID,
+                    AgentID: this.state.AgentID,
+                    UserName: this.state.UserName,
+                  },
+                  handleUpdateChatMessageNotificationCount: this.handleUpdateChatMessageCount.bind(
+                    this
+                  ),
+                }}
+              >
+                <div
+                  className="position-relative backnotifi"
+                  id="MobileChatNotifiCount"
+                  onClick={this.handleGetChatCountForMobile.bind(this)}
+                >
+                  <img
+                    src={NotificationLogo}
+                    alt="logoMobile"
+                    className="notifi"
+                    style={{ width: "15px" }}
+                  />
+                  <span style={{ display: "none" }} className="icon-fullname">
+                    Notifications
+                  </span>
+
+                  <span
+                    className="upper-noti-count"
+                    id="chatNotificationMomCount"
+                  >
+                    {/* {this.state.chatNotificationMomCount} */}0
+                  </span>
+
+                  <span style={{ display: "none" }} className="icon-fullname">
+                    Notifications
+                  </span>
+                </div>
+              </Link>
+            ) : null}
             <a
               id="chatwindow"
-              onClick={this.handleChatModalOpen.bind(this)}
+              onClick={this.handleOpenChatbotPage.bind(this, false)}
               style={{ display: this.state.chatAccess }}
             >
-              <div className="position-relative">
-                <img src={ChatLogow} alt="logo" className="chatImg" />
+              <div className="position-relative backnotifi">
+                {this.state.isMobileView ? (
+                  <img
+                    src={MobileChatIcon}
+                    alt="logo"
+                    className="chatImg mobic"
+                  />
+                ) : (
+                  <img src={ChatLogow} alt="logo" className="chatImg" />
+                )}
                 <img
                   src={ChatLogoBlue}
                   alt="logo"
                   className="chatImg"
                   style={{ display: "none" }}
                 />
-                <span className="message-icon-cnt">
-                  {this.state.chatMessageCount}
+                <span id="chatMessageCountMobile" className="message-icon-cnt">
+                  {/* {this.state.chatMessageCount} */}
                 </span>
               </div>
             </a>
+            <a>
+              <img src={SearchWh} alt="logo" className="searchIcon" />
+            </a>
+            {!this.state.isMobileView ? (
+              <a
+                href="#!"
+                className="bitmap5 useric"
+                onClick={this.onOpenModal}
+              >
+                {this.state.UserName.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()}
+              </a>
+            ) : (
+              <img
+                className="bitmap5 useric"
+                src={this.state.mobileprofilePic}
+                onClick={this.onOpenModal}
+                alt={this.state.UserName.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()}
+              />
+            )}
             <a className="verticaldots">
               <img src={Dots} alt="Dots" className="" />
             </a>
           </div>
+          {/* ) : null} */}
         </div>
         <Modal
           open={this.state.open}
@@ -3537,7 +4356,10 @@ class Header extends Component {
                   <p style={{ fontSize: "16px", fontWeight: "600" }}>
                     {this.state.UserName}
                     &nbsp;
-                    <Link to="userprofile">
+                    <Link
+                      to="userprofile"
+                      onClick={this.handleGetChatCountForMobile.bind(this)}
+                    >
                       <img
                         src={PencilImg}
                         alt="Pencile"
@@ -3552,7 +4374,7 @@ class Header extends Component {
                 </div>
                 <button
                   type="button"
-                  className="logout"
+                  className="logout logi"
                   onClick={this.handleLogoutMethod.bind(this)}
                 >
                   {TranslationContext !== undefined
@@ -3569,7 +4391,7 @@ class Header extends Component {
                 <p className="logout-label chat-status">
                   {TranslationContext !== undefined
                     ? TranslationContext.p.chatstatus
-                    : "CHAT STATUS"}{" "}
+                    : "CHAT STATUS"}
                   :
                 </p>
               </div>
@@ -3638,7 +4460,20 @@ class Header extends Component {
                 {this.state.workTimeHours}
               </p>
             </div>
-            <div>
+
+            <div className="butnlog">
+              <button
+                type="button"
+                className="logout logi1"
+                onClick={this.handleLogoutMethod.bind(this)}
+              >
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.logout
+                  : "LOGOUT"}
+              </button>
+            </div>
+
+            {/* <div className="logi">
               <div>
                 <p className="logout-label">
                   {TranslationContext !== undefined
@@ -3655,7 +4490,7 @@ class Header extends Component {
                 </p>
                 <p className="font-weight-bold">{this.state.AvgResponse}</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </Modal>
         {/*----------------- notification modal-------------- */}
@@ -3663,9 +4498,20 @@ class Header extends Component {
           onClose={this.handleNotificationModalClose.bind(this)}
           open={this.state.notificationModal}
           modalId="Notification-popup"
+          classNames={{ modal: "notifimobilemodal" }}
           overlayId="logout-ovrly"
         >
           <div className="notifi-container">
+            <div className="mobnotiheader">
+              <label>Notification</label>
+              <img
+                src={CancelIcon}
+                alt="cancel-icone"
+                className="cust-icon"
+                onClick={this.handleNotificationModalClose.bind(this)}
+                style={{ marginTop: "10px" }}
+              />
+            </div>
             {this.state.notificationCount === 0 ? (
               <span>No Notification Found</span>
             ) : (
@@ -3678,12 +4524,14 @@ class Header extends Component {
                         {item.notificationCount}
                       </label>
                     </div>
-                    <div className="md-6 new-tickets-assigned tic-noti">
+                    <div className="col-10 md-6 new-tickets-assigned tic-noti">
                       <label>
-                        <span>{item.notificationName}</span>
+                        <span style={{ whiteSpace: "nowrap" }}>
+                          {item.notificationName}
+                        </span>
                       </label>
                     </div>
-                    <div className="viewticketspeadding">
+                    <div className="col-12 viewticketspeadding">
                       <Popover
                         content={
                           <div className="notification-popover">
@@ -3707,6 +4555,20 @@ class Header extends Component {
                                             this,
                                             data.notificatonTypeID,
                                             data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    ) : data.notificatonTypeName ===
+                                      "Campaign" ? (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handlealertMessageModalOpen.bind(
+                                            this,
+                                            data.notificatonTypeID
                                           )}
                                         >
                                           {" " + data.notificatonTypeID}
@@ -3746,7 +4608,7 @@ class Header extends Component {
                         <div
                           className={
                             item.alertID !== ""
-                              ? "md-4 view-tickets"
+                              ? "col-12 md-4 view-tickets"
                               : "text-disabled"
                           }
                         >
@@ -3826,7 +4688,9 @@ class Header extends Component {
                       <li key={item.data}>
                         <Link
                           onClick={this.actives}
-                          to={item.urls}
+                          to={{
+                            pathname: item.urls,
+                          }}
                           className={item.activeClass}
                         >
                           <span className="header-icons-cntr mr-0">
@@ -3851,7 +4715,7 @@ class Header extends Component {
             </div>
             <div className="logoutbox">
               <ul>
-                <li>
+                <li onClick={this.handleLogoutMethod.bind(this)}>
                   <img src={Logout} alt="Logout" />
                   {TranslationContext !== undefined
                     ? TranslationContext.span.logout
@@ -3862,5045 +4726,10 @@ class Header extends Component {
           </div>
         </Drawer>
         {/*----------------- chat modal-------------- */}
-        <Modal
-          onClose={this.handleChatModalClose.bind(this)}
-          open={this.state.chatModal}
-          modalId="chat-popup"
-          overlayId="chat-popup-overlay"
-        >
-          <div className="store-chat-header">
-            {this.state.isMainLoader && this.state.isMobileView ? (
-              <div className="loader"></div>
-            ) : null}
-            <img src={Chatw} className="Chatw" alt="Chatw" />
-            <h3
-              style={{
-                marginRight: this.state.isMainLoader
-                  ? "15px"
-                  : this.state.isMobileView
-                  ? "54%"
-                  : "88%",
-              }}
-            >
-              {TranslationContext !== undefined
-                ? TranslationContext.h3.storechatwindow
-                : "Store chat"}
-            </h3>
-            {this.state.isMainLoader && !this.state.isMobileView ? (
-              <div className="loader"></div>
-            ) : null}
-            <span className="rounded-cross" onClick={this.handleChatModalClose}>
-              &times;
-            </span>
-            {this.state.isMobileView ? (
-              <img
-                src={CancelIconW}
-                className="Cancelicow"
-                alt="Cancelicow"
-                onClick={this.handleChatModalClose}
-              />
-            ) : null}
-            {(this.state.isMobileView && this.state.customerName) ||
-            this.state.isHistoricalChat ? (
-              <img
-                src={BackArw}
-                className="BackArw"
-                alt="BackArw"
-                onClick={this.handleBackButton.bind(this)}
-              />
-            ) : null}
-          </div>
-          <div className="container-fluid">
-            <div className="row">
-              <div
-                className={
-                  this.state.isMobileView &&
-                  !this.state.customerName &&
-                  !this.state.isHistoricalChat
-                    ? "firstbox firstbox-show"
-                    : this.state.isMobileView && this.state.isHistoricalChat
-                    ? "firstbox firstbox-hide"
-                    : this.state.onHoverName
-                    ? "firstbox firstbox-hide"
-                    : "firstbox firstbox-hide firstbox-full"
-                }
-              >
-                <div
-                  className="chatbot-left"
-                  style={{ backgroundColor: "#ECF2F4" }}
-                >
-                  <div
-                    className="chat-cntr"
-                    style={{
-                      padding: "0px",
-                      backgroundColor: "#FFFEF7",
-                    }}
-                  >
-                    <span className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span">
-                      {this.state.searchChat === "" ? (
-                        <img
-                          src={SearchBlueImg}
-                          alt="SearchBlueImg"
-                          className="srch-imge"
-                        />
-                      ) : (
-                        <img
-                          src={CancelBlueImg}
-                          alt="SearchBlueImg"
-                          className="srch-imge"
-                          style={{ width: "35%" }}
-                          onClick={this.handleClearChatSearch.bind(this)}
-                        />
-                      )}
-                    </span>
-                    <input
-                      type="text"
-                      style={{ padding: "0px" }}
-                      className="search-customerChatSrch"
-                      placeholder={
-                        TranslationContext !== undefined
-                          ? TranslationContext.placeholder.search
-                          : "Search Chat by Customer Name"
-                      }
-                      name="Search"
-                      maxLength="100"
-                      autoComplete="off"
-                      value={this.state.searchChat}
-                      onChange={this.handleGetOngoingChat.bind(this)}
-                    />
-                  </div>
-                  <div
-                    className="chat-cntr"
-                    style={{ backgroundColor: "#FFFEF7" }}
-                  >
-                    <p className="chats-heading d-flex justify-content-between align-items-center">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.p.newchats
-                        : "New Chats"}{" "}
-                      (
-                      {this.state.newChatsData.length < 9
-                        ? "0" + this.state.newChatsData.length
-                        : this.state.newChatsData.length}
-                      )
-                    </p>
-                    <div className="chat-left-height">
-                      {this.state.newChatsData &&
-                        this.state.newChatsData.map((chat, i) => (
-                          <div
-                            key={i}
-                            className={
-                              this.state.chatId === chat.chatID
-                                ? "chat-info active"
-                                : "chat-info"
-                            }
-                            onClick={this.handleUpdateCustomerChatStatus.bind(
-                              this,
-                              chat.chatID,
-                              chat.storeManagerId,
-                              chat.storeID,
-                              chat.cumtomerName,
-                              chat.mobileNo,
-                              chat.customerID,
-                              chat.programCode
-                            )}
-                          >
-                            <div className="d-flex align-items-center overflow-hidden">
-                              <span
-                                className="initial"
-                                style={{
-                                  backgroundColor: chat.initialColor,
-                                }}
-                              >
-                                {chat.cumtomerName.charAt(0)}
-                              </span>
-                              <div className="name-num mx-2">
-                                <p className="chat-name">{chat.cumtomerName}</p>
-                                <p className="num">{chat.mobileNo}</p>
-                              </div>
-                            </div>
-                            <div>
-                              <div className="mess-time">
-                                {!this.state.onHoverName ? (
-                                  <p
-                                    style={{
-                                      fontWeight:
-                                        chat.messageCount > 0 ? "bold" : "400",
-                                    }}
-                                  >
-                                    {chat.messageCount === 0 ? (
-                                      "No"
-                                    ) : (
-                                      <span className="messagecount">
-                                        {chat.messageCount}
-                                      </span>
-                                    )}{" "}
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.p.newmessages
-                                      : "New Messages"}
-                                  </p>
-                                ) : null}
-                                <p>{chat.timeAgo}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-
-                  <div
-                    className="chat-cntr oc-bg"
-                    style={{ backgroundColor: "#ECF2F4" }}
-                  >
-                    <div className="chats-heading d-flex justify-content-between align-items-center">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.p.ongoingchats
-                        : "Ongoing Chats"}
-                      (
-                      {this.state.ongoingChatsData.length < 9
-                        ? "0" + this.state.ongoingChatsData.length
-                        : this.state.ongoingChatsData.length}
-                      )
-                      {!this.state.onHoverName ? (
-                        <Select
-                          className="agentchatdrop-down"
-                          showArrow={true}
-                          value={this.state.sAgentId}
-                          onChange={this.handleChangeAgentDropdown.bind(this)}
-                        >
-                          <Option value={0}>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.option.allstoremember
-                              : "Agent ALL"}
-                          </Option>
-                          {this.state.agentData !== null &&
-                            this.state.agentData.map((item, i) => {
-                              return (
-                                <Option
-                                  key={i}
-                                  value={Number(item.storeManagerID)}
-                                >
-                                  {item.agentName}
-                                </Option>
-                              );
-                            })}
-                        </Select>
-                      ) : null}
-                    </div>
-                    <div className="chat-left-height">
-                      {this.state.ongoingChatsData
-                        ? this.state.ongoingChatsData.map((chat, i) => (
-                            <div
-                              id={chat.chatID}
-                              key={i}
-                              className={
-                                this.state.chatId === chat.chatID
-                                  ? "chat-info active"
-                                  : "chat-info"
-                              }
-                              onClick={this.handleOngoingChatClick.bind(
-                                this,
-                                chat.chatID,
-                                chat.cumtomerName,
-                                chat.messageCount,
-                                chat.mobileNo,
-                                chat.customerID,
-                                chat.programCode,
-                                chat.storeID,
-                                chat.isCustEndChat,
-                                chat.storeManagerId,
-                                chat.initialColor
-                              )}
-                            >
-                              <div className="d-flex align-items-center overflow-hidden">
-                                <div className="chat-initial-brd">
-                                  <span
-                                    className="initial"
-                                    style={{
-                                      backgroundColor: chat.initialColor,
-                                    }}
-                                  >
-                                    {chat.cumtomerName.charAt(0)}
-                                  </span>
-                                </div>
-                                <div className="name-num mx-2">
-                                  <p className="chat-name">
-                                    {chat.cumtomerName}
-                                  </p>
-                                  <p className="num">{chat.mobileNo}</p>
-                                </div>
-                              </div>
-                              <div>
-                                <div className="mess-time">
-                                  <p>{chat.timeAgo}</p>
-                                  {!this.state.onHoverName ? (
-                                    <p
-                                      className={"chat-storemng "}
-                                      title="Store Manager"
-                                    >
-                                      {chat.storeManagerName}
-                                    </p>
-                                  ) : null}
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                        : null}
-                    </div>
-                  </div>
-
-                  <div
-                    className="chat-hist"
-                    style={{ backgroundColor: "#ECF2F4" }}
-                  >
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        data-toggle="tab"
-                        href="#my-historical-chat"
-                        role="tab"
-                        aria-controls="my-historical-chat"
-                        aria-selected="false"
-                        onClick={this.handleHistTabClick.bind(this)}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.a.myhistoricalchat
-                          : "MY HISTORICAL CHAT"}
-                      </a>
-                    </li>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={
-                  this.state.onHoverName
-                    ? "secondbox"
-                    : this.state.customerName &&
-                      (this.state.isCustomerProduct ||
-                        this.state.isCustomerProfile)
-                    ? "secondbox secondbox-open"
-                    : (this.state.isMobileView && this.state.customerName) ||
-                      (this.state.isMobileView && this.state.isHistoricalChat)
-                    ? "secondbox secondbox-open-new-show"
-                    : "secondbox-open-new secondbox-open-new-hide"
-                }
-              >
-                <div className="chatbot-right">
-                  {this.state.isHistoricalChat !== true ? (
-                    <div className="row" style={{ margin: "0" }}>
-                      <div
-                        className="chatdivtitle"
-                        style={{ padding: "5px", height: "" }}
-                      >
-                        <ul
-                          className="nav nav-tabs"
-                          role="tablist"
-                          style={{
-                            width: "50%",
-                            display: "inline-block",
-                            border: "none",
-                          }}
-                        >
-                          {this.state.customerName ? (
-                            <>
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.mainTabSelect === 1
-                                      ? "nav-link active chatupperbtn"
-                                      : "nav-link chatupperbtn"
-                                  }
-                                  data-toggle="tab"
-                                  href="#current-chat"
-                                  role="tab"
-                                  aria-controls="current-chat"
-                                  aria-selected="true"
-                                  onClick={this.handleMainTabChange.bind(
-                                    this,
-                                    1
-                                  )}
-                                >
-                                  {/* Current Chat */}
-                                  {this.state.customerName}
-                                </a>
-                              </li>
-
-                              <li className="nav-item">
-                                <a
-                                  className={
-                                    this.state.mainTabSelect === 2
-                                      ? "nav-link active chatupperbtn"
-                                      : "nav-link chatupperbtn"
-                                  }
-                                  data-toggle="tab"
-                                  href="#recent-chat"
-                                  role="tab"
-                                  aria-controls="recent-chat"
-                                  aria-selected="true"
-                                  onClick={this.handleMainTabChange.bind(
-                                    this,
-                                    2
-                                  )}
-                                >
-                                  {this.state.agentRecentChatData.length < 9
-                                    ? TranslationContext !== undefined
-                                      ? TranslationContext.label.pastchat0 +
-                                        this.state.agentRecentChatData.length +
-                                        ")"
-                                      : "Past Chat(0" +
-                                        this.state.agentRecentChatData.length +
-                                        ")"
-                                    : TranslationContext !== undefined
-                                    ? TranslationContext.label.pastchat +
-                                      this.state.agentRecentChatData.length +
-                                      ")"
-                                    : "Past Chat(" +
-                                      this.state.agentRecentChatData.length +
-                                      ")"}
-                                </a>
-                              </li>
-                            </>
-                          ) : null}
-                        </ul>
-                        {this.state.customerName !== "" ? (
-                          <button
-                            type="button"
-                            className="chatactionbtn"
-                            onClick={this.handleActionOpen.bind(this)}
-                          >
-                            <label className="myticket-submit-solve-button-text">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.action
-                                : "Action"}
-                            </label>
-                            <img
-                              src={DownArw}
-                              alt="down-icon"
-                              className="down-white"
-                            />
-                          </button>
-                        ) : null}
-                      </div>
-                      <div
-                        className="tab-content chattabtitle"
-                        style={{
-                          backgroundColor: "#f5f5f5",
-                          marginTop:
-                            this.state.isCustomerProduct === false &&
-                            this.state.isCustomerProfile === false
-                              ? "0"
-                              : "",
-                        }}
-                      >
-                        <div
-                          className={
-                            this.state.mainTabSelect === 1
-                              ? "tab-pane fade show active"
-                              : "tab-pane fade"
-                          }
-                          id="current-chat"
-                          role="tabpanel"
-                          aria-labelledby="current-chat"
-                        >
-                          {this.state.isDownbtn ? (
-                            <div
-                              className="chatcontentRow"
-                              style={{
-                                height:
-                                  !this.state.isMessageTabActive &&
-                                  !this.state.isCardTabActive &&
-                                  !this.state.isRecommendedTabActive &&
-                                  !this.state.isSchedualTabActive &&
-                                  !this.state.isGeneratePaymentTabActive
-                                    ? "80%"
-                                    : "",
-                              }}
-                            >
-                              <div
-                                className="chatcontentDiv"
-                                ref={(div) => {
-                                  this.messageList = div;
-                                }}
-                              >
-                                {this.state.messageData !== null
-                                  ? this.state.messageData.map((item, i) => {
-                                      return (
-                                        <div
-                                          key={i}
-                                          className={
-                                            item.byCustomer === true &&
-                                            item.isBotReply !== true
-                                              ? "chat-trail-cntr"
-                                              : "chat-trail-cntr chat-trail-cntr-right"
-                                          }
-                                        >
-                                          <div className="chat-trail-img">
-                                            <span
-                                              className="chat-initial"
-                                              alt="face image"
-                                              title={
-                                                item.byCustomer
-                                                  ? item.customerName
-                                                  : this.state.UserName
-                                              }
-                                            >
-                                              {item.byCustomer
-                                                ? item.customerName
-                                                    .split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()
-                                                : this.state.UserName.split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()}
-                                            </span>
-                                          </div>
-                                          <div className="chat-trail-chat-cntr">
-                                            {item.isBotReply && (
-                                              <p className="bot-mark">
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.p.bot
-                                                  : "BOT"}
-                                              </p>
-                                            )}
-                                            <div className="chat-trail-chat pd-0">
-                                              {ReactHtmlParser(
-                                                item.message
-                                                  .replace(
-                                                    "col-md-2",
-                                                    "col-md-4"
-                                                  )
-                                                  .replace(
-                                                    "col-md-10",
-                                                    "col-md-8"
-                                                  )
-                                              )}
-                                            </div>
-                                            <span className="chat-trail-time">
-                                              {item.chatDate + " "}
-                                              {item.chatTime}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      );
-                                    })
-                                  : null}
-                              </div>
-                              {this.state.isCustEndChat &&
-                              this.state.customerName !== "" ? (
-                                <label className="endchatlbl">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.label
-                                        .customerhasendchat
-                                    : "Customer has ended the conversation"}
-                                </label>
-                              ) : null}
-                            </div>
-                          ) : null}
-                          {this.state.isMessageTabActive ||
-                          this.state.isCardTabActive ||
-                          this.state.isRecommendedTabActive ||
-                          this.state.isSchedualTabActive ||
-                          this.state.isGeneratePaymentTabActive ? (
-                            <div
-                              className="chatcontentdivtab chat-tabs-desktop"
-                              style={{
-                                maxHeight: !this.state.isDownbtn ? "531px" : "",
-                                pointerEvents:
-                                  this.state.isCustEndChat === true
-                                    ? "none"
-                                    : "all",
-                              }}
-                            >
-                              {this.state.customerName !== "" ? (
-                                <ul className="nav nav-tabs" role="tablist">
-                                  {this.state.isMessageTabActive ? (
-                                    <li className="nav-item">
-                                      <a
-                                        className={
-                                          this.state.activeTab === 1 &&
-                                          this.state.isMessageTabActive
-                                            ? "nav-link active"
-                                            : "nav-link"
-                                        }
-                                        data-toggle="tab"
-                                        href="#message-tab"
-                                        role="tab"
-                                        aria-controls="message-tab"
-                                        aria-selected="true"
-                                        onClick={this.handleTabClick.bind(
-                                          this,
-                                          1
-                                        )}
-                                        id="one"
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.a.message
-                                          : "MESSAGE"}
-                                      </a>
-                                    </li>
-                                  ) : null}
-                                  {this.state.isCardTabActive ? (
-                                    <li className="nav-item">
-                                      <a
-                                        className={
-                                          this.state.activeTab === 2
-                                            ? "nav-link active"
-                                            : "nav-link"
-                                        }
-                                        data-toggle="tab"
-                                        href="#card-tab"
-                                        role="tab"
-                                        aria-controls="card-tab"
-                                        aria-selected="false"
-                                        onClick={this.handleTabClick.bind(
-                                          this,
-                                          2
-                                        )}
-                                        id="two"
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.a.card
-                                          : "CARD"}
-                                      </a>
-                                    </li>
-                                  ) : null}
-                                  {this.state.isRecommendedTabActive ? (
-                                    <li className="nav-item">
-                                      <a
-                                        className={
-                                          this.state.activeTab === 3
-                                            ? "nav-link active"
-                                            : "nav-link"
-                                        }
-                                        data-toggle="tab"
-                                        href="#recommended-list-tab"
-                                        role="tab"
-                                        aria-controls="recommended-list-tab"
-                                        aria-selected="false"
-                                        onClick={this.handleTabClick.bind(
-                                          this,
-                                          3
-                                        )}
-                                        id="three"
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.a.recommendedlist
-                                          : "RECOMMENDED LIST"}
-                                      </a>
-                                    </li>
-                                  ) : null}
-                                  {this.state.isSchedualTabActive ? (
-                                    <li className="nav-item">
-                                      <a
-                                        className={
-                                          this.state.activeTab === 5
-                                            ? "nav-link active"
-                                            : "nav-link"
-                                        }
-                                        data-toggle="tab"
-                                        href="#schedule-visit-tab"
-                                        role="tab"
-                                        aria-controls="schedule-visit-tab"
-                                        aria-selected="false"
-                                        onClick={this.handleTabClick.bind(
-                                          this,
-                                          4
-                                        )}
-                                        id="four"
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.a.schedulevisit
-                                          : "SCHEDULE VISIT"}
-                                      </a>
-                                    </li>
-                                  ) : null}
-                                  {this.state.isGeneratePaymentTabActive ? (
-                                    <li className="nav-item">
-                                      <a
-                                        className={
-                                          this.state.activeTab === 5
-                                            ? "nav-link active"
-                                            : "nav-link"
-                                        }
-                                        data-toggle="tab"
-                                        href="#generate-payment-link-tab"
-                                        role="tab"
-                                        aria-controls="generate-payment-link-tab"
-                                        aria-selected="false"
-                                        onClick={this.handleTabClick.bind(
-                                          this,
-                                          5
-                                        )}
-                                        id="five"
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.a.schedulevisit
-                                          : "GENERATE PAYMENT LINK"}
-                                      </a>
-                                    </li>
-                                  ) : null}
-                                </ul>
-                              ) : null}
-                              <div className="tab-content">
-                                {/* --------Message Tab----- */}
-                                {this.state.isMessageTabActive &&
-                                this.state.customerName ? (
-                                  <div
-                                    className={
-                                      this.state.customerName !== "" &&
-                                      this.state.activeTab === 1
-                                        ? "tab-pane fade active show"
-                                        : "tab-pane fade"
-                                    }
-                                    id="message-tab"
-                                    role="tabpanel"
-                                    aria-labelledby="message-tab"
-                                  >
-                                    <div className="message-div">
-                                      <span className="message-initial">
-                                        {this.state.UserName.charAt(
-                                          0
-                                        ).toUpperCase()}
-                                      </span>
-                                      <textarea
-                                        placeholder="Search to get suggestions..."
-                                        value={this.state.message}
-                                        onChange={this.handleOnChangeCKEditor.bind(
-                                          this
-                                        )}
-                                      ></textarea>
-                                      <p className="cls-charcount">
-                                        {this.state.remainingCount + ""}
-                                        {/* {TranslationContext !== undefined
-                                          ? TranslationContext.p
-                                              .charactersremaining
-                                          :  
-                                          
-                                           }*/}
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label
-                                              .charactersremaining
-                                          : " characters remaining..."}
-                                      </p>
-                                      {this.state.isMessage !== "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.isMessage}
-                                        </p>
-                                      )}
-                                      {this.state.messageSuggestionTagsData !==
-                                      null
-                                        ? this.state.messageSuggestionTagsData.map(
-                                            (item, i) => {
-                                              return (
-                                                <button
-                                                  onClick={this.handleTagsButtonClick.bind(
-                                                    this,
-                                                    item.tagID
-                                                  )}
-                                                  className={
-                                                    this.state.selectedTags ===
-                                                    item.tagID
-                                                      ? "tagsbtn-active"
-                                                      : "tagsbtn"
-                                                  }
-                                                  id={item.tagID}
-                                                >
-                                                  {item.tagName}
-                                                </button>
-                                              );
-                                            }
-                                          )
-                                        : null}
-                                      {this.state.messageSuggestionData !==
-                                        null &&
-                                        this.state.messageSuggestionData
-                                          .length > 0 &&
-                                        this.state.messageSuggestionData
-                                          .length > 0 && (
-                                          <div
-                                            className="suggestions-cntr setpagination"
-                                            style={{ width: "100%" }}
-                                          >
-                                            <Table
-                                              noDataContent="No Record Found"
-                                              style={{ width: "100%" }}
-                                              className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
-                                              columns={[
-                                                {
-                                                  dataIndex: "suggestionText",
-                                                  render: (row, rowData) => {
-                                                    i = i + 1;
-                                                    return (
-                                                      <div
-                                                        className={
-                                                          this.state
-                                                            .chkSuggestion ===
-                                                          rowData.suggestionID
-                                                            ? "suggestions-tick"
-                                                            : ""
-                                                        }
-                                                        style={{
-                                                          width: "100%",
-                                                        }}
-                                                        id={i}
-                                                        onClick={this.onOpenMobSuggestionModal.bind(
-                                                          this,
-                                                          rowData.suggestionText,
-                                                          rowData.suggestionID
-                                                        )}
-                                                      >
-                                                        <Tooltip
-                                                          placement="left"
-                                                          title={
-                                                            rowData.suggestionText
-                                                          }
-                                                        >
-                                                          <span>
-                                                            {
-                                                              rowData.suggestionText
-                                                            }
-                                                          </span>
-                                                        </Tooltip>
-                                                      </div>
-                                                    );
-                                                  },
-                                                },
-                                              ]}
-                                              dataSource={this.state.messageSuggestionData.filter(
-                                                (x) =>
-                                                  x.tagID ==
-                                                  this.state.selectedTags
-                                              )}
-                                              pagination={{
-                                                pageSize: 10,
-                                                defaultPageSize: 10,
-                                              }}
-                                            ></Table>
-                                          </div>
-                                        )}
-
-                                      {this.state.storeAgentDetail.length !==
-                                        0 &&
-                                      this.state.storeAgentDetail[0]
-                                        .suggestion === 1 ? (
-                                        <div
-                                          className="mobile-ck-send"
-                                          onClick={this.handleMessageSuggestion.bind(
-                                            this
-                                          )}
-                                          title={"Search"}
-                                        >
-                                          <img
-                                            src={SuggSearch}
-                                            alt="send img"
-                                          />
-                                        </div>
-                                      ) : null}
-                                      {this.state.storeAgentDetail.length !==
-                                        0 &&
-                                      this.state.storeAgentDetail[0]
-                                        .freeText === 1 ? (
-                                        <div
-                                          className="mobile-ck-send-btn"
-                                          onClick={this.handleSaveChatMessages.bind(
-                                            this,
-                                            this.state.message,
-                                            0,
-                                            "",
-                                            ""
-                                          )}
-                                          title={"Send"}
-                                        >
-                                          <img src={Assign} alt="send img" />
-                                        </div>
-                                      ) : null}
-                                    </div>
-                                  </div>
-                                ) : null}
-                                {/* --------Card Tab----- */}
-                                {this.state.isCardTabActive &&
-                                this.state.customerName ? (
-                                  <div
-                                    className={
-                                      this.state.activeTab === 2
-                                        ? "tab-pane fade active show"
-                                        : "tab-pane fade"
-                                    }
-                                    id="card-tab"
-                                    role="tabpanel"
-                                    aria-labelledby="card-tab"
-                                  >
-                                    <div>
-                                      <div
-                                        className="input-group searchtxt-new"
-                                        style={{ background: "none" }}
-                                      >
-                                        <input
-                                          type="text"
-                                          className="search-customerAddSrch searchtxt"
-                                          placeholder={
-                                            TranslationContext !== undefined
-                                              ? TranslationContext.placeholder
-                                                  .searchitemidarticleskuid
-                                              : "Search ItemId/artcile/SKU ID"
-                                          }
-                                          name="Search"
-                                          maxLength="100"
-                                          autoComplete="off"
-                                          value={this.state.searchItem}
-                                          onChange={this.handleSearchItemChange.bind(
-                                            this
-                                          )}
-                                          onKeyPress={this.enterPressed.bind(
-                                            this
-                                          )}
-                                        />
-                                        <span
-                                          onClick={this.handleSearchChatItemDetails.bind(
-                                            this
-                                          )}
-                                          className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                        >
-                                          <img
-                                            src={SearchBlueImg}
-                                            alt="SearchBlueImg"
-                                            className="srch-imge"
-                                          />
-                                        </span>
-                                        {this.state.searchCardData.length ===
-                                          0 && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.noProductFound}
-                                          </p>
-                                        )}
-                                      </div>
-                                    </div>
-                                    <div className="container p-0">
-                                      <div
-                                        className="row product-card"
-                                        style={{
-                                          height: !this.state.isDownbtn
-                                            ? "100%"
-                                            : "",
-                                          maxHeight: !this.state.isDownbtn
-                                            ? "600px"
-                                            : "",
-                                        }}
-                                      >
-                                        {this.state.searchCardData !== null
-                                          ? this.state.searchCardData.map(
-                                              (item, i) => {
-                                                return (
-                                                  <div
-                                                    className="col-md-6"
-                                                    key={i}
-                                                  >
-                                                    {item.itemID ===
-                                                    this.state.selectedCard ? (
-                                                      <div className="selectdot">
-                                                        <img
-                                                          src={CardTick}
-                                                          alt={"select-card"}
-                                                        />
-                                                      </div>
-                                                    ) : null}
-                                                    <div
-                                                      className="card"
-                                                      id={"card" + item.itemID}
-                                                    >
-                                                      <div className="card-body position-relative">
-                                                        <div
-                                                          className="row"
-                                                          style={{
-                                                            margin: "0",
-                                                          }}
-                                                        >
-                                                          <div
-                                                            className="col-md-4 mb-md-0 mb-2"
-                                                            style={{
-                                                              alignSelf:
-                                                                "center",
-                                                            }}
-                                                          >
-                                                            {item.imageURL !==
-                                                            "" ? (
-                                                              <img
-                                                                className="chat-product-img"
-                                                                src={
-                                                                  item.imageURL
-                                                                }
-                                                                alt="Product Image"
-                                                                title={
-                                                                  item.productName
-                                                                }
-                                                              />
-                                                            ) : (
-                                                              <Dropzone
-                                                                maxSize={
-                                                                  5242880
-                                                                }
-                                                                accept="image/jpeg, image/png,image/jpg"
-                                                                onDrop={this.handleInsertCardImageUpload.bind(
-                                                                  this,
-                                                                  item.uniqueItemCode
-                                                                )}
-                                                              >
-                                                                {({
-                                                                  getRootProps,
-                                                                  getInputProps,
-                                                                }) => (
-                                                                  <div
-                                                                    {...getRootProps()}
-                                                                  >
-                                                                    <input
-                                                                      {...getInputProps()}
-                                                                      className="file-upload d-none"
-                                                                    />
-                                                                    <span className="addimg">
-                                                                      <input
-                                                                        type="image"
-                                                                        alt="Add Image"
-                                                                        src={
-                                                                          addimg
-                                                                        }
-                                                                      />
-                                                                    </span>
-                                                                  </div>
-                                                                )}
-                                                              </Dropzone>
-                                                            )}
-                                                          </div>
-                                                          <div
-                                                            className="col-md-8 bkcprdt"
-                                                            onClick={this.handleSelectCard.bind(
-                                                              this,
-                                                              item.itemID,
-                                                              item.imageURL
-                                                            )}
-                                                          >
-                                                            {item.productName ? (
-                                                              <div>
-                                                                <label className="chat-product-name">
-                                                                  {
-                                                                    item.productName
-                                                                  }
-                                                                </label>
-                                                              </div>
-                                                            ) : null}
-                                                            <div>
-                                                              {item.brandName !==
-                                                                "" &&
-                                                              item.brandName !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .brand
-                                                                    : "Brand"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.brandName}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.categoryName !==
-                                                                "" &&
-                                                              item.categoryName !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .category
-                                                                    : "Category"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.categoryName}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.subCategoryName !==
-                                                                "" &&
-                                                              item.subCategoryName !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .subcategory
-                                                                    : "SubCategory"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.subCategoryName}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.color !==
-                                                                "" &&
-                                                              item.color !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .color
-                                                                    : "Color"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.color}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.size !==
-                                                                "" &&
-                                                              item.size !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .color
-                                                                    : "Size"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.size}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.uniqueItemCode !==
-                                                                "" &&
-                                                              item.uniqueItemCode !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .itemcode
-                                                                    : "Item Code"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.uniqueItemCode}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.discount !==
-                                                                "" &&
-                                                              parseFloat(
-                                                                item.discount
-                                                              ) !== 0 &&
-                                                              item.discount !==
-                                                                null ? (
-                                                                <label className="chat-product-code">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .discount
-                                                                    : "Discount"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.discount}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            <div>
-                                                              {item.price !==
-                                                                "" &&
-                                                              parseFloat(
-                                                                item.price
-                                                              ) !== 0 &&
-                                                              item.price !==
-                                                                null ? (
-                                                                <label className="chat-product-prize">
-                                                                  {TranslationContext !==
-                                                                  undefined
-                                                                    ? TranslationContext
-                                                                        .label
-                                                                        .price
-                                                                    : "Price"}{" "}
-                                                                  :
-                                                                  {" " +
-                                                                    item.price}
-                                                                </label>
-                                                              ) : null}
-                                                            </div>
-                                                            {item.url !==
-                                                              null &&
-                                                            item.url !== "" ? (
-                                                              <div>
-                                                                <a
-                                                                  href={
-                                                                    item.url
-                                                                  }
-                                                                  target="_blank"
-                                                                  className="chat-product-url"
-                                                                >
-                                                                  {item.url}
-                                                                </a>
-                                                              </div>
-                                                            ) : (
-                                                              ""
-                                                            )}
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                );
-                                              }
-                                            )
-                                          : null}
-                                      </div>
-                                      {this.state.searchCardData.length > 0 ? (
-                                        <div className="row m-0">
-                                          <button
-                                            style={{ cursor: "pointer" }}
-                                            className="storeUpbtn"
-                                            onClick={this.handleDownButtonClick.bind(
-                                              this
-                                            )}
-                                          >
-                                            {this.state.isDownbtn ? (
-                                              <img
-                                                src={DownBlue}
-                                                alt="down-arrow"
-                                              />
-                                            ) : (
-                                              <img
-                                                src={UpBlue}
-                                                alt="up-arrow"
-                                              />
-                                            )}
-                                          </button>
-                                          <button
-                                            className="butn"
-                                            onClick={this.handleSendCard.bind(
-                                              this
-                                            )}
-                                          >
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.button.send
-                                              : "Send"}
-                                            <img
-                                              src={SendUp}
-                                              alt="send"
-                                              className="send-up float-none"
-                                            />
-                                            {this.state.isSendRecomended ? (
-                                              <FontAwesomeIcon
-                                                icon={faCircleNotch}
-                                                className="circular-loader ml-2"
-                                                spin
-                                              />
-                                            ) : (
-                                              ""
-                                            )}
-                                          </button>
-                                        </div>
-                                      ) : null}
-                                    </div>
-                                  </div>
-                                ) : null}
-                                {/* --------Recommended List Tab----- */}
-                                {this.state.isRecommendedTabActive &&
-                                this.state.customerName ? (
-                                  <div
-                                    className={
-                                      this.state.activeTab === 3
-                                        ? "tab-pane fade active show"
-                                        : "tab-pane fade"
-                                    }
-                                    id="recommended-list-tab"
-                                    role="tabpanel"
-                                    aria-labelledby="recommended-list-tab"
-                                  >
-                                    <div className="recommended-cntr">
-                                      <button
-                                        disabled={this.state.isSendRecomended}
-                                        className="butn"
-                                        onClick={this.handleSendRecommendedList.bind(
-                                          this
-                                        )}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.button
-                                              .sendrecommendedlist
-                                          : "Send Recommended List"}
-
-                                        <img
-                                          src={SendUp}
-                                          alt="send"
-                                          className="send-up float-none"
-                                        />
-                                        {this.state.isSendRecomended ? (
-                                          <FontAwesomeIcon
-                                            icon={faCircleNotch}
-                                            className="circular-loader ml-2"
-                                            spin
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-                                      </button>
-
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.noRecommendedFound}
-                                      </p>
-                                    </div>
-                                  </div>
-                                ) : null}
-                                {/* --------Schedule Visit Tab----- */}
-                                {this.state.isSchedualTabActive &&
-                                this.state.customerName ? (
-                                  <div
-                                    className={
-                                      this.state.activeTab === 4
-                                        ? "tab-pane fade active show"
-                                        : "tab-pane fade"
-                                    }
-                                    id="schedule-visit-tab"
-                                    role="tabpanel"
-                                    aria-labelledby="schedule-visit-tab"
-                                  >
-                                    {this.state.availableSlot > 0 ? (
-                                      <div className="row">
-                                        <div className="col-md-7 schedule-left-cntr">
-                                          {this.state.timeSlotData !== null
-                                            ? this.state.timeSlotData.map(
-                                                (item, i) => {
-                                                  return item
-                                                    .alreadyScheduleDetails
-                                                    .length > 0 ? (
-                                                    <div key={i}>
-                                                      <label className="s-lable">
-                                                        {item.day}:{item.dates}
-                                                      </label>
-                                                      <div className="schedule-btn-outer-cntr">
-                                                        <div
-                                                          className="selectdot-blue selectdot-blue-left"
-                                                          onClick={this.handleScrollLeft.bind(
-                                                            this,
-                                                            i
-                                                          )}
-                                                        >
-                                                          <img
-                                                            src={SchRight}
-                                                            alt="right arrow"
-                                                          />
-                                                        </div>
-                                                        <div
-                                                          className="schedule-btn-cntr"
-                                                          id={
-                                                            "schedule-btn-cntr" +
-                                                            i
-                                                          }
-                                                        >
-                                                          {item
-                                                            .alreadyScheduleDetails
-                                                            .length > 0 &&
-                                                            item.alreadyScheduleDetails.map(
-                                                              (data, k) => {
-                                                                var selectSlot = false;
-                                                                if (
-                                                                  this.state
-                                                                    .timeSlotData[
-                                                                    i
-                                                                  ]
-                                                                    .alreadyScheduleDetails[
-                                                                    k
-                                                                  ] ===
-                                                                  this.state
-                                                                    .selectedSlot
-                                                                ) {
-                                                                  selectSlot = true;
-                                                                }
-
-                                                                if (
-                                                                  data.maxCapacity ==
-                                                                  data.visitedCount
-                                                                ) {
-                                                                  return (
-                                                                    <Tooltip
-                                                                      placement="left"
-                                                                      title={
-                                                                        data.remaining +
-                                                                        " MORE PEOPLE LEFT"
-                                                                      }
-                                                                    >
-                                                                      <button
-                                                                        key={k}
-                                                                        disabled={
-                                                                          data.isDisabled
-                                                                        }
-                                                                        className="s-red-active"
-                                                                        style={{
-                                                                          cursor:
-                                                                            "no-drop",
-                                                                        }}
-                                                                      >
-                                                                        {
-                                                                          data.timeSlot
-                                                                        }
-                                                                      </button>
-                                                                    </Tooltip>
-                                                                  );
-                                                                }
-                                                                if (
-                                                                  data.visitedCount >=
-                                                                  (1 / 2) *
-                                                                    data.maxCapacity
-                                                                ) {
-                                                                  return (
-                                                                    <Tooltip
-                                                                      placement="left"
-                                                                      title={
-                                                                        data.remaining +
-                                                                        " MORE PEOPLE LEFT"
-                                                                      }
-                                                                    >
-                                                                      <button
-                                                                        key={k}
-                                                                        style={{
-                                                                          cursor: data.isDisabled
-                                                                            ? "no-drop"
-                                                                            : "pointer",
-                                                                        }}
-                                                                        className={
-                                                                          data.isDisabled
-                                                                            ? "s-red-active"
-                                                                            : selectSlot
-                                                                            ? "s-yellow-active"
-                                                                            : "s-yellow-btn"
-                                                                        }
-                                                                        onClick={this.handleSelectSlot.bind(
-                                                                          this,
-                                                                          data,
-                                                                          item.dates,
-                                                                          data.isDisabled
-                                                                        )}
-                                                                      >
-                                                                        {
-                                                                          data.timeSlot
-                                                                        }
-                                                                        {selectSlot ? (
-                                                                          <img
-                                                                            className="s-img-select"
-                                                                            src={
-                                                                              CircleRight
-                                                                            }
-                                                                            alt="circle-right"
-                                                                          />
-                                                                        ) : null}
-                                                                      </button>
-                                                                    </Tooltip>
-                                                                  );
-                                                                }
-                                                                if (
-                                                                  data.visitedCount <
-                                                                  (1 / 2) *
-                                                                    data.maxCapacity
-                                                                ) {
-                                                                  return (
-                                                                    <Tooltip
-                                                                      placement="left"
-                                                                      title={
-                                                                        data.remaining +
-                                                                        " MORE PEOPLE LEFT"
-                                                                      }
-                                                                    >
-                                                                      <button
-                                                                        key={k}
-                                                                        style={{
-                                                                          cursor: data.isDisabled
-                                                                            ? "no-drop"
-                                                                            : "pointer",
-                                                                        }}
-                                                                        className={
-                                                                          data.isDisabled
-                                                                            ? "s-red-active"
-                                                                            : selectSlot
-                                                                            ? "s-green-active"
-                                                                            : "s-green-btn"
-                                                                        }
-                                                                        onClick={this.handleSelectSlot.bind(
-                                                                          this,
-                                                                          data,
-                                                                          item.dates,
-                                                                          data.isDisabled
-                                                                        )}
-                                                                      >
-                                                                        {
-                                                                          data.timeSlot
-                                                                        }
-                                                                        {selectSlot ? (
-                                                                          <img
-                                                                            className="s-img-select"
-                                                                            src={
-                                                                              CircleRight
-                                                                            }
-                                                                            alt="circle-right"
-                                                                          />
-                                                                        ) : null}
-                                                                      </button>
-                                                                    </Tooltip>
-                                                                  );
-                                                                }
-                                                              }
-                                                            )}
-                                                        </div>
-                                                        <div
-                                                          className="selectdot-blue"
-                                                          onClick={this.handleScrollRight.bind(
-                                                            this,
-                                                            i
-                                                          )}
-                                                        >
-                                                          <img
-                                                            src={SchRight}
-                                                            alt="right arrow"
-                                                          />
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  ) : null;
-                                                }
-                                              )
-                                            : null}
-                                        </div>
-                                        <div className="col-md-5">
-                                          <div className="schedule-right-outer-cntr">
-                                            <div className="schedule-right-cntr">
-                                              <div>
-                                                <label className="s-lable">
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.label
-                                                        .selectedslot
-                                                    : "Selected Slot"}
-                                                </label>
-                                                {Object.keys(
-                                                  this.state.selectedSlot
-                                                ).length !== 0 ? (
-                                                  <button
-                                                    className={
-                                                      this.state.selectedSlot
-                                                        .visitedCount <
-                                                      (1 / 2) *
-                                                        this.state.selectedSlot
-                                                          .maxCapacity
-                                                        ? "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                        : this.state
-                                                            .selectedSlot
-                                                            .visitedCount <
-                                                          this.state
-                                                            .selectedSlot
-                                                            .maxCapacity
-                                                        ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                        : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                    }
-                                                  >
-                                                    {
-                                                      this.state.selectedSlot
-                                                        .timeSlot
-                                                    }
-                                                    <img
-                                                      className="s-img-select"
-                                                      src={CircleRight}
-                                                      alt="circle-right"
-                                                    />
-                                                  </button>
-                                                ) : null}
-                                                {this.state.isSelectSlot !==
-                                                  "" && (
-                                                  <p
-                                                    style={{
-                                                      color: "red",
-                                                      marginBottom: "0px",
-                                                    }}
-                                                  >
-                                                    {this.state.isSelectSlot}
-                                                  </p>
-                                                )}
-                                              </div>
-                                              <div>
-                                                <label className="s-lable">
-                                                  No of People
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  value={this.state.noOfPeople}
-                                                  onChange={this.handleNoOfPeopleChange.bind(
-                                                    this
-                                                  )}
-                                                />
-                                                {this.state.noOfPeopleMax !==
-                                                  "" && (
-                                                  <p
-                                                    style={{
-                                                      color: "red",
-                                                      marginBottom: "0px",
-                                                      width: "131px",
-                                                    }}
-                                                  >
-                                                    {this.state.noOfPeopleMax}
-                                                  </p>
-                                                )}
-                                              </div>
-                                            </div>
-                                            <button
-                                              className={
-                                                this.state.isSendClick
-                                                  ? "butn ml-auto mt-4 isSendClick-dsle"
-                                                  : "butn ml-auto mt-4"
-                                              }
-                                              onClick={this.handleScheduleVisit.bind(
-                                                this
-                                              )}
-                                            >
-                                              Send
-                                              <img
-                                                src={SendUp}
-                                                alt="send"
-                                                className="send-up float-none"
-                                              />
-                                              {this.state.isSendRecomended ? (
-                                                <FontAwesomeIcon
-                                                  icon={faCircleNotch}
-                                                  className="circular-loader ml-2"
-                                                  spin
-                                                />
-                                              ) : (
-                                                ""
-                                              )}
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        <span className="slot-span">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.span
-                                                .noslotaddedforthisstore
-                                            : "No slot added for this store"}
-                                        </span>
-                                      </div>
-                                    )}
-                                  </div>
-                                ) : null}
-
-                                {/* --------Generate Payment Link Tab----- */}
-                                {this.state.isGeneratePaymentTabActive &&
-                                this.state.customerName ? (
-                                  <div
-                                    className={
-                                      this.state.activeTab === 5
-                                        ? "tab-pane fade active show"
-                                        : "tab-pane fade"
-                                    }
-                                    id="generate-payment-link-tab"
-                                    role="tabpanel"
-                                    aria-labelledby="generate-payment-link-tab"
-                                  >
-                                    <div
-                                      className="input-group searchtxt-new"
-                                      style={{ background: "none" }}
-                                    >
-                                      <form style={{ width: "100%" }}>
-                                        <input
-                                          type="text"
-                                          className="search-customerAddSrch searchtxt"
-                                          placeholder={
-                                            TranslationContext !== undefined
-                                              ? TranslationContext.placeholder
-                                                  .searchorderid
-                                              : "Search Order Id"
-                                          }
-                                          name="Search"
-                                          maxLength="100"
-                                          autoComplete="off"
-                                        />
-                                        <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
-                                          <img
-                                            src={SearchBlueImg}
-                                            alt="SearchBlueImg"
-                                            className="srch-imge"
-                                          />
-                                        </span>
-                                      </form>
-                                    </div>
-                                    <div className="payment-details">
-                                      <label>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.amount
-                                          : "Amount"}
-                                      </label>
-                                      <span>INR 1299</span>
-                                    </div>
-                                    <div className="payment-link-butn">
-                                      <button className="butn">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.button
-                                              .sendpaymentlink
-                                          : "Send Payment Link"}
-                                        <img
-                                          src={SendUp}
-                                          alt="send"
-                                          className="send-up"
-                                        />
-                                      </button>
-                                    </div>
-                                    <div className="clearfix"></div>
-                                  </div>
-                                ) : null}
-                              </div>
-                            </div>
-                          ) : null}
-                          <div
-                            className="chatcontentdivtab chat-tabs-mobile"
-                            style={{
-                              height: !this.state.isDownbtn ? "80%" : "",
-                              pointerEvents:
-                                this.state.isCustEndChat === true
-                                  ? "none"
-                                  : "all",
-                            }}
-                          >
-                            <ul className="nav nav-tabs" role="tablist">
-                              {this.state.isMessageTabActive ? (
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.activeTab === 1
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#message-tab"
-                                    role="tab"
-                                    aria-controls="message-tab"
-                                    aria-selected="true"
-                                    id="one"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.message
-                                      : "MESSAGE"}
-                                  </a>
-                                </li>
-                              ) : null}
-                              {this.state.isCardTabActive ? (
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.activeTab === 2
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#card-tab"
-                                    role="tab"
-                                    aria-controls="card-tab"
-                                    aria-selected="false"
-                                    onClick={this.onOpenCardModal}
-                                    id="two"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.card
-                                      : "CARD"}
-                                  </a>
-                                </li>
-                              ) : null}
-                              {this.state.isRecommendedTabActive ? (
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.activeTab === 3
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#recommended-list-tab"
-                                    role="tab"
-                                    aria-controls="recommended-list-tab"
-                                    aria-selected="false"
-                                    onClick={this.onOpenRecommendedModal}
-                                    id="three"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.recommendedlist
-                                      : "RECOMMENDED LIST"}
-                                  </a>
-                                </li>
-                              ) : null}
-                              {this.state.isSchedualTabActive ? (
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.activeTab === 4
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#schedule-visit-tab"
-                                    role="tab"
-                                    aria-controls="schedule-visit-tab"
-                                    aria-selected="false"
-                                    onClick={this.onOpenScheduleModal}
-                                    id="four"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.schedulevisit
-                                      : "SCHEDULE VISIT"}
-                                  </a>
-                                </li>
-                              ) : null}
-                              {this.state.isGeneratePaymentTabActive ? (
-                                <li className="nav-item">
-                                  <a
-                                    className={
-                                      this.state.activeTab === 5
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                    data-toggle="tab"
-                                    href="#generate-payment-link-tab"
-                                    role="tab"
-                                    aria-controls="generate-payment-link-tab"
-                                    aria-selected="false"
-                                    onClick={this.onOpenPaymentModal}
-                                    id="five"
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.generatepaymentlink
-                                      : "GENERATE PAYMENT LINK"}
-                                  </a>
-                                </li>
-                              ) : null}
-                            </ul>
-                            <div className="tab-content">
-                              {/* --------Message Tab----- */}
-                              {this.state.isMessageTabActive ? (
-                                <div
-                                  className="tab-pane fade show active"
-                                  id="message-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="message-tab"
-                                >
-                                  <div className="message-div">
-                                    <span className="message-initial">
-                                      {this.state.UserName.charAt(
-                                        0
-                                      ).toUpperCase()}
-                                    </span>
-                                    <textarea
-                                      placeholder="Search to get suggestions..."
-                                      value={this.state.message}
-                                      onChange={this.handleOnChangeCKEditor.bind(
-                                        this
-                                      )}
-                                    ></textarea>
-                                    <p
-                                      className="cls-charcount"
-                                      style={{ fontSize: "x-small" }}
-                                    >
-                                      {this.state.remainingCount +
-                                        //   TranslationContext !==
-                                        // undefined
-                                        //   ? TranslationContext.p
-                                        //       .charactersremaining
-                                        //   :
-                                        ""}
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label
-                                            .charactersremaining
-                                        : " characters remaining..."}
-                                      {/* // } */}
-                                    </p>
-                                    {this.state.messageSuggestionTagsData !==
-                                    null
-                                      ? this.state.messageSuggestionTagsData.map(
-                                          (item, i) => {
-                                            return (
-                                              <button
-                                                onClick={this.handleTagsButtonClick.bind(
-                                                  this,
-                                                  item.tagID
-                                                )}
-                                                className={
-                                                  this.state.selectedTags ===
-                                                  item.tagID
-                                                    ? "tagsbtn-active"
-                                                    : "tagsbtn"
-                                                }
-                                                id={item.tagID}
-                                              >
-                                                {item.tagName}
-                                              </button>
-                                            );
-                                          }
-                                        )
-                                      : null}
-                                    {this.state.messageSuggestionData !==
-                                      null &&
-                                    this.state.messageSuggestionData.length >
-                                      0 &&
-                                    this.state.messageSuggestionData.length >
-                                      0 ? (
-                                      <div className="suggestions-cntr">
-                                        <Table
-                                          noDataContent="No Record Found"
-                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
-                                          columns={[
-                                            {
-                                              dataIndex: "suggestionText",
-                                              className: "textnowrap-table",
-                                              render: (row, rowData) => {
-                                                i = i + 1;
-                                                return (
-                                                  <div
-                                                    className={
-                                                      this.state.chkSuggestion[
-                                                        i
-                                                      ] === i
-                                                        ? "suggestions-tick"
-                                                        : ""
-                                                    }
-                                                    id={i}
-                                                    onClick={this.onOpenMobSuggestionModal.bind(
-                                                      this,
-                                                      rowData.suggestionText,
-                                                      i
-                                                    )}
-                                                  >
-                                                    <Tooltip
-                                                      placement="left"
-                                                      title={
-                                                        rowData.suggestionText
-                                                      }
-                                                    >
-                                                      <span>
-                                                        {rowData.suggestionText}
-                                                      </span>
-                                                    </Tooltip>
-                                                  </div>
-                                                );
-                                              },
-                                            },
-                                          ]}
-                                          dataSource={this.state.messageSuggestionData.filter(
-                                            (x) =>
-                                              x.tagID ===
-                                              this.state.selectedTags
-                                          )}
-                                          pagination={{
-                                            pageSize: 10,
-                                            defaultPageSize: 10,
-                                          }}
-                                        ></Table>
-                                      </div>
-                                    ) : null}
-
-                                    {this.state.storeAgentDetail.length !== 0 &&
-                                    this.state.storeAgentDetail[0]
-                                      .suggestion === 1 ? (
-                                      <div
-                                        className="mobile-ck-send"
-                                        onClick={this.handleMessageSuggestion.bind(
-                                          this
-                                        )}
-                                        title={"Search"}
-                                      >
-                                        <img src={SuggSearch} alt="send img" />
-                                      </div>
-                                    ) : null}
-                                    {this.state.storeAgentDetail.length !== 0 &&
-                                    this.state.storeAgentDetail[0].freeText ===
-                                      1 ? (
-                                      <div
-                                        className="mobile-ck-send-btn"
-                                        onClick={this.handleSaveChatMessages.bind(
-                                          this,
-                                          this.state.message,
-                                          0,
-                                          "",
-                                          ""
-                                        )}
-                                        title={"Send"}
-                                      >
-                                        <img src={Assign} alt="send img" />
-                                      </div>
-                                    ) : null}
-                                  </div>
-                                </div>
-                              ) : null}
-                              {/* -------- Card Modal ----- */}
-                              <Modal
-                                open={this.state.cardModal}
-                                onClose={this.onCloseCardModal}
-                                center
-                                modalId="mobile-tabs-popup"
-                                overlayId="mobile-tabs-overlay"
-                              >
-                                <div className="mobile-chat-popup">
-                                  <div
-                                    className="input-group searchtxt-new"
-                                    style={{ background: "none" }}
-                                  >
-                                    <input
-                                      type="text"
-                                      className="search-customerAddSrch searchtxt"
-                                      placeholder="Search ItemId/artcile/SKU ID"
-                                      name="Search"
-                                      maxLength="100"
-                                      autoComplete="off"
-                                      onChange={this.handleSearchItemChange.bind(
-                                        this
-                                      )}
-                                      onKeyPress={this.enterPressed.bind(this)}
-                                    />
-                                    <span
-                                      onClick={this.handleSearchChatItemDetails.bind(
-                                        this
-                                      )}
-                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                    >
-                                      <img
-                                        src={SearchBlueImg}
-                                        alt="SearchBlueImg"
-                                        className="srch-imge"
-                                      />
-                                    </span>
-                                    {this.state.searchCardData.length === 0 && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.noProductFound}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div className="product-card">
-                                    {this.state.searchCardData !== null
-                                      ? this.state.searchCardData.map(
-                                          (item, i) => {
-                                            return (
-                                              <div
-                                                className="card"
-                                                key={i}
-                                                onClick={this.handleSelectCard.bind(
-                                                  this,
-                                                  item.itemID
-                                                )}
-                                              >
-                                                <div className="card-body position-relative">
-                                                  {item.itemID ===
-                                                  this.state.selectedCard ? (
-                                                    <div className="selectdot">
-                                                      <img
-                                                        src={CardTick}
-                                                        alt={"select-card"}
-                                                      />
-                                                    </div>
-                                                  ) : null}
-                                                  <div className="mobile-card-cntr">
-                                                    <div className="mobile-card-img">
-                                                      {item.imageURL ? (
-                                                        <img
-                                                          className="chat-product-img"
-                                                          src={item.imageURL}
-                                                          alt="Product Image"
-                                                          title={
-                                                            item.productName
-                                                          }
-                                                        />
-                                                      ) : (
-                                                        <Dropzone
-                                                          onDrop={this.handleInsertCardImageUpload.bind(
-                                                            this,
-                                                            item.uniqueItemCode
-                                                          )}
-                                                        >
-                                                          {({
-                                                            getRootProps,
-                                                            getInputProps,
-                                                          }) => (
-                                                            <div
-                                                              {...getRootProps()}
-                                                            >
-                                                              <input
-                                                                {...getInputProps()}
-                                                                className="file-upload d-none"
-                                                              />
-                                                              <span className="addimg">
-                                                                <input
-                                                                  type="image"
-                                                                  alt="Add Image"
-                                                                  src={addimg}
-                                                                />
-                                                              </span>
-                                                            </div>
-                                                          )}
-                                                        </Dropzone>
-                                                      )}
-                                                    </div>
-                                                    <div className="bkcprdt">
-                                                      {item.productName ? (
-                                                        <label className="chat-product-name">
-                                                          {item.productName}
-                                                        </label>
-                                                      ) : null}
-                                                      {item.brandName !== "" &&
-                                                      item.brandName !==
-                                                        null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.brand
-                                                            : "Brand"}{" "}
-                                                          :
-                                                          {" " + item.brandName}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.categoryName !==
-                                                        "" &&
-                                                      item.categoryName !==
-                                                        null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.category
-                                                            : "Category"}{" "}
-                                                          :
-                                                          {" " +
-                                                            item.categoryName}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.subCategoryName !==
-                                                        "" &&
-                                                      item.subCategoryName !==
-                                                        null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label
-                                                                .subcategory
-                                                            : "SubCategory"}{" "}
-                                                          :
-                                                          {" " +
-                                                            item.subCategoryName}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.color !== "" &&
-                                                      item.color !== null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.color
-                                                            : "Color"}{" "}
-                                                          :{" " + item.color}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.size !== "" &&
-                                                      item.size !== null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.color
-                                                            : "Size"}{" "}
-                                                          :{" " + item.size}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.uniqueItemCode !==
-                                                        "" &&
-                                                      item.uniqueItemCode !==
-                                                        null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.itemcode
-                                                            : "Item Code"}{" "}
-                                                          :
-                                                          {" " +
-                                                            item.uniqueItemCode}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.discount !== "" &&
-                                                      parseFloat(
-                                                        item.discount
-                                                      ) !== 0 &&
-                                                      item.discount !== null ? (
-                                                        <label className="chat-product-code">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.discount
-                                                            : "Discount"}{" "}
-                                                          :{" " + item.discount}
-                                                        </label>
-                                                      ) : null}
-
-                                                      {item.price !== "" &&
-                                                      parseFloat(item.price) !==
-                                                        0 &&
-                                                      item.price !== null ? (
-                                                        <label className="chat-product-prize">
-                                                          {TranslationContext !==
-                                                          undefined
-                                                            ? TranslationContext
-                                                                .label.price
-                                                            : "Price"}{" "}
-                                                          :{" " + item.price}
-                                                        </label>
-                                                      ) : null}
-                                                      {item.url !== null &&
-                                                      item.url !== "" ? (
-                                                        <label className="chat-product-url">
-                                                          {item.url !== null
-                                                            ? item.url
-                                                            : ""}
-                                                        </label>
-                                                      ) : (
-                                                        ""
-                                                      )}
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            );
-                                          }
-                                        )
-                                      : null}
-                                  </div>
-                                  <div className="chat-btn-cntr">
-                                    <button
-                                      className="butn-inv"
-                                      onClick={this.onCloseCardModal}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.close
-                                        : "Close"}
-                                    </button>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleSendCard.bind(this)}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.send
-                                        : "Send"}
-                                      <img
-                                        src={SendUp}
-                                        alt="send"
-                                        className="send-up float-none"
-                                      />
-                                      {this.state.isSendRecomended ? (
-                                        <FontAwesomeIcon
-                                          icon={faCircleNotch}
-                                          className="circular-loader ml-2"
-                                          spin
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </button>
-                                  </div>
-                                </div>
-                              </Modal>
-                              {/* --------Recommended List Modal----- */}
-                              <Modal
-                                open={this.state.recommendedModal}
-                                onClose={this.onCloseRecommendedModal}
-                                center
-                                modalId="mobile-tabs-popup"
-                                overlayId="mobile-tabs-overlay"
-                                classNames={{
-                                  modal: "recommended-list-popup",
-                                }}
-                              >
-                                <div className="recommended-cntr m-0 h-100">
-                                  <div className="chat-btn-cntr">
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleSendRecommendedList.bind(
-                                        this
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button
-                                            .sendrecommendedlist
-                                        : "Send Recommended List"}
-
-                                      <img
-                                        src={SendUp}
-                                        alt="send"
-                                        className="send-up"
-                                      />
-                                      {this.state.isSendRecomended ? (
-                                        <FontAwesomeIcon
-                                          icon={faCircleNotch}
-                                          className="circular-loader ml-2"
-                                          spin
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </button>
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                      }}
-                                    >
-                                      {this.state.noRecommendedFound}
-                                    </p>
-                                    <button
-                                      className="butn-inv"
-                                      onClick={this.onCloseRecommendedModal}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.close
-                                        : "Close"}
-                                    </button>
-                                  </div>
-                                </div>
-                              </Modal>
-                              {/* -------- Schedule Visit Modal ----- */}
-                              <Modal
-                                open={this.state.scheduleModal}
-                                onClose={this.onCloseScheduleModal}
-                                center
-                                modalId="mobile-tabs-popup"
-                                overlayId="mobile-tabs-overlay"
-                                classNames={{
-                                  modal: "schedule-visit-popup",
-                                }}
-                              >
-                                {this.state.availableSlot > 0 ? (
-                                  <div className="schedule-mobile-cntr">
-                                    <div>
-                                      <div className="schedule-left-outer-cntr">
-                                        <div className="schedule-left-cntr">
-                                          {this.state.timeSlotData !== null
-                                            ? this.state.timeSlotData.map(
-                                                (item, i) => {
-                                                  return item
-                                                    .alreadyScheduleDetails
-                                                    .length > 0 ? (
-                                                    <div key={i}>
-                                                      <label className="s-lable">
-                                                        {item.day}:{item.dates}
-                                                      </label>
-                                                      <div className="schedule-btn-outer-cntr">
-                                                        <div className="schedule-btn-cntr">
-                                                          {item
-                                                            .alreadyScheduleDetails
-                                                            .length > 0 &&
-                                                            item.alreadyScheduleDetails.map(
-                                                              (data, k) => {
-                                                                var selectSlot = false;
-                                                                if (
-                                                                  this.state
-                                                                    .timeSlotData[
-                                                                    i
-                                                                  ]
-                                                                    .alreadyScheduleDetails[
-                                                                    k
-                                                                  ] ===
-                                                                  this.state
-                                                                    .selectedSlot
-                                                                ) {
-                                                                  selectSlot = true;
-                                                                }
-
-                                                                if (
-                                                                  data.maxCapacity ==
-                                                                  data.visitedCount
-                                                                ) {
-                                                                  return (
-                                                                    <Tooltip
-                                                                      placement="left"
-                                                                      title={
-                                                                        data.remaining +
-                                                                        " MORE PEOPLE LEFT"
-                                                                      }
-                                                                    >
-                                                                      <button
-                                                                        key={k}
-                                                                        disabled={
-                                                                          data.isDisabled
-                                                                        }
-                                                                        className="s-red-active"
-                                                                        style={{
-                                                                          cursor:
-                                                                            "no-drop",
-                                                                        }}
-                                                                      >
-                                                                        {
-                                                                          data.timeSlot
-                                                                        }
-                                                                      </button>
-                                                                    </Tooltip>
-                                                                  );
-                                                                }
-                                                                if (
-                                                                  data.visitedCount >=
-                                                                  (1 / 2) *
-                                                                    data.maxCapacity
-                                                                ) {
-                                                                  return (
-                                                                    <Tooltip
-                                                                      placement="left"
-                                                                      title={
-                                                                        data.remaining +
-                                                                        " MORE PEOPLE LEFT"
-                                                                      }
-                                                                    >
-                                                                      <button
-                                                                        key={k}
-                                                                        style={{
-                                                                          cursor: data.isDisabled
-                                                                            ? "no-drop"
-                                                                            : "pointer",
-                                                                        }}
-                                                                        className={
-                                                                          data.isDisabled
-                                                                            ? "s-red-active"
-                                                                            : selectSlot
-                                                                            ? "s-yellow-active"
-                                                                            : "s-yellow-btn"
-                                                                        }
-                                                                        onClick={this.handleSelectSlot.bind(
-                                                                          this,
-                                                                          data,
-                                                                          item.dates,
-                                                                          data.isDisabled
-                                                                        )}
-                                                                      >
-                                                                        {
-                                                                          data.timeSlot
-                                                                        }
-                                                                        {selectSlot ? (
-                                                                          <img
-                                                                            className="s-img-select"
-                                                                            src={
-                                                                              CircleRight
-                                                                            }
-                                                                            alt="circle-right"
-                                                                          />
-                                                                        ) : null}
-                                                                      </button>
-                                                                    </Tooltip>
-                                                                  );
-                                                                }
-                                                                if (
-                                                                  data.visitedCount <
-                                                                  (1 / 2) *
-                                                                    data.maxCapacity
-                                                                ) {
-                                                                  return (
-                                                                    <Tooltip
-                                                                      placement="left"
-                                                                      title={
-                                                                        data.remaining +
-                                                                        " MORE PEOPLE LEFT"
-                                                                      }
-                                                                    >
-                                                                      <button
-                                                                        key={k}
-                                                                        style={{
-                                                                          cursor: data.isDisabled
-                                                                            ? "no-drop"
-                                                                            : "pointer",
-                                                                        }}
-                                                                        className={
-                                                                          data.isDisabled
-                                                                            ? "s-red-active"
-                                                                            : selectSlot
-                                                                            ? "s-green-active"
-                                                                            : "s-green-btn"
-                                                                        }
-                                                                        onClick={this.handleSelectSlot.bind(
-                                                                          this,
-                                                                          data,
-                                                                          item.dates,
-                                                                          data.isDisabled
-                                                                        )}
-                                                                      >
-                                                                        {
-                                                                          data.timeSlot
-                                                                        }
-                                                                        {selectSlot ? (
-                                                                          <img
-                                                                            className="s-img-select"
-                                                                            src={
-                                                                              CircleRight
-                                                                            }
-                                                                            alt="circle-right"
-                                                                          />
-                                                                        ) : null}
-                                                                      </button>
-                                                                    </Tooltip>
-                                                                  );
-                                                                }
-                                                              }
-                                                            )}
-                                                        </div>
-                                                        <div className="selectdot-blue">
-                                                          <img
-                                                            src={SchRight}
-                                                            alt="right arrow"
-                                                          />
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  ) : null;
-                                                }
-                                              )
-                                            : null}
-                                        </div>
-                                      </div>
-                                      <div className="schedule-right-cntr">
-                                        <div>
-                                          <label className="s-lable">
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .selectedslot
-                                              : "Selected Slot"}
-                                          </label>
-                                          {Object.keys(this.state.selectedSlot)
-                                            .length !== 0 ? (
-                                            <button
-                                              className={
-                                                this.state.selectedSlot
-                                                  .visitedCount <
-                                                (1 / 2) *
-                                                  this.state.selectedSlot
-                                                    .maxCapacity
-                                                  ? "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                  : this.state.selectedSlot
-                                                      .visitedCount <
-                                                    this.state.selectedSlot
-                                                      .maxCapacity
-                                                  ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                  : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                              }
-                                            >
-                                              {this.state.selectedSlot.timeSlot}
-                                              <img
-                                                className="s-img-select"
-                                                src={CircleRight}
-                                                alt="circle-right"
-                                              />
-                                            </button>
-                                          ) : null}
-                                          {this.state.isSelectSlot !== "" && (
-                                            <p
-                                              style={{
-                                                color: "red",
-                                                marginBottom: "0px",
-                                              }}
-                                            >
-                                              {this.state.isSelectSlot}
-                                            </p>
-                                          )}
-                                        </div>
-                                        <div>
-                                          <label className="s-lable">
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .noofpeople
-                                              : "No of People"}
-                                          </label>
-                                          <input
-                                            type="text"
-                                            value={this.state.noOfPeople}
-                                            onChange={this.handleNoOfPeopleChange.bind(
-                                              this
-                                            )}
-                                          />
-                                          {this.state.noOfPeopleMax !== "" && (
-                                            <p
-                                              style={{
-                                                color: "red",
-                                                marginBottom: "0px",
-                                                width: "131px",
-                                              }}
-                                            >
-                                              {this.state.noOfPeopleMax}
-                                            </p>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="chat-btn-cntr">
-                                      <button
-                                        className="butn-inv"
-                                        onClick={this.onCloseScheduleModal}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.button.close
-                                          : "Close"}
-                                      </button>
-                                      <button
-                                        className="butn"
-                                        onClick={this.handleScheduleVisit.bind(
-                                          this
-                                        )}
-                                      >
-                                        Send
-                                        <img
-                                          src={SendUp}
-                                          alt="send"
-                                          className="send-up float-none"
-                                        />
-                                        {this.state.isSendRecomended ? (
-                                          <FontAwesomeIcon
-                                            icon={faCircleNotch}
-                                            className="circular-loader ml-2"
-                                            spin
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-                                      </button>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div>
-                                    <span className="slot-span">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span
-                                            .noslotaddedforthisstore
-                                        : "No slot added for this store"}
-                                    </span>
-                                  </div>
-                                )}
-                              </Modal>
-                              {/* -------- Generate Payment Link Modal ----- */}
-                              <Modal
-                                open={this.state.paymentModal}
-                                onClose={this.onClosePaymentModal}
-                                center
-                                modalId="mobile-tabs-popup"
-                                overlayId="mobile-tabs-overlay"
-                                classNames={{
-                                  modal: "recommended-list-popup",
-                                }}
-                              >
-                                <div className="schedule-mobile-cntr p-0">
-                                  <div>
-                                    <div className="mobile-chat-popup">
-                                      <div
-                                        className="input-group searchtxt-new pr-0"
-                                        style={{ background: "none" }}
-                                      >
-                                        <input
-                                          type="text"
-                                          className="search-customerAddSrch searchtxt"
-                                          placeholder="Search Order Id"
-                                          name="Search"
-                                          maxLength="100"
-                                          autoComplete="off"
-                                        />
-                                        <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
-                                          <img
-                                            src={SearchBlueImg}
-                                            alt="SearchBlueImg"
-                                            className="srch-imge"
-                                          />
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div className="payment-details">
-                                      <label>
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.amount
-                                          : "Amount"}
-                                      </label>
-                                      <span>INR 1299</span>
-                                    </div>
-                                  </div>
-                                  <div className="chat-btn-cntr">
-                                    <button
-                                      className="butn-inv"
-                                      onClick={this.onClosePaymentModal}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.close
-                                        : "Close"}
-                                    </button>
-                                    <button
-                                      className="butn"
-                                      onClick={this.onClosePaymentModal}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.send
-                                        : "Send"}
-                                      <img
-                                        src={SendUp}
-                                        alt="send"
-                                        className="send-up"
-                                      />
-                                      {this.state.isSendRecomended ? (
-                                        <FontAwesomeIcon
-                                          icon={faCircleNotch}
-                                          className="circular-loader ml-2"
-                                          spin
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </button>
-                                  </div>
-                                </div>
-                              </Modal>
-                              {/*Message Suggestion Modal*/}
-                              <Modal
-                                open={this.state.suggestionModal}
-                                onClose={this.onCloseSuggestionModal}
-                                center
-                                modalId="desktop-conf-popup"
-                                overlayId="mobile-tabs-overlay"
-                              >
-                                <div className="">
-                                  <div
-                                    className="input-group"
-                                    style={{ background: "none" }}
-                                  >
-                                    <p className="cls-p-conf">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p
-                                            .areyousureandwanttosend
-                                        : "Are you sure & want to send"}
-                                      ?
-                                    </p>
-                                  </div>
-                                  <hr
-                                    style={{
-                                      borderTop: "1px solid #bbb",
-                                    }}
-                                  ></hr>
-                                  <p className="cls-p-sugg">
-                                    {this.state.suggestionText}
-                                  </p>
-                                  <div className="chat-btn-conf">
-                                    <button
-                                      className="butn-inv"
-                                      onClick={this.onCloseSuggestionModal}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.no
-                                        : "No"}
-                                    </button>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleSaveChatMessages.bind(
-                                        this,
-                                        this.state.suggestionText,
-                                        "",
-                                        ""
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.yes
-                                        : "Yes"}
-                                      <img
-                                        src={SendUp}
-                                        alt="send"
-                                        className="send-up float-none"
-                                      />
-                                      {this.state.isSendRecomended ? (
-                                        <FontAwesomeIcon
-                                          icon={faCircleNotch}
-                                          className="circular-loader ml-2"
-                                          spin
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </button>
-                                  </div>
-                                </div>
-                              </Modal>
-                              {/* Mobile View Message Suggestion*/}
-                              <Modal
-                                open={this.state.suggestionModalMob}
-                                onClose={this.onCloseMobSuggestionModal}
-                                center
-                                modalId="desktop-conf-mob-popup"
-                                overlayId="mobile-tabs-overlay"
-                              >
-                                <div className="">
-                                  <div
-                                    className="input-group"
-                                    style={{ background: "none" }}
-                                  >
-                                    <p className="cls-p-conf-mob">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p
-                                            .areyousureandwanttosend
-                                        : "Are you sure & want to send"}
-                                      ?
-                                    </p>
-                                  </div>
-                                  <hr
-                                    style={{
-                                      borderTop: "1px solid #bbb",
-                                    }}
-                                  ></hr>
-                                  <p className="cls-p-sugg">
-                                    {this.state.suggestionText}
-                                  </p>
-                                  <div className="chat-btn-conf-mob">
-                                    <button
-                                      className="butn-inv"
-                                      onClick={this.onCloseMobSuggestionModal}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.no
-                                        : "No"}
-                                    </button>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleSaveChatMessages.bind(
-                                        this,
-                                        this.state.suggestionText,
-                                        "",
-                                        ""
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.yes
-                                        : "Yes"}
-                                      <img
-                                        src={SendUp}
-                                        alt="send"
-                                        className="send-up float-none"
-                                      />
-                                      {this.state.isSendRecomended ? (
-                                        <FontAwesomeIcon
-                                          icon={faCircleNotch}
-                                          className="circular-loader ml-2"
-                                          spin
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </button>
-                                  </div>
-                                </div>
-                              </Modal>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className={
-                            this.state.mainTabSelect === 2
-                              ? "tab-pane fade show active"
-                              : "tab-pane fade"
-                          }
-                          id="recent-chat"
-                          role="tabpanel"
-                          aria-labelledby="recent-chat"
-                        >
-                          <div className="chathistory-tbl histochat">
-                            <div
-                              className="table-cntr store chat-history chatabcus mg-rm now-rap-tbl-txt"
-                              style={{ margin: "10px" }}
-                            >
-                              <Table
-                                loading={this.state.isPastChatLoading}
-                                noDataContent="No Record Found"
-                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                                columns={[
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.title.chatid
-                                        : "Chat ID",
-                                    dataIndex: "chatID",
-                                    width: "10%",
-                                    className: "textnowrap-table",
-                                    render: (row, rowData) => {
-                                      return (
-                                        <>
-                                          {rowData.chatID ? rowData.chatID : ""}
-                                        </>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.title.agent
-                                        : "Agent",
-                                    dataIndex: "agentName",
-                                    width: "20%",
-                                    className: "textnowrap-table",
-                                    render: (row, rowData) => {
-                                      return (
-                                        <p>
-                                          {rowData.agentName
-                                            ? rowData.agentName
-                                            : ""}
-                                        </p>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.title.mobilenumber
-                                        : "Mobile No",
-                                    dataIndex: "customerMobile",
-                                    width: "20%",
-                                    className: "textnowrap-table",
-                                    render: (row, rowData) => {
-                                      return (
-                                        <p
-                                          title={
-                                            rowData.customerMobile
-                                              ? rowData.customerMobile.substring(
-                                                  2
-                                                )
-                                              : ""
-                                          }
-                                        >
-                                          {rowData.customerMobile
-                                            ? rowData.customerMobile.substring(
-                                                2
-                                              )
-                                            : ""}
-                                        </p>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.title.time
-                                        : "Time",
-                                    dataIndex: "timeAgo",
-                                    width: "20%",
-                                    className: "textnowrap-table",
-                                    render: (row, rowData) => {
-                                      return (
-                                        <>
-                                          {rowData.timeAgo
-                                            ? rowData.timeAgo
-                                            : ""}
-                                        </>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.title.status
-                                        : "Status",
-                                    dataIndex: "chatStatus",
-                                    width: "20%",
-                                    className: "textnowrap-table",
-                                    render: (row, rowData) => {
-                                      return (
-                                        <>
-                                          {rowData.chatStatus
-                                            ? rowData.chatStatus
-                                            : ""}
-                                        </>
-                                      );
-                                    },
-                                  },
-                                  {
-                                    title:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.title.message
-                                        : "Message",
-                                    dataIndex: "message",
-                                    width: "30%",
-                                    className: "textnowrap-table",
-                                    render: (row, rowdata) => {
-                                      return (
-                                        <div className="d-flex">
-                                          <p className="storeaget-chat-ctn">
-                                            {rowdata.chatCount
-                                              ? rowdata.chatCount
-                                              : ""}
-                                          </p>
-                                          <p
-                                            className="msg-text-overlap"
-                                            title={row ? row : ""}
-                                          >
-                                            {row ? row : ""}
-                                          </p>
-                                        </div>
-                                      );
-                                    },
-                                  },
-                                ]}
-                                dataSource={this.state.agentRecentChatData}
-                                onRow={(record, index) => ({
-                                  onClick: (event) => {
-                                    this.handleHistoricalTableRow(
-                                      record,
-                                      index,
-                                      event
-                                    );
-                                  },
-                                })}
-                                rowKey={(record) => {
-                                  if (record.chatID) {
-                                    uid = uid + 1;
-                                    return record.chatID + "p" + uid;
-                                  } else {
-                                    uid = uid + 1;
-                                    return "p" + uid;
-                                  }
-                                }}
-                                pagination={{
-                                  pageSize: 5,
-                                  defaultPageSize: 5,
-                                }}
-                                rowClassName={this.setRowClassName}
-                              ></Table>
-                            </div>
-                          </div>
-
-                          <div className="chathistory-tbl">
-                            {this.state.showHistoricalChat ? (
-                              <div className="historychatcontnet">
-                                <div className="chathistory-div add-bord">
-                                  <label className="chat-on-tuesday-jul">
-                                    {" "}
-                                    Chat On {this.state.chatTimeAgo}
-                                  </label>
-                                  <img
-                                    onClick={this.handleHistoryChatClose.bind(
-                                      this
-                                    )}
-                                    src={CancelBlack}
-                                    alt="close-icon"
-                                    style={{
-                                      float: "right",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                </div>
-                                <div
-                                  className="chatcontentDiv"
-                                  ref={(div) => {
-                                    this.historyMessageList = div;
-                                  }}
-                                >
-                                  {this.state.messageHistoryChatData !== null &&
-                                  this.state.messageHistoryChatData.length >
-                                    0 ? (
-                                    this.state.messageHistoryChatData.map(
-                                      (item, i) => {
-                                        return (
-                                          <div
-                                            key={i}
-                                            className={
-                                              item.byCustomer === true &&
-                                              item.isBotReply !== true
-                                                ? "chat-trail-cntr"
-                                                : "chat-trail-cntr chat-trail-cntr-right"
-                                            }
-                                          >
-                                            <div className="chat-trail-img">
-                                              <span
-                                                className="chat-initial"
-                                                alt="face image"
-                                                title={
-                                                  item.byCustomer
-                                                    ? item.customerName
-                                                    : this.state.UserName
-                                                }
-                                              >
-                                                {item.byCustomer
-                                                  ? item.customerName
-                                                      .split(" ")
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()
-                                                  : this.state.UserName.split(
-                                                      " "
-                                                    )
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()}
-                                              </span>
-                                            </div>
-                                            <div className="chat-trail-chat-cntr">
-                                              {item.isBotReply && (
-                                                <p className="bot-mark">
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.p.bot
-                                                    : "BOT"}
-                                                </p>
-                                              )}
-                                              <p className="chat-trail-chat pd-0">
-                                                {ReactHtmlParser(
-                                                  item.message
-                                                    .replace(
-                                                      "col-md-2",
-                                                      "col-md-4"
-                                                    )
-                                                    .replace(
-                                                      "col-md-10",
-                                                      "col-md-8"
-                                                    )
-                                                )}
-                                              </p>
-                                              <span className="chat-trail-time">
-                                                {item.chatDate + " "}
-                                                {item.chatTime}
-                                              </span>
-                                            </div>
-                                          </div>
-                                        );
-                                      }
-                                    )
-                                  ) : (
-                                    <p style={{ margin: "10" }}>
-                                      No record found
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="row" style={{ margin: "0" }}>
-                      <div className="chatdivtitle">
-                        <label
-                          className="chattitlelbl"
-                          style={{ color: "Black" }}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.myhistoricalchat
-                            : "My Historical Chat"}
-                        </label>
-                      </div>
-                      <div className="chathistory-tbl histochat">
-                        <div
-                          className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
-                          style={{ margin: "10px" }}
-                        >
-                          <Table
-                            loading={this.state.isHistoricalChatLoading}
-                            noDataContent="No Record Found"
-                            className="components-table-demo-nested antd-table-campaign custom-antd-table add-cursor"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.chatid
-                                    : "Chat ID",
-                                dataIndex: "chatID",
-                                width: "10%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>{rowData.chatID ? rowData.chatID : ""}</>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.customername
-                                    : "Customer Name",
-                                dataIndex: "customerName",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.customerName
-                                        ? rowData.customerName
-                                        : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.mobilenumber
-                                    : "Mobile No",
-                                dataIndex: "customerMobile",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.customerMobile
-                                        ? rowData.customerMobile.substring(2)
-                                        : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.time
-                                    : "Time",
-                                dataIndex: "timeAgo",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.timeAgo ? rowData.timeAgo : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.status
-                                    : "Status",
-                                dataIndex: "chatStatus",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.chatStatus
-                                        ? rowData.chatStatus
-                                        : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.message
-                                    : "Message",
-                                dataIndex: "message",
-                                width: "30%",
-                                className: "textnowrap-table",
-                                render: (row) => {
-                                  return (
-                                    <>
-                                      <p
-                                        className="msg-text-overlap"
-                                        title={row ? row : ""}
-                                      >
-                                        {row ? row : ""}
-                                      </p>
-                                    </>
-                                  );
-                                },
-                              },
-                            ]}
-                            dataSource={this.state.historicalChatData}
-                            onRow={(record, index) => ({
-                              onClick: (event) => {
-                                this.handleHistoricalTableRow(
-                                  record,
-                                  index,
-                                  event
-                                );
-                              },
-                            })}
-                            pagination={{
-                              pageSize: 5,
-                              defaultPageSize: 5,
-                            }}
-                            rowKey={(record) => {
-                              if (record.chatID) {
-                                uid = uid + 1;
-                                return record.chatID + "g" + uid;
-                              } else {
-                                uid = uid + 1;
-                                return "h" + uid;
-                              }
-                            }}
-                            rowClassName={this.setRowClassName}
-                          ></Table>
-                        </div>
-                      </div>
-                      <div className="chathistory-tbl">
-                        {this.state.showHistoricalChat ? (
-                          <div className="historychatcontnet">
-                            <div className="chathistory-div add-bord">
-                              <label className="chat-on-tuesday-jul">
-                                {" "}
-                                Chat On {this.state.chatTimeAgo}
-                              </label>
-                              <img
-                                onClick={this.handleHistoryChatClose.bind(this)}
-                                src={CancelBlack}
-                                alt="close-icon"
-                                style={{
-                                  float: "right",
-                                  cursor: "pointer",
-                                }}
-                              />
-                            </div>
-                            <div
-                              className="chatcontentDiv"
-                              ref={(div) => {
-                                this.historyMessageList = div;
-                              }}
-                            >
-                              {this.state.messageHistoryChatData !== null &&
-                              this.state.messageHistoryChatData.length > 0 ? (
-                                this.state.messageHistoryChatData.map(
-                                  (item, i) => {
-                                    return (
-                                      <div
-                                        key={i}
-                                        className={
-                                          item.byCustomer === true &&
-                                          item.isBotReply !== true
-                                            ? "chat-trail-cntr"
-                                            : "chat-trail-cntr chat-trail-cntr-right"
-                                        }
-                                      >
-                                        <div className="chat-trail-img">
-                                          <span
-                                            className="chat-initial"
-                                            alt="face image"
-                                            title={
-                                              item.byCustomer
-                                                ? item.customerName
-                                                : this.state.UserName
-                                            }
-                                          >
-                                            {item.byCustomer
-                                              ? item.customerName
-                                                  .split(" ")
-                                                  .map((n) => n[0])
-                                                  .join("")
-                                                  .toUpperCase()
-                                              : this.state.UserName.split(" ")
-                                                  .map((n) => n[0])
-                                                  .join("")
-                                                  .toUpperCase()}
-                                          </span>
-                                        </div>
-                                        <div className="chat-trail-chat-cntr">
-                                          {item.isBotReply && (
-                                            <p className="bot-mark">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.bot
-                                                : "BOT"}
-                                            </p>
-                                          )}
-                                          <p className="chat-trail-chat pd-0">
-                                            {ReactHtmlParser(
-                                              item.message
-                                                .replace("col-md-2", "col-md-4")
-                                                .replace(
-                                                  "col-md-10",
-                                                  "col-md-8"
-                                                )
-                                            )}
-                                          </p>
-                                          <span className="chat-trail-time">
-                                            {item.chatDate + " "}
-                                            {item.chatTime}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-                                )
-                              ) : (
-                                <p style={{ margin: "10px" }}>
-                                  No record found
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              {this.state.isCustomerProduct || this.state.isCustomerProfile ? (
-                this.state.customerName ? (
-                  <div
-                    onMouseLeave={this.handleNameHoverLeave.bind()}
-                    className={
-                      this.state.onHoverName
-                        ? "thirdbox"
-                        : this.state.isShutterOpen
-                        ? "thirdbox thirdbox-shutter"
-                        : this.state.isMobileView
-                        ? "thirdbox"
-                        : "thirdbox thirdbox-close"
-                    }
-                  >
-                    <div className="uptabs">
-                      {!this.state.isShutterOpen ? (
-                        <img
-                          src={Arwdown}
-                          className="Arwico"
-                          alt="Arwico"
-                          onClick={this.handleChangeShutterWindow.bind(
-                            this,
-                            true
-                          )}
-                        />
-                      ) : (
-                        <img
-                          src={Arwup}
-                          className="Arwico"
-                          alt="Arwico"
-                          onClick={this.handleChangeShutterWindow.bind(
-                            this,
-                            false
-                          )}
-                        />
-                      )}
-                      {this.state.isPinClick ? (
-                        <img
-                          src={Pin}
-                          className="pin"
-                          alt="Pin"
-                          onClick={this.handlePinClick.bind(this)}
-                        />
-                      ) : (
-                        <img
-                          src={Pin2}
-                          className="pin"
-                          alt="Pin"
-                          onClick={this.handlePinClick.bind(this)}
-                        />
-                      )}
-                      <div></div>
-                      <ul className="nav nav-tabs" role="tablist">
-                        {this.state.isCustomerProfile ? (
-                          <li
-                            className="nav-item"
-                            style={{
-                              padding: this.state.isCustomerProduct
-                                ? ""
-                                : "2px",
-                            }}
-                          >
-                            <a
-                              className={
-                                this.state.ProfileProductTab === 0
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#customer-profile"
-                              role="tab"
-                              aria-controls="customer-profile"
-                              aria-selected="true"
-                              onClick={this.handleProfileProductTabChange.bind(
-                                this,
-                                0
-                              )}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.a.profile
-                                : "Profile"}
-                            </a>
-                          </li>
-                        ) : null}
-                        {this.state.isCustomerProduct ? (
-                          <li
-                            className="nav-item"
-                            style={{
-                              padding: this.state.isCustomerProfile
-                                ? ""
-                                : "2px",
-                            }}
-                          >
-                            <a
-                              className={
-                                this.state.ProfileProductTab === 1
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#customer-product"
-                              role="tab"
-                              aria-controls="customer-product"
-                              aria-selected="true"
-                              onClick={this.handleProfileProductTabChange.bind(
-                                this,
-                                1
-                              )}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.a.product
-                                : "Product"}
-                            </a>
-                          </li>
-                        ) : null}
-                      </ul>
-
-                      <div className="tab-content">
-                        {this.state.isCustomerProfile ? (
-                          <div
-                            className={
-                              this.state.ProfileProductTab === 0
-                                ? "tab-pane fade active show"
-                                : "tab-pane fade"
-                            }
-                            id="customer-profile"
-                            role="tabpanel"
-                            aria-labelledby="customer-profile"
-                          >
-                            <div className="profilebox">
-                              <div>
-                                <ul className="nameplate">
-                                  <li>
-                                    <label
-                                      onClick={
-                                        this.state.isMobileView
-                                          ? this.handleMainTabChange.bind(
-                                              this,
-                                              1
-                                            )
-                                          : null
-                                      }
-                                      onMouseEnter={this.handleNameHover.bind(
-                                        this
-                                      )}
-                                      className="namelabel"
-                                      style={{
-                                        backgroundColor: this.state
-                                          .selectedColor,
-                                      }}
-                                    >
-                                      {this.state.customerName.charAt(0)}
-                                    </label>
-                                  </li>
-                                  <li
-                                    onClick={
-                                      this.state.isMobileView
-                                        ? this.handleMainTabChange.bind(this, 1)
-                                        : null
-                                    }
-                                  >
-                                    <h3>{this.state.customerName}</h3>
-                                    <span>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span.tier
-                                        : "Tier"}
-                                      : <b>{this.state.customerTier}</b>
-                                    </span>
-                                  </li>
-                                  <li className="contactbox">
-                                    <div>
-                                      <ul>
-                                        {this.state.customerEmailID ? (
-                                          <li>
-                                            {/* <label>Email ID</label> */}
-                                            <p>{this.state.customerEmailID}</p>
-                                          </li>
-                                        ) : null}
-                                        <li>
-                                          {/* <label>Mobile No</label> */}
-                                          <p>{this.state.customerMobileNo}</p>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div className="pointstable">
-                                <table>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .totalpoints
-                                            : "Total Points"}
-                                        </label>
-                                        <span>
-                                          {this.state.totalPoints.toLocaleString(
-                                            "en-IN"
-                                          )}
-                                        </span>
-                                      </td>
-                                      <td>
-                                        <label>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .lifetimevalue
-                                            : "Lifetime Value"}
-                                        </label>
-                                        <span>
-                                          {this.state.lifetimeValue.toLocaleString(
-                                            "en-IN"
-                                          )}
-                                        </span>
-                                      </td>
-                                      <td>
-                                        <label>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .visitcount
-                                            : "Visit Count"}
-                                        </label>
-                                        <span>
-                                          {this.state.visitCount.toLocaleString(
-                                            "en-IN"
-                                          )}
-                                        </span>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div className="prodtabl1">
-                                <Collapse
-                                  activeKey={this.state.activeCollpse}
-                                  onChange={this.handleCollpseChange.bind(this)}
-                                >
-                                  <Panel
-                                    header={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.panel.insights
-                                        : "Insights"
-                                    }
-                                    key="1"
-                                  >
-                                    <div className="insightsbox">
-                                      {this.state.insights
-                                        ? this.state.insights.map(
-                                            (item, key) => {
-                                              return item.insightMessage ? (
-                                                <p>
-                                                  {key + 1}.
-                                                  {" " + item.insightMessage}
-                                                </p>
-                                              ) : null;
-                                            }
-                                          )
-                                        : null}
-                                      {this.state.insights.length === 0 ? (
-                                        <Empty
-                                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        />
-                                      ) : null}
-                                    </div>
-                                  </Panel>
-                                  <Panel
-                                    header={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.panel.orders
-                                        : "Orders"
-                                    }
-                                    key="2"
-                                  >
-                                    <div className="ordersbox">
-                                      <ul>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .delivered
-                                              : "Delivered"}
-                                          </label>
-                                          <span>
-                                            {this.state.orderDelivered}
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .shoppingbag
-                                              : "Shopping Bag"}
-                                          </label>
-                                          <span>
-                                            {this.state.orderShoppingBag}
-                                          </span>
-                                        </li>
-                                      </ul>
-                                      <ul>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .readytoship
-                                              : "Ready to Ship"}
-                                          </label>
-                                          <span>
-                                            {this.state.orderReadyToShip}
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label.returns
-                                              : "Returns"}
-                                          </label>
-                                          <span>{this.state.orderReturns}</span>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </Panel>
-                                  <Panel
-                                    header={
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.panel
-                                            .lasttransaction
-                                        : "Last Transaction"
-                                    }
-                                    key="3"
-                                  >
-                                    <div className="lasttransaction">
-                                      <ul>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label.billno
-                                              : "Bill No"}
-                                          </label>
-                                          <span>{this.state.billNumber}</span>
-                                        </li>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label.Amount
-                                              : "Amount"}
-                                          </label>
-                                          <span>
-                                            {this.state.billAmount.toLocaleString(
-                                              "en-IN"
-                                            )}
-                                          </span>
-                                        </li>
-                                      </ul>
-                                      <ul>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label.store
-                                              : "Store"}
-                                          </label>
-                                          <span>{this.state.storeDetails}</span>
-                                        </li>
-                                        <li>
-                                          <label>
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.label.date
-                                              : "Date"}
-                                          </label>
-                                          <span>
-                                            {this.state.transactionDate}
-                                          </span>
-                                        </li>
-                                      </ul>
-                                      <div className="itemtable">
-                                        <table>
-                                          <thead>
-                                            <tr>
-                                              <th>
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.th.Items
-                                                  : "Items"}
-                                              </th>
-                                              <th>
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.th.qty
-                                                  : "Qty"}
-                                              </th>
-                                              <th>
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.th.Amount
-                                                  : "Amount"}
-                                              </th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <tr>
-                                              <td>
-                                                <label>
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.label
-                                                        .productname
-                                                    : "Product Name"}{" "}
-                                                  1
-                                                </label>
-                                                <label>
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.label
-                                                        .productname
-                                                    : "Product Name"}{" "}
-                                                  2
-                                                </label>
-                                                <label>
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.label
-                                                        .productname
-                                                    : "Product Name"}{" "}
-                                                  3
-                                                </label>
-                                              </td>
-                                              <td>
-                                                <label>02</label>
-                                                <label>03</label>
-                                                <label>01</label>
-                                              </td>
-                                              <td>
-                                                <label>₹999</label>
-                                                <label>₹1299</label>
-                                                <label>₹12999</label>
-                                              </td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </Panel>
-                                </Collapse>
-                              </div>
-                              <button
-                                type="button"
-                                className="updateprofilelinkbtn pastchatmobbtn"
-                                onClick={this.handleMainTabChange.bind(this, 2)}
-                              >
-                                {this.state.agentRecentChatData.length < 9
-                                  ? this.state.agentRecentChatData.length +
-                                    "0 Past Chat"
-                                  : this.state.agentRecentChatData.length +
-                                    " Past Chat"}
-                              </button>
-                              <Dropdown
-                                overlay={
-                                  <Menu
-                                    onClick={this.handleMobileActionMenuClick.bind(
-                                      this
-                                    )}
-                                  >
-                                    <Menu.Item key="1">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.dropdown.closechat
-                                        : "Close Chat"}
-                                    </Menu.Item>
-                                  </Menu>
-                                }
-                              >
-                                <button
-                                  style={{ float: "right" }}
-                                  type="button"
-                                  className="updateprofilelinkbtn pastchatmobbtn"
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.action
-                                    : "Action"}
-                                </button>
-                              </Dropdown>
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.isCustomerProduct ? (
-                          <div
-                            className={
-                              this.state.ProfileProductTab === 1
-                                ? "tab-pane fade active show"
-                                : "tab-pane fade"
-                            }
-                            id="customer-product"
-                            role="tabpanel"
-                            aria-labelledby="customer-product"
-                          >
-                            <div className="productsbox">
-                              {this.state.isCustomerProfile === false ? (
-                                <div>
-                                  <ul className="nameplate">
-                                    <li>
-                                      <label
-                                        onClick={
-                                          this.state.isMobileView
-                                            ? this.handleMainTabChange.bind(
-                                                this,
-                                                1
-                                              )
-                                            : null
-                                        }
-                                        onMouseEnter={this.handleNameHover.bind(
-                                          this
-                                        )}
-                                        className="namelabel"
-                                        style={{
-                                          backgroundColor: this.state
-                                            .selectedColor,
-                                        }}
-                                      >
-                                        {this.state.customerName.charAt(0)}
-                                      </label>
-                                    </li>
-                                    <li
-                                      onClick={
-                                        this.state.isMobileView
-                                          ? this.handleMainTabChange.bind(
-                                              this,
-                                              1
-                                            )
-                                          : null
-                                      }
-                                    >
-                                      <h3>{this.state.customerName}</h3>
-                                    </li>
-                                    <li className="contactbox">
-                                      <div>
-                                        <ul>
-                                          <li>
-                                            <p title="Mobile No">
-                                              {this.state.mobileNo}
-                                            </p>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              ) : null}
-                              <Tabs
-                                onSelect={(index, label) => {
-                                  this.handleProductTypeTabChange(index);
-                                }}
-                                selected={this.state.productTypeTab}
-                              >
-                                <Tab
-                                  label={
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.label.shoppingbag
-                                      : "Shopping Bag"
-                                  }
-                                >
-                                  <div className="shoppingbag">
-                                    {this.state.shoppingBagData.length > 0 ? (
-                                      <label
-                                        className="selectalllabel"
-                                        onClick={this.handleSelectAllProduct.bind(
-                                          this,
-                                          1
-                                        )}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.selectall
-                                          : "Select All"}
-                                      </label>
-                                    ) : null}
-                                    <div className="prodtabl">
-                                      {this.state.shoppingBagData
-                                        ? this.state.shoppingBagData.map(
-                                            (item, i) => {
-                                              return (
-                                                <div
-                                                  className="prodboxx"
-                                                  key={i}
-                                                >
-                                                  <Checkbox
-                                                    checked={
-                                                      this.state
-                                                        .shoppingBagData[i]
-                                                        .isCheck
-                                                    }
-                                                    onChange={this.handleProductTabsChange.bind(
-                                                      this,
-                                                      1,
-                                                      i
-                                                    )}
-                                                  >
-                                                    <Popover
-                                                      overlayClassName="antcustom ant-prodesc"
-                                                      content={
-                                                        <div className="productdesc">
-                                                          <h4>
-                                                            {item.productName}
-                                                          </h4>
-                                                          <p>
-                                                            {TranslationContext !==
-                                                            undefined
-                                                              ? TranslationContext
-                                                                  .p
-                                                                  .lasttransaction
-                                                              : "Last Transaction"}
-                                                            -
-                                                            {
-                                                              item.uniqueItemCode
-                                                            }
-                                                          </p>
-                                                          <table>
-                                                            <tbody>
-                                                              {item.color !==
-                                                              "" ? (
-                                                                <>
-                                                                  <tr>
-                                                                    <td
-                                                                      style={{
-                                                                        width:
-                                                                          "50px",
-                                                                      }}
-                                                                    >
-                                                                      <label>
-                                                                        {TranslationContext !==
-                                                                        undefined
-                                                                          ? TranslationContext
-                                                                              .label
-                                                                              .colors
-                                                                          : "Colors"}
-                                                                        :
-                                                                      </label>
-                                                                    </td>
-                                                                    <td>
-                                                                      <ul>
-                                                                        {item.color ===
-                                                                        "Blue" ? (
-                                                                          <li>
-                                                                            <a className="colorblue">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Black" ? (
-                                                                          <li>
-                                                                            <a className="colorblack">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Grey" ? (
-                                                                          <li>
-                                                                            <a className="colorgrey">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Red" ? (
-                                                                          <li>
-                                                                            <a className="colorRed">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                        {item.color ===
-                                                                        "Yellow" ? (
-                                                                          <li>
-                                                                            <a className="colorYellow">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                        {item.color ===
-                                                                        "Green" ? (
-                                                                          <li>
-                                                                            <a className="colorGreen">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                      </ul>
-                                                                    </td>
-                                                                  </tr>
-                                                                </>
-                                                              ) : null}
-
-                                                              {item.size !==
-                                                              "" ? (
-                                                                <>
-                                                                  <tr>
-                                                                    <td>
-                                                                      <label>
-                                                                        {TranslationContext !==
-                                                                        undefined
-                                                                          ? TranslationContext
-                                                                              .label
-                                                                              .sizes
-                                                                          : "Sizes"}
-                                                                        :
-                                                                      </label>
-                                                                    </td>
-                                                                    <td>
-                                                                      {isNaN(
-                                                                        parseInt(
-                                                                          item.size
-                                                                        )
-                                                                      ) ===
-                                                                      false ? (
-                                                                        <ul className="sizes">
-                                                                          <li>
-                                                                            <a>
-                                                                              {
-                                                                                item.size
-                                                                              }
-                                                                            </a>
-                                                                          </li>
-                                                                        </ul>
-                                                                      ) : (
-                                                                        <ul>
-                                                                          <li>
-                                                                            <a>
-                                                                              {
-                                                                                item.size
-                                                                              }
-                                                                            </a>
-                                                                          </li>
-                                                                        </ul>
-                                                                      )}
-                                                                    </td>
-                                                                  </tr>
-                                                                </>
-                                                              ) : null}
-                                                            </tbody>
-                                                          </table>
-                                                          <h3>
-                                                            {TranslationContext !==
-                                                            undefined
-                                                              ? TranslationContext
-                                                                  .h3.inr
-                                                              : "INR "}
-                                                            {item.price}
-                                                            /-
-                                                          </h3>
-                                                        </div>
-                                                      }
-                                                      placement="left"
-                                                    >
-                                                      <img
-                                                        src={item.imageURL}
-                                                        // src={Ladyimg}
-                                                        className="ladyimg"
-                                                        alt="Lady Img"
-                                                      />
-                                                    </Popover>
-                                                  </Checkbox>
-                                                  {item.brandName ? (
-                                                    <h3>{item.brandName}</h3>
-                                                  ) : null}
-                                                  {item.productName ? (
-                                                    <h4>{item.productName}</h4>
-                                                  ) : null}
-                                                  {item.price ? (
-                                                    <span>
-                                                      {item.price.toLocaleString(
-                                                        "en-IN",
-                                                        {
-                                                          style: "currency",
-                                                          currency: "INR",
-                                                          minimumFractionDigits: 0,
-                                                        }
-                                                      )}
-                                                    </span>
-                                                  ) : null}
-                                                  <img
-                                                    src={Cancelico}
-                                                    className="cancelico"
-                                                    alt="Cancel Ico"
-                                                    disabled={
-                                                      this.state.isButtonClick
-                                                    }
-                                                    onClick={this.handleRemoveProduct.bind(
-                                                      this,
-                                                      item.uniqueItemCode,
-                                                      "S"
-                                                    )}
-                                                  />
-                                                </div>
-                                              );
-                                            }
-                                          )
-                                        : null}
-                                      {this.state.shoppingBagData.length ===
-                                      0 ? (
-                                        <Empty
-                                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        />
-                                      ) : null}
-                                    </div>
-                                    {this.state.selectedShoppingBag.length >
-                                    0 ? (
-                                      <div className="tabsbotbtn-box">
-                                        <button
-                                          type="button"
-                                          className="tabsbotbtn"
-                                          onClick={this.handleSendProductsOnChat.bind(
-                                            this,
-                                            false
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.send
-                                            : "SEND"}
-                                        </button>
-                                        <button
-                                          disabled={
-                                            this.state.isButtonClick
-                                              ? true
-                                              : false
-                                          }
-                                          type="button"
-                                          className="tabsbotbtn"
-                                          onClick={this.handleAddProductsToWishlist.bind(
-                                            this,
-                                            false
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button
-                                                .addtowishlist
-                                            : "ADD To WISHLIST"}
-                                        </button>
-                                        <Popover
-                                          overlayClassName="antcustom ant-prodesc"
-                                          placement="topRight"
-                                          content={
-                                            <div
-                                              // className="productdesc"
-                                              className=""
-                                              style={{
-                                                display: "inline-flex",
-                                              }}
-                                            >
-                                              <button
-                                                type="button"
-                                                className="tabsbotbtn"
-                                                onClick={this.handleBuyProductsOnChat.bind(
-                                                  this,
-                                                  false,
-                                                  true
-                                                )}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.button
-                                                      .directbuy
-                                                  : "Direct Buy"}
-                                              </button>
-                                              <button
-                                                type="button"
-                                                className="tabsbotbtn"
-                                                onClick={this.handleAddressModalOpen.bind(
-                                                  this
-                                                )}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.button
-                                                      .addtoshoppingbag
-                                                  : "Add to Shopping Bag"}
-                                              </button>
-                                            </div>
-                                          }
-                                        >
-                                          <button
-                                            type="button"
-                                            className="tabsbotbtn"
-                                          >
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.button.buynow
-                                              : "BUY NOW"}
-                                          </button>
-                                        </Popover>
-                                      </div>
-                                    ) : null}
-                                  </div>
-                                </Tab>
-                                <Tab
-                                  label={
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.a.wishlist
-                                      : "Wishlist"
-                                  }
-                                >
-                                  <div className="shoppingbag">
-                                    {this.state.wishListData.length > 0 ? (
-                                      <label
-                                        className="selectalllabel"
-                                        onClick={this.handleSelectAllProduct.bind(
-                                          this,
-                                          2
-                                        )}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.selectall
-                                          : "Select All"}
-                                      </label>
-                                    ) : null}
-                                    <div className="prodtabl">
-                                      {this.state.wishListData
-                                        ? this.state.wishListData.map(
-                                            (item, i) => {
-                                              return (
-                                                <div
-                                                  className="prodboxx"
-                                                  key={i}
-                                                >
-                                                  <Checkbox
-                                                    checked={
-                                                      this.state.wishListData[i]
-                                                        .isCheck
-                                                    }
-                                                    onChange={this.handleProductTabsChange.bind(
-                                                      this,
-                                                      2,
-                                                      i
-                                                    )}
-                                                  >
-                                                    <Popover
-                                                      overlayClassName="antcustom ant-prodesc"
-                                                      content={
-                                                        <div className="productdesc">
-                                                          <h4>
-                                                            {item.productName}
-                                                          </h4>
-                                                          <p>
-                                                            {TranslationContext !==
-                                                            undefined
-                                                              ? TranslationContext
-                                                                  .p
-                                                                  .lasttransaction
-                                                              : "Last Transaction"}
-                                                            -
-                                                            {
-                                                              item.uniqueItemCode
-                                                            }
-                                                          </p>
-                                                          <table>
-                                                            <tbody>
-                                                              {item.color !==
-                                                              "" ? (
-                                                                <>
-                                                                  <tr>
-                                                                    <td
-                                                                      style={{
-                                                                        width:
-                                                                          "50px",
-                                                                      }}
-                                                                    >
-                                                                      <label>
-                                                                        {TranslationContext !==
-                                                                        undefined
-                                                                          ? TranslationContext
-                                                                              .label
-                                                                              .colors
-                                                                          : "Colors"}
-                                                                        :
-                                                                      </label>
-                                                                    </td>
-                                                                    <td>
-                                                                      <ul>
-                                                                        {item.color ===
-                                                                        "Blue" ? (
-                                                                          <li>
-                                                                            <a className="colorblue">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Black" ? (
-                                                                          <li>
-                                                                            <a className="colorblack">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Grey" ? (
-                                                                          <li>
-                                                                            <a className="colorgrey">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Red" ? (
-                                                                          <li>
-                                                                            <a className="colorRed">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                        {item.color ===
-                                                                        "Yellow" ? (
-                                                                          <li>
-                                                                            <a className="colorYellow">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                        {item.color ===
-                                                                        "Green" ? (
-                                                                          <li>
-                                                                            <a className="colorGreen">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                      </ul>
-                                                                    </td>
-                                                                  </tr>
-                                                                </>
-                                                              ) : null}
-
-                                                              {item.size !==
-                                                              "" ? (
-                                                                <>
-                                                                  <tr>
-                                                                    <td>
-                                                                      <label>
-                                                                        {TranslationContext !==
-                                                                        undefined
-                                                                          ? TranslationContext
-                                                                              .label
-                                                                              .sizes
-                                                                          : "Sizes"}
-                                                                        :
-                                                                      </label>
-                                                                    </td>
-                                                                    <td>
-                                                                      {isNaN(
-                                                                        parseInt(
-                                                                          item.size
-                                                                        )
-                                                                      ) ===
-                                                                      false ? (
-                                                                        <ul className="sizes">
-                                                                          <li>
-                                                                            <a>
-                                                                              {
-                                                                                item.size
-                                                                              }
-                                                                            </a>
-                                                                          </li>
-                                                                        </ul>
-                                                                      ) : (
-                                                                        <ul>
-                                                                          <li>
-                                                                            <a>
-                                                                              {
-                                                                                item.size
-                                                                              }
-                                                                            </a>
-                                                                          </li>
-                                                                        </ul>
-                                                                      )}
-                                                                    </td>
-                                                                  </tr>
-                                                                </>
-                                                              ) : null}
-                                                            </tbody>
-                                                          </table>
-                                                          <h3>
-                                                            {TranslationContext !==
-                                                            undefined
-                                                              ? TranslationContext
-                                                                  .h3.inr
-                                                              : "INR "}
-                                                            {item.price}
-                                                            /-
-                                                          </h3>
-                                                        </div>
-                                                      }
-                                                      placement="left"
-                                                    >
-                                                      <img
-                                                        src={item.imageURL}
-                                                        className="ladyimg"
-                                                        alt="Lady Img"
-                                                      />
-                                                    </Popover>
-                                                  </Checkbox>
-                                                  {item.brandName ? (
-                                                    <h3>{item.brandName}</h3>
-                                                  ) : null}
-                                                  {item.productName ? (
-                                                    <h4>{item.productName}</h4>
-                                                  ) : null}
-                                                  {item.price ? (
-                                                    <span>
-                                                      {item.price.toLocaleString(
-                                                        "en-IN",
-                                                        {
-                                                          style: "currency",
-                                                          currency: "INR",
-                                                          minimumFractionDigits: 0,
-                                                        }
-                                                      )}
-                                                    </span>
-                                                  ) : null}
-                                                  <img
-                                                    disabled={
-                                                      this.state.isButtonClick
-                                                    }
-                                                    onClick={this.handleRemoveProduct.bind(
-                                                      this,
-                                                      item.uniqueItemCode,
-                                                      "W"
-                                                    )}
-                                                    src={Cancelico}
-                                                    className="cancelico"
-                                                    alt="Cancel Ico"
-                                                  />
-                                                </div>
-                                              );
-                                            }
-                                          )
-                                        : null}
-                                      {this.state.wishListData.length === 0 ? (
-                                        <Empty
-                                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        />
-                                      ) : null}
-                                    </div>
-                                    {this.state.selectedWishList.length > 0 ? (
-                                      <div className="tabsbotbtn-box">
-                                        <button
-                                          type="button"
-                                          className="tabsbotbtn"
-                                          onClick={this.handleSendProductsOnChat.bind(
-                                            this,
-                                            false
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.send
-                                            : "SEND"}
-                                        </button>
-                                        <button
-                                          type="button"
-                                          className="tabsbotbtn"
-                                          disabled={
-                                            this.state.isButtonClick
-                                              ? true
-                                              : false
-                                          }
-                                          onClick={this.handleAddProductsToShoppingBag.bind(
-                                            this
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.addtobag
-                                            : "ADD To BAG"}
-                                        </button>
-                                        <Popover
-                                          overlayClassName="antcustom ant-prodesc"
-                                          placement="topRight"
-                                          content={
-                                            <div
-                                              // className="productdesc"
-                                              className=""
-                                              style={{
-                                                display: "inline-flex",
-                                              }}
-                                            >
-                                              <button
-                                                type="button"
-                                                className="tabsbotbtn"
-                                                onClick={this.handleBuyProductsOnChat.bind(
-                                                  this,
-                                                  false,
-                                                  true
-                                                )}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.button
-                                                      .directbuy
-                                                  : "Direct Buy"}
-                                              </button>
-                                              <button
-                                                type="button"
-                                                className="tabsbotbtn"
-                                                onClick={this.handleAddressModalOpen.bind(
-                                                  this
-                                                )}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.button
-                                                      .addtoshoppingbag
-                                                  : "Add to Shopping Bag"}
-                                              </button>
-                                            </div>
-                                          }
-                                        >
-                                          <button
-                                            onClick={this.handleBuyNowButtonClick.bind(
-                                              this
-                                            )}
-                                            type="button"
-                                            className="tabsbotbtn"
-                                          >
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.button.buynow
-                                              : "BUY NOW"}
-                                          </button>
-                                        </Popover>
-                                      </div>
-                                    ) : null}
-                                  </div>
-                                </Tab>
-                                <Tab
-                                  label="Recommended"
-                                  label={
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.a.recommended
-                                      : "Recommended"
-                                  }
-                                >
-                                  <div className="shoppingbag">
-                                    {this.state.recommendedData.length > 0 ? (
-                                      <label
-                                        className="selectalllabel"
-                                        onClick={this.handleSelectAllProduct.bind(
-                                          this,
-                                          3
-                                        )}
-                                      >
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.label.selectall
-                                          : "Select All"}
-                                      </label>
-                                    ) : null}
-                                    <div className="prodtabl">
-                                      {this.state.recommendedData
-                                        ? this.state.recommendedData.map(
-                                            (item, i) => {
-                                              return (
-                                                <div
-                                                  className="prodboxx"
-                                                  key={i}
-                                                >
-                                                  <Checkbox
-                                                    checked={
-                                                      this.state
-                                                        .recommendedData[i]
-                                                        .isCheck
-                                                    }
-                                                    onChange={this.handleProductTabsChange.bind(
-                                                      this,
-                                                      3,
-                                                      i
-                                                    )}
-                                                  >
-                                                    <Popover
-                                                      overlayClassName="antcustom ant-prodesc"
-                                                      content={
-                                                        <div className="productdesc">
-                                                          <h4>
-                                                            {item.productName}
-                                                          </h4>
-                                                          <p>
-                                                            {TranslationContext !==
-                                                            undefined
-                                                              ? TranslationContext
-                                                                  .p
-                                                                  .lasttransaction
-                                                              : "Last Transaction"}
-                                                            -
-                                                            {
-                                                              item.uniqueItemCode
-                                                            }
-                                                          </p>
-                                                          <table>
-                                                            <tbody>
-                                                              {item.color !==
-                                                              "" ? (
-                                                                <>
-                                                                  <tr>
-                                                                    <td
-                                                                      style={{
-                                                                        width:
-                                                                          "50px",
-                                                                      }}
-                                                                    >
-                                                                      <label>
-                                                                        {TranslationContext !==
-                                                                        undefined
-                                                                          ? TranslationContext
-                                                                              .label
-                                                                              .colors
-                                                                          : "Colors"}
-                                                                        :
-                                                                      </label>
-                                                                    </td>
-                                                                    <td>
-                                                                      <ul>
-                                                                        {item.color ===
-                                                                        "Blue" ? (
-                                                                          <li>
-                                                                            <a className="colorblue">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Black" ? (
-                                                                          <li>
-                                                                            <a className="colorblack">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Grey" ? (
-                                                                          <li>
-                                                                            <a className="colorgrey">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-
-                                                                        {item.color ===
-                                                                        "Red" ? (
-                                                                          <li>
-                                                                            <a className="colorRed">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                        {item.color ===
-                                                                        "Yellow" ? (
-                                                                          <li>
-                                                                            <a className="colorYellow">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                        {item.color ===
-                                                                        "Green" ? (
-                                                                          <li>
-                                                                            <a className="colorGreen">
-                                                                              <span>
-                                                                                1
-                                                                              </span>
-                                                                            </a>
-                                                                          </li>
-                                                                        ) : null}
-                                                                      </ul>
-                                                                    </td>
-                                                                  </tr>
-                                                                </>
-                                                              ) : null}
-
-                                                              {item.size !==
-                                                              "" ? (
-                                                                <>
-                                                                  <tr>
-                                                                    <td>
-                                                                      <label>
-                                                                        {TranslationContext !==
-                                                                        undefined
-                                                                          ? TranslationContext
-                                                                              .label
-                                                                              .sizes
-                                                                          : "Sizes"}
-                                                                        :
-                                                                      </label>
-                                                                    </td>
-                                                                    <td>
-                                                                      {isNaN(
-                                                                        parseInt(
-                                                                          item.size
-                                                                        )
-                                                                      ) ===
-                                                                      false ? (
-                                                                        <ul className="sizes">
-                                                                          <li>
-                                                                            <a>
-                                                                              {
-                                                                                item.size
-                                                                              }
-                                                                            </a>
-                                                                          </li>
-                                                                        </ul>
-                                                                      ) : (
-                                                                        <ul>
-                                                                          <li>
-                                                                            <a>
-                                                                              {
-                                                                                item.size
-                                                                              }
-                                                                            </a>
-                                                                          </li>
-                                                                        </ul>
-                                                                      )}
-                                                                    </td>
-                                                                  </tr>
-                                                                </>
-                                                              ) : null}
-                                                            </tbody>
-                                                          </table>
-                                                          <h3>
-                                                            {TranslationContext !==
-                                                            undefined
-                                                              ? TranslationContext
-                                                                  .h3.inr
-                                                              : "INR "}
-                                                            {item.price}
-                                                            /-
-                                                          </h3>
-                                                        </div>
-                                                      }
-                                                      placement="left"
-                                                    >
-                                                      <img
-                                                        src={item.imageURL}
-                                                        // src={Ladyimg}
-                                                        className="ladyimg"
-                                                        alt="Lady Img"
-                                                      />
-                                                    </Popover>
-                                                  </Checkbox>
-                                                  {item.brandName ? (
-                                                    <h3>{item.brandName}</h3>
-                                                  ) : null}
-                                                  {item.productName ? (
-                                                    <h4>{item.productName}</h4>
-                                                  ) : null}
-                                                  {item.price ? (
-                                                    <span>
-                                                      {item.price.toLocaleString(
-                                                        "en-IN",
-                                                        {
-                                                          style: "currency",
-                                                          currency: "INR",
-                                                          minimumFractionDigits: 0,
-                                                        }
-                                                      )}
-                                                    </span>
-                                                  ) : null}
-                                                  <img
-                                                    disabled={
-                                                      this.state.isButtonClick
-                                                    }
-                                                    onClick={this.handleRemoveProduct.bind(
-                                                      this,
-                                                      item.uniqueItemCode,
-                                                      "R"
-                                                    )}
-                                                    src={Cancelico}
-                                                    className="cancelico"
-                                                    alt="Cancel Ico"
-                                                  />
-                                                </div>
-                                              );
-                                            }
-                                          )
-                                        : null}
-                                      {this.state.recommendedData.length ===
-                                      0 ? (
-                                        <Empty
-                                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        />
-                                      ) : null}
-                                    </div>
-                                    {this.state.selectedRecommended.length >
-                                    0 ? (
-                                      <div className="tabsbotbtn-box">
-                                        <button
-                                          type="button"
-                                          className="tabsbotbtn"
-                                          onClick={this.handleSendProductsOnChat.bind(
-                                            this,
-                                            false
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.send
-                                            : "SEND"}
-                                        </button>
-                                        <button
-                                          type="button"
-                                          className="tabsbotbtn"
-                                          disabled={
-                                            this.state.isButtonClick
-                                              ? true
-                                              : false
-                                          }
-                                          onClick={this.handleAddProductsToWishlist.bind(
-                                            this,
-                                            true
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button
-                                                .addtowishlist
-                                            : "ADD To WISHLIST"}
-                                        </button>
-                                        <Popover
-                                          overlayClassName="antcustom ant-prodesc"
-                                          placement="topRight"
-                                          content={
-                                            <div
-                                              // className="productdesc"
-                                              className=""
-                                              style={{
-                                                display: "inline-flex",
-                                              }}
-                                            >
-                                              <button
-                                                type="button"
-                                                className="tabsbotbtn"
-                                                onClick={this.handleBuyProductsOnChat.bind(
-                                                  this,
-                                                  true,
-                                                  true
-                                                )}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.button
-                                                      .directbuy
-                                                  : "Direct Buy"}
-                                              </button>
-                                              <button
-                                                type="button"
-                                                className="tabsbotbtn"
-                                                onClick={this.handleAddressModalOpen.bind(
-                                                  this
-                                                )}
-                                              >
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.button
-                                                      .addtoshoppingbag
-                                                  : "Add to Shopping Bag"}
-                                              </button>
-                                            </div>
-                                          }
-                                        >
-                                          <button
-                                            onClick={this.handleBuyNowButtonClick.bind(
-                                              this
-                                            )}
-                                            type="button"
-                                            className="tabsbotbtn"
-                                          >
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.button.buynow
-                                              : "BUY NOW"}
-                                          </button>
-                                        </Popover>
-                                      </div>
-                                    ) : null}
-                                  </div>
-                                </Tab>
-                              </Tabs>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                ) : null
-              ) : null}
-            </div>
-          </div>
-        </Modal>
+        <a
+          id="mobileChatbotWindows"
+          onClick={this.handleChatMobileWindows.bind(this)}
+        ></a>
         {/* -----------------------Action Modal----------------- */}
         <Modal
           open={this.state.actionBtn}
@@ -8914,17 +4743,10 @@ class Header extends Component {
               : "actionmodalId-mr-remove",
           }}
         >
-          <div className="store-hdrtMdal">
+          <div style={{ padding: "0px 15px 0px 10px" }}>
             <div className="row">
               <label
                 className={"actionmodallbl"}
-                style={{
-                  cursor:
-                    this.state.isCustEndChat === false ? "no-drop" : "Pointer",
-                  pointerEvents:
-                    this.state.isCustEndChat === false ? "none" : "all",
-                }}
-                disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
               >
                 {TranslationContext !== undefined
@@ -8947,6 +4769,50 @@ class Header extends Component {
         >
           <div style={{ padding: "15px" }}>
             <div className="popover-input-cntr">
+              <div className="row">
+                <div className="col-md-6">
+                  <p>Name</p>
+                  <input
+                    type="text"
+                    placeholder={"Enter Name"}
+                    name="addressName"
+                    autoComplete="off"
+                    value={this.state.addressName}
+                    onChange={this.handleTextOnchage}
+                    // disabled={true}
+                  />
+
+                  {this.state.isName ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isName}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="col-md-6">
+                  <p>Mobile No</p>
+                  <input
+                    type="text"
+                    placeholder={"Enter Mobile No"}
+                    autoComplete="off"
+                    name="addressMobileNo"
+                    value={this.state.addressMobileNo}
+                    onChange={this.handleTextOnchage}
+                    disabled={true}
+                  />
+                  {this.state.isAddressMobileNo ? (
+                    <p
+                      className="non-deliverable"
+                      style={{ marginTop: "0", textAlign: "left" }}
+                    >
+                      {this.state.isAddressMobileNo}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+
               <div>
                 <p>
                   {TranslationContext !== undefined
@@ -9054,6 +4920,7 @@ class Header extends Component {
                   ) : null}
                 </div>
               </div>
+
               <div className="row">
                 <div className="col-md-6">
                   <p>
@@ -9148,9 +5015,96 @@ class Header extends Component {
             </div>
           </div>
         </Modal>
+        <Modal
+          open={this.state.fileShowMdl}
+          onClose={this.handleFileClose.bind(this)}
+          center
+          modalId="fileImagesShow"
+          overlayId="logout-ovrly"
+        >
+          <div style={{ marginTop: "10px" }}>
+            <label className="fileAttch">
+              {this.state.AttachementFiles.length}&nbsp;Attachment
+            </label>
+            <img
+              src={CancelImg}
+              alt="Cancel"
+              className="cancelFileimg"
+              onClick={this.handleFileClose.bind(this)}
+            />
+          </div>
+          <div
+            className="fileAttchment"
+            style={{ margin: "0px 20px 20px 20px" }}
+          >
+            {this.state.AttachementFiles.length > 0
+              ? this.state.AttachementFiles.map((item, i) => {
+                  return (
+                    <div className="fileBrdpdg" key={i}>
+                      <label className="lblFonr" title={item.name}>
+                        {item.name}
+                      </label>
+                      <img
+                        src={CancelImg}
+                        alt="Cancel"
+                        className="fileDocCancel"
+                        onClick={this.handleCancelFile.bind(this, i)}
+                      />
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+        </Modal>
+        <Modal
+          open={this.state.alertMessageModal}
+          onClose={this.handlealertMessageModalClose.bind(this)}
+          center
+          modalId="alertMessageModal"
+          classNames={{
+            modal:
+              "order-popover order-popover-butns order-popover-address customaddpop",
+          }}
+        >
+          <div className="popover-input-cntr">
+            <div className="comment-disp" style={{ float: "right" }}>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handlealertMessageModalClose.bind(this)}
+                />
+              </div>
+            </div>
+            <div style={{ padding: "15px" }}>
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Messgae Content</label>
+              </div>
+              <textarea
+                style={{ height: "200px", fontSize: "14px" }}
+                value={this.state.alertMessageContent}
+              ></textarea>
+              <div className="row">
+                <div class="ant-popover-buttons" style={{ marginLeft: "80px" }}>
+                  <button
+                    type="button"
+                    class="ant-btn ant-btn-primary ant-btn-sm"
+                    onClick={this.handlealertMessageModalClose.bind(this)}
+                    style={{ color: "#fff", marginLeft: "280px" }}
+                  >
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.close
+                      : "Close"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }
 }
 
-export default Header;
+export default withRouter(Header);

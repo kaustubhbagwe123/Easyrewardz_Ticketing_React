@@ -109,7 +109,6 @@ class JunkWords extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var data = res.data.responseData;
 
@@ -289,7 +288,6 @@ class JunkWords extends Component {
   }
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.JunkWordsData;
 
@@ -332,8 +330,6 @@ class JunkWords extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
-
     var itemsArray = [];
 
     itemsArray = this.state.JunkWordsData;
@@ -377,8 +373,6 @@ class JunkWords extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sjunkKeywordFilterCheckbox = this.state.sjunkKeywordFilterCheckbox;
@@ -592,11 +586,9 @@ class JunkWords extends Component {
     this.setState({
       tempJunkWordsData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   StatusCloseModel() {
-    debugger;
     if (this.state.tempJunkWordsData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -662,7 +654,6 @@ class JunkWords extends Component {
     }
   }
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterjunkKeyword.length === 0 ||
       this.state.sortFilterreason.length === 0 ||
@@ -764,7 +755,6 @@ class JunkWords extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "junkKeyword") {
       var sortFilterjunkKeyword = matchSorter(
@@ -1284,7 +1274,6 @@ class JunkWords extends Component {
                         sortable: false,
                         accessor: "actionReport",
                         Cell: (row) => (
-                          // <div className="report-action">
                           <div className="settings-align-actions">
                             <Popover
                               content={
@@ -1367,4 +1356,3 @@ class JunkWords extends Component {
 }
 
 export default JunkWords;
- 

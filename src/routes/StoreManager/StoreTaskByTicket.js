@@ -885,7 +885,7 @@ class StoreTaskByTicket extends Component {
                   <div className="row">
                     <div className="col-md-12 store-mrg">
                       <label className="store-Edit-lbl">
-                        Comments:{" "}
+                        Comments:
                         {this.state.commentCount < 9
                           ? "0" + this.state.commentCount
                           : this.state.commentCount}
@@ -971,7 +971,7 @@ class StoreTaskByTicket extends Component {
                         />
                       </div>
                       <label className="store-edit-data-1">
-                        {this.state.isueRaisedBy}{" "}
+                        {this.state.isueRaisedBy}
                       </label>
                     </div>
                     <div className="col-md-6">
@@ -1003,7 +1003,7 @@ class StoreTaskByTicket extends Component {
                     <div className="col-md-12 progress-sect">
                       <div className="col-md-3" style={{ padding: 0 }}>
                         <label className="store-date">
-                          {this.state.progressData.closureTaskDate}{" "}
+                          {this.state.progressData.closureTaskDate}
                         </label>
                       </div>
                       <div className="col-md-9" style={{ padding: 0 }}>
@@ -1225,14 +1225,20 @@ class StoreTaskByTicket extends Component {
                   Header: <span>Name</span>,
                   accessor: "userName",
                 },
+                // {
+                //   Header: <span>Designation</span>,
+                //   accessor: "designation"
+                // }
               ]}
               minRows={2}
               showPagination={false}
               resizable={false}
               getTrProps={(rowInfo, column) => {
+                // ////
                 const index = column ? column.index : -1;
                 return {
                   onClick: (e) => {
+                    ////
                     this.selectedRow = index;
                     var agentId = column.original["user_ID"];
                     this.setState({ agentId });

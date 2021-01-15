@@ -117,7 +117,6 @@ class StoreTask extends Component {
   };
   ////handle redirect to edit store task
   handleRedirectToEditStoreTask(storeTaskID) {
-    debugger;
     this.props.history.push({
       pathname: "editStoreTask",
       state: { TaskID: storeTaskID },
@@ -134,7 +133,6 @@ class StoreTask extends Component {
   };
   ////handle redirect to store Task By Ticket
   handleRedirectToStoreTaskByTicket(storeTaskID, ticketid) {
-    debugger;
     this.props.history.push({
       pathname: "/store/storeTaskByTicket",
       state: { TaskID: storeTaskID, TicketID: ticketid },
@@ -142,7 +140,6 @@ class StoreTask extends Component {
   }
   ////handle get task data by tab click
   handleGetTaskData(tabFor) {
-    debugger;
     if (tabFor === 4) {
       this.setState({
         showAddTask: false,
@@ -196,7 +193,6 @@ class StoreTask extends Component {
         params: { tabFor: tabFor },
       })
         .then(function(response) {
-          debugger;
           var message = response.data.message;
           var data = response.data.responseData;
           if (message === "Success" && data.length > 0) {
@@ -533,7 +529,6 @@ class StoreTask extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success" && data.length > 0) {
@@ -704,7 +699,6 @@ class StoreTask extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         let status = response.data.message;
         let data = response.data.responseData;
         if (status === "Success") {
@@ -742,7 +736,6 @@ class StoreTask extends Component {
       params: { DepartmentId: departmentId },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
@@ -798,7 +791,6 @@ class StoreTask extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
@@ -833,7 +825,6 @@ class StoreTask extends Component {
   }
   ////handle get assign by me search filter
   handleGetAssigenBymefilterData() {
-    debugger;
     let self = this;
 
     var inputParam = {};
@@ -895,7 +886,7 @@ class StoreTask extends Component {
   ////handle get raise by me search filter
   handleGetRaisedbymefilterData() {
     let self = this;
-    debugger;
+
     var inputParam = {};
 
     // inputParam.taskid = this.state.raiseSearchData["taskid"] || 0;
@@ -940,7 +931,6 @@ class StoreTask extends Component {
       data: inputParam,
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var raisedByMeData = response.data.responseData;
         if (message === "Success" && raisedByMeData) {
@@ -955,7 +945,7 @@ class StoreTask extends Component {
   }
   handleGetTaskbyTicketData() {
     let self = this;
-    debugger;
+
     var inputParam = {};
 
     // inputParam.taskid = this.state.ticketSearchData["taskid"] || 0;
@@ -1006,7 +996,6 @@ class StoreTask extends Component {
       data: inputParam,
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var taskByTicketData = response.data.responseData;
         if (message === "Success" && taskByTicketData) {
@@ -1020,7 +1009,6 @@ class StoreTask extends Component {
       });
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
 
     if (this.state.tabIndex === 1) {
@@ -1092,7 +1080,6 @@ class StoreTask extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
 
     if (this.state.tabIndex === 1) {
@@ -1167,8 +1154,6 @@ class StoreTask extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
     if (
       this.state.sortFilterdepartmentName.length === 0 ||
       this.state.sortFilterstoreName.length === 0 ||
@@ -1377,7 +1362,6 @@ class StoreTask extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFilterdepartmentName: this.state.sortdepartmentName,
       sortFilterstoreName: this.state.sortstoreName,
@@ -1524,8 +1508,6 @@ class StoreTask extends Component {
     }
   }
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sdepartmentNameFilterCheckbox = this.state
@@ -1945,7 +1927,6 @@ class StoreTask extends Component {
     });
   };
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "storeName") {
@@ -2066,7 +2047,6 @@ class StoreTask extends Component {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
   }
   handleOnChange(e) {
-    debugger;
     const { name, value } = e.target;
     if (this.state.tabIndex === 1) {
       this.state.raiseSearchData[name] = value;
@@ -2121,7 +2101,6 @@ class StoreTask extends Component {
     }
   }
   SearchCreationOn = async (startDate) => {
-    debugger;
     if (this.state.tabIndex === 1) {
       this.state.raiseSearchData["CreatedOnFrom"] = startDate[0];
       this.state.raiseSearchData["CreatedOnTo"] = startDate[1];
@@ -2299,7 +2278,7 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-              <div>
+              <div className="position-relative">
                 <Collapse isOpen={this.state.FilterCollapse}>
                   <Card>
                     <CardBody>
@@ -2517,7 +2496,7 @@ class StoreTask extends Component {
                 </Collapse>
                 <div
                   className="float-search"
-                  style={{ top: "18%" }}
+                  // style={{ top: "18%" }}
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
@@ -2633,7 +2612,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.department
-                                : "Department"}{" "}
+                                : "Department"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -2691,7 +2670,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.storename
-                                : "Store Name"}{" "}
+                                : "Store Name"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -2749,7 +2728,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.priority
-                                : "Priority"}{" "}
+                                : "Priority"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -2784,7 +2763,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.creationon
-                                : "Creation On"}{" "}
+                                : "Creation On"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -2817,7 +2796,7 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          Assigned to{" "}
+                                          Assigned to
                                           {" " + row.original.assignto}
                                         </p>
                                         <p>{row.original.assignedago}</p>
@@ -2829,12 +2808,12 @@ class StoreTask extends Component {
                                         </p>
                                         <p>{row.original.updatedago}</p>
                                       </li>
-                                      <li>
-                                        <p>Resolution time remaining by</p>
+                                      {/* <li>
+                                        <p>Response time remaining by</p>
                                         <p>
                                           {row.original.resolutionTimeRemaining}
                                         </p>
-                                      </li>
+                                      </li> */}
                                       {/* <li>
                                         <p>Response overdue by</p>
                                         <p></p>
@@ -2920,7 +2899,7 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-              <div>
+              <div className="position-relative">
                 <Collapse isOpen={this.state.FilterCollapse}>
                   <Card>
                     <CardBody>
@@ -3134,7 +3113,7 @@ class StoreTask extends Component {
                 </Collapse>
                 <div
                   className="float-search"
-                  style={{ top: "18%" }}
+                  // style={{ top: "18%" }}
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
@@ -3251,7 +3230,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.department
-                                : "Department"}{" "}
+                                : "Department"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -3309,7 +3288,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.createdby
-                                : "Created by"}{" "}
+                                : "Created by"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -3341,7 +3320,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.priority
-                                : "Priority"}{" "}
+                                : "Priority"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -3431,7 +3410,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.creationon
-                                : "Creation On"}{" "}
+                                : "Creation On"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -3465,7 +3444,7 @@ class StoreTask extends Component {
                                         </li>
                                         <li>
                                           <p>
-                                            Assigned to{" "}
+                                            Assigned to
                                             {" " + row.original.assignto}
                                           </p>
                                           <p>{row.original.assignedago}</p>
@@ -3478,15 +3457,15 @@ class StoreTask extends Component {
                                           <p>{row.original.updatedago}</p>
                                         </li>
 
-                                        <li>
-                                          <p>Resolution time remaining by</p>
+                                        {/* <li>
+                                          <p>Response time remaining by</p>
                                           <p>
                                             {
                                               row.original
                                                 .resolutionTimeRemaining
                                             }
                                           </p>
-                                        </li>
+                                        </li> */}
                                         {/* <li>
                                           <p>Response overdue by</p>
                                           <p></p>
@@ -3535,7 +3514,7 @@ class StoreTask extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-              <div>
+              <div className="position-relative">
                 <Collapse isOpen={this.state.FilterCollapse}>
                   <Card>
                     <CardBody>
@@ -3841,7 +3820,7 @@ class StoreTask extends Component {
                 </Collapse>
                 <div
                   className="float-search"
-                  style={{ top: "18%" }}
+                  // style={{ top: "18%" }}
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
@@ -3947,7 +3926,7 @@ class StoreTask extends Component {
                             <span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.tasktitle
-                                : "tasktitle"}
+                                : "Task Title"}
                             </span>
                           ),
                           accessor: "taskTitle",
@@ -3970,7 +3949,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.department
-                                : "Department"}{" "}
+                                : "Department"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -4028,7 +4007,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.createdby
-                                : "Created by"}{" "}
+                                : "Created by"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -4041,6 +4020,38 @@ class StoreTask extends Component {
                           ),
                           sortable: false,
                           accessor: "createdBy",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Priority"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priorityName",
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.priority
+                                  : "Priority"
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.priority
+                                : "Priority"}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ === false &&
+                                  this.state.sortHeader === "Priority"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "priorityName",
                         },
                         {
                           Header: (
@@ -4119,7 +4130,7 @@ class StoreTask extends Component {
                             >
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.creationon
-                                : "Creation On"}{" "}
+                                : "Creation On"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ === false &&
@@ -4152,7 +4163,7 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          Assigned to{" "}
+                                          Assigned to
                                           {" " + row.original.assignto}
                                         </p>
                                         <p>{row.original.assignedago}</p>
@@ -4164,12 +4175,12 @@ class StoreTask extends Component {
                                         </p>
                                         <p>{row.original.updatedago}</p>
                                       </li>
-                                      <li>
+                                      {/* <li>
                                         <p>Resolution time remaining by</p>
                                         <p>
                                           {row.original.resolutionTimeRemaining}
                                         </p>
-                                      </li>
+                                      </li> */}
                                       {/* <li>
                                         <p>Response overdue by</p>
                                         <p></p>

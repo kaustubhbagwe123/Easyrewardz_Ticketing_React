@@ -6,6 +6,7 @@ import Logo from "./../../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import ShopSter from "./../../assets/Images/Shopster.png";
 import { encryption } from "../../helpers/encryption";
 import axios from "axios";
 import { authHeader } from "../../helpers/authHeader";
@@ -25,6 +26,9 @@ class StoreSignIn extends Component {
       password: "",
       loading: false,
       programCode: "",
+      isMobileView: false,
+      emailIdValidation: "",
+      passwordValidation: "",
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,12 +39,20 @@ class StoreSignIn extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (!e.target.value) {
+      this.setState({ emailIdValidation: "Enter User ID." });
+    }else{
+      this.setState({emailIdValidation:""})
+    }
   }
 
   handlePasswordChange = (e) => {
     this.setState({
       password: e.target.value,
     });
+    if (!e.target.value) {
+      this.setState({ passwordValidation: "Enter Password." });
+    }
   };
 
   componentDidMount() {
@@ -57,33 +69,58 @@ class StoreSignIn extends Component {
     } else {
       this.props.history.push("/");
     }
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
   }
-
+  resize() {
+    if (window.innerWidth <= 760) {
+      this.setState({ isMobileView: true });
+    } else {
+      this.setState({ isMobileView: false });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize.bind(this));
+  }
   handleSubmit(event) {
     event.preventDefault();
-    debugger;
+
+    if (this.state.emailID) {
+      this.setState({ emailIdValidation: "" });
+    } else {
+      this.setState({ emailIdValidation: "Enter User ID." });
+    }
+    if (this.state.password) {
+      this.setState({ emailIdValidation: "" });
+    } else {
+      this.setState({ passwordValidation: "Enter Password." });
+    }
     let self = this;
-    if (this.validator.allValid()) {
+    if (this.state.emailID && this.state.password) {
       const { emailID, password } = this.state;
       var X_Authorized_userId = encryption(emailID, "enc");
 
       let X_Authorized_password = encryption(password, "enc");
 
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption(
-        "https://multitenancyshopsterv2.dcdev.brainvire.net",
+      let X_Authorized_Devicesource = encryption(
+        this.state.isMobileView ? "M" : "W",
         "enc"
       );
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // let X_Authorized_Domainname = encryption(
-      //   "https://multitenancyshopster.dcdev.brainvire.net",
+      //   "https://multitenancyshopsterv2.dcdev.brainvire.net",
       //   "enc"
       // );
       // let X_Authorized_Domainname = encryption(
-      //   "https://ui-shopsterqa.ercx.co",
+      //   "https://qa-ui.shopster.live",
       //   "enc"
       // );
       // let X_Authorized_Domainname = encryption(
-      //    "https://ui-bell-tktqa.ercx.co",
+      //   "https://qa-ui-belltktqa.shopster.live",
+      //   "enc"
+      // );
+      // let X_Authorized_Domainname = encryption(
+      //   "http://www.shopster.live",
       //   "enc"
       // );
 
@@ -100,16 +137,17 @@ class StoreSignIn extends Component {
             "X-Authorized-userId": X_Authorized_userId,
             "X-Authorized-password": X_Authorized_password,
             "X-Authorized-Domainname": X_Authorized_Domainname,
+            "X-Authorized-FBID": "",
+            "X-Authorized-DeviceID": "",
+            "X-Authorized-Devicesource": X_Authorized_Devicesource,
           },
         })
           .then(function(res) {
-            debugger;
             let resValid = res.data.message;
             self.setState({
               loading: true,
             });
             if (resValid === "Valid Login") {
-              debugger;
               window.localStorage.setItem("token", res.data.responseData.token);
               window.localStorage.setItem("ERS", true);
               self.handleCRMRole();
@@ -153,11 +191,12 @@ class StoreSignIn extends Component {
                 if (isCallStorePayAPI) {
                   self.handleGenerateStorePayLink();
                 } else {
-                  NotificationManager.error(
-                    "You don't have any sufficient page access. Please contact administrator for access.",
-                    "",
-                    2000
-                  );
+                  // NotificationManager.error(
+                  //   "You don't have any sufficient page access. Please contact administrator for access.",
+                  //   "",
+                  //   2000
+                  // );
+                  self.props.history.push("languageSelection");
                 }
 
                 self.setState({
@@ -253,12 +292,16 @@ class StoreSignIn extends Component {
   };
   render() {
     return (
-      <div className="auth-wrapper box-center">
+      <div className="auth-wrapper box-center Mainpro">
+        <div className="Shopster">
+          <img src={ShopSter} alt="ShopSter"/>
+        </div>
+        <h3 className="logintxt">Log in</h3>
         <div className="auth-content">
           <NotificationContainer />
           <div className="card">
             <div className="card-body text-center">
-              <div className="mb-4">
+              <div className="mb-4 logohi">
                 <img
                   src={Logo}
                   alt="logo"
@@ -269,23 +312,24 @@ class StoreSignIn extends Component {
               <form name="form" onSubmit={this.handleSubmit}>
                 <label className="sign-in">SIGN IN</label>
                 <div className="input-group mb-3">
+                  <label className="stprocode">Enter User ID</label>
                   <input
                     type="text"
                     className="program-code-textbox"
-                    placeholder="Email ID*"
+                    placeholder="Enter User ID*"
                     name="emailID"
                     onChange={this.hanleChange}
                     value={this.state.emailId}
                     autoComplete="off"
                     maxLength={100}
                   />
-                  {this.validator.message(
-                    "Email Id",
-                    this.state.emailID,
-                    "required|email"
-                  )}
+
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.emailIdValidation}
+                  </p>
                 </div>
                 <div className="input-group mb-3">
+                  <label className="stprocode">Password</label>
                   <input
                     type="password"
                     className="program-code-textbox"
@@ -293,17 +337,18 @@ class StoreSignIn extends Component {
                     onChange={this.handlePasswordChange}
                     autoComplete="off"
                     maxLength={25}
+                    value={this.state.password}
                   />
-                  {this.validator.message(
-                    "Password",
-                    this.state.password,
-                    "required"
+                  {this.state.password === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.passwordValidation}
+                    </p>
                   )}
                 </div>
                 <button
                   type="submit"
                   className="program-code-button"
-                  disabled={this.state.loading}
+                  onClick={this.handleSubmit.bind(this)}
                 >
                   {this.state.loading ? (
                     <FontAwesomeIcon
@@ -314,14 +359,13 @@ class StoreSignIn extends Component {
                   ) : (
                     ""
                   )}
-                  {this.state.loading ? "Please Wait ..." : "LOGIN"}
+                  {this.state.loading ? "Please Wait..." : "LOGIN"}
                 </button>
               </form>
               <div>
                 <br />
-                <p className="mb-0 text-muted">
+                <p className="mb-0 text-muted forg">
                   <Link
-                    // to="storeForgotpassword"
                     to={{
                       pathname: "storeForgotpassword",
                       state: {

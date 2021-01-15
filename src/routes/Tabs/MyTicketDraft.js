@@ -81,7 +81,6 @@ class MyTicketDraft extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.DraftDetails;
 
@@ -330,7 +329,7 @@ class MyTicketDraft extends Component {
       .then(function(res) {
         let data = res.data.responseData;
         let status = res.data.message;
-        debugger;
+
         if (status === "Success") {
           self.setState({ DraftDetails: data, isloading: false });
           self.state.sortAllData = data;
@@ -372,7 +371,7 @@ class MyTicketDraft extends Component {
 
   ////handle Row click
   hanldeRowClick = (rowInfo, column) => {
-    // debugger;
+    //
     if ((rowInfo, column)) {
       return {
         onClick: (e) => {
@@ -396,7 +395,6 @@ class MyTicketDraft extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "categoryName") {
@@ -708,9 +706,8 @@ class MyTicketDraft extends Component {
                           this,
                           "createdDate",
                           TranslationContext !== undefined
-                          ? TranslationContext.th
-                              .createddate
-                          : "Created Date"
+                            ? TranslationContext.th.createddate
+                            : "Created Date"
                         )}
                       >
                         {TranslationContext !== undefined

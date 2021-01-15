@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./../../../node_modules/jquery/dist/jquery.js";
 import "./../../../node_modules/popper.js/dist/popper.js";
 import "./../../../node_modules/bootstrap/dist/js/bootstrap.js";
-// import Demo from "./../../store/Hashtag";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import TaskDepartment from "./Charts/TaskDepartment.js";
@@ -14,7 +13,7 @@ import OpenCompaign from "./Charts/OpenCompaign.js";
 import InvoiceAmountPie from "./Charts/InvoiceAmountPie.js";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
 import ReactTable from "react-table";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +27,10 @@ import StoreStatus from "./StoreStatus.js";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import matchSorter from "match-sorter";
+import Select from "react-select";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
+import ZoneType from "../../routes/Settings/Ticketing/ZoneType";
 
 class StoreDashboard extends Component {
   constructor(props) {
@@ -37,10 +40,6 @@ class StoreDashboard extends Component {
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     ).subtract(30, "days");
     let end = moment(start).add(30, "days");
-    // let creationStart = moment(
-    //   new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-    // ).subtract(30, "days");
-    // let creationEnd = moment(creationStart).add(30, "days");
     this.state = {
       FilterCollapse: false,
       StatusModel: false,
@@ -55,6 +54,7 @@ class StoreDashboard extends Component {
       AgentIds: "",
       BrandIds: "",
       CheckBoxAllAgent: true,
+      CheckBoxAllcampaignName: true,
       CheckBoxAllBrand: true,
       departmentData: [],
       funcationData: [],
@@ -135,6 +135,20 @@ class StoreDashboard extends Component {
       sortassigntoId: [],
       sorttaskstatus: [],
       sortcreatedOn: [],
+      translateLanguage: {},
+      campaignNameData: [],
+      campaignNameChartData: [],
+      selectCampaignName: {},
+      campaignNames: "",
+      campaignNameIds: "",
+      StoreData: [],
+      ZoneData: ZoneType(),
+      dashboardSettingData: {},
+      CheckBoxAllStore: true,
+      StoreIds: "",
+      CheckBoxAllZone: true,
+      ZoneIds: "",
+      userProductiveReportData: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -147,15 +161,26 @@ class StoreDashboard extends Component {
     this.handleGetAssignTobyFuncationId = this.handleGetAssignTobyFuncationId.bind(
       this
     );
+    this.checkAllStoreStart = this.checkAllStoreStart.bind(this);
+    this.checkAllZoneStart = this.checkAllZoneStart.bind(this);
   }
 
   componentDidMount() {
     this.handleGetBrandList();
     this.handleGetAgentList();
     this.handleViewSearchData("grid");
-    // this.handleGetDashboardGraphCount();
     this.handleGetClaimCategory();
     this.handleGetStoreUser();
+    this.handleGetCampaignNameList();
+    this.handleDashboardSettingData();
+    this.handleGetStoreList();
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
@@ -164,7 +189,6 @@ class StoreDashboard extends Component {
     this.handleGetPriorityList();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
 
     if (this.state.activeTab === 1) {
@@ -187,10 +211,10 @@ class StoreDashboard extends Component {
         return 0;
       });
     }
-    if (this.state.sortColumn === "raiseBy") {
+    if (this.state.sortColumn === "createdByName") {
       itemsArray.sort((a, b) => {
-        if (a.raiseBy < b.raiseBy) return 1;
-        if (a.raiseBy > b.raiseBy) return -1;
+        if (a.createdByName < b.createdByName) return 1;
+        if (a.createdByName > b.createdByName) return -1;
         return 0;
       });
     }
@@ -258,7 +282,6 @@ class StoreDashboard extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
 
     if (this.state.activeTab === 1) {
@@ -281,10 +304,10 @@ class StoreDashboard extends Component {
         return 0;
       });
     }
-    if (this.state.sortColumn === "raiseBy") {
+    if (this.state.sortColumn === "createdByName") {
       itemsArray.sort((a, b) => {
-        if (a.raiseBy < b.raiseBy) return -1;
-        if (a.raiseBy > b.raiseBy) return 1;
+        if (a.createdByName < b.createdByName) return -1;
+        if (a.createdByName > b.createdByName) return 1;
         return 0;
       });
     }
@@ -350,7 +373,6 @@ class StoreDashboard extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    debugger;
     this.setState({ isortA: false });
     if (data === "categoryName") {
       if (
@@ -402,7 +424,7 @@ class StoreDashboard extends Component {
         });
       }
     }
-    if (data === "raiseBy") {
+    if (data === "createdByName") {
       if (
         this.state.scategoryNameFilterCheckbox !== "" ||
         this.state.sclaimStatusFilterCheckbox !== "" ||
@@ -606,7 +628,6 @@ class StoreDashboard extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFilterclaimStatus: this.state.sortclaimStatus,
       sortFiltercategoryName: this.state.sortcategoryName,
@@ -641,7 +662,7 @@ class StoreDashboard extends Component {
           });
         }
       }
-      if (this.state.sortColumn === "raiseBy") {
+      if (this.state.sortColumn === "createdByName") {
         if (this.state.screatedByNameFilterCheckbox === "") {
         } else {
           this.setState({
@@ -713,7 +734,6 @@ class StoreDashboard extends Component {
           this.setState({
             sstoreNameFilterCheckbox: "",
             sdepartmentFilterCheckbox: "",
-
             staskstatusFilterCheckbox: "",
             screatedOnFilterCheckbox: "",
           });
@@ -726,7 +746,6 @@ class StoreDashboard extends Component {
             sstoreNameFilterCheckbox: "",
             sdepartmentFilterCheckbox: "",
             sassigntoIdFilterCheckbox: "",
-
             screatedOnFilterCheckbox: "",
           });
         }
@@ -738,7 +757,6 @@ class StoreDashboard extends Component {
             sstoreNameFilterCheckbox: "",
             sdepartmentFilterCheckbox: "",
             sassigntoIdFilterCheckbox: "",
-
             staskstatusFilterCheckbox: "",
           });
         }
@@ -771,7 +789,6 @@ class StoreDashboard extends Component {
     });
   };
   applyCallback = async (startDate, endDate) => {
-    debugger;
     var startArr = endDate[0].split("-");
     var dummyStart = startArr[0];
     startArr[0] = startArr[1];
@@ -794,9 +811,11 @@ class StoreDashboard extends Component {
     });
     this.handleGetDashboardGraphCount();
     this.handleGetDashboardGraphData();
+    this.handleCampaignNameChange(true);
+    this.handleGetUserProductivityReportData();
+    this.handleGetStoreProductivityReportData();
   };
   SearchCreationOn = async (startDate, endDate) => {
-    debugger;
     var startArr = endDate[0].split("-");
     var dummyStart = startArr[0];
     startArr[0] = startArr[1];
@@ -813,7 +832,6 @@ class StoreDashboard extends Component {
     });
   };
   checkIndividualAgent = (event) => {
-    debugger;
     var agentcount = 0;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds = "";
@@ -849,12 +867,13 @@ class StoreDashboard extends Component {
       () => {
         this.handleGetDashboardGraphCount();
         this.handleGetDashboardGraphData();
-        // this.ViewSearchData();
+        this.handleCampaignNameChange();
+        this.handleGetUserProductivityReportData();
+        this.handleGetStoreProductivityReportData();
       }
     );
   };
   checkIndividualBrand = (event) => {
-    debugger;
     var brandcount = 0;
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds = "";
@@ -890,12 +909,12 @@ class StoreDashboard extends Component {
       () => {
         this.handleGetDashboardGraphCount();
         this.handleGetDashboardGraphData();
-        // this.ViewSearchData();
+        this.handleGetUserProductivityReportData();
+        this.handleGetStoreProductivityReportData();
       }
     );
   };
   checkAllAgent = async (event) => {
-    debugger;
     this.setState((state) => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
     var strAgentIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -923,7 +942,10 @@ class StoreDashboard extends Component {
     });
     this.handleGetDashboardGraphCount();
     this.handleGetDashboardGraphData();
-    // this.ViewSearchData();
+    this.handleCampaignNameChange();
+    this.handleGetUserProductivityReportData();
+    this.handleGetStoreProductivityReportData();
+    this.ViewSearchData();
   };
   checkAllAgentStart(event) {
     var checkboxes = document.getElementsByName("allAgent");
@@ -943,7 +965,9 @@ class StoreDashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardGraphCount();
       this.handleGetDashboardGraphData();
-      // this.handleTicketsOnLoad();
+      this.handleGetUserProductivityReportData();
+      this.handleGetStoreProductivityReportData();
+      //this.handleTicketsOnLoad();
     } else {
       this.setState({ loadingAbove: false });
     }
@@ -976,7 +1000,9 @@ class StoreDashboard extends Component {
     });
     this.handleGetDashboardGraphCount();
     this.handleGetDashboardGraphData();
-    // this.ViewSearchData();
+    this.handleGetUserProductivityReportData();
+    this.handleGetStoreProductivityReportData();
+    this.ViewSearchData();
   };
   checkAllBrandStart(event) {
     var checkboxes = document.getElementsByName("allBrand");
@@ -996,7 +1022,201 @@ class StoreDashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardGraphCount();
       this.handleGetDashboardGraphData();
-      // this.handleTicketsOnLoad();
+      this.handleGetUserProductivityReportData();
+      this.handleGetStoreProductivityReportData();
+      //this.handleTicketsOnLoad();
+    } else {
+      this.setState({ loadingAbove: false });
+    }
+  }
+
+  checkIndividualStore = (event) => {
+    var storecount = 0;
+    var checkboxes = document.getElementsByName("allStore");
+    var strStoreIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null) storecount++;
+          document.getElementById("spnStore").textContent = storecount;
+          strStoreIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    if (storecount === 0) {
+      document.getElementById("spnStore").textContent = "select";
+    }
+    if (checkboxes.length - 1 === storecount) {
+      document.getElementById("spnStore").textContent = "ALL";
+      this.setState({ CheckBoxAllStore: true });
+    } else {
+      this.setState({ CheckBoxAllStore: false });
+    }
+
+    this.setState(
+      {
+        StoreIds: strStoreIds,
+      },
+      () => {
+        this.handleGetUserProductivityReportData();
+        this.handleGetStoreProductivityReportData();
+        this.handleCampaignNameChange();
+      }
+    );
+  };
+
+  checkAllStore = async (event) => {
+    this.setState((state) => ({ CheckBoxAllStore: !state.CheckBoxAllStore }));
+    var strStoreIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allStore");
+    if (allCheckboxChecked) {
+      document.getElementById("spnStore").textContent = "ALL";
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStoreIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    } else {
+      document.getElementById("spnStore").textContent = "select";
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strStoreIds = "";
+    }
+    await this.setState({
+      StoreIds: strStoreIds,
+    });
+    this.handleGetUserProductivityReportData();
+    this.handleGetStoreProductivityReportData();
+    this.handleCampaignNameChange();
+    this.ViewSearchData();
+  };
+
+  checkAllStoreStart(event) {
+    var checkboxes = document.getElementsByName("allStore");
+    var strStoreIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        checkboxes[i].checked = true;
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStoreIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      StoreIds: strStoreIds,
+    });
+    if (
+      this.state.AgentIds !== "" &&
+      this.state.BrandIds !== "" &&
+      (this.state.StoreIds !== "" || this.state.ZoneIds !== "")
+    ) {
+      this.handleGetUserProductivityReportData();
+      this.handleGetStoreProductivityReportData();
+      this.handleCampaignNameChange();
+      //this.handleTicketsOnLoad();
+    } else {
+      this.setState({ loadingAbove: false });
+    }
+  }
+
+  checkIndividualZone = (event) => {
+    var zonecount = 0;
+    var checkboxes = document.getElementsByName("allZone");
+    var strZoneIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null) zonecount++;
+          document.getElementById("spnZone").textContent = zonecount;
+          strZoneIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    if (zonecount === 0) {
+      document.getElementById("spnZone").textContent = "select";
+    }
+    if (checkboxes.length - 1 === zonecount) {
+      document.getElementById("spnZone").textContent = "ALL";
+      this.setState({ CheckBoxAllZone: true });
+    } else {
+      this.setState({ CheckBoxAllZone: false });
+    }
+
+    this.setState(
+      {
+        ZoneIds: strZoneIds,
+      },
+      () => {
+        this.handleGetUserProductivityReportData();
+        this.handleGetStoreProductivityReportData();
+        this.handleCampaignNameChange();
+      }
+    );
+  };
+
+  checkAllZone = async (event) => {
+    this.setState((state) => ({ CheckBoxAllZone: !state.CheckBoxAllZone }));
+    var strZoneIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allZone");
+    if (allCheckboxChecked) {
+      document.getElementById("spnZone").textContent = "ALL";
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strZoneIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    } else {
+      document.getElementById("spnZone").textContent = "select";
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strZoneIds = "";
+    }
+    await this.setState({
+      ZoneIds: strZoneIds,
+    });
+    this.handleGetUserProductivityReportData();
+    this.handleGetStoreProductivityReportData();
+    this.handleCampaignNameChange();
+    // this.ViewSearchData();
+  };
+
+  checkAllZoneStart(event) {
+    var checkboxes = document.getElementsByName("allZone");
+    var strZoneIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        checkboxes[i].checked = true;
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strZoneIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      ZoneIds: strZoneIds,
+    });
+    if (
+      this.state.AgentIds !== "" &&
+      this.state.BrandIds !== "" &&
+      (this.state.StoreIds !== "" || this.state.ZoneIds !== "")
+    ) {
+      this.handleGetUserProductivityReportData();
+      this.handleGetStoreProductivityReportData();
+      this.handleCampaignNameChange();
+      //this.handleTicketsOnLoad();
     } else {
       this.setState({ loadingAbove: false });
     }
@@ -1033,7 +1253,6 @@ class StoreDashboard extends Component {
   ///// -----------API function--------------------------
   /// get count of all task and claim counts
   handleGetDashboardGraphCount() {
-    debugger;
     let self = this;
     this.setState({ loadingAbove: true });
     var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
@@ -1061,12 +1280,12 @@ class StoreDashboard extends Component {
         }
       })
       .catch((res) => {
+        self.setState({ loadingAbove: false });
         console.log(res);
       });
   }
   /// Get Dashboard graph data
   handleGetDashboardGraphData() {
-    debugger;
     let self = this;
     this.setState({ loadingAbove: true });
     var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
@@ -1084,7 +1303,6 @@ class StoreDashboard extends Component {
       data: finalData,
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var DashboardOpenTaskDepartmentWise =
           res.data.responseData.openTaskDepartmentWise;
@@ -1096,7 +1314,7 @@ class StoreDashboard extends Component {
         var DashboardOpenClaimStatus = res.data.responseData.openClaimStatus;
         var DashboardClaimVsInvoiceAmount =
           res.data.responseData.claimVsInvoiceAmount;
-
+        self.setState({ loadingAbove: false });
         if (DashboardOpenTaskDepartmentWise !== null) {
           self.setState({
             DashboardOpenTaskDepartmentWise,
@@ -1144,6 +1362,7 @@ class StoreDashboard extends Component {
         }
       })
       .catch((res) => {
+        self.setState({ loadingAbove: false });
         console.log(res);
       });
   }
@@ -1205,7 +1424,6 @@ class StoreDashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1232,7 +1450,6 @@ class StoreDashboard extends Component {
       params: { DepartmentId: this.state.selectDepartment },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
@@ -1254,7 +1471,6 @@ class StoreDashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1305,7 +1521,6 @@ class StoreDashboard extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success") {
@@ -1320,7 +1535,6 @@ class StoreDashboard extends Component {
   }
   //// handle Search data in toggle
   handleViewSearchData(check) {
-    debugger;
     let self = this;
     var claimID = 0;
     var taskID = 0;
@@ -1380,7 +1594,6 @@ class StoreDashboard extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -1522,7 +1735,6 @@ class StoreDashboard extends Component {
       params: { BrandIds: "" },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var categoryData = response.data.responseData;
         if (message === "Success" && categoryData) {
@@ -1626,7 +1838,7 @@ class StoreDashboard extends Component {
     }
 
     inputParam.taskID = Number(this.state.searchData["taskID"]) || 0;
-    inputParam.claimstatus = Number(this.state.searchData["claimstatus"]) || 0;
+    inputParam.status = Number(this.state.searchData["status"]) || 0;
     inputParam.taskmapped = Number(this.state.searchData["taskmapped"]) || 0;
     inputParam.BrandIDs = this.state.BrandIds || "";
     inputParam.AgentIds = this.state.AgentIds || "";
@@ -1688,18 +1900,21 @@ class StoreDashboard extends Component {
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].raiseBy] && data[i].raiseBy !== "") {
-              distinct.push(data[i].raiseBy);
-              unique[data[i].raiseBy] = 1;
+            if (
+              !unique[data[i].createdByName] &&
+              data[i].createdByName !== ""
+            ) {
+              distinct.push(data[i].createdByName);
+              unique[data[i].createdByName] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
               sortcreatedByName.push({
-                raiseBy: distinct[i],
+                createdByName: distinct[i],
               });
               sortFiltercreatedByName.push({
-                raiseBy: distinct[i],
+                createdByName: distinct[i],
               });
             }
           }
@@ -1807,7 +2022,7 @@ class StoreDashboard extends Component {
   ////handle on change in view search
   handleOnChange = (e) => {
     const { name, value } = e.target;
-    debugger;
+
     var searchData = this.state.searchData;
     if (name === "claimID") {
       searchData[name] = value;
@@ -1851,7 +2066,7 @@ class StoreDashboard extends Component {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name === "claimstatus") {
+    if (name === "status") {
       searchData[name] = value;
       this.setState({ searchData });
     }
@@ -1889,7 +2104,6 @@ class StoreDashboard extends Component {
   }
   ////handle cliam table row click
   HandleRowClickPage = (rowInfo, column) => {
-    debugger;
     return {
       onClick: (e) => {
         var claimID = column.original["claimID"];
@@ -1899,15 +2113,12 @@ class StoreDashboard extends Component {
   };
   ////hadle redirect to view claim page.
   handleRedirectToViewStoreClaim(claimID) {
-    debugger;
     this.props.history.push({
       pathname: "claimApproveReject",
       state: { ClaimID: claimID },
     });
   }
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
@@ -2077,7 +2288,7 @@ class StoreDashboard extends Component {
         }
       }
     }
-    if (column === "raiseBy" || column === "all") {
+    if (column === "createdByName" || column === "all") {
       if (type === "value" && type !== "All") {
         screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
           "all",
@@ -2107,10 +2318,10 @@ class StoreDashboard extends Component {
         if (screatedByNameFilterCheckbox.includes("all")) {
           screatedByNameFilterCheckbox = "";
         } else {
-          if (this.state.sortColumn === "raiseBy") {
+          if (this.state.sortColumn === "createdByName") {
             for (let i = 0; i < this.state.sortcreatedBy.length; i++) {
               screatedByNameFilterCheckbox +=
-                this.state.sortcreatedBy[i].raiseBy + ",";
+                this.state.sortcreatedBy[i].createdByName + ",";
             }
             screatedByNameFilterCheckbox += "all";
           }
@@ -2311,7 +2522,7 @@ class StoreDashboard extends Component {
     }
 
     var allData = this.state.sortAllData;
-    debugger;
+
     this.setState({
       scategoryNameFilterCheckbox,
       sclaimStatusFilterCheckbox,
@@ -2377,12 +2588,14 @@ class StoreDashboard extends Component {
           }
         }
       }
-    } else if (column === "raiseBy") {
+    } else if (column === "createdByName") {
       var sItems = screatedByNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter((a) => a.raiseBy === sItems[i]);
+            var tempFilterData = allData.filter(
+              (a) => a.createdByName === sItems[i]
+            );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
                 itemsArray.push(tempFilterData[j]);
@@ -2493,7 +2706,6 @@ class StoreDashboard extends Component {
     });
   };
   filteTextChange(e) {
-    debugger;
     if (this.state.sortColumn === "categoryName") {
       var sortFiltercategoryName = matchSorter(
         this.state.sortcategoryName,
@@ -2522,12 +2734,12 @@ class StoreDashboard extends Component {
         });
       }
     }
-    if (this.state.sortColumn === "raiseBy") {
+    if (this.state.sortColumn === "createdByName") {
       var sortFiltercreatedByName = matchSorter(
         this.state.sortcreatedByName,
         e.target.value,
         {
-          keys: ["raiseBy"],
+          keys: ["createdByName"],
         }
       );
       if (sortFiltercreatedByName.length > 0) {
@@ -2684,14 +2896,301 @@ class StoreDashboard extends Component {
     }
   }
 
+  handleGetCampaignNameList = () => {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Graph/GetCampaignNameList",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var campaignNameData = response.data.responseData;
+        if (message === "Success" && campaignNameData) {
+          self.setState({ campaignNameData });
+          self.checkAllCampaignStart();
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetCampaignNameList");
+      });
+  };
+  handleCampaignNameChange = (isLoading) => {
+    let self = this;
+    this.setState({
+      campaignloading: isLoading || false,
+      campaignNameChartData: [],
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Graph/DashboardCampaignGraph",
+      headers: authHeader(),
+      data: {
+        UserIds: this.state.AgentIds,
+        CampaignNameIDs: this.state.campaignNameIds,
+        StartDate: moment(this.state.start)
+          .format("YYYY-MM-DD")
+          .toString(),
+        EndDate: moment(this.state.end)
+          .format("YYYY-MM-DD")
+          .toString(),
+        StoreIDs: this.state.StoreIds,
+        ZoneIDs: this.state.ZoneIds,
+        // StartDate: "2020-06-01",
+        // EndDate: "2020-06-30",
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var campaignNameChartData = response.data.responseData;
+        self.setState({ campaignloading: false });
+        if (message === "Success" && campaignNameChartData) {
+          self.setState({
+            campaignNameChartData,
+          });
+        } else {
+          self.setState({
+            campaignNameChartData: [],
+          });
+        }
+      })
+      .catch((response) => {
+        self.setState({ campaignloading: false });
+        console.log(response, "---handleCampaignNameChange");
+      });
+  };
+  checkAllCampaignName = async (event) => {
+    this.setState((state) => ({
+      CheckBoxAllcampaignName: !state.CheckBoxAllcampaignName,
+    }));
+    var strcampaignNameIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("CheckBoxAllcampaignName");
+    if (allCheckboxChecked) {
+      strcampaignNameIds = this.state.campaignNameIds;
+      document.getElementById("spnCampaign").textContent = "ALL";
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strcampaignNameIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    } else {
+      document.getElementById("spnCampaign").textContent = "select";
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strcampaignNameIds = "";
+    }
+    await this.setState({
+      campaignNameIds: strcampaignNameIds,
+    });
+    setTimeout(() => {
+      this.handleCampaignNameChange(true);
+    }, 500);
+  };
+  checkIndividualcampaignName = (event) => {
+    var campaignCount = 0;
+    var checkboxes = document.getElementsByName("CheckBoxAllcampaignName");
+    var strAgentIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false && i > 0) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null) campaignCount++;
+          document.getElementById("spnCampaign").textContent = campaignCount;
+          strAgentIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    if (campaignCount === 0) {
+      document.getElementById("spnCampaign").textContent = "select";
+    }
+    if (checkboxes.length - 1 === campaignCount) {
+      document.getElementById("spnCampaign").textContent = "ALL";
+      this.setState({ CheckBoxAllcampaignName: true });
+    } else {
+      this.setState({ CheckBoxAllcampaignName: false });
+    }
+
+    this.setState({
+      campaignNameIds: strAgentIds,
+    });
+    setTimeout(() => {
+      this.handleCampaignNameChange(true);
+    }, 500);
+  };
+
+  checkAllCampaignStart = () => {
+    var checkboxes = document.getElementsByName("CheckBoxAllcampaignName");
+    var strAgentIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        checkboxes[i].checked = true;
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strAgentIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      campaignNameIds: strAgentIds,
+    });
+    setTimeout(() => {
+      this.handleCampaignNameChange();
+    }, 2000);
+  };
+
+  handleGetStoreList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDashboard/GetStoreByTenantID",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            StoreData: data,
+          });
+          setTimeout(() => {
+            self.checkAllStoreStart();
+          }, 10);
+        } else {
+          self.setState({
+            StoreData: [],
+          });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+
+  handleDashboardSettingData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            dashboardSettingData: data.campaignSettingTimer,
+          });
+          if (data.campaignSettingTimer.storeFlag) {
+            self.handleGetStoreList();
+            self.checkAllStoreStart();
+          }
+          if (data.campaignSettingTimer.zoneFlag) {
+            self.checkAllZoneStart();
+          }
+        } else {
+          self.setState({
+            dashboardSettingData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleGetUserProductivityReportData() {
+    let self = this;
+    this.setState({ loadingAbove: true });
+    var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
+    var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
+
+    var finalData = {};
+    finalData.UserIds = this.state.AgentIds;
+    finalData.DateFrom = fromdate;
+    finalData.DateEnd = todate;
+    finalData.BrandIDs = this.state.BrandIds;
+    finalData.StoreIDs = this.state.StoreIds;
+    finalData.ZoneIDs = this.state.ZoneIds;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDashboard/UserProductivityReport",
+      headers: authHeader(),
+      data: finalData,
+    })
+      .then(function(res) {
+        var status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            userProductiveReportData: data,
+          });
+        } else {
+          self.setState({
+            userProductiveReportData: [],
+          });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+
+  handleGetStoreProductivityReportData() {
+    let self = this;
+    this.setState({ loadingAbove: true });
+    var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
+    var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
+
+    var finalData = {};
+    finalData.UserIds = this.state.AgentIds;
+    finalData.DateFrom = fromdate;
+    finalData.DateEnd = todate;
+    finalData.BrandIDs = this.state.BrandIds;
+    finalData.StoreIDs = this.state.StoreIds;
+    finalData.ZoneIDs = this.state.ZoneIds;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreDashboard/StoreProductivityReport",
+      headers: authHeader(),
+      data: finalData,
+    })
+      .then(function(res) {
+        var status = res.data.message;
+        let data = res.data.responseData;
+        self.setState({ loadingAbove: false });
+        if (status === "Success") {
+          self.setState({
+            storeProductiveReportData: data,
+          });
+        } else {
+          self.setState({
+            storeProductiveReportData: [],
+          });
+        }
+      })
+      .catch((res) => {
+        self.setState({ loadingAbove: false });
+        console.log(res);
+      });
+  }
+
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
           <div className="d-flex dashallbrand1">
             <div>
               <span>
-                Brand :
+                {TranslationContext !== undefined
+                  ? TranslationContext.text.brand
+                  : "Brand :"}
+
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -2700,7 +3199,9 @@ class StoreDashboard extends Component {
                     data-toggle="dropdown"
                   >
                     <span id="spnBrand" className="EMFCText">
-                      All
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.all
+                        : "All"}
                     </span>
                   </button>
                   <ul className="dropdown-menu">
@@ -2714,7 +3215,11 @@ class StoreDashboard extends Component {
                           checked={this.state.CheckBoxAllBrand}
                           name="allBrand"
                         />
-                        <span className="ch1-text">All</span>
+                        <span className="ch1-text">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.all
+                            : "All"}
+                        </span>
                       </label>
                     </li>
                     {this.state.BrandData !== null &&
@@ -2739,7 +3244,10 @@ class StoreDashboard extends Component {
             </div>
             <div>
               <span>
-                Agent :
+                {TranslationContext !== undefined
+                  ? TranslationContext.text.agent
+                  : "Agent :"}
+
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -2748,10 +3256,12 @@ class StoreDashboard extends Component {
                     data-toggle="dropdown"
                   >
                     <span id="spnAgent" className="EMFCText">
-                      All
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.all
+                        : "All"}
                     </span>
                   </button>
-                  <ul style={{ width: "180px" }} className="dropdown-menu">
+                  <ul style={{ width: "90px" }} className="dropdown-menu">
                     <li>
                       <label htmlFor="all-agent">
                         <input
@@ -2762,7 +3272,11 @@ class StoreDashboard extends Component {
                           checked={this.state.CheckBoxAllAgent}
                           name="allAgent"
                         />
-                        <span className="ch1-text">All</span>
+                        <span className="ch1-text">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.all
+                            : "All"}
+                        </span>
                       </label>
                     </li>
                     {this.state.AgentData !== null &&
@@ -2785,11 +3299,127 @@ class StoreDashboard extends Component {
                 </div>
               </span>
             </div>
+            {this.state.dashboardSettingData.storeFlag ? (
+              <div>
+                <span>
+                  Store :
+                  <div className="dropdown">
+                    <button
+                      style={{ width: "90px" }}
+                      className="dropdown-toggle dashallbrand"
+                      type="button"
+                      data-toggle="dropdown"
+                    >
+                      <span id="spnStore" className="EMFCText">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.all
+                          : "All"}
+                      </span>
+                    </button>
+                    <ul style={{ width: "444px" }} className="dropdown-menu">
+                      <li>
+                        <label htmlFor="all-store">
+                          <input
+                            type="checkbox"
+                            id="all-store"
+                            className="ch1"
+                            onChange={this.checkAllStore.bind(this)}
+                            checked={this.state.CheckBoxAllStore}
+                            name="allStore"
+                          />
+                          <span className="ch1-text">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.all
+                              : "All"}
+                          </span>
+                        </label>
+                      </li>
+                      {this.state.StoreData !== null &&
+                        this.state.StoreData.map((item, i) => (
+                          <li key={i}>
+                            <label htmlFor={"s" + item.storeID}>
+                              <input
+                                type="checkbox"
+                                id={"s" + item.storeID}
+                                className="ch1"
+                                name="allStore"
+                                attrIds={item.storeID}
+                                onChange={this.checkIndividualStore.bind(this)}
+                              />
+                              <span className="ch1-text">{item.storeName}</span>
+                            </label>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </span>
+              </div>
+            ) : null}
+            {this.state.dashboardSettingData.zoneFlag ? (
+              <div>
+                <span>
+                  Zone :
+                  <div className="dropdown">
+                    <button
+                      style={{ width: "90px" }}
+                      className="dropdown-toggle dashallbrand"
+                      type="button"
+                      data-toggle="dropdown"
+                    >
+                      <span id="spnZone" className="EMFCText">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.all
+                          : "All"}
+                      </span>
+                    </button>
+                    <ul style={{ width: "90px" }} className="dropdown-menu">
+                      <li>
+                        <label htmlFor="all-zone">
+                          <input
+                            type="checkbox"
+                            id="all-zone"
+                            className="ch1"
+                            onChange={this.checkAllZone.bind(this)}
+                            checked={this.state.CheckBoxAllZone}
+                            name="allZone"
+                          />
+                          <span className="ch1-text">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.all
+                              : "All"}
+                          </span>
+                        </label>
+                      </li>
+                      {this.state.ZoneData !== null &&
+                        this.state.ZoneData.map((item, i) => (
+                          <li key={i}>
+                            <label htmlFor={"i" + item.zoneID}>
+                              <input
+                                type="checkbox"
+                                id={"i" + item.zoneID}
+                                className="ch1"
+                                name="allZone"
+                                attrIds={item.zoneID}
+                                onChange={this.checkIndividualZone.bind(this)}
+                              />
+                              <span className="ch1-text">{item.zoneName}</span>
+                            </label>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </span>
+              </div>
+            ) : null}
           </div>
           <div>
             <div className="row">
               <div className="col-md-6 col-6">
-                <span style={{ float: "right" }}>Date Range : </span>
+                <span style={{ float: "right" }}>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.text.daterange
+                    : "Date Range :"}
+                </span>
               </div>
               <div className="col-md-6 col-6 p-0">
                 <div className="DashTimeRange">
@@ -2815,73 +3445,121 @@ class StoreDashboard extends Component {
               <div className="row">
                 <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                   <div className="dash-top-cards">
-                    <p className="card-head">Task</p>
+                    <p className="card-head">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.task
+                        : "Task"}
+                    </p>
                     <div className="aside-cont">
                       <div>
                         <span className="card-value">
                           {this.state.graphCount.taskOpen}
                         </span>
-                        <small>Open</small>
+                        <small>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.open
+                            : "Open"}
+                        </small>
                       </div>
                       <div>
                         <span className="card-value">
                           {this.state.graphCount.taskDueToday}
                         </span>
-                        <small>Due Today</small>
+                        <small>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard.duedate
+                            : "Due Today"}
+                        </small>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                   <div className="dash-top-cards">
-                    <p className="card-head">Task</p>
+                    <p className="card-head">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.task
+                        : "Task"}
+                    </p>
                     <div className="aside-cont">
                       <div>
                         <span className="card-value red-clr">
                           {this.state.graphCount.taskOverDue}
                         </span>
-                        <small>Over-due</small>
+                        <small>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.overdue
+                            : "Over-due"}
+                        </small>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                   <div className="dash-top-cards">
-                    <p className="card-head">Claim</p>
+                    <p className="card-head">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.nav.claim
+                        : "Claim"}
+                    </p>
                     <div className="aside-cont">
                       <div>
                         <span className="card-value">
                           {this.state.graphCount.claimOpen}
                         </span>
-                        <small>Open</small>
+                        <small>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.open
+                            : "Open"}
+                        </small>
                       </div>
                       <div>
                         <span className="card-value">
                           {this.state.graphCount.claimDueToday}
                         </span>
-                        <small>Due Today</small>
+                        <small>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.small.duetoday
+                            : "Due Today"}
+                        </small>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                   <div className="dash-top-cards">
-                    <p className="card-head">Claim</p>
+                    <p className="card-head">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.nav.claim
+                        : "Claim"}
+                    </p>
                     <span className="card-value red-clr">
                       {this.state.graphCount.claimOverDue}
                     </span>
-                    <small>Over-due</small>
+                    <small>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.small.overdue
+                        : "Over-due"}
+                    </small>
                   </div>
                 </div>
                 <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                   <div className="dash-top-cards">
-                    <p className="card-head">Campaign</p>
+                    <p className="card-head">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.campaign
+                        : "Campaign"}
+                    </p>
                     <div className="aside-cont">
                       <div>
                         <span className="card-value">
                           {this.state.graphCount.campaingnOpen}
                         </span>
-                        <small>Open</small>
+                        <small>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.open
+                            : "Open"}
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -2893,41 +3571,143 @@ class StoreDashboard extends Component {
             <div className="row">
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
-                  <p className="card-head">Open Task-Department Wise</p>
+                  <p className="card-head">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.opentaskdepartmentwise
+                      : "Open Task-Department Wise"}
+                  </p>
                   {this.state.DashboardOpenTaskDepartmentWise.length > 0 ? (
                     <TaskDepartment
                       data={this.state.DashboardOpenTaskDepartmentWise}
                     />
                   ) : (
-                    <p>No Data Available</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.noDataAvailable
+                        : "No Data Available"}
+                    </p>
                   )}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
-                  <p className="card-head">Task by priority</p>
+                  <p className="card-head">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.taskbypriority
+                      : "Task by priority"}
+                  </p>
+
                   {this.state.DashboardTaskByPriority.length > 0 ? (
                     <TaskByPriority data={this.state.DashboardTaskByPriority} />
                   ) : (
-                    <p>No Data Available</p>
+                    <p>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.ticketingDashboard.noDataAvailable
+                        : "No Data Available"}
+                    </p>
                   )}
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
-                  <p className="card-head">Open Campaign by type</p>
-                  {this.state.DashboardOpenCampaignByType.length > 0 ? (
-                    <OpenCompaign
-                      data={this.state.DashboardOpenCampaignByType}
-                    />
-                  ) : (
-                    <p>No Data Available</p>
-                  )}
+                  <p className="card-head">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.opencampaignstats
+                      : "Open Campaign Stats"}
+                  </p>
+                  <div className="campCard">
+                    <div>
+                      <label className="campCardLbl">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.campaignname
+                          : "Campaign Name"}
+                      </label>
+                    </div>
+                    <div style={{ marginRight: "15px", width: "100%" }}>
+                      <div className="dropdown">
+                        <button
+                          style={{ width: "180px" }}
+                          className="dropdown-toggle dashallbrand"
+                          type="button"
+                          data-toggle="dropdown"
+                        >
+                          <span id="spnCampaign" className="EMFCText">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.all
+                              : "All"}
+                          </span>
+                        </button>
+                        <ul
+                          style={{ width: "180px" }}
+                          className="dropdown-menu"
+                        >
+                          <li>
+                            <label htmlFor="all-agent">
+                              <input
+                                type="checkbox"
+                                id="all-agent"
+                                className="ch1"
+                                onChange={this.checkAllCampaignName.bind(this)}
+                                checked={this.state.CheckBoxAllcampaignName}
+                                name="CheckBoxAllcampaignName"
+                              />
+                              <span className="ch1-text" style={{marginLeft:"5px"}}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.all
+                                  : "All"}
+                              </span>
+                            </label>
+                          </li>
+                          {this.state.campaignNameData !== null &&
+                            this.state.campaignNameData.map((item, i) => (
+                              <li key={i}>
+                                <label
+                                  htmlFor={"i" + item.campaignNameID}
+                                  className="drp-text-check"
+                                  title={item.campaignName}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={"i" + item.campaignNameID}
+                                    className="ch1"
+                                    name="CheckBoxAllcampaignName"
+                                    attrIds={item.campaignNameID}
+                                    onChange={this.checkIndividualcampaignName.bind(
+                                      this
+                                    )}
+                                  />
+                                  <span className="ch1-text" style={{marginLeft:"5px"}}>
+                                    {item.campaignName}
+                                  </span>
+                                </label>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Spin spinning={this.state.campaignloading} tip="Loading...">
+                    {this.state.campaignNameChartData.length > 0 ? (
+                      <OpenCompaign data={this.state.campaignNameChartData} />
+                    ) : (
+                      <p>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .noDataAvailable
+                          : "No Data Available"}
+                      </p>
+                    )}
+                  </Spin>
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
-                  <p className="card-head">Claim Vs Invoice &amp; Article</p>
+                  <p className="card-head">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.claimvsinvoicearticle
+                      : "Claim Vs Invoice & Article"}
+                  </p>
                   {this.state.DashboardClaimVsInvoiceArticle.length > 0 ? (
                     <ClaimVsInvoice
                       data={this.state.DashboardClaimVsInvoiceArticle}
@@ -2935,21 +3715,39 @@ class StoreDashboard extends Component {
                   ) : null}
                 </div>
                 {this.state.FlagClaimVsInvoiceArticle && (
-                  <p>No Data Available</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.noDataAvailable
+                      : "No Data Available"}
+                  </p>
                 )}
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
-                  <p className="card-head">Open Claim Stats</p>
+                  <p className="card-head">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.openclaimstata
+                      : "Open Claim Stats"}
+                  </p>
                   {this.state.DashboardOpenClaimStatus.length > 0 ? (
                     <OpenClaim data={this.state.DashboardOpenClaimStatus} />
                   ) : null}
                 </div>
-                {this.state.FlagOpenClaimStatus && <p>No Data Available</p>}
+                {this.state.FlagOpenClaimStatus && (
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.noDataAvailable
+                      : "No Data Available"}
+                  </p>
+                )}
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
-                  <p className="card-head">Claim Vs Invoice Amount</p>
+                  <p className="card-head">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.claimvsinvoiceamount
+                      : "Claim Vs Invoice Amount"}
+                  </p>
                   {this.state.DashboardClaimVsInvoiceAmount.length > 0 ? (
                     <InvoiceAmountPie
                       data={this.state.DashboardClaimVsInvoiceAmount}
@@ -2957,9 +3755,107 @@ class StoreDashboard extends Component {
                   ) : null}
                 </div>
                 {this.state.FlagClaimVsInvoiceAmount && (
-                  <p>No Data Available</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.noDataAvailable
+                      : "No Data Available"}
+                  </p>
                 )}
               </div>
+              {this.state.dashboardSettingData.userProductivityReport ? (
+                <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-12">
+                  <div className="dash-top-cards">
+                    <p className="card-head">User Productivity Report</p>
+                    <div className="table-responsive tickhierpad">
+                      <ReactTable
+                        data={this.state.userProductiveReportData}
+                        columns={[
+                          {
+                            Header: <span>User Name</span>,
+                            accessor: "userName",
+                          },
+                          {
+                            Header: <span>Store Name</span>,
+                            accessor: "storeName",
+                          },
+                          {
+                            Header: <span>Login Time</span>,
+                            accessor: "loginTime",
+                          },
+                          {
+                            Header: <span>Campaign Assigned</span>,
+                            accessor: "campaignAssigned",
+                          },
+                          {
+                            Header: <span>Customer Count</span>,
+                            accessor: "customerCount",
+                          },
+                          {
+                            Header: <span>Contacted</span>,
+                            accessor: "contacted",
+                          },
+                          {
+                            Header: <span>Not Contacted</span>,
+                            accessor: "notContacted",
+                          },
+                          {
+                            Header: <span>Follow Up</span>,
+                            accessor: "followUp",
+                          },
+                        ]}
+                        // resizable={false}
+                        minRows={2}
+                        defaultPageSize={10}
+                        showPagination={true}
+                        getTrProps={this.HandleRowClickPage}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              {this.state.dashboardSettingData.storeProductivityReport ? (
+                <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-12">
+                  <div className="dash-top-cards">
+                    <p className="card-head">Store Productivity Report</p>
+                    <div className="table-responsive tickhierpad">
+                      <ReactTable
+                        data={this.state.storeProductiveReportData}
+                        columns={[
+                          {
+                            Header: <span>Store Name</span>,
+                            accessor: "storeName",
+                          },
+                          {
+                            Header: <span>Campaign Assigned</span>,
+                            accessor: "campaignAssigned",
+                          },
+                          {
+                            Header: <span>Customer Count</span>,
+                            accessor: "customerCount",
+                          },
+                          {
+                            Header: <span>Contacted</span>,
+                            accessor: "contacted",
+                          },
+                          {
+                            Header: <span>Not Contacted</span>,
+                            accessor: "notContacted",
+                          },
+                          {
+                            Header: <span>Follow Up</span>,
+                            accessor: "followUp",
+                          },
+                        ]}
+                        // resizable={false}
+                        minRows={2}
+                        defaultPageSize={10}
+                        showPagination={true}
+                        getTrProps={this.HandleRowClickPage}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="container-fluid">
@@ -2980,7 +3876,9 @@ class StoreDashboard extends Component {
                               aria-selected="true"
                               onClick={this.handleTabChange.bind(this, 1)}
                             >
-                              Task:{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.task + ":"
+                                : "Task:"}
                               <span className="myTciket-tab-span">
                                 {this.state.taskCount}
                               </span>
@@ -2997,7 +3895,9 @@ class StoreDashboard extends Component {
                               aria-selected="false"
                               onClick={this.handleTabChange.bind(this, 2)}
                             >
-                              Claim:
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claim + ":"
+                                : "Claim:"}
                               <span className="myTciket-tab-span">
                                 {this.state.cliamCount < 9
                                   ? "0" + this.state.cliamCount
@@ -3011,7 +3911,9 @@ class StoreDashboard extends Component {
                               type="button"
                               onClick={this.handleViewSerach.bind(this)}
                             >
-                              VIEW SEARCH
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.viewsearch
+                                : "VIEW SEARCH"}
                             </button>
                           </div>
                         </ul>
@@ -3027,7 +3929,11 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <input
                                     type="text"
-                                    placeholder="Task ID"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.taskid
+                                        : "Task ID"
+                                    }
                                     name="task_Id"
                                     value={this.state.task_Id}
                                     onChange={this.hanldetoggleOnChange}
@@ -3041,7 +3947,11 @@ class StoreDashboard extends Component {
                                     value={this.state.selectDepartment}
                                     onChange={this.handleDropdownOnchange}
                                   >
-                                    <option>Department</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.department
+                                        : "Department"}
+                                    </option>
                                     {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
@@ -3063,7 +3973,11 @@ class StoreDashboard extends Component {
                                     name="selectedFuncation"
                                     onChange={this.handleDropdownOnchange}
                                   >
-                                    <option>Funcation</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.function
+                                        : "Function"}
+                                    </option>
                                     {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
@@ -3084,15 +3998,31 @@ class StoreDashboard extends Component {
                                     name="Task_Claim"
                                     onChange={this.hanldetoggleOnChange}
                                   >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value="">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.taskwithclaim
+                                        : "Task With Claim"}
+                                    </option>
+                                    <option value="true">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.yes
+                                        : "Yes"}
+                                    </option>
+                                    <option value="false">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.no
+                                        : "No"}
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <input
                                     type="text"
-                                    placeholder="Task Title"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.tasktitle
+                                        : "Task Title"
+                                    }
                                     name="task_Title"
                                     value={this.state.task_Title}
                                     onChange={this.hanldetoggleOnChange}
@@ -3106,7 +4036,11 @@ class StoreDashboard extends Component {
                                     value={this.state.selectAssignTo}
                                     onChange={this.handleDropdownOnchange}
                                   >
-                                    <option>Assign To</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.assignto
+                                        : "Assign To"}
+                                    </option>
                                     {this.state.assignToData !== null &&
                                       this.state.assignToData.map((item, i) => (
                                         <option
@@ -3126,7 +4060,12 @@ class StoreDashboard extends Component {
                                     name="SelectedCreatedBy"
                                     onChange={this.handleDropdownOnchange}
                                   >
-                                    <option>Task Created By</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .taskcreatedby
+                                        : "Task Created By"}
+                                    </option>
                                     {this.state.createdUser !== null &&
                                       this.state.createdUser.map((item, j) => (
                                         <option
@@ -3143,7 +4082,11 @@ class StoreDashboard extends Component {
                                   <div className="col-md-3">
                                     <input
                                       type="text"
-                                      placeholder="Claim ID"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.claimid
+                                          : "Claim ID"
+                                      }
                                       name="Task_ClaimId"
                                       value={this.state.Task_ClaimId}
                                       onChange={this.hanldetoggleOnChange}
@@ -3158,7 +4101,11 @@ class StoreDashboard extends Component {
                                     name="selectedStatus"
                                     onChange={this.hanldetoggleOnChange}
                                   >
-                                    <option value="0">Task Status</option>
+                                    <option value="0">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.taskstatus
+                                        : "Task Status"}
+                                    </option>
                                     {this.state.storeStatus !== null &&
                                       this.state.storeStatus.map((item, i) => (
                                         <option
@@ -3181,9 +4128,22 @@ class StoreDashboard extends Component {
                                     name="Task_Ticket"
                                     onChange={this.hanldetoggleOnChange}
                                   >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value="">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .taskwithtickets
+                                        : "Task With Ticket"}
+                                    </option>
+                                    <option value="true">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.yes
+                                        : "Yes"}
+                                    </option>
+                                    <option value="false">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.no
+                                        : "No"}
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -3193,7 +4153,11 @@ class StoreDashboard extends Component {
                                     onChange={this.handleDropdownOnchange}
                                     value={this.state.selectedPriority}
                                   >
-                                    <option>Task Priority</option>
+                                    <option>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.taskpriority
+                                        : "Task Priority"}
+                                    </option>
                                     {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
@@ -3211,7 +4175,11 @@ class StoreDashboard extends Component {
                                     <input
                                       className="no-bg"
                                       type="text"
-                                      placeholder="Ticket ID"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.ticketid
+                                          : "Ticket ID"
+                                      }
                                       name="Task_ticketId"
                                       value={this.state.Task_ticketId}
                                       onChange={this.hanldetoggleOnChange}
@@ -3233,7 +4201,11 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <input
                                     type="text"
-                                    placeholder="Claim ID"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.claimid
+                                        : "Claim ID"
+                                    }
                                     name="claimID"
                                     onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["claimID"]}
@@ -3249,7 +4221,9 @@ class StoreDashboard extends Component {
                                     }
                                   >
                                     <option value={""} selected>
-                                      Claim Category
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.claimcategory
+                                        : "Claim Category"}
                                     </option>
                                     {this.state.categoryData !== null &&
                                       this.state.categoryData.map((item, i) => (
@@ -3271,7 +4245,10 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["claimsubcat"]}
                                   >
                                     <option value={""} selected>
-                                      Claim Sub Category
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .claimsubcategory
+                                        : "Claim Sub Category"}
                                     </option>
                                     {this.state.subCategoryData !== null &&
                                       this.state.subCategoryData.map(
@@ -3298,7 +4275,10 @@ class StoreDashboard extends Component {
                                     }
                                   >
                                     <option value={""} selected>
-                                      Claim Issue Type
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .claimissuetype
+                                        : "Claim Issue Type"}
                                     </option>
                                     {this.state.issueTypeData !== null &&
                                       this.state.issueTypeData.map(
@@ -3322,7 +4302,12 @@ class StoreDashboard extends Component {
                                       this
                                     )}
                                     name="claimraiseddate"
-                                    placeholderText="Claim Raised On"
+                                    placeholderText={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.option
+                                            .claimraisedon
+                                        : "Claim Raised On"
+                                    }
                                     showMonthDropdown
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
@@ -3339,7 +4324,9 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["assignTo"]}
                                   >
                                     <option value={""} selected>
-                                      Assign To
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.assignto
+                                        : "Assign To"}
                                     </option>
                                     {this.state.userData !== null &&
                                       this.state.userData.map((item, i) => (
@@ -3360,7 +4347,9 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["raisedby"]}
                                   >
                                     <option value={""} disabled selected>
-                                      Raised By
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.raisedby
+                                        : "Raised By"}
                                     </option>
                                     {this.state.userData !== null &&
                                       this.state.userData.map((item, i) => (
@@ -3376,12 +4365,14 @@ class StoreDashboard extends Component {
                                 </div>
                                 <div className="col-md-3">
                                   <select
-                                    name="claimstatus"
+                                    name="status"
                                     onChange={this.handleOnChange.bind(this)}
-                                    value={this.state.searchData["claimstatus"]}
+                                    value={this.state.searchData["status"]}
                                   >
                                     <option value={""} selected>
-                                      Claim Status
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.b.status
+                                        : "Claim Status"}
                                     </option>
                                     {this.state.storeStatus !== null &&
                                       this.state.storeStatus.map((item, i) => {
@@ -3404,10 +4395,20 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["taskmapped"]}
                                   >
                                     <option value={""} selected>
-                                      Task Mapped
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.taskmapped
+                                        : "Task Mapped"}
                                     </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
+                                    <option value={1}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.yes
+                                        : "Yes"}
+                                    </option>
+                                    <option value={0}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.no
+                                        : "No"}
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -3419,10 +4420,20 @@ class StoreDashboard extends Component {
                                     }
                                   >
                                     <option value={""} selected>
-                                      Ticket Mapped
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.option.ticketmapped
+                                        : "Ticket Mapped"}
                                     </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
+                                    <option value={1}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.yes
+                                        : "Yes"}
+                                    </option>
+                                    <option value={0}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.no
+                                        : "No"}
+                                    </option>
                                   </select>
                                 </div>
 
@@ -3430,7 +4441,11 @@ class StoreDashboard extends Component {
                                   <div className="col-md-3">
                                     <input
                                       type="text"
-                                      placeholder="Task ID"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.span.taskid
+                                          : "Task ID"
+                                      }
                                       name="taskID"
                                       value={this.state.searchData["taskID"]}
                                       onChange={this.handleOnChange.bind(this)}
@@ -3442,7 +4457,11 @@ class StoreDashboard extends Component {
                                   <div className="col-md-3">
                                     <input
                                       type="text"
-                                      placeholder="Ticket ID"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.label.ticketid
+                                          : "Ticket ID"
+                                      }
                                       name="ticketID"
                                       onChange={this.handleOnChange.bind(this)}
                                       value={this.state.searchData["ticketID"]}
@@ -3464,7 +4483,13 @@ class StoreDashboard extends Component {
                       data={this.state.dashboardGridData}
                       columns={[
                         {
-                          Header: <span>ID</span>,
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.id
+                                : "ID"}
+                            </span>
+                          ),
                           accessor: "taskid",
                         },
                         {
@@ -3481,7 +4506,9 @@ class StoreDashboard extends Component {
                                 "Status"
                               )}
                             >
-                              Status{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3517,7 +4544,13 @@ class StoreDashboard extends Component {
                           },
                         },
                         {
-                          Header: <span>Task Title</span>,
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.tasktitle
+                                : "Task Title"}
+                            </span>
+                          ),
                           accessor: "tasktitle",
                           sortable: false,
                         },
@@ -3535,7 +4568,9 @@ class StoreDashboard extends Component {
                                 "Department"
                               )}
                             >
-                              Department{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.department
+                                : "Department"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3563,7 +4598,9 @@ class StoreDashboard extends Component {
                                 "Store Name"
                               )}
                             >
-                              Store Name{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.StoreName
+                                : "Store Name"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3591,7 +4628,9 @@ class StoreDashboard extends Component {
                                 "Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3613,38 +4652,65 @@ class StoreDashboard extends Component {
                                   <div className="insertpop1">
                                     <ul className="dash-creation-popup">
                                       <li className="title">
-                                        Creation details
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.li
+                                              .creationdetails
+                                          : "Creation details"}
                                       </li>
                                       <li>
                                         <p>
-                                          Created by {row.original.createdBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.createdby
+                                            : "Created by "}{" "}
+                                          {row.original.createdBy}
                                         </p>
                                         <p>{row.original.createdago}</p>
                                       </li>
                                       <li>
                                         <p>
-                                          Assigned to {row.original.assigntoId}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .assignedto
+                                            : "Assigned to "}{" "}
+                                          {row.original.assigntoId}
                                         </p>
                                         <p>{row.original.assignedago}</p>
                                       </li>
                                       <li>
                                         <p>
-                                          Updated by {row.original.modifiedBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updatedby
+                                            : "Updated by "}{" "}
+                                          {row.original.modifiedBy}
                                         </p>
                                         <p>{row.original.updatedago}</p>
                                       </li>
-                                      <li>
-                                        <p>Resolution time remaining by</p>
-                                        <p>
-                                          {row.original.resolutionTimeRemaining}
-                                        </p>
-                                      </li>
                                       {/* <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .responsetimerem
+                                            : "Response time remaining by "}
+                                            {" "}
+                                        </p>
+                                        <p></p>
+                                      </li> */}
+                                      {/* <li>
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .responseoverdueby
+                                            : "Response overdue by "}{" "}
+                                        </p>
+                                        <p> </p>
                                       </li> */}
                                       <li>
-                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .resolutionoverdueby
+                                            : "Resolution overdue by"}{" "}
+                                        </p>
                                         <p>
                                           {row.original.resolutionOverdueBy}
                                         </p>
@@ -3677,7 +4743,9 @@ class StoreDashboard extends Component {
                                 "Assign to"
                               )}
                             >
-                              Assign to
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.assignto
+                                : "Assign to"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3692,7 +4760,6 @@ class StoreDashboard extends Component {
                           accessor: "assigntoId",
                         },
                       ]}
-                      // resizable={false}
                       minRows={2}
                       defaultPageSize={10}
                       showPagination={true}
@@ -3707,7 +4774,13 @@ class StoreDashboard extends Component {
                       data={this.state.cliamSearchData}
                       columns={[
                         {
-                          Header: <span>ID</span>,
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.id
+                                : "ID"}
+                            </span>
+                          ),
                           accessor: "claimID",
                         },
                         {
@@ -3724,7 +4797,9 @@ class StoreDashboard extends Component {
                                 "Status"
                               )}
                             >
-                              Status{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3760,7 +4835,13 @@ class StoreDashboard extends Component {
                           },
                         },
                         {
-                          Header: <span>Claim Issue Type</span>,
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.claimissuetype
+                                : "Claim Issue Type"}
+                            </span>
+                          ),
                           accessor: "issueTypeName",
                         },
                         {
@@ -3777,7 +4858,9 @@ class StoreDashboard extends Component {
                                 "Category"
                               )}
                             >
-                              Category{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.category
+                                : "Category"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3799,7 +4882,11 @@ class StoreDashboard extends Component {
                                     <div className="dash-creation-popup-cntr">
                                       <div>
                                         <b>
-                                          <p className="title">Category</p>
+                                          <p className="title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.category
+                                              : "Category"}
+                                          </p>
                                         </b>
                                         <p className="sub-title">
                                           {row.original.categoryName}
@@ -3807,7 +4894,11 @@ class StoreDashboard extends Component {
                                       </div>
                                       <div>
                                         <b>
-                                          <p className="title">Sub Category</p>
+                                          <p className="title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.subcategory
+                                              : "Sub Category"}
+                                          </p>
                                         </b>
                                         <p className="sub-title">
                                           {row.original.subCategoryName}
@@ -3815,7 +4906,11 @@ class StoreDashboard extends Component {
                                       </div>
                                       <div>
                                         <b>
-                                          <p className="title">Type</p>
+                                          <p className="title">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.type
+                                              : "Type"}
+                                          </p>
                                         </b>
                                         <p className="sub-title">
                                           {row.original.issueTypeName}
@@ -3845,11 +4940,13 @@ class StoreDashboard extends Component {
                               }
                               onClick={this.StatusOpenModel.bind(
                                 this,
-                                "raiseBy",
+                                "createdByName",
                                 "Created By"
                               )}
                             >
-                              Created By{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created By"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3861,7 +4958,7 @@ class StoreDashboard extends Component {
                             </span>
                           ),
                           sortable: false,
-                          accessor: "raiseBy",
+                          accessor: "createdByName",
                         },
                         {
                           Header: (
@@ -3877,7 +4974,9 @@ class StoreDashboard extends Component {
                                 "Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3899,42 +4998,67 @@ class StoreDashboard extends Component {
                                   <div className="insertpop1">
                                     <ul className="dash-creation-popup">
                                       <li className="title">
-                                        Creation details
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.li
+                                              .creationdetails
+                                          : "Creation details"}
                                       </li>
                                       <li>
                                         <p>
-                                          {"Created by " + row.original.raiseBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.createdby
+                                            : "Created by"}{" "}
+                                          {row.original.raiseBy}{" "}
                                         </p>
-                                        <p>{row.original.creationAgo}</p>
+                                        <p> {row.original.creationAgo}</p>
+                                        {/* <p> {row.original.creationOn}</p> */}
                                       </li>
                                       <li>
                                         <p>
-                                          Assigned to {row.original.assignTo}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .assignedto
+                                            : "Assigned to "}{" "}
+                                          {row.original.assignTo}
                                         </p>
                                         <p>{row.original.assignOn}</p>
                                       </li>
                                       <li>
                                         <p>
-                                          Updated by {row.original.modifiedBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updatedby
+                                            : "Updated by "}{" "}
+                                          {row.original.modifyBy}
                                         </p>
                                         <p>{row.original.modifyOn}</p>
                                       </li>
-                                      <li>
-                                        <p>Resolution time remaining by</p>
-                                        <p>
-                                          {row.original.resolutionTimeRemaining}
-                                        </p>
-                                      </li>
                                       {/* <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
-                                      </li> */}
-                                      <li>
-                                        <p>Resolution overdue by</p>
                                         <p>
-                                          {row.original.resolutionOverdueBy}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .responsetimeremainingby
+                                            : "Response time remaining by"}
                                         </p>
-                                      </li>
+                                        <p></p>
+                                      </li> */}
+                                      {/* <li>
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .responseoverdueby
+                                            : "Response overdue by"}
+                                        </p>
+                                        <p></p>
+                                      </li> */}
+                                      {/* <li>
+                                        <p>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .resolutionoverdueby
+                                            : "Resolution overdue by"}
+                                        </p>
+                                        <p></p>
+                                      </li> */}
                                     </ul>
                                   </div>
                                 }
@@ -3963,7 +5087,9 @@ class StoreDashboard extends Component {
                                 "Assign to"
                               )}
                             >
-                              Assign to
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.assignto
+                                : "Assign to"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -4134,7 +5260,7 @@ class StoreDashboard extends Component {
                               )
                             : null}
 
-                          {this.state.sortColumn === "raiseBy"
+                          {this.state.sortColumn === "createdByName"
                             ? this.state.sortFiltercreatedByName !== null &&
                               this.state.sortFiltercreatedByName.map(
                                 (item, i) => (
@@ -4142,20 +5268,24 @@ class StoreDashboard extends Component {
                                     <input
                                       type="checkbox"
                                       name="filter-type"
-                                      id={"fil-open" + item.raiseBy}
-                                      value={item.raiseBy}
+                                      id={"fil-open" + item.createdByName}
+                                      value={item.createdByName}
                                       checked={this.state.screatedByNameFilterCheckbox
                                         .split(",")
-                                        .find((word) => word === item.raiseBy)}
+                                        .find(
+                                          (word) => word === item.createdByName
+                                        )}
                                       onChange={this.setSortCheckStatus.bind(
                                         this,
-                                        "raiseBy",
+                                        "createdByName",
                                         "value"
                                       )}
                                     />
-                                    <label htmlFor={"fil-open" + item.raiseBy}>
+                                    <label
+                                      htmlFor={"fil-open" + item.createdByName}
+                                    >
                                       <span className="table-btn table-blue-btn">
-                                        {item.raiseBy}
+                                        {item.createdByName}
                                       </span>
                                     </label>
                                   </div>
@@ -4356,7 +5486,11 @@ class StoreDashboard extends Component {
                   className="float-search"
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
-                  <small>Search</small>
+                  <small>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.search
+                      : "Search"}
+                  </small>
                   <img
                     className="search-icon"
                     src={SearchIcon}

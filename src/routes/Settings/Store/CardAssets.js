@@ -14,6 +14,7 @@ import CancelImg from "./../../../assets/Images/cancel.png";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
 var uid = 0;
+// import InfoIcon from "../../assets/Images/info-icon.png";
 class CardAssets extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +35,17 @@ class CardAssets extends Component {
     };
   }
   componentDidMount() {
+    if (window.localStorage.getItem("module")) {
+      var moduleData = JSON.parse(window.localStorage.getItem("module"));
+      if (moduleData) {
+        var campModule = moduleData.filter(
+          (x) => x.moduleName === "Settings" && x.modulestatus === true
+        );
+        if (campModule.length === 0) {
+          this.props.history.push("/store/404notfound");
+        }
+      }
+    }
     // this.handleGetCardImageUploadlog(1);
     this.handleGetCardImageApproval();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {

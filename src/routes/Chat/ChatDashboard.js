@@ -12,7 +12,7 @@ import { FormControl } from "react-bootstrap";
 class ChatDashboard extends Component {
   constructor(props) {
     super(props);
-  let now = new Date();
+    let now = new Date();
     let start = moment(
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     );
@@ -26,11 +26,9 @@ class ChatDashboard extends Component {
       daterange: "Today",
       daterangeszie: "870px",
       good: "70%",
-      bad: "30%"
+      bad: "30%",
     };
   }
-
-  
 
   mainDashboard = () => {
     this.props.history.push("/admin/dashboard");
@@ -40,27 +38,25 @@ class ChatDashboard extends Component {
       this.setState({
         chatstatus: false,
         daterange: "Last 7 Days",
-        daterangeszie: "838px"
+        daterangeszie: "838px",
       });
     } else {
       this.setState({
         chatstatus: true,
         daterange: "Today",
-        daterangeszie: "870px"
+        daterangeszie: "870px",
       });
     }
   };
-   applyCallback = async (startDate, endDate) => {
-    debugger;
+  applyCallback = async (startDate, endDate) => {
     await this.setState({
       start: startDate,
       end: endDate,
     });
-     
   };
 
   render() {
-      let now = new Date();
+    let now = new Date();
     let start = moment(
       new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
     );
@@ -71,65 +67,65 @@ class ChatDashboard extends Component {
       "Today Only": [moment(start), moment(end)],
       "Yesterday Only": [
         moment(start).subtract(1, "days"),
-        moment(end).subtract(1, "days")
+        moment(end).subtract(1, "days"),
       ],
-      "3 Days": [moment(start).subtract(3, "days"), moment(end)]
+      "3 Days": [moment(start).subtract(3, "days"), moment(end)],
     };
-     let local = {
+    let local = {
       format: "DD-MM-YYYY",
-      sundayFirst: false
+      sundayFirst: false,
     };
-     let value = `${this.state.start.format(
+    let value = `${this.state.start.format(
       "DD-MM-YYYY"
     )} - ${this.state.end.format("DD-MM-YYYY")}`;
     let disabled = false;
     return (
       <div>
         <div className="Chat-main-header dash-dropdowns">
-          <div className="row" style={{width: "100%"}}>
-           <div className="col-md-6">
-           <div className="d-flex dashallbrand1">
-           <div>
-              <span>
-                Brand :
-                <div className="dropdown">
-                  <button
-                    className="dropdown-toggle dashallbrand"
-                    type="button"
-                    data-toggle="dropdown"
-                  >
-                    <span className="EMFCText">All</span>
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <label htmlFor="one">
-                        <input type="checkbox" id="one" className="ch1" />
-                        <span className="ch1-text">Bata 1</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="two">
-                        <input type="checkbox" id="two" className="ch1" />
-                        <span className="ch1-text">Bata 2</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="three">
-                        <input type="checkbox" id="three" className="ch1" />
-                        <span className="ch1-text">Bata 3</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="four">
-                        <input type="checkbox" id="four" className="ch1" />
-                        <span className="ch1-text">Bata 4</span>
-                      </label>
-                    </li>
-                  </ul>
+          <div className="row" style={{ width: "100%" }}>
+            <div className="col-md-6">
+              <div className="d-flex dashallbrand1">
+                <div>
+                  <span>
+                    Brand :
+                    <div className="dropdown">
+                      <button
+                        className="dropdown-toggle dashallbrand"
+                        type="button"
+                        data-toggle="dropdown"
+                      >
+                        <span className="EMFCText">All</span>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <label htmlFor="one">
+                            <input type="checkbox" id="one" className="ch1" />
+                            <span className="ch1-text">Bata 1</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label htmlFor="two">
+                            <input type="checkbox" id="two" className="ch1" />
+                            <span className="ch1-text">Bata 2</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label htmlFor="three">
+                            <input type="checkbox" id="three" className="ch1" />
+                            <span className="ch1-text">Bata 3</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label htmlFor="four">
+                            <input type="checkbox" id="four" className="ch1" />
+                            <span className="ch1-text">Bata 4</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </span>
                 </div>
-              </span>
-            </div>
-             {/* <div style={{display: "inline"}}>
+                {/* <div style={{display: "inline"}}>
               <label className="lable-text">
                 Brand :<b> All</b>
               </label>
@@ -139,47 +135,47 @@ class ChatDashboard extends Component {
                 className="sort-down-arrow"
               />
             </div> */}
-             <div>
-              <span>
-                Agent :
-                <div className="dropdown">
-                  <button
-                    className="dropdown-toggle dashallbrand"
-                    type="button"
-                    data-toggle="dropdown"
-                  >
-                    <span className="EMFCText">All</span>
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <label htmlFor="one">
-                        <input type="checkbox" id="one" className="ch1" />
-                        <span className="ch1-text">Bata 1</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="two">
-                        <input type="checkbox" id="two" className="ch1" />
-                        <span className="ch1-text">Bata 2</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="three">
-                        <input type="checkbox" id="three" className="ch1" />
-                        <span className="ch1-text">Bata 3</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="four">
-                        <input type="checkbox" id="four" className="ch1" />
-                        <span className="ch1-text">Bata 4</span>
-                      </label>
-                    </li>
-                  </ul>
+                <div>
+                  <span>
+                    Agent :
+                    <div className="dropdown">
+                      <button
+                        className="dropdown-toggle dashallbrand"
+                        type="button"
+                        data-toggle="dropdown"
+                      >
+                        <span className="EMFCText">All</span>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <label htmlFor="one">
+                            <input type="checkbox" id="one" className="ch1" />
+                            <span className="ch1-text">Bata 1</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label htmlFor="two">
+                            <input type="checkbox" id="two" className="ch1" />
+                            <span className="ch1-text">Bata 2</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label htmlFor="three">
+                            <input type="checkbox" id="three" className="ch1" />
+                            <span className="ch1-text">Bata 3</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label htmlFor="four">
+                            <input type="checkbox" id="four" className="ch1" />
+                            <span className="ch1-text">Bata 4</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </span>
                 </div>
-              </span>
-            </div>
-             {/* <div style={{display: "inline" , marginRight: "10px"}}>
+                {/* <div style={{display: "inline" , marginRight: "10px"}}>
               <label className="lable-text">
                 Agent :<b> All</b>
               </label>
@@ -189,41 +185,41 @@ class ChatDashboard extends Component {
                 className="sort-down-arrow"
               />
             </div> */}
-            </div>
-           </div>
-            <div className="col-md-6">
-              <div className="d-flex" style={{float: "right"}}>
-              <span>Date Range : </span>
-              <div className="DashTimeRange">
-                <Row className="show-grid" style={{ textAlign: "center" }}>
-                  {/* <Col xs={3} /> */}
-                  <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
-                    <DateTimeRangeContainer
-                      ranges={ranges}
-                      start={this.state.start}
-                      end={this.state.end}
-                      local={local}
-                      applyCallback={this.applyCallback}
-                      smartMode
-                      leftMode
-                      // forceMobileMode
-                      noMobileMode
-                    >
-                      <FormControl
-                        id="formControlsTextB"
-                        type="text"
-                        label="Text"
-                        placeholder="Enter text"
-                        style={{ cursor: "pointer" }}
-                        disabled={disabled}
-                        value={value}
-                      />
-                    </DateTimeRangeContainer>
-                  </Col>
-                  {/* <Col xs={3} md={4} /> */}
-                </Row>
               </div>
             </div>
+            <div className="col-md-6">
+              <div className="d-flex" style={{ float: "right" }}>
+                <span>Date Range : </span>
+                <div className="DashTimeRange">
+                  <Row className="show-grid" style={{ textAlign: "center" }}>
+                    {/* <Col xs={3} /> */}
+                    <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
+                      <DateTimeRangeContainer
+                        ranges={ranges}
+                        start={this.state.start}
+                        end={this.state.end}
+                        local={local}
+                        applyCallback={this.applyCallback}
+                        smartMode
+                        leftMode
+                        // forceMobileMode
+                        noMobileMode
+                      >
+                        <FormControl
+                          id="formControlsTextB"
+                          type="text"
+                          label="Text"
+                          placeholder="Enter text"
+                          style={{ cursor: "pointer" }}
+                          disabled={disabled}
+                          value={value}
+                        />
+                      </DateTimeRangeContainer>
+                    </Col>
+                    {/* <Col xs={3} md={4} /> */}
+                  </Row>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -476,7 +472,9 @@ class ChatDashboard extends Component {
               <div className="missed-chat-card">
                 <p className="card-titel chat-lbl5">Missed Chat</p>
                 <p className="missed-chat-30 team-member-30">30</p>
-                <p className="team-member-center-text teamchat-p">18 : New Visitor</p>
+                <p className="team-member-center-text teamchat-p">
+                  18 : New Visitor
+                </p>
 
                 <p className="team-member-center-text teamchat-p">
                   12 : Returning Visitor

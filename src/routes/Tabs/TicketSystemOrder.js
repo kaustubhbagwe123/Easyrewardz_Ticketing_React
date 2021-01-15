@@ -138,7 +138,6 @@ class TicketSystemOrder extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -319,7 +318,6 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderSearchData(OrdData, e) {
-    debugger;
     let self = this;
     var CustID = this.props.custDetails;
 
@@ -337,7 +335,6 @@ class TicketSystemOrder extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let Msg = res.data.message;
             let mainData = res.data.responseData;
 
@@ -417,7 +414,6 @@ class TicketSystemOrder extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           // let Msg = res.data.message;
           let mainData = res.data.responseData;
 
@@ -444,7 +440,6 @@ class TicketSystemOrder extends Component {
     }
   }
   hadleAddManuallyOrderData() {
-    debugger;
     const TranslationContext = this.state.translateLanguage.default;
     if (this.validator.allValid()) {
       let self = this;
@@ -475,7 +470,6 @@ class TicketSystemOrder extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
 
           if (status === "Success") {
@@ -721,7 +715,6 @@ class TicketSystemOrder extends Component {
   };
 
   handleGetOderItemData(invoiceNumber, rowData, e) {
-    debugger;
     if (e.target.checked) {
       this.setState({
         SelectedAllOrder: [],
@@ -744,7 +737,6 @@ class TicketSystemOrder extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
           if (Msg === "Success") {
@@ -971,7 +963,7 @@ class TicketSystemOrder extends Component {
   // -------------------------------Check box selected all code start-------------------------------
 
   // onCheckMasterAllChange(orderMasterID, rowData) {
-  //   debugger;
+  //
   //   const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
   //   newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
   //   this.setState({
@@ -1067,7 +1059,6 @@ class TicketSystemOrder extends Component {
   // }
 
   checkIndividualItem(articleNumber, rowData) {
-    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({

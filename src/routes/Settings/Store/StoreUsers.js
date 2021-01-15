@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import { Popover, Spin } from "antd";
+import { Popover, Spin, Empty } from "antd";
 import ReactTable from "react-table";
 import { authHeader } from "../../../helpers/authHeader";
 import axios from "axios";
@@ -39,6 +39,7 @@ class StoreUsers extends Component {
       fileName: "",
       brandData: [],
       storeCodeData: [],
+      editStoreCodeData: [],
       departmentData: [],
       functionData: [],
       activeData: ActiveStatus(),
@@ -165,9 +166,15 @@ class StoreUsers extends Component {
       isATOZ: true,
       translateLanguage: {},
       bulkuploadLoading: false,
-      personalBtnDisabled: true,
-      profileBtnDisbaled: true,
-      mappedBtnDisabled: true,
+      isloading: false,
+      userCodeID: "",
+      userCodeIDCompulsory: "",
+      userIdSuggetionData: [],
+      EditUserCodeIDCompulsory: "",
+      suggestedUserCode: [],
+      userAlreadyExists: false,
+      editsuggestedUserCode: [],
+      edituserAlreadyExists: false,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -197,15 +204,36 @@ class StoreUsers extends Component {
   }
 
   opneUserEditModal = () => {
-    this.setState({ UserEditmodel: true });
+    this.setState({
+      UserEditmodel: true,
+      editsuggestedUserCode: [],
+      edituserAlreadyExists: false,
+    });
   };
   closeEditModals() {
-    this.setState({ UserEditmodel: false, selTab: "Store Details" });
+    this.setState({
+      UserEditmodel: false,
+      selTab: "Store Details",
+      editsuggestedUserCode: [],
+      edituserAlreadyExists: false,
+    });
   }
 
   componentDidMount() {
+    // if (window.localStorage.getItem("module")) {
+    //   var moduleData = JSON.parse(window.localStorage.getItem("module"));
+    //   if (moduleData) {
+    //
+    //     var campModule = moduleData.filter(
+    //       (x) => x.moduleName === "Settings" && x.modulestatus === true
+    //     );
+    //     if (campModule.length === 0) {
+    //       this.props.history.push("/store/404notfound");
+    //     }
+    //   }
+    // }
     this.handleGetBrandData();
-    this.handleGetstoreCodeData();
+    // this.handleGetstoreCodeData();
     this.handleGetUserDesignationData();
     this.handleGetCRMRole();
     this.handleGetStoreUserGridData();
@@ -218,8 +246,9 @@ class StoreUsers extends Component {
       this.state.translateLanguage = {};
     }
   }
+
   fileUpload = (file) => {
-    if (file) {
+    if (file.length > 0) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
       this.setState({
@@ -228,6 +257,8 @@ class StoreUsers extends Component {
         file: file[0],
         fileValidation: "",
       });
+    } else {
+      NotificationManager.error("File accept only csv type.");
     }
   };
 
@@ -309,6 +340,18 @@ class StoreUsers extends Component {
             });
             self.handleGetStoreUserGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+          } else if (status === "Record Uploaded Partially") {
+            NotificationManager.error(
+              "File uploaded partially.Please check the log."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
+            self.handleGetStoreUserGridData();
+            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             self.setState({ bulkuploadLoading: false });
@@ -339,6 +382,7 @@ class StoreUsers extends Component {
         functionData: [],
         selectedFunction: [],
       });
+      this.handleGetstoreCodeData(value, "");
     } else if (name === "storeCode") {
       this.setState({
         selectStore: value,
@@ -432,10 +476,11 @@ class StoreUsers extends Component {
   /// Onchange function
   handleOnChangeUserData = (e) => {
     var name = e.target.name;
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    debugger;
     if (name === "email_Id") {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
       var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       if (e.target.value === "") {
         this.setState({
@@ -449,6 +494,31 @@ class StoreUsers extends Component {
         this.setState({
           emailFlag: true,
         });
+      }
+    }
+
+    if (name === "userName") {
+      var regEXP = /^[a-z].*/i;
+      if (regEXP.test(e.target.value)) {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      } else {
+        this.setState({
+          [e.target.name]: "",
+        });
+      }
+    }
+
+    if (name === "userCodeID") {
+      if (e.target.value.length >= 3) {
+        this.setState({ userCodeID: e.target.value });
+
+        setTimeout(() => {
+          this.handleValidateUserName();
+        }, 200);
+      } else {
+        this.setState({ userCodeID: e.target.value });
       }
     }
   };
@@ -584,6 +654,22 @@ class StoreUsers extends Component {
       this.setState({
         userEdit,
       });
+    } else if (name === "userCodeID") {
+      if (value.length >= 3) {
+        userEdit[name] = value;
+        this.setState({
+          userEdit,
+        });
+        
+        setTimeout(() => {
+          this.handleValidateUserName();
+        }, 200);
+      } else {
+        userEdit[name] = value;
+        this.setState({
+          userEdit,
+        });
+      }
     } else {
       userEdit[name] = value;
       userEdit.departmentID = 0;
@@ -596,6 +682,7 @@ class StoreUsers extends Component {
     }
 
     setTimeout(() => {
+      this.handleGetstoreCodeData(this.state.userEdit.brandID, "edit");
       if (this.state.userEdit.brandID && this.state.userEdit.storeID) {
         var brandId = this.state.userEdit.brandID;
         var storeId = this.state.userEdit.storeID;
@@ -1226,6 +1313,7 @@ class StoreUsers extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
+
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var sitemCodeFilterCheckbox = this.state.sitemCodeFilterCheckbox;
     var suserNameFilterCheckbox = this.state.suserNameFilterCheckbox;
@@ -1785,6 +1873,8 @@ class StoreUsers extends Component {
     userEdit.isClaimApprover = data.isClaimApprover;
     userEdit.FirstName = data.firstName;
     userEdit.LastName = data.lastName;
+    userEdit.userCodeID = data.userCode;
+    userEdit.tempUserCodeID = data.userCode;
 
     ////for Multi function binding drop down
     var fName = userEdit.mappedFunctions.split(",");
@@ -1859,11 +1949,13 @@ class StoreUsers extends Component {
     this.handleGetClaimCategoryData("edit");
     this.handleGetClaimSubCategoryData("edit");
     this.handleGetClaimIssueType("edit");
+    this.handleGetstoreCodeData(userEdit.brandID, "edit");
   };
   // -------------------API Start------------------------
   ///Show Store User Grid data
   handleGetStoreUserGridData() {
     let self = this;
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
@@ -1872,6 +1964,7 @@ class StoreUsers extends Component {
       .then((res) => {
         let status = res.data.message;
         let data = res.data.responseData;
+        self.setState({ isloading: false });
         if (status === "Success") {
           self.setState({ StoreUserData: data });
 
@@ -2051,6 +2144,7 @@ class StoreUsers extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isloading: false });
         console.log(response);
       });
   }
@@ -2077,20 +2171,31 @@ class StoreUsers extends Component {
       });
   }
   ////get Store Code for dropdown
-  handleGetstoreCodeData() {
+  handleGetstoreCodeData(BrandId, check) {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Store/StoreList",
+      url: config.apiUrl + "/StoreUser/StoreListByBrand",
       headers: authHeader(),
+      params: {
+        BrandID: parseInt(BrandId),
+      },
     })
       .then((res) => {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ storeCodeData: data });
+          if (check === "edit") {
+            self.setState({ editStoreCodeData: data });
+          } else {
+            self.setState({ storeCodeData: data });
+          }
         } else {
-          self.setState({ storeCodeData: [] });
+          if (check === "edit") {
+            self.setState({ editStoreCodeData: [] });
+          } else {
+            self.setState({ storeCodeData: [] });
+          }
         }
       })
       .catch((response) => {
@@ -2113,6 +2218,7 @@ class StoreUsers extends Component {
       .then((res) => {
         let status = res.data.message;
         let data = res.data.responseData;
+        debugger;
         if (status === "Success") {
           self.setState({ departmentData: data });
         } else {
@@ -2457,7 +2563,6 @@ class StoreUsers extends Component {
             self.setState({
               user_ID: data,
               StoreReadOnly: true,
-              personalBtnDisabled: false,
             });
           } else {
             NotificationManager.error(
@@ -2535,7 +2640,9 @@ class StoreUsers extends Component {
       this.state.mobile_no.length > 0 &&
       this.state.email_Id.length > 0 &&
       this.state.emailFlag === true &&
-      this.state.phoneFlag === true
+      this.state.phoneFlag === true &&
+      this.state.userAlreadyExists === false &&
+      this.state.userCodeID.length > 0
     ) {
       if (this.state.user_ID) {
         axios({
@@ -2550,6 +2657,7 @@ class StoreUsers extends Component {
             FirstName: "",
             LastName: "",
             IsStoreUser: true,
+            UserCode: this.state.userCodeID,
           },
         })
           .then(function(res) {
@@ -2563,8 +2671,8 @@ class StoreUsers extends Component {
               );
               self.setState({
                 // user_ID: data,
+                suggestedUserCode: [],
                 personalReadOnly: true,
-                profileBtnDisbaled: false,
               });
             } else {
               NotificationManager.error(res.data.message);
@@ -2585,6 +2693,7 @@ class StoreUsers extends Component {
         userNameCompulsory: "Please Enter User Name.",
         mobilenumberCompulsory: "Please Enter Mobile No.",
         emailCompulsory: "Please Enter Email Id.",
+        userCodeIDCompulsory: "Please Enter User Id.",
       });
     }
   }
@@ -2599,7 +2708,9 @@ class StoreUsers extends Component {
       this.state.mobile_no.length > 0 &&
       this.state.email_Id.length > 0 &&
       this.state.emailFlag === true &&
-      this.state.phoneFlag === true
+      this.state.phoneFlag === true &&
+      this.state.userAlreadyExists === false &&
+      this.state.userCodeID.length > 0
     ) {
       if (this.state.user_ID) {
         axios({
@@ -2614,6 +2725,7 @@ class StoreUsers extends Component {
             FirstName: "",
             LastName: "",
             IsStoreUser: true,
+            UserCode: this.state.userCodeID,
           },
         })
           .then(function(res) {
@@ -2627,6 +2739,7 @@ class StoreUsers extends Component {
               );
               self.setState({
                 // user_ID: data,
+                suggestedUserCode: [],
                 personalReadOnly: true,
               });
             } else {
@@ -2648,6 +2761,7 @@ class StoreUsers extends Component {
         userNameCompulsory: "Please Enter User Name.",
         mobilenumberCompulsory: "Please Enter Mobile No.",
         emailCompulsory: "Please Enter Email Id.",
+        userCodeIDCompulsory: "Please Enter User Id.",
       });
     }
   }
@@ -2698,7 +2812,6 @@ class StoreUsers extends Component {
             );
             self.setState({
               profileReadOnly: true,
-              mappedBtnDisabled: false,
             });
           } else {
             NotificationManager.error(
@@ -2863,8 +2976,8 @@ class StoreUsers extends Component {
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
-                  ? TranslationContext.alertmessage.recordsavedsuccessfully
-                  : "Record Saved Successfully."
+                  ? TranslationContext.alertmessage.usercreatedsuccessfully
+                  : "User created successfully."
               );
               self.handleGetStoreUserGridData();
               self.handleSendMail(self.state.user_ID);
@@ -2897,17 +3010,13 @@ class StoreUsers extends Component {
                 claimCategoryData: [],
                 brandData: [],
                 claimIssueTypeData: [],
-                CrmRoleData: [],
-                activeData: [],
-                personalBtnDisabled: true,
-                profileBtnDisbaled: true,
-                mappedBtnDisabled: true,
+                
               });
             } else {
               NotificationManager.error(
                 TranslationContext !== undefined
-                  ? TranslationContext.alertmessage.recordnotsaved
-                  : "Record Not Saved."
+                  ? TranslationContext.alertmessage.usernotcreated
+                  : "User not created successfully."
               );
             }
           })
@@ -2990,7 +3099,8 @@ class StoreUsers extends Component {
     if (
       this.state.userEdit.userName.length > 0 &&
       this.state.userEdit.mobileNo.length > 0 &&
-      this.state.userEdit.emailID.length > 0
+      this.state.userEdit.emailID.length > 0 &&
+      this.state.userEdit.userCodeID.length > 0
     ) {
       this.setState({
         selTab: "Profile Details",
@@ -3000,13 +3110,14 @@ class StoreUsers extends Component {
         editUserNameCompulsory: "Please Enter User Name.",
         editMobilenumberCompulsory: "Please Enter Mobile No.",
         EditEmailCompulsory: "Please Enter Email Id.",
+        EditEmailCompulsory: "Please Enter User Id.",
       });
     }
   }
   ////handle update user
   handleUpdateUser() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    debugger;
     var inputParam = {};
     if (
       /// -----------Store Detail Validation-------------------
@@ -3016,6 +3127,8 @@ class StoreUsers extends Component {
       this.state.userEdit.userName.length > 0 &&
       this.state.userEdit.mobileNo.length > 0 &&
       this.state.userEdit.emailID.length > 0 &&
+      this.state.userEdit.userCodeID.length > 0 &&
+      this.state.edituserAlreadyExists === false &&
       /// -----------Profile Details Validation----------------
       this.state.userEdit.departmentID > 0 &&
       this.state.editFuncation.length > 0 &&
@@ -3088,6 +3201,7 @@ class StoreUsers extends Component {
       inputParam.LastName = this.state.userEdit.LastName || "";
       inputParam.BrandID = this.state.userEdit.brandID;
       inputParam.StoreID = this.state.userEdit.storeID;
+      inputParam.UserCode = this.state.userEdit.userCodeID;
       let self = this;
       axios({
         method: "post",
@@ -3105,10 +3219,11 @@ class StoreUsers extends Component {
                 ? TranslationContext.alertmessage.userupdatedsuccessfully
                 : "User Updated Successfully."
             );
+            self.setState({ editsuggestedUserCode: [] });
             self.handleGetStoreUserGridData();
             self.closeEditModals();
           } else {
-            NotificationManager.success(
+            NotificationManager.error(
               TranslationContext !== undefined
                 ? TranslationContext.alertmessage.userupdatedfailed
                 : "User Updated Fail."
@@ -3145,6 +3260,7 @@ class StoreUsers extends Component {
         EditReportDesignationCompulsory: "please Select Report To.",
         EditReporteeDesignationCompulsory:
           "please Select Reportee Designation.",
+        EditUserCodeIdCompulsory: "Please Enter User Id.",
       });
     }
   }
@@ -3225,6 +3341,99 @@ class StoreUsers extends Component {
       tempitemData: [],
     });
   }
+  handleChagenUserId = (e) => {
+    var name = e.target.name;
+    if (name === "userName") {
+      var regEXP = /^[a-z].*/i;
+      if (e.target.value.length === 1 && regEXP.test(e.target.value)) {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      }
+
+      if (e.target.value.length > 1) {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      }
+
+      if (e.target.value.length === 0) {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      }
+    }
+  };
+
+  handleValidateUserName = () => {
+    let self = this;
+
+    var userName = "";
+    var userCodeID = "";
+    if (this.state.UserEditmodel) {
+      if (this.state.userEdit.userName === "") {
+        return false;
+      } else {
+        userName = this.state.userEdit.userName;
+        userCodeID = this.state.userEdit.userCodeID;
+      }
+    } else {
+      if (this.state.userName === "") {
+        return false;
+      } else {
+        userName = this.state.userName;
+        userCodeID = this.state.userCodeID;
+      }
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/ValidateUserName",
+      headers: authHeader(),
+      data: {
+        UserName: userName.replace(/\s+/g, " ").trim(),
+        UserCode: userCodeID,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (responseData) {
+          if (self.state.UserEditmodel) {
+            // if(self.state.userEdit.userCodeID===self.state.userEdit.tempUserCodeID)
+            // {
+            //   self.setState({
+            //     editsuggestedUserCode: [],
+            //     edituserAlreadyExists: false,
+            //   });  
+
+            // }else{
+              self.setState({
+                editsuggestedUserCode: responseData.suggestedUserCode,
+                edituserAlreadyExists: responseData.userAlreadyExists,
+              });
+            // }
+            
+          } else {
+            self.setState({
+              suggestedUserCode: responseData.suggestedUserCode,
+              userAlreadyExists: responseData.userAlreadyExists,
+            });
+          }
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  };
+  handleSelectSuggetion = (suggestedUserCode) => {
+    if (this.state.UserEditmodel) {
+      this.state.userEdit.userCodeID = suggestedUserCode;
+      this.setState({ userEdit: this.state.userEdit });
+    } else {
+      this.setState({ userCodeID: suggestedUserCode });
+    }
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -3564,7 +3773,7 @@ class StoreUsers extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreUserReact setting-table-des settings-align">
+                <div className="table-cntr table-height StoreUserReact setting-table-des settings-align tbl-loading">
                   <ReactTable
                     data={this.state.StoreUserData}
                     columns={[
@@ -3669,6 +3878,7 @@ class StoreUsers extends Component {
                         ),
                         sortable: false,
                         accessor: "userName",
+                        minWidth: 150,
                         Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
@@ -3869,7 +4079,9 @@ class StoreUsers extends Component {
                             />
                           </span>
                         ),
+                        minWidth: 150,
                         sortable: false,
+                        resizable: true,
                         accessor: "reporteeName",
                         Cell: (row) => {
                           var ids = row.original["userID"];
@@ -4067,47 +4279,18 @@ class StoreUsers extends Component {
                     defaultPageSize={10}
                     minRows={2}
                     showPagination={true}
-                    resizable={false}
+                    // resizable={false}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin size="large" tip="Loading..." />
+                      ) : this.state.StoreUserData.length === 0 ? (
+                        <Empty
+                          style={{ margin: "0" }}
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        />
+                      ) : null
+                    }
                   />
-
-                  {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className="col-md-4 cus-drp">
@@ -4286,6 +4469,7 @@ class StoreUsers extends Component {
                           name="userName"
                           value={this.state.userName}
                           onChange={this.handleOnChangeUserData}
+                          onBlur={this.handleValidateUserName.bind(this)}
                         />
                         {this.state.userName.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4371,6 +4555,61 @@ class StoreUsers extends Component {
                         </p>
                       </div>
 
+                      <div className="div-cntr">
+                        <label>User ID</label>
+                        <input
+                          type="text"
+                          placeholder={"Enter User ID"}
+                          maxLength={25}
+                          autoComplete="off"
+                          readOnly={this.state.personalReadOnly}
+                          className={
+                            this.state.personalReadOnly ? "disabled-input" : ""
+                          }
+                          name="userCodeID"
+                          value={this.state.userCodeID}
+                          onChange={this.handleOnChangeUserData}
+                        />
+
+                        {this.state.suggestedUserCode.length > 0 && this.state.userAlreadyExists===false ? (
+                          <>
+                            <p
+                              style={{
+                                fontWeight: "bold",
+                                fontSize: "16px",
+                                marginTop: "5px",
+                              }}
+                            >
+                              Suggestions:
+                            </p>
+                            {this.state.suggestedUserCode.map((item, i) => {
+                              return (
+                                <span
+                                  key={i}
+                                  className="suggetionptag"
+                                  onClick={this.handleSelectSuggetion.bind(
+                                    this,
+                                    item
+                                  )}
+                                >
+                                  {item}
+                                </span>
+                              );
+                            })}
+                          </>
+                        ) : null}
+
+                        {this.state.userCodeID.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.userCodeIDCompulsory}
+                          </p>
+                        )}
+                        {this.state.userAlreadyExists && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            User Id Already Exists.
+                          </p>
+                        )}
+                      </div>
                       {this.state.personalReadOnly === true ? (
                         <div className="btn-coll">
                           <button
@@ -4400,13 +4639,8 @@ class StoreUsers extends Component {
                       ) : (
                         <div className="btn-coll">
                           <button
-                            className={
-                              this.state.personalBtnDisabled
-                                ? "butn userBtnDibsl"
-                                : "butn"
-                            }
+                            className="butn"
                             onClick={this.handleSavePersonalDetails.bind(this)}
-                            disabled={this.state.personalBtnDisabled}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
@@ -4665,13 +4899,8 @@ class StoreUsers extends Component {
                       ) : (
                         <div className="btn-coll">
                           <button
-                            className={
-                              this.state.profileBtnDisbaled
-                                ? "butn userBtnDibsl"
-                                : "butn"
-                            }
+                            className="butn"
                             onClick={this.handleSaveProfileDetails.bind(this)}
-                            disabled={this.state.profileBtnDisbaled}
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.button.saveandnext
@@ -4912,12 +5141,7 @@ class StoreUsers extends Component {
                       </div>
                       <div className="btn-coll">
                         <button
-                          className={
-                            this.state.mappedBtnDisabled
-                              ? "butn userBtnDibsl"
-                              : "butn"
-                          }
-                          disabled={this.state.mappedBtnDisabled}
+                          className="butn"
                           type="button"
                           onClick={this.handleFinalSaveUserData.bind(this)}
                         >
@@ -4955,7 +5179,7 @@ class StoreUsers extends Component {
                     spinning={this.state.bulkuploadLoading}
                   >
                     <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload}>
+                      <Dropzone accept=".csv" onDrop={this.fileUpload}>
                         {({ getRootProps, getInputProps }) => (
                           <div {...getRootProps()}>
                             <input
@@ -5173,8 +5397,8 @@ class StoreUsers extends Component {
                                 ? TranslationContext.option.select
                                 : "Select"}
                             </option>
-                            {this.state.storeCodeData !== null &&
-                              this.state.storeCodeData.map((item, s) => (
+                            {this.state.editStoreCodeData !== null &&
+                              this.state.editStoreCodeData.map((item, s) => (
                                 <option
                                   key={s}
                                   value={item.storeID}
@@ -5250,6 +5474,7 @@ class StoreUsers extends Component {
                             name="userName"
                             value={this.state.userEdit.userName}
                             onChange={this.handleEditOnchange}
+                            onBlur={this.handleValidateUserName.bind(this)}
                           />
                           {this.state.userEdit.userName === "" && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
@@ -5257,6 +5482,7 @@ class StoreUsers extends Component {
                             </p>
                           )}
                         </div>
+
                         <div className="div-cntr">
                           <label className="edit-label-1">
                             {TranslationContext !== undefined
@@ -5319,6 +5545,54 @@ class StoreUsers extends Component {
                               {this.state.EditEmailCompulsory}
                             </p>
                           )}
+                        </div>
+                        <div className="div-cntr">
+                          <label className="edit-label-1">User ID</label>
+                          <input
+                            type="text"
+                            placeholder={"Enter User ID"}
+                            maxLength={25}
+                            autoComplete="off"
+                            name="userCodeID"
+                            value={this.state.userEdit.userCodeID}
+                            onChange={this.handleEditOnchange}
+                          />
+
+                          {this.state.editsuggestedUserCode.length>0 ? (
+                            <>
+                              <p
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "16px",
+                                  marginTop: "5px",
+                                }}
+                              >
+                                Suggestions:
+                              </p>
+                              {this.state.editsuggestedUserCode.map((item,i)=>{
+                                return(<span
+                                key={i}
+                                  className="suggetionptag"
+                                  onClick={this.handleSelectSuggetion.bind(this,item)}
+                                >
+                                  {item}
+                                </span>);
+                              })}
+                              
+                            </>
+                          ) : null}
+
+                          {this.state.userEdit.userCodeID == "" && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.EditUserCodeIDCompulsory}
+                            </p>
+                          )}
+
+                          {/* {this.state.edituserAlreadyExists && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              User Already Exists.
+                            </p>
+                          )} */}
                         </div>
                       </div>
 

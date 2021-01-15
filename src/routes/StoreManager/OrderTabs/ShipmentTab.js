@@ -1,19 +1,30 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Spin, Tooltip } from "antd";
+import {
+  Table,
+  Popover,
+  Popconfirm,
+  Spin,
+  Tooltip,
+  Collapse,
+  Empty,
+} from "antd";
 import Modal from "react-responsive-modal";
+import Deliver from "./../../../assets/Images/icons8-delivery.svg";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
 import OrderInfo from "./../../../assets/Images/order-info.png";
 import CardTick from "./../../../assets/Images/card-tick.png";
+import Info from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import OrderDel from "./../../../assets/Images/order-del.png";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
-
+const { Panel } = Collapse;
 class ShipmentTab extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +62,13 @@ class ShipmentTab extends Component {
       selectedTemplate: "0",
       createShipmetLoader: false,
       showShipmentCharge: true,
+      ShowSelectCourierPartner: false,
+      selectCourierPartner: 0,
+      ShipCancelComment: "",
+      ShipShowTemplate: false,
+      isMobileView: false,
+      activePanel: [],
+      showNewShipmentCharge: false,
     };
   }
 
@@ -66,11 +84,24 @@ class ShipmentTab extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
+  }
+  resize() {
+    if (window.innerWidth <= 760) {
+      this.setState({ isMobileView: true });
+    } else {
+      this.setState({ isMobileView: false });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize.bind(this));
   }
   /// search data
   handleShipmentSearch = (searchData) => {
     this.setState({
       orderSearchText: searchData,
+      currentPage:1
     });
     setTimeout(() => {
       this.handleGetShipmentTabGridData();
@@ -98,7 +129,6 @@ class ShipmentTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -209,7 +239,6 @@ class ShipmentTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -282,8 +311,12 @@ class ShipmentTab extends Component {
             ShipmentMdlbtn: true,
             airWayBill2ndTab: false,
             orderId: ordId,
+            ShowSelectCourierPartner: data.showSelectCourierPartner,
+            ShipShowTemplate: data.showTemplate,
           });
-          self.handleGetTemplateData();
+          if (data.showTemplate) {
+            self.handleGetTemplateData();
+          }
         } else {
           self.setState({
             ShipmentOrderItem: [],
@@ -293,8 +326,9 @@ class ShipmentTab extends Component {
             showShipmentCharge: true,
             airWayBill2ndTab: false,
             orderId: ordId,
+            ShowSelectCourierPartner: false,
+            ShipShowTemplate: false,
           });
-          self.handleGetTemplateData();
         }
       })
       .catch((data) => {
@@ -310,7 +344,6 @@ class ShipmentTab extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -339,9 +372,9 @@ class ShipmentTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
+
         if (status === "Success") {
           self.setState({
             AirwayBillAWBNo: data[0].awbNumber,
@@ -349,6 +382,7 @@ class ShipmentTab extends Component {
             ShipmentOrderId: data[0].invoiceNo,
             shipmentCharges: data[0].shipmentCharges,
             showShipmentCharge: data[0].isStoreDelivery,
+            showNewShipmentCharge: data[0].showShipmentCharges,
             ShipmentMdlbtn: true,
             airWayBill2ndTab: true,
             createdShoppingTabs: true,
@@ -377,61 +411,167 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
+    let self = this;
+    var itemIds = "";
+    if (this.state.ShipmentOrderItem.length > 0) {
+      for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
+        itemIds += this.state.ShipmentOrderItem[i].id + ",";
+      }
+    }
+    this.setState({
+      createShipmentBtnDisbaled: true,
+      createShipmetLoader: true,
+    });
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
+      headers: authHeader(),
+      params: {
+        orderID: this.state.orderId,
+        itemIDs: itemIds,
+        templateID: this.state.ShipShowTemplate
+          ? this.state.selectedTemplate
+          : 0,
+      },
+    })
+      .then(function(res) {
+        let CheckStatus = res.data.status;
+        let data = res.data.responseData;
+        if (CheckStatus) {
+          if (data.status) {
+            self.setState({
+              AirwayBillAWBNo: data.awbNumber,
+              AirwayItemIds: data.itemIDs,
+              createdShoppingTabs: true,
+              createShipmentBtnDisbaled: false,
+              createShipmetLoader: false,
+            });
+            if (data.isStoreDelivery) {
+              self.setState({
+                IsStoreDelivery: true,
+              });
+            }
+          } else {
+            NotificationManager.error(data.statusMessge);
+            self.setState({
+              ShipmentMdlbtn: false,
+            });
+          }
+          self.handleGetShipmentTabGridData();
+        } else {
+          NotificationManager.error(res.data.message);
+          self.setState({
+            createdShoppingTabs: false,
+            createShipmentBtnDisbaled: false,
+            createShipmetLoader: false,
+            ShipmentMdlbtn: false,
+          });
+        }
+      })
+      .catch((data) => {
+        self.setState({ createShipmetLoader: false });
+        console.log(data);
+      });
+  }
+  /// make shipment Store delivery
+  handleMakeShipmentAsStoreDelivery() {
+    let self = this;
+
+    var itemIds = "";
+    if (this.state.ShipmentOrderItem.length > 0) {
+      for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
+        itemIds += this.state.ShipmentOrderItem[i].id + ",";
+      }
+    }
+    this.setState({
+      createShipmentBtnDisbaled: true,
+      createShipmetLoader: true,
+    });
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/MakeShipmentAsStoreDelivery",
+      headers: authHeader(),
+      params: {
+        orderID: this.state.orderId,
+        itemIDs: itemIds,
+        templateID: this.state.ShipShowTemplate
+          ? this.state.selectedTemplate
+          : 0,
+      },
+    })
+      .then(function(res) {
+        let CheckStatus = res.data.status;
+        let data = res.data.responseData;
+        if (CheckStatus) {
+          if (data.status) {
+            self.setState({
+              AirwayBillAWBNo: data.awbNumber,
+              AirwayItemIds: data.itemIDs,
+              createdShoppingTabs: true,
+              createShipmentBtnDisbaled: false,
+              createShipmetLoader: false,
+            });
+            if (data.isStoreDelivery) {
+              self.setState({
+                IsStoreDelivery: true,
+              });
+            }
+          } else {
+            NotificationManager.error(data.statusMessge);
+            self.setState({
+              ShipmentMdlbtn: false,
+            });
+          }
+          self.handleGetShipmentTabGridData();
+        } else {
+          NotificationManager.error(res.data.message);
+          self.setState({
+            createdShoppingTabs: false,
+            createShipmentBtnDisbaled: false,
+            createShipmetLoader: false,
+            ShipmentMdlbtn: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle cancel and comment for Shopping bag
+  handleCancleAndCommnetShipment(OrdId) {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-    if (this.state.selectedTemplate !== "0") {
-      var itemIds = "";
-      if (this.state.ShipmentOrderItem.length > 0) {
-        for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
-          itemIds += this.state.ShipmentOrderItem[i].id + ",";
-        }
-      }
-      this.setState({
-        createShipmentBtnDisbaled: true,
-        createShipmetLoader: true,
-      });
+    if (this.state.ShipCancelComment !== "") {
       axios({
         method: "post",
-        url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
+        url: config.apiUrl + "/HSOrder/CancelOrder",
         headers: authHeader(),
-        params: {
-          orderID: this.state.orderId,
-          itemIDs: itemIds,
-          templateID: this.state.selectedTemplate,
+        data: {
+          orderID: OrdId,
+          cancellationReason: this.state.ShipCancelComment,
         },
       })
         .then(function(res) {
-          debugger
-          let CheckStatus = res.data.status;
-          let data = res.data.responseData;
-          if (CheckStatus) {
-            if (data.status) {
-              self.setState({
-                AirwayBillAWBNo: data.awbNumber,
-                AirwayItemIds: data.itemIDs,
-                createdShoppingTabs: true,
-                createShipmentBtnDisbaled: false,
-                createShipmetLoader: false,
-                ShipmentMdlbtn:false
-              });
-              if (data.isStoreDelivery) {
-                self.setState({
-                  IsStoreDelivery: true,
-                });
-              }
-            } else {
-              NotificationManager.error(data.message);
-            }
-            self.handleGetShipmentTabGridData();
-          } else {
-            NotificationManager.error(res.data.message);
+          let status = res.data.message;
+          if (status === "Success") {
             self.setState({
-              createdShoppingTabs: false,
-              createShipmentBtnDisbaled: false,
-              createShipmetLoader: false,
-              ShipmentMdlbtn:false
+              ShipCancelComment: "",
             });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.success
+                : "Success."
+            );
+          } else {
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.failed
+                : "Failed."
+            );
           }
+          self.handleGetShipmentTabGridData();
         })
         .catch((data) => {
           console.log(data);
@@ -439,12 +579,69 @@ class ShipmentTab extends Component {
     } else {
       NotificationManager.error(
         TranslationContext !== undefined
-          ? TranslationContext.ticketingDashboard.pleaseselecttemplate
-          : "Please Select Template."
+          ? TranslationContext.alertmessage.pleaseentercomment
+          : "Please Enter Comment."
       );
     }
   }
   ///-----------------------API function End----------------------------
+  handleCreateShipmentCheck() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (this.state.ShowSelectCourierPartner) {
+      if (
+        this.state.selectCourierPartner !== "0" &&
+        this.state.selectCourierPartner !== 0
+      ) {
+        if (this.state.selectCourierPartner === "Store") {
+          this.handleCheckShowTemplateData();
+        } else {
+          this.handleCheckShipmentAWB();
+        }
+      } else {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseselectcourierpartner
+            : "Please Select Courier Partner."
+        );
+      }
+    } else {
+      this.handleCheckShipmentAWB();
+    }
+  }
+  /// handle check template data api function
+  handleCheckShowTemplateData() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (this.state.ShipShowTemplate) {
+      if (this.state.selectedTemplate !== "0") {
+        this.handleMakeShipmentAsStoreDelivery();
+      } else {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseselecttemplate
+            : "Please Select Template."
+        );
+      }
+    } else {
+      this.handleMakeShipmentAsStoreDelivery();
+    }
+  }
+  /// handle check AWB data api function
+  handleCheckShipmentAWB() {
+    const TranslationContext = this.state.translateLanguage.default;
+    if (this.state.ShipShowTemplate) {
+      if (this.state.selectedTemplate !== "0") {
+        this.handleCreateShipmentAWB();
+      } else {
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseselecttemplate
+            : "Please Select Template."
+        );
+      }
+    } else {
+      this.handleCreateShipmentAWB();
+    }
+  }
 
   //// shipment Modale Close
   handleShipmentModalClose(e) {
@@ -548,684 +745,1147 @@ class ShipmentTab extends Component {
       selectedTemplate: e.target.value,
     });
   };
+  handlecollapseChange = (e) => {
+    this.state.activePanel = e[e.length - 1];
+    this.setState({ activePanel: this.state.activePanel });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
     return (
       <>
         {this.state.orderPopoverOverlay && (
           <div className="order-popover-overlay"></div>
         )}
-        <div className="table-cntr store dv-table-paging">
-          <Table
-            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table antd-table-order-mobile"
-            columns={[
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.invoiceno
-                    : "Invoice no.",
-                key: "invoiceNo",
-                render: (row, item) => {
-                  return (
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <Tooltip title={item.invoiceNo} placement="bottom">
-                        <p className="order-bill-no">{item.invoiceNo}</p>
-                      </Tooltip>
-                    </div>
-                  );
-                },
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.customer
-                    : "Customer",
-                className: "table-coloum-hide",
-                render: (row, item) => {
-                  return (
-                    <div>
-                      <p>{item.customerName},</p>
-                      <p className="order-small-font">{item.mobileNumber}</p>
-                    </div>
-                  );
-                },
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.items
-                    : "Items",
-                render: (row, item) => {
-                  return (
-                    <div className="d-flex align-items-center">
-                      <p>{item.ordersItemList.length}</p>
-                      <Popover
-                        content={
-                          <Table
-                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemid
-                                    : "Item ID",
-                                dataIndex: "itemID",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemname
-                                    : "Item Name",
-                                dataIndex: "itemName",
-                                width: 150,
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemprice
-                                    : "Item Price",
-                                dataIndex: "itemPrice",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.quantity
-                                    : "Quantity",
-                                dataIndex: "quantity",
-                              },
-                            ]}
-                            scroll={{ y: 240 }}
-                            pagination={false}
-                            dataSource={item.ordersItemList}
-                          />
-                        }
-                        trigger="click"
-                        overlayClassName="order-popover-table order-popover order-popover-table-big"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                      >
-                        <img src={OrderHamb} className="order-hamb" />
-                      </Popover>
-                    </div>
-                  );
-                },
-                width: 100,
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.shippingaddress
-                    : "Shipping address",
-                render: (row, item) => {
-                  return (
-                    <p className="order-small-font">{item.shippingAddress}</p>
-                  );
-                },
-                width: 250,
-                className: "white-space-init table-coloum-hide",
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.deliverytype
-                    : "Delivery Type",
-                className:
-                  "shopping-delivery-header camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
-                dataIndex: "deliveryTypeName",
-                width: 150,
-                filterDropdown: (data, row) => {
-                  return (
-                    <div className="campaign-status-drpdwn">
-                      <ul>
-                        {this.state.DeliveryFilterData !== null &&
-                          this.state.DeliveryFilterData.map((item, b) => (
-                            <li key={b}>
-                              <input
-                                type="checkbox"
-                                id={"New" + item.deliveryTypeID}
-                                className="ch1"
-                                onChange={this.handleCheckDeliveryOnchange.bind(
-                                  this
-                                )}
-                                name="ShipmentDelivery"
-                                attrIds={item.deliveryTypeID}
-                              />
-                              <label htmlFor={"New" + item.deliveryTypeID}>
-                                <span className="ch1-text">
-                                  {item.deliveryTypeName}
-                                </span>
-                              </label>
-                            </li>
-                          ))}
-                      </ul>
-                      <div className="dv-status">
-                        <button
-                          className="btn-apply-status"
-                          onClick={this.handleGetShipmentTabGridData.bind(
-                            this,
-                            "filter"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.apply
-                            : "Apply"}
-                        </button>
-                        <button
-                          className="btn-cancel-status"
-                          onClick={this.handleCloseDeliveryFilter.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "Cancel"}
-                        </button>
+        <div className="table-cntr store dv-table-paging shipmo">
+          <p className="shopi">
+            {TranslationContext !== undefined
+              ? TranslationContext.label.shipment
+              : "Shipment"}
+          </p>
+          {!this.state.isMobileView ? (
+            <Table
+              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table antd-table-order-mobile"
+              columns={[
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.orderid
+                      : "Order ID",
+                  key: "invoiceNo",
+                  render: (row, item) => {
+                    return (
+                      <div className="d-flex align-items-center overflow-hidden namenumbermain">
+                        <Tooltip title={item.invoiceNo} placement="bottom">
+                          <p className="order-bill-no">
+                            {item.invoiceNo.length > 13
+                              ? item.invoiceNo.substr(0, 13).concat("...")
+                              : item.invoiceNo}
+                          </p>
+                        </Tooltip>
+                        <div className="namenumber">
+                          <p>{item.customerName},</p>
+                          <p className="order-small-font">
+                            {item.mobileNumber}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  );
+                    );
+                  },
                 },
-                filterDropdownVisible: this.state.filterShipmentDelivery,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterShipmentDelivery: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.status
-                    : "Status",
-                className:
-                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
-                render: (row, item) => {
-                  return (
-                    <div className="d-flex align-items-center">
-                      <p>{item.statusName}</p>
-                      <Popover
-                        content={
-                          <div className="order-tab-popover shipment-status-popover">
-                            <div className="d-flex align-items-center justify-content-between">
-                              <p>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.ticketingDashboard
-                                      .expectedpickupdate
-                                  : "Expected Pickup Date"}
-                                :
-                              </p>
-                              <p className="username-mar">
-                                {item.pickupScheduledDate}
-                              </p>
-                            </div>
-                            <div className="d-flex align-items-center justify-content-between">
-                              <p>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.ticketingDashboard
-                                      .expecteddeliverydate
-                                  : "Expected Delivery Date"}
-                                :
-                              </p>
-                              <p className="username-mar">
-                                {item.estimatedDeliveryDate}
-                              </p>
-                            </div>
-                            <div className="d-flex align-items-center justify-content-between">
-                              <p>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.ticketingDashboard
-                                      .charges
-                                  : "Charges"}
-                                :
-                              </p>
-                              <p className="username-mar">
-                                {item.shippingCharges}
-                              </p>
-                            </div>
-                          </div>
-                        }
-                        trigger="click"
-                        overlayClassName="order-popover shopping-popover-cancel"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                      >
-                        {item.statusName !== "" ? (
-                          <img src={OrderInfo} className="order-info" />
-                        ) : null}
-                      </Popover>
-                    </div>
-                  );
-                },
-                filterDropdown: (data, row) => {
-                  return (
-                    <div className="campaign-status-drpdwn">
-                      <ul>
-                        {this.state.statusFilterData !== null &&
-                          this.state.statusFilterData.map((item, b) => (
-                            <li key={b}>
-                              <input
-                                type="checkbox"
-                                id={"New" + item.statusID}
-                                className="ch1"
-                                onChange={this.handleCheckDeliIndividualStatus.bind(
-                                  this
-                                )}
-                                name="ShipmentStatus"
-                                attrIds={item.statusID}
-                              />
-                              <label htmlFor={"New" + item.statusID}>
-                                <span className="ch1-text">
-                                  {item.statusName}
-                                </span>
-                              </label>
-                            </li>
-                          ))}
-                      </ul>
-                      <div className="dv-status">
-                        <button
-                          className="btn-apply-status"
-                          onClick={this.handleGetShipmentTabGridData.bind(
-                            this,
-                            "filter"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.apply
-                            : "Apply"}
-                        </button>
-                        <button
-                          className="btn-cancel-status"
-                          onClick={this.handleCloseStatusFilter.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "Cancel"}
-                        </button>
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.customer
+                      : "Customer",
+                  className: "table-coloum-hide",
+                  render: (row, item) => {
+                    return (
+                      <div>
+                        <p>{item.customerName},</p>
+                        <p className="order-small-font">{item.mobileNumber}</p>
                       </div>
-                    </div>
-                  );
+                    );
+                  },
                 },
-                filterDropdownVisible: this.state.filterShipmentStatus,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterShipmentStatus: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.partner
-                    : "Partner",
-                dataIndex: "courierPartner",
-                className:
-                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header partner-shipment-header",
-                width: 150,
-                filterDropdown: (data, row) => {
-                  return (
-                    <div className="campaign-status-drpdwn">
-                      <ul>
-                        {this.state.PartnerFilterData !== null &&
-                          this.state.PartnerFilterData.map((item, p) => {
-                            return (
-                              <li key={p}>
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.items
+                      : "Items",
+                  render: (row, item) => {
+                    return (
+                      <div className="d-flex align-items-center">
+                        <p>{item.ordersItemList.length}</p>
+                        <Popover
+                          content={
+                            <Table
+                              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                              columns={[
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemid
+                                      : "Item ID",
+                                  dataIndex: "itemID",
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemname
+                                      : "Item Name",
+                                  dataIndex: "itemName",
+                                  width: 150,
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.itemprice
+                                      : "Item Price",
+                                  dataIndex: "itemPrice",
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.quantity
+                                      : "Quantity",
+                                  dataIndex: "quantity",
+                                },
+                              ]}
+                              scroll={{ y: 240 }}
+                              pagination={false}
+                              dataSource={item.ordersItemList}
+                            />
+                          }
+                          trigger="click"
+                          overlayClassName="order-popover-table order-popover order-popover-table-big"
+                          onVisibleChange={(visible) =>
+                            this.setState({ orderPopoverOverlay: visible })
+                          }
+                        >
+                          <img src={OrderHamb} className="order-hamb" />
+                        </Popover>
+                      </div>
+                    );
+                  },
+                  width: 100,
+                  className: "order-desktop",
+                },
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.shippingaddress
+                      : "Shipping address",
+                  render: (row, item) => {
+                    return (
+                      <p className="order-small-font">{item.shippingAddress}</p>
+                    );
+                  },
+                  width: 250,
+                  className: "white-space-init table-coloum-hide",
+                },
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.deliverytype
+                      : "Delivery Type",
+                  className:
+                    "shopping-delivery-header camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                  dataIndex: "deliveryTypeName",
+                  width: 150,
+                  filterDropdown: (data, row) => {
+                    return (
+                      <div className="campaign-status-drpdwn">
+                        <ul>
+                          {this.state.DeliveryFilterData !== null &&
+                            this.state.DeliveryFilterData.map((item, b) => (
+                              <li key={b}>
                                 <input
                                   type="checkbox"
-                                  id={"New" + item}
+                                  id={"New" + item.deliveryTypeID}
                                   className="ch1"
-                                  onChange={this.handleCheckPartnerOnchange.bind(
+                                  onChange={this.handleCheckDeliveryOnchange.bind(
                                     this
                                   )}
-                                  name="ShipmentPartner"
-                                  attrIds={item}
+                                  name="ShipmentDelivery"
+                                  attrIds={item.deliveryTypeID}
                                 />
-                                <label htmlFor={"New" + item}>
-                                  <span className="ch1-text">{item}</span>
+                                <label htmlFor={"New" + item.deliveryTypeID}>
+                                  <span className="ch1-text">
+                                    {item.deliveryTypeName}
+                                  </span>
                                 </label>
                               </li>
-                            );
-                          })}
-                      </ul>
-                      <div className="dv-status">
-                        <button
-                          className="btn-apply-status"
-                          onClick={this.handleGetShipmentTabGridData.bind(
-                            this,
-                            "filter"
-                          )}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.apply
-                            : "Apply"}
-                        </button>
-                        <button
-                          className="btn-cancel-status"
-                          onClick={this.handleClosePartnerFilter.bind(this)}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "Cancel"}
-                        </button>
+                            ))}
+                        </ul>
+                        <div className="dv-status">
+                          <button
+                            className="btn-apply-status"
+                            onClick={this.handleGetShipmentTabGridData.bind(
+                              this,
+                              "filter"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.apply
+                              : "Apply"}
+                          </button>
+                          <button
+                            className="btn-cancel-status"
+                            onClick={this.handleCloseDeliveryFilter.bind(this)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.cancel
+                              : "Cancel"}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  );
+                    );
+                  },
+                  filterDropdownVisible: this.state.filterShipmentDelivery,
+                  onFilterDropdownVisibleChange: (visible) =>
+                    this.setState({ filterShipmentDelivery: visible }),
+                  filterIcon: (filtered) => (
+                    <span
+                      style={{ color: filtered ? "#1890ff" : undefined }}
+                    ></span>
+                  ),
                 },
-                filterDropdownVisible: this.state.filterShipmentPartner,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterShipmentPartner: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.actions
-                    : "Action",
-                className: "action-w",
-                render: (row, item) => {
-                  return (
-                    <div className="pickuppendingcustom">
-                      {item.actionTypeName === "Pickup Pending" ? (
-                        <>
-                          <Popconfirm
-                            title={
-                              <div className="pickuppending-table">
-                                <table>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <label>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .pickupdate
-                                            : "Pickup Date"}
-                                          :
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          value={item.pickupDate}
-                                          disabled={true}
-                                        />
-                                      </td>
-                                      <td>
-                                        <label>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .pickuptime
-                                            : "Pickup Time"}
-                                          :
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          value={item.pickupTime}
-                                          disabled={true}
-                                        />
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <label>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .pickupdone
-                                            : "Pickup Done"}
-                                        </label>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.status
+                      : "Status",
+                  className:
+                    "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                  render: (row, item) => {
+                    return (
+                      <div className="d-flex align-items-center">
+                        <p>{item.statusName}</p>
+                        <Popover
+                          content={
+                            <div className="order-tab-popover shipment-status-popover">
+                              <div className="d-flex align-items-center justify-content-between">
+                                <p>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .expectedpickupdate
+                                    : "Expected Pickup Date"}
+                                  :
+                                </p>
+                                <p className="username-mar">
+                                  {item.pickupScheduledDate}
+                                </p>
                               </div>
-                            }
-                            overlayClassName="order-popover order-popover-butns popbtn"
-                            placement="bottomRight"
-                            onVisibleChange={(visible) =>
-                              this.setState({ orderPopoverOverlay: visible })
-                            }
-                            icon={false}
-                            okText={
-                              TranslationContext !== undefined
-                                ? TranslationContext.button.yes
-                                : "Yes"
-                            }
-                            onConfirm={this.handleUpdateDateandTime.bind(
-                              this,
-                              item.id
-                            )}
-                            cancelText={
-                              TranslationContext !== undefined
-                                ? TranslationContext.button.no
-                                : "No"
-                            }
-                          >
-                            <button
-                              className={
-                                item.actionTypeName === "Pickup Pending"
-                                  ? "butn order-grid-butn order-grid-butn-green"
-                                  : "butn order-grid-butn"
-                              }
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.button.pickuppending
-                                : item.actionTypeName}
-                            </button>
-                          </Popconfirm>
-                        </>
-                      ) : null}
-                      {item.actionTypeName === "Create Shipment" ? (
-                        <>
-                          <button
-                            className={
-                              item.actionTypeName === "Create Shipment"
-                                ? "butn order-grid-butn"
-                                : "butn order-grid-butn order-grid-butn-green"
-                            }
-                            type="button"
-                            onClick={this.handleGetOrderItemDataByOrderId.bind(
-                              this,
-                              item.id
-                            )}
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.createshipment
-                              : item.actionTypeName}
-                          </button>
-                        </>
-                      ) : null}
-                      {item.actionTypeName === "Shipment Created" ? (
-                        <>
-                          <button
-                            className={
-                              item.actionTypeName === "Shipment Created"
-                                ? "butn order-grid-butn delibutn"
-                                : "butn order-grid-butn order-grid-butn-green"
-                            }
-                            type="button"
-                            onClick={this.handleGetAWBInvoiceDetailsOrderId.bind(
-                              this,
-                              item.id
-                            )}
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.shipmentcreated
-                              : item.actionTypeName}
-                          </button>
-                        </>
-                      ) : null}
-                    </div>
-                  );
-                },
-              },
-            ]}
-            expandedRowRender={(row, item) => {
-              return (
-                <div className="innertabcollapse">
-                  <table>
-                    <tr>
-                      <td>
-                        <label>
-                          <b>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.customername
-                              : "Customer Name"}
-                          </b>
-                        </label>
-                        <label>
-                          <p>{row.customerName}</p>
-                          <p>{row.mobileNumber}</p>
-                        </label>
-                      </td>
-                      <td>
-                        <label>
-                          <b>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p.shippingaddress
-                              : "Shipping Address"}
-                          </b>
-                        </label>
-                        <label style={{ whiteSpace: "initial" }}>
-                          {row.shippingAddress}
-                        </label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>
-                          <b>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.title.deliverytype
-                              : "Delivery Type"}
-                          </b>
-                        </label>
-                        <label>{row.deliveryTypeName}</label>
-                      </td>
-                      <td>
-                        <label>
-                          <b>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.status
-                              : "Status"}
-                          </b>
-                        </label>
-                        <div className="d-flex align-items-center">
-                          <label>{row.statusName}</label>
-                          <Popover
-                            content={
-                              <div className="order-tab-popover shipment-status-popover">
-                                <div className="d-flex align-items-center justify-content-between">
-                                  <p>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                          .expectedpickupdate
-                                      : "Expected Pickup Date"}
-                                    :
-                                  </p>
-                                  <p className="username-mar">
-                                    {row.estimatedDeliveryDate}
-                                  </p>
-                                </div>
-                                <div className="d-flex align-items-center justify-content-between">
-                                  <p>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.ticketingDashboard
-                                          .expecteddeliverydate
-                                      : "Expected Delivery Date"}
-                                    :
-                                  </p>
-                                  <p className="username-mar">
-                                    {row.pickupScheduledDate}
-                                  </p>
-                                </div>
+                              <div className="d-flex align-items-center justify-content-between">
+                                <p>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .expecteddeliverydate
+                                    : "Expected Delivery Date"}
+                                  :
+                                </p>
+                                <p className="username-mar">
+                                  {item.estimatedDeliveryDate}
+                                </p>
+                              </div>
+                              {item.showShipmentCharges ? (
                                 <div className="d-flex align-items-center justify-content-between">
                                   <p>
                                     {TranslationContext !== undefined
                                       ? TranslationContext.ticketingDashboard
                                           .charges
-                                      : "Charges"}{" "}
+                                      : "Charges"}
                                     :
                                   </p>
                                   <p className="username-mar">
-                                    {row.shippingCharges}
-                                    {/* &#8377; */}
+                                    {item.shippingCharges}
                                   </p>
+                                </div>
+                              ) : null}
+                            </div>
+                          }
+                          trigger="click"
+                          overlayClassName="order-popover shopping-popover-cancel"
+                          onVisibleChange={(visible) =>
+                            this.setState({ orderPopoverOverlay: visible })
+                          }
+                        >
+                          {item.courierPartner !== "" &&
+                          item.courierPartner !== "Store" ? (
+                            <img src={OrderInfo} className="order-info" />
+                          ) : null}
+                        </Popover>
+                      </div>
+                    );
+                  },
+                  filterDropdown: (data, row) => {
+                    return (
+                      <div className="campaign-status-drpdwn">
+                        <ul>
+                          {this.state.statusFilterData !== null &&
+                            this.state.statusFilterData.map((item, b) => (
+                              <li key={b}>
+                                <input
+                                  type="checkbox"
+                                  id={"New" + item.statusID}
+                                  className="ch1"
+                                  onChange={this.handleCheckDeliIndividualStatus.bind(
+                                    this
+                                  )}
+                                  name="ShipmentStatus"
+                                  attrIds={item.statusID}
+                                />
+                                <label htmlFor={"New" + item.statusID}>
+                                  <span className="ch1-text">
+                                    {item.statusName}
+                                  </span>
+                                </label>
+                              </li>
+                            ))}
+                        </ul>
+                        <div className="dv-status">
+                          <button
+                            className="btn-apply-status"
+                            onClick={this.handleGetShipmentTabGridData.bind(
+                              this,
+                              "filter"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.apply
+                              : "Apply"}
+                          </button>
+                          <button
+                            className="btn-cancel-status"
+                            onClick={this.handleCloseStatusFilter.bind(this)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.cancel
+                              : "Cancel"}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  },
+                  filterDropdownVisible: this.state.filterShipmentStatus,
+                  onFilterDropdownVisibleChange: (visible) =>
+                    this.setState({ filterShipmentStatus: visible }),
+                  filterIcon: (filtered) => (
+                    <span
+                      style={{ color: filtered ? "#1890ff" : undefined }}
+                    ></span>
+                  ),
+                },
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.partner
+                      : "Partner",
+                  dataIndex: "courierPartner",
+                  className:
+                    "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header partner-shipment-header",
+                  width: 150,
+                  filterDropdown: (data, row) => {
+                    return (
+                      <div className="campaign-status-drpdwn">
+                        <ul>
+                          {this.state.PartnerFilterData !== null &&
+                            this.state.PartnerFilterData.map((item, p) => {
+                              return (
+                                <li key={p}>
+                                  <input
+                                    type="checkbox"
+                                    id={"New" + item}
+                                    className="ch1"
+                                    onChange={this.handleCheckPartnerOnchange.bind(
+                                      this
+                                    )}
+                                    name="ShipmentPartner"
+                                    attrIds={item}
+                                  />
+                                  <label htmlFor={"New" + item}>
+                                    <span className="ch1-text">{item}</span>
+                                  </label>
+                                </li>
+                              );
+                            })}
+                        </ul>
+                        <div className="dv-status">
+                          <button
+                            className="btn-apply-status"
+                            onClick={this.handleGetShipmentTabGridData.bind(
+                              this,
+                              "filter"
+                            )}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.apply
+                              : "Apply"}
+                          </button>
+                          <button
+                            className="btn-cancel-status"
+                            onClick={this.handleClosePartnerFilter.bind(this)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.cancel
+                              : "Cancel"}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  },
+                  filterDropdownVisible: this.state.filterShipmentPartner,
+                  onFilterDropdownVisibleChange: (visible) =>
+                    this.setState({ filterShipmentPartner: visible }),
+                  filterIcon: (filtered) => (
+                    <span
+                      style={{ color: filtered ? "#1890ff" : undefined }}
+                    ></span>
+                  ),
+                },
+                {
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.actions
+                      : "Action",
+                  className: "action-w",
+                  render: (row, item) => {
+                    return (
+                      <div>
+                        <div className="pickuppendingcustom pickup">
+                          {item.actionTypeName === "Pickup Pending" ? (
+                            <>
+                              <Popconfirm
+                                title={
+                                  <div className="pickuppending-table">
+                                    <table>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .pickupdate
+                                                : "Pickup Date"}
+                                              :
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                              value={item.pickupDate}
+                                              disabled={true}
+                                            />
+                                          </td>
+                                          <td>
+                                            <label>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .pickuptime
+                                                : "Pickup Time"}
+                                              :
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                              value={item.pickupTime}
+                                              disabled={true}
+                                            />
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <label>
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .pickupdone
+                                                : "Pickup Done"}
+                                            </label>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                }
+                                overlayClassName="order-popover order-popover-butns popbtn"
+                                placement="bottomRight"
+                                onVisibleChange={(visible) =>
+                                  this.setState({
+                                    orderPopoverOverlay: visible,
+                                  })
+                                }
+                                icon={false}
+                                okText={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.button.yes
+                                    : "Yes"
+                                }
+                                onConfirm={this.handleUpdateDateandTime.bind(
+                                  this,
+                                  item.id
+                                )}
+                                cancelText={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.button.no
+                                    : "No"
+                                }
+                              >
+                                <button
+                                  className={
+                                    item.actionTypeName === "Pickup Pending"
+                                      ? "butn order-grid-butn order-grid-butn-green"
+                                      : "butn order-grid-butn"
+                                  }
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.pickuppending
+                                    : item.actionTypeName}
+                                </button>
+                              </Popconfirm>
+                            </>
+                          ) : null}
+                          {item.actionTypeName === "Create Shipment" ? (
+                            <>
+                              <button
+                                className={
+                                  item.actionTypeName === "Create Shipment"
+                                    ? "butn order-grid-butn"
+                                    : "butn order-grid-butn order-grid-butn-green"
+                                }
+                                type="button"
+                                onClick={this.handleGetOrderItemDataByOrderId.bind(
+                                  this,
+                                  item.id
+                                )}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.createshipment
+                                  : item.actionTypeName}
+                              </button>
+                            </>
+                          ) : null}
+                          {item.actionTypeName === "Shipment Created" ? (
+                            <>
+                              <button
+                                className={
+                                  item.actionTypeName === "Shipment Created"
+                                    ? "butn order-grid-butn delibutn"
+                                    : "butn order-grid-butn order-grid-butn-green"
+                                }
+                                type="button"
+                                onClick={this.handleGetAWBInvoiceDetailsOrderId.bind(
+                                  this,
+                                  item.id
+                                )}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.shipmentcreated
+                                  : item.actionTypeName}
+                              </button>
+                              {item.cancelButtonInShipment && (
+                                <Popconfirm
+                                  title={
+                                    <>
+                                      <div className="popover-input-cntr">
+                                        <div>
+                                          <p>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.comment
+                                              : "Comment"}
+                                          </p>
+                                          <textarea
+                                            placeholder={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.placeholder
+                                                    .entercomment
+                                                : "Enter Comment"
+                                            }
+                                            value={this.state.ShipCancelComment}
+                                            name="ShipCancelComment"
+                                            onChange={(e) =>
+                                              this.setState({
+                                                ShipCancelComment:
+                                                  e.target.value,
+                                              })
+                                            }
+                                          ></textarea>
+                                        </div>
+                                      </div>
+                                    </>
+                                  }
+                                  overlayClassName="order-popover order-popover-butns shopping-popover-delete"
+                                  placement="bottomRight"
+                                  onVisibleChange={(visible) =>
+                                    this.setState({
+                                      orderPopoverOverlay: visible,
+                                      ShipCancelComment: "",
+                                    })
+                                  }
+                                  icon={false}
+                                  okText="Remove"
+                                  onConfirm={this.handleCancleAndCommnetShipment.bind(
+                                    this,
+                                    item.id
+                                  )}
+                                >
+                                  <button className="butn order-grid-butn order-del-butn">
+                                    <img src={OrderDel} alt="delete icon" />
+                                  </button>
+                                </Popconfirm>
+                              )}
+                            </>
+                          ) : null}
+                        </div>
+                        <div className="itemviewmobile">
+                          <div className="d-flex align-items-center">
+                            <p>{item.ordersItemList.length}</p>
+                            <Popover
+                              content={
+                                <Table
+                                  className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                  columns={[
+                                    {
+                                      title:
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.title.itemid
+                                          : "Item ID",
+                                      dataIndex: "itemID",
+                                    },
+                                    {
+                                      title:
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.title.itemname
+                                          : "Item Name",
+                                      dataIndex: "itemName",
+                                      width: 150,
+                                    },
+                                    {
+                                      title:
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.title.itemprice
+                                          : "Item Price",
+                                      dataIndex: "itemPrice",
+                                    },
+                                    {
+                                      title:
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.title.quantity
+                                          : "Quantity",
+                                      dataIndex: "quantity",
+                                    },
+                                  ]}
+                                  scroll={{ y: 240 }}
+                                  pagination={false}
+                                  dataSource={item.ordersItemList}
+                                />
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover-table order-popover order-popover-table-big"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <img src={Info} className="item-img" />
+                            </Popover>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  },
+                },
+              ]}
+              pagination={false}
+              showSizeChanger={false}
+              onShowSizeChange={false}
+              dataSource={this.state.ShipmentGridData}
+              loading={this.state.ShipmentLoading}
+            />
+          ) : (
+            <>
+              <Pagination
+                currentPage={this.state.currentPage}
+                totalSize={this.state.totalCount}
+                sizePerPage={this.state.postsPerPage}
+                changeCurrentPage={this.PaginationOnChange}
+                theme="bootstrap"
+              />
+              <div className="position-relative">
+                <div className="item-selection Camp-pagination">
+                  <select
+                    value={this.state.postsPerPage}
+                    onChange={this.handlePageItemchange}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.itemsperpage
+                      : "Items per page"}
+                  </p>
+                </div>
+              </div>
+              <Spin spinning={this.state.ShipmentLoading}>
+                <Collapse
+                  bordered={false}
+                  className="site-collapse-custom-collapse"
+                  expandIconPosition={"right"}
+                  destroyInactivePanel={true}
+                  onChange={this.handlecollapseChange.bind(this)}
+                  activeKey={this.state.activePanel}
+                >
+                  {this.state.ShipmentGridData.length > 0
+                    ? this.state.ShipmentGridData.map((item, key) => {
+                        return (
+                          <Panel
+                            header={
+                              <div>
+                                <div>
+                                  <div className="d-flex align-items-center overflow-hidden namenumbermain">
+                                    <p className="order-bill-no">
+                                      {item.invoiceNo}
+                                    </p>
+                                    {item.ordersItemList.length > 0 ? (
+                                      <>
+                                        <Popover
+                                          content={
+                                            <Table
+                                              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                              columns={[
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .itemid
+                                                      : "Item ID",
+                                                  dataIndex: "itemID",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .itemname
+                                                      : "Item Name",
+                                                  dataIndex: "itemName",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .itemprice
+                                                      : "Item Price",
+                                                  dataIndex: "itemPrice",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .quantity
+                                                      : "Quantity",
+                                                  dataIndex: "quantity",
+                                                },
+                                              ]}
+                                              scroll={{ y: 240 }}
+                                              pagination={false}
+                                              dataSource={item.ordersItemList}
+                                            />
+                                          }
+                                          trigger="click"
+                                          placement="bottom"
+                                          overlayClassName="order-popover-table order-popover order-popover-table-big"
+                                          onVisibleChange={(visible) =>
+                                            this.setState({
+                                              orderPopoverOverlay: visible,
+                                            })
+                                          }
+                                        >
+                                          <div className="mobeye">
+                                            <img
+                                              src={Info}
+                                              className="item-img"
+                                            />
+                                            <span>
+                                              {item.ordersItemList.length}
+                                            </span>
+                                          </div>
+                                        </Popover>
+                                      </>
+                                    ) : null}
+
+                                    {item.isShoppingBagConverted === true && (
+                                      <Popover
+                                        content={
+                                          <>
+                                            <p className="shopping-num-invoice">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.title
+                                                    .shoppingbagno
+                                                : "Shopping bag No"}
+                                              :<span>{item.shoppingBagNo}</span>
+                                            </p>
+                                            <Table
+                                              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                              columns={[
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .itemid
+                                                      : "Item ID",
+                                                  dataIndex: "itemID",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .itemname
+                                                      : "Item Name",
+                                                  dataIndex: "itemName",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .itemprice
+                                                      : "Item Price",
+                                                  dataIndex: "itemPrice",
+                                                },
+                                                {
+                                                  title:
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.title
+                                                          .quantity
+                                                      : "Quantity",
+                                                  dataIndex: "quantity",
+                                                },
+                                              ]}
+                                              scroll={{ y: 240 }}
+                                              pagination={false}
+                                              dataSource={
+                                                item.shoppingBagItemList
+                                                  .length > 0
+                                                  ? item.shoppingBagItemList
+                                                  : []
+                                              }
+                                            />
+                                          </>
+                                        }
+                                        trigger="click"
+                                        overlayClassName="order-popover-table order-popover order-popover-invoice"
+                                        placement="bottomLeft"
+                                        onVisibleChange={(visible) =>
+                                          this.setState({
+                                            orderPopoverOverlay: visible,
+                                          })
+                                        }
+                                      >
+                                        <img
+                                          src={OrderInfo}
+                                          className="order-info"
+                                        />
+                                      </Popover>
+                                    )}
+                                    <div className="namenumber">
+                                      <p>{item.customerName},</p>
+                                      <p className="order-small-font">
+                                        {item.mobileNumber}
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             }
-                            trigger="click"
-                            overlayClassName="order-popover shopping-popover-cancel shipment-popover-cancel"
-                            onVisibleChange={(visible) =>
-                              this.setState({ orderPopoverOverlay: visible })
-                            }
                           >
-                            <img src={OrderInfo} className="order-info" />
-                          </Popover>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>
-                          <b>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.title.partner
-                              : "Partner"}
-                          </b>
-                        </label>
-                        <label>{row.courierPartner}</label>
-                      </td>
-                    </tr>
-                  </table>
+                            <div className="row">
+                              <div className="col-7 p-0">
+                                <span className="date">
+                                  Partner: &nbsp;
+                                  <span>{item.courierPartner}</span>
+                                </span>
+                              </div>
+                              <div className="col-5 p-0 text-right">
+                                <span className="stname">
+                                  {item.statusName}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-12 p-0">
+                                <span className="delivery">
+                                  <img
+                                    src={Deliver}
+                                    alt="Delivery"
+                                    className="delivery"
+                                    width="20px"
+                                  />
+                                  {item.deliveryTypeName}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-6 p-0">
+                                <span className="addres">
+                                  <p>{item.shippingAddress}</p>
+                                </span>
+                              </div>
+                              <div className="col-6 pr-1 text-right">
+                                {item.actionTypeName === "Pickup Pending" ? (
+                                  <>
+                                    <Popconfirm
+                                      title={
+                                        <div className="pickuppending-table">
+                                          <table>
+                                            <tbody>
+                                              <tr>
+                                                <td>
+                                                  <label>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .pickupdate
+                                                      : "Pickup Date"}
+                                                    :
+                                                  </label>
+                                                  <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={item.pickupDate}
+                                                    disabled={true}
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <label>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .pickuptime
+                                                      : "Pickup Time"}
+                                                    :
+                                                  </label>
+                                                  <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={item.pickupTime}
+                                                    disabled={true}
+                                                  />
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td>
+                                                  <label>
+                                                    {TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext.label
+                                                          .pickupdone
+                                                      : "Pickup Done"}
+                                                  </label>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      }
+                                      overlayClassName="order-popover order-popover-butns popbtn"
+                                      placement="bottomRight"
+                                      onVisibleChange={(visible) =>
+                                        this.setState({
+                                          orderPopoverOverlay: visible,
+                                        })
+                                      }
+                                      icon={false}
+                                      okText={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.button.yes
+                                          : "Yes"
+                                      }
+                                      onConfirm={this.handleUpdateDateandTime.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                      cancelText={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.button.no
+                                          : "No"
+                                      }
+                                    >
+                                      <button
+                                        className={
+                                          item.actionTypeName ===
+                                          "Pickup Pending"
+                                            ? "butn order-grid-butn order-grid-butn-green"
+                                            : "butn order-grid-butn"
+                                        }
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button
+                                              .pickuppending
+                                          : item.actionTypeName}
+                                      </button>
+                                    </Popconfirm>
+                                  </>
+                                ) : null}
+                                {item.actionTypeName === "Create Shipment" ? (
+                                  <>
+                                    <button
+                                      className={
+                                        item.actionTypeName ===
+                                        "Create Shipment"
+                                          ? "butn order-grid-butn"
+                                          : "butn order-grid-butn order-grid-butn-green"
+                                      }
+                                      type="button"
+                                      onClick={this.handleGetOrderItemDataByOrderId.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .createshipment
+                                        : item.actionTypeName}
+                                    </button>
+                                  </>
+                                ) : null}
+                                {item.actionTypeName === "Shipment Created" ? (
+                                  <>
+                                    <button
+                                      className={
+                                        item.actionTypeName ===
+                                        "Shipment Created"
+                                          ? "butn order-grid-butn delibutn"
+                                          : "butn order-grid-butn order-grid-butn-green"
+                                      }
+                                      type="button"
+                                      onClick={this.handleGetAWBInvoiceDetailsOrderId.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .shipmentcreated
+                                        : item.actionTypeName}
+                                    </button>
+                                    {item.cancelButtonInShipment && (
+                                      <Popconfirm
+                                        title={
+                                          <>
+                                            <div className="popover-input-cntr">
+                                              <div>
+                                                <p>
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .comment
+                                                    : "Comment"}
+                                                </p>
+                                                <textarea
+                                                  placeholder={
+                                                    TranslationContext !==
+                                                    undefined
+                                                      ? TranslationContext
+                                                          .placeholder
+                                                          .entercomment
+                                                      : "Enter Comment"
+                                                  }
+                                                  value={
+                                                    this.state.ShipCancelComment
+                                                  }
+                                                  name="ShipCancelComment"
+                                                  onChange={(e) =>
+                                                    this.setState({
+                                                      ShipCancelComment:
+                                                        e.target.value,
+                                                    })
+                                                  }
+                                                ></textarea>
+                                              </div>
+                                            </div>
+                                          </>
+                                        }
+                                        overlayClassName="order-popover order-popover-butns shopping-popover-delete"
+                                        placement="bottomRight"
+                                        icon={false}
+                                        okText="Remove"
+                                        onConfirm={this.handleCancleAndCommnetShipment.bind(
+                                          this,
+                                          item.id
+                                        )}
+                                      >
+                                        <button className="butn order-grid-butn order-del-butn">
+                                          <img
+                                            src={OrderDel}
+                                            alt="delete icon"
+                                          />
+                                        </button>
+                                      </Popconfirm>
+                                    )}
+                                  </>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className=""></div>
+                          </Panel>
+                        );
+                      })
+                    : null}
+                </Collapse>
+                {this.state.ShipmentGridData.length === 0 ? (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                ) : null}
+              </Spin>
+            </>
+          )}
+          {!this.state.isMobileView ? (
+            <>
+              <Pagination
+                currentPage={this.state.currentPage}
+                totalSize={this.state.totalCount}
+                sizePerPage={this.state.postsPerPage}
+                changeCurrentPage={this.PaginationOnChange}
+                theme="bootstrap"
+              />
+              <div className="position-relative">
+                <div className="item-selection Camp-pagination">
+                  <select
+                    value={this.state.postsPerPage}
+                    onChange={this.handlePageItemchange}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.itemsperpage
+                      : "Items per page"}
+                  </p>
                 </div>
-              );
-            }}
-            expandIconColumnIndex={7}
-            expandIconAsCell={false}
-            pagination={false}
-            showSizeChanger={false}
-            onShowSizeChange={false}
-            dataSource={this.state.ShipmentGridData}
-            loading={this.state.ShipmentLoading}
-          />
-          <Pagination
-            currentPage={this.state.currentPage}
-            totalSize={this.state.totalCount}
-            sizePerPage={this.state.postsPerPage}
-            changeCurrentPage={this.PaginationOnChange}
-            theme="bootstrap"
-          />
-          <div className="position-relative">
-            <div className="item-selection Camp-pagination">
-              <select
-                value={this.state.postsPerPage}
-                onChange={this.handlePageItemchange}
-              >
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={30}>30</option>
-              </select>
-              <p>
-                {TranslationContext !== undefined
-                  ? TranslationContext.p.itemsperpage
-                  : "Items per page"}
-              </p>
-            </div>
-          </div>
+              </div>
+            </>
+          ) : null}
           <Modal
             open={this.state.ShipmentMdlbtn}
             onClose={this.handleShipmentModalClose.bind(this)}
             center
             modalId="article-popup"
             overlayId="logout-ovrly"
+            classNames={{ modal: "ShoimentMobile" }}
           >
-            <div className="">
+            <div
+              className="closemob"
+              style={{ marginBottom: "20px" }}
+              onClick={this.handleShipmentModalClose.bind(this)}
+            ></div>
+            <div>
               <img
                 src={CancelImg}
                 alt="cancelImg"
@@ -1333,7 +1993,19 @@ class ShipmentTab extends Component {
                                           type="checkbox"
                                           checked={item.checked}
                                         />
-                                        &nbsp;{item.itemID}
+                                        &nbsp;
+                                        <Tooltip
+                                          title={item.itemID}
+                                          placement="bottom"
+                                        >
+                                          <p className="order-bill-no">
+                                            {item.itemID.length > 10
+                                              ? item.itemID
+                                                  .substr(0, 10)
+                                                  .concat("...")
+                                              : item.itemID}
+                                          </p>
+                                        </Tooltip>
                                       </p>
                                     );
                                   },
@@ -1344,6 +2016,24 @@ class ShipmentTab extends Component {
                                       ? TranslationContext.title.itemname
                                       : "Article Name",
                                   dataIndex: "itemName",
+                                  render: (row, item) => {
+                                    return (
+                                      <p>
+                                        <Tooltip
+                                          title={item.itemName}
+                                          placement="bottom"
+                                        >
+                                          <p className="order-bill-no">
+                                            {item.itemName.length > 12
+                                              ? item.itemName
+                                                  .substr(0, 12)
+                                                  .concat("...")
+                                              : item.itemName}
+                                          </p>
+                                        </Tooltip>
+                                      </p>
+                                    );
+                                  },
                                   width: 150,
                                 },
                                 {
@@ -1362,22 +2052,32 @@ class ShipmentTab extends Component {
                                 },
                                 {
                                   title: () => (
-                                    <select
-                                      className="shipment-table-dropdown"
-                                      name="selectedTemplate"
-                                      value={this.state.selectedTemplate}
-                                      onChange={this.handleSelectTemplateDD}
-                                    >
-                                      <option value="0">Select Template</option>
-                                      {this.state.TemplateData !== null &&
-                                        this.state.TemplateData.map(
-                                          (item, j) => (
-                                            <option key={j} value={item.id}>
-                                              {item.templateName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
+                                    <>
+                                      {this.state.ShipShowTemplate && (
+                                        <select
+                                          className="shipment-table-dropdown"
+                                          name="selectedTemplate"
+                                          value={this.state.selectedTemplate}
+                                          onChange={this.handleSelectTemplateDD}
+                                        >
+                                          <option value="0">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .selecttemplate
+                                              : "Select Template"}
+                                          </option>
+                                          {this.state.TemplateData !== null &&
+                                            this.state.TemplateData.map(
+                                              (item, j) => (
+                                                <option key={j} value={item.id}>
+                                                  {item.templateName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      )}
+                                    </>
                                   ),
                                 },
                               ]}
@@ -1388,8 +2088,39 @@ class ShipmentTab extends Component {
                           </div>
                         </div>
                         <div className="dv-status m-t-20 ship-mar-bot">
+                          {this.state.ShowSelectCourierPartner && (
+                            <div className="ordDisply">
+                              <label>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard
+                                      .selectcourierpartner
+                                  : "Select Courier Partner"}
+                              </label>
+                              <select
+                                className="shipment-table-dropdown"
+                                onChange={(e) =>
+                                  this.setState({
+                                    selectCourierPartner: e.target.value,
+                                  })
+                                }
+                                value={this.state.selectCourierPartner}
+                              >
+                                <option value="0">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.ticketingDashboard
+                                        .selectpartner
+                                    : "Select Partner"}
+                                </option>
+                                <option value="Store">Store</option>
+                                <option value="courierpartner">
+                                  Courier Partner
+                                </option>
+                              </select>
+                            </div>
+                          )}
+
                           <button
-                            className="btn-shipment-popup"
+                            className="btn-shipment-popup canshio"
                             style={{ marginRight: "10px" }}
                             onClick={this.handleShipmentModalClose.bind(this)}
                           >
@@ -1404,7 +2135,7 @@ class ShipmentTab extends Component {
                                 ? "btnClickDisabled btn-shipment-saveNext"
                                 : "btn-shipment-saveNext"
                             }
-                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                            onClick={this.handleCreateShipmentCheck.bind(this)}
                             disabled={this.state.createShipmentBtnDisbaled}
                           >
                             {TranslationContext !== undefined
@@ -1447,26 +2178,48 @@ class ShipmentTab extends Component {
                               </>
                             )}
                           </h2>
-                          <p>
+                          <p className="success">
                             {TranslationContext !== undefined
                               ? TranslationContext.p.successfullymappedto
                               : "Successfully mapped to"}
                           </p>
-                          <ul>
+                          <ul className="mobileul">
+                            <li className="success1">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.successfullymappedto
+                                : "Successfully mapped to"}
+                            </li>
+
                             <li>
                               {TranslationContext !== undefined
-                                ? TranslationContext.li.invoiceno
-                                : "Invoice no."}
+                                ? TranslationContext.label.orderid
+                                : "Order ID"} 
                               - {this.state.ShipmentOrderId}
                             </li>
                             <li>
                               {TranslationContext !== undefined
                                 ? TranslationContext.li.itemid
                                 : "Item ID"}
-                              - {this.state.AirwayItemIds}
+                              {" - "}
+                              {/* {this.state.AirwayItemIds} */}
+
+                              <Tooltip
+                                title={this.state.AirwayItemIds}
+                                placement="bottom"
+                              >
+                                <p className="shipItemtlTp">
+                                  {this.state.AirwayItemIds.length > 20
+                                    ? this.state.AirwayItemIds.substr(
+                                        0,
+                                        20
+                                      ).concat("...")
+                                    : this.state.AirwayItemIds}
+                                </p>
+                              </Tooltip>
                             </li>
                           </ul>
-                          {this.state.showShipmentCharge === false ? (
+
+                          {this.state.showNewShipmentCharge ? (
                             <p style={{ color: "black" }}>
                               {TranslationContext !== undefined
                                 ? TranslationContext.ticketingDashboard
@@ -1479,7 +2232,7 @@ class ShipmentTab extends Component {
                       </div>
                       <div className="dv-status m-t-20 ship-mar-bot">
                         <button
-                          className="btn-shipment-popup"
+                          className="btn-shipment-popup canshio"
                           style={{ marginRight: "10px" }}
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >

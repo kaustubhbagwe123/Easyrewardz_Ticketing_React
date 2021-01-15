@@ -3,7 +3,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { Popover, Spin } from "antd";
+import { Popover, Spin,Empty } from "antd";
 import ReactTable from "react-table";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
@@ -78,6 +78,7 @@ class StoreCRMRole extends Component {
       crmData: [],
       translateLanguage: {},
       bulkuploadLoading: false,
+      isloading:false,
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -85,7 +86,7 @@ class StoreCRMRole extends Component {
   }
 
   componentDidMount() {
-    this.handleGetCRMGridData();
+     this.handleGetCRMGridData();
     this.handleModulesDefault();
     this.handleGetStoreCrmModule();
 
@@ -107,7 +108,7 @@ class StoreCRMRole extends Component {
   fileUpload = (e) => {
     var allFiles = [];
     var selectedFiles = e;
-    if (selectedFiles) {
+    if (selectedFiles.length>0) {
       allFiles.push(selectedFiles[0]);
 
       var fileSize = formatSizeUnits(selectedFiles[0].size);
@@ -117,6 +118,9 @@ class StoreCRMRole extends Component {
         fileName: allFiles[0].name,
         bulkuploadCompulsion: "",
       });
+    }
+    else{
+      NotificationManager.error("File accept only csv type.")
     }
   };
 
@@ -160,6 +164,7 @@ class StoreCRMRole extends Component {
   ////Get CRM grid data
   handleGetCRMGridData() {
     let self = this;
+    this.setState({isloading:true})
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCRMRole/GetStoreCRMRoles",
@@ -169,9 +174,9 @@ class StoreCRMRole extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ crmRoles: data });
+          self.setState({ crmRoles: data,isloading:false });
         } else {
-          self.setState({ crmRoles: [] });
+          self.setState({ crmRoles: [],isloading:false });
         }
         if (data !== null) {
           var unique = [];
@@ -249,6 +254,7 @@ class StoreCRMRole extends Component {
         }
       })
       .catch((res) => {
+        self.setState({isloading:false})
         console.log(res);
       });
   }
@@ -333,8 +339,7 @@ class StoreCRMRole extends Component {
       if (this.state.RoleName.length > 0 && this.state.RoleisActive !== 0) {
         CRMRoleID = 0;
         RoleName = self.state.RoleName;
-        // ModulesEnabled = self.state.ModulesEnabled;
-        // if (self.state.ModulesEnabled === "") {
+
         for (let i = 0; i < self.state.modulesList.length; i++) {
           if (self.state.modulesList[i].isActive === true) {
             ModulesEnabled += self.state.modulesList[i].moduleID + ",";
@@ -342,7 +347,7 @@ class StoreCRMRole extends Component {
             ModulesDisabled += self.state.modulesList[i].moduleID + ",";
           }
         }
-        // }
+        this.setState({isSubmit:true})
       } else {
         this.setState({
           checkRoleName: "Required",
@@ -367,6 +372,7 @@ class StoreCRMRole extends Component {
         }
       }
     }
+    this.setState({editSaveLoading:true})
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCRMRole/CreateUpdateStoreCRMRole",
@@ -381,6 +387,7 @@ class StoreCRMRole extends Component {
     })
       .then((res) => {
         let status = res.data.message;
+        self.setState({editSaveLoading:false,isSubmit:false})
         if (status === "Success") {
           if (e === "add") {
             NotificationManager.success(
@@ -446,6 +453,7 @@ class StoreCRMRole extends Component {
         }
       })
       .catch((res) => {
+        self.setState({ editSaveLoading: false, isSubmit: false });
         console.log(res);
       });
   }
@@ -461,20 +469,15 @@ class StoreCRMRole extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      // this.setState({ showProgress: true });
+
       axios({
         method: "post",
         url: config.apiUrl + "/StoreCRMRole/BulkUploadStoreCRMRole",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // },
       })
         .then(function(res) {
           let status = res.data.message;
-          // let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -488,11 +491,18 @@ class StoreCRMRole extends Component {
               bulkuploadLoading: false,
             });
             self.handleGetCRMGridData();
+          } else if (status === "Record Uploaded Partially"){
+            NotificationManager.error("File uploaded partially.Please check the log.");
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
+            self.handleGetCRMGridData();
           } else {
             self.setState({
               bulkuploadLoading: false,
-              // isFileUploadFail: true,
-              // progressValue: 0,
             });
             NotificationManager.error(
               TranslationContext !== undefined
@@ -531,6 +541,7 @@ class StoreCRMRole extends Component {
   /// set sorting status
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
+
     var sroleNameFilterCheckbox = this.state.sroleNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var sisRoleActiveFilterCheckbox = this.state.sisRoleActiveFilterCheckbox;
@@ -880,7 +891,6 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterRoleName });
       } else {
         this.setState({
-          // sortFilterRoleName: this.state.sortRoleName,
           sortFilterRoleName: [],
         });
       }
@@ -895,7 +905,6 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterCreated });
       } else {
         this.setState({
-          // sortFilterCreated: this.state.sortCreated,
           sortFilterCreated: [],
         });
       }
@@ -910,7 +919,6 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          // sortFilterStatus: this.state.sortStatus,
           sortFilterStatus: [],
         });
       }
@@ -1178,9 +1186,6 @@ class StoreCRMRole extends Component {
                               name={item.roleName}
                               id={"fil-open" + item.roleName}
                               value={item.roleName}
-                              // checked={this.state.sroleNameFilterCheckbox.includes(
-                              //   item.roleName
-                              // )}
                               checked={
                                 this.state.sroleNameFilterCheckbox
                                   .split(",")
@@ -1304,7 +1309,6 @@ class StoreCRMRole extends Component {
                         sortable: false,
                         accessor: "roleName",
                         Cell: (row) => {
-                          // var ids = row.original["id"];
                           return (
                             <div className="one-liner store-one-liner">
                               <span>
@@ -1550,12 +1554,20 @@ class StoreCRMRole extends Component {
                     minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin size="large" tip="Loading..." />
+                      ) : this.state.crmRoles.length===0 ? (
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                      ) : null
+                    }
+                    
                   />
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="store-col-2">
-                  <div className="createSpace">
+                  <div className="storeSettingcreateDiv">
                     <label className="create-department">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.createcrmrole
@@ -1657,7 +1669,15 @@ class StoreCRMRole extends Component {
                           this,
                           "add"
                         )}
+                        disabled={this.state.isSubmit}
                       >
+                        {this.state.isSubmit ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : null}
                         {TranslationContext !== undefined
                           ? TranslationContext.button.addrole
                           : "ADD ROLE"}
@@ -1698,7 +1718,7 @@ class StoreCRMRole extends Component {
                       spinning={this.state.bulkuploadLoading}
                     >
                       <div className="mainfileUpload">
-                        <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        <Dropzone accept=".csv"  onDrop={this.fileUpload.bind(this)}>
                           {({ getRootProps, getInputProps }) => (
                             <div {...getRootProps()}>
                               <input
@@ -1762,6 +1782,7 @@ class StoreCRMRole extends Component {
                                     </p>
                                     <div className="del-can">
                                       <a href={Demo.BLANK_LINK}>
+                                        {" "}
                                         {TranslationContext !== undefined
                                           ? TranslationContext.a.cancel
                                           : "CANCEL"}

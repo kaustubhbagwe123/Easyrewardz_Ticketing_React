@@ -49,11 +49,13 @@ class storeMyTicket extends Component {
       chatEndDateTime: "",
       isWhatsAppIconClick: false,
       reInitiateChatDateTime: "",
+      isMobileView: false,
     };
   }
   componentDidMount() {
     if (this.props.location.ticketDetailID) {
       var ticketId = this.props.location.ticketDetailID;
+
       this.setState({ ticket_Id: ticketId });
       this.handleGetNoteCommentData(ticketId);
       this.handleGetTicketDetails(ticketId);
@@ -69,8 +71,19 @@ class storeMyTicket extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
   }
-
+  resize() {
+    if (window.innerWidth <= 760) {
+      this.setState({ isMobileView: window.innerWidth <= 760 });
+    } else {
+      this.setState({ isMobileView: false });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize.bind(this));
+  }
   /// ---------------------API call start---------------------------------
   /// handle Get Category Data for drop-down
   handleGetCategoryList() {
@@ -169,7 +182,6 @@ class storeMyTicket extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
-          debugger;
           self.setState({
             ticketDetailsData: data,
             loading: false,
@@ -395,6 +407,7 @@ class storeMyTicket extends Component {
           FirstName: this.state.ticketDetailsData.customerName,
           LastName: "",
           MobileNo: this.state.customerMobileNumber,
+          ChatTicketID: this.state.ticket_Id,
         },
       })
         .then(function(response) {
@@ -406,7 +419,8 @@ class storeMyTicket extends Component {
               isWhatsAppIconClick: false,
             });
             if (document.getElementById("chatwindow")) {
-              document.getElementById("newTicketChatId").value = responseData;
+              // document.getElementById("newTicketChatId").value = responseData;
+              window.localStorage.setItem("newTicketChatId",responseData)
               document.getElementById("chatwindow").click();
             }
             self.handleGetTicketDetails(self.state.ticket_Id);
@@ -429,158 +443,155 @@ class storeMyTicket extends Component {
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
-          <div>
-            <div className="head-header">
-              <div className="head-header-1">
-                <div className="row">
-                  <div className="col-12 col-xs-4 col-sm-4 col-md-3">
-                    <img
-                      src={HeadphoneImg}
-                      alt="headphone"
-                      className="headphone"
-                    />
-                    <label className="id-abc-1234">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.id
-                        : "ID"}{" "}
-                      - {this.state.ticketDetailsData.ticketID}
-                      <span className="updated-2-d-ago">
-                        {this.state.ticketDetailsData.createdDate}
-                      </span>
-                    </label>
-                    <div
-                      className="loading-rectangle-cntr"
-                      onClick={this.handleGetHistoricalData.bind(this)}
-                    >
+          <div className="stoticket">
+            {this.state.isMobileView ? null : (
+              <div className="head-header">
+                <div className="head-header-1">
+                  <div className="row">
+                    <div className="col-12 col-xs-4 col-sm-4 col-md-3">
                       <img
-                        src={LoadingImg}
-                        alt="Loading"
-                        className="loading-rectangle m-0"
-                        title="Ticket Historical"
+                        src={HeadphoneImg}
+                        alt="headphone"
+                        className="headphone"
                       />
-                    </div>
-                  </div>
-                  <div className="historical-model">
-                    <Modal
-                      open={this.state.historicalTicket}
-                      onClose={this.HistoricalModalClose.bind(this)}
-                      closeIconId="sdsg"
-                      modalId="Historical-popup"
-                      overlayId="logout-ovrly"
-                      classNames={{ modal: "historical-popup" }}
-                    >
-                      <label className="lblHistorical">
+                      <label className="id-abc-1234">
                         {TranslationContext !== undefined
-                          ? TranslationContext.label.tickethistorical
-                          : "Ticket Historical"}
+                          ? TranslationContext.label.id
+                          : "ID"}
+                        - {this.state.ticketDetailsData.ticketID}
+                        <span className="updated-2-d-ago">
+                          {this.state.ticketDetailsData.createdDate}
+                        </span>
                       </label>
-                      <img
-                        src={CancelImg}
-                        alt="cancelImg"
-                        className="cancalImg"
-                        onClick={this.HistoricalModalClose.bind(this)}
-                      />
-                      <div className="tic-history tic-his varunoverflow">
-                        <ReactTable
-                          data={this.state.historicalDetails}
-                          columns={[
-                            {
-                              Header: (
-                                <span>
-                                  {" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.name
-                                    : "Name"}
-                                </span>
-                              ),
-                              accessor: "name",
-                              width: 150,
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.actions
-                                    : "Action"}
-                                </span>
-                              ),
-                              accessor: "action",
-                            },
-                            {
-                              Header: (
-                                <span>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.timeanddate
-                                    : "Time & Date"}
-                                </span>
-                              ),
-                              accessor: "dateandTime",
-                              width: 200,
-                              Cell: (row) => {
-                                var date = row.original["dateandTime"];
-                                return (
-                                  <span>
-                                    {moment(date).format("M/D/YYYY")} &nbsp;
-                                    {moment(date).format("HH:mm A")}
-                                  </span>
-                                );
-                              },
-                            },
-                          ]}
-                          resizable={false}
-                          defaultPageSize={10}
-                          showPagination={false}
-                          minRows={2}
+                      <div
+                        className="loading-rectangle-cntr"
+                        onClick={this.handleGetHistoricalData.bind(this)}
+                      >
+                        <img
+                          src={LoadingImg}
+                          alt="Loading"
+                          className="loading-rectangle m-0"
+                          title="Ticket Historical"
                         />
                       </div>
-                    </Modal>
-                  </div>
-                  <div className="col-12 col-xs-8 col-sm-8 col-md-9">
-                    <div
-                      style={{ float: "right", marginTop: "0px" }}
-                      //   className={this.state.isKB ? "iskbticket" : ""}
-                    >
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55"
-                        title="Agent List"
-                      />
-                      <label
-                        className="naman-r"
-                        // onClick={this.HandlelabelModalOpen.bind(this)}
+                    </div>
+                    <div className="historical-model">
+                      <Modal
+                        open={this.state.historicalTicket}
+                        onClose={this.HistoricalModalClose.bind(this)}
+                        closeIconId="sdsg"
+                        modalId="Historical-popup"
+                        overlayId="logout-ovrly"
+                        classNames={{ modal: "historical-popup" }}
                       >
-                        {this.state.ticketDetailsData.assignTo}
-                      </label>
-                      <img
-                        src={DownImg}
-                        alt="down"
-                        className="down-header"
-                        style={{ display: "none" }}
-                      />
+                        <label className="lblHistorical">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.tickethistorical
+                            : "Ticket Historical"}
+                        </label>
+                        <img
+                          src={CancelImg}
+                          alt="cancelImg"
+                          className="cancalImg"
+                          onClick={this.HistoricalModalClose.bind(this)}
+                        />
+                        <div className="tic-history tic-his varunoverflow">
+                          <ReactTable
+                            data={this.state.historicalDetails}
+                            columns={[
+                              {
+                                Header: (
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.name
+                                      : "Name"}
+                                  </span>
+                                ),
+                                accessor: "name",
+                                width: 150,
+                              },
+                              {
+                                Header: (
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.actions
+                                      : "Action"}
+                                  </span>
+                                ),
+                                accessor: "action",
+                              },
+                              {
+                                Header: (
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.timeanddate
+                                      : "Time & Date"}
+                                  </span>
+                                ),
+                                accessor: "dateandTime",
+                                width: 200,
+                                Cell: (row) => {
+                                  var date = row.original["dateandTime"];
+                                  return (
+                                    <span>
+                                      {moment(date).format("M/D/YYYY")} &nbsp;
+                                      {moment(date).format("HH:mm A")}
+                                    </span>
+                                  );
+                                },
+                              },
+                            ]}
+                            resizable={false}
+                            defaultPageSize={10}
+                            showPagination={false}
+                            minRows={2}
+                          />
+                        </div>
+                      </Modal>
+                    </div>
+                    <div className="col-12 col-xs-8 col-sm-8 col-md-9 submitbtnnone">
+                      <div style={{ float: "right", marginTop: "0px" }}>
+                        <img
+                          src={Headphone2Img}
+                          alt="headphone"
+                          className="oval-55"
+                          title="Agent List"
+                        />
+                        <label className="naman-r">
+                          {this.state.ticketDetailsData.assignTo}
+                        </label>
+                        <img
+                          src={DownImg}
+                          alt="down"
+                          className="down-header"
+                          style={{ display: "none" }}
+                        />
 
-                      <button
-                        type="button"
-                        className="myticket-submit-solve-button"
-                        onClick={this.handleUpdateTicketDetails.bind(this)}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.button.submit
-                          : "SUBMIT"}
-                      </button>
+                        <button
+                          type="button"
+                          className="myticket-submit-solve-button"
+                          onClick={this.handleUpdateTicketDetails.bind(this)}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.submit
+                            : "SUBMIT"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="card-rectangle">
               <div className="rectangle-box">
-                <div className="row">
+                <div className="row marzero">
                   <div className="col-md-4" style={{ padding: "0" }}>
-                    <div style={{ padding: "15px 0px 15px 30px" }}>
-                      <div className="row">
-                        <div className="col-md-5">
+                    <div
+                      className="padmobil"
+                      style={{ padding: "15px 0px 15px 30px" }}
+                    >
+                      <div className="row marzero">
+                        <div className="col-6 col-md-5">
                           <label className="mobile-number">
                             {TranslationContext !== undefined
                               ? TranslationContext.label.customername
@@ -592,10 +603,10 @@ class storeMyTicket extends Component {
                             {this.state.ticketDetailsData.customerName}
                           </label>
                         </div>
-                        <div className="col-md-7">
-                          <div className="row">
+                        <div className="col-6 col-md-7">
+                          <div className="row marzero">
                             <div
-                              className="col-md-3"
+                              className="col-12 col-md-3 alignright"
                               style={{ paddingRight: 0 }}
                             >
                               <label className="mobile-number">
@@ -609,12 +620,15 @@ class storeMyTicket extends Component {
                                 {this.state.chatID}
                               </label>
                             </div>
-                            <div className="col-md-9" style={{ padding: 0 }}>
+                            <div
+                              className="col-6 col-md-9 whicnone"
+                              style={{ padding: 0 }}
+                            >
                               {this.state.isIconDisplay &&
                               !this.state.isChatAllreadyActive ? (
                                 <img
                                   style={{
-                                    width: "24px",
+                                    width: "30px",
                                     cursor: "pointer",
                                   }}
                                   title="Re-Initiate Chat"
@@ -628,7 +642,7 @@ class storeMyTicket extends Component {
                                 this.state.isChatAllreadyActive ? (
                                 <img
                                   style={{
-                                    width: "20px",
+                                    width: "30px",
                                     cursor: "pointer",
                                   }}
                                   title={
@@ -643,13 +657,18 @@ class storeMyTicket extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="row">
-                        <div className="col-md-5">
+                      <div className="row marzero break">
+                        <div className="col-6 col-md-5">
                           <div className="m-t-15">
-                            <label className="mobile-number">
+                            <label className="mobile-number mobile-numbermobnone">
                               {TranslationContext !== undefined
                                 ? TranslationContext.label.mobilenumber
                                 : "Mobile Number"}
+                            </label>
+                            <label className="mobile-number mobile-numbermob">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.mobilenumber
+                                : "Mobile No."}
                             </label>
                             <br />
                             <label className="mobile-no">
@@ -660,12 +679,17 @@ class storeMyTicket extends Component {
                             </label>
                           </div>
                         </div>
-                        <div className="col-md-7">
-                          <div className="m-t-15">
-                            <label className="mobile-number">
+                        <div className="col-6 col-md-7">
+                          <div className="m-t-15 right">
+                            <label className="mobile-number numb mobile-numbermobnone">
                               {TranslationContext !== undefined
                                 ? TranslationContext.label.mobilenumber
                                 : "Customer Last Message Date & Time"}
+                            </label>
+                            <label className="mobile-number numb mobile-numbermob">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.mobilenumber
+                                : "Last Message Date & Time"}
                             </label>
                             <br />
                             <label className="mobile-no">
@@ -674,13 +698,61 @@ class storeMyTicket extends Component {
                           </div>
                         </div>
                       </div>
+                      <div className="row mt-3 marzero textnone">
+                        <div className="col-12">
+                          <label className="ticket-title-where mb-0">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.tickettitle
+                              : "Ticket Title"}
+                            :
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        className="row marzero textnone"
+                        style={{ marginTop: "0" }}
+                      >
+                        <div className="col-12">
+                          <label className="storelabel-3 mb-0">
+                            {this.state.ticketDetailsData.ticketTitle}
+                          </label>
+                        </div>
+                      </div>
+                      {this.state.isMobileView ? null : (
+                        <div className="backtick textnone">
+                          <div className="row mt-3 marzero">
+                            <label className="ticket-title-where mb-0">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.ticketdetails
+                                : "Ticket Details"}
+                            </label>
+                          </div>
+                          <div className="" style={{ marginTop: "5px" }}>
+                            {this.state.ticketDetailsData.ticketDescription
+                              ? this.state.ticketDetailsData.ticketDescription
+                                  .split(",")
+                                  .map((item) => {
+                                    return (
+                                      <>
+                                        <p
+                                          className="label-3 pb-0"
+                                          style={{ marginBottom: "5px" }}
+                                        >
+                                          {item}
+                                        </p>
+                                      </>
+                                    );
+                                  })
+                              : null}
+                          </div>
+                        </div>
+                      )}
                       <img
                         src={EyeImg}
                         alt="eye"
                         className="eyeImg1"
                         title="Customer Profile"
                         style={{ display: "none" }}
-                        // onClick={this.HandleProfileModalOpen.bind(this)}
                       />
 
                       <img
@@ -689,7 +761,6 @@ class storeMyTicket extends Component {
                         className="billImg"
                         title="Historical Order"
                         style={{ display: "none" }}
-                        // onClick={this.handleBillImgModalOpen.bind(this)}
                       />
                     </div>
                   </div>
@@ -734,8 +805,6 @@ class storeMyTicket extends Component {
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={this.state.ticketDetailsData.priority}
-                              // onChange={this.handleDropDownChange}
-                              // name="priority"
                             >
                               <option
                                 className="select-category-placeholder"
@@ -756,8 +825,6 @@ class storeMyTicket extends Component {
                             <select
                               className="rectangle-9 select-category-placeholder"
                               value={this.state.ticketDetailsData.brand}
-                              // onChange={this.handleDropDownChange}
-                              // name="brand"
                             >
                               <option
                                 className="select-category-placeholder"
@@ -861,6 +928,17 @@ class storeMyTicket extends Component {
                             </select>
                           </div>
                         </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <button
+                            type="button"
+                            className="myticket-submit-solve-button submitbtn"
+                            onClick={this.handleUpdateTicketDetails.bind(this)}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.submit
+                              : "SUBMIT"}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -869,7 +947,7 @@ class storeMyTicket extends Component {
             </div>
             <div style={{ padding: "15px", background: "#fff" }}>
               <div className="rectangle-3 text-editor">
-                <div className="row mt-2">
+                <div className="row mt-2 textnone1">
                   <label className="ticket-title-where mb-0">
                     {TranslationContext !== undefined
                       ? TranslationContext.label.tickettitle
@@ -877,36 +955,38 @@ class storeMyTicket extends Component {
                     :
                   </label>
                 </div>
-                <div className="row" style={{ marginTop: "0" }}>
+                <div className="row textnone1" style={{ marginTop: "0" }}>
                   <label className="storelabel-3 mb-0">
                     {this.state.ticketDetailsData.ticketTitle}
                   </label>
                 </div>
-                <div className="row mt-3">
-                  <label className="ticket-title-where mb-0">
-                    {TranslationContext !== undefined
-                      ? TranslationContext.label.ticketdetails
-                      : "Ticket Details"}
-                    :
-                  </label>
-                </div>
-                <div className="" style={{ marginTop: "5px" }}>
-                  {this.state.ticketDetailsData.ticketDescription
-                    ? this.state.ticketDetailsData.ticketDescription
-                        .split(",")
-                        .map((item) => {
-                          return (
-                            <>
-                              <p
-                                className="label-3 pb-0"
-                                style={{ marginBottom: "5px" }}
-                              >
-                                {item}
-                              </p>
-                            </>
-                          );
-                        })
-                    : null}
+                <div className="backtick textnone1">
+                  <div className="row mt-3">
+                    <label className="ticket-title-where mb-0">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.ticketdetails
+                        : "Ticket Details"}
+                      :
+                    </label>
+                  </div>
+                  <div className="" style={{ marginTop: "5px" }}>
+                    {this.state.ticketDetailsData.ticketDescription
+                      ? this.state.ticketDetailsData.ticketDescription
+                          .split(",")
+                          .map((item) => {
+                            return (
+                              <>
+                                <p
+                                  className="label-3 pb-0"
+                                  style={{ marginBottom: "5px" }}
+                                >
+                                  {item}
+                                </p>
+                              </>
+                            );
+                          })
+                      : null}
+                  </div>
                 </div>
               </div>
               <div className="row">
@@ -922,11 +1002,12 @@ class storeMyTicket extends Component {
                   </label>
                 </div>
               </div>
-              <div className="row" style={{ marginTop: "20px" }}>
+              <div className="row mobto" style={{ marginTop: "20px" }}>
                 <div
                   className="col-12 col-xs-12 col-sm-4"
                   style={{ marginTop: "20px" }}
                 >
+                  <label className="addnotes">Add Notes</label>
                   <textarea
                     className="Add-Notes-textarea"
                     placeholder={
@@ -966,8 +1047,8 @@ class storeMyTicket extends Component {
                 >
                   {this.state.Notesdetails !== null &&
                     this.state.Notesdetails.map((item, i) => (
-                      <div className="row my-ticket-notes-row" key={i}>
-                        <div className="col-md-1">
+                      <div className="row my-ticket-notes-row marzero" key={i}>
+                        <div className="col-3 col-md-1">
                           <div className="oval-5-1-new">
                             <img
                               src={StoreIcon}
@@ -976,10 +1057,10 @@ class storeMyTicket extends Component {
                             />
                           </div>
                         </div>
-                        <div className="col-md-11">
+                        <div className="col-9 col-md-11">
                           <div className="row my-ticket-notes-created">
                             <label className="varun-nagpal">
-                              {item.name}{" "}
+                              {item.name}
                               <span class="addTask-time-ago">
                                 {item.commentDate}
                               </span>

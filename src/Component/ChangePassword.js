@@ -29,12 +29,10 @@ class ChangePassword extends Component {
     this.validator = new SimpleReactValidator();
   }
   componentDidMount() {
-    debugger;
     this.handleGetUserProfileData();
   }
 
   handleGetUserProfileData() {
-    debugger;
     let self = this;
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
     var _token = window.localStorage.getItem("token");
@@ -49,7 +47,6 @@ class ChangePassword extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
@@ -67,14 +64,12 @@ class ChangePassword extends Component {
       });
   }
   handlechange(e) {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
   }
 
   handleCheckPassword(e) {
-    debugger;
     e.preventDefault();
 
     if (this.validator.allValid()) {
@@ -96,7 +91,6 @@ class ChangePassword extends Component {
     }
   }
   handleChangePassword(newPassword) {
-    debugger;
     let self = this;
 
     // let emaiId=encryption(EmailID, "enc");
@@ -127,7 +121,7 @@ class ChangePassword extends Component {
       emailIDsystem = email;
     }
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-    
+
     var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
@@ -135,7 +129,7 @@ class ChangePassword extends Component {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "X-Authorized-Token": _token === null ? "":_token ,
+        "X-Authorized-Token": _token === null ? "" : _token,
         "X-Authorized-Domainname": X_Authorized_Domainname,
       },
       data: {
@@ -147,7 +141,7 @@ class ChangePassword extends Component {
     })
       .then(function(response) {
         // let data = response;
-        debugger;
+
         let Msg = response.data.responseData;
         if (Msg === true) {
           NotificationManager.success(
@@ -176,7 +170,7 @@ class ChangePassword extends Component {
           >
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>

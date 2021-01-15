@@ -7,7 +7,6 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
 import { encryption } from "../../helpers/encryption";
 
@@ -18,20 +17,29 @@ class StoreUserForgotPassword extends Component {
     this.state = {
       newPassword: "",
       confimPassword: "",
+      emailId: "",
     };
     this.handleCheckPassword = this.handleCheckPassword.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.validator = new SimpleReactValidator();
   }
+
+  componentDidMount() {
+    var email = window.location.href
+      .slice(window.location.href.indexOf("?") + 1)
+      .split(":")[1];
+    this.setState({
+      emailId: email,
+    });
+  }
+  /// handle onchange
   handlechange = (e) => {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
   };
 
   handleCheckPassword(e) {
-    debugger;
     e.preventDefault();
 
     if (this.validator.allValid()) {
@@ -50,28 +58,25 @@ class StoreUserForgotPassword extends Component {
       this.forceUpdate();
     }
   }
+
   handleChangePassword(newPassword) {
-    debugger;
+    debugger
     let self = this;
-    // let emaiId=encryption(EmailID, "enc");
-    let emaiId = window.location.href
-      .slice(window.location.href.indexOf("?") + 1)
-      .split(":")[1];
+    // let emaiId = window.location.href
+    //   .slice(window.location.href.indexOf("?") + 1)
+    //   .split(":")[1];
     let encPassword = encryption(newPassword, "enc");
 
-    // update password
     axios({
       method: "post",
       url: config.apiUrl + "/StoreAccount/UpdatePassword",
       params: {
-        cipherEmailId: emaiId,
+        cipherEmailId: this.state.emailId,
         Password: encPassword,
       },
-      headers: authHeader(),
+      headers: authHeader("no"),
     })
-      .then(function (response) {
-        // let data = response;
-        debugger;
+      .then(function(response) {
         let Msg = response.data.responseData;
         if (Msg === "Update password successfully") {
           NotificationManager.success(
@@ -79,7 +84,7 @@ class StoreUserForgotPassword extends Component {
             "",
             1500
           );
-          setTimeout(function () {
+          setTimeout(function() {
             self.props.history.push("/");
           }, 1500);
         } else {
@@ -93,14 +98,12 @@ class StoreUserForgotPassword extends Component {
   render() {
     return (
       <div className="auth-wrapper box-center">
+        <NotificationContainer></NotificationContainer>
         <div className="auth-content">
-          <div
-            className="card forgotpass-card changepass-card"
-            // style={{ height: "500px" }}
-          >
+          <div className="card forgotpass-card changepass-card">
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
@@ -124,8 +127,9 @@ class StoreUserForgotPassword extends Component {
                     name="newPassword"
                     placeholder="Enter New Password"
                     className="program-code-textbox"
-                    onChange={this.handlechange}
                     maxLength={25}
+                    autoComplete="off"
+                    onChange={this.handlechange}
                   />
                   {this.validator.message(
                     "New Password",
@@ -146,6 +150,7 @@ class StoreUserForgotPassword extends Component {
                     className="program-code-textbox"
                     onChange={this.handlechange}
                     maxLength={25}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "Confirm Password",
@@ -162,7 +167,6 @@ class StoreUserForgotPassword extends Component {
                   </button>
                 </div>
               </form>
-              <NotificationContainer />
             </div>
           </div>
         </div>

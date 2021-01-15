@@ -5,7 +5,7 @@ import config from "./../helpers/config";
 import { authHeader } from "./../helpers/authHeader";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
@@ -23,14 +23,13 @@ class UserForgotPassword extends Component {
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.validator = new SimpleReactValidator();
   }
-  handlechange = e => {
+  handlechange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   handleCheckPassword(e) {
-    debugger;
     e.preventDefault();
 
     if (this.validator.allValid()) {
@@ -39,7 +38,9 @@ class UserForgotPassword extends Component {
         this.handleChangePassword(newPassword);
       } else {
         NotificationManager.error(
-          "The new password and confirm password do not match.", '', 1500
+          "The new password and confirm password do not match.",
+          "",
+          1500
         );
       }
     } else {
@@ -48,7 +49,6 @@ class UserForgotPassword extends Component {
     }
   }
   handleChangePassword(newPassword) {
-    debugger;
     let self = this;
     // let emaiId=encryption(EmailID, "enc");
     let emaiId = window.location.href
@@ -61,19 +61,20 @@ class UserForgotPassword extends Component {
       url: config.apiUrl + "/Account/UpdatePassword",
       params: {
         cipherEmailId: emaiId,
-        Password: encPassword
+        Password: encPassword,
       },
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(response) {
+      // let data = response;
+
       let Msg = response.data.responseData;
-      debugger;
       if (Msg === "Update password successfully") {
-        NotificationManager.success("Password Changed successfully.", '', 1500);
+        NotificationManager.success("Password Changed successfully.", "", 1500);
         setTimeout(function() {
           self.props.history.push("/SignIn");
         }, 1500);
       } else {
-        NotificationManager.error("Password Not Changed.", '', 1500);
+        NotificationManager.error("Password Not Changed.", "", 1500);
       }
     });
   }
@@ -87,7 +88,7 @@ class UserForgotPassword extends Component {
           >
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
@@ -100,7 +101,7 @@ class UserForgotPassword extends Component {
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
-              <div className="input-group sb-2">
+                <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                     Enter New Password
                   </label>

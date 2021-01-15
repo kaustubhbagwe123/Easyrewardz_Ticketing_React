@@ -129,17 +129,13 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
-      let X_Authorized_Domainname = encryption(
-        "https://multitenancyshopsterv2.dcdev.brainvire.net",
-        "enc"
-      );
-      // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption(
-      //   "http://easyrewardz.demo.brainvire.net",
+      //   "https://qa-ui-belltktqa.shopster.live",
       //   "enc"
       // );
+      // let X_Authorized_Domainname = encryption('https://bell.ercx.co', "enc");
 
       let X_Authorized_Programcode = this.state.programCode;
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
@@ -196,7 +192,7 @@ class SingIn extends Component {
           <div className="card">
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={Logo} alt="logo" style={{ width: "210px" }} />
+                <img src={Logo} alt="logo" className="initial-logo" />
               </div>
               <form name="form" onSubmit={this.handleSubmit}>
                 <label className="sign-in">SIGN IN</label>

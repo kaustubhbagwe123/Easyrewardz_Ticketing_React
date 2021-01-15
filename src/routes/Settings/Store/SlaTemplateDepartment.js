@@ -13,7 +13,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Popover, Spin } from "antd";
+import { Popover, Spin, Empty } from "antd";
 import ReactTable from "react-table";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
@@ -102,7 +102,7 @@ class SlaTemplateDepartment extends Component {
   }
 
   componentDidMount() {
-    this.handleGetSLATemplateGrid();
+  this.handleGetSLATemplateGrid();
     this.handleGetSLAFunctionName();
     this.handleGetPriorityList();
 
@@ -487,7 +487,6 @@ class SlaTemplateDepartment extends Component {
     var separator = ",";
     var values = indiSla.split(separator);
     if (event.target.checked) {
-      // indiSla += issueId + ",";
       var flag = values.includes(issueId.toString());
       if (!flag) {
         values.unshift(issueId);
@@ -563,7 +562,7 @@ class SlaTemplateDepartment extends Component {
     if (this.state.slaFunctionName !== null) {
       this.state.slaFunctionName.forEach(allSlaId);
       function allSlaId(item) {
-        indiSla += item.issueTypeID + ",";
+        indiSla += item.functionID + ",";
       }
     }
     await this.setState({
@@ -680,6 +679,7 @@ class SlaTemplateDepartment extends Component {
   ////handle get SLA temlpate data for gir
   handleGetSLATemplateGrid() {
     let self = this;
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreSLA/GetStoreSLA",
@@ -688,6 +688,7 @@ class SlaTemplateDepartment extends Component {
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
+        self.setState({ isloading: false });
 
         if (data !== null) {
           self.state.sortAllData = data;
@@ -707,7 +708,9 @@ class SlaTemplateDepartment extends Component {
               sortFilterIssueType.push({
                 functionName: distinct[i],
               });
-              sortIssueType.push({ functionName: distinct[i] });
+              sortIssueType.push({
+                functionName: distinct[i],
+              });
             }
           }
 
@@ -724,8 +727,12 @@ class SlaTemplateDepartment extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              sortCreatedBy.push({ createdBy: distinct[i] });
-              sortFilterCreatedBy.push({ createdBy: distinct[i] });
+              sortCreatedBy.push({
+                createdBy: distinct[i],
+              });
+              sortFilterCreatedBy.push({
+                createdBy: distinct[i],
+              });
             }
           }
 
@@ -743,7 +750,9 @@ class SlaTemplateDepartment extends Component {
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
               sortStatus.push({ isSLAActive: distinct[i] });
-              sortFilterStatus.push({ isSLAActive: distinct[i] });
+              sortFilterStatus.push({
+                isSLAActive: distinct[i],
+              });
             }
           }
           self.setState({
@@ -764,6 +773,8 @@ class SlaTemplateDepartment extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isloading: false });
+
         console.log(data);
       });
   }
@@ -778,7 +789,6 @@ class SlaTemplateDepartment extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         let temp = [];
-
         if (status === "Success") {
           for (let i = 0; i < data.length; i++) {
             let tempData = {};
@@ -914,7 +924,7 @@ class SlaTemplateDepartment extends Component {
         temp.PriorityResolutionDuration = data[i].ResolveType;
         paramData.push(temp);
       }
-
+      this.setState({ isSubmit: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreSLA/CreateStoreSLA",
@@ -927,6 +937,7 @@ class SlaTemplateDepartment extends Component {
       })
         .then(function(res) {
           let status = res.data.message;
+          self.setState({ isSubmit: false });
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -952,18 +963,21 @@ class SlaTemplateDepartment extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
       this.setState({
         issueTypeCompulsory: "Please select issuetype.",
         slaTargetCompulsory: "Required.",
+        isSubmit: false,
       });
     }
   }
 
   handleDeleteSLA(deleteId) {
     const TranslationContext = this.state.translateLanguage.default;
+
     let self = this;
     axios({
       method: "post",
@@ -994,8 +1008,9 @@ class SlaTemplateDepartment extends Component {
         console.log(data);
       });
   }
+
   fileUpload = (file) => {
-    if (file) {
+    if (file.length > 0) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
       this.setState({
@@ -1004,6 +1019,8 @@ class SlaTemplateDepartment extends Component {
         fileN: file[0],
         bulkuploadCompulsion: "",
       });
+    } else {
+      NotificationManager.error("File accept only csv type.");
     }
   };
   handleSearchSla = async (e) => {
@@ -1166,20 +1183,16 @@ class SlaTemplateDepartment extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN);
-      // this.setState({ showProgress: true });
+
       axios({
         method: "post",
         url: config.apiUrl + "/StoreSLA/BulkUploadStoreSLA",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // },
       })
         .then(function(res) {
           let status = res.data.message;
-          // let data = res.data.responseData;
+
           if (status === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -1193,10 +1206,17 @@ class SlaTemplateDepartment extends Component {
               bulkuploadLoading: false,
             });
             self.handleGetSLATemplateGrid();
+          } else if (status === "Record Uploaded Partially"){
+            NotificationManager.error("File uploaded partially.Please check the log.");
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
+            self.handleGetSLATemplateGrid();
           } else {
             self.setState({
-              // showProgress: false,
-              // isFileUploadFail: true,
               progressValue: 0,
               bulkuploadLoading: false,
             });
@@ -1534,7 +1554,7 @@ class SlaTemplateDepartment extends Component {
                                 {priorityName.length > 0 ? (
                                   <Popover
                                     content={
-                                      <div className="general-popover created-popover">
+                                      <div className="general-popover created-popover sla-popover sla-popover-store">
                                         <div>
                                           <label className="slatargettext-1">
                                             {TranslationContext !== undefined
@@ -1777,7 +1797,6 @@ class SlaTemplateDepartment extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
-                                    // id={ids}
                                   />
                                 </Popover>
                                 <button
@@ -1801,15 +1820,21 @@ class SlaTemplateDepartment extends Component {
                       },
                     ]}
                     resizable={false}
-                    minRows={2}
                     defaultPageSize={10}
                     showPagination={true}
+                    noDataText={
+                      this.state.isloading ? (
+                        <Spin size="large" tip="Loading..." />
+                      ) : this.state.slaTemplateGrid.length === 0 ? (
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                      ) : null
+                    }
                   />
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="store-col-2">
-                  <div className="createSpace">
+                  <div className="storeSettingcreateDiv">
                     <label className="Create-store-text">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.createsla
@@ -2085,7 +2110,15 @@ class SlaTemplateDepartment extends Component {
                         className="addBtn-ticket-hierarchy"
                         type="button"
                         onClick={this.handleCreateSlaTemplate.bind(this)}
+                        disabled={this.state.isSubmit}
                       >
+                        {this.state.isSubmit ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : null}
                         {TranslationContext !== undefined
                           ? TranslationContext.button.add
                           : "ADD"}
@@ -2122,7 +2155,7 @@ class SlaTemplateDepartment extends Component {
                       spinning={this.state.bulkuploadLoading}
                     >
                       <div className="mainfileUpload">
-                        <Dropzone onDrop={this.fileUpload}>
+                        <Dropzone accept=".csv" onDrop={this.fileUpload}>
                           {({ getRootProps, getInputProps }) => (
                             <div {...getRootProps()}>
                               <input

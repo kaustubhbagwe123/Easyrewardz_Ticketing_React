@@ -36,6 +36,7 @@ class MyTicketClaim extends Component {
   }
 
   componentDidMount() {
+    debugger
     if (this.props.claimData.claimDeatils.ticketId !== 0) {
       var ticketId = this.props.claimData.claimDeatils.ticketId;
       var tabId = this.props.claimData.claimDeatils.claimTabId;
@@ -67,6 +68,7 @@ class MyTicketClaim extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -91,12 +93,15 @@ class MyTicketClaim extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         var claimOrderData = [];
 
         if (status === "Success") {
-          claimOrderData.push(data.customOrderMaster);
+          if(data.customOrderMaster !== null){
+            claimOrderData.push(data.customOrderMaster);
+          }
           self.setState({
             claimDetails: data,
             ClaimDetailsModal: true,
@@ -496,7 +501,7 @@ class MyTicketClaim extends Component {
                     <label className="claim-category">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.claimaskedfor
-                        : "CLAIM ASKED FOR %"}{" "}
+                        : "CLAIM ASKED FOR %"}
                     </label>
                   </div>
                 </div>
@@ -599,7 +604,7 @@ class MyTicketClaim extends Component {
                 <label className="claim-status-open">
                   {TranslationContext !== undefined
                     ? TranslationContext.ticketingDashboard.claimstatus
-                    : "Claim Status"}{" "}
+                    : "Claim Status"}
                   : {this.state.claimDetails.status}
                 </label>
               </div>

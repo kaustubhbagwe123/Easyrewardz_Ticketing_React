@@ -1125,7 +1125,6 @@ class CreatePriority extends Component {
       params: { PriorityName: priority_name },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message == "Success") {
@@ -1706,7 +1705,7 @@ class CreatePriority extends Component {
                               <span className="settings-align-actions">
                                 <Popover
                                   content={
-                                    <div className="d-flex general-popover popover-body">
+                                    <div>
                                       <div className="del-big-icon">
                                         <img
                                           src={BlackDeleteIcon}

@@ -20,7 +20,6 @@ import matchSorter from "match-sorter";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import { Spin } from "antd";
-
 import * as translationHI from "../translations/hindi";
 import * as translationMA from "../translations/marathi";
 
@@ -140,9 +139,6 @@ class KnowledgeBase extends Component {
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
     this.opneSearchModal = this.opneSearchModal.bind(this);
     this.closeSearchModal = this.closeSearchModal.bind(this);
-    // this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(
-    //   this
-    // );
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
@@ -944,10 +940,6 @@ class KnowledgeBase extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        // this.setState({
-        // selectedSubCategory:0
-        // });
-
         this.handleGetSubCategoryList();
       }
     }, 1);
@@ -1000,7 +992,6 @@ class KnowledgeBase extends Component {
         if (data.length > 0) {
           self.setState({
             CategoryData: CategoryData,
-            // CategoryDataAll: CategoryDataAll
           });
         } else {
           self.setState({
@@ -1014,9 +1005,7 @@ class KnowledgeBase extends Component {
   }
   handleGetSubCategoryList() {
     let self = this;
-
     let cateId = this.state.selectedCategory;
-
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
@@ -1108,7 +1097,6 @@ class KnowledgeBase extends Component {
       })
         .then(function(res) {
           let Msg = res.data.message;
-
           if (Msg === "Success") {
             NotificationManager.success(
               TranslationContext !== undefined
@@ -1133,7 +1121,6 @@ class KnowledgeBase extends Component {
         var ckeditor = ck.replace(/&nbsp;/gi, " ");
         var jsonData = {
           KBID: id,
-
           CategoryID: this.state.selectedCategory,
           SubCategoryID: this.state.selectedSubCategory,
           IssueTypeID: this.state.selectedIssueType,
@@ -1149,7 +1136,6 @@ class KnowledgeBase extends Component {
         })
           .then(function(res) {
             let Msg = res.data.message;
-
             if (Msg === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
@@ -1186,7 +1172,6 @@ class KnowledgeBase extends Component {
         var notapprove = res.data.responseData.notApproved;
         var approveconut = res.data.responseData.approved.length;
         var notapproveconut = res.data.responseData.notApproved.length;
-
         self.setState({
           KBListData: approve,
           KBListnotApproveData: notapprove,
@@ -1333,13 +1318,8 @@ class KnowledgeBase extends Component {
           var approveconut = res.data.responseData.approved.length;
           var notapproveconut = res.data.responseData.notApproved.length;
           var similarTickets = res.data.responseData.similarTickets;
-
           self.setState({
             similarTickets,
-            // KBListData: approve,
-            // KBListnotApproveData: notapprove,
-            // countApprove: approveconut,
-            // countNotApprove: notapproveconut,
             SubCategoryData: [],
             IssueTypeData: [],
             selectedCategory: "",
@@ -1395,7 +1375,6 @@ class KnowledgeBase extends Component {
         KBCODE: "",
         CategoryID: this.state.selectedCategory,
         SubCategoryID: this.state.selectedSubCategory,
-
         Subject: this.state.updateSubject,
         Description: ckeditor,
 
@@ -1448,8 +1427,6 @@ class KnowledgeBase extends Component {
       this.state.selectedSubject.length > 0
     ) {
       let self = this;
-      //var ck=this.state.ckeditorAdd.replace("<p>","");
-      //var ckeditor=ck.replace("</p>","");
       var ck = this.state.ckeditorAdd.replace(/<[^>]+>/g, "");
       var ckeditor = ck.replace(/&nbsp;/gi, " ");
 
@@ -1457,7 +1434,6 @@ class KnowledgeBase extends Component {
         KBCODE: "",
         CategoryID: this.state.selectedCategory,
         SubCategoryID: this.state.selectedSubCategory,
-
         Subject: this.state.selectedSubject,
         Description: ckeditor,
         IsActive: 1,
@@ -1514,7 +1490,6 @@ class KnowledgeBase extends Component {
 
   filteTextChange(e) {
     this.setState({ filterTxtValue: e.target.value });
-    // if (e.target.value !== "") {
     if (this.state.sortHeader === "IssueType") {
       var sortFilterIssueType = matchSorter(
         this.state.sortIssueTypeApprove,
@@ -1696,12 +1671,7 @@ class KnowledgeBase extends Component {
                   </p>
                 </div>
               </div>
-              {/* <a
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
-              >
-                clear search
-              </a> */}
+
               <div className="filter-type FTypeScroll">
                 <p>
                   {TranslationContext !== undefined
@@ -2119,7 +2089,7 @@ class KnowledgeBase extends Component {
                         <label className={this.state.categoryColor}>
                           {TranslationContext !== undefined
                             ? TranslationContext.label.category
-                            : "Category"}{" "}
+                            : "Category"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -2130,7 +2100,7 @@ class KnowledgeBase extends Component {
                         <span>
                           <label className="table-category">
                             {row.original.categoryName}
-                          </label>{" "}
+                          </label>
                         </span>
                       );
                     },
@@ -2150,7 +2120,7 @@ class KnowledgeBase extends Component {
                         <label className={this.state.subCategoryColor}>
                           {TranslationContext !== undefined
                             ? TranslationContext.label.subcategory
-                            : "Sub Category"}{" "}
+                            : "Sub Category"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -2160,7 +2130,7 @@ class KnowledgeBase extends Component {
                       return (
                         <span>
                           <label className="table-subcategory">
-                            {row.original.subCategoryName}{" "}
+                            {row.original.subCategoryName}
                           </label>
                         </span>
                       );
@@ -2216,7 +2186,6 @@ class KnowledgeBase extends Component {
                     },
                   },
                 ]}
-                // resizable={false}
                 defaultPageSize={10}
                 minRows={2}
                 showPagination={true}
@@ -2309,7 +2278,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "issueTypeName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2335,7 +2303,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "categoryName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2361,7 +2328,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subCategoryName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2513,7 +2479,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "issueTypeName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2526,7 +2491,6 @@ class KnowledgeBase extends Component {
                       );
                     },
                   },
-
                   {
                     Header: (
                       <span
@@ -2542,7 +2506,7 @@ class KnowledgeBase extends Component {
                         <label className={this.state.categoryColor}>
                           {TranslationContext !== undefined
                             ? TranslationContext.label.category
-                            : "Category"}{" "}
+                            : "Category"}
                           <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -2553,7 +2517,7 @@ class KnowledgeBase extends Component {
                         <span>
                           <label className="table-category">
                             {row.original.categoryName}
-                          </label>{" "}
+                          </label>
                         </span>
                       );
                     },
@@ -2639,7 +2603,6 @@ class KnowledgeBase extends Component {
                     },
                   },
                 ]}
-                // resizable={false}
                 minRows={2}
                 defaultPageSize={10}
                 showPagination={true}
@@ -2731,7 +2694,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "issueTypeName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2757,7 +2719,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "categoryName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2783,7 +2744,6 @@ class KnowledgeBase extends Component {
                       </span>
                     ),
                     accessor: "subCategoryName",
-
                     Cell: (row) => {
                       return (
                         <span>
@@ -2803,37 +2763,6 @@ class KnowledgeBase extends Component {
               />
             </div>
           </div>
-          {/* <div className="pagi">
-            <ul>
-              <li>
-                <a href={Demo.BLANK_LINK}>&lt;</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>1</a>
-              </li>
-              <li className="active">
-                <a href={Demo.BLANK_LINK}>2</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>3</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>4</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>5</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>6</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>7</a>
-              </li>
-              <li>
-                <a href={Demo.BLANK_LINK}>&gt;</a>
-              </li>
-            </ul>
-          </div> */}
         </div>
         {/* ----------------------------------Search Modal------------------------------------ */}
         <Modal
@@ -2876,7 +2805,6 @@ class KnowledgeBase extends Component {
               </div>
               <br />
               <br />
-
               <div className="row">
                 <select
                   className="add-select-category"
@@ -2990,7 +2918,6 @@ class KnowledgeBase extends Component {
                     onChange={this.setCategoryValue}
                   >
                     <option value="">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.option.selectcategory
                         : "Select Category"}
@@ -3015,7 +2942,6 @@ class KnowledgeBase extends Component {
                     onChange={this.setSubCategoryValue}
                   >
                     <option value="">
-                      {" "}
                       {TranslationContext !== undefined
                         ? TranslationContext.option.selectsubcategory
                         : "Select Subcategory"}

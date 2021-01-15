@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import NVD3Chart from "react-nvd3";
 
-// const datum = [
-//   { key: "TOTAL CLAIM AMOUNT", y: 20, color: "#FBC463" },
-//   { key: "TOTAL INVOICE AMOUNT", y: 78, color: "#3B92F5" }
-// ];
-
 class InvoiceAmountPie extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +19,6 @@ class InvoiceAmountPie extends Component {
   }
 
   handleGetDashboardGraphData() {
-    debugger;
     var propsData = this.props.data;
     if (propsData !== null) {
       let values = [];

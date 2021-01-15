@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import logo from "../../assets/Images/logo.jpg";
+import ShopSter from "./../../assets/Images/Shopster.png";
 import { Link } from "react-router-dom";
 import {
   NotificationContainer,
@@ -22,7 +23,6 @@ class StoreForgotPassword extends Component {
     this.validator = new SimpleReactValidator();
   }
   componentDidMount() {
-    debugger;
     var finalEncProgramCode = this.props.location.state.programCode;
     if (finalEncProgramCode) {
       this.setState({
@@ -32,13 +32,12 @@ class StoreForgotPassword extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    debugger;
 
     if (this.validator.allValid()) {
       let self = this;
-      
+
       var encProgramCode = this.state.programCode;
-      let X_Authorized_Domainname = encryption(window.location.origin, "enc"); 
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // validate email
       axios({
         method: "post",
@@ -54,7 +53,6 @@ class StoreForgotPassword extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let SearchData = res.data.responseData;
           if (res.data.statusCode === 1001) {
             NotificationManager.error(SearchData, "", 1500);
@@ -81,18 +79,22 @@ class StoreForgotPassword extends Component {
 
   render() {
     return (
-      <div className="auth-wrapper box-center">
+      <div className="auth-wrapper box-center Mainpro">
         <NotificationContainer></NotificationContainer>
+        <div className="Shopster">
+          <img src={ShopSter} alt="ShopSter" className="" />
+        </div>
+        <h3 className="logintxt">FORGOT PASSWORD ?</h3>
         <div className="auth-content">
           <div className="card forgotpass-card">
             <div className="card-body text-center">
-              <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+              <div className="mb-4 logohi">
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
                   <label
-                    className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
+                    className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text sign-in"
                     style={{ fontWeight: "300" }}
                   >
                     FORGOT PASSWORD
@@ -122,8 +124,17 @@ class StoreForgotPassword extends Component {
                   )}
                 </div>
                 <div className="input-group mb-3">
-                  <button type="submit" className="program-code-button">
+                  <button
+                    type="submit"
+                    className="program-code-button disbtnnone"
+                  >
                     RECOVER PASSWORD
+                  </button>
+                  <button
+                    type="submit"
+                    className="program-code-button disbtnnone1"
+                  >
+                    Reset Password
                   </button>
                 </div>
               </form>

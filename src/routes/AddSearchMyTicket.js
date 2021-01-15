@@ -44,7 +44,6 @@ class AddSearchMyTicket extends Component {
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
     this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
-
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCopyToaster = this.handleCopyToaster.bind(this);
@@ -97,7 +96,6 @@ class AddSearchMyTicket extends Component {
   handleSearchCustomer(e) {
     const TranslationContext = this.state.translateLanguage.default;
     e.preventDefault();
-    debugger;
     if (this.state.SrchEmailPhone.length > 0) {
       let self = this;
       axios({
@@ -109,7 +107,6 @@ class AddSearchMyTicket extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let SearchData = res.data.responseData[0];
           if (SearchData) {
             let GetCustId = SearchData.customerID;
@@ -121,7 +118,6 @@ class AddSearchMyTicket extends Component {
             }, 100);
             self.setState({
               customerId: GetCustId,
-              // message: res.data.message
             });
           } else {
             var filter = Number(self.state.SrchEmailPhone.trim());
@@ -137,7 +133,6 @@ class AddSearchMyTicket extends Component {
             self.setState({
               message: res.data.message,
             });
-            // NotificationManager.error(res.data.message);
           }
         })
         .catch((data) => {
@@ -215,8 +210,6 @@ class AddSearchMyTicket extends Component {
         AltEmailID: this.state.altEmailID.trim(),
         DateOfBirth: dob,
         IsActive: 1,
-        // ModifyBy: 1,
-        // ModifiedDate: "2019-12-17"
       },
     })
       .then(function(res) {
@@ -267,7 +260,6 @@ class AddSearchMyTicket extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
-        {/* <NotificationContainer /> */}
         <div className="addSearch-header">
           <img
             src={ArrowCircleImg}
@@ -486,11 +478,6 @@ class AddSearchMyTicket extends Component {
                       className="txt-1"
                       dateFormat="dd/MM/yyyy"
                     />
-                    {/* {this.validator.message(
-                      "Date of Birth",
-                      this.state.dob,
-                      "required"
-                    )} */}
                   </div>
                 </div>
                 <hr />

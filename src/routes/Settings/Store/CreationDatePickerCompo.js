@@ -32,11 +32,7 @@ class CreationDatePickerCompo extends Component {
           onChange={this.handleApplyCallback}
           bordered={false}
           format="DD-MM-YYYY"
-        //   defaultValue={[
-        //     moment(this.state.start, "DD-MM-YYYY"),
-        //     moment(this.state.end, "DD-MM-YYYY")
-        //   ]}
-        />
+      />
       </div>
     );
   }

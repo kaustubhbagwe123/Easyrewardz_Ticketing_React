@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import ProfileImg from "./../assets/Images/UserIcon.png";
+import ProfileImg from "./../assets/Images/UserLogin.png";
 import { authHeader } from "./../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -58,7 +58,6 @@ class UserProfile extends Component {
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
     this.setState({
-      //fileName: e.target.files[0].name
       fileName: allFiles,
     });
   }
@@ -111,8 +110,6 @@ class UserProfile extends Component {
     this.state.selectedProfilePicture = userData.profilePicture;
     var image = this.state.selectedProfilePicture.split("/");
     var imgFlag = image[image.length - 1];
-    // var array=[];
-    // array.push({name:img})
 
     self.setState({
       selectedUserID: userData.userId,
@@ -123,7 +120,6 @@ class UserProfile extends Component {
       selectedDesignation: userData.designationID,
       imgFlag,
       loading: false,
-      //fileName:array
     });
   };
 
@@ -188,14 +184,7 @@ class UserProfile extends Component {
 
   handleEditUserProfile() {
     const TranslationContext = this.state.translateLanguage.default;
-    if (
-      // this.state.fileName.length > 0 &&
-      // this.state.selectedFirstName.length > 0 &&
-      // this.state.selectedLastName.length > 0 &&
-      this.state.selectedMobile.length > 0
-      // this.state.selectedEmailID.length > 0 &&
-      // this.state.selectedDesignation > 0
-    ) {
+    if (this.state.selectedMobile.length > 0) {
       let self = this;
       var json = {
         UserId: this.state.selectedUserID,
@@ -237,15 +226,10 @@ class UserProfile extends Component {
         });
     } else {
       this.setState({
-        // fileNameCompulsion: "Please select profile picture.",
-        // FirstNameCompulsion: "Please enter first name.",
-        // LastNameCompulsion: "Please enter last name.",
         MobileCompulsion:
           TranslationContext !== undefined
             ? TranslationContext.alertmessage.pleaseentermobilenumber
             : "Please enter mobile number.",
-        // EmailIDCompulsion: "Please enter emailID.",
-        // DesignationCompulsion: "Please select designation."
       });
     }
   }
@@ -281,18 +265,6 @@ class UserProfile extends Component {
                         alt=""
                         className="profimg"
                       />
-                      {/* <img
-                            src={
-                              item.Type === "docx"
-                                ? require("./../assets/Images/word.png")
-                                : item.Type === "xlsx"
-                                ? require("./../assets/Images/TxtIcon.png")
-                                : require("./../assets/Images/thumbticket.png")
-                            }
-                            title={item.name}
-                            alt="thumb"
-                            className="thumbtick"
-                          /> */}
                       <div className="uploadtextprofile">
                         <br></br>
                         <input
@@ -315,21 +287,12 @@ class UserProfile extends Component {
                               : "Upload"
                             : TranslationContext !== undefined
                             ? TranslationContext.ticketingDashboard.change
-                            : "Change"}&nbsp;
+                            : "Change"}
+                          &nbsp;
                           {TranslationContext !== undefined
                             ? TranslationContext.label.photo
                             : "Photo"}
                         </label>
-                        {/* <label
-                          htmlFor="file-upload"
-                          onDrop={this.fileDrop}
-                          onDragOver={this.fileDragOver}
-                          onDragEnter={this.fileDragEnter}
-                          
-                        >
-                         
-                          <span className="uploadtextprofile1"  >Upload</span>
-                        </label> */}
                         {this.state.fileName[0] && (
                           <div className="file-info pb-0">
                             <div className="">
@@ -346,7 +309,6 @@ class UserProfile extends Component {
                         <label
                           onClick={this.handleDeleteProfilePic}
                           className="uploadtextprofile1"
-                          // onChange={this.fileUpload.bind(this)}
                         >
                           {TranslationContext !== undefined
                             ? TranslationContext.label.deletephoto
@@ -516,10 +478,7 @@ class UserProfile extends Component {
                       </button>
                     </div>
                   </div>
-                  <div
-                    className="userChangePW"
-                    //onClick={this.redirectToChangePassword}
-                  >
+                  <div className="userChangePW">
                     <Link to="/changePassword">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.changepassword

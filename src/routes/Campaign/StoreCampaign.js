@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
@@ -6,6 +6,9 @@ import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import Sharevia from "./../../assets/Images/sharevia.png";
 import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Tick from "./../../assets/Images/tick.png";
+import BackLeft from "./../../assets/Images/black-left-arrow.png";
+import SmsBlack from "./../../assets/Images/smsbl.svg";
+import WhiteRightArrow from "./../../assets/Images/down-white.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import Email from "./../../assets/Images/camp-Email.svg";
@@ -13,7 +16,7 @@ import Smsicon from "./../../assets/Images/sms2.svg";
 import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table, Popover, Radio } from "antd";
+import { Table, Popover, Radio, Select, Collapse, Spin } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
@@ -27,6 +30,318 @@ import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
+import calendaer from "./../../assets/Images/white-calendar.png";
+import CardTick from "./../../assets/Images/card-tick.png";
+
+const { Option } = Select;
+const { Panel } = Collapse;
+class CampaignExpandComponent extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      campaignId: this.props.CampaignScriptID,
+      campaignCustomerData: [],
+      isLoading: false,
+      expandedRowKeys: [],
+      pageCount: 0,
+      pageSize: 10,
+      pageNo: 1,
+      activePanel: [],
+    };
+  }
+
+  componentDidMount() {
+    this.handlegetCampaignDetailsById(1, 10);
+  }
+  handlegetCampaignDetailsById = (PageNo, PageSize) => {
+    let self = this;
+    this.setState({ isLoading: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+      headers: authHeader(),
+      data: {
+        campaignScriptID: this.state.campaignId,
+        pageNo: PageNo,
+        pageSize: PageSize,
+        FilterStatus: "All",
+        MobileNumber: "",
+      },
+    })
+      .then(function(res) {
+        var message = res.data.message;
+        var responseData = res.data.responseData.campaignCustomerModel;
+        self.setState({ isLoading: false });
+        if (message === "Success" && responseData) {
+          var pageCount = res.data.responseData.campaignCustomerCount;
+          if (responseData.length > 0) {
+            var i = 0;
+            responseData.forEach((element) => {
+              element.uID = i;
+              i += 1;
+            });
+          }
+          self.setState({
+            campaignCustomerData: responseData,
+            pageCount,
+          });
+          self.forceUpdate();
+        } else {
+          self.setState({
+            campaignCustomerData: [],
+            pageCount: 0,
+          });
+          self.forceUpdate();
+        }
+      })
+      .catch((response) => {
+        self.setState({ isLoading: false });
+        console.log(response);
+      });
+  };
+
+  handleExpandSubTable = (row, data) => {
+    var expandedRowKeysData = [];
+    expandedRowKeysData.push(data);
+    this.setState({ expandedRowKeys: row ? expandedRowKeysData : [] });
+  };
+  handleUpdateCampaignResponse = (
+    id,
+    responseID,
+    callRescheduledTo,
+    campaignScriptID
+  ) => {
+    this.props.handleUpdateCampaignResponse(
+      id,
+      responseID,
+      callRescheduledTo,
+      campaignScriptID
+    );
+  };
+  handleResponseChange = (cid, e) => {
+    this.state.campaignCustomerData.filter(
+      (x) => x.id === cid
+    )[0].responseID = Number(e);
+
+    this.setState({ campaignCustomerData: this.state.campaignCustomerData });
+    this.forceUpdate();
+  };
+  PaginationOnChange = (e) => {
+    this.setState({ pageNo: Number(e) });
+    this.handlegetCampaignDetailsById(Number(e), this.state.pageSize);
+  };
+  handlecollapseChange = (e) => {
+    this.state.activePanel = e[e.length - 1];
+    this.setState({ activePanel: this.state.activePanel });
+    this.forceUpdate();
+  };
+
+  handlePageItemchange = (e) => {
+    this.setState({
+      pageSize: e.target.value,
+    });
+    this.handlegetCampaignDetailsById(
+      this.state.pageNo,
+      Number(e.target.value)
+    );
+  };
+  handleGetCustomerData = (item) => {
+    this.props.handleGetCustomerDataForModal(item);
+  };
+  onDateChange(campaignCustomerID, e) {
+    this.state.campaignCustomerData.filter(
+      (x) => x.id === campaignCustomerID
+    )[0].callRescheduledTo = e;
+    this.setState({ campaignCustomerData: this.state.campaignCustomerData });
+    this.forceUpdate();
+  }
+  render() {
+    return (
+      <div style={{ marginTop: "25px" }} className="campinsidemob">
+        <Spin spinning={this.state.isLoading}>
+          <Pagination
+            currentPage={this.state.pageNo}
+            totalSize={this.state.pageCount}
+            sizePerPage={this.state.pageSize}
+            changeCurrentPage={this.PaginationOnChange}
+            // total={this.state.pageCount}
+            // current={this.state.pageNo}
+            // showSizeChanger={true}
+            // onShowSizeChange={true}
+            // size={this.state.pageSize}
+            theme="bootstrap"
+          />
+          <div className="position-relative">
+            <div className="item-selection Camp-pagination">
+              <select
+                value={this.state.pageSize}
+                onChange={this.handlePageItemchange}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+              </select>
+              <p>Items per page</p>
+            </div>
+          </div>
+          <Collapse
+            bordered={false}
+            className="site-collapse-custom-collapse"
+            expandIconPosition={"right"}
+            destroyInactivePanel={true}
+            onChange={this.handlecollapseChange.bind(this)}
+            activeKey={this.state.activePanel}
+          >
+            {this.state.campaignCustomerData.length > 0
+              ? this.state.campaignCustomerData.map((item, key) => {
+                  return (
+                    <Panel
+                      header={
+                        <>
+                          <div>
+                            <div className="namenext">
+                              <label
+                                className="name"
+                                onClick={this.handleGetCustomerData.bind(
+                                  this,
+                                  item
+                                )}
+                              >
+                                {item.customerName}
+                              </label>
+                              <img
+                                className="ico cr-pnt ml-2"
+                                src={Whatsapp}
+                                alt="Whatsapp Icon"
+                              />
+                              <label className="number">
+                                {item.customerNumber}
+                              </label>
+                            </div>
+                            <div className="contacbtn">
+                              {item.statusID === 100 ? (
+                                <label className="table-btnlabel contactBtnGreen">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 101 ? (
+                                <label className="table-btnlabel notConnectedBtnRed">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 102 ? (
+                                <label className="table-btnlabel followUpBtnYellow">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 104 ? (
+                                <label className="table-btnlabel followUpBtnBlue">
+                                  {item.statusName}
+                                </label>
+                              ) : null}
+                            </div>
+                          </div>
+                        </>
+                      }
+                      key={key}
+                      className="site-collapse-custom-panel"
+                    >
+                      <div className="mobextend">
+                        <div className="">
+                          <label className="date">Date</label>
+                          <label className="datee">{item.campaignDate}</label>
+                        </div>
+                        <div className="" style={{ display: "inlineblock" }}>
+                          <label className="date">Response</label>
+                          <div className="response">
+                            <Select
+                              style={{ width: "100%", height: "20%" }}
+                              placeholder="Select Response"
+                              onChange={this.handleResponseChange.bind(
+                                this,
+                                item.id
+                              )}
+                              value={item.responseID}
+                            >
+                              {item.hsCampaignResponseList.map((items, key) => {
+                                return (
+                                  <Option key={key} value={items.responseID}>
+                                    {items.response}
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </div>
+                        </div>
+                        <div className="" style={{ display: "inlineblock" }}>
+                          <label className="date">Call Rescheduled to</label>
+                          <div className="response">
+                            <div
+                              className={
+                                item.responseID === 3 ? "" : "disabled-input"
+                              }
+                            >
+                              <div className="date-time-resp">
+                                <DatePicker
+                                  id={"startDate" + item.id}
+                                  autoComplete="off"
+                                  showTimeSelect
+                                  name="startDate"
+                                  minDate={new Date()}
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  selected={
+                                    item.callRescheduledTo !== ""
+                                      ? new Date(item.callRescheduledTo)
+                                      : new Date()
+                                  }
+                                  dateFormat="MM/dd/yyyy h:mm aa"
+                                  value={
+                                    item.callRescheduledTo !== ""
+                                      ? moment(item.callRescheduledTo)
+                                      : ""
+                                  }
+                                  onChange={this.onDateChange.bind(
+                                    this,
+                                    item.id
+                                  )}
+                                  className={
+                                    item.responseID === 3 &&
+                                    item.dateTimeHighlight &&
+                                    !item.callRescheduledTo
+                                      ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                      : item.responseID === 3
+                                      ? "txtStore dateTimeStore"
+                                      : "txtStore dateTimeStore disabled-link"
+                                  }
+                                  placeholderText={"Select Date & Time"}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="updatebtn">
+                          <button
+                            onClick={this.handleUpdateCampaignResponse.bind(
+                              this,
+                              item.id,
+                              item.responseID,
+                              item.callRescheduledTo,
+                              item.campaignScriptID
+                            )}
+                          >
+                            Update
+                          </button>
+                        </div>
+                      </div>
+                    </Panel>
+                  );
+                })
+              : null}
+          </Collapse>
+        </Spin>
+      </div>
+    );
+  }
+}
 
 class StoreCampaign extends Component {
   constructor(props) {
@@ -108,6 +423,10 @@ class StoreCampaign extends Component {
       campaignCode: "",
       translateLanguage: {},
       broadCastLoading: false,
+      isMobileView: false,
+      isTableRowClick: false,
+      campaignName: "",
+      selectedButton: 0,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -116,8 +435,20 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
+    // if (window.localStorage.getItem("module")) {
+    //   var moduleData = JSON.parse(window.localStorage.getItem("module"));
+    //   if (moduleData) {
+    //
+    //     var campModule = moduleData.filter(
+    //       (x) => x.moduleName === "Campaign" && x.modulestatus === true
+    //     );
+    //     if (campModule.length === 0) {
+    //       this.props.history.push("/store/404notfound");
+    //     }
+    //   }
+    // }
     this.handleGetCampaignGridData();
-    // this.handleGetBrand();
+    // this.handleGetBrand();   /// Don't remove
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -125,6 +456,18 @@ class StoreCampaign extends Component {
     } else {
       this.state.translateLanguage = {};
     }
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
+  }
+  resize() {
+    if (window.innerWidth <= 760) {
+      this.setState({ isMobileView: window.innerWidth <= 760 });
+    } else {
+      this.setState({ isTableRowClick: false, isMobileView: false });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize.bind(this));
   }
 
   handleArrowImg() {
@@ -172,7 +515,7 @@ class StoreCampaign extends Component {
           const indexOfFirstpost = indexOfLastpost - self.state.postsPerPage;
           const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
           self.setState({
-            campaignGridData: currentPosts,
+            campaignGridData: data,
             loading: false,
             totalGridRecord: data.length,
           });
@@ -219,6 +562,7 @@ class StoreCampaign extends Component {
         })
           .then(function(res) {
             let status = res.data.message;
+            self.setState({ isTableRowClick: false });
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
@@ -231,10 +575,16 @@ class StoreCampaign extends Component {
                 campaignScriptID,
                 ""
               );
+              if (self.state.isMobileView) {
+                self.setState({ isTableRowClick: true });
+              }
             } else {
               self.setState({
                 loading: false,
               });
+              if (self.state.isMobileView) {
+                self.setState({ isTableRowClick: true });
+              }
             }
           })
           .catch((data) => {
@@ -265,12 +615,16 @@ class StoreCampaign extends Component {
         })
           .then(function(res) {
             let status = res.data.message;
+            self.setState({ isTableRowClick: false });
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
                   ? TranslationContext.alertmessage.recordupdatedsuccessfully
                   : "Record Updated Successfully."
               );
+              if (self.state.isMobileView) {
+                self.setState({ isTableRowClick: true });
+              }
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
@@ -281,6 +635,9 @@ class StoreCampaign extends Component {
               self.setState({
                 loading: false,
               });
+              if (self.state.isMobileView) {
+                self.setState({ isTableRowClick: true });
+              }
             }
           })
           .catch((data) => {
@@ -719,12 +1076,14 @@ class StoreCampaign extends Component {
     });
   }
 
-  responsiveCustModalOpen(data) {
+  responsiveCustModalOpen(data, e) {
+    e.stopPropagation();
     this.setState({
       ResponsiveCustModal: true,
       chatbotScript: data.chatbotScript,
       smsScript: data.smsScript,
       campaingPeriod: data.campaingPeriod,
+      isTableRowClick: false,
     });
   }
   responsiveCustModalClose() {
@@ -827,6 +1186,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -922,7 +1282,6 @@ class StoreCampaign extends Component {
         },
       })
         .then(function(response) {
-          debugger;
           var message = response.data.message;
           var data = response.data.responseData;
           if (message == "Success") {
@@ -979,6 +1338,7 @@ class StoreCampaign extends Component {
       .then(function(response) {
         const TranslationContext = self.state.translateLanguage.default;
         var message = response.data.message;
+        self.setState({ selectedButton: 0 });
         if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
             self.setState({
@@ -1056,6 +1416,7 @@ class StoreCampaign extends Component {
       .then(function(response) {
         const TranslationContext = self.state.translateLanguage.default;
         var message = response.data.message;
+        self.setState({ selectedButton: 0 });
         if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
             self.setState({
@@ -1122,7 +1483,7 @@ class StoreCampaign extends Component {
       .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
-
+        self.setState({ selectedButton: 0 });
         if (message === "Success") {
           self.setState({
             custNameModal: false,
@@ -1163,94 +1524,121 @@ class StoreCampaign extends Component {
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
-      headers: authHeader(),
-      params: {
-        programCode: rowData.programcode,
-        mobileNumber: rowData.customerNumber,
-        campaignID: rowData.campaignScriptID,
-      },
-    })
-      .then(function(response) {
-        debugger;
-        var message = response.data.message;
-        var data = response.data.responseData;
-        if (message == "Success") {
-          var strTag = rowData.customerName.split(" ");
-          var sortName = strTag[0].charAt(0).toUpperCase();
-          if (strTag.length === 1) {
-            sortName = strTag[0].charAt(0).toUpperCase();
-          } else {
-            sortName += strTag[1].charAt(0).toUpperCase();
-          }
-          if (data.lasttransactiondetails !== null) {
-            if (data.lasttransactiondetails.itemDetails !== null) {
-              self.setState({
-                lastTransactionItem: data.lasttransactiondetails.itemDetails,
-                showLastTransactiondtab: false,
-              });
-            } else {
-              self.setState({
-                lastTransactionItem: [],
-                showLastTransactiondtab: true,
-              });
-            }
-          } else {
-            self.setState({
-              lastTransactionItem: [],
-              showLastTransactiondtab: true,
-            });
-          }
+    var strTag = rowData.customerName.split(" ");
+    var sortName = strTag[0].charAt(0).toUpperCase();
+    if (strTag.length === 1) {
+      sortName = strTag[0].charAt(0).toUpperCase();
+    } else {
+      sortName += strTag[1].charAt(0).toUpperCase();
+    }
+    var customerModalDetails = {};
 
-          if (data.campaignrecommended[0].itemCode !== "") {
-            self.setState({
-              showRecommandedtab: true,
-            });
-          } else {
-            self.setState({
-              showRecommandedtab: false,
-            });
-          }
-          self.setState({
-            custNameModal: true,
-            customerModalDetails: rowData,
-            campaignkeyinsight: data.campaignkeyinsight,
-            useratvdetails: data.useratvdetails,
-            campaignrecommended: data.campaignrecommended,
-            lasttransactiondetails: data.lasttransactiondetails,
-            shareCampaignViaSettingModal: data.shareCampaignViaSettingModal,
-            sortCustName: sortName,
-          });
-          if (data.campaignkeyinsight !== null) {
-            if (data.campaignkeyinsight.insightText.length > 0) {
-              if (
-                document.getElementById("insight-data").offsetWidth <
-                document.getElementById("insight-data").scrollWidth
-              ) {
-                self.setState({ insightShowImg: true });
-              }
-            }
-          } else {
-            self.setState({ insightShowImg: false });
-          }
-        } else {
-          self.setState({
-            custNameModal: true,
-            customerModalDetails: {},
-            campaignkeyinsight: {},
-            useratvdetails: {},
-            campaignrecommended: [],
-            lasttransactiondetails: {},
-            shareCampaignViaSettingModal: {},
-            lastTransactionItem: [],
-          });
-        }
-      })
-      .catch((response) => {
-        console.log(response);
-      });
+    this.setState({
+      customerModalDetails: rowData,
+      isCustomerModelLoader: true,
+      custNameModal: true,
+      sortCustName: sortName,
+      modelCustomerName: rowData.customerName,
+      modelCustomerNo: rowData.customerNumber,
+      // campaignIdRow: rowData.campaignScriptID,
+    });
+
+    this.handleGetShareCampaignViaSetting(rowData.customerNumber);
+
+    this.handleGetCustomerpopupDetails(
+      rowData.customerNumber,
+      rowData.campaignScriptID
+    );
+
+    this.handleGetStoreCampaignLastTransactionDetails(rowData.customerNumber);
+    this.handleGetCampaignRecommendationList(rowData.customerNumber);
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
+    //   headers: authHeader(),
+    //   params: {
+    //     programCode: rowData.programcode,
+    //     mobileNumber: rowData.customerNumber,
+    //     campaignID: rowData.campaignScriptID,
+    //   },
+    // })
+    //   .then(function(response) {
+    //     var message = response.data.message;
+    //     var data = response.data.responseData;
+    //     if (message == "Success") {
+    //       var strTag = rowData.customerName.split(" ");
+    //       var sortName = strTag[0].charAt(0).toUpperCase();
+    //       if (strTag.length === 1) {
+    //         sortName = strTag[0].charAt(0).toUpperCase();
+    //       } else {
+    //         sortName += strTag[1].charAt(0).toUpperCase();
+    //       }
+    //       if (data.lasttransactiondetails !== null) {
+    //         if (data.lasttransactiondetails.itemDetails !== null) {
+    //           self.setState({
+    //             lastTransactionItem: data.lasttransactiondetails.itemDetails,
+    //             showLastTransactiondtab: false,
+    //           });
+    //         } else {
+    //           self.setState({
+    //             lastTransactionItem: [],
+    //             showLastTransactiondtab: true,
+    //           });
+    //         }
+    //       } else {
+    //         self.setState({
+    //           lastTransactionItem: [],
+    //           showLastTransactiondtab: true,
+    //         });
+    //       }
+
+    //       if (data.campaignrecommended[0].itemCode !== "") {
+    //         self.setState({
+    //           showRecommandedtab: true,
+    //         });
+    //       } else {
+    //         self.setState({
+    //           showRecommandedtab: false,
+    //         });
+    //       }
+    //       self.setState({
+    //         custNameModal: true,
+    //         customerModalDetails: rowData,
+    //         campaignkeyinsight: data.campaignkeyinsight,
+    //         useratvdetails: data.useratvdetails,
+    //         campaignrecommended: data.campaignrecommended,
+    //         lasttransactiondetails: data.lasttransactiondetails,
+    //         shareCampaignViaSettingModal: data.shareCampaignViaSettingModal,
+    //         sortCustName: sortName,
+    //       });
+    //       if (data.campaignkeyinsight !== null) {
+    //         if (data.campaignkeyinsight.insightText.length > 0) {
+    //           if (
+    //             document.getElementById("insight-data").offsetWidth <
+    //             document.getElementById("insight-data").scrollWidth
+    //           ) {
+    //             self.setState({ insightShowImg: true });
+    //           }
+    //         }
+    //       } else {
+    //         self.setState({ insightShowImg: false });
+    //       }
+    //     } else {
+    //       self.setState({
+    //         custNameModal: true,
+    //         customerModalDetails: {},
+    //         campaignkeyinsight: {},
+    //         useratvdetails: {},
+    //         campaignrecommended: [],
+    //         lasttransactiondetails: {},
+    //         shareCampaignViaSettingModal: {},
+    //         lastTransactionItem: [],
+    //       });
+    //     }
+    //   })
+    //   .catch((response) => {
+    //     console.log(response);
+    //   });
   }
   /// handle Campaign status filter for individual select
   handleCheckCampIndividualStatus() {
@@ -1414,7 +1802,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1436,7 +1823,10 @@ class StoreCampaign extends Component {
       });
   };
   ///handle get Broadcast configuration
-  handleGetBroadcastConfiguration(store_Code, campaign_Code) {
+  handleGetBroadcastConfiguration(store_Code, campaign_Code, e) {
+    if (this.state.isMobileView) {
+      e.stopPropagation();
+    }
     let self = this;
     this.setState({
       broadCastLoading: true,
@@ -1522,9 +1912,9 @@ class StoreCampaign extends Component {
   }
   ////handle whats app icon click
   handleWhatsAppIconClick(itemData) {
-    debugger;
     if (document.getElementById("chatwindow")) {
-      document.getElementById("newTicketChatId").value =itemData.customerChatingID;
+      document.getElementById("newTicketChatId").value =
+        itemData.customerChatingID;
       document.getElementById("chatwindow").click();
     }
   }
@@ -1560,871 +1950,850 @@ class StoreCampaign extends Component {
       });
     }
   }
+  handelCampaignRowClick = (data) => {
+    if (this.state.isMobileView) {
+      this.setState({
+        isTableRowClick: true,
+        campaignName: data.campaignName,
+        campaignID: data.campaignID,
+      });
+    } else {
+    }
+  };
+  handleCampaignBackClick = () => {
+    if (this.state.isMobileView) {
+      this.setState({
+        isTableRowClick: false,
+      });
+    }
+  };
+  ///handle get share campaign via setting
+  handleGetShareCampaignViaSetting(mobileNo) {
+    let self = this;
+    this.setState({
+      isCustomerModelLoader: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetShareCampaignViaSetting",
+      headers: authHeader(),
+      params: {
+        mobileNumber: mobileNo,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        if (message === "Success" && responseData) {
+          self.setState({ shareCampaignViaSettingModal: responseData });
+        }
+      })
+      .catch((response) => {
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        console.log(response);
+      });
+  }
+
+  ///handle get share campaign via setting
+  handleGetStoreCampaignLastTransactionDetails(mobileNo) {
+    let self = this;
+
+    this.setState({
+      isCustomerModelLoader: true,
+    });
+    axios({
+      method: "post",
+      url:
+        config.apiUrl + "/StoreCampaign/GetStoreCampaignLastTransactionDetails",
+      headers: authHeader(),
+      params: {
+        mobileNumber: mobileNo,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.setState({ lasttransactiondetails: responseData });
+          self.setState({
+            isCustomerModelLoader: false,
+          });
+          if (responseData.itemDetails !== null) {
+            self.setState({
+              lastTransactionItem: responseData.itemDetails,
+              showLastTransactiondtab: false,
+            });
+          } else {
+            self.setState({
+              lastTransactionItem: [],
+              showLastTransactiondtab: true,
+            });
+          }
+        } else {
+          self.setState({
+            lastTransactionItem: [],
+            showLastTransactiondtab: true,
+          });
+        }
+      })
+      .catch((response) => {
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        console.log(response);
+      });
+  }
+
+  ///handle get campaign recommendation list
+  handleGetCampaignRecommendationList(mobileNo) {
+    let self = this;
+    this.setState({
+      isCustomerModelLoader: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignRecommendationList",
+      headers: authHeader(),
+      params: {
+        mobileNumber: mobileNo,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        if (message === "Success" && responseData) {
+          self.setState({ campaignrecommended: responseData });
+          if (responseData[0].itemCode !== "") {
+            self.setState({
+              showRecommandedtab: true,
+            });
+          } else {
+            self.setState({
+              showRecommandedtab: false,
+            });
+          }
+        }
+      })
+      .catch((response) => {
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        console.log(response);
+      });
+  }
+
+  ///handle get store campaign ket insight
+  handleGetStoreCampaignKeyInsight(
+    mobileNo,
+    campaignId,
+    lifeTimeValue,
+    visitCount
+  ) {
+    let self = this;
+    this.setState({
+      isCustomerModelLoader: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetStoreCampaignKeyInsight",
+      headers: authHeader(),
+      params: {
+        mobileNumber: mobileNo,
+        campaignID: campaignId,
+        lifetimeValue: lifeTimeValue || "",
+        VisitCount: visitCount || "",
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        if (message === "Success" && responseData) {
+          if (responseData.insightText.length > 0) {
+            if (
+              document.getElementById("insight-data").offsetWidth <
+              document.getElementById("insight-data").scrollWidth
+            ) {
+              self.setState({ insightShowImg: true });
+            }
+          }
+        } else {
+          self.setState({ insightShowImg: false });
+        }
+        self.setState({ campaignkeyinsight: responseData });
+      })
+      .catch((response) => {
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        console.log(response);
+      });
+  }
+
+  ///handle get customer pop up details
+  handleGetCustomerpopupDetails(mobileNo, campaignId) {
+    let self = this;
+    this.setState({
+      isCustomerModelLoader: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
+      headers: authHeader(),
+      params: {
+        mobileNumber: mobileNo,
+        campaignID: campaignId,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        if (message === "Success" && responseData) {
+          self.setState({
+            useratvdetails: responseData.useratvdetails,
+          });
+        }
+        self.handleGetStoreCampaignKeyInsight(
+          mobileNo,
+          campaignId,
+          responseData.useratvdetails.lifeTimeValue,
+          responseData.useratvdetails.visitCount
+        );
+      })
+      .catch((response) => {
+        self.setState({
+          isCustomerModelLoader: false,
+        });
+        console.log(response);
+      });
+  }
+  handleshareNowButtonClick = () => {
+    if (this.state.selectedButton === 1) {
+      this.handleSendViaSMS(this.state.customerModalDetails);
+    }
+    if (this.state.selectedButton === 2) {
+      this.handleSendViaMessanger(this.state.customerModalDetails);
+    }
+    if (this.state.selectedButton === 3) {
+      this.handleSendViaBotData(this.state.customerModalDetails);
+    }
+  };
+  handleshareOptionSelect = (id) => {
+    this.setState({ selectedButton: id });
+  };
+  handlegetCampaignDetailsById() {
+    this.handlegetCampaignDetailsById(1, 10);
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
+
     return (
-      <div className="custom-tableak">
-        <div className="table-cntr store">
-          <Table
-            className="components-table-demo-nested antd-table-campaign custom-antd-table"
-            columns={[
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.campaignname
-                    : "Campaign Name",
-                dataIndex: "campaignName",
-                className: "camp-status-header camp-status-header-cust-name",
-                filterDropdown: (dataIndex) => (
-                  <div className="cust-name-drpdwn">
-                    <label>
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.campaignname
-                        : "Campaign Name"}
-                    </label>
-                    <input
-                      type="text"
-                      className="txt-1"
-                      autoComplete="off"
-                      maxLength={100}
-                      placeholder={
-                        TranslationContext !== undefined
-                          ? TranslationContext.placeholder.entercampaignname
-                          : "Enter Campaign Name"
-                      }
-                      value={this.state.filterCampName}
-                      onChange={this.handleCampaignNameOnchange.bind(this)}
-                    />
-                    {this.state.filterCampName.length > 1 && (
-                      <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.CampCustNameValidation}
-                      </p>
-                    )}
-                  </div>
-                ),
-                filterDropdownVisible: this.state.filterCampaignName,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterCampaignName: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-                render: (row, item) => {
-                  return (
-                    <div>
-                      <label className="customernamecam">
-                        {item.campaignName}
-                      </label>
-                      <img
-                        className="info-icon-cp hidedesk"
-                        src={BlackInfoIcon}
-                        alt="info-icon"
-                        onClick={this.responsiveCustModalOpen.bind(this, item)}
-                      />
-                    </div>
-                  );
-                },
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.customers
-                    : "Customers",
-                dataIndex: "customerCount",
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.campaignscript
-                    : "Campaign Script",
-                dataIndex: "campaignScript",
-                className: "table-coloum-hide",
-                render: (row, item) => {
-                  return (
-                    <div className="chatbotwid">
-                      <Popover
-                        overlayClassName="antcustom"
-                        content={
-                          <div className="insertpop1">
-                            <div className="dash-creation-popup custompop">
-                              <label className="poptitle">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.ChatbotScript
-                                  : "Chatbot Script"}
-                              </label>
-                              <label className="channelScript">
-                                {item.chatbotScript}
-                              </label>
-                            </div>
-                          </div>
-                        }
-                        placement="bottom"
-                      >
-                        <a className="button-red">
-                          <img
-                            className="ico"
-                            src={ChatbotS}
-                            alt="Chatbot Icon"
-                          />
+      <div className="custom-tableak mobback">
+        <div class="appcusto">
+          <span
+            class="apleft"
+            style={{
+              width: this.state.isTableRowClick ? "calc(100% - 80px)" : "",
+            }}
+          >
+            Campaign Name&nbsp;
+            {this.state.isTableRowClick ? ": " + this.state.campaignName : null}
+          </span>
+          {!this.state.isTableRowClick ? (
+            <span class="apright">Customers</span>
+          ) : (
+            <a
+              className="aprightbck apright"
+              onClick={this.handleCampaignBackClick.bind(this)}
+              style={{ color: "#2561a8" }}
+            >
+              BACK
+            </a>
+          )}
+        </div>
+        <div className="table-cntr store mobcamp">
+          {!this.state.isTableRowClick ? (
+            <div>
+              <Table
+                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                columns={[
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.campaignname
+                        : "Campaign Name",
+                    dataIndex: "campaignName",
+                    className:
+                      "camp-status-header camp-status-header-cust-name campname",
+                    filterDropdown: (dataIndex) => (
+                      <div className="cust-name-drpdwn">
+                        <label>
                           {TranslationContext !== undefined
-                            ? TranslationContext.label.ChatbotScript
-                            : "Chatbot Script"}
-                        </a>
-                      </Popover>
-                      <Popover
-                        overlayClassName="antcustom"
-                        content={
-                          <div className="insertpop1">
-                            <div className="dash-creation-popup custompop">
-                              <label className="poptitle">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.smsscript
-                                  : "SMS Script"}
-                              </label>
-                              <label className="channelScript">
-                                {item.smsScript}
-                              </label>
-                            </div>
-                          </div>
-                        }
-                        placement="bottom"
-                      >
-                        <a className="button-blue">
+                            ? TranslationContext.label.campaignname
+                            : "Campaign Name"}
+                        </label>
+                        <input
+                          type="text"
+                          className="txt-1"
+                          autoComplete="off"
+                          maxLength={100}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.entercampaignname
+                              : "Enter Campaign Name"
+                          }
+                          value={this.state.filterCampName}
+                          onChange={this.handleCampaignNameOnchange.bind(this)}
+                        />
+                        {this.state.filterCampName.length > 1 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.CampCustNameValidation}
+                          </p>
+                        )}
+                      </div>
+                    ),
+                    filterDropdownVisible: this.state.filterCampaignName,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterCampaignName: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    ),
+                    render: (row, item) => {
+                      return (
+                        <div className="backcolo bord1">
+                          <label className="customernamecam">
+                            {item.campaignName}
+                          </label>
                           <img
-                            className="ico"
-                            src={Smsicon}
-                            alt="Chatbot Icon"
-                          />
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.smsscript
-                            : "SMS Script"}
-                        </a>
-                      </Popover>
-                    </div>
-                  );
-                },
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.campaignperiod
-                    : "Campaign Period",
-                dataIndex: "campaingPeriod",
-                className: "table-coloum-hide",
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.status
-                    : "Status",
-                dataIndex: "status",
-                className: "camp-status-header camp-status-header-statusFilter",
-                filterDropdown: (data, row) => {
-                  return (
-                    <div className="campaign-status-drpdwn">
-                      <ul>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Campall-status"
-                            className="ch1"
-                            onChange={this.handleCheckCampAllStatus.bind(this)}
-                            checked={this.state.CheckBoxAllStatus}
-                            name="CampallStatus"
-                          />
-                          <label htmlFor="Campall-status">
-                            <span className="ch1-text">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.all
-                                : "All"}
-                            </span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="New100"
-                            className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(
-                              this
+                            className="info-icon-cp hidedesk"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            onClick={this.responsiveCustModalOpen.bind(
+                              this,
+                              item
                             )}
-                            name="CampallStatus"
-                            attrIds={100}
                           />
-                          <label htmlFor="New100">
-                            <span className="ch1-text">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.new
-                                : "New"}
-                            </span>
+                          <label className="d-none mobstat">
+                            {item.status}
                           </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Inproress101"
-                            className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(
-                              this
-                            )}
-                            name="CampallStatus"
-                            attrIds={101}
-                          />
-                          <label htmlFor="Inproress101">
-                            <span className="ch1-text">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.inprogress
-                                : "InProgress"}
-                            </span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Close102"
-                            className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(
-                              this
-                            )}
-                            name="CampallStatus"
-                            attrIds={102}
-                          />
-                          <label htmlFor="Close102">
-                            <span className="ch1-text">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.close
-                                : "Close"}
-                            </span>
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
-                  );
-                },
-                filterDropdownVisible: this.state.filterCampaignStatus,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterCampaignStatus: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.actions
-                    : "Actions",
-                render: (row, item) => {
-                  return (
-                    <Popover
-                      overlayClassName="antcustom antbroadcast"
-                      content={
-                        <div className="general-popover popover-body broadcastpop">
-                          {this.state.campaignExecutionDetails.length > 0 ? (
-                            <label className="broadcasttitle">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.recentcampaigns
-                                : "Recent Campaigns"}
-                            </label>
-                          ) : null}
-
-                          {this.state.campaignExecutionDetails !== null &&
-                            this.state.campaignExecutionDetails.map(
-                              (item, b) => (
-                                <div className="broembox clearfix" key={b}>
-                                  <p>
-                                    <label>{item.channelType}</label>
-                                    <span>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.label.ExecutedDate
-                                        : "Executed Date"}
-                                      : {item.executionDate}
-                                    </span>
-                                  </p>
-                                </div>
-                              )
-                            )}
-                          <>
-                            <label className="broadcasttitle">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label
-                                    .broadcastcampaigntocustomers
-                                : "Broadcast Campaign to Customers"}
-                            </label>
-                            <label className="broadcastsubtitle">
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.choosechannel
-                                : "Choose Channel"}
-                            </label>
-                            <div>
-                              <Radio.Group
-                                onChange={this.handleBroadcastChange}
-                                value={this.state.broadcastChannel}
-                              >
-                                {this.state.broadcastConfiguration.emailFlag ? (
-                                  <Radio
-                                    className="broadChannel"
-                                    value="Email"
-                                    disabled={
-                                      this.state.broadcastConfiguration
-                                        .disableEmail
-                                    }
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.radio.email
-                                      : "Email"}
-                                  </Radio>
-                                ) : null}
-                                {this.state.broadcastConfiguration.smsFlag ? (
-                                  <Radio
-                                    className="broadChannel"
-                                    value="SMS"
-                                    disabled={
-                                      this.state.broadcastConfiguration
-                                        .disableSMS
-                                    }
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.radio.sms
-                                      : "SMS"}
-                                  </Radio>
-                                ) : null}
-                                {this.state.broadcastConfiguration
-                                  .whatsappFlag ? (
-                                  <Radio
-                                    className="broadChannel"
-                                    value="Whatsapp"
-                                    disabled={
-                                      this.state.broadcastConfiguration
-                                        .disableWhatsapp
-                                    }
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.radio.whatsapp
-                                      : "Whatsapp"}
-                                  </Radio>
-                                ) : null}
-                              </Radio.Group>
-
-                              {this.state.broadcastChannel === "" && (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    marginBottom: "0px",
-                                  }}
-                                >
-                                  {this.state.broadChannelValidation}
-                                </p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.customers
+                        : "Customers",
+                    dataIndex: "customerCount",
+                    className: "mob-custright",
+                    render: (row, item) => {
+                      return (
+                        <div className="mob-backcolo">
+                          <div className="mob-broadcast-icon">
+                            <img
+                              src={BroadCastIcon}
+                              alt="cancel-icone"
+                              onClick={this.handleGetBroadcastConfiguration.bind(
+                                this,
+                                item.storeCode,
+                                item.campaignCode
                               )}
+                              className="broadcastimg"
+                            />
+                          </div>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.customers
+                        : "Customers",
+                    dataIndex: "customerCount",
+                    className: "custright",
+                    render: (row, item) => {
+                      return (
+                        <div className="backcolo bord2">
+                          <label>{item.customerCount}</label>
+                          <div className="rightarrow">
+                            <img
+                              src={WhiteRightArrow}
+                              className=""
+                              width="10px"
+                            />
+                          </div>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.campaignscript
+                        : "Campaign Script",
+                    dataIndex: "campaignScript",
+                    className: "table-coloum-hide",
+                    render: (row, item) => {
+                      return (
+                        <div className="chatbotwid">
+                          <Popover
+                            overlayClassName="antcustom"
+                            content={
+                              <div className="insertpop1">
+                                <div className="dash-creation-popup custompop">
+                                  <label className="poptitle">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.ChatbotScript
+                                      : "Chatbot Script"}
+                                  </label>
+                                  <label className="channelScript">
+                                    {item.chatbotScript}
+                                  </label>
+                                </div>
+                              </div>
+                            }
+                            placement="bottom"
+                          >
+                            <a className="button-red">
+                              <img
+                                className="ico"
+                                src={ChatbotS}
+                                alt="Chatbot Icon"
+                              />
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.ChatbotScript
+                                : "Chatbot Script"}
+                            </a>
+                          </Popover>
+                          <Popover
+                            overlayClassName="antcustom"
+                            content={
+                              <div className="insertpop1">
+                                <div className="dash-creation-popup custompop">
+                                  <label className="poptitle">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.smsscript
+                                      : "SMS Script"}
+                                  </label>
+                                  <label className="channelScript">
+                                    {item.smsScript}
+                                  </label>
+                                </div>
+                              </div>
+                            }
+                            placement="bottom"
+                          >
+                            <a className="button-blue">
+                              <img
+                                className="ico"
+                                src={Smsicon}
+                                alt="Chatbot Icon"
+                              />
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.smsscript
+                                : "SMS Script"}
+                            </a>
+                          </Popover>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.campaignperiod
+                        : "Campaign Period",
+                    dataIndex: "campaingPeriod",
+                    className: "table-coloum-hide",
+                  },
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.status
+                        : "Status",
+                    dataIndex: "status",
+                    className:
+                      "camp-status-header camp-status-header-statusFilter stat",
+                    filterDropdown: (data, row) => {
+                      return (
+                        <div className="campaign-status-drpdwn">
+                          <ul>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Campall-status"
+                                className="ch1"
+                                onChange={this.handleCheckCampAllStatus.bind(
+                                  this
+                                )}
+                                checked={this.state.CheckBoxAllStatus}
+                                name="CampallStatus"
+                              />
+                              <label htmlFor="Campall-status">
+                                <span className="ch1-text">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.all
+                                    : "All"}
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="New100"
+                                className="ch1"
+                                onChange={this.handleCheckCampIndividualStatus.bind(
+                                  this
+                                )}
+                                name="CampallStatus"
+                                attrIds={100}
+                              />
+                              <label htmlFor="New100">
+                                <span className="ch1-text">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.new
+                                    : "New"}
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress101"
+                                className="ch1"
+                                onChange={this.handleCheckCampIndividualStatus.bind(
+                                  this
+                                )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress101">
+                                <span className="ch1-text">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.inprogress
+                                    : "InProgress"}
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Close102"
+                                className="ch1"
+                                onChange={this.handleCheckCampIndividualStatus.bind(
+                                  this
+                                )}
+                                name="CampallStatus"
+                                attrIds={102}
+                              />
+                              <label htmlFor="Close102">
+                                <span className="ch1-text">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.close
+                                    : "Close"}
+                                </span>
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                      );
+                    },
+                    filterDropdownVisible: this.state.filterCampaignStatus,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterCampaignStatus: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    ),
+                  },
+                  {
+                    title:
+                      TranslationContext !== undefined
+                        ? TranslationContext.title.actions
+                        : "Actions",
+                    className: "actbtnmob",
+                    render: (row, item) => {
+                      return (
+                        <Popover
+                          overlayClassName="antcustom antbroadcast"
+                          content={
+                            <div className="general-popover popover-body broadcastpop">
+                              {this.state.campaignExecutionDetails.length >
+                              0 ? (
+                                <label className="broadcasttitle">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.recentcampaigns
+                                    : "Recent Campaigns"}
+                                </label>
+                              ) : null}
+
+                              {this.state.campaignExecutionDetails !== null &&
+                                this.state.campaignExecutionDetails.map(
+                                  (item, b) => (
+                                    <div className="broembox clearfix" key={b}>
+                                      <p>
+                                        <label>{item.channelType}</label>
+                                        <span>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .ExecutedDate
+                                            : "Executed Date"}
+                                          : {item.executionDate}
+                                        </span>
+                                      </p>
+                                    </div>
+                                  )
+                                )}
+                              <>
+                                <label className="broadcasttitle">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label
+                                        .broadcastcampaigntocustomers
+                                    : "Broadcast Campaign to Customers"}
+                                </label>
+                                <label className="broadcastsubtitle">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.choosechannel
+                                    : "Choose Channel"}
+                                </label>
+                                <div>
+                                  <Radio.Group
+                                    onChange={this.handleBroadcastChange}
+                                    value={this.state.broadcastChannel}
+                                  >
+                                    {this.state.broadcastConfiguration
+                                      .emailFlag ? (
+                                      <Radio
+                                        className="broadChannel"
+                                        value="Email"
+                                        disabled={
+                                          this.state.broadcastConfiguration
+                                            .disableEmail
+                                        }
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.radio.email
+                                          : "Email"}
+                                      </Radio>
+                                    ) : null}
+                                    {this.state.broadcastConfiguration
+                                      .smsFlag ? (
+                                      <Radio
+                                        className="broadChannel"
+                                        value="SMS"
+                                        disabled={
+                                          this.state.broadcastConfiguration
+                                            .disableSMS
+                                        }
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.radio.sms
+                                          : "SMS"}
+                                      </Radio>
+                                    ) : null}
+                                    {this.state.broadcastConfiguration
+                                      .whatsappFlag ? (
+                                      <Radio
+                                        className="broadChannel"
+                                        value="Whatsapp"
+                                        disabled={
+                                          this.state.broadcastConfiguration
+                                            .disableWhatsapp
+                                        }
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.radio.whatsapp
+                                          : "Whatsapp"}
+                                      </Radio>
+                                    ) : null}
+                                  </Radio.Group>
+
+                                  {this.state.broadcastChannel === "" && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.broadChannelValidation}
+                                    </p>
+                                  )}
+                                </div>
+                                <button
+                                  type="button"
+                                  className="executebtn"
+                                  onClick={this.handleBroadcastExecute.bind(
+                                    this,
+                                    row.storeCode,
+                                    row.campaignCode
+                                  )}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.execute
+                                    : "Execute"}
+                                </button>
+                              </>
                             </div>
-                            <button
-                              type="button"
-                              className="executebtn"
-                              onClick={this.handleBroadcastExecute.bind(
+                          }
+                          placement="bottom"
+                          trigger="click"
+                        >
+                          <div className="broadcast-icon">
+                            <img
+                              src={BroadCastIcon}
+                              alt="cancel-icone"
+                              onClick={this.handleGetBroadcastConfiguration.bind(
                                 this,
                                 row.storeCode,
                                 row.campaignCode
                               )}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.button.execute
-                                : "Execute"}
-                            </button>
-                          </>
-                        </div>
-                      }
-                      placement="bottom"
-                      trigger="click"
-                    >
-                      <div className="broadcast-icon">
-                        <img
-                          src={BroadCastIcon}
-                          alt="cancel-icone"
-                          onClick={this.handleGetBroadcastConfiguration.bind(
-                            this,
-                            row.storeCode,
-                            row.campaignCode
-                          )}
-                          className="broadcastimg"
-                        />
-                      </div>
-                    </Popover>
-                  );
-                },
-              },
-            ]}
-            expandedRowRender={(row, item) => {
-              return (
-                <div>
-                  <Table
-                    dataSource={this.state.CampChildTableData.filter(
-                      (x) => x.campaignScriptID === row.campaignID
-                    )}
-                    className="midalResponseAction"
-                    columns={[
-                      {
-                        title:
-                          TranslationContext !== undefined
-                            ? TranslationContext.title.customername
-                            : "Customer Name",
-                        className:
-                          "camp-status-header camp-status-header-cust-name",
-                        dataIndex: "id",
-                        filterDropdown: (dataIndex) => (
-                          <div className="cust-name-drpdwn">
-                            <label>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.customernumber
-                                : "Customer Number"}
-                            </label>
-                            <input
-                              type="text"
-                              className="txt-1"
-                              autoComplete="off"
-                              placeholder={
-                                TranslationContext !== undefined
-                                  ? TranslationContext.placeholder.entermobileno
-                                  : "Enter Mobile No"
-                              }
-                              maxLength={10}
-                              value={this.state.filterCustNO}
-                              onChange={this.handleCustomerFilerOnchange.bind(
-                                this,
-                                row.campaignID,
-                                row.customerCount
-                              )}
+                              className="broadcastimg"
                             />
-                            {this.state.filterCustNO.length > 1 && (
-                              <p style={{ color: "red", marginBottom: "0px" }}>
-                                {this.state.custMobileValidation}
-                              </p>
-                            )}
                           </div>
-                        ),
-                        filterDropdownVisible: this.state.filterCustomerNumber,
-                        onFilterDropdownVisibleChange: (visible) =>
-                          this.setState({ filterCustomerNumber: visible }),
-                        filterIcon: (filtered) => (
-                          <span
-                            style={{ color: filtered ? "#1890ff" : undefined }}
-                          ></span>
-                        ),
-                        render: (row, item) => {
-                          return (
-                            <div>
-                              <div className="d-flex">
-                                <p
-                                  className="cust-name"
-                                  onClick={this.handleGetCustomerDataForModal.bind(
-                                    this,
-                                    item
-                                  )}
-                                >
-                                  {item.customerName}
-                                </p>
-                                {item.isCustomerChating && (
-                                  <img
-                                    className="ico cr-pnt ml-2"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                    onClick={this.handleWhatsAppIconClick.bind(
-                                      this,
-                                      item
-                                    )}
-                                  />
-                                )}
-                              </div>
-                              <span className="sml-fnt">
-                                {item.customerNumber}
-                              </span>
-                            </div>
-                          );
-                        },
-                      },
-                      {
-                        title:
-                          TranslationContext !== undefined
-                            ? TranslationContext.title.date
-                            : "Date",
-                        dataIndex: "campaignDate",
-                        className: "table-coloum-hide",
-                      },
-                      {
-                        title:
-                          TranslationContext !== undefined
-                            ? TranslationContext.title.response
-                            : "Response",
-                        className: "table-coloum-hide",
-                        render: (row, item) => {
-                          return (
-                            <div>
-                              <select
-                                className="responceDrop-down dropdown-label"
-                                value={item.responseID}
-                                onChange={this.onResponseChange.bind(
-                                  this,
-                                  item.id,
-                                  item
-                                )}
-                              >
-                                <option hidden>
+                        </Popover>
+                      );
+                    },
+                  },
+                ]}
+                expandedRowRender={(row, item) => {
+                  return (
+                    <div>
+                      <Table
+                        dataSource={this.state.CampChildTableData.filter(
+                          (x) => x.campaignScriptID === row.campaignID
+                        )}
+                        className="midalResponseAction expading"
+                        columns={[
+                          {
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.title.customername
+                                : "Customer Name",
+                            className:
+                              "camp-status-header camp-status-header-cust-name",
+                            dataIndex: "id",
+                            filterDropdown: (dataIndex) => (
+                              <div className="cust-name-drpdwn">
+                                <label>
                                   {TranslationContext !== undefined
-                                    ? TranslationContext.option.SelectResponse
-                                    : "Select Response"}
-                                </option>
-                                {item.hsCampaignResponseList !== null &&
-                                  item.hsCampaignResponseList.map(
-                                    (items, i) => (
-                                      <option key={i} value={items.responseID}>
-                                        {items.response}
-                                      </option>
-                                    )
-                                  )}
-                              </select>
-                            </div>
-                          );
-                        },
-                      },
-                      {
-                        title:
-                          TranslationContext !== undefined
-                            ? TranslationContext.title.status
-                            : "Status",
-                        dataIndex: "statusName",
-                        className: "camp-status-header",
-                        render: (row, item) => {
-                          return (
-                            <div>
-                              {item.statusID === 100 ? (
-                                <label className="table-btnlabel contactBtnGreen">
-                                  {item.statusName}
+                                    ? TranslationContext.label.customernumber
+                                    : "Customer Number"}
                                 </label>
-                              ) : item.statusID === 101 ? (
-                                <label className="table-btnlabel notConnectedBtnRed">
-                                  {item.statusName}
-                                </label>
-                              ) : item.statusID === 102 ? (
-                                <label className="table-btnlabel followUpBtnYellow">
-                                  {item.statusName}
-                                </label>
-                              ) : item.statusID === 104 ? (
-                                <label className="table-btnlabel followUpBtnBlue">
-                                  {item.statusName}
-                                </label>
-                              ) : null}
-                            </div>
-                          );
-                        },
-                        filterDropdown: (dataIndex) => (
-                          <div className="campaign-status-drpdwn">
-                            <ul>
-                              <li>
                                 <input
-                                  type="checkbox"
-                                  id="all-status"
-                                  className="ch1"
-                                  onChange={this.checkAllStatus.bind(
-                                    this,
-                                    row.campaignID,
-                                    row.customerCount
-                                  )}
-                                  checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                />
-                                <label htmlFor="all-status">
-                                  <span className="ch1-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.option.all
-                                      : "All"}
-                                  </span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="status100"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(
-                                    this,
-                                    row.campaignID,
-                                    row.customerCount
-                                  )}
-                                  name="allStatus"
-                                  attrIds={100}
-                                />
-                                <label htmlFor="status100">
-                                  <span className="ch1-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.Contacted
-                                      : "Contacted"}
-                                  </span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="status101"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(
-                                    this,
-                                    row.campaignID,
-                                    row.customerCount
-                                  )}
-                                  name="allStatus"
-                                  attrIds={101}
-                                />
-                                <label htmlFor="status101">
-                                  <span className="ch1-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.NotContacted
-                                      : "Not Contacted"}
-                                  </span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="status102"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(
-                                    this,
-                                    row.campaignID,
-                                    row.customerCount
-                                  )}
-                                  name="allStatus"
-                                  attrIds={102}
-                                />
-                                <label htmlFor="status102">
-                                  <span className="ch1-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.FollowUp
-                                      : "Follow Up"}
-                                  </span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="status103"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(
-                                    this,
-                                    row.campaignID,
-                                    row.customerCount
-                                  )}
-                                  name="allStatus"
-                                  attrIds={103}
-                                />
-                                <label htmlFor="status103">
-                                  <span className="ch1-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.Converted
-                                      : "Converted"}
-                                  </span>
-                                </label>
-                              </li>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id="status104"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(
-                                    this,
-                                    row.campaignID,
-                                    row.customerCount
-                                  )}
-                                  name="allStatus"
-                                  attrIds={104}
-                                />
-                                <label htmlFor="status104">
-                                  <span className="ch1-text">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.span.Conversation
-                                      : "Conversation"}
-                                  </span>
-                                </label>
-                              </li>
-                            </ul>
-                          </div>
-                        ),
-                        filterDropdownVisible: this.state.filterDropdownVisible,
-                        onFilterDropdownVisibleChange: (visible) =>
-                          this.setState({ filterDropdownVisible: visible }),
-                        filterIcon: (filtered) => (
-                          <span
-                            style={{ color: filtered ? "#1890ff" : undefined }}
-                          ></span>
-                        ),
-                      },
-                      {
-                        title:
-                          TranslationContext !== undefined
-                            ? TranslationContext.title.callrecheduledto
-                            : "Call Recheduled To",
-                        className: "table-coloum-hide",
-                        dataIndex: "pricePaid",
-                        render: (row, item) => {
-                          return (
-                            <div
-                              className={
-                                item.responseID === 3 ? "" : "disabled-input"
-                              }
-                            >
-                              <div className="date-time-resp">
-                                <DatePicker
-                                  id={"startDate" + item.id}
+                                  type="text"
+                                  className="txt-1"
                                   autoComplete="off"
-                                  showTimeSelect
-                                  name="startDate"
-                                  minDate={new Date()}
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  selected={
-                                    item.callRescheduledTo !== ""
-                                      ? new Date(item.callRescheduledTo)
-                                      : new Date()
-                                  }
-                                  dateFormat="MM/dd/yyyy h:mm aa"
-                                  value={
-                                    item.callRescheduledTo !== ""
-                                      ? moment(item.callRescheduledTo)
-                                      : ""
-                                  }
-                                  onChange={this.onDateChange.bind(
-                                    this,
-                                    item.id
-                                  )}
-                                  className={
-                                    item.responseID === 3 &&
-                                    item.dateTimeHighlight &&
-                                    !item.callRescheduledTo
-                                      ? "txtStore dateTimeStore dateTimeStore-highlight"
-                                      : item.responseID === 3
-                                      ? "txtStore dateTimeStore"
-                                      : "txtStore dateTimeStore disabled-link"
-                                  }
-                                  placeholderText={
+                                  placeholder={
                                     TranslationContext !== undefined
                                       ? TranslationContext.placeholder
-                                          .selecttimeanddate
-                                      : "Select Date & Time"
+                                          .entermobileno
+                                      : "Enter Mobile No"
                                   }
+                                  maxLength={10}
+                                  value={this.state.filterCustNO}
+                                  onChange={this.handleCustomerFilerOnchange.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
                                 />
-                              </div>
-                            </div>
-                          );
-                        },
-                      },
-                      {
-                        title:
-                          TranslationContext !== undefined
-                            ? TranslationContext.title.actions
-                            : "Actions",
-                        render: (row, item) => {
-                          return (
-                            <div>
-                              <div className="table-coloum-hide status-btn-camp">
-                                <div>
-                                  <button
-                                    className="saveBtn saveLabel"
-                                    type="button"
-                                    onClick={this.handleUpdateCampaignResponse.bind(
-                                      this,
-                                      item.id,
-                                      item.responseID,
-                                      item.callRescheduledTo,
-                                      item.campaignScriptID
-                                    )}
+                                {this.state.filterCustNO.length > 1 && (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px",
+                                    }}
                                   >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.button.update
-                                      : "Update"}
-                                  </button>
-                                  <button
-                                    className="raisedticket-Btn"
-                                    style={{ display: "none" }}
-                                    type="button"
-                                  >
-                                    <label className="raise-ticketLbl">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span.RaiseTicket
-                                        : "Raise Ticket"}
-                                    </label>
-                                  </button>
-                                </div>
+                                    {this.state.custMobileValidation}
+                                  </p>
+                                )}
                               </div>
-                            </div>
-                          );
-                        },
-                      },
-                    ]}
-                    expandedRowRender={(row, item) => {
-                      return (
-                        <div className="innertabcollapse">
-                          <table>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <label>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.CustomerName
-                                      : "Customer Name"}
-                                  </label>
-                                </td>
-                                <td>
+                            ),
+                            filterDropdownVisible: this.state
+                              .filterCustomerNumber,
+                            onFilterDropdownVisibleChange: (visible) =>
+                              this.setState({ filterCustomerNumber: visible }),
+                            filterIcon: (filtered) => (
+                              <span
+                                style={{
+                                  color: filtered ? "#1890ff" : undefined,
+                                }}
+                              ></span>
+                            ),
+                            render: (row, item) => {
+                              return (
+                                <div className="backcoloin bord3">
                                   <div className="d-flex">
-                                    <label className=" cust-name">
-                                      {row.customerName}
-                                    </label>
-                                    {row.isCustomerChating && (
-                                      <img
-                                        className="ico cr-pnt ml-1"
-                                        src={Whatsapp}
-                                        alt="Whatsapp Icon"
-                                        onClick={this.handleWhatsAppIconClick.bind(
-                                          this,
-                                          row
-                                        )}
-                                      />
-                                    )}
+                                    <p
+                                      className="cust-name"
+                                      onClick={this.handleGetCustomerDataForModal.bind(
+                                        this,
+                                        item
+                                      )}
+                                    >
+                                      {item.customerName}
+                                    </p>
+                                    {/* {item.isCustomerChating && ( */}
+                                    <img
+                                      className="ico cr-pnt ml-2"
+                                      src={Whatsapp}
+                                      alt="Whatsapp Icon"
+                                      // onClick={this.handleWhatsAppIconClick.bind(
+                                      //   this,
+                                      //   item
+                                      // )}
+                                    />
+                                    {/* )} */}
                                   </div>
                                   <span className="sml-fnt">
-                                    {row.customerNumber}
+                                    {item.customerNumber}
                                   </span>
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <label>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.date
-                                      : "Date"}
-                                  </label>
-                                </td>
-                                <td>
-                                  <label>{row.campaignDate}</label>
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <label>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.Response
-                                      : "Response"}
-                                  </label>
-                                </td>
-                                <td>
+                                </div>
+                              );
+                            },
+                          },
+                          {
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.title.date
+                                : "Date",
+                            dataIndex: "campaignDate",
+                            className: "table-coloum-hide",
+                          },
+                          {
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.title.response
+                                : "Response",
+                            className: "table-coloum-hide",
+                            render: (row, item) => {
+                              return (
+                                <div>
                                   <select
                                     className="responceDrop-down dropdown-label"
-                                    value={row.responseID}
+                                    value={item.responseID}
                                     onChange={this.onResponseChange.bind(
                                       this,
-                                      row.id,
-                                      row
+                                      item.id,
+                                      item
                                     )}
                                   >
                                     <option hidden>
@@ -2433,8 +2802,8 @@ class StoreCampaign extends Component {
                                             .SelectResponse
                                         : "Select Response"}
                                     </option>
-                                    {row.hsCampaignResponseList !== null &&
-                                      row.hsCampaignResponseList.map(
+                                    {item.hsCampaignResponseList !== null &&
+                                      item.hsCampaignResponseList.map(
                                         (items, i) => (
                                           <option
                                             key={i}
@@ -2445,176 +2814,572 @@ class StoreCampaign extends Component {
                                         )
                                       )}
                                   </select>
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <label>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label.status
-                                      : "Status"}
-                                  </label>
-                                </td>
-                                <td>
-                                  <div>
-                                    {row.statusID === 100 ? (
-                                      <label className="table-btnlabel contactBtnGreen">
-                                        {row.statusName}
-                                      </label>
-                                    ) : row.statusID === 101 ? (
-                                      <label className="table-btnlabel notConnectedBtnRed">
-                                        {row.statusName}
-                                      </label>
-                                    ) : row.statusID === 102 ? (
-                                      <label className="table-btnlabel followUpBtnYellow">
-                                        {row.statusName}
-                                      </label>
-                                    ) : row.statusID === 104 ? (
-                                      <label className="table-btnlabel followUpBtnBlue">
-                                        {row.statusName}
-                                      </label>
-                                    ) : null}
+                                </div>
+                              );
+                            },
+                          },
+                          {
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.title.status
+                                : "Status",
+                            dataIndex: "statusName",
+                            className: "camp-status-header",
+                            render: (row, item) => {
+                              return (
+                                <div className="backcoloin bord4">
+                                  {item.statusID === 100 ? (
+                                    <label className="table-btnlabel contactBtnGreen">
+                                      {item.statusName}
+                                    </label>
+                                  ) : item.statusID === 101 ? (
+                                    <label className="table-btnlabel notConnectedBtnRed">
+                                      {item.statusName}
+                                    </label>
+                                  ) : item.statusID === 102 ? (
+                                    <label className="table-btnlabel followUpBtnYellow">
+                                      {item.statusName}
+                                    </label>
+                                  ) : item.statusID === 104 ? (
+                                    <label className="table-btnlabel followUpBtnBlue">
+                                      {item.statusName}
+                                    </label>
+                                  ) : null}
+                                </div>
+                              );
+                            },
+                            filterDropdown: (dataIndex) => (
+                              <div className="campaign-status-drpdwn">
+                                <ul>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="all-status"
+                                      className="ch1"
+                                      onChange={this.checkAllStatus.bind(
+                                        this,
+                                        row.campaignID,
+                                        row.customerCount
+                                      )}
+                                      checked={this.state.CheckBoxAllBrand}
+                                      name="allStatus"
+                                    />
+                                    <label htmlFor="all-status">
+                                      <span className="ch1-text">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.all
+                                          : "All"}
+                                      </span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="status100"
+                                      className="ch1"
+                                      onChange={this.checkIndividualStatus.bind(
+                                        this,
+                                        row.campaignID,
+                                        row.customerCount
+                                      )}
+                                      name="allStatus"
+                                      attrIds={100}
+                                    />
+                                    <label htmlFor="status100">
+                                      <span className="ch1-text">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.Contacted
+                                          : "Contacted"}
+                                      </span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="status101"
+                                      className="ch1"
+                                      onChange={this.checkIndividualStatus.bind(
+                                        this,
+                                        row.campaignID,
+                                        row.customerCount
+                                      )}
+                                      name="allStatus"
+                                      attrIds={101}
+                                    />
+                                    <label htmlFor="status101">
+                                      <span className="ch1-text">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.NotContacted
+                                          : "Not Contacted"}
+                                      </span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="status102"
+                                      className="ch1"
+                                      onChange={this.checkIndividualStatus.bind(
+                                        this,
+                                        row.campaignID,
+                                        row.customerCount
+                                      )}
+                                      name="allStatus"
+                                      attrIds={102}
+                                    />
+                                    <label htmlFor="status102">
+                                      <span className="ch1-text">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.FollowUp
+                                          : "Follow Up"}
+                                      </span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="status103"
+                                      className="ch1"
+                                      onChange={this.checkIndividualStatus.bind(
+                                        this,
+                                        row.campaignID,
+                                        row.customerCount
+                                      )}
+                                      name="allStatus"
+                                      attrIds={103}
+                                    />
+                                    <label htmlFor="status103">
+                                      <span className="ch1-text">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.Converted
+                                          : "Converted"}
+                                      </span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="status104"
+                                      className="ch1"
+                                      onChange={this.checkIndividualStatus.bind(
+                                        this,
+                                        row.campaignID,
+                                        row.customerCount
+                                      )}
+                                      name="allStatus"
+                                      attrIds={104}
+                                    />
+                                    <label htmlFor="status104">
+                                      <span className="ch1-text">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.Conversation
+                                          : "Conversation"}
+                                      </span>
+                                    </label>
+                                  </li>
+                                </ul>
+                              </div>
+                            ),
+                            filterDropdownVisible: this.state
+                              .filterDropdownVisible,
+                            onFilterDropdownVisibleChange: (visible) =>
+                              this.setState({ filterDropdownVisible: visible }),
+                            filterIcon: (filtered) => (
+                              <span
+                                style={{
+                                  color: filtered ? "#1890ff" : undefined,
+                                }}
+                              ></span>
+                            ),
+                          },
+                          {
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.title.callrecheduledto
+                                : "Call Recheduled To",
+                            className: "table-coloum-hide",
+                            dataIndex: "pricePaid",
+                            render: (row, item) => {
+                              return (
+                                <div
+                                  className={
+                                    item.responseID === 3
+                                      ? ""
+                                      : "disabled-input"
+                                  }
+                                >
+                                  <div className="date-time-resp">
+                                    <DatePicker
+                                      id={"startDate" + item.id}
+                                      autoComplete="off"
+                                      showTimeSelect
+                                      name="startDate"
+                                      minDate={new Date()}
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      selected={
+                                        item.callRescheduledTo !== ""
+                                          ? new Date(item.callRescheduledTo)
+                                          : new Date()
+                                      }
+                                      dateFormat="MM/dd/yyyy h:mm aa"
+                                      value={
+                                        item.callRescheduledTo !== ""
+                                          ? moment(item.callRescheduledTo)
+                                          : ""
+                                      }
+                                      onChange={this.onDateChange.bind(
+                                        this,
+                                        item.id
+                                      )}
+                                      className={
+                                        item.responseID === 3 &&
+                                        item.dateTimeHighlight &&
+                                        !item.callRescheduledTo
+                                          ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                          : item.responseID === 3
+                                          ? "txtStore dateTimeStore"
+                                          : "txtStore dateTimeStore disabled-link"
+                                      }
+                                      placeholderText={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .selecttimeanddate
+                                          : "Select Date & Time"
+                                      }
+                                    />
                                   </div>
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <label>
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.label
-                                          .callrescheduledto
-                                      : "Call Rescheduled to"}
-                                  </label>
-                                </td>
-                                <td>
-                                  <div
-                                    className={
-                                      row.responseID === 3
-                                        ? ""
-                                        : "disabled-input"
-                                    }
-                                  >
-                                    <div className="date-time-resp">
-                                      <DatePicker
-                                        id={"startDate" + item.id}
-                                        autoComplete="off"
-                                        showTimeSelect
-                                        name="startDate"
-                                        minDate={new Date()}
-                                        showMonthDropdown
-                                        showYearDropdown
-                                        selected={
-                                          row.callRescheduledTo !== ""
-                                            ? new Date(row.callRescheduledTo)
-                                            : new Date()
-                                        }
-                                        dateFormat="MM/dd/yyyy h:mm aa"
-                                        value={
-                                          row.callRescheduledTo !== ""
-                                            ? moment(row.callRescheduledTo)
-                                            : ""
-                                        }
-                                        onChange={this.onDateChange.bind(
+                                </div>
+                              );
+                            },
+                          },
+                          {
+                            title:
+                              TranslationContext !== undefined
+                                ? TranslationContext.title.actions
+                                : "Actions",
+                            render: (row, item) => {
+                              return (
+                                <div>
+                                  <div className="table-coloum-hide status-btn-camp">
+                                    <div>
+                                      <button
+                                        className="saveBtn saveLabel"
+                                        type="button"
+                                        onClick={this.handleUpdateCampaignResponse.bind(
                                           this,
-                                          row.id
+                                          item.id,
+                                          item.responseID,
+                                          item.callRescheduledTo,
+                                          item.campaignScriptID
                                         )}
-                                        className={
-                                          row.responseID === 3 &&
-                                          row.dateTimeHighlight &&
-                                          !row.callRescheduledTo
-                                            ? "txtStore dateTimeStore dateTimeStore-highlight"
-                                            : row.responseID === 3
-                                            ? "txtStore dateTimeStore"
-                                            : "txtStore dateTimeStore disabled-link"
-                                        }
-                                        placeholderText={
-                                          TranslationContext !== undefined
-                                            ? TranslationContext.placeholder
-                                                .selectdateandtime
-                                            : "Select Date & Time"
-                                        }
-                                      />
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.update
+                                          : "Update"}
+                                      </button>
+                                      <button
+                                        className="raisedticket-Btn"
+                                        style={{ display: "none" }}
+                                        type="button"
+                                      >
+                                        <label className="raise-ticketLbl">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .RaiseTicket
+                                            : "Raise Ticket"}
+                                        </label>
+                                      </button>
                                     </div>
                                   </div>
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td colSpan="3">
-                                  <div style={{ float: "right" }}>
-                                    <button
-                                      className="saveBtn saveLabel"
-                                      type="button"
-                                      onClick={this.handleUpdateCampaignResponse.bind(
-                                        this,
-                                        row.id,
-                                        row.responseID,
-                                        row.callRescheduledTo,
-                                        row.campaignScriptID
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.update
-                                        : "Update"}
-                                    </button>
-                                    <button
-                                      className="raisedticket-Btn saveLabel"
-                                      style={{ display: "none" }}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.raiseticket
-                                        : "Raise Ticket"}
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                                </div>
+                              );
+                            },
+                          },
+                        ]}
+                        expandedRowRender={(row, item) => {
+                          return (
+                            <div className="innertabcollapse">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .CustomerName
+                                          : "Customer Name"}
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <div className="d-flex">
+                                        <label className=" cust-name">
+                                          {row.customerName}
+                                        </label>
+                                        {row.isCustomerChating && (
+                                          <img
+                                            className="ico cr-pnt ml-1"
+                                            src={Whatsapp}
+                                            alt="Whatsapp Icon"
+                                            onClick={this.handleWhatsAppIconClick.bind(
+                                              this,
+                                              row
+                                            )}
+                                          />
+                                        )}
+                                      </div>
+                                      <span className="sml-fnt">
+                                        {row.customerNumber}
+                                      </span>
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.date
+                                          : "Date"}
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <label>{row.campaignDate}</label>
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.Response
+                                          : "Response"}
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <select
+                                        className="responceDrop-down dropdown-label"
+                                        value={row.responseID}
+                                        onChange={this.onResponseChange.bind(
+                                          this,
+                                          row.id,
+                                          row
+                                        )}
+                                      >
+                                        <option hidden>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option
+                                                .SelectResponse
+                                            : "Select Response"}
+                                        </option>
+                                        {row.hsCampaignResponseList !== null &&
+                                          row.hsCampaignResponseList.map(
+                                            (items, i) => (
+                                              <option
+                                                key={i}
+                                                value={items.responseID}
+                                              >
+                                                {items.response}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.status
+                                          : "Status"}
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        {row.statusID === 100 ? (
+                                          <label className="table-btnlabel contactBtnGreen">
+                                            {row.statusName}
+                                          </label>
+                                        ) : row.statusID === 101 ? (
+                                          <label className="table-btnlabel notConnectedBtnRed">
+                                            {row.statusName}
+                                          </label>
+                                        ) : row.statusID === 102 ? (
+                                          <label className="table-btnlabel followUpBtnYellow">
+                                            {row.statusName}
+                                          </label>
+                                        ) : row.statusID === 104 ? (
+                                          <label className="table-btnlabel followUpBtnBlue">
+                                            {row.statusName}
+                                          </label>
+                                        ) : null}
+                                      </div>
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .callrescheduledto
+                                          : "Call Rescheduled to"}
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <div
+                                        className={
+                                          row.responseID === 3
+                                            ? ""
+                                            : "disabled-input"
+                                        }
+                                      >
+                                        <div className="date-time-resp">
+                                          <DatePicker
+                                            id={"startDate" + item.id}
+                                            autoComplete="off"
+                                            showTimeSelect
+                                            name="startDate"
+                                            minDate={new Date()}
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            selected={
+                                              row.callRescheduledTo !== ""
+                                                ? new Date(
+                                                    row.callRescheduledTo
+                                                  )
+                                                : new Date()
+                                            }
+                                            dateFormat="MM/dd/yyyy h:mm aa"
+                                            value={
+                                              row.callRescheduledTo !== ""
+                                                ? moment(row.callRescheduledTo)
+                                                : ""
+                                            }
+                                            onChange={this.onDateChange.bind(
+                                              this,
+                                              row.id
+                                            )}
+                                            className={
+                                              row.responseID === 3 &&
+                                              row.dateTimeHighlight &&
+                                              !row.callRescheduledTo
+                                                ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                                : row.responseID === 3
+                                                ? "txtStore dateTimeStore"
+                                                : "txtStore dateTimeStore disabled-link"
+                                            }
+                                            placeholderText={
+                                              TranslationContext !== undefined
+                                                ? TranslationContext.placeholder
+                                                    .selectdateandtime
+                                                : "Select Date & Time"
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td colSpan="3">
+                                      <div
+                                        className="mobflo"
+                                        style={{ float: "right" }}
+                                      >
+                                        <button
+                                          className="saveBtn saveLabel"
+                                          type="button"
+                                          onClick={this.handleUpdateCampaignResponse.bind(
+                                            this,
+                                            row.id,
+                                            row.responseID,
+                                            row.callRescheduledTo,
+                                            row.campaignScriptID
+                                          )}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.update
+                                            : "Update"}
+                                        </button>
+                                        <button
+                                          className="raisedticket-Btn saveLabel"
+                                          style={{ display: "none" }}
+                                        >
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button
+                                                .raiseticket
+                                            : "Raise Ticket"}
+                                        </button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          );
+                        }}
+                        expandIconColumnIndex={5}
+                        expandIconAsCell={false}
+                        pagination={false}
+                        loading={this.state.ChildTblLoading}
+                      />
+                      <Pagination
+                        currentPage={this.state.childCurrentPage}
+                        totalSize={this.state.childTotalGridRecord}
+                        sizePerPage={this.state.ChildPostsPerPage}
+                        changeCurrentPage={this.PaginationOnChange}
+                        theme="bootstrap"
+                      />
+                      <div className="position-relative">
+                        <div className="item-selection Camp-pagination">
+                          <select
+                            value={this.state.ChildPostsPerPage}
+                            onChange={this.handlePageItemchange}
+                          >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={30}>30</option>
+                          </select>
+                          <p>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.itemperpage
+                              : "Items per page"}
+                          </p>
                         </div>
-                      );
-                    }}
-                    expandIconColumnIndex={5}
-                    expandIconAsCell={false}
-                    pagination={false}
-                    loading={this.state.ChildTblLoading}
-                  />
-                  <Pagination
-                    currentPage={this.state.childCurrentPage}
-                    totalSize={this.state.childTotalGridRecord}
-                    sizePerPage={this.state.ChildPostsPerPage}
-                    changeCurrentPage={this.PaginationOnChange}
-                    theme="bootstrap"
-                  />
-                  <div className="position-relative">
-                    <div className="item-selection Camp-pagination">
-                      <select
-                        value={this.state.ChildPostsPerPage}
-                        onChange={this.handlePageItemchange}
-                      >
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={30}>30</option>
-                      </select>
-                      <p>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.p.itemperpage
-                          : "Items per page"}
-                      </p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            }}
-            onExpand={this.handleGetCampaignCustomerData}
-            expandedRowKeys={this.state.expandedRowKeys}
-            expandIconColumnIndex={5}
-            expandIconAsCell={false}
-            pagination={false}
-            loading={this.state.loading}
-            dataSource={this.state.campaignGridData}
-          />
+                  );
+                }}
+                onExpand={this.handleGetCampaignCustomerData}
+                expandedRowKeys={this.state.expandedRowKeys}
+                rowExpandable={this.state.isMobileView === false ? true : false}
+                expandIconColumnIndex={
+                  this.state.isMobileView === false ? 6 : -1
+                }
+                expandIconAsCell={false}
+                pagination={false}
+                loading={this.state.loading}
+                dataSource={this.state.campaignGridData}
+                onRowClick={this.handelCampaignRowClick.bind(this)}
+              />
+            </div>
+          ) : (
+            <div>
+              <CampaignExpandComponent
+                CampaignScriptID={this.state.campaignID}
+                handleGetCustomerDataForModal={this.handleGetCustomerDataForModal.bind(
+                  this
+                )}
+                handleUpdateCampaignResponse={this.handleUpdateCampaignResponse.bind(
+                  this
+                )}
+                handlegetCampaignDetailsById={this.handlegetCampaignDetailsById.bind(
+                  this
+                )}
+              />
+            </div>
+          )}
         </div>
 
         <Modal
@@ -2623,7 +3388,12 @@ class StoreCampaign extends Component {
           center
           modalId="customername-popup"
           overlayId="logout-ovrly"
+          classNames={{ modal: "customername-popupbottom" }}
         >
+          <div
+            className="closemob"
+            onClick={this.responsiveCustModalClose.bind(this)}
+          ></div>
           <img
             src={CancelIcon}
             alt="cancel-icone"
@@ -2635,7 +3405,7 @@ class StoreCampaign extends Component {
               <Tab label="Chatbot Script">
                 <div className="">
                   <div class="dash-creation-popup custompop">
-                    <label class="poptitle">
+                    <label class="poptitle chatbotmob">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.ChatbotScript
                         : "Chatbot Script"}
@@ -2657,7 +3427,7 @@ class StoreCampaign extends Component {
               <Tab label="SMS Script">
                 <div className="">
                   <div class="dash-creation-popup custompop">
-                    <label class="poptitle">
+                    <label class="poptitle chatbotmob">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.smsscript
                         : "SMS Script"}
@@ -2684,7 +3454,12 @@ class StoreCampaign extends Component {
           center
           modalId="customername-popup"
           overlayId="logout-ovrly"
+          classNames={{ modal: "icon-popupbottom" }}
         >
+          <div
+            className="closemob"
+            onClick={this.handleCustomerNameModalClose.bind(this)}
+          ></div>
           <img
             src={CancelIcon}
             alt="cancel-icone"
@@ -2698,7 +3473,7 @@ class StoreCampaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>
-                  {this.state.shareCampaignViaSettingModal.customerName}
+                  {this.state.shareCampaignViaSettingModal.customerName}{" "}
                   <span>
                     {this.state.shareCampaignViaSettingModal.customerNumber}
                   </span>
@@ -2707,6 +3482,143 @@ class StoreCampaign extends Component {
               </div>
             </div>
           </div>
+          {this.state.isMobileView ? (
+            <div>
+              <label className="Sendvia">Send Via</label>
+              <div className="col-12 p-0">
+                <div className="sharecamp">
+                  <ul className="sha">
+                    {this.state.shareCampaignViaSettingModal.smsFlag ===
+                    true ? (
+                      <li
+                        onClick={this.handleshareOptionSelect.bind(this, 1)}
+                        className={
+                          this.state.selectedButton == 1 ? "active" : ""
+                        }
+                        id={this.state.smsDisable ? "dis-sms" : ""}
+                      >
+                        {this.state.selectedButton == 1 ? (
+                          <div className="sele">
+                            <img
+                              src={CardTick}
+                              style={{ width: "15px" }}
+                              alt={"select-card"}
+                            />
+                          </div>
+                        ) : null}
+                        <img className="ico" src={Sms1} alt="SMS Icon" />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.li.sms
+                          : "SMS"}
+                      </li>
+                    ) : null}
+                    {this.state.shareCampaignViaSettingModal.emailFlag ===
+                    true ? (
+                      <li
+                        className={
+                          this.state.selectedButton == 4 ? "active" : ""
+                        }
+                      >
+                        {this.state.selectedButton == 4 ? (
+                          <div className="sele">
+                            <img
+                              src={CardTick}
+                              style={{ width: "15px" }}
+                              alt={"select-card"}
+                            />
+                          </div>
+                        ) : null}
+                        <img
+                          className="emailico"
+                          src={Email}
+                          alt="Email Icon"
+                        />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.li.email
+                          : "Email"}
+                      </li>
+                    ) : null}
+                    {this.state.shareCampaignViaSettingModal.messengerFlag ===
+                    true ? (
+                      <li
+                        onClick={this.handleshareOptionSelect.bind(this, 2)}
+                        className={
+                          this.state.selectedButton == 2 ? "active" : ""
+                        }
+                        id={this.state.msngrDisable ? "dis-msngr" : ""}
+                      >
+                        {this.state.selectedButton == 2 ? (
+                          <div className="sele">
+                            <img
+                              src={CardTick}
+                              style={{ width: "15px" }}
+                              alt={"select-card"}
+                            />
+                          </div>
+                        ) : null}
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
+                        <label>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.li.sendviamessage
+                            : "Messenger"}
+                        </label>
+                      </li>
+                    ) : null}
+                    {this.state.shareCampaignViaSettingModal.botFlag ===
+                    true ? (
+                      <li
+                        onClick={this.handleshareOptionSelect.bind(this, 3)}
+                        className={
+                          this.state.selectedButton == 3 ? "active" : ""
+                        }
+                        id={this.state.botDisable ? "dis-bot" : ""}
+                      >
+                        {this.state.selectedButton == 3 ? (
+                          <div className="sele">
+                            <img
+                              src={CardTick}
+                              style={{ width: "15px" }}
+                              alt={"select-card"}
+                            />
+                          </div>
+                        ) : null}
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
+                        <label>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.li.sendviabot
+                            : "Bot"}
+                        </label>
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+
+                <div className="sharecampmob">
+                  <label
+                    className="shareviabtn"
+                    onClick={this.handleShareViaModalOpen.bind(this)}
+                  >
+                    <img
+                      className="shareviaimg"
+                      src={Sharevia}
+                      alt="Share Via"
+                    />
+                    {TranslationContext !== undefined
+                      ? TranslationContext.li.sharevia
+                      : "Share Via"}
+                  </label>
+                </div>
+              </div>
+            </div>
+          ) : null}
           <div className="row">
             <div className="col-12 col-md-6">
               {this.state.campaignkeyinsight !== null ? (
@@ -2723,8 +3635,7 @@ class StoreCampaign extends Component {
                                   : "Lifetime Value"}
                               </h4>
                               <label>
-                                {this.state.useratvdetails.lifeTimeValue !==
-                                null ? (
+                                {this.state.useratvdetails.lifeTimeValue ? (
                                   <>
                                     ₹{this.state.useratvdetails.lifeTimeValue}
                                   </>
@@ -2769,8 +3680,7 @@ class StoreCampaign extends Component {
                                   : "Lifetime Value"}
                               </h4>
                               <label>
-                                {this.state.useratvdetails.lifeTimeValue !==
-                                null ? (
+                                {this.state.useratvdetails.lifeTimeValue ? (
                                   <>
                                     ₹{this.state.useratvdetails.lifeTimeValue}
                                   </>
@@ -2807,7 +3717,6 @@ class StoreCampaign extends Component {
                 </>
               ) : (
                 <>
-                  {" "}
                   <div className="lifetimevalue lt-single">
                     <table>
                       <tbody>
@@ -2819,8 +3728,7 @@ class StoreCampaign extends Component {
                                 : "Lifetime Value"}
                             </h4>
                             <label>
-                              {this.state.useratvdetails.lifeTimeValue !==
-                              null ? (
+                              {this.state.useratvdetails.lifeTimeValue ? (
                                 <>₹{this.state.useratvdetails.lifeTimeValue}</>
                               ) : (
                                 "₹0"
@@ -3280,7 +4188,6 @@ class StoreCampaign extends Component {
                                       },
                                     ]}
                                     minRows={2}
-                                    // defaultPageSize={5}
                                     showPagination={false}
                                     resizable={false}
                                   />
@@ -3310,104 +4217,137 @@ class StoreCampaign extends Component {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-12">
-              <div className="sharecamp">
-                <h4>
-                  {TranslationContext !== undefined
-                    ? TranslationContext.h4.sharecampaignvia
-                    : "Share Campaign Via"}
-                </h4>
-                <ul>
-                  {this.state.shareCampaignViaSettingModal.smsFlag === true ? (
-                    <li
-                      onClick={this.handleSendViaSMS.bind(
-                        this,
-                        this.state.customerModalDetails
-                      )}
-                      className={
-                        this.state.shareCampaignViaSettingModal.smsClickable
-                          ? ""
-                          : "dis-btns"
-                      }
-                      id={this.state.smsDisable ? "dis-sms" : ""}
-                    >
-                      <img className="ico" src={Sms1} alt="SMS Icon" />
-                      {TranslationContext !== undefined
-                        ? TranslationContext.li.sms
-                        : "SMS"}
-                    </li>
-                  ) : null}
-                  {this.state.shareCampaignViaSettingModal.emailFlag ===
-                  true ? (
-                    <li
-                      className={
-                        this.state.shareCampaignViaSettingModal.emailClickable
-                          ? ""
-                          : "dis-btns"
-                      }
-                    >
-                      <img className="emailico" src={Email} alt="Email Icon" />
-                      {TranslationContext !== undefined
-                        ? TranslationContext.li.email
-                        : "Email"}
-                    </li>
-                  ) : null}
-                  {this.state.shareCampaignViaSettingModal.messengerFlag ===
-                  true ? (
-                    <li
-                      onClick={this.handleSendViaMessanger.bind(
-                        this,
-                        this.state.customerModalDetails
-                      )}
-                      className={
-                        this.state.shareCampaignViaSettingModal
-                          .messengerClickable
-                          ? ""
-                          : "dis-btns"
-                      }
-                      id={this.state.msngrDisable ? "dis-msngr" : ""}
-                    >
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      {TranslationContext !== undefined
-                        ? TranslationContext.li.sendviamessage
-                        : "Send Via Messenger"}
-                    </li>
-                  ) : null}
-                  {this.state.shareCampaignViaSettingModal.botFlag === true ? (
-                    <li
-                      onClick={this.handleSendViaBotData.bind(
-                        this,
-                        this.state.customerModalDetails
-                      )}
-                      className={
-                        this.state.shareCampaignViaSettingModal.botClickable
-                          ? ""
-                          : "dis-btns"
-                      }
-                      id={this.state.botDisable ? "dis-bot" : ""}
-                    >
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      {TranslationContext !== undefined
-                        ? TranslationContext.li.sendviabot
-                        : "Send Via Bot"}
-                    </li>
-                  ) : null}
-                </ul>
-              </div>
-              <div className="sharecampmob">
-                <label
-                  className="shareviabtn"
-                  onClick={this.handleShareViaModalOpen.bind(this)}
-                >
-                  <img className="shareviaimg" src={Sharevia} alt="Share Via" />
-                  {TranslationContext !== undefined
-                    ? TranslationContext.li.sharevia
-                    : "Share Via"}
-                </label>
+          {!this.state.isMobileView ? (
+            <div className="row">
+              <div className="col-12">
+                <div className="sharecamp">
+                  <h4>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.h4.sharecampaignvia
+                      : "Share Campaign Via"}
+                  </h4>
+                  <ul>
+                    {this.state.shareCampaignViaSettingModal.smsFlag ===
+                    true ? (
+                      <li
+                        onClick={this.handleSendViaSMS.bind(
+                          this,
+                          this.state.customerModalDetails
+                        )}
+                        className={
+                          this.state.shareCampaignViaSettingModal.smsClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                        id={this.state.smsDisable ? "dis-sms" : ""}
+                      >
+                        <img className="ico" src={Sms1} alt="SMS Icon" />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.li.sms
+                          : "SMS"}
+                      </li>
+                    ) : null}
+                    {this.state.shareCampaignViaSettingModal.emailFlag ===
+                    true ? (
+                      <li
+                        className={
+                          this.state.shareCampaignViaSettingModal.emailClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
+                        <img
+                          className="emailico"
+                          src={Email}
+                          alt="Email Icon"
+                        />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.li.email
+                          : "Email"}
+                      </li>
+                    ) : null}
+                    {this.state.shareCampaignViaSettingModal.messengerFlag ===
+                    true ? (
+                      <li
+                        onClick={this.handleSendViaMessanger.bind(
+                          this,
+                          this.state.customerModalDetails
+                        )}
+                        className={
+                          this.state.shareCampaignViaSettingModal
+                            .messengerClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                        id={this.state.msngrDisable ? "dis-msngr" : ""}
+                      >
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.li.sendviamessage
+                          : "Send Via Messenger"}
+                      </li>
+                    ) : null}
+                    {this.state.shareCampaignViaSettingModal.botFlag ===
+                    true ? (
+                      <li
+                        onClick={this.handleSendViaBotData.bind(
+                          this,
+                          this.state.customerModalDetails
+                        )}
+                        className={
+                          this.state.shareCampaignViaSettingModal.botClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                        id={this.state.botDisable ? "dis-bot" : ""}
+                      >
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
+                        {TranslationContext !== undefined
+                          ? TranslationContext.li.sendviabot
+                          : "Send Via Bot"}
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+                <div className="sharecampmob">
+                  <label
+                    className="shareviabtn"
+                    onClick={this.handleShareViaModalOpen.bind(this)}
+                  >
+                    <img
+                      className="shareviaimg"
+                      src={Sharevia}
+                      alt="Share Via"
+                    />
+                    {TranslationContext !== undefined
+                      ? TranslationContext.li.sharevia
+                      : "Share Via"}
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
+          {this.state.isMobileView ? (
+            <button
+              disabled={
+                this.state.smsDisable ||
+                this.state.msngrDisable ||
+                this.state.botDisable
+              }
+              className="shareviabtnmdl"
+              onClick={this.handleshareNowButtonClick.bind(this)}
+            >
+              Share Now
+            </button>
+          ) : null}
         </Modal>
         <Modal
           open={this.state.ResponsiveShareNow}
@@ -3561,7 +4501,19 @@ class StoreCampaign extends Component {
           center
           modalId="sharecamp-popup"
           overlayId="logout-ovrly"
+          classNames={{ modal: "nexticon-popupbottom" }}
         >
+          <div
+            className="closemob"
+            style={{ marginBottom: "10px" }}
+            onClick={this.handleShareViaModalClose.bind(this)}
+          ></div>
+          <img
+            src={BackLeft}
+            onClick={this.handleShareViaModalClose.bind(this)}
+            alt="back"
+            className="closemobback"
+          />
           <img
             src={CancelIcon}
             alt="cancel-icone"
@@ -3708,6 +4660,7 @@ class StoreCampaign extends Component {
                 </tr>
               </tbody>
             </table>
+
             <div className="sharecampmob">
               <label
                 className="shareviabtn"
@@ -3743,12 +4696,24 @@ class StoreCampaign extends Component {
                   : "Customer Details"}
               </p>
               <p className="m-0">
-                Source:<span>Store</span>
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.source
+                  : "Source"}
+                :
+                <span>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.store
+                    : "Store"}
+                </span>
               </p>
             </div>
             <div className="row">
               <div className="col-md-4 mb-3">
-                <label>Name</label>
+                <label>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.name
+                    : "Name"}
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3764,7 +4729,11 @@ class StoreCampaign extends Component {
                 )}
               </div>
               <div className="col-md-4 mb-3">
-                <label>Mobile</label>
+                <label>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.mobile
+                    : "Mobile"}
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3780,7 +4749,11 @@ class StoreCampaign extends Component {
                 )}
               </div>
               <div className="col-md-4 mb-3">
-                <label>Email</label>
+                <label>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.email
+                    : "Email"}
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3798,7 +4771,11 @@ class StoreCampaign extends Component {
             </div>
             <div className="row">
               <div className="col-md-4 mb-3">
-                <label>Date of birth</label>
+                <label>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.dateofbirth
+                    : "Date of birth"}
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3809,13 +4786,21 @@ class StoreCampaign extends Component {
                 />
 
                 <div className="col-md-4 mb-3">
-                  <label>Brand</label>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.brand
+                      : "Brand"}
+                  </label>
                   <select
                     name="brand"
                     value={this.state.modalData["brand"]}
                     onChange={this.handleOnchange}
                   >
-                    <option value="">Select</option>
+                    <option value="">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
                     {this.state.brandData !== null &&
                       this.state.brandData.map((item, i) => (
                         <option
@@ -3834,13 +4819,21 @@ class StoreCampaign extends Component {
                   )}
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label>Category</label>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.category
+                      : "Category"}
+                  </label>
                   <select
                     name="category"
                     value={this.state.modalData["category"]}
                     onChange={this.handleOnchange}
                   >
-                    <option value="">Select</option>
+                    <option value="">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
                     {this.state.categoryData !== null &&
                       this.state.categoryData.map((item, i) => (
                         <option
@@ -3861,13 +4854,21 @@ class StoreCampaign extends Component {
               </div>
               <div className="row">
                 <div className="col-md-4 mb-3">
-                  <label>Sub Category</label>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.subcategory
+                      : "Sub Category"}
+                  </label>
                   <select
                     name="subCategory"
                     value={this.state.modalData["subCategoryId"]}
                     onChange={this.handleOnchange}
                   >
-                    <option value="">Select</option>
+                    <option value="">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
                     {this.state.subCategoryData !== null &&
                       this.state.subCategoryData.map((item, i) => (
                         <option
@@ -3886,13 +4887,21 @@ class StoreCampaign extends Component {
                   )}
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label>Issue Type</label>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.issuetype
+                      : "Issue Type"}
+                  </label>
                   <select
                     name="issueType"
                     value={this.state.modalData["issueTypeId"]}
                     onChange={this.handleOnchange}
                   >
-                    <option value="">Select</option>
+                    <option value="">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.select
+                        : "Select"}
+                    </option>
                     {this.state.issueTypeData !== null &&
                       this.state.issueTypeData.map((item, i) => (
                         <option
@@ -3911,7 +4920,11 @@ class StoreCampaign extends Component {
                   )}
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label>Ticket Title</label>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.tickettitle
+                      : "Ticket Title"}
+                  </label>
                   <input
                     type="text"
                     name="tiketTitle"
@@ -3928,7 +4941,11 @@ class StoreCampaign extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 mb-3">
-                  <label>Ticket Details</label>
+                  <label>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.ticketdetails
+                      : "Ticket Details"}
+                  </label>
                   <textarea
                     name="tiketDetails"
                     className="textarea-store"
@@ -3948,14 +4965,18 @@ class StoreCampaign extends Component {
                   onClick={this.handleRaisedTicketModalClose.bind(this)}
                   className="blue-clr mr-4"
                 >
-                  CANCEL
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.cancel
+                    : "CANCEL"}
                 </a>
                 <button
                   className="butn"
                   type="button"
                   onClick={this.handleCreateTicket.bind(this)}
                 >
-                  CREATE TICKET
+                  {TranslationContext !== undefined
+                    ? TranslationContext.button.createticket
+                    : "CREATE TICKET"}
                 </button>
               </div>
             </div>

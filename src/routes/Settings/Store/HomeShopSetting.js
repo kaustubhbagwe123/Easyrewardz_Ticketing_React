@@ -12,6 +12,7 @@ import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
+import { Spin, Empty } from "antd";
 
 class HomeShopSetting extends Component {
   constructor(props) {
@@ -25,10 +26,22 @@ class HomeShopSetting extends Component {
       storeCode: "",
       StoreCodeData: [],
       translateLanguage: {},
+      isloading: false,
     };
   }
 
   componentDidMount() {
+    if (window.localStorage.getItem("module")) {
+      var moduleData = JSON.parse(window.localStorage.getItem("module"));
+      if (moduleData) {
+        var campModule = moduleData.filter(
+          (x) => x.moduleName === "Settings" && x.modulestatus === true
+        );
+        if (campModule.length === 0) {
+          this.props.history.push("/store/404notfound");
+        }
+      }
+    }
     this.handleGetBrandData();
     this.handleGetStoreAgentListData();
 
@@ -53,7 +66,6 @@ class HomeShopSetting extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -68,7 +80,6 @@ class HomeShopSetting extends Component {
   }
 
   handleGetStoreCodeData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -79,7 +90,6 @@ class HomeShopSetting extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -94,7 +104,6 @@ class HomeShopSetting extends Component {
   }
 
   handleOnBrandChangeData = async (e) => {
-    debugger;
     await this.setState({
       [e.target.name]: e.target.value,
     });
@@ -102,15 +111,15 @@ class HomeShopSetting extends Component {
   };
 
   handleOnStoreCodeChangeData = async (e) => {
-    debugger;
     await this.setState({
       [e.target.name]: e.target.value,
     });
   };
 
   handleGetStoreAgentListData() {
-    debugger;
     let self = this;
+    this.setState({ isloading: true });
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSSetting/GetStoreAgentList",
@@ -122,9 +131,9 @@ class HomeShopSetting extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
+        self.setState({ isloading: false });
         if (status === "Success") {
           self.setState({ storeAgentData: data });
         } else {
@@ -132,16 +141,18 @@ class HomeShopSetting extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isloading: false });
         console.log(response);
       });
   }
 
   checkSuggestionFreeText = async (row, type) => {
     const TranslationContext = this.state.translateLanguage.default;
-    debugger;
     let storeAgentData = [...this.state.storeAgentData],
       suggestion,
-      freeText;
+      freeText,
+      attachment,
+      grammarlyCheck;
     for (let i = 0; i < storeAgentData.length; i++) {
       if (type === "suggestion") {
         if (storeAgentData[i].agentID === row.agentID) {
@@ -155,12 +166,24 @@ class HomeShopSetting extends Component {
           storeAgentData[i].freeText = freeText === 0 ? 1 : 0;
         }
       }
+      if (type === "attachment") {
+        if (storeAgentData[i].agentID === row.agentID) {
+          attachment = storeAgentData[i].attachment;
+          storeAgentData[i].attachment = attachment === 0 ? 1 : 0;
+        }
+      }
+      // if (type === "grammarlyCheck") {
+      //   if (storeAgentData[i].agentID === row.agentID) {
+      //     grammarlyCheck = storeAgentData[i].grammarlyCheck;
+      //     storeAgentData[i].grammarlyCheck = grammarlyCheck === 0 ? 1 : 0;
+      //   }
+      // }
     }
 
     await this.setState({
       storeAgentData,
     });
-    let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSSetting/InsertUpdateAgentDetails",
@@ -171,12 +194,12 @@ class HomeShopSetting extends Component {
         StoreCode: row.storeCode,
         Suggestion: row.suggestion,
         FreeText: row.freeText,
+        Attachment: row.attachment,
+        // GrammarlyCheck: row.grammarlyCheck,
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
-        let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -334,7 +357,7 @@ class HomeShopSetting extends Component {
                             <span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.srno
-                                : "Sr No."}{" "}
+                                : "Sr No."}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -342,28 +365,31 @@ class HomeShopSetting extends Component {
                           Cell: (row) => {
                             return row.index + 1;
                           },
+                          sortable: false,
                         },
                         {
                           Header: (
                             <span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.agentname
-                                : "Agent Name"}{" "}
+                                : "Agent Name"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           accessor: "agentName",
+                          sortable: false,
                         },
                         {
                           Header: (
                             <span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.emailid
-                                : "Email ID"}{" "}
+                                : "Email ID"}
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
                           accessor: "emailID",
+                          sortable: false,
                         },
                         {
                           Header: (
@@ -417,7 +443,6 @@ class HomeShopSetting extends Component {
                                   type="checkbox"
                                   id={"j" + row.index}
                                   name="allModules"
-                                  //attrIds={item.moduleId}
                                   checked={
                                     row.original.freeText === 0 ? true : false
                                   }
@@ -436,10 +461,80 @@ class HomeShopSetting extends Component {
                             );
                           },
                         },
+                        {
+                          Header: <span>Attachment</span>,
+                          accessor: "attachment",
+                          sortable: false,
+                          Cell: (row) => {
+                            return (
+                              <div className="switch switch-primary d-inline m-r-10">
+                                <input
+                                  type="checkbox"
+                                  id={"a" + row.index}
+                                  name="allModules"
+                                  checked={
+                                    row.original.attachment === 0 ? true : false
+                                  }
+                                  onChange={this.checkSuggestionFreeText.bind(
+                                    this,
+                                    row.original,
+                                    "attachment"
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"a" + row.index}
+                                  className="cr cr-float-auto"
+                                  style={{ float: "inherit" }}
+                                ></label>
+                              </div>
+                            );
+                          },
+                        },
+                        // {
+                        //   Header: <span>Grammarly Check</span>,
+                        //   accessor: "grammarlyCheck",
+                        //   sortable: false,
+                        //   Cell: (row) => {
+                        //     return (
+                        //       <div className="switch switch-primary d-inline m-r-10">
+                        //         <input
+                        //           type="checkbox"
+                        //           id={"g" + row.index}
+                        //           name="allModules"
+                        //           checked={
+                        //             row.original.grammarlyCheck === 0
+                        //               ? true
+                        //               : false
+                        //           }
+                        //           onChange={this.checkSuggestionFreeText.bind(
+                        //             this,
+                        //             row.original,
+                        //             "grammarlyCheck"
+                        //           )}
+                        //         />
+                        //         <label
+                        //           htmlFor={"g" + row.index}
+                        //           className="cr cr-float-auto"
+                        //           style={{ float: "inherit" }}
+                        //         ></label>
+                        //       </div>
+                        //     );
+                        //   },
+                        // },
                       ]}
                       defaultPageSize={10}
                       minRows={2}
                       showPagination={true}
+                      noDataText={
+                        this.state.isloading ? (
+                          <Spin size="large" tip="Loading..." />
+                        ) : this.state.storeAgentData.length === 0 ? (
+                          <Empty
+                            style={{ margin: "0" }}
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                          />
+                        ) : null
+                      }
                     />
                   </div>
                 </div>

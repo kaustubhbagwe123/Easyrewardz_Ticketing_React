@@ -177,6 +177,13 @@
   height: 31px;
   text-transform: initial;
 }
+.addcommentCmp-Btn {
+  background-color: #bed883;
+  border-radius: 4px;
+  width: 101px;
+  height: 31px;
+  text-transform: initial;
+}
 .raise-ticketLbl {
   color: #ffffff;
   font-family: Lato;
@@ -851,6 +858,7 @@
   color: #16cba3;
   font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
 }
 .modal-lbl-2 {
   color: #696969;
@@ -1473,12 +1481,20 @@ table tr th:last-child {
   padding: 30px;
   width: 800px;
 }
+#CampAddCmt-popup {
+  border-radius: 25px;
+  position: relative;
+  padding: 20px;
+  width: 450px;
+  top: -35px;
+}
 .cust-icon {
-  position: absolute;
+  /* position: absolute; */
   top: 10px;
   right: 10px;
   height: 20px;
   cursor: pointer;
+  float: right;
 }
 .nr-initials {
   float: left;
@@ -2257,15 +2273,33 @@ table tr th:last-child {
   #customername-popup {
     width: 730px;
   }
+  .sharecamp .active{
+    background: #fff;
+    box-shadow: 0px 0px 5px 0px;
+  }
+  .shareviabtnmdl{
+    width: 100%;
+    margin-top: 10px;
+    background: #FF8C3F;
+    border: none;
+    color: #fff;
+    outline: none !important;
+  }
+  .sharecamp ul{
+    float: none;
+    text-align: center;
+  }
   .sharecamp li {
-    min-width: 135px;
+    min-width: 80px;
+    margin-right: 10px;
+    padding: 15px;
   }
   .sharecamp {
-    margin-top: 25px;
-    display: none;
+    margin-top: 0;
+    /* display: none; */
   }
   .sharecampmob {
-    display: block;
+    display: none;
   }
   .shareviabtn {
     background-color: #00b894;
@@ -2557,9 +2591,9 @@ table tr th:last-child {
     font-size: 12px;
     margin-top: 3px;
   }
-  .sharecamp {
+  /* .sharecamp {
     margin-top: 25px;
-  }
+  } */
   .cust-name .ico {
     margin-left: 4px;
   }
@@ -2594,7 +2628,7 @@ table tr th:last-child {
     bottom: 4px;
   }
   .customernamecam {
-    max-width: 90px;
+    max-width: 85px;
     text-overflow: ellipsis;
     display: inline-block;
     overflow: hidden;
@@ -2616,7 +2650,7 @@ table tr th:last-child {
     background: none;
   }
   .customername-popupmob .nav-item:first-child .nav-link {
-    color: #ee6261 !important;
+    color: #ee6261;
     font-weight: 600;
     border-radius: 50px;
     border: 1px solid #ee6261;
@@ -2627,7 +2661,7 @@ table tr th:last-child {
     margin-right: 10px;
   }
   .customername-popupmob .nav-item:last-child .nav-link {
-    color: #2196f3 !important;
+    color: #2196f3;
     font-weight: 600;
     border-radius: 50px;
     font-size: 12px;
@@ -2828,7 +2862,10 @@ table tr th:last-child {
   .custom-tableak .react-pagination-js-bootstrap ul {
     margin: initial;
     margin-left: auto;
-    margin-right: 4px;
+    margin-right: auto;
+    display: flex;
+    width: 100%;
+    justify-content: center;
   }
   .Camp-pagination p {
     display: none;
@@ -2838,7 +2875,7 @@ table tr th:last-child {
     padding-bottom: 3px;
   }
   .Camp-pagination {
-    left: 12px;
+    left: 2px;
   }
   .transactionbox {
     padding: 0;
@@ -3870,6 +3907,23 @@ table tr th:last-child {
 }
 
 @media screen and (max-width: 576px) {
+
+  .storemyticketpgn .pagination-bottom {
+    display: block !important;
+  }
+  .storemyticketpgn .ReactTable .-pagination,
+  .storemyticketpgn .ReactTable .-pagination .-center {
+    flex-wrap: nowrap;
+  }
+  .storemyticketpgn .ReactTable .-pagination .-btn {
+    min-width: auto;
+  }
+  .storemyticketpgn .ReactTable .-pagination .-pageJump input {
+    width: 40px;
+  }
+  .storemyticketpgn .ReactTable .-pagination .-pageInfo {
+    margin-right: 0;
+  }
   .ant-pagination-options {
     display: inline-block !important;
   }
@@ -4172,3 +4226,32 @@ table tr th:last-child {
   }
   /* store campaign tab ends */
 }
+.camp-response-header .ant-table-filter-icon::before {
+  content: "";
+  background: url("./../Images//dropdown3.png") no-repeat center center;
+  background-size: 12px;
+  display: block;
+  height: 6px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+}
+.camp-callres-header .ant-table-filter-icon::before{
+  content: "";
+  background: url("./../Images//dropdown3.png") no-repeat center center;
+  background-size: 12px;
+  display: block;
+  height: 6px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+}
+.camp-callres-header .ant-table-filter-icon {
+  left: 135px !important;
+}
+.camp-response-header .ant-table-filter-icon {
+  left: 80px !important;
+}
+ 

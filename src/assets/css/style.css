@@ -219,7 +219,7 @@ p.text-muted {
   border: none;
 }
 .dropdown-menu.show:before {
-  content: "\63";
+  /* content: "\63"; */
   font-family: "pct";
   position: absolute;
   left: 15px;
@@ -230,6 +230,7 @@ p.text-muted {
   color: #fff;
   text-shadow: 0 -2px 2px rgba(69, 90, 100, 0.12);
 }
+
 .dropdown-menu.show.dropdown-menu-right:before {
   left: auto;
   right: 5px;
@@ -239,7 +240,7 @@ p.text-muted {
   margin-top: 0;
 }
 .dropdown-menu[x-placement="top-start"].show:before {
-  content: "\64";
+  /* content: "\64"; */
   bottom: -5px;
   top: auto;
   text-shadow: 0 2px 2px rgba(69, 90, 100, 0.12);
@@ -3872,7 +3873,8 @@ table.footable-paging-center > tfoot > tr.footable-paging > td {
   position: relative;
   width: 430px;
   padding: 15px;
-  z-index: 5;
+  /* z-index: 5; */
+  z-index: 0;
 }
 .auth-wrapper .auth-content.multyform, .auth-wrapper .auth-content.subscribe {
   width: 750px;

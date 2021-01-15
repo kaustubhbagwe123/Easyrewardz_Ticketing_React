@@ -7,7 +7,7 @@ import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import DownExcel from "./../../../assets/Images/black-Dld.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
-import { Popover } from "antd";
+import { Popover, Spin, Empty } from "antd";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
@@ -52,7 +52,8 @@ class StoreReports extends Component {
       NextPopup: false,
       taskCreateDate: "",
       claimCreateDate: "",
-      tabIndex: 3,
+      tabIndex: 1,
+      // tabIndex: 3,
       taskStatusList: StoreTaskStatus(),
       taskStatus: [],
       taskIdTitle: "",
@@ -215,6 +216,7 @@ class StoreReports extends Component {
       loginUsers: "0",
       loginStart: loginstart,
       loginEnd: loginend,
+      isloading: false,
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -304,7 +306,8 @@ class StoreReports extends Component {
     }, 1);
 
     this.setState({
-      tabIndex: 3,
+      tabIndex: 1,
+      // tabIndex: 3,
       taskIdTitle: "",
       taskStatus: [],
       taskLinkedTicketId: "",
@@ -1089,10 +1092,8 @@ class StoreReports extends Component {
   }
   handleAddReportClose() {
     this.setState({ AddReportPopup: false, edit: false });
-    // this.handleClearTabData();
   }
   handleNextPopupOpen(activeTabId) {
-    //this.handleAddReportClose();
     this.handleGetStoreReportSearch(activeTabId);
     this.setState({ NextPopup: true });
     if (this.state.edit) {
@@ -1371,6 +1372,7 @@ class StoreReports extends Component {
 
   handleGetStoreReports() {
     let self = this;
+    this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/GetStoreReports",
@@ -1380,7 +1382,7 @@ class StoreReports extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message === "Success" && data.length > 0) {
-          self.setState({ storeReportData: data });
+          self.setState({ storeReportData: data, isloading: false });
           if (data !== null) {
             var unique = [];
             var distinct = [];
@@ -1468,8 +1470,10 @@ class StoreReports extends Component {
             });
           }
         }
+        self.setState({ isloading: false });
       })
       .catch((response) => {
+        self.setState({ isloading: false });
         console.log(response);
       });
   }
@@ -1906,15 +1910,11 @@ class StoreReports extends Component {
             self.state.selectedScheduleTime = "";
 
             self.ScheduleCloseModel();
-            // this.handleReportList();
             self.setState({ Schedule_ID: scheduleId });
             self.setState({ AddReportPopup: false });
             NotificationManager.success("Scheduler created successfully.");
             self.setState({
               selectedScheduleTime: "",
-              // selectedTeamMemberCommaSeperated="",
-              // selectScheduleDate="",
-              // selectedScheduleTime="",
               IsDaily: false,
               IsDailyForMonth: false,
               IsWeekly: false,
@@ -1995,8 +1995,6 @@ class StoreReports extends Component {
           return;
         }
         setTimeout(() => {
-          // if (this.state.Schedule_ID > 0) {
-
           axios({
             method: "post",
             url: config.apiUrl + "/StoreReport/SaveStoreReport",
@@ -2009,11 +2007,9 @@ class StoreReports extends Component {
             },
           })
             .then(function(res) {
-              // this.handleReportList();
               if (res.data.message === "Success") {
                 self.setState({ AddReportPopup: false });
                 self.setState({ Schedule_ID: 0 });
-                // self.handleGetStoreReports();
                 self.handleNextPopupClose();
                 NotificationManager.success(
                   "Report saved successfully for download."
@@ -2575,7 +2571,6 @@ class StoreReports extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterName.length === 0 ||
       this.state.sortFilterSchedule.length === 0 ||
@@ -2584,7 +2579,6 @@ class StoreReports extends Component {
     ) {
       return false;
     }
-    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "reportName") {
       if (
         this.state.sscheduleStatusFilterCheckbox !== "" ||
@@ -2742,7 +2736,6 @@ class StoreReports extends Component {
   };
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-
     var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
     var sscheduleStatusFilterCheckbox = this.state
       .sscheduleStatusFilterCheckbox;
@@ -2999,7 +2992,6 @@ class StoreReports extends Component {
     this.setState({
       tempReportData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   filteTextChange(e) {
@@ -3123,6 +3115,271 @@ class StoreReports extends Component {
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const datareport = this.state.storeReportData;
+
+    const columnsreport = [
+      {
+        Header: (
+          <span
+            className={this.state.sortHeader === "Name" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "reportName",
+              TranslationContext !== undefined
+                ? TranslationContext.span.name
+                : "Name"
+            )}
+          >
+            {TranslationContext !== undefined
+              ? TranslationContext.span.name
+              : "Name"}
+
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false && this.state.sortHeader === "Name"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
+          </span>
+        ),
+        sortable: false,
+        accessor: "reportName",
+      },
+      {
+        Header: (
+          <span
+            className={
+              this.state.sortHeader === "Schedule Status" ? "sort-column" : ""
+            }
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "scheduleStatus",
+              TranslationContext !== undefined
+                ? TranslationContext.span.schedulestatus
+                : "Schedule Status"
+            )}
+          >
+            {TranslationContext !== undefined
+              ? TranslationContext.span.schedulestatus
+              : "Schedule Status"}
+
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Schedule Status"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
+          </span>
+        ),
+        sortable: false,
+        accessor: "scheduleStatus",
+      },
+      {
+        Header: (
+          <span
+            className={
+              this.state.sortHeader === "Created by" ? "sort-column" : ""
+            }
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "createdBy",
+              TranslationContext !== undefined
+                ? TranslationContext.span.createdby
+                : "Created by"
+            )}
+          >
+            {TranslationContext !== undefined
+              ? TranslationContext.span.createdby
+              : "Created by"}
+
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Created by"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
+          </span>
+        ),
+        sortable: false,
+        accessor: "createdBy",
+        Cell: (row) => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span className="one-liner store-one-liner">
+                {row.original["createdBy"]}
+                <Popover
+                  content={
+                    <>
+                      <div>
+                        <b>
+                          <p className="title">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.createdby
+                              : "Created By"}
+                            : {row.original["createdBy"]}
+                          </p>
+                        </b>
+                        <p className="sub-title">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.createddate
+                            : "Created Date"}
+                          : {row.original["createdDate"]}
+                        </p>
+                      </div>
+                      <div>
+                        <b>
+                          <p className="title">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.updatedby
+                              : "Updated By"}
+                            : {row.original["modifiedBy"]}
+                          </p>
+                        </b>
+                        <p className="sub-title">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.updateddate
+                            : "Updated Date"}
+                          : {row.original["modifiedDate"]}
+                        </p>
+                      </div>
+                    </>
+                  }
+                  placement="bottom"
+                >
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        },
+      },
+      {
+        Header: (
+          <span
+            className={this.state.sortHeader === "Status" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "reportStatus",
+              TranslationContext !== undefined
+                ? TranslationContext.span.status
+                : "Status"
+            )}
+          >
+            {TranslationContext !== undefined
+              ? TranslationContext.span.status
+              : "Status"}
+
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false && this.state.sortHeader === "Status"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
+          </span>
+        ),
+        sortable: false,
+        accessor: "reportStatus",
+      },
+      {
+        Header: (
+          <span>
+            {TranslationContext !== undefined
+              ? TranslationContext.span.actions
+              : "Actions"}
+          </span>
+        ),
+        sortable: false,
+        accessor: "actionReport",
+        Cell: (row) => (
+          <div className="report-action">
+            <div>
+              {row.original.isDownloaded === 1 && (
+                <img
+                  src={DownExcel}
+                  alt="download icon"
+                  className="downloadaction"
+                  onClick={this.handleDownload.bind(
+                    this,
+                    row.original.reportID
+                  )}
+                />
+              )}
+            </div>
+            <div>
+              <Popover
+                content={
+                  <div className="d-flex general-popover popover-body">
+                    <div className="del-big-icon">
+                      <img src={DelBigIcon} alt="del-icon" />
+                    </div>
+                    <div>
+                      <p className="font-weight-bold blak-clr">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.deletefile
+                          : "Delete file"}
+                        ?
+                      </p>
+                      <p className="mt-1 fs-12">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p
+                              .areyousureyouwanttodeletethisfile
+                          : "Are you sure you want to delete this file"}
+                        ?
+                      </p>
+                      <div className="del-can">
+                        <a href={Demo.BLANK_LINK}>
+                          {" "}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
+                        </a>
+                        <button
+                          className="butn"
+                          onClick={this.handleDeleteStoreReports.bind(
+                            this,
+                            row.original["reportID"]
+                          )}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.delete
+                            : "Delete"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                }
+                placement="bottom"
+                trigger="click"
+              >
+                <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
+              </Popover>
+            </div>
+            <div>
+              <button
+                className="react-tabel-button editre"
+                id="p-edit-pop-2"
+                onClick={this.handleEditReport.bind(this, row.original)}
+              >
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.edit
+                  : "EDIT"}
+              </button>
+            </div>
+          </div>
+        ),
+      },
+    ];
 
     return (
       <Fragment>
@@ -3365,7 +3622,7 @@ class StoreReports extends Component {
                 className="addplusbtnReport"
                 onClick={this.handleAddReportOpen}
               >
-                +{" "}
+                +
                 {TranslationContext !== undefined
                   ? TranslationContext.button.add
                   : "Add"}
@@ -3377,7 +3634,6 @@ class StoreReports extends Component {
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addStorereport-modal"
-            // overlayId="logout-ovrly"
           >
             <div
               id="overlayDepartment"
@@ -3428,8 +3684,8 @@ class StoreReports extends Component {
               <ul className="nav nav-tabs margin-report" role="tablist">
                 <li
                   className="nav-item"
-                  onClick={this.handleChangeTab.bind(this, 3)}
-                  style={{ display: "none" }}
+                  onClick={this.handleChangeTab.bind(this, 1)}
+                  // style={{ display: "none" }}
                 >
                   <a
                     className={`nav-link ${this.state.tabIndex === 1 &&
@@ -3449,7 +3705,7 @@ class StoreReports extends Component {
                 <li
                   className="nav-item"
                   onClick={this.handleChangeTab.bind(this, 2)}
-                  style={{ display: "none" }}
+                  // style={{ display: "none" }}
                 >
                   <a
                     className={`nav-link ${this.state.tabIndex === 2 &&
@@ -3560,16 +3816,7 @@ class StoreReports extends Component {
 
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
+
                         <div
                           className={
                             this.state.departmentShow
@@ -3615,14 +3862,6 @@ class StoreReports extends Component {
                                           this,
                                           item.departmentID
                                         )}
-                                        // checked={
-                                        //   this.state.indiDepartment !==
-                                        //   undefined
-                                        //     ? this.state.indiDepartment.includes(
-                                        //         item.departmentID
-                                        //       )
-                                        //     : false
-                                        // }
                                         checked={
                                           this.state.indiDepartment !==
                                           undefined
@@ -3716,16 +3955,6 @@ class StoreReports extends Component {
 
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
                         <div
                           className={
                             this.state.functionShow
@@ -3769,13 +3998,6 @@ class StoreReports extends Component {
                                           this,
                                           item.functionID
                                         )}
-                                        // checked={
-                                        //   this.state.indiFunction !== undefined
-                                        //     ? this.state.indiFunction.includes(
-                                        //         item.functionID
-                                        //       )
-                                        //     : false
-                                        // }
                                         checked={
                                           this.state.indiFunction !== undefined
                                             ? this.state.indiFunction
@@ -3820,8 +4042,6 @@ class StoreReports extends Component {
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
                           ))}
-                        {/* <option value="1">Aman</option>
-                        <option value="2">Arjun</option> */}
                       </select>
                     </div>
                   </div>
@@ -3865,16 +4085,7 @@ class StoreReports extends Component {
 
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
+
                         <div
                           className={
                             this.state.priorityShow
@@ -3918,13 +4129,6 @@ class StoreReports extends Component {
                                           this,
                                           item.priorityID
                                         )}
-                                        // checked={
-                                        //   this.state.indiPriority !== undefined
-                                        //     ? this.state.indiPriority.includes(
-                                        //         item.priorityID
-                                        //       )
-                                        //     : false
-                                        // }
                                         checked={
                                           this.state.indiPriority !== undefined
                                             ? this.state.indiPriority
@@ -3973,8 +4177,6 @@ class StoreReports extends Component {
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
                           ))}
-                        {/* <option value="1">Aman</option>
-                        <option value="2">Arjun</option> */}
                       </select>
                     </div>
                   </div>
@@ -4109,16 +4311,7 @@ class StoreReports extends Component {
 
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
+
                         <div
                           className={
                             this.state.claimCategoryShow
@@ -4167,14 +4360,6 @@ class StoreReports extends Component {
                                             this,
                                             item.categoryID
                                           )}
-                                          // checked={
-                                          //   this.state.indiClaimCategory !==
-                                          //   undefined
-                                          //     ? this.state.indiClaimCategory.includes(
-                                          //         item.categoryID
-                                          //       )
-                                          //     : false
-                                          // }
                                           checked={
                                             this.state.indiClaimCategory !==
                                             undefined
@@ -4241,16 +4426,6 @@ class StoreReports extends Component {
                           Select
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
                         <div
                           className={
                             this.state.claimStatusShow
@@ -4296,14 +4471,6 @@ class StoreReports extends Component {
                                           this,
                                           item.claimStatusID
                                         )}
-                                        // checked={
-                                        //   this.state.indiClaimStatus !==
-                                        //   undefined
-                                        //     ? this.state.indiClaimStatus.includes(
-                                        //         item.claimStatusID
-                                        //       )
-                                        //     : false
-                                        // }
                                         checked={
                                           this.state.indiClaimStatus !==
                                           undefined
@@ -4349,16 +4516,7 @@ class StoreReports extends Component {
                           Select
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
+
                         <div
                           className={
                             this.state.claimSubCategoryShow
@@ -4403,14 +4561,6 @@ class StoreReports extends Component {
                                             this,
                                             item.subCategoryID
                                           )}
-                                          // checked={
-                                          //   this.state.indiClaimSubCategory !==
-                                          //   undefined
-                                          //     ? this.state.indiClaimSubCategory.includes(
-                                          //         item.subCategoryID
-                                          //       )
-                                          //     : false
-                                          // }
                                           checked={
                                             this.state.indiClaimSubCategory !==
                                             undefined
@@ -4500,16 +4650,6 @@ class StoreReports extends Component {
                           Select
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
                         <div
                           className={
                             this.state.claimIssueTypeShow
@@ -4554,14 +4694,6 @@ class StoreReports extends Component {
                                             this,
                                             item.issueTypeID
                                           )}
-                                          // checked={
-                                          //   this.state.indiClaimIssueType !==
-                                          //   undefined
-                                          //     ? this.state.indiClaimIssueType.includes(
-                                          //         item.issueTypeID
-                                          //       )
-                                          //     : false
-                                          // }
                                           checked={
                                             this.state.indiClaimIssueType !==
                                             undefined
@@ -4610,8 +4742,6 @@ class StoreReports extends Component {
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
                           ))}
-                        {/* <option value="1">Aman</option>
-                        <option value="2">Arjun</option> */}
                       </select>
                     </div>
                   </div>
@@ -4688,7 +4818,6 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        // onClick={this.handleNextPopupOpen}
                         onClick={this.handleNextPopupOpen.bind(this, 2)}
                       >
                         {TranslationContext !== undefined
@@ -4724,16 +4853,7 @@ class StoreReports extends Component {
                           Select
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
+
                         <div
                           className={
                             this.state.campaignNameShow
@@ -4777,14 +4897,6 @@ class StoreReports extends Component {
                                           this,
                                           item.campaignNameID
                                         )}
-                                        // checked={
-                                        //   this.state.indiCampaignName !==
-                                        //   undefined
-                                        //     ? this.state.indiCampaignName.includes(
-                                        //         item.campaignNameID
-                                        //       )
-                                        //     : false
-                                        // }
                                         checked={
                                           this.state.indiCampaignName !==
                                           undefined
@@ -4820,7 +4932,7 @@ class StoreReports extends Component {
                         name="campaignRegion"
                         value={this.state.campaignRegion}
                         onChange={this.handleOnChangeData}
-                        disabled={true}
+                        // disabled={true}
                       >
                         <option value="0">Select</option>
                         {this.state.regionZoneData !== null &&
@@ -4837,7 +4949,7 @@ class StoreReports extends Component {
                         name="campaignZone"
                         value={this.state.campaignZone}
                         onChange={this.handleOnChangeData}
-                        disabled={true}
+                        // disabled={true}
                       >
                         <option value="0">Select</option>
                         {this.state.regionZoneData !== null &&
@@ -4877,10 +4989,6 @@ class StoreReports extends Component {
                         </label>
                       </div>
                       <div className="ticketreportdat campaign-end-date">
-                        {/* <DatePickerComponenet
-                          applyCallback={this.applyCallback}
-
-                        /> */}
                         <RangePicker
                           onChange={this.applyCallback}
                           bordered={false}
@@ -4891,7 +4999,6 @@ class StoreReports extends Component {
                           ]}
                         />
                       </div>
-                      {/* <input className="no-bg" type="text" /> */}
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>
@@ -4909,16 +5016,7 @@ class StoreReports extends Component {
                           Select
                           <span className="caret"></span>
                         </button>
-                        {/* {this.state.indiDepartment === "" && (
-                          <p
-                            style={{
-                              color: "red",
-                              marginBottom: "0px",
-                            }}
-                          >
-                            {this.state.issueTypeCompulsion}
-                          </p>
-                        )} */}
+
                         <div
                           className={
                             this.state.campaignStatusShow
@@ -4963,14 +5061,6 @@ class StoreReports extends Component {
                                             this,
                                             item.campaignNameID
                                           )}
-                                          // checked={
-                                          //   this.state.indiCampaignStatus !==
-                                          //   undefined
-                                          //     ? this.state.indiCampaignStatus.includes(
-                                          //         item.campaignNameID
-                                          //       )
-                                          //     : false
-                                          // }
                                           checked={
                                             this.state.indiCampaignStatus !==
                                             undefined
@@ -5010,7 +5100,6 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         onClick={this.handleNextPopupOpen.bind(this, 3)}
-                        // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.next
@@ -5050,9 +5139,6 @@ class StoreReports extends Component {
                         <label>Date</label>
                       </div>
                       <div className="ticketreportdat campaign-end-date">
-                        {/* <DatePickerComponenet
-                          applyCallback={this.applyCallback}
-                        /> */}
                         <RangePicker
                           onChange={this.applyCallback}
                           bordered={false}
@@ -5064,7 +5150,6 @@ class StoreReports extends Component {
                           disabledDate={disabledDate}
                         />
                       </div>
-                      {/* <input className="no-bg" type="text" /> */}
                     </div>
                   </div>
                   <div className="row nextbutton1">
@@ -5073,7 +5158,6 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         onClick={this.handleNextPopupOpen.bind(this, 4)}
-                        // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         {TranslationContext !== undefined
                           ? TranslationContext.button.next
@@ -5090,7 +5174,6 @@ class StoreReports extends Component {
             onClose={this.handleNextPopupClose}
             closeIconId="sdsg"
             modalId="nextbuttonpopup"
-            // overlayId="logout-ovrly"
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
@@ -5183,11 +5266,9 @@ class StoreReports extends Component {
                     }
                     options={this.state.userData}
                     placeholder="Team Member"
-                    // menuIsOpen={true}
                     closeMenuOnSelect={false}
                     onChange={this.setTeamMember.bind(this)}
                     value={this.state.selectedTeamMember}
-                    // showNewOptionAtTop={false}
                     isMulti
                   />
                 </div>
@@ -5411,11 +5492,9 @@ class StoreReports extends Component {
                             }
                             options={this.state.NameOfDayForWeek}
                             placeholder="Select"
-                            // menuIsOpen={true}
                             closeMenuOnSelect={false}
                             onChange={this.setNameOfDayForWeek.bind(this)}
                             value={this.state.selectedNameOfDayForWeek}
-                            // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
@@ -5446,11 +5525,9 @@ class StoreReports extends Component {
                             }
                             options={this.state.NameOfMonthForYear}
                             placeholder="Select"
-                            // menuIsOpen={true}
                             closeMenuOnSelect={false}
                             onChange={this.setNameOfMonthForYear.bind(this)}
                             value={this.state.selectedNameOfMonthForYear}
-                            // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
@@ -5517,11 +5594,9 @@ class StoreReports extends Component {
                             }
                             options={this.state.NameOfDayForYear}
                             placeholder="Select"
-                            // menuIsOpen={true}
                             closeMenuOnSelect={false}
                             onChange={this.setNameOfDayForYear.bind(this)}
                             value={this.state.selectedNameOfDayForYear}
-                            // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
@@ -5544,13 +5619,11 @@ class StoreReports extends Component {
                             }
                             options={this.state.NameOfMonthForDailyYear}
                             placeholder="Select"
-                            // menuIsOpen={true}
                             closeMenuOnSelect={false}
                             onChange={this.setNameOfMonthForDailyYear.bind(
                               this
                             )}
                             value={this.state.selectedNameOfMonthForDailyYear}
-                            // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
@@ -5559,12 +5632,6 @@ class StoreReports extends Component {
                   </div>
                 ) : null}
 
-                {/* <input
-                                      type="text"
-                                      className="txt-1 txt1Place txt1Time"
-                                      placeholder="11AM"
-                                      onChange={this.handleScheduleTime}
-                                    /> */}
                 <div className="dash-timepicker">
                   <DatePicker
                     selected={this.state.selectedScheduleTime}
@@ -5602,300 +5669,26 @@ class StoreReports extends Component {
               </div>
             </div>
           </Modal>
-
-          {/* </div> */}
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport setting-table-des settings-align">
             <div style={{ backgroundColor: "#fff" }}>
               <ReactTable
                 data={datareport}
-                columns={[
-                  {
-                    Header: (
-                      <span
-                        className={
-                          this.state.sortHeader === "Name" ? "sort-column" : ""
-                        }
-                        onClick={this.StatusOpenModel.bind(
-                          this,
-                          "reportName",
-                          TranslationContext !== undefined
-                            ? TranslationContext.span.name
-                            : "Name"
-                        )}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.name
-                          : "Name"}
-
-                        <FontAwesomeIcon
-                          icon={
-                            this.state.isATOZ == false &&
-                            this.state.sortHeader === "Name"
-                              ? faCaretUp
-                              : faCaretDown
-                          }
-                        />
-                      </span>
-                    ),
-                    sortable: false,
-                    accessor: "reportName",
-                  },
-                  {
-                    Header: (
-                      <span
-                        className={
-                          this.state.sortHeader === "Schedule Status"
-                            ? "sort-column"
-                            : ""
-                        }
-                        onClick={this.StatusOpenModel.bind(
-                          this,
-                          "scheduleStatus",
-                          TranslationContext !== undefined
-                            ? TranslationContext.span.schedulestatus
-                            : "Schedule Status"
-                        )}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.schedulestatus
-                          : "Schedule Status"}
-
-                        <FontAwesomeIcon
-                          icon={
-                            this.state.isATOZ == false &&
-                            this.state.sortHeader === "Schedule Status"
-                              ? faCaretUp
-                              : faCaretDown
-                          }
-                        />
-                      </span>
-                    ),
-                    sortable: false,
-                    accessor: "scheduleStatus",
-                  },
-                  {
-                    Header: (
-                      <span
-                        className={
-                          this.state.sortHeader === "Created by"
-                            ? "sort-column"
-                            : ""
-                        }
-                        onClick={this.StatusOpenModel.bind(
-                          this,
-                          "createdBy",
-                          TranslationContext !== undefined
-                            ? TranslationContext.span.createdby
-                            : "Created by"
-                        )}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.createdby
-                          : "Created by"}
-
-                        <FontAwesomeIcon
-                          icon={
-                            this.state.isATOZ == false &&
-                            this.state.sortHeader === "Created by"
-                              ? faCaretUp
-                              : faCaretDown
-                          }
-                        />
-                      </span>
-                    ),
-                    sortable: false,
-                    accessor: "createdBy",
-                    Cell: (row) => {
-                      var ids = row.original["id"];
-                      return (
-                        <div>
-                          <span className="one-liner store-one-liner">
-                            {row.original["createdBy"]}
-                            <Popover
-                              content={
-                                <>
-                                  <div>
-                                    <b>
-                                      <p className="title">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.p.createdby
-                                          : "Created By"}
-                                        : {row.original["createdBy"]}
-                                      </p>
-                                    </b>
-                                    <p className="sub-title">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p.createddate
-                                        : "Created Date"}
-                                      : {row.original["createdDate"]}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <b>
-                                      <p className="title">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.p.updatedby
-                                          : "Updated By"}
-                                        : {row.original["modifiedBy"]}
-                                      </p>
-                                    </b>
-                                    <p className="sub-title">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.p.updateddate
-                                        : "Updated Date"}
-                                      : {row.original["modifiedDate"]}
-                                    </p>
-                                  </div>
-                                </>
-                              }
-                              placement="bottom"
-                            >
-                              <img
-                                className="info-icon-cp"
-                                src={BlackInfoIcon}
-                                alt="info-icon"
-                                id={ids}
-                              />
-                            </Popover>
-                          </span>
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    Header: (
-                      <span
-                        className={
-                          this.state.sortHeader === "Status"
-                            ? "sort-column"
-                            : ""
-                        }
-                        onClick={this.StatusOpenModel.bind(
-                          this,
-                          "reportStatus",
-                          TranslationContext !== undefined
-                            ? TranslationContext.span.status
-                            : "Status"
-                        )}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.status
-                          : "Status"}
-
-                        <FontAwesomeIcon
-                          icon={
-                            this.state.isATOZ == false &&
-                            this.state.sortHeader === "Status"
-                              ? faCaretUp
-                              : faCaretDown
-                          }
-                        />
-                      </span>
-                    ),
-                    sortable: false,
-                    accessor: "reportStatus",
-                  },
-                  {
-                    Header: (
-                      <span>
-                        {TranslationContext !== undefined
-                          ? TranslationContext.span.actions
-                          : "Actions"}
-                      </span>
-                    ),
-                    sortable: false,
-                    accessor: "actionReport",
-                    Cell: (row) => (
-                      <div className="report-action">
-                        <div>
-                          {row.original.isDownloaded === 1 && (
-                            <img
-                              src={DownExcel}
-                              alt="download icon"
-                              className="downloadaction"
-                              onClick={this.handleDownload.bind(
-                                this,
-                                row.original.reportID
-                              )}
-                            />
-                          )}
-                        </div>
-                        <div>
-                          <Popover
-                            content={
-                              <div className="d-flex general-popover popover-body">
-                                <div className="del-big-icon">
-                                  <img src={DelBigIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.p.deletefile
-                                      : "Delete file"}
-                                    ?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.p
-                                          .areyousureyouwanttodeletethisfile
-                                      : "Are you sure you want to delete this file"}
-                                    ?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>
-                                      {" "}
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.a.cancel
-                                        : "CANCEL"}
-                                    </a>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleDeleteStoreReports.bind(
-                                        this,
-                                        row.original["reportID"]
-                                      )}
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.button.delete
-                                        : "Delete"}
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            }
-                            placement="bottom"
-                            trigger="click"
-                          >
-                            <img
-                              src={RedDeleteIcon}
-                              alt="del-icon"
-                              className="del-btn"
-                            />
-                          </Popover>
-                        </div>
-                        <div>
-                          <button
-                            className="react-tabel-button editre"
-                            id="p-edit-pop-2"
-                            onClick={this.handleEditReport.bind(
-                              this,
-                              row.original
-                            )}
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.edit
-                              : "EDIT"}
-                          </button>
-                        </div>
-                      </div>
-                    ),
-                  },
-                ]}
-                minRows={1}
+                columns={columnsreport}
+                minRows={2}
                 defaultPageSize={5}
                 showPagination={true}
+                noDataText={
+                  this.state.isloading ? (
+                    <Spin size="large" tip="Loading..." />
+                  ) : datareport.length == 0 ? (
+                    <Empty
+                      style={{ margin: "0" }}
+                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    />
+                  ) : null
+                }
               />
             </div>
           </div>

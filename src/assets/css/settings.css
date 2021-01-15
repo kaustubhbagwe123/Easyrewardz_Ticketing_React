@@ -596,6 +596,15 @@
 .sla-popover div:not(:first-child) label:nth-child(2) {
   width: 30%;
 }
+.sla-popover-store div:not(:first-child) label:first-child {
+  width: 50%;
+}
+.sla-popover-store div:not(:first-child) label:nth-child(2) {
+  width: 20%;
+}
+.sla-popover-store div:not(:first-child) label:nth-child(3) {
+  width: 30%;
+}
 .created-popover .popover-body {
   padding: 25px 35px;
 }
@@ -696,7 +705,7 @@
 }
 .right-sect-div label {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
 }
 .right-sect-div input,
 .right-sect-div select {
@@ -1289,7 +1298,12 @@
   padding: 10px;
 }
 .createSpace {
-  padding: 0px 40px 40px;
+  /* padding: 0px 40px 40px; */
+  padding: 0px 5px 20px;
+}
+.storeSettingcreateDiv {
+  padding: 0px 30px 30px;
+  /* padding: 0px 5px 20px; */
 }
 .divSpace {
   padding-bottom: 10px;
@@ -1762,8 +1776,7 @@
   font-size: 15px;
   font-weight: 500;
   line-height: 1.6;
-  /* width: 135px; */
-  display: inline-block;
+  display: inline-block !important;
   margin-left: 32px;
 }
 .ordSttd-store {
@@ -2643,7 +2656,7 @@
   background-color: #fff;
   border: 1px solid #fff;
   box-shadow: none;
-  padding: 10px 30px;
+  padding: 10px 25px;
   font-size: 16px;
   font-family: lato;
   text-align: center;
@@ -2652,7 +2665,7 @@
   color: #8e8e8e;
   font-weight: 600;
   font-size: 16px;
-  padding: 10px 30px;
+  padding: 10px 25px;
   border: 1px solid #ededed;
   background-color: #f3f3f3;
   font-family: lato;
@@ -2708,8 +2721,10 @@
   margin-bottom: 7px;
 }
 .slotEditModal {
-  width: 800px;
-  min-width: 800px;
+  width: 880px;
+  min-width: 880px;
+  box-shadow: 0 0 15px 0px #ddd;
+  border-radius: 20px;
 }
 .slotEditModal .modal-content {
   border-radius: 20px;
@@ -2730,6 +2745,12 @@
 .slotEditModal .edit-slot li label {
   color: #888;
   width: 160px;
+}
+.slotEditModal .edit-slot .oper-days-edit li {
+  display: inline-block;
+}
+.slotEditModal .edit-slot .oper-days-edit li label {
+  width: auto;
 }
 .slotEditModal .edit-slot label {
   color: #888;
@@ -3582,6 +3603,7 @@
 .fileupload-span {
   font-weight: 700;
   color: #2561a8;
+  margin-right: 3px;
 }
 #Raised-popup {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
@@ -4015,6 +4037,10 @@
 .selectstores-box {
   padding: 20px;
 }
+.oper-days-edit {
+  padding: 0;
+  padding-top: 5px;
+}
 .selectstores-box h3 {
   font-size: 16px;
   font-weight: 600;
@@ -4031,6 +4057,16 @@
   background: #f3f3f3;
   padding: 5px 5px 5px 10px;
   border-radius: 50px;
+}
+.edit-slot-temp {
+  padding: 5px 10px !important;
+  height: auto !important;
+  background-position-x: 95% !important;
+  background-size: 11px !important;
+}
+.edit-slot-right label {
+  width: 105px !important;
+  flex: 0 0 105px;
 }
 .selectstores-box .cust-ic {
   height: 20px;
@@ -4052,6 +4088,8 @@
 .chooseslot-main {
   width: 800px;
   min-width: 800px;
+  box-shadow: 0 0 15px 0px #ddd;
+  border-radius: 20px;
 }
 .chooseslot-main .modal-content {
   border-radius: 20px;
@@ -4059,16 +4097,20 @@
 .choosestorebox {
   width: 800px;
   max-width: 800px;
-  top: 200px;
-  right: 90px;
+  top: 125px;
+  right: 175px;
+  box-shadow: 0 0 15px 0px #ddd;
+  border-radius: 20px;
 }
 .choosestorebox .modal-content {
   border-radius: 20px;
 }
 .selectstores-main .modal-content {
   border-radius: 20px;
-  top: 308px;
-  right: 240px;
+  top: 335px;
+  right: 275px;
+  box-shadow: 0 0 15px 0px #ddd;
+  border-radius: 20px;
 }
 .choosestore {
   padding: 25px 50px;
@@ -4079,6 +4121,7 @@
   right: 10px;
   height: 14px;
   cursor: pointer;
+  z-index: 1;
 }
 .choosestorebox label {
   font-weight: normal;
@@ -4233,12 +4276,23 @@
   border: #dadada;
 }
 .operational-select .css-yk16xz-control {
-  max-height: 45px;
+  min-height: 45px;
+  height: auto;
 }
 .operational-select .css-1hwfws3 {
+  z-index: 2;
+}
+.modal-backdrop {
+  background-color: transparent;
+}
+.operational-select .select-oper .css-1pahdxg-control {
+  height: auto;
+  min-height: calc(2.55rem + 2px);
+}
+/* .operational-select .css-1hwfws3 {
   max-height: 40px;
   overflow: auto;
-}
+} */
 .operational-select .css-1g48xl4-IndicatorsContainer {
   max-height: 40px;
 }
@@ -4275,13 +4329,122 @@
 }
 .appoint-txtarea {
   width: 100% !important;
+  margin-top: 10px;
 }
-.ordTempClear {
-  color: #2561a8 !important;
-  font-family: Lato;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 31px;
-  cursor: pointer;
-  display: inline;
+.appoint-conf-dv {
+  margin: 35px 0px 0px 35px;
+}
+.dv-placeholders {
+  margin-top: 20px;
+}
+.dv-placeholders label {
+  margin-top: 10px !important;
+}
+.dv-placeholders select {
+  width: 77%;
+  float: right;
+}
+.sltsave-btn {
+  padding-right: 5px;
+  color: #fff !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.slottbl .ant-table-placeholder {
+  z-index: 0;
+}
+
+.claimtextoverflow {
+  width: 165px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tbl-loading .ReactTable .rt-noData {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.ReactTable .rt-noData {
+  height: 100px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50% !important;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.rt-noData.ant-empty-normal {
+  margin: 0;
+}
+.tbl-loading.rt-noData.ant-empty-normal {
+  margin: 0;
+}
+
+.filter-btn-slot {
+  border-bottom: 1px solid #dae2e5;
+  padding: 10px 0;
+  text-align: right;
+}
+.chooseopreationbox {
+  width: 800px;
+  max-width: 500px;
+  top: 359px;
+  right: 80px;
+  box-shadow: 0 0 15px 0px #ddd;
+  border-radius: 20px;
+}
+
+.selectOPRFilterModal.select-oper .css-yk16xz-control {
+  height: 100%;
+}
+.deleteConfirm .ant-popover-buttons button {
+  min-width: auto;
+  margin-top: 10px;
+}
+.selectOPRFilterModal .select-oper .css-1pahdxg-control {
+  height: auto;
+}
+.opreditSelect {
+  float: right;
+  width: 100%;
+  margin-top: 10px;
+  text-align: right;
+}
+
+.campCard {
+  font-size: 16px;
+  text-align: left;
+  display: flex;
+  margin-bottom: 10px;
+  
+}
+.campCardLbl {
+  float: left;
+  margin-left: 20px;
+  margin-right: 10px;
+  width: 125px;
+}
+.viewCMTNew .ant-popover-title{
+  min-height: 55px !important;
+}
+
+.drp-text-check{
+  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 150px;
 }

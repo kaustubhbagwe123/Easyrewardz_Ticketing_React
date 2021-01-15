@@ -1,49 +1,24 @@
-// import React, { Component } from 'react'
-// import Chart from 'react-apexcharts'
-// class OpenCompaign extends Component {
-//   constructor(props) {
-//     super(props);
-  
-//     this.state = {
-//       options: {
-//         responsive: [{
-//           breakpoint: 450,
-//           options: {
-//             chart: {
-//               width: 100
-//             },
-//             legend: {
-//               position: 'bottom'
-//             }
-//           }
-//         }]
-//       },
-//       series: [44.50, 55, 41, 17]
-//     }
-//   }
-  
-//   render() {
-//     return (
-//       <div className="chart">
-//         <Chart options={this.state.options} series={this.state.series} type="donut" width="400" className="opendonutChart"/>
-//       </div>
-//     );
-//   }
-// }
-
-// export default OpenCompaign;
-import React, { Component } from 'react'
-import { PieChart } from "react-d3-components";
+import React, { Component } from "react";
+import Chart from "react-apexcharts";
 
 export class OpenCompaign extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
-      data: {
-        values: []
+      options: {
+        xaxis: {
+          // categories: ['Fianance', 'HR', 'Logistics', 'Infra']
+          categories: [],
+        },
       },
-      sort: null
+      series: [
+        {
+          // name: 'series-1',
+          // data: [76, 140, 76, 101]
+          data: [],
+        },
+      ],
     };
 
     this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
@@ -55,37 +30,69 @@ export class OpenCompaign extends Component {
   }
 
   handleGetDashboardGraphData() {
-      var propsData = this.props.data;
-      let values = [];
-      if (propsData !== null) {
-        for (let i = 0; i < propsData.length; i++) {
-          let name = propsData[i].name;
-          let value = propsData[i].value;
-          let obj = {x: `${name}, ${value}`, y: value};
-          values.push(obj);
-        }
-        this.setState({
-          data: {
-              values
-          }
-        });
+    var taskData = this.props.data;
+    var category = [];
+    var data = [];
+    if (taskData !== null) {
+      for (let i = 0; i < taskData.length; i++) {
+        let categoryName = taskData[i].campaignStatusName;
+        category.push(categoryName);
+        let dataCount = taskData[i].campaignStatusCount;
+        data.push(dataCount);
       }
+      this.setState({
+        options: {
+          xaxis: {
+            categories: category,
+            // colors: ["#f5a623", "#c0505f", "#9cc541"],
+          },
+          dataLabels: {
+            enabled: true,
+            // formatter: function (val) {
+            //   return val + "%";
+            // },
+            offsetY: -20,
+            style: {
+              fontSize: "12px",
+              colors: ["#304758"],
+            },
+          },
+          legend: {
+            show: false,
+          },
+          plotOptions: {
+            bar: {
+              dataLabels: {
+                position: "top", // top, center, bottom
+              },
+            },
+          },
+          // colors: ["#f5a623", "#c0505f", "#9cc541"],
+          // markers: {
+          //   colors: ["#f5a623", "#c0505f", "#9cc541"],
+          // },
+        },
+        series: [
+          {
+            data,
+          },
+        ],
+      });
+    }
   }
-  
   render() {
     return (
-      <div className="obpml">
-        <PieChart
-          data={this.state.data}
-          width={350}
-          height={270}
-          margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
-          sort={this.state.sort}
+      <div className="obpml" style={{ marginLeft: "10px" }}>
+        <Chart
+          options={this.state.options}
+          series={this.state.series}
+          type="bar"
+          // width={370}
+          // height={250}
         />
       </div>
-    )
+    );
   }
 }
 
-export default OpenCompaign
-
+export default OpenCompaign;

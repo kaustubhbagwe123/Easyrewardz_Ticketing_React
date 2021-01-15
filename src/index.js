@@ -5,14 +5,14 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/ie11";
+// import Loadable from "react-loadable";
+import "react-notifications/lib/notifications.css";
 
 //Css
 import "./assets/css/style.css";
 import "./assets/css/settings.css";
-import "./assets/css/QA.css";
 import "./assets/css/store.css";
 import "./assets/css/custome.css";
-//import "./assets/css/artboard.css";
 
 //JS
 import "./../node_modules/popper.js/dist/popper.js";
@@ -33,9 +33,6 @@ import ProgramCodeSignIn from "./Component/ProgramCodeSignIn";
 import App from "./routes/index";
 import PieChart from "./Component/PieChart/PieChart";
 import StoreApp from "./routes/StoreManager/index";
-import QAApp from "./routes/QA/index";
-import ArtBoardApp from "./routes/ArtBoard/index";
-import TenantApp from "./routes/Tenant Controller";
 import ChangePassword from "./Component/ChangePassword";
 import UserForgotPassword from "./Component/UserForgotPassword";
 import StoreProgramCode from "./Component/Store/StoreProgramCode";
@@ -43,9 +40,10 @@ import StoreSignIn from "./Component/Store/StoreSignIn";
 import StoreForgotPassword from "./Component/Store/StoreForgotPassword";
 import StoreUserForgotPassword from "./Component/Store/StoreUserForgotPassword";
 import ModuleSelect from "./Component/ModuleSelect";
-import StoreChangePassword from "./Component/Store/ChangePassword";
 import LanguageSelection from "./Component/Store/LanguageSelection";
 import TicketingLanguageSelection from "./Component/TicketingLanguageSelection";
+import ShipmentPrintHtml from "./routes/StoreManager/OrderTabs/ShipmentPrintHtml";
+import Logout from "./../src/routes/StoreManager/Logout"
 
 ReactDOM.render(
   <Router>
@@ -53,8 +51,7 @@ ReactDOM.render(
     {/* <Route exact path="/" component={ModuleSelect} /> */}
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
-    <Route path="/qa" component={QAApp} />
-    <Route exact path="/" component={ProgramCodeSignIn} />
+    <Route exact path="/programCodeSignIn" component={ProgramCodeSignIn} />
     <Route exact path="/SignIn" component={SignIn} />
     <Route
       exact
@@ -63,9 +60,8 @@ ReactDOM.render(
     />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/ChangePassword" component={ChangePassword} />
-    <Route exact path="/storeChangePassword" component={StoreChangePassword} />
     <Route exact path="/languageSelection" component={LanguageSelection} />
-    <Route exact path="/StoreProgramCode" component={StoreProgramCode} />
+    <Route exact path="/" component={StoreProgramCode} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
     <Route exact path="/storeForgotpassword" component={StoreForgotPassword} />
     <Route
@@ -75,8 +71,8 @@ ReactDOM.render(
     />
     <Route exact path="/UserForgotPassword" component={UserForgotPassword} />
     <Route exact path="/PieChart" component={PieChart} />
-    <Route path="/artBoard" component={ArtBoardApp} />
-    <Route path="/tenantApp" component={TenantApp} />
+    <Route path="/ShipmentPrintHtml" component={ShipmentPrintHtml} />
+    <Route path="/logout" component={Logout} />
   </Router>,
   document.getElementById("root")
 );

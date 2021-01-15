@@ -14,6 +14,11 @@ import CancelImg from "./../../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
 import { withRouter } from "react-router-dom";
 import Headphone2Img from "./../../assets/Images/headphone2.png";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 class ClaimApproveReject extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +47,6 @@ class ClaimApproveReject extends Component {
       gender: "",
       commentData: [],
       finalClaimPercentage: "",
-      errFinalClaimPercent: "",
       imageURL: "",
       ticketID: 0,
       ticketingTaskID: 0,
@@ -64,6 +68,15 @@ class ClaimApproveReject extends Component {
       storeCommetData: [],
       approveCommentData: [],
       rejectCommentData: [],
+      translateLanguage: {},
+      isCommentSubmit: false,
+      isRejectSubmit: false,
+      isApproveSubmit: false,
+      isAddSubmit: false,
+      isSkipSubmit: false,
+      canApproveclaim: false,
+      raisedByTab: false,
+      AssignTab: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -75,21 +88,37 @@ class ClaimApproveReject extends Component {
   componentDidMount() {
     if (this.props.location.state) {
       var claimId = this.props.location.state.ClaimID;
+      var raisedByTab = this.props.location.state.raisedByTab;
+      var AssignTab = this.props.location.state.AssignTab;
       this.setState({
         claimID: claimId,
+        raisedByTab,
+        AssignTab,
       });
       this.handleGetClaimByID(claimId);
       this.handleGetClaimCommentByClaimID(claimId);
       this.handleGetStoreClaimComments(claimId);
       this.handleGetBrandList();
     }
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   componentDidUpdate() {
     if (this.props.location.state) {
       var claimId = this.props.location.state.ClaimID;
+      var raisedByTab = this.props.location.state.raisedByTab;
+      var AssignTab = this.props.location.state.AssignTab;
       if (claimId !== this.state.claimID) {
         this.setState({
           claimID: claimId,
+          raisedByTab,
+          AssignTab,
         });
         this.handleGetClaimByID(claimId);
 
@@ -129,6 +158,7 @@ class ClaimApproveReject extends Component {
 
   ////handle assign task
   handleAssignClaim() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -140,24 +170,34 @@ class ClaimApproveReject extends Component {
       },
     })
       .then(function(response) {
-        var responseData = response.data.responseData;
         var message = response.data.message;
+        self.setState({ isSkipSubmit: false });
         if (message === "Success") {
           self.setState({
             assigneeID: self.state.agentId,
+            assignComment: "",
           });
-          NotificationManager.success("Task Assign Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.claimassignedsuccesfully
+              : "Claim Assigned Successfully."
+          );
           self.handleAssginToModalClose();
           self.handleUserModelClose();
           setTimeout(() => {
             self.componentDidMount();
           }, 100);
         } else {
-          NotificationManager.error("Task Assign Fail.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.ticketingDashboard.taskassignfailed
+              : "Task Assign Failed."
+          );
           self.setState({ userModel: false, assigneeID: this.state.agentId });
         }
       })
       .catch((response) => {
+        self.setState({ isSkipSubmit: false });
         console.log(response, "---handleAssignTask");
       });
   }
@@ -222,7 +262,7 @@ class ClaimApproveReject extends Component {
           } else {
             imageURL = "";
           }
-
+          var canApproveclaim = responseData.canApproveclaim;
           var ticketingTaskID = responseData.ticketingTaskID;
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
@@ -238,6 +278,7 @@ class ClaimApproveReject extends Component {
           }
 
           self.setState({
+            canApproveclaim,
             oldAssignID,
             status,
             assigneeID,
@@ -276,6 +317,7 @@ class ClaimApproveReject extends Component {
   }
   ////handle add comment on claim
   handleAddStoreClaimCommentsApproveReject(isRejectComment) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.claimComments !== "" || this.state.rejectComment !== "") {
       var comment = "";
@@ -284,6 +326,7 @@ class ClaimApproveReject extends Component {
       } else {
         comment = this.state.rejectComment;
       }
+      this.setState({ isCommentSubmit: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
@@ -297,9 +340,14 @@ class ClaimApproveReject extends Component {
         .then(function(res) {
           let status = res.data.message;
           let data = res.data.responseData;
+          self.setState({ isCommentSubmit: false });
           if (status === "Success") {
             if (!isRejectComment)
-              NotificationManager.success("Record saved successfully");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordsavedsuccessfully
+                  : "Record saved successfully."
+              );
             self.setState({
               claimComments: "",
               rejectComment: "",
@@ -311,10 +359,15 @@ class ClaimApproveReject extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isCommentSubmit: false });
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please Enter Comment.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseentercomment
+          : "Please Enter Comment."
+      );
     }
   }
 
@@ -389,8 +442,15 @@ class ClaimApproveReject extends Component {
   }
 
   handleApproveRejectClaim(IsApprove, e) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
+
     if (this.state.finalClaimPercentage !== "") {
+      if (IsApprove) {
+        this.setState({ isApproveSubmit: true });
+      } else {
+        this.setState({ isRejectSubmit: true });
+      }
       axios({
         method: "post",
         url: config.apiUrl + "/StoreClaim/IsClaimApprove",
@@ -403,12 +463,21 @@ class ClaimApproveReject extends Component {
       })
         .then(function(res) {
           let status = res.data.message;
+          self.setState({ isApproveSubmit: false, isRejectSubmit: false });
           if (status === "Success") {
             if (IsApprove == true) {
-              NotificationManager.success("Record approved successfully");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordapprovedsuccessfully
+                  : "Record approved successfully."
+              );
               self.props.history.push("/store/claim");
             } else {
-              NotificationManager.success("Record rejected successfully");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordrejectedsuccessfully
+                  : "Record rejected successfully."
+              );
               self.props.history.push("/store/claim");
             }
           } else {
@@ -416,16 +485,20 @@ class ClaimApproveReject extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isApproveSubmit: false, isRejectSubmit: false });
           console.log(data);
         });
     } else {
-      this.setState({
-        errFinalClaimPercent: "Please enter final claim percentage",
-      });
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenterfinalclaimpercentage
+          : "Please enter final claim percentage."
+      );
     }
   }
   ////handle brand change
   handleBrandChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     let value = e.target.value;
     if (value !== "0") {
       this.state.errors["Brand"] = "";
@@ -443,7 +516,10 @@ class ClaimApproveReject extends Component {
         }
       }, 1);
     } else {
-      this.state.errors["Brand"] = "Please select Brand";
+      this.state.errors["Brand"] =
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectbrand
+          : "Please select Brand";
       this.setState({
         errors: this.state.errors,
         selectBrand: value,
@@ -485,6 +561,7 @@ class ClaimApproveReject extends Component {
   };
 
   handleCategoryChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     var value = e.target.value;
     if (value !== "0") {
       this.state.errors["Category"] = "";
@@ -499,7 +576,10 @@ class ClaimApproveReject extends Component {
         }
       }, 10);
     } else {
-      this.state.errors["Category"] = "Please select claim category";
+      this.state.errors["Category"] =
+        TranslationContext !== undefined
+          ? TranslationContext.placeholder.pleaseselectclaimcategory
+          : "Please select claim category";
       this.setState({ showList1: true, errors: this.state.errors });
     }
   };
@@ -530,6 +610,7 @@ class ClaimApproveReject extends Component {
   };
 
   handleSubCatOnChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     var value = e.target.value;
     if (value !== "0") {
       this.state.errors["SubCategory"] = "";
@@ -540,7 +621,10 @@ class ClaimApproveReject extends Component {
         }
       }, 1);
     } else {
-      this.state.errors["SubCategory"] = "Please select sub category";
+      this.state.errors["SubCategory"] =
+        TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectsubcategory
+          : "Please select sub category";
       this.setState({ errors: this.state.errors });
     }
   };
@@ -576,12 +660,16 @@ class ClaimApproveReject extends Component {
   }
 
   handleIssueOnChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     const value = e.target.value;
     if (value !== "0") {
       this.state.errors["IssueType"] = "";
       this.setState({ ListOfIssue: value, errors: this.state.errors });
     } else {
-      this.state.errors["IssueType"] = "Please select claim type";
+      this.state.errors["IssueType"] =
+        TranslationContext !== undefined
+          ? TranslationContext.validation.pleaseselectclaimtype
+          : "Please select claim type";
       this.setState({ errors: this.state.errors });
     }
   };
@@ -602,12 +690,15 @@ class ClaimApproveReject extends Component {
   }
   ////handle reject comment modal open
   handleRejectModalOpen() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.finalClaimPercentage !== "") {
-      this.setState({ rejectModal: true, errFinalClaimPercent: "" });
+      this.setState({ rejectModal: true });
     } else {
-      this.setState({
-        errFinalClaimPercent: "Please enter final claim percentage",
-      });
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenterfinalclaimpercentage
+          : "Please enter final claim percentage."
+      );
     }
   }
   ////handle reject comment modal close
@@ -616,18 +707,26 @@ class ClaimApproveReject extends Component {
   }
   ////handle change reject comment
   handleRejectCommentChange(e) {
+    const TranslationContext = this.state.translateLanguage.default;
     if (e.target.value !== "") {
       this.setState({ rejectComment: e.target.value, isrejectComment: "" });
     } else {
       this.setState({
         rejectComment: e.target.value,
-        isrejectComment: "Please enter valid reason.",
+        isrejectComment:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentervalidreason
+            : "Please enter valid reason.",
       });
     }
   }
   ////handle assgin to modal open
   handleAssginToModalOpen() {
-    this.setState({ assginToModal: true });
+    if (this.state.agentId) {
+      this.setState({ assginToModal: true });
+    } else {
+      NotificationManager.error("Please Select Re-Assign Name.");
+    }
   }
   ///handle assgin to modal close
   handleAssginToModalClose() {
@@ -635,27 +734,37 @@ class ClaimApproveReject extends Component {
   }
   ////handle assign to with comment
   handleAssigntoWithComment() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
       this.handleAssignClaim();
       this.handleAddStoreComment();
     } else {
-      this.setState({ isAssignComment: "Please enter comment." });
+      this.setState({
+        isAssignComment:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentercomment
+            : "Please enter comment.",
+      });
     }
   }
   ////handel comment change
   handleAssignCommentChange(e) {
+    const TranslationContext = this.state.translateLanguage.default;
     if (e.target.value !== "") {
       this.setState({ assignComment: e.target.value, isAssignComment: "" });
     } else {
       this.setState({
         assignComment: e.target.value,
-        isAssignComment: "Please enter comment.",
+        isAssignComment:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentercomment
+            : "Please enter comment.",
       });
     }
   }
   ////handle add store comment
   handleAddStoreComment() {
-    let self = this;
+    const TranslationContext = this.state.translateLanguage.default;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreClaim/AddStoreClaimComment",
@@ -669,9 +778,18 @@ class ClaimApproveReject extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        var responseData = response.data.responseData;
         if (message == "Success") {
-          NotificationManager.success("Store comment added successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.storecommentaddedsuccessfully
+              : "Store comment added successfully."
+          );
+        } else {
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.storecommentnotadded
+              : "Store comment not added."
+          );
         }
       })
       .catch((response) => {
@@ -714,26 +832,42 @@ class ClaimApproveReject extends Component {
   }
   ////handle reject modal submit button on click
   handleRejectModalSubmit() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.rejectComment !== "") {
       this.handleAddStoreClaimCommentsApproveReject(true);
       this.handleApproveRejectClaim(false);
     } else {
-      this.setState({ isrejectComment: "Please enter valid reason." });
+      this.setState({
+        isrejectComment:
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentervalidreason
+            : "Please enter valid reason.",
+      });
     }
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { orderDetailsData } = this.state;
 
     return (
       <Fragment>
         <div className="row claim-header-card width">
-          <div className="col-md-7">
-            <label className="claim-title1">Claim Ticket ID :</label>
+          <div className="col-md-6">
+            <label className="claim-title1">
+              {TranslationContext !== undefined
+                ? TranslationContext.label.claimticketid
+                : "Claim Ticket ID :"}
+            </label>
             <label className="claim-A22345">{this.state.claimID}</label>
             {this.state.ticketingTaskID > 0 ? (
               <>
-                <label className="claim-title1">Task ID :</label>
+                <label className="claim-title1">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.span.taskid
+                    : "Task ID"}
+                  :
+                </label>
                 <label className="claim-A22345">
                   {this.state.ticketingTaskID}
                 </label>
@@ -743,13 +877,59 @@ class ClaimApproveReject extends Component {
             )}
             {this.state.ticketID > 0 ? (
               <>
-                <label className="claim-title1">Ticket ID :</label>
+                <label className="claim-title1">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.ticketid
+                    : "Ticket ID"}
+                  :
+                </label>
                 <label className="claim-A22345">{this.state.ticketID}</label>
               </>
             ) : null}
           </div>
-          <div className="col-md-5">
-            <div className="d-inline-block">
+          <div className="col-md-6">
+            {this.state.AssignTab && (
+              <>
+                {this.state.canApproveclaim ? (
+                  <div className="btn-approrej">
+                    <button
+                      type="button"
+                      className="btn-approrej1"
+                      style={{ width: "165px" }}
+                      onClick={this.handleApproveRejectClaim.bind(this, true)}
+                      disabled={this.state.isApproveSubmit}
+                    >
+                      {this.state.isApproveSubmit ? (
+                        <FontAwesomeIcon
+                          className="circular-loader"
+                          icon={faCircleNotch}
+                          spin
+                        />
+                      ) : null}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.approveclaim
+                        : "APPROVE CLAIM"}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-approrej1"
+                      onClick={this.handleRejectModalOpen.bind(this)}
+                      disabled={this.state.isRejectSubmit}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.rejectclaim
+                        : "REJECT CLAIM"}
+                    </button>
+                  </div>
+                ) : null}
+              </>
+            )}
+
+            {/* <div className="d-inline-block" style={{ marginLeft: "100px",float:this.state.canApproveclaim?"none":"right" }}> */}
+            <div
+              className="d-inline-block"
+              style={{ marginRight: "10px", float: "right" }}
+            >
               <a
                 style={{
                   marginTop: this.state.targetClouserDate ? "5px" : "11px",
@@ -760,32 +940,22 @@ class ClaimApproveReject extends Component {
                 <div className="oval-5-1-new-store">
                   <img src={storeImg} alt="headphone" className="storeImg-11" />
                 </div>
-                <label className="naman-r">{this.state.assignToName}</label>
+                <label
+                  className="naman-r claimtextoverflow"
+                  title={this.state.assignToName}
+                >
+                  {this.state.assignToName}
+                </label>
                 <img src={DownImg} alt="down" className="down-header" />
               </a>
               {this.state.targetClouserDate && (
                 <p className="closure-date">
-                  Closure Date: {this.state.targetClouserDate}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.closuredate
+                    : "Closure Date"}
+                  : {this.state.targetClouserDate}
                 </p>
               )}
-            </div>
-
-            <div className="btn-approrej">
-              <button
-                type="button"
-                className="btn-approrej1"
-                onClick={this.handleApproveRejectClaim.bind(this, true)}
-              >
-                APPROVE CLAIM
-              </button>
-              <button
-                type="button"
-                className="btn-approrej1"
-                onClick={this.handleRejectModalOpen.bind(this)}
-                // onClick={this.handleApproveRejectClaim.bind(this, false)}
-              >
-                REJECT CLAIM
-              </button>
             </div>
           </div>
         </div>
@@ -807,7 +977,12 @@ class ClaimApproveReject extends Component {
                   >
                     <div className="claim-status-card">
                       <label>
-                        <b>Claim Status: {this.state.status}</b>
+                        <b>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimstatus
+                            : "Claim Status"}
+                          : {this.state.status}
+                        </b>
                       </label>
                       <div className="claimplus">
                         <span className="plusline1new"></span>
@@ -835,7 +1010,9 @@ class ClaimApproveReject extends Component {
                           <div className="row mx-0">
                             <div className="col-md-6">
                               <label className="orderdetailtext">
-                                Order details
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.orderdetails
+                                  : "Order details"}
                               </label>
                             </div>
 
@@ -855,42 +1032,69 @@ class ClaimApproveReject extends Component {
                                     dataSource={orderDetailsData}
                                     columns={[
                                       {
-                                        title: "Invoice Number",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .invoicenumber
+                                            : "Invoice Number",
                                         dataIndex: "invoiceNumber",
                                       },
                                       {
-                                        title: "Invoice Date",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .invoicedate
+                                            : "Invoice Date",
                                         dataIndex: "dateFormat",
                                       },
                                       {
-                                        title: "Item Count",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span
+                                                .invoicecount
+                                            : "Item Count",
                                         dataIndex: "itemCount",
                                       },
                                       {
-                                        title: "Item Price",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.span.itemprice
+                                            : "Item Price",
                                         dataIndex: "ordeItemPrice",
                                       },
                                       {
-                                        title: "Price Paid",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.label.pricepaid
+                                            : "Price Paid",
                                         dataIndex: "orderPricePaid",
                                       },
                                       {
-                                        title: "Store Code",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.label.storecode
+                                            : "Store Code",
                                         dataIndex: "storeCode",
                                       },
                                       {
-                                        title: "Store Address",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .storeaddress
+                                            : "Store Address",
                                         dataIndex: "storeAddress",
                                       },
                                       {
-                                        title: "Discount",
+                                        title:
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.label.discount
+                                            : "Discount",
                                         dataIndex: "discount",
                                       },
                                     ]}
                                     expandedRowRender={(row) => {
                                       return (
                                         <Table
-                                          // dataSource={this.state.OrderSubItem}
                                           dataSource={this.state.OrderSubItem.filter(
                                             (x) =>
                                               x.orderMasterID ===
@@ -898,27 +1102,47 @@ class ClaimApproveReject extends Component {
                                           )}
                                           columns={[
                                             {
-                                              title: "Article Number",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .articlenumber
+                                                  : "Article Number",
                                               dataIndex: "articleNumber",
                                             },
                                             {
-                                              title: "Article Name",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.span
+                                                      .articlename
+                                                  : "Article Name",
                                               dataIndex: "articleName",
                                             },
                                             {
-                                              title: "Article MRP",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext
+                                                      .ticketingDashboard
+                                                      .articlemrp
+                                                  : "Article MRP",
                                               dataIndex: "itemPrice",
                                             },
                                             {
-                                              title: "Price Paid",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.label
+                                                      .pricepaid
+                                                  : "Price Paid",
                                               dataIndex: "pricePaid",
                                             },
                                             {
-                                              title: "Discount",
+                                              title:
+                                                TranslationContext !== undefined
+                                                  ? TranslationContext.label
+                                                      .discount
+                                                  : "Discount",
                                               dataIndex: "discount",
                                             },
                                           ]}
-                                          // rowSelection={rowSelection}
                                           pagination={false}
                                         />
                                       );
@@ -933,7 +1157,10 @@ class ClaimApproveReject extends Component {
                               <div className="row">
                                 <div className="col-md-12 uploadsechmargin">
                                   <label className="uploadsearch-text">
-                                    No order found with this number
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label
+                                          .noorderfoundwiththisnumber
+                                      : "No order found with this number"}
                                   </label>
                                 </div>
                               </div>
@@ -947,7 +1174,9 @@ class ClaimApproveReject extends Component {
                                       for="file-upload"
                                       className="uploadsearchbtn-text"
                                     >
-                                      UPLOAD FILE
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.uploadfile
+                                        : "UPLOAD FILE"}
                                     </label>
                                   </button>
                                 </div>
@@ -955,7 +1184,12 @@ class ClaimApproveReject extends Component {
                               <div className="row">
                                 <div className="col-md-12 uploadsechmargin">
                                   <u>
-                                    <a href="#!">DOWNLOAD SAMPLE FILE</a>
+                                    <a href="#!">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .downloadsamplefile
+                                        : "DOWNLOAD SAMPLE FILE"}
+                                    </a>
                                   </u>
                                 </div>
                               </div>
@@ -967,7 +1201,11 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row w-100">
                     <div className="form-group col-md-4">
-                      <label className="label-6">Brand</label>
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.brand
+                          : "Brand"}
+                      </label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -975,7 +1213,11 @@ class ClaimApproveReject extends Component {
                         onChange={this.handleBrandChange}
                         disabled={true}
                       >
-                        <option>select</option>
+                        <option>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.select
+                            : "Select"}
+                        </option>
                         {this.state.brandData !== null &&
                           this.state.brandData.map((item, i) => (
                             <option
@@ -989,8 +1231,11 @@ class ClaimApproveReject extends Component {
                       </select>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="label-6">Claim Category</label>
-
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.claimcategory
+                          : "Claim Category"}
+                      </label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -998,7 +1243,11 @@ class ClaimApproveReject extends Component {
                         value={this.state.list1Value}
                         disabled={true}
                       >
-                        <option value={0}>select</option>
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.select
+                            : "Select"}
+                        </option>
                         {this.state.categoryDropData !== null &&
                           this.state.categoryDropData.map((item, i) => (
                             <option
@@ -1016,8 +1265,11 @@ class ClaimApproveReject extends Component {
                       </p>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="label-6">Sub Category</label>
-
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.subcategory
+                          : "Sub Category"}
+                      </label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -1025,7 +1277,11 @@ class ClaimApproveReject extends Component {
                         value={this.state.ListOfSubCate}
                         disabled={true}
                       >
-                        <option value={0}>select</option>
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.select
+                            : "Select"}
+                        </option>
                         {this.state.SubCategoryDropData !== null &&
                           this.state.SubCategoryDropData.map((item, i) => (
                             <option
@@ -1039,8 +1295,11 @@ class ClaimApproveReject extends Component {
                       </select>
                     </div>
                     <div className="form-group col-md-4">
-                      <label className="label-6">Claim Type</label>
-
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.claimtype
+                          : "Claim Type"}
+                      </label>
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
@@ -1048,7 +1307,11 @@ class ClaimApproveReject extends Component {
                         value={this.state.ListOfIssue}
                         disabled={true}
                       >
-                        <option value={0}>select</option>
+                        <option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.select
+                            : "Select"}
+                        </option>
                         {this.state.ListOfIssueData !== null &&
                           this.state.ListOfIssueData.map((item, i) => (
                             <option
@@ -1064,11 +1327,19 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6"> Claim Asked for %</label>
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.claimaskedfor
+                          : "Claim Asked for %"}
+                      </label>
                       <input
                         type="text"
                         className="form-control textBox"
-                        placeholder="Claim Percentage"
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.claimpercentage
+                            : "Claim Percentage"
+                        }
                         name="claimPercentage"
                         disabled={true}
                         value={this.state.claimPercentage}
@@ -1079,7 +1350,9 @@ class ClaimApproveReject extends Component {
                   <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6" style={{ display: "block" }}>
-                        Attached Image
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.attachedimage
+                          : "Attached Image"}
                       </label>
                       {this.state.imageURL !== "" ? (
                         <img
@@ -1092,7 +1365,11 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row" style={{ margin: "0" }}>
                     <div className="col-md-4">
-                      <label className="label-6">Comments By Store</label>
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.commentsbystore
+                          : "Comments By Store"}
+                      </label>
                     </div>
                   </div>
                   {this.state.storeCommetData !== null &&
@@ -1116,11 +1393,19 @@ class ClaimApproveReject extends Component {
                           </div>
                           <div className="row" style={{ margin: "0" }}>
                             <label className="naman-R allign-reassign">
-                              Reassign to {item.newAgentName}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.reassignto
+                                : "Reassign to"}{" "}
+                              {item.newAgentName}
                             </label>
                           </div>
                           <div className="row" style={{ margin: "0" }}>
-                            <label className="label-6">Comments:</label>
+                            <label className="label-6">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.comments
+                                : "Comments"}
+                              :
+                            </label>
                           </div>
                           <div className="row" style={{ margin: "0" }}>
                             <div style={{ width: "100%" }}>
@@ -1146,32 +1431,49 @@ class ClaimApproveReject extends Component {
                       className="form-group col-md-4"
                       style={{ padding: "0" }}
                     >
-                      <label className="label-6">Final Claim Asked for %</label>
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .finalclaimaskedfor
+                          : "Final Claim Asked for"}
+                        %
+                      </label>
                       <input
                         type="text"
                         className="form-control textBox"
-                        placeholder="Claim Percentage"
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.label.claimpercentage
+                            : "Claim Percentage"
+                        }
                         name="finalClaimPercentage"
                         value={this.state.finalClaimPercentage}
                         onChange={this.handleOnChange}
+                        autoComplete="off"
                       />
-                      {this.state.finalClaimPercentage === "" && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.errFinalClaimPercent}
-                        </p>
-                      )}
                     </div>
                   </div>
 
                   <div className="row" style={{ margin: "0" }}>
                     <div style={{ width: "100%" }}>
-                      <label className="label-6">Comments By Approval</label>
+                      <label className="label-6">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .commentsbyapproval
+                          : "Comments By Approval"}
+                      </label>
                       <hr className="mt-0 mb-2" />
                     </div>
                     <div className="" style={{ display: "contents" }}>
                       <textarea
+                        style={{ padding: "10px" }}
                         className="ticket-comments-textarea mt-1"
-                        placeholder="Add your Comment here"
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.ticketingDashboard
+                                .addyourcommenthere
+                            : "Add your Comment here"
+                        }
                         name="claimComments"
                         value={this.state.claimComments}
                         onChange={this.handleOnChange}
@@ -1187,13 +1489,28 @@ class ClaimApproveReject extends Component {
                         false
                       )}
                     >
-                      <label className="txt">ADD COMMENT</label>
+                      {this.state.isCommentSubmit ? (
+                        <FontAwesomeIcon
+                          className="circular-loader"
+                          icon={faCircleNotch}
+                          spin
+                        />
+                      ) : null}
+                      <label className="txt">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.addcomment
+                          : "ADD COMMENT"}
+                      </label>
                     </button>
                   </div>
                   <div className="row mt-4" style={{ margin: "0" }}>
                     <div className="">
                       <label className="label-6">
-                        Comments By Approval:{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .commentsbyapproval
+                          : "Comments By Approval"}
+                        :
                         {this.state.approveCommentData.length < 9
                           ? "0" + this.state.approveCommentData.length
                           : this.state.commentData.length}
@@ -1219,7 +1536,10 @@ class ClaimApproveReject extends Component {
                       </div>
                       <div className="row" style={{ margin: "0" }}>
                         <label className="label-6" style={{ paddingTop: "0" }}>
-                          Comments:
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.comments
+                            : "Comments"}
+                          :
                         </label>
                       </div>
                       <div className="row" style={{ margin: "0" }}>
@@ -1235,7 +1555,11 @@ class ClaimApproveReject extends Component {
                   <div className="row" style={{ margin: "0" }}>
                     <div className="">
                       <label className="label-6">
-                        Comments By Reject:{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.ticketingDashboard
+                              .commentsbyreject
+                          : "Comments By Reject"}
+                        :
                         {this.state.rejectCommentData.length < 9
                           ? "0" + this.state.rejectCommentData.length
                           : this.state.rejectCommentData.length}
@@ -1261,7 +1585,10 @@ class ClaimApproveReject extends Component {
                       </div>
                       <div className="row" style={{ margin: "0" }}>
                         <label className="label-6" style={{ paddingTop: "0" }}>
-                          Comments:
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.comments
+                            : "Comments"}
+                          :
                         </label>
                       </div>
                       <div className="row" style={{ margin: "0" }}>
@@ -1282,7 +1609,11 @@ class ClaimApproveReject extends Component {
               <div className="card card-radius2 cardbor">
                 <div className="alankrit">
                   <label>
-                    <b>CUSTOMER NAME</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.customername
+                        : "CUSTOMER NAME"}
+                    </b>
                   </label>
                   <label>
                     {this.state.customerName ? (
@@ -1297,31 +1628,51 @@ class ClaimApproveReject extends Component {
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>PHONE NUMBER</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.phonenumber
+                        : "PHONE NUMBER"}
+                    </b>
                   </label>
                   <label>{this.state.customerPhoneNumber}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>ALTERNATE NUMBER</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.alternatenumber
+                        : "ALTERNATE NUMBER"}
+                    </b>
                   </label>
                   <label>{this.state.customerAlternateNumber}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>EMAIL</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.email
+                        : "EMAIL"}
+                    </b>
                   </label>
                   <label>{this.state.emailID}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>ALTERNATE EMAIL</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.alternateemail
+                        : "ALTERNATE EMAIL"}
+                    </b>
                   </label>
                   <label>{this.state.alternateEmailID}</label>
                 </div>
                 <div className="alankrit">
                   <label>
-                    <b>GENDER</b>
+                    <b>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.b.gender
+                        : "GENDER"}
+                    </b>
                   </label>
                   <label>{this.state.gender}</label>
                 </div>
@@ -1343,12 +1694,24 @@ class ClaimApproveReject extends Component {
               data={this.state.userData}
               columns={[
                 {
-                  Header: <span>Emp Id</span>,
+                  Header: (
+                    <span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.span.empid
+                        : "Emp Id"}
+                    </span>
+                  ),
                   accessor: "user_ID",
                   width: 80,
                 },
                 {
-                  Header: <span>Name</span>,
+                  Header: (
+                    <span>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.name
+                        : "Name"}
+                    </span>
+                  ),
                   accessor: "userName",
                 },
               ]}
@@ -1373,10 +1736,11 @@ class ClaimApproveReject extends Component {
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                // onClick={this.handleAssignClaim.bind(this)}
                 onClick={this.handleAssginToModalOpen.bind(this)}
               >
-                SELECT
+                {TranslationContext !== undefined
+                  ? TranslationContext.placeholder.select
+                  : "SELECT"}
               </button>
             </div>
             <div
@@ -1401,7 +1765,11 @@ class ClaimApproveReject extends Component {
           <div className="commenttextborder">
             <div className="comment-disp">
               <div className="Commentlabel">
-                <label className="Commentlabel1">Reason for Rejection</label>
+                <label className="Commentlabel1">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.ticketingDashboard.reasonforrejection
+                    : "Reason for Rejection"}
+                </label>
               </div>
               <div>
                 <img
@@ -1432,8 +1800,18 @@ class ClaimApproveReject extends Component {
               <button
                 className="SendCommentBtn1"
                 onClick={this.handleRejectModalSubmit.bind(this)}
+                disabled={this.state.isRejectSubmit}
               >
-                SUBMIT
+                {this.state.isRejectSubmit ? (
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : null}
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.submit
+                  : "SUBMIT"}
               </button>
             </div>
           </div>
@@ -1452,7 +1830,11 @@ class ClaimApproveReject extends Component {
           <div className="commenttextborder">
             <div className="comment-disp">
               <div className="Commentlabel">
-                <label className="Commentlabel1">Add Comment</label>
+                <label className="Commentlabel1">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.button.addcomment
+                    : "Add Comment"}
+                </label>
               </div>
               <div>
                 <img
@@ -1482,17 +1864,36 @@ class ClaimApproveReject extends Component {
               <button
                 className="SendCommentBtn1"
                 onClick={this.handleSkipButtonClick.bind(this)}
+                disabled={this.state.isSkipSubmit}
               >
-                SKIP
+                {this.state.isSkipSubmit ? (
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : null}
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.skip
+                  : "SKIP"}
               </button>
             </div>
             <div className="SendCommentBtn" style={{ margin: "0" }}>
               <button
                 className="SendCommentBtn1"
                 onClick={this.handleAssigntoWithComment.bind(this)}
-                // onClick={this..bind(this, 4)}
+                disabled={this.state.isAddSubmit}
               >
-                ADD
+                {this.state.isAddSubmit ? (
+                  <FontAwesomeIcon
+                    className="circular-loader"
+                    icon={faCircleNotch}
+                    spin
+                  />
+                ) : null}
+                {TranslationContext !== undefined
+                  ? TranslationContext.button.add
+                  : "ADD"}
               </button>
             </div>
           </div>

@@ -8,63 +8,63 @@ class TicketToBillBarGraph extends Component {
     this.state = {
       optionsMixedChart: {
         chart: {
-          id: "basic-bar"
+          id: "basic-bar",
         },
         xaxis: {
-          categories: []
+          categories: [],
           // categories: ["Offline", "Web", "Mobile"]
         },
         legend: {
-          position: 'top',
-          horizontalAlign: 'right',
+          position: "top",
+          horizontalAlign: "right",
           markers: {
-            fillColors: ['#75A5DE', '#2561A8']
-          }
+            fillColors: ["#75A5DE", "#2561A8"],
+          },
         },
         fill: {
-          colors: ['#75A5DE', '#2561A8'],
-          opacity: 1
+          colors: ["#75A5DE", "#2561A8"],
+          opacity: 1,
         },
         plotOptions: {
           bar: {
-            columnWidth: '90%'
-          }
+            columnWidth: "90%",
+          },
         },
         stroke: {
-          show: false
+          show: false,
         },
         states: {
           hover: {
             filter: {
-              type: 'none'
-            }
+              type: "none",
+            },
           },
           active: {
             filter: {
-              type: 'none'
-            }
-          }
+              type: "none",
+            },
+          },
         },
         tooltip: {
           marker: {
-            fillColors: [ '#2561A8','#75A5DE']
-          }
-        }
+            fillColors: ["#2561A8", "#75A5DE"],
+          },
+        },
       },
       seriesMixedChart: [
         {
           name: "Total Bills",
           type: "column",
-          data: []
+          data: [],
           // data: [2500, 2500, 2500]
         },
         {
           name: "Ticketed Bills",
           type: "column",
-          data: []
+          data: [],
           // data: [1700, 1700, 1700]
-        }
-      ]
+        },
+      ],
     };
 
     this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
@@ -77,37 +77,34 @@ class TicketToBillBarGraph extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
-   
-      var propsData = this.props.data;
-      let categories = [],
-        totalBillsData = [],
-        ticketedBillsData = [];
-      // let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
-      for (let i = 0; i < propsData.length; i++) {
-        let ticketSourceName = propsData[i].ticketSourceName;
-        categories.push(ticketSourceName);
-        let totalBills = propsData[i].totalBills;
-        totalBillsData.push(totalBills);
-        let ticketedBills = propsData[i].ticketedBills;
-        ticketedBillsData.push(ticketedBills);
-      }
+    var propsData = this.props.data;
+    let categories = [],
+      totalBillsData = [],
+      ticketedBillsData = [];
+    for (let i = 0; i < propsData.length; i++) {
+      let ticketSourceName = propsData[i].ticketSourceName;
+      categories.push(ticketSourceName);
+      let totalBills = propsData[i].totalBills;
+      totalBillsData.push(totalBills);
+      let ticketedBills = propsData[i].ticketedBills;
+      ticketedBillsData.push(ticketedBills);
+    }
 
-      this.setState({
-        optionsMixedChart: {
-          xaxis: {
-            categories
-          }
+    this.setState({
+      optionsMixedChart: {
+        xaxis: {
+          categories,
         },
-        seriesMixedChart: [
-          {
-            data: totalBillsData
-          },
-          {
-            data: ticketedBillsData
-          }
-        ]
-      });
+      },
+      seriesMixedChart: [
+        {
+          data: totalBillsData,
+        },
+        {
+          data: ticketedBillsData,
+        },
+      ],
+    });
     // });
   }
 

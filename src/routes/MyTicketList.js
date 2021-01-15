@@ -14,6 +14,7 @@ import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
+import TicketFromStore from "./../assets/Images/store.png";
 import moment from "moment";
 import Modal from "react-responsive-modal";
 import MyTicketDraft from "./Tabs/MyTicketDraft.js";
@@ -44,6 +45,7 @@ import { withRouter } from "react-router";
 import matchSorter from "match-sorter";
 import * as translationHI from "../translations/hindi";
 import * as translationMA from "../translations/marathi";
+
 class MyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +67,6 @@ class MyTicketList extends Component {
       ChannelOfPurchaseData: [],
       SlaStatusData: [],
       CategoryData: [],
-
       SubCategoryData: [],
       ClaimSubCategoryData: [],
       SubCategoryAllData: [],
@@ -363,7 +364,6 @@ class MyTicketList extends Component {
     this.handleGetCategoryList();
     this.handleGetSlaStatusList();
     this.handleGetAssignTo();
-
     this.handleGetDepartmentList();
     this.handleGetModulesNames();
 
@@ -1150,7 +1150,6 @@ class MyTicketList extends Component {
         },
       })
         .then(function(res) {
-          //
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
@@ -1510,7 +1509,6 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //
         let data = res.data.responseData;
         self.setState({
           ClaimSubCategoryData: data,
@@ -1521,7 +1519,6 @@ class MyTicketList extends Component {
       });
   }
   handleGetSubCategoryList(param) {
-    //
     let self = this;
     if (param === "categoryTab") {
       this.setState({
@@ -1564,7 +1561,6 @@ class MyTicketList extends Component {
     })
       .then(function(res) {
         var data = res.data.responseData;
-
         if (param === "categoryTab") {
           self.setState({
             SubCategoryData: data,
@@ -1599,7 +1595,6 @@ class MyTicketList extends Component {
       },
     })
       .then(function(res) {
-        //
         let ClaimIssueTypeData = res.data.responseData;
         self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
       })
@@ -1820,8 +1815,6 @@ class MyTicketList extends Component {
           "YYYY-MM-DD"
         );
       }
-      // allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
-      // allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
       allTab["CategoryId"] = this.state.selectedCategoryAll;
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
@@ -2094,8 +2087,6 @@ class MyTicketList extends Component {
           "YYYY-MM-DD"
         );
       }
-      // allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
-      // allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
       allTab["CategoryId"] = this.state.selectedCategoryAll;
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
@@ -2260,7 +2251,6 @@ class MyTicketList extends Component {
               delete CVData[i].responseTimeRemainingBy;
               delete CVData[i].responseOverdueBy;
               delete CVData[i].resolutionOverdueBy;
-              // delete CSVData[i].ticketCommentCount;
             }
             self.setState({ CSVDownload: CVData });
           }
@@ -2549,7 +2539,6 @@ class MyTicketList extends Component {
           spriorityFilterCheckbox: "",
           screatedOnFilterCheckbox: "",
           sassignedToFilterCheckbox: "",
-
           StatusModel: true,
           sortColumnName: data,
           sortHeader: header,
@@ -2873,7 +2862,6 @@ class MyTicketList extends Component {
     }
   }
   handleByDateCreate(date) {
-    //
     this.setState({ ByDateCreatDate: date });
   }
   handleChangeSelectDate(date) {
@@ -2901,7 +2889,6 @@ class MyTicketList extends Component {
   hanleChange = () => {
     this.props.history.push("/admin/addSearchMyTicket");
   };
-
   handleAssignModalOpen() {
     this.setState({ AssignModal: true });
   }
@@ -2914,7 +2901,6 @@ class MyTicketList extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
     var scategoryFilterCheckbox = this.state.scategoryFilterCheckbox;
     var spriorityFilterCheckbox = this.state.spriorityFilterCheckbox;
@@ -3063,7 +3049,6 @@ class MyTicketList extends Component {
         }
       }
     }
-
     var allData = this.state.sortAllData;
 
     this.setState({
@@ -3292,7 +3277,6 @@ class MyTicketList extends Component {
   }
 
   handleGetAssignTo() {
-    //
     let self = this;
     axios({
       method: "post",
@@ -3300,7 +3284,6 @@ class MyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -3331,7 +3314,6 @@ class MyTicketList extends Component {
         }
       }
     }
-
     const newSelected = Object.assign({}, this.state.cSelectedRow);
     newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
 
@@ -3389,7 +3371,6 @@ class MyTicketList extends Component {
     if ((rowInfo, column)) {
       return {
         onClick: (e) => {
-          //
           let Id = column.original["ticketID"];
           let self = this;
           self.setState({
@@ -3568,8 +3549,6 @@ class MyTicketList extends Component {
             resultCount: count,
             loading: false,
           });
-          // self.onCloseModal();
-
           let lowerTabs = document.querySelectorAll(".lower-tabs .nav-link");
           let activeTabId = dataSearch.ActiveTabId;
           for (let i = 0; i < lowerTabs.length; i++) {
@@ -3837,7 +3816,6 @@ class MyTicketList extends Component {
               selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
               selectedPurchaseStoreCodeAddressAll:
                 dataSearch.SearchDataByAll.StoreCodeORAddress,
-
               selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
               selectedWantToVisitStoreAll:
                 dataSearch.SearchDataByAll.IsWantVistingStore,
@@ -4530,13 +4508,6 @@ class MyTicketList extends Component {
             </ul>
 
             <div className="mlistbtn">
-              {/* <button
-                className="myTicket-btn-A"
-                type="button"
-                onClick={this.handleAssignModalOpen.bind(this)}
-              >
-                ASSIGN
-              </button> */}
               {this.state.SearchTicketData.length > 0 ? (
                 <div>
                   {this.state.headerActiveId === 1003 ? (
@@ -4695,7 +4666,6 @@ class MyTicketList extends Component {
                               >
                                 <div className="save-search">
                                   <p>
-                                    {" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.button.savesearch
                                       : "SAVE SEARCH"}
@@ -4759,7 +4729,6 @@ class MyTicketList extends Component {
                                     </p>
                                   </div>
                                   <ul>
-                                    {/* <li> */}
                                     {this.state.SearchListData !== null &&
                                       this.state.SearchListData.map(
                                         (item, i) => (
@@ -6063,7 +6032,6 @@ class MyTicketList extends Component {
                                   </div>
                                   <div className="col-auto mob-mar-btm">
                                     <CSVLink
-                                      // className="csv-button"
                                       className={
                                         this.state.SearchTicketData.length > 0
                                           ? "csv-button"
@@ -6409,9 +6377,9 @@ class MyTicketList extends Component {
                                                       getOptionLabel={(
                                                         option
                                                       ) => option.days}
-                                                      getOptionValue={
-                                                        (option) => option.days //id
-                                                      }
+                                                      getOptionValue={(
+                                                        option
+                                                      ) => option.days}
                                                       options={
                                                         this.state
                                                           .NameOfDayForWeek
@@ -6460,9 +6428,9 @@ class MyTicketList extends Component {
                                                       getOptionLabel={(
                                                         option
                                                       ) => option.month}
-                                                      getOptionValue={(
-                                                        option
-                                                      ) => option.month}
+                                                      getOptionValue={
+                                                        (option) => option.month //id
+                                                      }
                                                       options={
                                                         this.state
                                                           .NameOfMonthForYear
@@ -6605,9 +6573,9 @@ class MyTicketList extends Component {
                                                       getOptionLabel={(
                                                         option
                                                       ) => option.month}
-                                                      getOptionValue={
-                                                        (option) => option.month //id
-                                                      }
+                                                      getOptionValue={(
+                                                        option
+                                                      ) => option.month}
                                                       options={
                                                         this.state
                                                           .NameOfMonthForDailyYear
@@ -7056,6 +7024,15 @@ class MyTicketList extends Component {
                                                 className="headPhone3 black-twitter"
                                                 title="Twitter"
                                               />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "TicketFromStore" ? (
+                                              <img
+                                                src={TicketFromStore}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="TicketFromStore"
+                                              />
                                             ) : null}
 
                                             {row.original.ticketID}
@@ -7390,7 +7367,6 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "priority",
                                 minWidth: 50,
-                                // Cell: props => <span>High</span>
                               },
                               {
                                 Header: (

@@ -13,6 +13,8 @@ import Modal from "react-bootstrap/Modal";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 var uid = 0;
 class OrderSetting extends Component {
   constructor(props) {
@@ -56,12 +58,13 @@ class OrderSetting extends Component {
       fileName: "",
       ordSettingBtnDisabled: false,
       orderWhatsAppTemplate: [],
+      isOrderLoading: false,
     };
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
 
   componentDidMount() {
-    this.handleGetModuleConfigData();
+    // this.handleGetModuleConfigData();
     this.handleGetOrderConfigData();
     this.handleGetShippingTempData();
     this.handleGetWhatsAppTemplateData();
@@ -234,7 +237,8 @@ class OrderSetting extends Component {
 
   handleUpdateOrderConfigData() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    this.setState({ isOrderLoading: true });
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateOrderConfiguration",
@@ -279,10 +283,20 @@ class OrderSetting extends Component {
             : 0,
         StateFlag: this.state.orderConfigData.stateFlag,
         CurrencyText: this.state.orderConfigData.currencyText,
+        CancelButtonInShipment: this.state.orderConfigData
+          .cancelButtonInShipment,
+        IsPushToPoss: this.state.orderConfigData.isPushToPoss,
+        IsPODAccept: this.state.orderConfigData.isPODAccept,
+        EnableCheckService: this.state.orderConfigData.enableCheckService,
+        ShowShipmentCharges: this.state.orderConfigData.showShipmentCharges,
+        ShowItemProperty: this.state.orderConfigData.showItemProperty,
+        ShowSelfPickupTab: this.state.orderConfigData.showSelfPickupTab,
+        ShowAvailableQuantity: this.state.orderConfigData.showAvailableQuantity,
       },
     })
       .then(function(res) {
         let status = res.data.message;
+        self.setState({ isOrderLoading: false });
         if (status === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -298,12 +312,15 @@ class OrderSetting extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isOrderLoading: false });
         console.log(data);
       });
   }
 
   handleUpdateOrderConfigMessageTempData() {
     const TranslationContext = this.state.translateLanguage.default;
+    let self = this;
+    this.setState({ isOrderLoading: true });
 
     axios({
       method: "post",
@@ -315,6 +332,7 @@ class OrderSetting extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
+        self.setState({ isOrderLoading: false });
         if (status === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -330,6 +348,7 @@ class OrderSetting extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isOrderLoading: false });
         console.log(data);
       });
   }
@@ -372,7 +391,32 @@ class OrderSetting extends Component {
     } else if (OrderConfig === "chkOrderconfigStateFlag") {
       this.state.orderConfigData.stateFlag = !this.state.orderConfigData
         .stateFlag;
+    } else if (OrderConfig === "ckOrdCancelBtnShipment") {
+      this.state.orderConfigData.cancelButtonInShipment = !this.state
+        .orderConfigData.cancelButtonInShipment;
+    } else if (OrderConfig === "ckOrdIsPushToPoss") {
+      this.state.orderConfigData.isPushToPoss = !this.state.orderConfigData
+        .isPushToPoss;
+    } else if (OrderConfig === "ckOrdisPODAccept") {
+      this.state.orderConfigData.isPODAccept = !this.state.orderConfigData
+        .isPODAccept;
+    } else if (OrderConfig === "isEnableCheckService") {
+      this.state.orderConfigData.enableCheckService = !this.state
+        .orderConfigData.enableCheckService;
+    } else if (OrderConfig === "isShowShipmentCharges") {
+      this.state.orderConfigData.showShipmentCharges = !this.state
+        .orderConfigData.showShipmentCharges;
+    } else if (OrderConfig === "isShowItemProperty") {
+      this.state.orderConfigData.showItemProperty = !this.state.orderConfigData
+        .showItemProperty;
+    } else if (OrderConfig === "isShowSelfPickupTab") {
+      this.state.orderConfigData.showSelfPickupTab = !this.state.orderConfigData
+        .showSelfPickupTab;
+    } else if (OrderConfig === "isShowAvailableQuantity") {
+      this.state.orderConfigData.showAvailableQuantity = !this.state
+        .orderConfigData.showAvailableQuantity;
     }
+
     this.setState({ orderConfigData: this.state.orderConfigData });
   };
   /// Handle Communication change
@@ -499,31 +543,50 @@ class OrderSetting extends Component {
     }
     var splitText = values.split(".");
     var index = values.indexOf(".");
-
-    if (index !== -1) {
-      if (splitText) {
-        if (splitText[1].length <= 2) {
-          if (index !== -1 && splitText.length === 2) {
-            if (names === "OrdTempHeight") {
-              this.setState({
-                OrdTempHeight: values,
-              });
-            } else if (names === "OrdTempLength") {
-              this.setState({
-                OrdTempLength: values,
-              });
-            } else if (names === "OrdTempBreadth") {
-              this.setState({
-                OrdTempBreadth: values,
-              });
-            } else if (names === "OrdTempWeight") {
-              this.setState({
-                OrdTempWeight: values,
-              });
+    if (values !== "0") {
+      if (index !== -1) {
+        if (splitText) {
+          if (splitText[1].length <= 2) {
+            if (index !== -1 && splitText.length === 2) {
+              if (names === "OrdTempHeight") {
+                this.setState({
+                  OrdTempHeight: values,
+                });
+              } else if (names === "OrdTempLength") {
+                this.setState({
+                  OrdTempLength: values,
+                });
+              } else if (names === "OrdTempBreadth") {
+                this.setState({
+                  OrdTempBreadth: values,
+                });
+              } else if (names === "OrdTempWeight") {
+                this.setState({
+                  OrdTempWeight: values,
+                });
+              }
             }
+          } else {
+            return false;
           }
         } else {
-          return false;
+          if (names === "OrdTempHeight") {
+            this.setState({
+              OrdTempHeight: values,
+            });
+          } else if (names === "OrdTempLength") {
+            this.setState({
+              OrdTempLength: values,
+            });
+          } else if (names === "OrdTempBreadth") {
+            this.setState({
+              OrdTempBreadth: values,
+            });
+          } else if (names === "OrdTempWeight") {
+            this.setState({
+              OrdTempWeight: values,
+            });
+          }
         }
       } else {
         if (names === "OrdTempHeight") {
@@ -545,23 +608,7 @@ class OrderSetting extends Component {
         }
       }
     } else {
-      if (names === "OrdTempHeight") {
-        this.setState({
-          OrdTempHeight: values,
-        });
-      } else if (names === "OrdTempLength") {
-        this.setState({
-          OrdTempLength: values,
-        });
-      } else if (names === "OrdTempBreadth") {
-        this.setState({
-          OrdTempBreadth: values,
-        });
-      } else if (names === "OrdTempWeight") {
-        this.setState({
-          OrdTempWeight: values,
-        });
-      }
+      return false;
     }
   }
 
@@ -624,9 +671,11 @@ class OrderSetting extends Component {
       this.state.OrdTempWeight !== ""
     ) {
       let self = this;
+      this.setState({ isOrderLoading: true });
       this.setState({
         ordSettingBtnDisabled: true,
       });
+      this.setState({ isOrderLoading: true });
       axios({
         method: "post",
         url: config.apiUrl + "/HSOrder/InsertUpdateOrderShippingTemplate",
@@ -645,6 +694,7 @@ class OrderSetting extends Component {
       })
         .then(function(res) {
           let status = res.data.message;
+          self.setState({ isOrderLoading: false });
           if (status === "Success") {
             self.setState({
               OrdTemplatename: "",
@@ -681,6 +731,7 @@ class OrderSetting extends Component {
           }
         })
         .catch((data) => {
+          self.setState({ isOrderLoading: false });
           console.log(data);
         });
     } else {
@@ -731,6 +782,14 @@ class OrderSetting extends Component {
               ? TranslationContext.alertmessage.fileuploadedsuccessfully
               : "File uploaded successfully."
           );
+          self.setState({
+            fileName: "",
+            file: {},
+            ordSettingBtnDisabled: false,
+          });
+          self.handleGetShippingTempData();
+        } else if (status === "Process completed with some failed data..") {
+          NotificationManager.error("Process completed with some failed data.");
           self.setState({
             fileName: "",
             file: {},
@@ -951,7 +1010,8 @@ class OrderSetting extends Component {
 
   handleUpdateWhatsAppTemplateData() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    let self = this;
+    this.setState({ isOrderLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateWhatsappTemplate",
@@ -962,6 +1022,7 @@ class OrderSetting extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
+        self.setState({ isOrderLoading: false });
         if (status === "Success") {
           NotificationManager.success(
             TranslationContext !== undefined
@@ -977,6 +1038,7 @@ class OrderSetting extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isOrderLoading: false });
         console.log(data);
       });
   }
@@ -1014,7 +1076,9 @@ class OrderSetting extends Component {
           <div className="module-tabs">
             <section>
               <Tabs
-                onSelect={(index, label) => this.setState({ selTab: label })}
+                onSelect={(index, label) =>
+                  this.setState({ selTab: label, isOrderLoading: false })
+                }
                 selected={this.state.selTab}
               >
                 {/* Don't Remove commented code */}
@@ -1351,6 +1415,222 @@ class OrderSetting extends Component {
                                       </div>
                                     ) : null}
                                   </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .cancelbuttoninshipment
+                                          : "Cancel Button in Shipment"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckOrdCancelBtnShipment"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .cancelButtonInShipment
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckOrdCancelBtnShipment"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.ispushtoposs
+                                          : "Is Push To Poss"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckOrdIsPushToPoss"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .isPushToPoss
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckOrdIsPushToPoss"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.podaccept
+                                          : "POD Accept"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckOrdisPODAccept"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData.isPODAccept
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckOrdisPODAccept"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .showshipmentcharges
+                                          : "Show Shipment Charges"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="isShowShipmentCharges"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .showShipmentCharges
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="isShowShipmentCharges"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .enablecheckservice
+                                          : "Enable Check Service"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="isEnableCheckService"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .enableCheckService
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="isEnableCheckService"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .showitemproperty
+                                          : "Show Item Property"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="isShowItemProperty"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .showItemProperty
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="isShowItemProperty"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .showselfpickuptab
+                                          : "Show Self Pickup Tab"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="isShowSelfPickupTab"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .showSelfPickupTab
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="isShowSelfPickupTab"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .showavailablequantity
+                                          : "Show Available Quantity"}
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="isShowAvailableQuantity"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .showAvailableQuantity
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="isShowAvailableQuantity"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
 
                                   <table className="cmpaign-channel-table">
                                     <tr>
@@ -1410,7 +1690,13 @@ class OrderSetting extends Component {
                                   </table>
                                   <table className="cmpaign-channel-table">
                                     <tr>
-                                      <td>Maximum Retry Count</td>
+                                      <td>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard
+                                              .maximumretrycount
+                                          : "Maximum Retry Count"}
+                                      </td>
                                       <td>
                                         <input
                                           type="text"
@@ -1432,7 +1718,10 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        State Flag
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.stateflag
+                                          : "State Flag"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -1457,7 +1746,10 @@ class OrderSetting extends Component {
                                         className="storeRole-name-text ml-0 ordSttd-store"
                                         style={{ marginTop: 14 }}
                                       >
-                                        Currency
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext
+                                              .ticketingDashboard.currency
+                                          : "Currency"}
                                       </label>
                                       <input
                                         type="text"
@@ -1480,7 +1772,15 @@ class OrderSetting extends Component {
                                   onClick={this.handleUpdateOrderConfigData.bind(
                                     this
                                   )}
+                                  disabled={this.state.isOrderLoading}
                                 >
+                                  {this.state.isOrderLoading ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.update
                                     : "UPDATE"}
@@ -1635,7 +1935,15 @@ class OrderSetting extends Component {
                                   onClick={this.handleUpdateOrderConfigMessageTempData.bind(
                                     this
                                   )}
+                                  disabled={this.state.isOrderLoading}
                                 >
+                                  {this.state.isOrderLoading ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.update
                                     : "UPDATE"}
@@ -1938,7 +2246,7 @@ class OrderSetting extends Component {
                                   </div>
 
                                   <div style={{ display: "flex" }}>
-                                    <div className="col-md-10 my-3 text-center">
+                                    <div className="col-md-6 my-3 text-center">
                                       <button
                                         className="Schedulenext1 mb-0"
                                         type="button"
@@ -1949,13 +2257,21 @@ class OrderSetting extends Component {
                                           this.state.ordSettingBtnDisabled
                                         }
                                       >
+                                        {this.state.isOrderLoading ? (
+                                          <FontAwesomeIcon
+                                            className="circular-loader"
+                                            icon={faCircleNotch}
+                                            spin
+                                          />
+                                        ) : null}
                                         {TranslationContext !== undefined
                                           ? TranslationContext.button.submit
                                           : "SUBMIT"}
                                       </button>
                                     </div>
                                     <div
-                                      className="my-3 text-center"
+                                      className="col-md-3 my-3 text-center"
+                                      style={{ marginRight: "5rem" }}
                                     >
                                       <button
                                         className="Schedulenext1 mb-0"
@@ -2184,7 +2500,15 @@ class OrderSetting extends Component {
                                   onClick={this.handleUpdateWhatsAppTemplateData.bind(
                                     this
                                   )}
+                                  disabled={this.state.isOrderLoading}
                                 >
+                                  {this.state.isOrderLoading ? (
+                                    <FontAwesomeIcon
+                                      className="circular-loader"
+                                      icon={faCircleNotch}
+                                      spin
+                                    />
+                                  ) : null}
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.update
                                     : "UPDATE"}
@@ -2203,7 +2527,7 @@ class OrderSetting extends Component {
             <Modal
               show={this.state.editSlotModal}
               onHide={this.closeSlotEditModal}
-              dialogClassName="slotEditModal"
+              dialogClassName="editShippingTemp"
             >
               <div className="edtpadding">
                 <div className="">
@@ -2427,6 +2751,13 @@ class OrderSetting extends Component {
                     onClick={this.handleUpdateShippingTemplate.bind(this)}
                     disabled={this.state.editButtonShow}
                   >
+                    {this.state.editButtonShow ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : null}
                     {TranslationContext !== undefined
                       ? TranslationContext.label.save
                       : "SAVE"}

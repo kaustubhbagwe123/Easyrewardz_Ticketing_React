@@ -3,12 +3,11 @@ import logo from "../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import axios from "axios";
 import config from "../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
-// import { authHeader } from "../helpers/authHeader";
 import { encryption } from "../helpers/encryption";
 
 class ForgotPassword extends Component {
@@ -34,10 +33,10 @@ class ForgotPassword extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    debugger;
+
     if (this.validator.allValid()) {
       var encProgramCode = this.state.programCode;
-      let X_Authorized_Domainname = encryption(window.location.origin, "enc"); 
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let self = this;
       axios({
         method: "post",
@@ -49,22 +48,14 @@ class ForgotPassword extends Component {
           "X-Authorized-Domainname": X_Authorized_Domainname,
         },
         params: {
-          EmailId: this.state.emailId
-        }
+          EmailId: this.state.emailId,
+        },
       }).then(function(res) {
-        debugger;
         let SearchData = res.data.responseData;
-        if(res.data.statusCode===1001)
-        {  
-          NotificationManager.error(
-          SearchData, '', 1500
-         );
-        }
-        else if(res.data.statusCode===200)
-        {
-          NotificationManager.success(
-            SearchData, '', 1500
-           );
+        if (res.data.statusCode === 1001) {
+          NotificationManager.error(SearchData, "", 1500);
+        } else if (res.data.statusCode === 200) {
+          NotificationManager.success(SearchData, "", 1500);
         }
         self.setState({ SearchData: SearchData });
       });
@@ -75,19 +66,19 @@ class ForgotPassword extends Component {
   }
   hanleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
   render() {
     return (
       <div className="auth-wrapper box-center">
-      <NotificationContainer></NotificationContainer>
+        <NotificationContainer></NotificationContainer>
         <div className="auth-content">
           <div className="card forgotpass-card">
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={logo} style={{ width: "210px" }} alt="logo" />
+                <img src={logo} className="initial-logo" alt="logo" />
               </div>
               <div style={{ marginBottom: "15px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>

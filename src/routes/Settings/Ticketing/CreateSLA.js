@@ -306,6 +306,7 @@ class CreateSLA extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
+
     var sissueTpeNameFilterCheckbox = this.state.sissueTpeNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var sisSLAActiveFilterCheckbox = this.state.sisSLAActiveFilterCheckbox;
@@ -475,7 +476,6 @@ class CreateSLA extends Component {
     this.setState({
       tempsla: itemsArray,
     });
-    // this.StatusCloseModel();
   };
 
   selectIndividualSLA = async (issueId, event) => {
@@ -678,7 +678,6 @@ class CreateSLA extends Component {
 
   handleCreate(issueTypeName) {
     let { slaIssueType, value } = this.state;
-
     let newOption = {
       issueTypeName,
       issueTypeID: slaIssueType.length + 1,
@@ -702,6 +701,7 @@ class CreateSLA extends Component {
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
+
         if (data !== null) {
           self.state.sortAllData = data;
           var unique = [];
@@ -926,7 +926,6 @@ class CreateSLA extends Component {
                 : "SLA added successfully."
             );
             self.setState({
-              // selectedSlaIssueType: 0,
               SlaIsActive: "true",
               SearchText: "",
               issueTypeCompulsion: "",
@@ -1042,9 +1041,10 @@ class CreateSLA extends Component {
   ////handle update sla details by id
   handleUpdareSLADetails() {
     const TranslationContext = this.state.translateLanguage.default;
+    var EditData = this.state.finalEditData;
+    var valid = false;
 
     let self = this;
-    // if (valid === true) {
     var inputParamter = {};
     inputParamter.SLAId = this.state.SLAId;
     inputParamter.IsActive = this.state.isActive;
@@ -1164,20 +1164,14 @@ class CreateSLA extends Component {
         const formData = new FormData();
 
         formData.append("file", this.state.fileN[0]);
-        // this.setState({ showProgress: true });
         axios({
           method: "post",
           url: config.apiUrl + "/SLA/BulkUploadSLA",
           headers: authHeader(),
           data: formData,
-          // onUploadProgress: (ev = ProgressEvent) => {
-          //   const progress = (ev.loaded / ev.total) * 100;
-          //   this.updateUploadProgress(Math.round(progress));
-          // }
         })
           .then(function(res) {
             let status = res.data.message;
-            // let data = res.data.responseData;
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
@@ -1195,7 +1189,6 @@ class CreateSLA extends Component {
               self.setState({
                 showProgress: false,
                 bulkuploadLoading: false,
-                // isFileUploadFail: true,
                 progressValue: 0,
               });
               NotificationManager.error(
@@ -1838,7 +1831,6 @@ class CreateSLA extends Component {
                           <button
                             className="btn issuesladrop"
                             type="button"
-                            // data-toggle="dropdown"
                             id="issueTypeValue"
                             onClick={this.handleSlaButton}
                           >
@@ -1915,7 +1907,7 @@ class CreateSLA extends Component {
                                           )}
                                         />
                                         <label htmlFor={"i" + item.issueTypeID}>
-                                          {item.issueTypeName}
+                                          {item.issueTypeName}{" "}
                                           <div>
                                             <img src={Correct} alt="Checked" />
                                           </div>
@@ -1973,8 +1965,8 @@ class CreateSLA extends Component {
                         %
                         {TranslationContext !== undefined
                           ? TranslationContext.label.sla
-                          : "SLA"}
-                        <br />
+                          : "SLA"}{" "}
+                        <br />{" "}
                         {TranslationContext !== undefined
                           ? TranslationContext.label.breach
                           : "Breach"}
@@ -2167,7 +2159,7 @@ class CreateSLA extends Component {
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.addfile
                                   : "Add File"}
-                              </span>
+                              </span>{" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.div.ordropfilehere
                                 : "or Drop File here"}
@@ -2301,8 +2293,6 @@ class CreateSLA extends Component {
             </div>
           </div>
         </div>
-
-        {/* <NotificationContainer /> */}
         <div
           id="overlaySla"
           className={this.state.slaOvrlayShow ? "show" : ""}

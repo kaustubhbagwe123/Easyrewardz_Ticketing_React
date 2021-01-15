@@ -13,10 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import config from "./../../helpers/config";
 import ReactTable from "react-table";
-import {
-  NotificationManager
-} from "react-notifications";
-import { authHeader } from "../../helpers/authHeader"; 
+import { NotificationManager } from "react-notifications";
+import { authHeader } from "../../helpers/authHeader";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
 
@@ -49,7 +47,7 @@ class MyTicketTask extends Component {
       taskFunctionCompulsion: "",
       taskAssignToCompulsion: "",
       taskPriorityCompulsion: "",
-      addcommentCompulsion:"",
+      addcommentCompulsion: "",
       translateLanguage: {},
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
@@ -66,17 +64,16 @@ class MyTicketTask extends Component {
   }
 
   componentDidMount() {
-    //debugger;
     if (this.props.taskData.TicketData.TicketId !== 0) {
       var Id = this.props.taskData.TicketData.TicketId;
       /// var GridData=this.props.taskData.TicketData.GridData;
-     
+
       this.handleGetTaskTableGrid(Id);
       this.handleGetDepartmentList();
       this.handleGetTicketPriorityList();
-     
+
       this.setState({
-        tikcet_ID: Id
+        tikcet_ID: Id,
         /// taskTableGrid:GridData
       });
     } else if (this.props.taskData.TicketData.TicketId === 0) {
@@ -106,127 +103,127 @@ class MyTicketTask extends Component {
   HandleRowClickDraw = (rowInfo, column) => {
     //debugger
     return {
-      onClick: e => {
+      onClick: (e) => {
         var taskId = column.original["ticketingTaskID"];
         this.setState({
-          ticketTask_Id: taskId
+          ticketTask_Id: taskId,
         });
         this.handleGetTaskTabDetails(taskId);
         this.handleTaskDetailsDrawerOpn();
         this.handleGetTaskCommentsdetails(taskId);
-      }
+      },
     };
   };
-  handleTaskOnchangeData = e => {
+  handleTaskOnchangeData = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
   handleGetTaskTableGrid(Id) {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/gettasklist",
       headers: authHeader(),
       params: {
-        TicketId: Id
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ taskTableGrid: data });
-      } else {
-        self.setState({ taskTableGrid: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+        TicketId: Id,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ taskTableGrid: data });
+        } else {
+          self.setState({ taskTableGrid: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetTaskTabDetails(ticketTaskId) {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/gettaskdetailsbyid",
       headers: authHeader(),
       params: {
-        taskId: ticketTaskId
-      }
-    }).then(function(res) {
-      //debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ taskDetailsData: data });
-      } else {
-        self.setState({ taskDetailsData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+        taskId: ticketTaskId,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ taskDetailsData: data });
+        } else {
+          self.setState({ taskDetailsData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetTaskCommentsdetails(ticketTaskId) {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/getTaskComment",
       headers: authHeader(),
       params: {
-        TaskId: ticketTaskId
-      }
-    }).then(function(res) {
-      //debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ Taskdetails: data });
-      } else {
-        self.setState({ Taskdetails: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+        TaskId: ticketTaskId,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ Taskdetails: data });
+        } else {
+          self.setState({ Taskdetails: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetDepartmentList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader()
-    }).then(function(res) {
-      //debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ DepartmentData: data });
-      } else {
-        self.setState({ DepartmentData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ DepartmentData: data });
+        } else {
+          self.setState({ DepartmentData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetFunctionList() {
-    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectedDepartment
-      }
-    }).then(function(res) {
-      //debugger;
-      let FunctionData = res.data.responseData;
-      self.setState({ FunctionData: FunctionData });
-    }).catch(data => {
-      console.log(data);
+        DepartmentId: this.state.selectedDepartment,
+      },
+    })
+      .then(function(res) {
+        let FunctionData = res.data.responseData;
+        self.setState({ FunctionData: FunctionData });
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetAssignToList() {
@@ -236,37 +233,38 @@ class MyTicketTask extends Component {
       url: config.apiUrl + "/StoreTask/GetAssignedTo",
       headers: authHeader(),
       params: {
-        Function_ID: this.state.selectedFunction
-      }
-    }).then(function(res) {
-      //debugger;
-      let AssignToData = res.data.responseData;
-      self.setState({ AssignToData: AssignToData });
-    }).catch(data => {
-      console.log(data);
+        Function_ID: this.state.selectedFunction,
+      },
+    })
+      .then(function(res) {
+        let AssignToData = res.data.responseData;
+        self.setState({ AssignToData: AssignToData });
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
   handleGetTicketPriorityList() {
-    //debugger;
     let self = this;
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader()
-    }).then(function(res) {
-      //debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ TicketPriorityData: data });
-      } else {
-        self.setState({ TicketPriorityData: [] });
-      }
-    }).catch(data => {
-      console.log(data);
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ TicketPriorityData: data });
+        } else {
+          self.setState({ TicketPriorityData: [] });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
       });
   }
-  setDepartmentValue = e => {
+  setDepartmentValue = (e) => {
     let DepartmentValue = e.target.value;
     this.setState({ selectedDepartment: DepartmentValue });
     setTimeout(() => {
@@ -275,7 +273,7 @@ class MyTicketTask extends Component {
       }
     }, 1);
   };
-  setFunctionValue = e => {
+  setFunctionValue = (e) => {
     let FunctionValue = e.target.value;
     this.setState({ selectedFunction: FunctionValue });
     setTimeout(() => {
@@ -284,11 +282,11 @@ class MyTicketTask extends Component {
       }
     }, 1);
   };
-  setAssignToValue = e => {
+  setAssignToValue = (e) => {
     let AssignValue = e.target.value;
     this.setState({ selectedAssignTo: AssignValue });
   };
-  setPriorityValue = e => {
+  setPriorityValue = (e) => {
     let PriorityValue = e.target.value;
     this.setState({ selectedPriority: PriorityValue });
   };
@@ -315,16 +313,17 @@ class MyTicketTask extends Component {
           FunctionID: this.state.selectedFunction,
           AssignToID: this.state.selectedAssignTo,
           PriorityID: this.state.selectedPriority,
-          TicketID: this.state.tikcet_ID
-        }
+          TicketID: this.state.tikcet_ID,
+        },
       })
         .then(function(res) {
-          //debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext !== undefined
-              ? TranslationContext.ticketingDashboard.taskcreatedsuccessfully
-              : "Task created successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.taskcreatedsuccessfully
+                : "Task created successfully."
+            );
             self.handleAddTaskModalCls();
             self.handleGetTaskTableGrid(ticketId);
             self.setState({
@@ -333,89 +332,104 @@ class MyTicketTask extends Component {
               selectedDepartment: 0,
               selectedFunction: 0,
               selectedAssignTo: 0,
-              selectedPriority: 0
+              selectedPriority: 0,
             });
             self.props.callbackToParent();
             // {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }
           } else {
-            NotificationManager.error(TranslationContext !== undefined
-              ? TranslationContext.ticketingDashboard.tasknotcreated
-              : "Task not created.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.ticketingDashboard.tasknotcreated
+                : "Task not created."
+            );
             // {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }
           }
-        }).catch(function(res) {
+        })
+        .catch(function(res) {
           //handle error
           console.log(res);
         });
     } else {
       this.setState({
-        taskTitleCompulsion: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.thetitlefieldiscompulsory
-        : "The Title field is compulsory.",
-        taskDescCompulsion: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.thedescriptionfieldiscompulsory
-        : "The Description field is compulsory.",
-        taskDepartmentCompulsion: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.thedepartmentfieldiscompulsory
-        : "The Department field is compulsory.",
-        taskFunctionCompulsion: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.thefunctionfieldiscompulsory
-        : "The Function field is compulsory.",
-        taskAssignToCompulsion: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.theassigntofieldiscompulsory
-        : "The Assign To field is compulsory.",
-        taskPriorityCompulsion: TranslationContext !== undefined
-        ? TranslationContext.ticketingDashboard.thepriorityfieldiscompulsory
-        : "The Priority field is compulsory."
+        taskTitleCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.thetitlefieldiscompulsory
+            : "The Title field is compulsory.",
+        taskDescCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard
+                .thedescriptionfieldiscompulsory
+            : "The Description field is compulsory.",
+        taskDepartmentCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard
+                .thedepartmentfieldiscompulsory
+            : "The Department field is compulsory.",
+        taskFunctionCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.thefunctionfieldiscompulsory
+            : "The Function field is compulsory.",
+        taskAssignToCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.theassigntofieldiscompulsory
+            : "The Assign To field is compulsory.",
+        taskPriorityCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.thepriorityfieldiscompulsory
+            : "The Priority field is compulsory.",
       });
     }
-   
   }
   handleTaskAddComments() {
     const TranslationContext = this.state.translateLanguage.default;
-    if(
-      this.state.taskAddComment.length > 0
-    ){
-    var TaskData = this.props.taskData.TicketData.TabActiveId;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Task/AddComment",
-      headers: authHeader(),
-      params: {
-        CommentForId: TaskData,
-        Comment: this.state.taskAddComment.trim(),
-        Id: this.state.ticketTask_Id
-      }
-    }).then(function(res) {
-      let status = res.data.message;
-      if (status === "Success") {
-        NotificationManager.success( TranslationContext !== undefined
-          ? TranslationContext.alertmessage.commentaddedsuccessfully
-          : "Comment added successfully.");
-        self.setState({
-          taskAddComment: ""
+    if (this.state.taskAddComment.length > 0) {
+      var TaskData = this.props.taskData.TicketData.TabActiveId;
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Task/AddComment",
+        headers: authHeader(),
+        params: {
+          CommentForId: TaskData,
+          Comment: this.state.taskAddComment.trim(),
+          Id: this.state.ticketTask_Id,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.commentaddedsuccessfully
+                : "Comment added successfully."
+            );
+            self.setState({
+              taskAddComment: "",
+            });
+            self.handleGetTaskCommentsdetails(self.state.ticketTask_Id);
+          } else {
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.commentnotadded
+                : "Comment not added."
+            );
+          }
+        })
+        .catch((data) => {
+          console.log(data);
         });
-        self.handleGetTaskCommentsdetails(self.state.ticketTask_Id);
-      } else {
-        NotificationManager.error(TranslationContext !== undefined
-          ? TranslationContext.alertmessage.commentnotadded
-          : "Comment not added.");
-      }
-    }).catch(data => {
-      console.log(data);
+    } else {
+      this.setState({
+        addcommentCompulsion:
+          TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.pleaseaddcomment
+            : "Please Add Comment.",
       });
-  }else{
-    this.setState({
-      addcommentCompulsion:TranslationContext !== undefined
-      ? TranslationContext.ticketingDashboard.pleaseaddcomment
-      : "Please Add Comment."
-    });
-  }
+    }
   }
 
   render() {
@@ -424,7 +438,13 @@ class MyTicketTask extends Component {
 
     return (
       <div>
-        <div className={this.props.isKB?"claim-addTask-btn iskbticket":"claim-addTask-btn"}>
+        <div
+          className={
+            this.props.isKB
+              ? "claim-addTask-btn iskbticket"
+              : "claim-addTask-btn"
+          }
+        >
           <button
             type="button"
             className="butn"
@@ -443,9 +463,11 @@ class MyTicketTask extends Component {
           overlayId="logout-ovrly"
         >
           <div className="claim-AddTask-Mdl">
-            <label className="claim-hdrMdl">{TranslationContext !== undefined
-                                ? TranslationContext.nav.task
-                                : "Task"}</label>
+            <label className="claim-hdrMdl">
+              {TranslationContext !== undefined
+                ? TranslationContext.nav.task
+                : "Task"}
+            </label>
             <img
               src={CancelImg}
               alt="cancelImg"
@@ -457,9 +479,11 @@ class MyTicketTask extends Component {
             <input
               type="text"
               className="txt-1"
-              placeholder={TranslationContext !== undefined
-                ? TranslationContext.span.tasktitle
-                : "Task Title"}
+              placeholder={
+                TranslationContext !== undefined
+                  ? TranslationContext.span.tasktitle
+                  : "Task Title"
+              }
               name="taskTitle"
               value={this.state.taskTitle}
               onChange={this.handleTaskOnchangeData}
@@ -472,9 +496,11 @@ class MyTicketTask extends Component {
             )}
             <textarea
               className="ClaimAddTadk-modal-textArea mb-0"
-              placeholder={TranslationContext !== undefined
-                ? TranslationContext.label.taskdescription
-                : "Task Description"}
+              placeholder={
+                TranslationContext !== undefined
+                  ? TranslationContext.label.taskdescription
+                  : "Task Description"
+              }
               rows="6"
               name="taskDescription"
               value={this.state.taskDescription}
@@ -495,9 +521,9 @@ class MyTicketTask extends Component {
                   onChange={this.setDepartmentValue}
                 >
                   <option value="" className="select-category-placeholder">
-                  {TranslationContext !== undefined
-                ? TranslationContext.option.department
-                : "Department"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.department
+                      : "Department"}
                   </option>
                   {this.state.DepartmentData !== null &&
                     this.state.DepartmentData.map((item, i) => (
@@ -524,9 +550,9 @@ class MyTicketTask extends Component {
                   onChange={this.setFunctionValue}
                 >
                   <option value="" className="select-sub-category-placeholder">
-                  {TranslationContext !== undefined
-                              ? TranslationContext.label.function
-                              : "Function"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.function
+                      : "Function"}
                   </option>
                   {this.state.FunctionData !== null &&
                     this.state.FunctionData.map((item, i) => (
@@ -555,9 +581,9 @@ class MyTicketTask extends Component {
                   className="category-select-system dropdown-label"
                 >
                   <option value="" className="select-category-placeholder">
-                  {TranslationContext !== undefined
-                              ? TranslationContext.label.assignto
-                              : "Assign To"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.assignto
+                      : "Assign To"}
                   </option>
                   {this.state.AssignToData !== null &&
                     this.state.AssignToData.map((item, i) => (
@@ -584,9 +610,9 @@ class MyTicketTask extends Component {
                   className="category-select-system dropdown-label"
                 >
                   <option className="select-sub-category-placeholder">
-                  {TranslationContext !== undefined
-                              ? TranslationContext.label.taskpriority
-                              : "Task Priority"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.taskpriority
+                      : "Task Priority"}
                   </option>
                   {this.state.TicketPriorityData !== null &&
                     this.state.TicketPriorityData.map((item, i) => (
@@ -614,8 +640,8 @@ class MyTicketTask extends Component {
                   onClick={this.handleAddTaskModalCls.bind(this)}
                 >
                   {TranslationContext !== undefined
-                                          ? TranslationContext.option.cancel
-                                          : "CANCEL"}
+                    ? TranslationContext.option.cancel
+                    : "CANCEL"}
                 </button>
                 <button
                   className="butn"
@@ -623,8 +649,8 @@ class MyTicketTask extends Component {
                   onClick={this.handleAddTaskTitle.bind(this)}
                 >
                   {TranslationContext !== undefined
-                                          ? TranslationContext.button.createtask
-                                          : "CREATE TASK"}
+                    ? TranslationContext.button.createtask
+                    : "CREATE TASK"}
                 </button>
               </div>
             </div>
@@ -635,11 +661,15 @@ class MyTicketTask extends Component {
             data={taskTableGrid}
             columns={[
               {
-                Header: <span>{TranslationContext !== undefined
-                  ? TranslationContext.label.id
-                  : "ID"}</span>,
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.id
+                      : "ID"}
+                  </span>
+                ),
                 accessor: "ticketingTaskID",
-                Cell: row => (
+                Cell: (row) => (
                   <span>
                     <img
                       src={HeadPhone3}
@@ -648,76 +678,83 @@ class MyTicketTask extends Component {
                     />
                     {row.original.ticketingTaskID}
                   </span>
-                )
-              },
-              {
-                Header: <span>{TranslationContext !== undefined
-                  ? TranslationContext.label.status
-                  : "Status"}</span>,
-                accessor: "taskStatus"
-              },
-              {
-                Header: <span>{TranslationContext !== undefined
-                  ? TranslationContext.span.tasktitle
-                  : "Task Title"}</span>,
-                accessor: "taskTitle"
+                ),
               },
               {
                 Header: (
                   <span>
                     {TranslationContext !== undefined
-                              ? TranslationContext.label.department
-                              : "Department"}
-                    <FontAwesomeIcon icon={faCaretDown} />
+                      ? TranslationContext.label.status
+                      : "Status"}
                   </span>
                 ),
-                accessor: "departmentName"
-              },
-              {
-                Header: (
-                  <span>
-                   {TranslationContext !== undefined
-                                              ? TranslationContext.label
-                                                  .storecode
-                                              : "Store Code"}
-                    <FontAwesomeIcon icon={faCaretDown} />
-                  </span>
-                ),
-                accessor: "storeCode"
+                accessor: "taskStatus",
               },
               {
                 Header: (
                   <span>
                     {TranslationContext !== undefined
-                                          ? TranslationContext.label.createdby
-                                          : "Created By"}
-                    <FontAwesomeIcon icon={faCaretDown} />
+                      ? TranslationContext.span.tasktitle
+                      : "Task Title"}
                   </span>
                 ),
-                accessor: "createdBy"
+                accessor: "taskTitle",
               },
               {
                 Header: (
                   <span>
                     {TranslationContext !== undefined
-                              ? TranslationContext.span.creationon
-                              : "Creation On"}
+                      ? TranslationContext.label.department
+                      : "Department"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "dateFormat"
+                accessor: "departmentName",
               },
               {
                 Header: (
                   <span>
-                     {TranslationContext !== undefined
-                              ? TranslationContext.label.assignto
-                              : "Assign To"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.storecode
+                      : "Store Code"}
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "assignName"
-              }
+                accessor: "storeCode",
+              },
+              {
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.createdby
+                      : "Created By"}
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "createdBy",
+              },
+              {
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.creationon
+                      : "Creation On"}
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "dateFormat",
+              },
+              {
+                Header: (
+                  <span>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.assignto
+                      : "Assign To"}
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "assignName",
+              },
             ]}
             minRows={2}
             // resizable={false}
@@ -727,7 +764,7 @@ class MyTicketTask extends Component {
           />
 
           <Drawer
-            className="taskTab-drawerModal"
+            className="taskTab-drawerModal tktTaskDrw"
             placement={"right"}
             closable={false}
             // onClose={this.handleClaimDetailsModalClose}
@@ -742,9 +779,11 @@ class MyTicketTask extends Component {
                   // onClick={this.handleTaskDetailsDrawerCls.bind(this)}
                 />
               </a>
-              <label className="task-details"> {TranslationContext !== undefined
-                              ? TranslationContext.label.taskdetails
-                              : "Task Details"}</label>
+              <label className="task-details">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.taskdetails
+                  : "Task Details"}
+              </label>
             </div>
             <hr className="claimline" />
             <div className="">
@@ -761,9 +800,9 @@ class MyTicketTask extends Component {
                 </div>
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago m-r-25">
-                  {TranslationContext !== undefined
-                                          ? TranslationContext.label.assignedto
-                                          : "ASSIGNED TO"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.assignedto
+                      : "ASSIGNED TO"}
                     <span className="addTasklbl-name">
                       {this.state.taskDetailsData.assignName}
                     </span>
@@ -778,9 +817,9 @@ class MyTicketTask extends Component {
                 </div>
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago m-r-25">
-                  {TranslationContext !== undefined
-                              ? TranslationContext.label.status
-                              : "STATUS"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.status
+                      : "STATUS"}
                     <span className="addTasklbl-name">
                       {this.state.taskDetailsData.taskStatus}
                     </span>
@@ -795,9 +834,9 @@ class MyTicketTask extends Component {
                 </div>
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago">
-                  {TranslationContext !== undefined
-                              ? TranslationContext.ticketingDashboard.duedate
-                              : "DUE DATE"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.ticketingDashboard.duedate
+                      : "DUE DATE"}
                     <span className="addTasklbl-name">
                       {this.state.taskDetailsData.dateFormat}
                     </span>
@@ -810,18 +849,20 @@ class MyTicketTask extends Component {
               <hr className="claimline" />
               <textarea
                 className="task-drawerv-textArea"
-                placeholder={TranslationContext !== undefined
-                  ? TranslationContext.a.addcomments
-                  : "Add Comments"}
+                placeholder={
+                  TranslationContext !== undefined
+                    ? TranslationContext.a.addcomments
+                    : "Add Comments"
+                }
                 name="taskAddComment"
                 value={this.state.taskAddComment}
                 onChange={this.handleTaskOnchangeData}
               ></textarea>
               {this.state.taskAddComment.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.addcommentCompulsion}
-                    </p>
-                  )}
+                <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.addcommentCompulsion}
+                </p>
+              )}
               <button
                 className="assign-butn btn-assign-tikcet"
                 type="button"

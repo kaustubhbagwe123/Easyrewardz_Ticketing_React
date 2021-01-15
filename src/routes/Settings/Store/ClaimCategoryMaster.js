@@ -8,7 +8,7 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Select as Aselect, Spin } from "antd";
+import { Select as Aselect, Spin, Empty } from "antd";
 import Select from "react-select";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
@@ -117,6 +117,8 @@ class ClaimCategoryMaster extends Component {
       showEditAddIssue: false,
       translateLanguage: {},
       bulkuploadLoading: false,
+      isSubmit: false,
+      isDelete: false,
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -145,7 +147,6 @@ class ClaimCategoryMaster extends Component {
   sortStatusZtoA() {
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
-    var headerName = "";
 
     if (this.state.sortColumn === "brandName") {
       itemsArray.sort((a, b) => {
@@ -456,6 +457,7 @@ class ClaimCategoryMaster extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
+
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
     var ssubCategoryNameFilterCheckbox = this.state
@@ -752,11 +754,11 @@ class ClaimCategoryMaster extends Component {
     this.setState({
       tempcategoryGridData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
   handleGetCategoryGridData() {
     let self = this;
-    this.setState({ loading: true });
+    this.setState({ isloading: true });
+
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetClaimCategoryList",
@@ -764,6 +766,7 @@ class ClaimCategoryMaster extends Component {
     })
       .then(function(res) {
         var data = res.data;
+        self.setState({ isloading: false });
         if (data !== null) {
           var unique = [];
           var distinct = [];
@@ -781,6 +784,7 @@ class ClaimCategoryMaster extends Component {
               sortFilterBrandName.push({ brandName: distinct[i] });
             }
           }
+
           var unique = [];
           var distinct = [];
           var sortCategory = [];
@@ -882,6 +886,7 @@ class ClaimCategoryMaster extends Component {
         }
       })
       .catch((data) => {
+        self.setState({ isloading: false });
         console.log(data);
       });
   }
@@ -1138,6 +1143,7 @@ class ClaimCategoryMaster extends Component {
     const TranslationContext = this.state.translateLanguage.default;
 
     let self = this;
+    this.setState({ isDelete: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Category/DeleteClaimCategory",
@@ -1149,6 +1155,8 @@ class ClaimCategoryMaster extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
+          self.setState({ isDelete: false });
+
           self.handleGetCategoryGridData();
           NotificationManager.success(
             TranslationContext !== undefined
@@ -1156,8 +1164,10 @@ class ClaimCategoryMaster extends Component {
               : "Category deleted successfully."
           );
         }
+        self.setState({ isDelete: false });
       })
       .catch((data) => {
+        self.setState({ isDelete: false });
         console.log(data);
       });
   }
@@ -1398,6 +1408,7 @@ class ClaimCategoryMaster extends Component {
       IssueData = this.state.ListOfIssueData.filter(
         (x) => x.issueTypeName === this.state.ListOfIssue
       )[0].issueTypeID;
+      this.setState({ isSubmit: true });
 
       axios({
         method: "post",
@@ -1421,6 +1432,7 @@ class ClaimCategoryMaster extends Component {
                 : "Category added successfully."
             );
             self.setState({
+              isSubmit: false,
               selectBrandMulti: [],
               categoryDropData: [],
               SubCategoryDropData: [],
@@ -1444,15 +1456,19 @@ class ClaimCategoryMaster extends Component {
                 ? TranslationContext.alertmessage.recordalreadyexists
                 : "Record Already Exists."
             );
+            self.setState({ isSubmit: false });
           } else {
             NotificationManager.error(status);
+            self.setState({ isSubmit: false });
           }
         })
         .catch((data) => {
+          self.setState({ isSubmit: false });
           console.log(data);
         });
     } else {
       this.setState({
+        isSubmit: false,
         brandCompulsion: "Please Select Brand",
         categoryCompulsion: "Please Select category",
         subcategoryCompulsion: "Please Select SubCategory",
@@ -1625,7 +1641,7 @@ class ClaimCategoryMaster extends Component {
   fileUpload = (e) => {
     var allFiles = [];
     var selectedFiles = e;
-    if (selectedFiles) {
+    if (selectedFiles.length > 0) {
       allFiles.push(selectedFiles[0]);
 
       var fileSize = formatSizeUnits(selectedFiles[0].size);
@@ -1635,6 +1651,8 @@ class ClaimCategoryMaster extends Component {
         fileName: allFiles[0].name,
         bulkuploadCompulsion: "",
       });
+    } else {
+      NotificationManager.error("File accept only csv type.");
     }
   };
   handleCategoryChange = (value) => {
@@ -1978,16 +1996,11 @@ class ClaimCategoryMaster extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/Category/BulkUploadClaimCategory",
         headers: authHeader(),
         data: formData,
-        // onUploadProgress: (ev = ProgressEvent) => {
-        //   const progress = (ev.loaded / ev.total) * 100;
-        //   this.updateUploadProgress(Math.round(progress));
-        // }
       })
         .then(function(res) {
           let status = res.data.message;
@@ -2007,10 +2020,22 @@ class ClaimCategoryMaster extends Component {
               bulkuploadLoading: false,
             });
             self.handleGetCategoryGridData();
+          } else if (status === "Record Uploaded Partially") {
+            NotificationManager.error(
+              "File uploaded partially.Please check the log."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              showProgress: false,
+              isFileUploadFail: false,
+              bulkuploadLoading: false,
+            });
+            self.handleGetCategoryGridData();
           } else {
             self.setState({
               showProgress: false,
-              // isFileUploadFail: true,
               bulkuploadLoading: false,
               progressValue: 0,
             });
@@ -2583,11 +2608,19 @@ class ClaimCategoryMaster extends Component {
                                             <button
                                               className="butn"
                                               type="button"
+                                              disabled={this.state.isDelete}
                                               onClick={this.handleDeleteCategoryData.bind(
                                                 this,
                                                 ids
                                               )}
                                             >
+                                              {this.state.isDelete ? (
+                                                <FontAwesomeIcon
+                                                  className="circular-loader"
+                                                  icon={faCircleNotch}
+                                                  spin
+                                                />
+                                              ) : null}
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.button
                                                     .delete
@@ -2625,17 +2658,27 @@ class ClaimCategoryMaster extends Component {
                           },
                         },
                       ]}
-                      minRows={1}
+                      minRows={2}
                       resizable={false}
                       defaultPageSize={10}
                       showPagination={true}
+                      noDataText={
+                        this.state.isloading ? (
+                          <Spin size="large" tip="Loading..." />
+                        ) : categoryGridData.length === 0 ? (
+                          <Empty
+                            style={{ margin: "0" }}
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                          />
+                        ) : null
+                      }
                     />
                   </div>
                 )}
               </div>
               <div className="col-md-4">
                 <div className="store-col-2">
-                  <div className="createSpace cus-cs">
+                  <div className="storeSettingcreateDiv cus-cs">
                     <label className="Create-store-text">
                       {TranslationContext !== undefined
                         ? TranslationContext.label.createclaimcategory
@@ -2870,7 +2913,7 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleIssueTypeAdd.bind(this)}
                           >
-                            +{" "}
+                            +
                             {TranslationContext !== undefined
                               ? TranslationContext.span.addnew
                               : "ADD NEW"}
@@ -2954,7 +2997,15 @@ class ClaimCategoryMaster extends Component {
                         className="addBtn-ticket-hierarchy"
                         type="button"
                         onClick={this.handleSubmitData.bind(this)}
+                        disabled={this.state.isSubmit}
                       >
+                        {this.state.isSubmit ? (
+                          <FontAwesomeIcon
+                            className="circular-loader"
+                            icon={faCircleNotch}
+                            spin
+                          />
+                        ) : null}
                         {TranslationContext !== undefined
                           ? TranslationContext.button.add
                           : "ADD"}
@@ -2992,7 +3043,10 @@ class ClaimCategoryMaster extends Component {
                       spinning={this.state.bulkuploadLoading}
                     >
                       <div className="mainfileUpload">
-                        <Dropzone onDrop={this.fileUpload.bind(this)}>
+                        <Dropzone
+                          accept=".csv"
+                          onDrop={this.fileUpload.bind(this)}
+                        >
                           {({ getRootProps, getInputProps }) => (
                             <div {...getRootProps()}>
                               <input
@@ -3006,7 +3060,7 @@ class ClaimCategoryMaster extends Component {
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.addfile
                                   : "Add File"}
-                              </span>{" "}
+                              </span>
                               {TranslationContext !== undefined
                                 ? TranslationContext.div.or
                                 : "or"}
@@ -3209,7 +3263,7 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditCategoryAdd.bind(this)}
                       >
-                        +{" "}
+                        +
                         {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
@@ -3289,7 +3343,7 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditSubCategoryAdd.bind(this)}
                       >
-                        +{" "}
+                        +
                         {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}
@@ -3375,7 +3429,7 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditIssueAdd.bind(this)}
                       >
-                        +{" "}
+                        +
                         {TranslationContext !== undefined
                           ? TranslationContext.span.addnew
                           : "ADD NEW"}

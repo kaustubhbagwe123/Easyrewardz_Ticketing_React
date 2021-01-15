@@ -459,7 +459,6 @@ class CategoryMaster extends Component {
 
   setSortCheckStatus = (column, type, e) => {
     var itemsArray = [];
-
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
     var ssubCategoryNameFilterCheckbox = this.state
@@ -736,7 +735,6 @@ class CategoryMaster extends Component {
     this.setState({
       tempcategoryGridData: itemsArray,
     });
-    // this.StatusCloseModel();
   };
   handleGetCategoryGridData() {
     let self = this;
@@ -894,13 +892,11 @@ class CategoryMaster extends Component {
         (x) => x.categoryName === this.state.editCategory.categoryName
       );
       Category_Id = data[0].categoryID;
-      // Category_Id = this.state.editCategory.categoryID;
     } else {
       var data = this.state.categoryDropData.filter(
         (x) => x.categoryName === this.state.list1Value
       );
       Category_Id = data[0].categoryID;
-      // Category_Id = this.state.list1Value;
     }
     await axios({
       method: "post",
@@ -934,7 +930,6 @@ class CategoryMaster extends Component {
       SubCat_Id = this.state.SubCategoryDropData.filter(
         (x) => x.subCategoryName === this.state.ListOfSubCate
       )[0].subCategoryID;
-      // SubCat_Id = this.state.ListOfSubCate;
     }
     axios({
       method: "post",
@@ -1035,8 +1030,6 @@ class CategoryMaster extends Component {
           } else {
             self.setState({
               category_Id: data,
-              // inputValue: "",
-              // list1Value: ""
             });
             self.handleGetCategoryList();
           }
@@ -1196,39 +1189,13 @@ class CategoryMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      // if (isNaN(this.state.list1Value)) {
-      //   categorydata = this.state.category_Id;
-      // } else {
-      //   categorydata = this.state.categoryDropData.filter(
-      //     (x) => x.categoryName === this.state.list1Value
-      //   )[0].categoryID;
-      //   // categorydata = this.state.list1Value;
-      // }
       categorydata = this.state.categoryDropData.filter(
         (x) => x.categoryName === this.state.list1Value
       )[0].categoryID;
 
-      // if (isNaN(this.state.ListOfSubCate)) {
-      //   subCategoryData = this.state.subCategory_Id;
-      // } else {
-      //   subCategoryData = this.state.SubCategoryDropData.filter(
-      //     (x) => x.subCategoryName === this.state.ListOfSubCate
-      //   )[0].subCategoryID;
-      //   // subCategoryData = this.state.ListOfSubCate;
-      // }
-
       subCategoryData = this.state.SubCategoryDropData.filter(
         (x) => x.subCategoryName === this.state.ListOfSubCate
       )[0].subCategoryID;
-
-      // if (isNaN(this.state.ListOfIssue)) {
-      //   IssueData = this.state.issueType_Id;
-      // } else {
-      //   IssueData = this.state.ListOfIssueData.filter(
-      //     (x) => x.issueTypeName === this.state.ListOfIssue
-      //   )[0].issueTypeID;
-      //   // IssueData = this.state.ListOfIssue;
-      // }
       IssueData = this.state.ListOfIssueData.filter(
         (x) => x.issueTypeName === this.state.ListOfIssue
       )[0].issueTypeID;
@@ -1629,8 +1596,6 @@ class CategoryMaster extends Component {
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["subCategoryName"] = value;
-      // var subCategoryName=this.state.SubCategoryDropData.filter(x=>x.subCategoryName===value)[0].subCategoryName;
-      // editCategory["subCategoryName"] = subCategoryName;
       editCategory["issueTypeID"] = "";
       editCategory["issueTypeName"] = "";
       this.setState({
@@ -1958,7 +1923,6 @@ class CategoryMaster extends Component {
         const formData = new FormData();
 
         formData.append("file", this.state.fileN[0]);
-        // this.setState({ showProgress: true });
         axios({
           method: "post",
           url: config.apiUrl + "/Category/BulkUploadCategory",
@@ -1967,6 +1931,7 @@ class CategoryMaster extends Component {
         })
           .then(function(res) {
             let status = res.data.message;
+            let data = res.data.responseData;
             if (status === "Success") {
               NotificationManager.success(
                 TranslationContext !== undefined
@@ -1984,8 +1949,6 @@ class CategoryMaster extends Component {
               self.setState({
                 showProgress: false,
                 bulkuploadLoading: false,
-                // isFileUploadFail: true,
-                // progressValue: 0
               });
               NotificationManager.error(
                 TranslationContext !== undefined
@@ -2025,7 +1988,6 @@ class CategoryMaster extends Component {
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const { categoryGridData } = this.state;
-
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -2547,7 +2509,6 @@ class CategoryMaster extends Component {
                           onSearch={this.handleSearchCategoryData.bind(this)}
                           notFoundContent="No Data Found"
                         >
-                          {/* {list1SelectOptions} */}
                           {this.state.categoryDropData !== null &&
                             this.state.categoryDropData.map((item, o) => (
                               <Option key={o} value={item.categoryName}>
@@ -2639,7 +2600,6 @@ class CategoryMaster extends Component {
                           onSearch={this.handleSearchSubCategoryData.bind(this)}
                           notFoundContent="No Data Found"
                         >
-                          {/* {listSubCategory} */}
                           {this.state.SubCategoryDropData !== null &&
                             this.state.SubCategoryDropData.map((item, o) => (
                               <Option key={o} value={item.subCategoryName}>
@@ -2648,7 +2608,7 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              +
+                              +{" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
@@ -2725,7 +2685,6 @@ class CategoryMaster extends Component {
                           onSearch={this.handleSearchIssueType.bind(this)}
                           notFoundContent="No Data Found"
                         >
-                          {/* {listOfIssueType} */}
                           {this.state.ListOfIssueData !== null &&
                             this.state.ListOfIssueData.map((item, i) => (
                               <Option key={i} value={item.issueTypeName}>
@@ -2734,7 +2693,7 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              +
+                              +{" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.span.addnew
                                 : "ADD NEW"}
@@ -2883,7 +2842,7 @@ class CategoryMaster extends Component {
                                 {TranslationContext !== undefined
                                   ? TranslationContext.span.addfile
                                   : "Add File"}
-                              </span>
+                              </span>{" "}
                               {TranslationContext !== undefined
                                 ? TranslationContext.div.ordropfilehere
                                 : "or Drop File here"}
@@ -3078,7 +3037,6 @@ class CategoryMaster extends Component {
                       onSearch={this.handleSearchEditCategoryData.bind(this)}
                       notFoundContent="No Data Found"
                     >
-                      {/* {list1SelectOptions} */}
                       {this.state.categoryDropData !== null &&
                         this.state.categoryDropData.map((item, o) => (
                           <Option key={o} value={item.categoryName}>
@@ -3168,7 +3126,6 @@ class CategoryMaster extends Component {
                       onSearch={this.handleSearchEditSubCategoryData.bind(this)}
                       notFoundContent="No Data Found"
                     >
-                      {/* {listSubCategory} */}
                       {this.state.SubCategoryDropData !== null &&
                         this.state.SubCategoryDropData.map((item, o) => (
                           <Option key={o} value={item.subCategoryName}>
@@ -3177,7 +3134,7 @@ class CategoryMaster extends Component {
                         ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          +
+                          +{" "}
                           {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
@@ -3263,7 +3220,6 @@ class CategoryMaster extends Component {
                       onSearch={this.handleSearchEditIssueType.bind(this)}
                       notFoundContent="No Data Found"
                     >
-                      {/* {listOfIssueType} */}
                       {this.state.ListOfIssueData !== null &&
                         this.state.ListOfIssueData.map((item, i) => (
                           <Option key={i} value={item.issueTypeName}>
@@ -3272,7 +3228,7 @@ class CategoryMaster extends Component {
                         ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">
-                          +
+                          +{" "}
                           {TranslationContext !== undefined
                             ? TranslationContext.span.addnew
                             : "ADD NEW"}
